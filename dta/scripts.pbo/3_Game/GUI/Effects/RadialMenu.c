@@ -22,7 +22,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 
 	//controller
 	protected int 						m_ControllerTimout;
-	protected bool						m_IsControllerTimoutEnabled 		= true;		//enables/disables controller deselect timeout reset
+	protected bool						m_IsControllerTimoutEnabled 		= true;			//enables/disables controller deselect timeout reset
 	protected const float				CONTROLLER_DESELECT_TIMEOUT 		= 1000;			//timeout [ms] after which selection is automatically deselect when controller is not active
 	protected const int 				CONTROLLER_TILT_TRESHOLD			= 8;			//tilt value (0-10) for controller sticks after which the selection will be executed 
 	
@@ -39,6 +39,28 @@ class RadialMenu : ScriptedWidgetEventHandler
 	ref UIScriptedMenu					m_RegisteredClass;	
 	ref static RadialMenu				m_Instance;
 	
+	/*
+	
+			RADIAL MENU EVENTS
+	
+	Mouse:
+		OnMouseSelect
+		OnMouseDeselect
+		OnMouseExecute
+	
+	Controller:
+		OnControllerSelect
+		OnControllerDeselect
+		OnControllerExecute
+		OnControllerPressSelect
+		OnControllerPressBack
+	
+	Common:
+		OnControlsChanged		- controls has been changed (mouse<->controller)
+	
+	*/
+	
+	
 	//============================================
 	// RadialMenu
 	//============================================
@@ -52,7 +74,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 		
 		m_RadialItemCards = new ref map<Widget, float>;
 		m_UpdateTimer = new ref Timer();
-		m_UpdateTimer.Run( 0.03, this, "Update", NULL, true );
+		m_UpdateTimer.Run( 0.01, this, "Update", NULL, true );
 	}
 
 	void ~RadialMenu()
@@ -76,6 +98,26 @@ class RadialMenu : ScriptedWidgetEventHandler
 		SetFocus( m_Parent );			//set focus to widget
 	}
 
+	//controls
+	protected void SetMouseControls( bool state )
+	{
+		if ( m_UsingMouse != state )
+		{
+			m_UsingMouse = state;
+			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControlsChanged", NULL, state );
+		}
+	}
+	
+	bool IsUsingMouse()
+	{
+		return m_UsingMouse;
+	}
+	
+	bool IsUsingController()
+	{
+		return !m_UsingMouse;
+	}
+	
 	//============================================
 	// Setup
 	//============================================	
@@ -98,7 +140,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 	{
 		m_DelimiterLayout = delimiter_layout;
 	}
-	
+		
 	//============================================
 	// Visual
 	//============================================	
@@ -394,7 +436,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 				if ( mouse_distance <= MOUSE_SAFE_ZONE_RADIUS )
 				{
 					//Deselect
-					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionDeselect", NULL, m_SelectedObject );
+					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnMouseDeselect", NULL, m_SelectedObject );
 					m_SelectedObject = NULL;
 					//hide selector
 					HideRadialSelector();
@@ -403,11 +445,11 @@ class RadialMenu : ScriptedWidgetEventHandler
 				else
 				{
 					//Deselect
-					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionDeselect", NULL, m_SelectedObject );
+					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnMouseDeselect", NULL, m_SelectedObject );
 					
 					//Select
 					m_SelectedObject = GetObjectByDegAngle( GetAngleInDegrees( mouse_angle ) );
-					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionSelect", NULL, m_SelectedObject );				
+					GetGame().GameScript.CallFunction( m_RegisteredClass, "OnMouseSelect", NULL, m_SelectedObject );				
 					//show selector
 					ShowRadialSelector( m_SelectedObject );
 					
@@ -415,7 +457,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 					if ( mouse_distance >= GetRadius() * m_ExecuteDistanceOffset )
 					{
 						//Execute
-						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionExecute", NULL, m_SelectedObject );
+						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnMouseExecute", NULL, m_SelectedObject );
 					}
 					//--------------------------
 				}
@@ -423,7 +465,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 			//controller controls
 			else
 			{
-				//if controller is in use
+				//Controller tilt
 				if ( m_ControllerAngle > -1 && m_ControllerTilt > -1 )
 				{
 					//Right analogue stick
@@ -434,18 +476,18 @@ class RadialMenu : ScriptedWidgetEventHandler
 						if ( w_selected != m_SelectedObject )
 						{
 							//Deselect
-							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionDeselect", NULL, m_SelectedObject );
+							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerDeselect", NULL, m_SelectedObject );
 							
 							//Select new object
 							m_SelectedObject = w_selected;
-							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionSelect", NULL, m_SelectedObject );
+							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerSelect", NULL, m_SelectedObject );
 							//show selector
 							ShowRadialSelector( m_SelectedObject );							
 						}
 					}
 					else
 					{
-						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionDeselect", NULL, m_SelectedObject );
+						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerDeselect", NULL, m_SelectedObject );
 						m_SelectedObject = NULL;
 						//hide selector
 						HideRadialSelector();						
@@ -455,8 +497,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 					if ( m_ControllerTilt >= CONTROLLER_TILT_TRESHOLD )
 					{
 						//Execute
-						//Print("RadialMenu->OnSelectionExecute");
-						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionExecute", NULL, m_SelectedObject );
+						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerExecute", NULL, m_SelectedObject );
 					}				
 				}
 				//if controller is giving no feedback
@@ -468,7 +509,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 						
 						if ( m_ControllerTimout >= CONTROLLER_DESELECT_TIMEOUT )
 						{
-							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnSelectionDeselect", NULL, m_SelectedObject );
+							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerDeselect", NULL, m_SelectedObject );
 							m_SelectedObject = NULL;
 							//hide selector
 							HideRadialSelector();						
@@ -505,7 +546,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 		super.OnController( w, control, value );
 
 		//switch controls
-		m_UsingMouse = false;
+		SetMouseControls( false );
 		
 		//Right stick
 		if ( control == ControlID.CID_RADIALMENU )
@@ -519,31 +560,26 @@ class RadialMenu : ScriptedWidgetEventHandler
 			
 			return true;
 		}
-
-		//A button
-		if ( control == ControlID.CID_SELECT )
+		
+		//Controller buttons
+		//Select (A,cross)
+		if ( GetGame().GetInput().GetActionDown( "UAUISelect", false ) )
 		{
-			//Print("RadialMenu->OnControllerPressA");
-			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressA", NULL, m_SelectedObject );
-			
-			return true;
+			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressSelect", NULL, m_SelectedObject );
 		}
-
-		//B button
-		if ( control == ControlID.CID_BACK )
+		
+		//Back (B,circle)
+		if ( GetGame().GetInput().GetActionDown( "UAUIBack", false ) )
 		{
-			//Print("RadialMenu->OnControllerPressB");
-			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressB", NULL, m_SelectedObject );
-			
-			return true;
+			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressBack", NULL, m_SelectedObject );
 		}
-				
+		
 		return false;
 	}
 		
 	override bool OnMouseEnter( Widget w, int x, int y )
 	{
-		m_UsingMouse = true;
+		SetMouseControls( true );
 
 		return false;
 	}

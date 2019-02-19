@@ -737,6 +737,7 @@
                         "Jervant Malakjan",
                         "Jindřiška Musilová",
                         "Jiří Halama",
+						"Jiří Kunt",
                         "Jiří Lemberger",
                         "Jiří Raška",
                         "Josef Plachý",
@@ -751,6 +752,7 @@
                         "Lukáš Nožička",
                         "Lukáš Válka",
                         "Markéta Wiesnerová",
+                        "Martin Batel",
                         "Martin Civáň",
                         "Martin Horák",
                         "Martin Liška",
@@ -792,9 +794,11 @@
                         "Cortez",
                         "Dancing.Russian.Man",
                         "DemonGroover",
+                        "Derpy_Hooves",
                         "ferstaberinde",
                         "Fireball",
                         "-FM-",
+                        "Fraggle",
                         "Inception.",
                         "kichilron",
                         "Max Planck",
@@ -835,7 +839,8 @@
                         "Petr Kolář",
                         "Petr Rak",
                         "Quirin Eberle",
-                        "Roman Roba"
+                        "Roman Roba",
+                        "You"
                     ]
                 }
             ]
@@ -854,7 +859,8 @@
                     "SectionLines": [
                         "Copyright (c) 2002-2008 Xiph.org Foundation",
                         "TrueSky",
-                        "Portions of this software utilize True Sky technology (© 2015 Simul Software Ltd, all rights reserved.)"
+                        "Portions of this software utilize True Sky technology",
+						"(© 2015 Simul Software Ltd, all rights reserved.)"
                     ]
                 },
 				{
@@ -866,14 +872,15 @@
 				{
                     "SectionName": "OpenSSL",
                     "SectionLines": [
-                        "Copyright (c) 1998-2018 The OpenSSL Project.  All rights reserved.",
-						"Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)"
+                        "Copyright (c) 1998-2018 The OpenSSL Project. All rights reserved.",
+						"Copyright (c) 1995-1998 Eric Young (eay@cryptsoft.com)"
                     ]
                 },
 				{
                     "SectionName": "rapidjson",
                     "SectionLines": [
-                        "Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip.  All rights reserved.",
+                        "Copyright (c) 2015 THL A29 Limited, a Tencent company, and Milo Yip.",
+						"All rights reserved.",
                         "json.org, Copyright (c) 2002 JSON.org, All Rights Reserved.",
                         "JSON_checker, Copyright (c) 2002 JSON.org, All Rights Reserved."
                     ]
@@ -899,7 +906,7 @@
 				{
                     "SectionName": "zLib",
                     "SectionLines": [
-                        "Copyright (C) 1995-2017 Jean-loup Gailly and Mark Adler"
+                        "Copyright (c) 1995-2017 Jean-loup Gailly and Mark Adler"
                     ]
                 },
 				{

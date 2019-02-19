@@ -44,7 +44,7 @@ FrameWidgetClass server_browser_tab_root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "SERVER LIST"
+       text "#str_server_browser_tab_root_server_list_root_server_list_header_server_list_header_text0"
        font "gui/fonts/sdf_MetronLight24"
        "exact text" 0
        "exact text size" 24
@@ -128,7 +128,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             text "Host"
+             text "#server_browser_column_host"
              font "gui/fonts/sdf_MetronLight24"
              "exact text" 0
              "exact text size" 18
@@ -224,7 +224,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactpos 1
            hexactsize 1
            vexactsize 0
-           text "Population"
+           text "#players_title"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 0
            "exact text size" 18
@@ -252,7 +252,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactpos 1
            hexactsize 1
            vexactsize 0
-           text "Slots"
+           text "#server_browser_column_slots"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 0
            "exact text size" 18
@@ -391,7 +391,7 @@ FrameWidgetClass server_browser_tab_root {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       text "FILTERS"
+       text "#str_server_browser_tab_root_filters_root_filters_header_filters_header_text0"
        font "gui/fonts/sdf_MetronLight24"
        "exact text" 0
        "exact text size" 24

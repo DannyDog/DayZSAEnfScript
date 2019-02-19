@@ -870,6 +870,18 @@ class HumanMovementState
 	{
 		return m_iStanceIdx >= DayZPlayerConstants.STANCEIDX_RAISEDERECT;
 	}
+	
+	//! 
+	bool		IsInProne()
+	{
+		return m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE;
+	}
+	
+	//! 
+	bool		IsLeaning()
+	{
+		return m_fLeaning != 0;
+	}	
 }
 
 

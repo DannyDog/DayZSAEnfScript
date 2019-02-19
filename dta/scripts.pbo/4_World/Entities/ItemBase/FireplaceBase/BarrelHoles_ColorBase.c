@@ -4,8 +4,9 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	const string ANIMATION_OPENED 			= "LidOff";
 	const string ANIMATION_CLOSED			= "LidOn";
 	
-	protected bool m_IsOpened 				= false;
 	protected bool m_IsOpenedClient			= false;
+
+	protected ref OpenableBehaviour m_Openable;
 	
 	void BarrelHoles_ColorBase()
 	{
@@ -17,9 +18,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		PARTICLE_NORMAL_SMOKE	= ParticleList.BARREL_NORMAL_SMOKE;
 		PARTICLE_FIRE_END 		= ParticleList.BARREL_FIRE_END;
 		PARTICLE_STEAM_END		= ParticleList.BARREL_FIRE_STEAM_2END;
+
+		m_Openable = new OpenableBehaviour(false);
 		
 		//synchronized variables
-		RegisterNetSyncVariableBool( "m_IsOpened" );
+		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 	}
 	
 	override void EEInit()
@@ -41,26 +44,22 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		
 		if ( !IsBeingPlaced() )
 		{
-			//refresh if opened/closed state changed
-			if ( m_IsOpenedClient != m_IsOpened )
-			{
-				m_IsOpenedClient = m_IsOpened;
-				
-				//Refresh particles and sounds
-				RefreshFireParticlesAndSounds( true );
-			}
+			//Refresh particles and sounds
+			RefreshFireParticlesAndSounds( true );
 			
 			//sound sync
-			if ( IsOpened() && IsSoundSynchRemote() )
+			if ( IsOpen() && IsSoundSynchRemote() )
 			{
 				SoundBarrelOpenPlay();
 			}
 			
-			if ( !IsOpened() && IsSoundSynchRemote() )
+			if ( !IsOpen() && IsSoundSynchRemote() )
 			{
 				SoundBarrelClosePlay();
 			}
 		}
+
+		UpdateVisualState();
 	}
 	
 	//ATTACHMENTS
@@ -69,19 +68,19 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		ItemBase item = ItemBase.Cast( attachment );
 		
 		//kindling items
-		if ( IsKindling ( item ) && IsOpened() )
+		if ( IsKindling ( item ) && IsOpen() )
 		{
 			return true;
 		}
 		
 		//fuel items
-		if ( IsFuel ( item ) && IsOpened() )
+		if ( IsFuel ( item ) && IsOpen() )
 		{
 			return true;
 		}
 		
 		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT && !IsOpened() )
+		if ( item.Type() == ATTACHMENT_COOKING_POT && !IsOpen() )
 		{
 			return true;
 		}
@@ -94,7 +93,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		ItemBase item = ItemBase.Cast( attachment );
 		
 		//kindling items
-		if ( IsKindling ( item ) && !IsBurning() && IsOpened() )
+		if ( IsKindling ( item ) && !IsBurning() && IsOpen() )
 		{
 			if ( HasLastFuelKindlingAttached() )
 			{
@@ -114,7 +113,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		
 		//fuel items
-		if ( IsFuel ( item ) && !IsBurning() && IsOpened() )
+		if ( IsFuel ( item ) && !IsBurning() && IsOpen() )
 		{
 			if ( HasLastFuelKindlingAttached() )
 			{	
@@ -215,7 +214,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//cargo item into/outo this.Cargo
 	override bool CanReceiveItemIntoCargo( EntityAI cargo )
 	{
-		if ( !IsOpened() || GetHierarchyParent() )
+		if ( !IsOpen() || GetHierarchyParent() )
 		{
 			return false;
 		}
@@ -225,11 +224,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 
 	override bool CanReleaseCargo( EntityAI cargo )
 	{
-		if ( IsBurning() && IsOpened() )
+		if ( IsBurning() && IsOpen() )
 		{
 			return false;
 		}
-		else if ( !IsOpened() )
+		else if ( !IsOpen() )
 		{
 			return false;
 		}
@@ -244,7 +243,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		{
 			return false;
 		}
-		if ( HasAshes() || IsBurning() || !IsCargoEmpty() || IsItemTypeAttached( ATTACHMENT_COOKING_POT ) || IsOpened() )
+		if ( HasAshes() || IsBurning() || !IsCargoEmpty() || IsItemTypeAttached( ATTACHMENT_COOKING_POT ) || IsOpen() )
 		{
 			return false;
 		}
@@ -262,7 +261,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		//
 		
-		return IsOpened();
+		return IsOpen();
 	}
 	
 	override bool CanDisplayAttachmentSlot( string slot_name )
@@ -276,7 +275,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		
 		if ( slot_name == "CookingEquipment" )
 		{
-			return !IsOpened();
+			return !IsOpen();
 		}
 		
 		return true;
@@ -293,11 +292,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		
 		if ( category_name == "CookingEquipment" )
 		{
-			return !IsOpened();
+			return !IsOpen();
 		}			
 		else
 		{
-			return IsOpened();
+			return IsOpen();
 		}
 		
 		return true;
@@ -305,64 +304,49 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	// ---	
 
 	//ACTIONS
-	bool IsOpened()
-	{
-		return m_IsOpened;
-	}
-	
-	override void SetOpenState( bool state )
-	{
-		m_IsOpened = state;
-		
-		Synchronize();
-	}
-
-	void SoundBarrelOpenPlay()
-	{
-		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
-		sound.SetSoundAutodestroy( true );
-	}
-	
 	override void Open()
 	{
-		//update visual
-		SetAnimationPhase ( ANIMATION_OPENED, 0 );
-		SetAnimationPhase ( ANIMATION_CLOSED, 1 );
-		
-		//set open state
-		SetOpenState( true );
-		
-		//show in inventory
+		m_Openable.Open();
 		//GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
-		
+
 		SoundSynchRemote();
-	}
-	
-	void SoundBarrelClosePlay()
-	{
-		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
-		sound.SetSoundAutodestroy( true );
+		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+		UpdateVisualState();
 	}
 	
 	override void Close()
 	{
-		//update visual
-		SetAnimationPhase ( ANIMATION_OPENED, 1 );
-		SetAnimationPhase ( ANIMATION_CLOSED, 0 );
-		
-		//set open state
-		SetOpenState( false );
-		
-		//hide in inventory
+		m_Openable.Close();
 		//GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
 		
 		SoundSynchRemote();
+		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+		UpdateVisualState();
+	}
+	
+	override bool IsOpen()
+	{
+		return m_Openable.IsOpened();
+	}
+	
+	protected void UpdateVisualState()
+	{
+		if ( IsOpen() )
+		{
+			SetAnimationPhase(ANIMATION_OPENED, 0);
+			SetAnimationPhase(ANIMATION_CLOSED, 1);
+		}
+		else
+		{
+			SetAnimationPhase(ANIMATION_OPENED, 1);
+			SetAnimationPhase(ANIMATION_CLOSED, 0);
+		}
 	}
 	
 	//Can extinguish fire
 	override bool CanExtinguishFire()
 	{
-		if ( IsOpened() && IsBurning() )
+		if ( IsOpen() && IsBurning() )
 		{
 			return true;
 		}
@@ -373,7 +357,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//particles
 	override bool CanShowSmoke()
 	{
-		return IsOpened();
+		return IsOpen();
 	}
 	
 	// Item-to-item fire distribution
@@ -384,7 +368,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	
 	override bool CanBeIgnitedBy( EntityAI igniter = NULL )
 	{
-		if ( HasAnyKindling() && !IsBurning() && IsOpened() && !GetHierarchyParent() )
+		if ( HasAnyKindling() && !IsBurning() && IsOpen() && !GetHierarchyParent() )
 		{
 			return true;
 		}
@@ -394,7 +378,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	
 	override bool CanIgniteItem( EntityAI ignite_target = NULL )
 	{
-		if ( IsBurning() && IsOpened() )
+		if ( IsBurning() && IsOpen() )
 		{
 			return true;
 		}
@@ -421,6 +405,18 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		//start fire
 		StartFire(); 
 	}
+
+	void SoundBarrelOpenPlay()
+	{
+		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
+		sound.SetSoundAutodestroy( true );
+	}
+	
+	void SoundBarrelClosePlay()
+	{
+		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
+		sound.SetSoundAutodestroy( true );
+	}
 	
 	void DestroyClutterCutter( Object clutter_cutter )
 	{
@@ -430,7 +426,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override bool IsThisIgnitionSuccessful( EntityAI item_source = NULL )
 	{
 		//check kindling
-		if ( !HasAnyKindling() && IsOpened() )
+		if ( !HasAnyKindling() && IsOpen() )
 		{
 			return false;
 		}

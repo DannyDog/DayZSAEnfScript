@@ -121,6 +121,25 @@ class RadialQuickbarMenu extends UIScriptedMenu
 		//create content (widgets) for items
 		RefreshQuickbar();
 		
+		//set controller toolbar icons
+		#ifdef PLATFORM_CONSOLE
+				ImageWidget toolbar_select = layoutRoot.FindAnyWidget( "SelectIcon" );
+				ImageWidget toolbar_back = layoutRoot.FindAnyWidget( "CombineIcon" );
+			#ifdef PLATFORM_XBOX
+				toolbar_select.LoadImageFile( 0, "set:xbox_buttons image:A" );
+				toolbar_back.LoadImageFile( 0, "set:xbox_buttons image:B" );
+			#endif		
+			#ifdef PLATFORM_PS4
+				toolbar_select.LoadImageFile( 0, "set:playstation_buttons image:cross" );
+				toolbar_back.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			#endif
+		#endif
+		
+		#ifdef PLATFORM_WINDOWS
+				Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
+				toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );
+		#endif
+				
 		return layoutRoot;
 	}
 	
@@ -274,7 +293,37 @@ class RadialQuickbarMenu extends UIScriptedMenu
 	//============================================
 	// Radial Menu Events
 	//============================================
-	void OnSelectionSelect( Widget w )
+	//Common
+	void OnControlsChanged( bool is_using_mouse )
+	{
+		//show/hide controller toolbar
+		Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
+		toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );		
+	}
+		
+	//Controller
+	void OnControllerSelect( Widget w )
+	{
+		MarkSelected( w );
+	}
+
+	void OnControllerDeselect( Widget w )
+	{
+		UnmarkSelected( w );
+	}
+
+	void OnControllerPressSelect( Widget w )
+	{
+		PrimaryAction( w );
+	}
+	
+	void OnControllerPressBack( Widget w )
+	{
+		SecondaryAction( w );
+	}	
+
+	//Actions			
+	protected void MarkSelected( Widget w )
 	{
 		m_SelectedItem = w;
 		
@@ -298,13 +347,11 @@ class RadialQuickbarMenu extends UIScriptedMenu
 					TextWidget title_widget = TextWidget.Cast( quickbar_item.GetRadialItemCard().FindAnyWidget( TEXT_ITEM_TITLE ) );
 					title_widget.SetColor( ARGB( 255, 66, 175, 95 ) );					
 				}				
-			}
-
-			//Print("RadialQuickbarMenu->OnSelectionSelect");			
+			}		
 		}
 	}
 	
-	void OnSelectionDeselect( Widget w )
+	protected void UnmarkSelected( Widget w )
 	{
 		m_SelectedItem = NULL;
 		
@@ -329,12 +376,10 @@ class RadialQuickbarMenu extends UIScriptedMenu
 					title_widget.SetColor( ARGB( 255, 255, 255, 255 ) );					
 				}
 			}
-			
-			//Print("RadialQuickbarMenu->OnSelectionDeselect");
 		}
 	}
 	
-	void OnControllerPressA( Widget w )
+	protected void PrimaryAction( Widget w )
 	{
 		if ( instance.m_SelectedItem )
 		{
@@ -370,10 +415,9 @@ class RadialQuickbarMenu extends UIScriptedMenu
 				}
 			}
 		}
-		//Print("RadialQuickbarMenu->OnControllerPressA");
 	}
 	
-	void OnControllerPressB( Widget w )
+	protected void SecondaryAction( Widget w )
 	{
 		if ( instance.m_SelectedItem )
 		{
@@ -396,7 +440,5 @@ class RadialQuickbarMenu extends UIScriptedMenu
 				}
 			}
 		}
-		
-		//Print("RadialQuickbarMenu->OnControllerPressB");
 	}	
 }

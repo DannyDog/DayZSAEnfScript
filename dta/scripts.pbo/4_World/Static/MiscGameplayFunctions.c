@@ -261,6 +261,7 @@ class MiscGameplayFunctions
 				if (drop)
 				{
 					player.LocalDropEntity(child);
+					GetGame().RemoteObjectTreeCreate(child);
 					result = TransferInventoryResult.DroppedSome;
 				}
 			}

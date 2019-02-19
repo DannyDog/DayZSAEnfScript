@@ -133,7 +133,7 @@ FrameWidgetClass grid_container_root {
          disabled 1
          clipchildren 0
          ignorepointer 1
-         position 100 0
+         position 50 0
          size 0.1 0.6
          halign right_ref
          valign center_ref

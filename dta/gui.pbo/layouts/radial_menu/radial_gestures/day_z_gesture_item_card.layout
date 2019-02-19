@@ -22,7 +22,9 @@ PanelWidgetClass GestureItemCard {
    vexactsize 1
    text "Item Name"
    font "gui/fonts/sdf_MetronBook24"
-   "exact text" 0
+   "exact text" 1
+   "size to text h" 0
+   "size to text v" 1
    "text halign" center
    "text valign" center
   }

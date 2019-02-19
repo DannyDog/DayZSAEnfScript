@@ -752,8 +752,13 @@ class CGame
 	*/
 	proto native void		EnableVoN(Object player, bool enable);
 	
-	//! Returns current chat channel.
-	//proto native ChatChannel ChatGetChannel();
+	/**
+	 \brief Enable/disable VoN effect (only on server)
+	@param player in question
+	@param voice effect (VoiceEffectMumbling, VoiceEffectExtortion)
+	@param enable or disable effect
+	*/
+	proto native void		SetVoiceEffect(Object player, int effect, bool enable);
 
 	// mission
 	proto native Mission 	GetMission();

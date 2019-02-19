@@ -42,7 +42,7 @@ FrameWidgetClass TitleScreenLayout {
   RichTextWidgetClass InputPromptText {
    clipchildren 1
    color 1 1 1 1
-   position 0 328.5
+   position 0 80
    size 800 50
    halign center_ref
    valign bottom_ref
@@ -62,6 +62,7 @@ FrameWidgetClass TitleScreenLayout {
    wrap 1
   }
   ImageWidgetClass PreviewBuildNoteBackground {
+   visible 0
    color 0 0 0 0
    position 0 380
    size 0.7 0.18

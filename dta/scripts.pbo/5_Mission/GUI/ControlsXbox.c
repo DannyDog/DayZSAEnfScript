@@ -258,7 +258,7 @@ class ControlsXbox extends UIScriptedMenu
 		string content = "";
 		if ( file_handle )
 		{
-			while ( FGets( file_handle,  line_content ) > 0 )
+			while ( FGets( file_handle,  line_content ) >= 0 )
 			{
 				content += line_content;
 			}

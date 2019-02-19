@@ -4,7 +4,7 @@ class Container extends LayoutHolder
 	protected ref array<ref LayoutHolder>	m_OpenedContainers;
 	protected int							m_ActiveIndex = 1;
 	protected bool							m_LastIndex;
-	protected ref Container 				m_FocusedContainer;
+	protected Container 					m_FocusedContainer;
 	
 	const int ITEMS_IN_ROW = 8;
 	
@@ -36,31 +36,31 @@ class Container extends LayoutHolder
 		m_FocusedContainer = cont;
 	}
 	
-	float GetFocusedContainerHeight()
+	float GetFocusedContainerHeight( bool contents = false )
 	{
 		float x, y;
 		if( GetFocusedContainer() )
-			GetFocusedContainer().GetRootWidget().GetScreenSize( x, y );
+			y = GetFocusedContainer().GetFocusedContainerHeight( contents );
 		else
 			GetRootWidget().GetScreenSize( x, y );
 		return y;
 	}
 	
-	float GetFocusedContainerYPos()
+	float GetFocusedContainerYPos( bool contents = false )
 	{
 		float x, y;
 		if( GetFocusedContainer() )
-			GetFocusedContainer().GetRootWidget().GetPos( x, y );
+			y = GetFocusedContainer().GetFocusedContainerYPos( contents );
 		else
 			GetRootWidget().GetPos( x, y );
 		return y;
 	}
 	
-	float GetFocusedContainerYScreenPos()
+	float GetFocusedContainerYScreenPos( bool contents = false )
 	{
 		float x, y;
 		if( GetFocusedContainer() )
-			GetFocusedContainer().GetRootWidget().GetScreenPos( x, y );
+			y = GetFocusedContainer().GetFocusedContainerYScreenPos( contents );
 		else
 			GetRootWidget().GetScreenPos( x, y );
 		return y;
@@ -71,69 +71,94 @@ class Container extends LayoutHolder
 		return m_Body.Count();
 	}
 	
-	void SelectItem()
+	bool SelectItem()
 	{
-		GetFocusedContainer().SelectItem();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().SelectItem();
+		return false;
 	}
 	
-	void Select()
+	bool Select()
 	{
-		GetFocusedContainer().Select();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().Select();
+		return false;
 	}
 	
-	void Combine()
+	bool Combine()
 	{
-		GetFocusedContainer().Combine();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().Combine();
+		return false;
 	}
 	
-	void TransferItemToVicinity()
+	bool TransferItemToVicinity()
 	{
-		GetFocusedContainer().TransferItemToVicinity();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().TransferItemToVicinity();
+		return false;
 	}
 	
-	void TransferItem()
+	bool TransferItem()
 	{
-		GetFocusedContainer().TransferItem();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().TransferItem();
+		return false;
 	}
 	
-	void EquipItem()
+	bool EquipItem()
 	{
-		GetFocusedContainer().EquipItem();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().EquipItem();
+		return false;
 	}
 	
 	bool CanEquip()
 	{
-		return GetFocusedContainer().CanEquip();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().CanEquip();
+		return false;
 	}
 	
 	bool CanCombine()
 	{
-		return GetFocusedContainer().CanCombine();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().CanCombine();
+		return false;
 	}
 	
 	bool CanCombineAmmo()
 	{
-		return GetFocusedContainer().CanCombineAmmo();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().CanCombineAmmo();
+		return false;
 	}
 	
 	bool IsEmpty()
 	{
-		return GetFocusedContainer().IsEmpty();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().IsEmpty();
+		return true;
 	}
 	
 	bool IsItemActive()
 	{
-		return GetFocusedContainer().IsItemActive();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().IsItemActive();
+		return false;
 	}
 
 	bool IsItemWithQuantityActive()
 	{
-		return GetFocusedContainer().IsItemWithQuantityActive();
+		if( GetFocusedContainer() )
+			return GetFocusedContainer().IsItemWithQuantityActive();
+		return false;
 	}
 	
 	EntityAI GetFocusedEntity()
 	{
-		return GetFocusedContainer().GetFocusedEntity();
+		EntityAI item = GetFocusedContainer().GetFocusedEntity();
+		return item;
 	}
 	
 	override void UpdateInterval()
@@ -209,7 +234,7 @@ class Container extends LayoutHolder
 						cnt.GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).Show( true );
 						ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( cnt.GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
 					}
-					if( item_preview == NULL )
+					if( item_preview == null )
 					{
 						return;
 					}
@@ -488,6 +513,8 @@ class Container extends LayoutHolder
 			m_Body.InsertAt( container, pos );
 		else
 			m_Body.Insert( container );
+		
+		Refresh();
 	}
 
 	void Remove( LayoutHolder container )
@@ -496,6 +523,8 @@ class Container extends LayoutHolder
 		{
 			m_Body.RemoveItem( container );
 		}
+		
+		Refresh();
 	}
 	
 	LayoutHolder Get( int x )

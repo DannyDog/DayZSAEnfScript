@@ -109,14 +109,6 @@ class TutorialsMenu extends UIScriptedMenu
 		
 		// hide all button markers
 		Widget xbox_controls_image = layoutRoot.FindAnyWidget( "Markers_" + index );
-		Widget child = xbox_controls_image.GetChildren();
-		child.Show(false);
-		
-		while( child.GetSibling() )
-		{
-			child = child.GetSibling();
-			child.Show(false);
-		}
 		
 		Widget panel_widget;
 		Widget button_marker_widget;
@@ -130,7 +122,6 @@ class TutorialsMenu extends UIScriptedMenu
 				button_marker_widget = layoutRoot.FindAnyWidget( "button_marker_" + tab_array[index][l].m_ButtonName );
 				text_widget.SetText( tab_array[index][l].m_InfoText );
 				panel_widget.Show( true );
-				button_marker_widget.Show( true );
 				panel_widget.Update();
 				
 				if( !button_marker_groups.Contains(tab_array[index][l].m_ButtonName ))
@@ -256,7 +247,7 @@ class TutorialsMenu extends UIScriptedMenu
 		string content = "";
 		if ( file_handle )
 		{
-			while ( FGets( file_handle,  line_content ) > 0 )
+			while ( FGets( file_handle,  line_content ) >= 0 )
 			{
 				content += line_content;
 			}

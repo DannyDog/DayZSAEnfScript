@@ -52,7 +52,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 					xb_controls.Show( tab_count > 1 );
 			#endif
 			
-			#ifdef PLATFORM_CONSOLE
+			#ifdef PLATFORM_PS4
 				ImageWidget toolbar_lb = xb_controls.FindAnyWidget( "TabLeftControl" );
 				ImageWidget toolbar_rb = xb_controls.FindAnyWidget( "TabRightControl" );
 				toolbar_lb.LoadImageFile( 0, "set:playstation_buttons image:L1" );

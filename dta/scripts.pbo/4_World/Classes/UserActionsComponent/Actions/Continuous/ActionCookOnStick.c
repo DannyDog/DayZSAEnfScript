@@ -50,7 +50,7 @@ class ActionCookOnStick: ActionContinuousBase
 			//barrel with holes
 			if ( barrel )
 			{
-				if ( barrel.IsOpened() && fireplace_target.CanCookOnStick() )
+				if ( barrel.IsOpen() && fireplace_target.CanCookOnStick() )
 				{
 					return true;
 				}

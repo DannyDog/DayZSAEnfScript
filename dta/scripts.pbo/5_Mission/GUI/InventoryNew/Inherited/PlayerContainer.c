@@ -9,6 +9,7 @@ class PlayerContainer: CollapsibleContainer
 	protected Widget							m_UpIcon;
 	protected Widget							m_DownIcon;
 	protected ref SizeToChild					m_ContentResize;
+	protected bool								m_ShouldChangeSize = true;
 	
 	void PlayerContainer( LayoutHolder parent, int sort = -1 )
 	{
@@ -296,6 +297,23 @@ class PlayerContainer: CollapsibleContainer
 		UpdateSelectionIcons();
 	}
 	
+	float GetMainContainerTopPos()
+	{
+		float x, y;
+		GetRootWidget().GetScreenPos( x, y );
+		return y;
+	}
+	
+	float GetMainContainerBottomPos()
+	{
+		float x, y;
+		float x2, y2;
+		GetRootWidget().GetScreenPos( x, y );
+		GetRootWidget().GetScreenSize( x2, y2 );
+		y += y2;
+		return y;
+	}
+	
 	void UpdateSelectionIcons()
 	{
 		m_UpIcon.Show( m_IsActive );
@@ -395,7 +413,7 @@ class PlayerContainer: CollapsibleContainer
 	{
 		ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_PlayerAttachmentsContainer.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
 		EntityAI ent = item_preview.GetItem();
-		return ent == NULL;
+		return ent == null;
 	}
 	
 	void UnfocusPlayerAttachmentsContainer()
@@ -409,7 +427,7 @@ class PlayerContainer: CollapsibleContainer
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 			
-			if( w == NULL || player.GetInventory().IsInventoryLocked() )
+			if( w == null || player.GetInventory().IsInventoryLocked() )
 			{
 				return;
 			}
@@ -491,20 +509,11 @@ class PlayerContainer: CollapsibleContainer
 		return GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments );
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
 		if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.TransferItemToVicinity();
-			}
-			else if ( iwca )
-			{
-				iwca.TransferItemToVicinity();
-			}
+			return GetFocusedContainer().TransferItemToVicinity();
 		}
 		else
 		{
@@ -514,14 +523,16 @@ class PlayerContainer: CollapsibleContainer
 			if( item && player.CanDropEntity( item ) )
 			{
 				player.PredictiveDropEntity( item );
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	int GetRecipeCount( bool recipe_anywhere, EntityAI entity1, EntityAI entity2 )
 	{
 		PluginRecipesManager plugin_recipes_manager = PluginRecipesManager.Cast( GetPlugin( PluginRecipesManager ) );
-		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), NULL, PlayerBase.Cast( GetGame().GetPlayer() ) );
+		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), null, PlayerBase.Cast( GetGame().GetPlayer() ) );
 	}
 	
 	override bool CanCombine()
@@ -532,20 +543,11 @@ class PlayerContainer: CollapsibleContainer
 		return GetRecipeCount( false, ent, item_in_hands ) > 0;
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
 		if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.EquipItem();
-			}
-			else if ( iwca )
-			{
-				iwca.EquipItem();
-			}
+			return GetFocusedContainer().EquipItem();
 		}
 		else
 		{
@@ -554,27 +556,20 @@ class PlayerContainer: CollapsibleContainer
 			if( item )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, item );
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
 		LeftArea left_area = LeftArea.Cast( GetParent() );
 		if( left_area )
 		{
 			if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 			{
-				ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-				ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-				if( iwc )
-				{
-					iwc.TransferItem();
-				}
-				else if ( iwca )
-				{
-					iwca.TransferItem();
-				}
+				return GetFocusedContainer().TransferItem();
 			}
 			else
 			{
@@ -583,6 +578,7 @@ class PlayerContainer: CollapsibleContainer
 				if( item )
 				{
 					GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, item );
+					return true;
 				}
 			}
 		}
@@ -595,48 +591,33 @@ class PlayerContainer: CollapsibleContainer
 				if( item )
 				{
 					GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, item );
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	EntityAI GetFocusedItem()
 	{
+		EntityAI item;
 		if( GetFocusedContainer() && ( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				return iwc.GetFocusedEntity();
-			}
-			else if ( iwca )
-			{
-				return iwca.GetFocusedEntity();
-			}
-			return NULL;
+			return GetFocusedContainer().GetFocusedEntity();
 		}
 		else
 		{
 			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_PlayerAttachmentsContainer.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
-			return item_preview.GetItem();
+			item = item_preview.GetItem();
 		}
+		return item;
 	}	
 	
-	override void Combine()
+	override bool Combine()
 	{
 		if( GetFocusedContainer() && ( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.Combine();
-			}
-			else if ( iwca )
-			{
-				iwca.Combine();
-			}
+			return GetFocusedContainer().Combine();
 		}
 		else
 		{
@@ -649,47 +630,36 @@ class PlayerContainer: CollapsibleContainer
 			if( item_in_hands && item )
 			{
 				hands_icon.CombineItems( item_in_hands, item );
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
 		if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.SelectItem();
-			}
-			else if ( iwca )
-			{
-				iwca.SelectItem();
-			}
+			return GetFocusedContainer().SelectItem();
 		}
 		else
 		{
 			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_PlayerAttachmentsContainer.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
 			ItemBase item = ItemBase.Cast( item_preview.GetItem() );
-			ItemManager.GetInstance().SetSelectedItem( item, NULL, NULL );
+			if( item )
+			{
+				ItemManager.GetInstance().SetSelectedItem( item, null, null );
+				return true;
+			}
 		}
+		return false;
 	}
 	
-	override void Select()
+	override bool Select()
 	{
 		if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.Select();
-			}
-			else if ( iwca )
-			{
-				iwca.Select();
-			}
+			return GetFocusedContainer().Select();
 		}
 		else
 		{
@@ -701,8 +671,8 @@ class PlayerContainer: CollapsibleContainer
 					if( GetGame().GetPlayer().GetInventory().CanRemoveAttachment( selected_item ) )
 					{
 						GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, selected_item );
-						ItemManager.GetInstance().SetSelectedItem( NULL, NULL, NULL );
-						m_PlayerAttachmentsContainer.Get( 0 ).GetMainWidget().FindAnyWidget( "Cursor" + 0 ).Show( true );
+						ItemManager.GetInstance().SetSelectedItem( null, null, null );
+						return true;
 					}
 				}
 			}
@@ -718,6 +688,7 @@ class PlayerContainer: CollapsibleContainer
 						if( GameInventory.CanSwapEntities( item_in_hands, item ) )
 						{
 							GetGame().GetPlayer().PredictiveSwapEntities( item_in_hands, item );
+							return true;
 						}
 					}
 					else
@@ -725,11 +696,13 @@ class PlayerContainer: CollapsibleContainer
 						if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityInHands( item ) )
 						{
 							GetGame().GetPlayer().PredictiveTakeEntityToHands( item );
+							return true;
 						}
 					}
 				}
 			}
 		}
+		return false;
 	}
 
 	override void MoveGridCursor( int direction )
@@ -752,6 +725,7 @@ class PlayerContainer: CollapsibleContainer
 			{
 				iwca.MoveGridCursor(direction);
 			}
+			ScrollToActiveContainer( GetFocusedContainer() );
 		}
 		else
 		{
@@ -861,39 +835,19 @@ class PlayerContainer: CollapsibleContainer
 		m_ScrollWidget.GetScreenPos( x, y );
 		m_ScrollWidget.GetScreenSize( x, y_s );
 		float amount;
-		float next_pos	= active_container.GetFocusedContainerYScreenPos() + active_container.GetFocusedContainerHeight();
+		float next_pos	= active_container.GetFocusedContainerYScreenPos( true ) + active_container.GetFocusedContainerHeight( true );
 			
 		if( next_pos > ( y + y_s ) )
 		{
-			amount	= y + active_container.GetFocusedContainerYScreenPos();
-			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + active_container.GetFocusedContainerHeight() + 2 );
+			amount	= y + active_container.GetFocusedContainerYScreenPos( true );
+			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + active_container.GetFocusedContainerHeight( true ) + 2 );
 		}
-		else if( active_container.GetFocusedContainerYScreenPos() < y )
+		else if( active_container.GetFocusedContainerYScreenPos( true ) < y )
 		{
-			amount = active_container.GetFocusedContainerYScreenPos() - y;
+			amount = active_container.GetFocusedContainerYScreenPos( true ) - y;
 			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + amount - 2 );
 		}
 	}
-
-	/*void LoadDefaultState()
-	{
-		m_Hidden = !ItemManager.GetInstance().GetDefaultHeaderOpenState( "EQUIPMENT" );
-
-		if( m_Hidden )
-		{
-			OnHide();
-			Print(GetMainWidget().GetName());
-
-		}
-		else
-		{
-			OnShow();
-
-		}
-
-		//GetMainWidget().FindAnyWidget("opened").Show(!m_Hidden);
-		//GetMainWidget().FindAnyWidget("closed").Show(m_Hidden);
-	}*/
 
 	bool MouseEnter( Widget w, int x, int y )
 	{
@@ -1016,7 +970,7 @@ class PlayerContainer: CollapsibleContainer
 
 	override void DraggingOverHeader( Widget w, int x, int y, Widget receiver )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return;
 		}
@@ -1048,7 +1002,7 @@ class PlayerContainer: CollapsibleContainer
 
 	override void DraggingOver( Widget w, int x, int y, Widget receiver )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return;
 		}
@@ -1069,11 +1023,11 @@ class PlayerContainer: CollapsibleContainer
 		}
 
 		EntityAI item = ipw.GetItem();
-		//PlayerBase player = GetGame().GetPlayer();
 		if( !item )
 		{
 			return;
 		}
+		
 		if( receiver_item )
 		{
 			if( GameInventory.CanSwapEntities( receiver_item, item ) )
@@ -1233,7 +1187,6 @@ class PlayerContainer: CollapsibleContainer
 			return;
 		}
 		
-		m_ContentResize.ResizeParentToChild();
 		int attachments_count = m_Player.GetInventory().AttachmentCount();
 		ref map<EntityAI, ref Container> new_showed_items = new ref map<EntityAI, ref Container>;
 		ref array<EntityAI> showed_player_ghost_entities = new ref array<EntityAI>;
@@ -1304,6 +1257,8 @@ class PlayerContainer: CollapsibleContainer
 							name = ipw.GetName();
 							name.Replace( "Render", "RadialIconPanel" );
 							ipw.GetParent().GetParent().FindAnyWidget( name ).Show( true );
+							
+							Refresh();
 						}
 						else if( entity.GetInventory().GetCargo() )
 						{
@@ -1318,6 +1273,8 @@ class PlayerContainer: CollapsibleContainer
 							name = ipw.GetName();
 							name.Replace( "Render", "RadialIconPanel" );
 							ipw.GetParent().GetParent().FindAnyWidget( name ).Show(true);
+							
+							Refresh();
 						}
 					}
 					else
@@ -1329,7 +1286,7 @@ class PlayerContainer: CollapsibleContainer
 			}
 		}
 
-		for ( i = 0; i < m_ShowedItems.Count(); i++)
+		for( i = 0; i < m_ShowedItems.Count(); i++ )
 		{
 			EntityAI ent = m_ShowedItems.GetKey( i );
 			m_ShowedItems.GetElement( i ).UpdateInterval();
@@ -1339,13 +1296,14 @@ class PlayerContainer: CollapsibleContainer
 				( Container.Cast( con.m_Parent ) ).Remove( con );
 				RecomputeOpenedContainers();
 				GetMainWidget().Update();
+				Refresh();
 			}
 		}
 
-		for ( i = 0; i < m_InventorySlots.Count(); i++)
+		for( i = 0; i < m_InventorySlots.Count(); i++ )
 		{
 			ipw = ItemPreviewWidget.Cast( m_InventorySlots.GetElement(i) );
-			if( ipw.GetItem() != NULL && showed_player_ghost_entities.Find( ipw.GetItem() ) == INDEX_NOT_FOUND )
+			if( ipw.GetItem() != null && showed_player_ghost_entities.Find( ipw.GetItem() ) == INDEX_NOT_FOUND )
 			{
 				name2 = ipw.GetParent().GetName();
 				ipw.Show( false );
@@ -1353,7 +1311,7 @@ class PlayerContainer: CollapsibleContainer
 				ipw.GetParent().GetParent().FindAnyWidget( name2 ).Show( true );
 				name2.Replace( "GhostSlot", "RadialIconPanel" );
 				ipw.GetParent().GetParent().FindAnyWidget( name2 ).Show( false );
-				ipw.SetItem( NULL );
+				ipw.SetItem( null );
 				Inventory in = Inventory.Cast( GetRoot() );
 				if( in )
 					in.UpdateConsoleToolbar();
@@ -1368,6 +1326,15 @@ class PlayerContainer: CollapsibleContainer
 			}
 		}
 
+		bool changed_size;
+		if( m_ShouldChangeSize )
+			m_ContentResize.ResizeParentToChild( changed_size );
+		if( changed_size )
+		{
+			CheckScrollbarVisibility();
+			m_ShouldChangeSize = false;
+		}
+		
 		m_ShowedItems = new_showed_items;
 		m_ShowedItemsIDs = showed_items_IDs;
 	}
@@ -1375,7 +1342,7 @@ class PlayerContainer: CollapsibleContainer
 	void ToggleContainer( Widget w , int number )
 	{
 		ClosableContainer c = ClosableContainer.Cast( m_ShowedItemsIDs.Get( number ) );
-		if( c == NULL )
+		if( c == null )
 		{
 			return;
 		}
@@ -1388,6 +1355,8 @@ class PlayerContainer: CollapsibleContainer
 		{
 			c.Open();
 		}
+		
+		Refresh();
 	}
 
 	void ToggleWidget( Widget w )
@@ -1417,7 +1386,6 @@ class PlayerContainer: CollapsibleContainer
 	override void CollapseButtonOnMouseButtonDown(Widget w)
 	{
 		super.CollapseButtonOnMouseButtonDown(w);
-		//ItemManager.GetInstance().SetDefaultHeaderOpenState( "EQUIPMENT", !m_Hidden );
 	}
 	
 	bool IsPlayerEquipmentActive()
@@ -1438,11 +1406,14 @@ class PlayerContainer: CollapsibleContainer
 		m_RootWidget.Update();
 		m_ScrollWidget.Update();
 		
-		CheckScrollbarVisibility();
+		m_ShouldChangeSize = true;
 	}
 	
 	void CheckScrollbarVisibility()
 	{
+		m_MainWidget.Update();
+		m_RootWidget.Update();
+		m_ScrollWidget.Update();
 		float x, y;
 		float x2, y2;
 		
@@ -1454,16 +1425,12 @@ class PlayerContainer: CollapsibleContainer
 	override bool OnChildRemove( Widget w, Widget child )
 	{
 		Refresh();
-		
-		m_ScrollWidget.VScrollToPos01( m_ScrollWidget.GetVScrollPos01() );
 		return true;
 	}
 	
 	override bool OnChildAdd( Widget w, Widget child )
 	{
 		Refresh();
-		
-		m_ScrollWidget.VScrollToPos01( m_ScrollWidget.GetVScrollPos01() );
 		return true;
 	}
 }

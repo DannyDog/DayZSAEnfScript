@@ -148,6 +148,11 @@ class MainMenu extends UIScriptedMenu
 	
 	void UpdateNewsFeed()
 	{
+		layoutRoot.FindAnyWidget( "news_feed_root" ).Show( false );
+		layoutRoot.FindAnyWidget( "news_feed_root_xbox_trial" ).Show( false );
+		layoutRoot.FindAnyWidget( "news_feed_root_xbox" ).Show( false );
+		
+		/*
 		#ifdef PLATFORM_XBOX
 			layoutRoot.FindAnyWidget( "news_feed_root" ).Show( false );
 		
@@ -172,6 +177,7 @@ class MainMenu extends UIScriptedMenu
 			layoutRoot.FindAnyWidget( "news_feed_root_xbox" ).Show( false );
 			layoutRoot.FindAnyWidget( "news_feed_root_xbox_trial" ).Show( false );
 		#endif
+		*/
 	}
 	
 	override bool OnMouseButtonDown( Widget w, int x, int y, int button )

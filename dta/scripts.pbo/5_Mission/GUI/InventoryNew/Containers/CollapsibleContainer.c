@@ -1,7 +1,7 @@
 class CollapsibleContainer: Container
 {
 	protected ref CollapsibleHeader	m_CollapsibleHeader;
-	protected bool m_Hidden;
+	protected bool					m_Hidden;
 	
 	void CollapsibleContainer( LayoutHolder parent, int sort = -1 )
 	{

@@ -220,7 +220,7 @@ class InGameMenuXbox extends UIScriptedMenu
 			}
 			case IDC_MAIN_QUIT:
 			{
-				GetGame().GetUIManager().ShowDialog("EXIT", "Are you sure you want to exit?", IDC_INT_EXIT, DBT_YESNO, DBB_YES, DMT_QUESTION, NULL);
+				GetGame().GetUIManager().ShowDialog("#main_menu_exit", "#main_menu_exit_desc", IDC_INT_EXIT, DBT_YESNO, DBB_YES, DMT_QUESTION, NULL);
 				return true;
 			}
 			case IDC_INT_RETRY:

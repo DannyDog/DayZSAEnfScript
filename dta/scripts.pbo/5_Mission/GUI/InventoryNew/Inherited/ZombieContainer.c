@@ -194,7 +194,7 @@ class ZombieContainer: CollapsibleContainer
 
 	override void UpdateInterval()
 	{
-		if( m_ZombieEntity == NULL )
+		if( m_ZombieEntity == null )
 		{
 			return;
 		}
@@ -208,7 +208,7 @@ class ZombieContainer: CollapsibleContainer
 			{
 				int slot_id = entity.GetInventory().GetSlotId(0);
 				ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_InventorySlots.Get( slot_id ) );
-				if( ipw == NULL )
+				if( ipw == null )
 				{
 					return;
 				}
@@ -289,13 +289,13 @@ class ZombieContainer: CollapsibleContainer
 		for ( i = 0; i < m_InventorySlots.Count(); i++)
 		{
 			ipw = ItemPreviewWidget.Cast( m_InventorySlots.GetElement(i) );
-			if( ipw.GetItem() != NULL && showed_player_ghost_entities.Find( ipw.GetItem() ) == INDEX_NOT_FOUND )
+			if( ipw.GetItem() != null && showed_player_ghost_entities.Find( ipw.GetItem() ) == INDEX_NOT_FOUND )
 			{
 				name2 = ipw.GetParent().GetName();
 				ipw.Show( false );
 				name2.Replace( "PanelWidget", "GhostSlot" );
 				ipw.GetParent().GetParent().FindAnyWidget( name2 ).Show( true );
-				ipw.SetItem( NULL );
+				ipw.SetItem( null );
 			}
 			
 		}
@@ -552,7 +552,7 @@ class ZombieContainer: CollapsibleContainer
 	{
 		if( button == MouseState.LEFT )
 		{
-			if( w == NULL )
+			if( w == null )
 			{
 				return;
 			}
@@ -601,7 +601,7 @@ class ZombieContainer: CollapsibleContainer
 					}
 				}
 			}
-			iw.SetItem( NULL );
+			iw.SetItem( null );
 			name.Replace( "Render", "GhostSlot" );
 			w.GetParent().FindAnyWidget( name ).Show( true );
 			
@@ -630,26 +630,19 @@ class ZombieContainer: CollapsibleContainer
 		super.CollapseButtonOnMouseButtonDown(w);
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
 		if( GetFocusedContainer().IsInherited( ContainerWithCargo ) || GetFocusedContainer().IsInherited( ContainerWithCargoAndAttachments ) )
 		{
-			ContainerWithCargo iwc = ContainerWithCargo.Cast( GetFocusedContainer() );
-			ContainerWithCargoAndAttachments iwca = ContainerWithCargoAndAttachments.Cast( GetFocusedContainer() );
-			if( iwc )
-			{
-				iwc.SelectItem();
-			}
-			else if ( iwca )
-			{
-				iwca.SelectItem();
-			}
+			return GetFocusedContainer().SelectItem();
 		}
 		else
 		{
 			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
 			ItemBase item = ItemBase.Cast( item_preview.GetItem() );
-			ItemManager.GetInstance().SetSelectedItem( item, NULL, NULL );
+			ItemManager.GetInstance().SetSelectedItem( item, null, null );
+			return true;
 		}
+		return false;
 	}
 }

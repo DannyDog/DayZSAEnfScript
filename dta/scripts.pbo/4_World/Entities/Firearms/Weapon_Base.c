@@ -281,7 +281,7 @@ class Weapon_Base extends Weapon
 		}
 	}
 
-	void AfterStoreLoad ()
+	override void AfterStoreLoad ()
 	{
 		if (m_fsm)
 		{

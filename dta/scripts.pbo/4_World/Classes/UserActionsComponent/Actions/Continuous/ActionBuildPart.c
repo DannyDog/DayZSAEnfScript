@@ -53,35 +53,37 @@ class ActionBuildPart: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		Object targetObject = target.GetObject();
-		
-		if ( targetObject && targetObject.CanUseConstruction() )
+		if ( player && !player.IsLeaning() )
 		{
-			BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
-			Construction construction = base_building.GetConstruction();
-			ConstructionActionData construction_action_data = player.GetConstructionActionData();
-			construction_action_data.SetTarget( targetObject );
-			
-			string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
-			
-			if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
+			Object targetObject = target.GetObject();
+			if ( targetObject && targetObject.CanUseConstruction() )
 			{
-				construction_action_data.RefreshPartsToBuild( main_part_name, item );
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
+				Construction construction = base_building.GetConstruction();
+				ConstructionActionData construction_action_data = player.GetConstructionActionData();
+				construction_action_data.SetTarget( targetObject );
+				
+				string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
+				
+				if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
+				{
+					construction_action_data.RefreshPartsToBuild( main_part_name, item );
+				}
+				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
+	
+				//Debug
+				/*
+				if ( constrution_part )
+				{
+					construction.IsColliding( constrution_part.GetPartName() );
+				}
+				*/
+	
+				if ( constrution_part && base_building.IsFacingBack( player, constrution_part.GetMainPartName() ) )
+				{
+					return true;
+				}
 			}
-			ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
-
-			//Debug
-			/*
-			if ( constrution_part )
-			{
-				construction.IsColliding( constrution_part.GetPartName() );
-			}
-			*/
-
-			if ( constrution_part && base_building.IsFacingBack( player, constrution_part.GetMainPartName() ) )
-			{
-				return true;
-			}			
 		}
 		
 		return false;

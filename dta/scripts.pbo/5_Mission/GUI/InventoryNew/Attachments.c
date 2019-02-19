@@ -117,16 +117,18 @@ class Attachments
 		return -1;
 	}
 	
-	void SelectItem()
+	bool SelectItem()
 	{
 		if( m_FocusedRow < m_Ics.Count() )
 		{
 			ItemBase item = ItemBase.Cast( GetFocusedEntity() );
 			ItemManager.GetInstance().SetSelectedItem( item, null, m_Ics.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ) );
+			return true;
 		}
+		return false;
 	}
 	
-	void Select()
+	bool Select()
 	{
 		EntityAI prev_item = EntityAI.Cast( GetFocusedEntity() );
 		Man player = GetGame().GetPlayer();
@@ -140,26 +142,8 @@ class Attachments
 				if( can_add )
 				{
 					player.PredictiveTakeEntityToTargetAttachment(m_Entity, selected_item);
-					ItemManager.GetInstance().SetSelectedItem( NULL, NULL, NULL );
-				}
-				else
-				{
-					Icon selected_icon = ItemManager.GetInstance().GetSelectedIcon();
-					if( selected_icon )
-					{
-						selected_icon.SetActive( false );
-					}
-					Widget selected_widget = ItemManager.GetInstance().GetSelectedWidget();
-					if( selected_widget )
-					{
-						selected_widget.Show( false );
-					}
-				}
-				
-				if( m_Parent.IsInherited( PlayerContainer ) )
-				{
-					PlayerContainer player_container_parent = PlayerContainer.Cast( m_Parent );
-					player_container_parent.UnfocusPlayerAttachmentsContainer();
+					ItemManager.GetInstance().SetSelectedItem( null, null, null );
+					return true;
 				}
 			}
 		}
@@ -178,6 +162,7 @@ class Attachments
 						if( GameInventory.CanSwapEntities( item_in_hands, prev_item ) )
 						{
 							player.PredictiveSwapEntities( item_in_hands, prev_item );
+							return true;
 						}
 					}
 					else
@@ -185,17 +170,19 @@ class Attachments
 						if( player.GetHumanInventory().CanAddEntityInHands( prev_item ) )
 						{
 							player.PredictiveTakeEntityToHands( prev_item );
+							return true;
 						}
 					}
 				}
 			}		
 		}
+		return false;
 	}
 	
 	int GetRecipeCount( bool recipe_anywhere, EntityAI entity1, EntityAI entity2 )
 	{
 		PluginRecipesManager plugin_recipes_manager = PluginRecipesManager.Cast( GetPlugin( PluginRecipesManager ) );
-		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), NULL, PlayerBase.Cast( GetGame().GetPlayer() ) );
+		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), null, PlayerBase.Cast( GetGame().GetPlayer() ) );
 	}
 	
 	bool CanCombine()
@@ -217,7 +204,7 @@ class Attachments
 		return GetGame().GetPlayer().GetInventory().FindFreeLocationFor( entity, FindInventoryLocationType.ATTACHMENT, il );
 	}
 	
-	void EquipItem()
+	bool EquipItem()
 	{
 		ItemBase entity = ItemBase.Cast( GetFocusedEntity() );
 		if( entity && !entity.IsInherited( Magazine ) )
@@ -225,29 +212,38 @@ class Attachments
 			if( entity.HasQuantity() )
 			{
 				entity.OnRightClick();
+				return true;
 			}
 			else
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, entity );
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	void TransferItem()
+	bool TransferItem()
 	{
 		EntityAI entity = GetFocusedEntity();
 		if( entity )
 		{
 			GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, entity );
+			return true;
 		}
+		return false;
 	}
 	
-	void TransferItemToVicinity()
+	bool TransferItemToVicinity()
 	{
 		EntityAI item = GetFocusedEntity();
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		
-		player.PredictiveDropEntity( item );
+		if( item )
+		{
+			player.PredictiveDropEntity( item );
+			return true;
+		}
+		return false;
 	}
 	
 	bool IsActive()
@@ -407,7 +403,7 @@ class Attachments
 			row.FindAnyWidget( "Icon" + i % ITEMS_IN_ROW ).Show( true );
 			ItemPreviewWidget item_preview2 = ItemPreviewWidget.Cast( row.FindAnyWidget( "Render" + i % ITEMS_IN_ROW ) );
 			ImageWidget image_widget2 = ImageWidget.Cast( row.FindAnyWidget( "GhostSlot" + i % ITEMS_IN_ROW ) );
-			if( image_widget2 && m_Entity.GetInventory().FindAttachment( slot_id ) == NULL )
+			if( image_widget2 && m_Entity.GetInventory().FindAttachment( slot_id ) == null )
 			{
 				image_widget2.Show( true );
 			}
@@ -432,7 +428,7 @@ class Attachments
 
 			Widget item_w = item_preview2;
 			EntityAI item = m_Entity.GetInventory().FindAttachment( slot_id );
-			if( item == NULL )
+			if( item == null )
 			{
 				item_w.FindAnyWidget( "QuantityPanel" + i % ITEMS_IN_ROW ).Show( false );
 				item_w.GetParent().FindAnyWidget( "OutOfReach" + i % ITEMS_IN_ROW ).Show( false );

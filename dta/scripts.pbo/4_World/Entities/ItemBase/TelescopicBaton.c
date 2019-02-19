@@ -4,49 +4,53 @@ class TelescopicBaton : ItemBase
 	protected int m_MeleeHeavyMode;
 	protected int m_MeleeSprintMode;
 	
+	protected ref OpenableBehaviour m_Openable;
+	
 	void TelescopicBaton()
 	{
-		Init();
-	}
-	
-	protected void Init()
-	{
-		m_Opened = false;
-
 		//!set default melee modes on init
 		m_MeleeMode = 0;
 		m_MeleeHeavyMode = 1;
 		m_MeleeSprintMode = 2;
+
+		m_Openable = new OpenableBehaviour(false);
+		
+		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
+
+		UpdateVisualState();
 	}
 	
 	override void Open()
 	{
-		super.Open();
+		m_Openable.Open();
+		SetSynchDirty();
 
 		//! sets different set of melee modes for opened state
 		m_MeleeMode = 3;
 		m_MeleeHeavyMode = 4;
 		m_MeleeSprintMode = 5;
 
-		//! single player only
-		if ( !GetGame().IsMultiplayer() && !GetGame().IsClient() )
-			UpdateVisualState();
+		UpdateVisualState();
 	}
 
 	override void Close()
 	{
-		super.Close();
+		m_Openable.Close();
+		SetSynchDirty();
 
 		//! sets different set of melee modes for closed state
 		m_MeleeMode = 0;
 		m_MeleeHeavyMode = 1;
 		m_MeleeSprintMode = 2;
 
-		//! single player only		
-		if ( !GetGame().IsMultiplayer() && !GetGame().IsClient() )
-			UpdateVisualState();
+		UpdateVisualState();
 	}
 	
+	override bool IsOpen()
+	{
+		return m_Openable.IsOpened();
+	}
+
 	protected void UpdateVisualState()
 	{
 		if ( IsOpen() )

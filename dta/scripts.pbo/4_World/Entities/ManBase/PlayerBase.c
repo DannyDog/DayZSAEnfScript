@@ -494,7 +494,9 @@ class PlayerBase extends ManBase
 			m_MeleeLastHitTime = GetGame().GetTime();
 			m_MeleeSource = source;
 		}
-		//Print("damage player = " + damageResult.GetDamage(dmgZone, "Health"));
+		/*Print("damage player = " + damageResult.GetDamage(dmgZone, "Health"));
+		if (dmgZone == "")
+			Print("NO DAMAGE ZONE HIT");*/
 		
 		if( damageResult != null && damageResult.GetDamage(dmgZone, "Shock") > 0)
 		{
@@ -1481,7 +1483,7 @@ class PlayerBase extends ManBase
 
 	void OnCameraChanged(DayZPlayerCameraBase new_camera)
 	{
-		//Print("---change began---");
+		//Print("---camera change began---");
 		m_CameraSwayModifier = new_camera.GetWeaponSwayModifier();
 		m_CurrentCamera = new_camera;
 		//Print(new_camera.GetCameraName());
@@ -2117,8 +2119,6 @@ class PlayerBase extends ManBase
 		}
 	}
 	
-	
-	
 	void OnUnconsciousStart()
 	{		
 		CloseInventoryMenu();
@@ -2150,7 +2150,7 @@ class PlayerBase extends ManBase
 			if ( m_AdminLog )
 			{
 				m_AdminLog.UnconStart( this );
-			}
+		}
 		}
 		
 		SetMasterAttenuation("UnconsciousAttenuation");
@@ -2177,7 +2177,7 @@ class PlayerBase extends ManBase
 			if ( m_AdminLog )
 			{
 				m_AdminLog.UnconStop( this );
-			}
+		}
 		}
 		
 		SetMasterAttenuation("");
@@ -2401,6 +2401,8 @@ class PlayerBase extends ManBase
 	
 	override void EOnFrame(IEntity other, float timeSlice)
 	{
+		//super.EOnFrame(other, timeSlice);
+		
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 		{
 			m_Hud.Update( timeSlice );
@@ -2409,6 +2411,8 @@ class PlayerBase extends ManBase
 
 	override void EOnPostFrame(IEntity other, int extra)
 	{
+		//super.EOnPostFrame(other, extra);
+		
 		float delta_time = (GetGame().GetTime() - m_LastPostFrameTickTime) / 1000;
 		m_LastPostFrameTickTime = GetGame().GetTime();
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
@@ -3094,6 +3098,16 @@ class PlayerBase extends ManBase
 		return true;
 	}
 	
+	bool IsInProne()
+	{
+		return m_MovementState.IsInProne();
+	}
+	
+	bool IsLeaning()
+	{
+		return m_MovementState.IsLeaning();
+	}	
+	
 	bool IsRaised()
 	{
 		//GetMovementState(m_MovementState);
@@ -3481,7 +3495,7 @@ class PlayerBase extends ManBase
 		Class.CastTo(attachment, GetInventory().FindAttachment(InventorySlots.MASK));
 		if ( attachment && GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
 		{
-			attachment.MutePlayer(this,true);
+			attachment.MutePlayerByGag(this,true);
 		}
 	}
 	
@@ -4280,7 +4294,7 @@ class PlayerBase extends ManBase
 		return true;
 	}
 
-	void AfterStoreLoad()
+	override void AfterStoreLoad()
 	{
 		GetHumanInventory().OnAfterStoreLoad();
 		//SetSynchDirty();		

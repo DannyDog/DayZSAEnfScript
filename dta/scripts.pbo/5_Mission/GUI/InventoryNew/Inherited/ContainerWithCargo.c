@@ -104,24 +104,24 @@ class ContainerWithCargo: ClosableContainer
 		m_CargoGrid.SetDefaultFocus( while_micromanagment_mode );
 	}
 	
-	override void EquipItem()
-	{
-		m_CargoGrid.EquipItem();
-	}
-
 	override void UnfocusAll()
 	{
 		m_CargoGrid.Unfocus();
 	}
 	
-	override void TransferItem()
+	override bool EquipItem()
 	{
-		m_CargoGrid.TransferItem();
+		return m_CargoGrid.EquipItem();
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItem()
 	{
-		m_CargoGrid.TransferItemToVicinity();
+		return m_CargoGrid.TransferItem();
+	}
+	
+	override bool TransferItemToVicinity()
+	{
+		return m_CargoGrid.TransferItemToVicinity();
 	}
 
 	void SetEntity( EntityAI entity )
@@ -170,14 +170,14 @@ class ContainerWithCargo: ClosableContainer
 		}
 		if( !ipw || !ipw.IsInherited( ItemPreviewWidget ) )
 		{
-			return NULL;
+			return null;
 		}
 		return ipw.GetItem();
 	}
 
 	bool DraggingOverGrid( Widget w, int x, int y, Widget reciever )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return false;
 		}

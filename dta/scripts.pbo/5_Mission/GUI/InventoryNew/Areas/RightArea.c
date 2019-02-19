@@ -25,7 +25,8 @@ class RightArea: Container
 	
 	EntityAI GetFocusedItem()
 	{
-		return m_PlayerContainer.GetFocusedItem();
+		EntityAI item = m_PlayerContainer.GetFocusedItem();
+		return item;
 	}
 	
 	PlayerContainer GetPlayerContainer()
@@ -43,34 +44,34 @@ class RightArea: Container
 		m_PlayerContainer.MoveGridCursor( direction );
 	}
 	
-	override void Select()
+	override bool Select()
 	{
-		m_PlayerContainer.Select();
+		return m_PlayerContainer.Select();
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
-		m_PlayerContainer.SelectItem();
+		return m_PlayerContainer.SelectItem();
 	}
 	
-	override void Combine()
+	override bool Combine()
 	{
-		m_PlayerContainer.Combine();
+		return m_PlayerContainer.Combine();
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
-		m_PlayerContainer.EquipItem();
+		return m_PlayerContainer.EquipItem();
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
-		m_PlayerContainer.TransferItem();
+		return m_PlayerContainer.TransferItem();
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
-		m_PlayerContainer.TransferItemToVicinity();
+		return m_PlayerContainer.TransferItemToVicinity();
 	}
 	
 	override void UnfocusGrid()
@@ -120,6 +121,11 @@ class RightArea: Container
 	override bool IsActive()
 	{
 		return m_PlayerContainer.IsActive( );
+	}
+	
+	override void Refresh()
+	{
+		m_PlayerContainer.Refresh();
 	}
 
 	override void SetLayoutName()

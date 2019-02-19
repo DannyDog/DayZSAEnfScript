@@ -12,29 +12,29 @@ class AttachmentsWrapper: Container
 		m_LayoutName = WidgetLayoutName.AttachmentsWrapper;
 	}
 	
-	override void Select()
+	override bool Select()
 	{
-		m_Attachments.Select();
+		return m_Attachments.Select();
 	}
 	
-	override void Combine()
+	override bool Combine()
 	{
-		
+		return false;
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
-		m_Attachments.TransferItemToVicinity();
+		return m_Attachments.TransferItemToVicinity();
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
-		m_Attachments.TransferItem();
+		return m_Attachments.TransferItem();
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
-		m_Attachments.EquipItem();
+		return m_Attachments.EquipItem();
 	}
 	
 	override bool CanEquip()

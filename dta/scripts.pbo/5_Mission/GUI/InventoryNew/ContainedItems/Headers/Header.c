@@ -23,7 +23,7 @@ class Header: LayoutHolder
 	
 	void SetName( string name )
 	{
-		TextWidget text_widget = TextWidget.Cast( GetMainWidget().FindAnyWidget( "TextWidget0" ) );
+		TextWidget text_widget = TextWidget.Cast( GetRootWidget().FindAnyWidget( "TextWidget0" ) );
 		name.ToUpper();
 		text_widget.SetText( name );
 	}
@@ -57,12 +57,12 @@ class Header: LayoutHolder
 		super.SetActive( active );
 		if( active )
 		{
-			GetRootWidget().SetAlpha( m_DefaultColor + 0.1 );
+			GetMainWidget().SetAlpha( m_DefaultColor + 0.1 );
 			m_HeaderText.SetTextExactSize( m_DefaultFontSize * 1.1 );
 		}
 		else
 		{
-			GetRootWidget().SetAlpha( m_DefaultColor );
+			GetMainWidget().SetAlpha( m_DefaultColor );
 			m_HeaderText.SetTextExactSize( m_DefaultFontSize );
 		}
 	}

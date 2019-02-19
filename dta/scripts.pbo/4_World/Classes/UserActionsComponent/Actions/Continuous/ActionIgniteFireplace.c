@@ -51,7 +51,7 @@ class ActionIgniteFireplace: ActionContinuousBase
 				if ( fireplace_target.IsBarrelWithHoles() ) 		//if barrel with holes
 				{
 					BarrelHoles_ColorBase barrel = BarrelHoles_ColorBase.Cast( fireplace_target );
-					if ( !barrel.IsOpened() )
+					if ( !barrel.IsOpen() )
 					{
 						return false;
 					}

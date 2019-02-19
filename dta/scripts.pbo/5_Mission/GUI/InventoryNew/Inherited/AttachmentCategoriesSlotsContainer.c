@@ -120,28 +120,34 @@ class AttachmentCategoriesSlotsContainer: Container
 		}
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
+		return false;
 	}
 	
-	override void Select()
+	override bool Select()
 	{
+		return false;
 	}
 	
-	override void Combine()
+	override bool Combine()
 	{
+		return false;
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
+		return false;
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
+		return false;
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
+		return false;
 	}
 	
 	override bool CanEquip()

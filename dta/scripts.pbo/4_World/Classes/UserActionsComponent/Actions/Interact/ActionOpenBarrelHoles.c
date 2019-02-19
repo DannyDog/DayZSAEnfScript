@@ -27,7 +27,7 @@ class ActionOpenBarrelHoles: ActionInteractBase
 			BarrelHoles_ColorBase ntarget = BarrelHoles_ColorBase.Cast( target_object );
 			if( ntarget )
 			{
-				if ( !ntarget.IsOpened() && !ntarget.IsItemTypeAttached( ntarget.ATTACHMENT_COOKING_POT ) )
+				if ( !ntarget.IsOpen() && !ntarget.IsItemTypeAttached( ntarget.ATTACHMENT_COOKING_POT ) )
 				{
 					return true;
 				}

@@ -543,13 +543,13 @@ class EntityAI extends Entity
 		}
 	}
 	
-	//! Called when entity is being restored from storage folder
-	void EEOnStorageLoad()
+	//! Called when entity is being created as new by CE/ Debug
+	void EEOnCECreate()
 	{
 	}
 
-	//! Called when entity is being created as new by CE/ Debug
-	void EEOnCECreate()
+	//! Called when entity is being loaded from DB or Storage (after all children loaded)
+	void AfterStoreLoad()
 	{
 	}
 

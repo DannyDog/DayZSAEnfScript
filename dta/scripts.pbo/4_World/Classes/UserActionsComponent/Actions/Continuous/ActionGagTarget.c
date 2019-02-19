@@ -61,11 +61,8 @@ class ActionGagTarget: ActionContinuousBase
 		action_data.m_MainItem.Delete();
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		
-		// disable speaking using VoN
-		GetGame().EnableVoN(ntarget, false);
 	}
-
+	
 	bool IsWearingMask( PlayerBase player)
 	{
 		if ( player.GetInventory().FindAttachment(InventorySlots.MASK) )

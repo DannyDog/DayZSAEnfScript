@@ -200,6 +200,36 @@ class CargoContainer extends Container
 		return GetIcon( m_FocusedItemPosition );
 	}
 	
+	override float GetFocusedContainerHeight( bool contents = false )
+	{
+		float x, y;
+		if( GetFocusedItem() && contents )
+			GetFocusedItem().GetRootWidget().GetScreenSize( x, y );
+		else
+			GetRootWidget().GetScreenSize( x, y );
+		return y;
+	}
+	
+	override float GetFocusedContainerYPos( bool contents = false )
+	{
+		float x, y;
+		if( GetFocusedItem() && contents )
+			GetFocusedItem().GetRootWidget().GetPos( x, y );
+		else
+			GetRootWidget().GetPos( x, y );
+		return y;
+	}
+	
+	override float GetFocusedContainerYScreenPos( bool contents = false )
+	{
+		float x, y;
+		if( GetFocusedItem() && contents )
+			GetFocusedItem().GetRootWidget().GetScreenPos( x, y );
+		else
+			GetRootWidget().GetScreenPos( x, y );
+		return y;
+	}
+	
 	void UpdateSelection()
 	{
 		if( m_FocusedItemPosition > m_Icons.Count() - 1 )
@@ -209,6 +239,8 @@ class CargoContainer extends Container
 		{
 			icon.SetActive( true );
 		}
+		if( m_FocusedItemPosition == -1 )
+			UnfocusAll();
 	}
 	
 	void UpdateRowVisibility( int count )
@@ -223,6 +255,8 @@ class CargoContainer extends Container
 			{
 				m_Rows.Remove( i );
 			}
+			m_Resizer2.ResizeParentToChild();
+			m_Resizer1.ResizeParentToChild();
 		}
 		else if( diff > 0 )
 		{
@@ -237,10 +271,9 @@ class CargoContainer extends Container
 				m_Rows.Insert( row );
 			}
 			m_MainWidget	= m_ItemsContainer;
+			m_Resizer2.ResizeParentToChild();
+			m_Resizer1.ResizeParentToChild();
 		}
-		
-		m_Resizer2.ResizeParentToChild();
-		m_Resizer1.ResizeParentToChild();
 	}
 	
 	override void UpdateInterval()
@@ -332,7 +365,7 @@ class CargoContainer extends Container
 		return icon;
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
 		Man player = GetGame().GetPlayer();
 		if( GetFocusedItem() )
@@ -341,8 +374,10 @@ class CargoContainer extends Container
 			if( entity && player.CanDropEntity( entity ) )
 			{
 				player.PredictiveDropEntity( entity );
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	void SetDefaultFocus( bool while_micromanagment_mode = false )
@@ -361,6 +396,8 @@ class CargoContainer extends Container
 			if( icon )
 				icon.SetActive( true );
 		}
+		else
+			m_FocusedItemPosition = -1;
 	}
 	
 	void Unfocus()
@@ -368,8 +405,8 @@ class CargoContainer extends Container
 		if( GetFocusedItem() )
 		{
 			GetFocusedItem().SetActive( false );
-			m_FocusedItemPosition = 0;
 		}
+		m_FocusedItemPosition = -1;
 	}
 	
 	override void UnfocusAll()
@@ -381,13 +418,17 @@ class CargoContainer extends Container
 				icon.SetActive( false );
 			}
 		}
-		m_FocusedItemPosition = 0;
+		m_FocusedItemPosition = -1;
 	}
 	
 	override EntityAI GetFocusedEntity()
 	{
-		if( GetFocusedItem() )
-			return EntityAI.Cast( GetFocusedItem().GetObject() );
+		Icon icon = GetFocusedItem();
+		if( icon )
+		{
+			return EntityAI.Cast( icon.GetObject() );
+		}
+			
 		return null;
 	}
 	
@@ -475,7 +516,7 @@ class CargoContainer extends Container
 		return false;
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
 		if( GetFocusedItem() )
 		{
@@ -483,11 +524,13 @@ class CargoContainer extends Container
 			if( entity )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, entity );
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
 		if( GetFocusedItem() )
 		{
@@ -507,21 +550,25 @@ class CargoContainer extends Container
 				else
 				{
 					GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, entity );
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
 		Icon focused_item = GetFocusedItem();
 		if( focused_item )
 		{
 			ItemManager.GetInstance().SetSelectedItem( ItemBase.Cast( focused_item.GetObject() ), focused_item, null );
+			return true;
 		}
+		return false;
 	}
 
-	override void Select()
+	override bool Select()
 	{
 		EntityAI prev_item;
 		if( GetFocusedItem() )
@@ -540,11 +587,17 @@ class CargoContainer extends Container
 				if( can_add && in_cargo )
 				{
 					player.PredictiveTakeEntityToTargetCargo( m_Entity, selected_item );
-					Widget selected_widget1 = ItemManager.GetInstance().GetSelectedWidget();
-					if( selected_widget1 )
+					Icon selected_icon2 = ItemManager.GetInstance().GetSelectedIcon();
+					if( selected_icon2 )
 					{
-						selected_widget1.Show( false );
+						selected_icon2.SetActive( false );
 					}
+					Widget selected_widget2 = ItemManager.GetInstance().GetSelectedWidget();
+					if( selected_widget2 )
+					{
+						selected_widget2.Show( false );
+					}
+					return true;
 				}
 				else
 				{
@@ -560,12 +613,6 @@ class CargoContainer extends Container
 						selected_widget.Show( false );
 					}
 				}
-				
-				if( GetParent().GetParent().IsInherited( PlayerContainer ) )
-				{
-					PlayerContainer player_container_parent = PlayerContainer.Cast( GetParent().GetParent() );
-					player_container_parent.UnfocusPlayerAttachmentsContainer();
-				}
 			}
 		}
 		else if ( prev_item && prev_item.GetInventory().CanRemoveEntity() )
@@ -576,6 +623,7 @@ class CargoContainer extends Container
 				if( GameInventory.CanSwapEntities( item_in_hands, prev_item ) )
 				{
 					player.PredictiveSwapEntities( item_in_hands, prev_item );
+					return true;
 				}
 			}
 			else
@@ -583,12 +631,14 @@ class CargoContainer extends Container
 				if( player.GetHumanInventory().CanAddEntityInHands( prev_item ) )
 				{
 					player.PredictiveTakeEntityToHands( prev_item );
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
-	override void Combine()
+	override bool Combine()
 	{
 		if( GetFocusedItem() )
 		{
@@ -600,9 +650,11 @@ class CargoContainer extends Container
 				if( item_in_hands && prev_item )
 				{
 					icon.CombineItems( item_in_hands, prev_item );
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	override void MoveGridCursor( int direction )
@@ -611,7 +663,7 @@ class CargoContainer extends Container
 		{
 			Container cnt;
 			Icon icon = GetIcon( m_FocusedItemPosition );
-			if( icon != NULL )
+			if( icon != null )
 			{
 				icon.SetActive( false );
 				ItemManager.GetInstance().HideTooltip( );

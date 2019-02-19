@@ -22,7 +22,7 @@ class CaninaBerry extends Edible_Base
 		{
 			Barrel_ColorBase barrel = Barrel_ColorBase.Cast( parent );
 			
-			if ( barrel.IsOpened() && !barrel.FindAttachmentBySlotName( "Nails" ) && !barrel.FindAttachmentBySlotName( "OakBark" ) && !barrel.FindAttachmentBySlotName( "BirchBark" ) && !barrel.FindAttachmentBySlotName( "Lime" ) && !barrel.FindAttachmentBySlotName( "Disinfectant" ) && !barrel.FindAttachmentBySlotName( "Guts" ) )
+			if ( barrel.IsOpen() && !barrel.FindAttachmentBySlotName( "Nails" ) && !barrel.FindAttachmentBySlotName( "OakBark" ) && !barrel.FindAttachmentBySlotName( "BirchBark" ) && !barrel.FindAttachmentBySlotName( "Lime" ) && !barrel.FindAttachmentBySlotName( "Disinfectant" ) && !barrel.FindAttachmentBySlotName( "Guts" ) )
 			{
 				return true;
 			}
@@ -38,7 +38,7 @@ class CaninaBerry extends Edible_Base
 		{
 			Barrel_ColorBase barrel = Barrel_ColorBase.Cast( parent );
 			
-			if ( !barrel.IsOpened() )
+			if ( !barrel.IsOpen() )
 			{
 				return false;
 			}

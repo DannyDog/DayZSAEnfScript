@@ -57,6 +57,8 @@ class Inventory: LayoutHolder
 	protected static ref map<string, int>	m_PlayerAttachmentsIndexes;
 	protected static ref map<int, string>	m_SlotIDs;
 	
+	protected bool							m_HadFastTransferred;
+	
 	void Inventory( LayoutHolder parent )
 	{
 		LoadPlayerAttachmentIndexes();
@@ -125,7 +127,7 @@ class Inventory: LayoutHolder
 
 	void ~Inventory()
 	{
-		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(this.UpdateInterval);
+		
 	}
 	
 	Man GetPreviewPlayer()
@@ -515,7 +517,12 @@ class Inventory: LayoutHolder
 		{
 			if( m_HandsArea.IsActive() )
 			{
-				m_HandsArea.EquipItem();
+				if( m_HandsArea.EquipItem() )
+				{
+					m_HandsArea.SetActive( false );
+					m_HandsArea.UnfocusGrid();
+					m_RightArea.SetActive( true );
+				}
 			}
 			if( m_RightArea.IsActive() )
 			{
@@ -523,7 +530,12 @@ class Inventory: LayoutHolder
 			}
 			if( m_LeftArea.IsActive() )
 			{
-				m_LeftArea.EquipItem();
+				if( m_LeftArea.EquipItem() )
+				{
+					//m_LeftArea.SetActive( false );
+					//m_LeftArea.UnfocusAll();
+					//m_RightArea.SetActive( true );
+				}
 			}
 			UpdateConsoleToolbar();
 			ItemManager.GetInstance().HideTooltip();
@@ -533,15 +545,30 @@ class Inventory: LayoutHolder
 		{
 			if( m_RightArea.IsActive() )
 			{
-				m_RightArea.Select();
+				if( m_RightArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+				{
+					m_RightArea.SetActive( false );
+					m_RightArea.UnfocusAll();
+					m_HandsArea.SetActive( true );
+				}
 			}
 			if( m_LeftArea.IsActive() )
 			{
-				m_LeftArea.Select();
+				if( m_LeftArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+				{
+					//m_LeftArea.SetActive( false );
+					//m_LeftArea.UnfocusAll();
+					//m_RightArea.SetActive( true );
+				}
 			}
 			if( m_HandsArea.IsActive() )
 			{
-				m_HandsArea.Select();
+				if( m_HandsArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+				{
+					m_HandsArea.SetActive( false );
+					m_HandsArea.UnfocusGrid();
+					m_RightArea.SetActive( true );
+				}
 			}
 			DisableMicromanagement();
 			UpdateConsoleToolbar();
@@ -551,21 +578,37 @@ class Inventory: LayoutHolder
 		{
 			if( m_HandsArea.IsActive() )
 			{
-				m_HandsArea.TransferItemToVicinity();
+				if( m_HandsArea.TransferItemToVicinity() )
+				{
+					m_HandsArea.SetActive( false );
+					m_HandsArea.UnfocusGrid();
+					m_LeftArea.SetActive( true );
+					m_HadFastTransferred = true;
+				}
 			}
 			if( m_RightArea.IsActive() )
 			{
-				m_RightArea.TransferItemToVicinity();
+				if( m_RightArea.TransferItemToVicinity() )
+				{
+					//m_RightArea.SetActive( false );
+					//m_RightArea.UnfocusAll();
+					//m_LeftArea.SetActive( true );
+					m_HadFastTransferred = true;
+				}
 			}
 			if( m_LeftArea.IsActive() )
 			{
 				m_LeftArea.TransferItemToVicinity();
+				m_HadFastTransferred = true;
 			}
 			UpdateConsoleToolbar();
 			ItemManager.GetInstance().HideTooltip();
 		}
 		
-		if( GetGame().GetInput().GetActionUp( "UAUIFastTransferItem", false ) )
+		if( GetGame().GetInput().GetActionDown( "UAUIFastTransferItem", false ) )
+			m_HadFastTransferred = false;
+		
+		if( !m_HadFastTransferred && GetGame().GetInput().GetActionUp( "UAUIFastTransferItem", false ) )
 		{
 			if( ItemManager.GetInstance().IsMicromanagmentMode() )
 			{
@@ -577,11 +620,21 @@ class Inventory: LayoutHolder
 			}
 			if( m_LeftArea.IsActive() )
 			{
-				m_LeftArea.TransferItem();
+				if( m_LeftArea.TransferItem() )
+				{
+					//m_LeftArea.SetActive( false );
+					//m_LeftArea.UnfocusAll();
+					//m_RightArea.SetActive( true );
+				}
 			}
 			if( m_HandsArea.IsActive() )
 			{
-				m_HandsArea.TransferItem();
+				if( m_HandsArea.TransferItem() )
+				{
+					m_HandsArea.SetActive( false );
+					m_HandsArea.UnfocusGrid();
+					m_RightArea.SetActive( true );
+				}
 			}
 			UpdateConsoleToolbar();
 			ItemManager.GetInstance().HideTooltip();
@@ -926,15 +979,12 @@ class Inventory: LayoutHolder
 		#endif	
 		RefreshQuickbar();
 		UpdateInterval();
-		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Insert(this.UpdateInterval);
 		UpdateConsoleToolbar();
+		m_HadFastTransferred = false;
 	}
 
 	override void OnHide()
 	{
-		//start update
-		GetGame().GetUpdateQueue(CALL_CATEGORY_SYSTEM).Remove(this.UpdateInterval);
-		
 		Serialize();
 		ItemManager.GetInstance().HideTooltip();
 		Mission mission = GetGame().GetMission();
@@ -952,7 +1002,14 @@ class Inventory: LayoutHolder
 				hud.ToggleHud( hud.GetHudState(), true );
 			}
 		}
-		ItemManager.GetInstance().SetSelectedItem( NULL, NULL, NULL );
+		ItemManager.GetInstance().SetSelectedItem( null, null, null );
+	}
+	
+	override void Refresh()
+	{
+		m_LeftArea.Refresh();
+		m_HandsArea.Refresh();
+		m_RightArea.Refresh();
 	}
 	
 	void RefreshQuickbar()
@@ -979,25 +1036,25 @@ class Inventory: LayoutHolder
 	}
 	
 	#ifdef PLATFORM_XBOX
-	string to_hands_swap = "<image set=\"xbox_buttons\" name=\"A\" /> " + "#dayz_context_menu_to_hands_swap" + "    ";
-	string drop = "<image set=\"xbox_buttons\" name=\"Y\" /> " + "#dayz_context_menu_drop" + "    ";
-	string equip = "<image set=\"xbox_buttons\" name=\"X\" /> " + "#dayz_context_menu_equip" + "    ";
-	string split = "<image set=\"xbox_buttons\" name=\"X\" /> " + "#dayz_context_menu_split" + "    ";
-	string to_inventory = "<image set=\"xbox_buttons\" name=\"Y\" /> " + "#dayz_context_menu_to_inventory" + "    ";
-	string open_close_container = "<image set=\"xbox_buttons\" name=\"RS\" /> " + "#dayz_context_menu_open_close" + "    ";
-	string combine = "<image set=\"xbox_buttons\" name=\"B\" /> " + "#dayz_context_menu_combine";
-	string micromanagment = "<image set=\"xbox_buttons\" name=\"A\" /> " + "#dayz_context_menu_micro" + "    ";
-	string quickslot = "<image set=\"xbox_buttons\" name=\"LS\" /> " + "#dayz_context_menu_quickslot" + "    ";
+	static const string to_hands_swap = "<image set=\"xbox_buttons\" name=\"A\" /> " + "#dayz_context_menu_to_hands_swap" + "    ";
+	static const string drop = "<image set=\"xbox_buttons\" name=\"X\" /> " + "#dayz_context_menu_drop" + "    ";
+	static const string equip = "<image set=\"xbox_buttons\" name=\"Y\" /> " + "#dayz_context_menu_equip" + "    ";
+	static const string split = "<image set=\"xbox_buttons\" name=\"Y\" /> " + "#dayz_context_menu_split" + "    ";
+	static const string to_inventory = "<image set=\"xbox_buttons\" name=\"X\" /> " + "#dayz_context_menu_to_inventory" + "    ";
+	static const string open_close_container = "<image set=\"xbox_buttons\" name=\"RS\" /> " + "#dayz_context_menu_open_close" + "    ";
+	static const string combine = "<image set=\"xbox_buttons\" name=\"B\" /> " + "#dayz_context_menu_combine";
+	static const string micromanagment = "<image set=\"xbox_buttons\" name=\"A\" /> " + "#dayz_context_menu_micro" + "    ";
+	static const string quickslot = "<image set=\"xbox_buttons\" name=\"LS\" /> " + "#dayz_context_menu_quickslot" + "    ";
 	#else
-	string to_hands_swap = "<image set=\"playstation_buttons\" name=\"cross\" /> To hands/swap    ";
-	string drop = "<image set=\"playstation_buttons\" name=\"triangle\" />(hold) Drop    ";
-	string equip = "<image set=\"playstation_buttons\" name=\"square\" /> Equip    ";
-	string split = "<image set=\"playstation_buttons\" name=\"square\" /> Split    ";
-	string to_inventory = "<image set=\"playstation_buttons\" name=\"triangle\" /> To inventory    ";
-	string open_close_container = "<image set=\"playstation_buttons\" name=\"R3\" /> Open/Close container    ";
-	string combine = "<image set=\"playstation_buttons\" name=\"circle\" /> Combine";
-	string micromanagment = "<image set=\"playstation_buttons\" name=\"cross\" /> (hold) Micromanagment    ";
-	string quickslot = "<image set=\"playstation_buttons\" name=\"L3\" /> (hold) Quickslot    ";
+	static const string to_hands_swap = "<image set=\"playstation_buttons\" name=\"cross\" /> To hands/swap    ";
+	static const string drop = "<image set=\"playstation_buttons\" name=\"square\" />(hold) Drop    ";
+	static const string equip = "<image set=\"playstation_buttons\" name=\"triangle\" /> Equip    ";
+	static const string split = "<image set=\"playstation_buttons\" name=\"triangle\" /> Split    ";
+	static const string to_inventory = "<image set=\"playstation_buttons\" name=\"square\" /> To inventory    ";
+	static const string open_close_container = "<image set=\"playstation_buttons\" name=\"R3\" /> Open/Close container    ";
+	static const string combine = "<image set=\"playstation_buttons\" name=\"circle\" /> Combine";
+	static const string micromanagment = "<image set=\"playstation_buttons\" name=\"cross\" /> (hold) Micromanagment    ";
+	static const string quickslot = "<image set=\"playstation_buttons\" name=\"L3\" /> (hold) Quickslot    ";
 	#endif
 	
 	string ConsoleToolbarTypeToString( int console_toolbar_type )

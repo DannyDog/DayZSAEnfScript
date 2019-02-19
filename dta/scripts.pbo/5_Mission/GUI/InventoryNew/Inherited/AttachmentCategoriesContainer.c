@@ -93,11 +93,6 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		}
 	}
 	
-	override void SelectItem()
-	{
-		GetFocusedContainer().SelectItem();	
-	}
-	
 	override void MoveGridCursor( int direction )
 	{
 		Container active_container = Container.Cast( m_Body.Get( m_ActiveIndex ) );
@@ -363,7 +358,7 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 	
 	override void DraggingOverHeader( Widget w, int x, int y, Widget receiver )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return;
 		}

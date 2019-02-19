@@ -111,4 +111,34 @@ class ClosableContainer extends Container
 		super.SetActive( active );
 		m_ClosableHeader.SetActive( active );
 	}
+	
+	override float GetFocusedContainerHeight( bool contents = false )
+	{
+		float x, y;
+		if( contents && GetFocusedContainer() )
+			y = GetFocusedContainer().GetFocusedContainerHeight( contents );
+		else
+			GetRootWidget().GetScreenSize( x, y );
+		return y;
+	}
+	
+	override float GetFocusedContainerYPos( bool contents = false )
+	{
+		float x, y;
+		if( contents && GetFocusedContainer() )
+			y = GetFocusedContainer().GetFocusedContainerYPos( contents );
+		else
+			GetRootWidget().GetPos( x, y );
+		return y;
+	}
+	
+	override float GetFocusedContainerYScreenPos( bool contents = false )
+	{
+		float x, y;
+		if( contents && GetFocusedContainer() )
+			y = GetFocusedContainer().GetFocusedContainerYScreenPos( contents );
+		else
+			GetRootWidget().GetScreenPos( x, y );
+		return y;
+	}
 }

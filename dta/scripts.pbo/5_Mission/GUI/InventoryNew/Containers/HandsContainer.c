@@ -1,8 +1,10 @@
 class HandsContainer: Container
 {
+	protected bool											m_Hidden;
 	protected EntityAI										m_Entity;
 	protected ref HandsHeader								m_CollapsibleHeader;
-	protected bool											m_Hidden;
+	protected ref HandsPreview								m_HandsPreview;
+	
 	protected ref Attachments								m_Atts;
 	protected ref CargoContainer							m_CargoGrid;
 	
@@ -11,6 +13,8 @@ class HandsContainer: Container
 	protected ref map<EntityAI, ref Attachments>			m_AttachmentAttachments;
 	
 	EntityAI m_am_entity1, m_am_entity2;
+	
+	protected ScrollWidget									m_ScrollWidget;
 
 	void HandsContainer( LayoutHolder parent )
 	{
@@ -19,15 +23,15 @@ class HandsContainer: Container
 		m_MainWidget = m_MainWidget.FindWidget( "body" );
 		GetMainWidget().SetFlags( WidgetFlags.IGNOREPOINTER );
 		m_Body = new array<ref LayoutHolder>;
-		HandsPreview hands_preview = new HandsPreview( this );
-		ItemManager.GetInstance().SetHandsPreview( hands_preview );
-		m_Body.Insert( hands_preview );
+		m_HandsPreview		= new HandsPreview( this );
+		ItemManager.GetInstance().SetHandsPreview( m_HandsPreview );
+		m_Body.Insert( m_HandsPreview );
 		
 		m_AttachmentCargos					= new map<EntityAI, ref CargoContainer>;
 		m_AttachmentAttachmentsContainers	= new map<EntityAI, ref AttachmentsWrapper>;
 		m_AttachmentAttachments				= new map<EntityAI, ref Attachments>;
 		
-		LoadDefaultState();
+		m_ScrollWidget						= ScrollWidget.Cast( m_RootWidget.GetParent().GetParent() );
 	}
 	
 	HandsHeader GetHeader()
@@ -183,6 +187,7 @@ class HandsContainer: Container
 			if( m_MainWidget.FindAnyWidget("Selected") )
 				m_MainWidget.FindAnyWidget("Selected").Show( true );
 			#endif
+			m_ScrollWidget.VScrollToPos01( 0 );
 		}
 		else
 		{
@@ -230,17 +235,30 @@ class HandsContainer: Container
 			}
 			if( m_MainWidget.FindAnyWidget("Selected") )
 				m_MainWidget.FindAnyWidget("Selected").Show( false );
+			ScrollToActiveContainer( GetFocusedContainer() );
 		}
-		/*
+	}
+	
+	void ScrollToActiveContainer( Container active_container )
+	{
+		if( !active_container )
+			return;
 		float x, y, y_s;
 		m_ScrollWidget.GetScreenPos( x, y );
 		m_ScrollWidget.GetScreenSize( x, y_s );
-		float amount	= y + GetFocusedContainer().GetFocusedContainerYScreenPos();
-		float next_pos	= GetFocusedContainer().GetFocusedContainerYScreenPos() + GetFocusedContainer().GetFocusedContainerHeight();
+		float amount;
+		float next_pos	= active_container.GetFocusedContainerYScreenPos() + active_container.GetFocusedContainerHeight();
+			
 		if( next_pos > ( y + y_s ) )
 		{
-			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + GetFocusedContainer().GetFocusedContainerHeight() + 2 );
-		}*/
+			amount	= y + active_container.GetFocusedContainerYScreenPos();
+			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + active_container.GetFocusedContainerHeight() + 2 );
+		}
+		else if( active_container.GetFocusedContainerYScreenPos() < y )
+		{
+			amount = active_container.GetFocusedContainerYScreenPos() - y;
+			m_ScrollWidget.VScrollToPos( m_ScrollWidget.GetVScrollPos() + amount - 2 );
+		}
 	}
 	
 	override void Insert( LayoutHolder container, int pos = -1 )
@@ -276,7 +294,7 @@ class HandsContainer: Container
 		DraggingOverHeader(w, x, y, receiver );
 	}
 	
-	override void TransferItem()
+	override bool TransferItem()
 	{
 		if( m_ActiveIndex == 1 )
 		{
@@ -287,13 +305,15 @@ class HandsContainer: Container
 				{
 					m_MainWidget.FindAnyWidget("Selected").Show( false );
 					m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
+					return true;
 				}
 			}
 		}
 		else
 		{
-			GetFocusedContainer().TransferItem();
+			return GetFocusedContainer().TransferItem();
 		}
+		return false;
 	}
 	
 	override bool CanEquip()
@@ -322,7 +342,7 @@ class HandsContainer: Container
 		}
 	}
 	
-	override void EquipItem()
+	override bool EquipItem()
 	{
 		if( m_ActiveIndex == 1 )
 		{
@@ -339,14 +359,16 @@ class HandsContainer: Container
 					{
 						m_MainWidget.FindAnyWidget("Selected").Show( false );
 						m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
+						return true;
 					}
 				}
 			}
 		}
 		else
 		{
-			GetFocusedContainer().EquipItem();
+			return GetFocusedContainer().EquipItem();
 		}
+		return false;
 	}
 	
 	override void SetActive( bool active )
@@ -378,11 +400,17 @@ class HandsContainer: Container
 		}
 	}
 	
+	override void Refresh()
+	{
+		super.Refresh();
+		SetActive( m_IsActive );
+	}
+	
 	override bool IsItemActive()
 	{
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		ItemBase item = ItemBase.Cast( player.GetHumanInventory().GetEntityInHands() );
-		if( item == NULL )
+		if( item == null )
 		{
 			return false;
 		}
@@ -393,7 +421,7 @@ class HandsContainer: Container
 	{
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		ItemBase item = ItemBase.Cast( player.GetHumanInventory().GetEntityInHands() );
-		if( item == NULL )
+		if( item == null )
 		{
 			return false;
 		}
@@ -403,10 +431,10 @@ class HandsContainer: Container
 	override bool IsEmpty()
 	{
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		return player.GetHumanInventory().GetEntityInHands() == NULL;
+		return player.GetHumanInventory().GetEntityInHands() == null;
 	}
 	
-	override void TransferItemToVicinity()
+	override bool TransferItemToVicinity()
 	{
 		if( m_ActiveIndex == 1 )
 		{
@@ -418,17 +446,19 @@ class HandsContainer: Container
 				{
 					m_MainWidget.FindAnyWidget("Selected").Show( false );
 					m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
+					return true;
 				}
 			}
 		}
 		else
 		{
 			if( GetFocusedContainer() )
-				GetFocusedContainer().TransferItemToVicinity();
+				return GetFocusedContainer().TransferItemToVicinity();
 		}
+		return false;
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
 		Man player = GetGame().GetPlayer();
 		EntityAI item_in_hands;
@@ -436,13 +466,18 @@ class HandsContainer: Container
 			item_in_hands = player.GetHumanInventory().GetEntityInHands();
 		else
 			item_in_hands = GetFocusedContainer().GetFocusedEntity();
-		ItemManager.GetInstance().SetSelectedItem( item_in_hands, NULL, NULL );
+		
+		if( item_in_hands )
+		{
+			ItemManager.GetInstance().SetSelectedItem( item_in_hands, null, null );
+			return true;
+		}
+		return false;
 	}
 	
-	bool to_reselect;
 	EntityAI item_to_be_swap;
 	EntityAI prev_item;
-	override void Select()
+	override bool Select()
 	{
 		if( m_ActiveIndex == 1 )
 		{
@@ -458,8 +493,8 @@ class HandsContainer: Container
 						if( GameInventory.CanSwapEntities( item_in_hands, selected_item ) )
 						{
 							player.PredictiveSwapEntities( item_in_hands, selected_item );
-							to_reselect = true;
 							item_to_be_swap = selected_item;
+							return true;
 						}
 					}
 					else
@@ -471,28 +506,24 @@ class HandsContainer: Container
 							if( stackable == 0 || item_base.GetQuantity() <= stackable )
 							{
 								GetGame().GetPlayer().PredictiveTakeEntityToHands( item_base );		
+								return true;
 							}
 							else if( stackable != 0 && stackable <= item_base.GetQuantity() )
 							{
 								item_base.SplitIntoStackMaxHandsClient( PlayerBase.Cast( GetGame().GetPlayer() ) );
+								return true;
 							}
-							
-							Widget selected_widget = ItemManager.GetInstance().GetSelectedWidget();
-							if( selected_widget )
-							{
-								selected_widget.Show( false );
-							}
-							to_reselect = true;
 						}
-						return;
 					}
 				}
 			}
 		}
 		else
 		{
-			GetFocusedContainer().Select();
+			return GetFocusedContainer().Select();
 		}
+		
+		return false;
 	}
 	
 	EntityAI GetItemPreviewItem( Widget w )
@@ -520,7 +551,7 @@ class HandsContainer: Container
 
 	override void DraggingOverHeader( Widget w, int x, int y, Widget receiver )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return;
 		}
@@ -528,11 +559,11 @@ class HandsContainer: Container
 		name.Replace( "PanelWidget", "Render" );
 
 		ItemPreviewWidget w_ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		if( w_ipw == NULL )
+		if( w_ipw == null )
 		{
 			w_ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( "Render" ) );
 		}
-		if( w_ipw == NULL )
+		if( w_ipw == null )
 		{
 			return;
 		}
@@ -545,7 +576,7 @@ class HandsContainer: Container
 			return;
 		}
 
-		if( receiver_entity != NULL && GameInventory.CanSwapEntities( receiver_entity, w_entity ) )
+		if( receiver_entity != null && GameInventory.CanSwapEntities( receiver_entity, w_entity ) )
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 			ItemManager.GetInstance().HideDropzones();
@@ -575,7 +606,7 @@ class HandsContainer: Container
 	void OnPerformCombination(int combinationFlags)
 	{
 		PlayerBase m_player = PlayerBase.Cast( GetGame().GetPlayer() );
-		if ( m_am_entity1 == NULL || m_am_entity2 == NULL ) return;
+		if ( m_am_entity1 == null || m_am_entity2 == null ) return;
 
 		if ( combinationFlags == InventoryCombinationFlags.NONE ) return;
 
@@ -689,7 +720,7 @@ class HandsContainer: Container
 			return;
 		}
 
-		if ( entity1 == NULL || entity2 == NULL ) return;
+		if ( entity1 == null || entity2 == null ) return;
 
 		if ( combinationFlags == InventoryCombinationFlags.NONE ) return;
 
@@ -776,8 +807,8 @@ class HandsContainer: Container
 		w.FindAnyWidget( name ).Show( false );
 		name.Replace( "Selected", "Render" );
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetItem( NULL );
-		ItemManager.GetInstance().SetDraggedItem( NULL );
+		ipw.SetItem( null );
+		ItemManager.GetInstance().SetDraggedItem( null );
 
 		return false;
 	}
@@ -901,7 +932,7 @@ class HandsContainer: Container
 	int GetRecipeCount( bool recipe_anywhere, EntityAI entity1, EntityAI entity2 )
 	{
 		PluginRecipesManager plugin_recipes_manager = PluginRecipesManager.Cast( GetPlugin( PluginRecipesManager ) );
-		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), NULL, PlayerBase.Cast( GetGame().GetPlayer() ) );
+		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), null, PlayerBase.Cast( GetGame().GetPlayer() ) );
 	}
 	
 	void RemoveItem()
@@ -1042,6 +1073,7 @@ class HandsContainer: Container
 				m_AttachmentCargos.GetElement( index - cargo_start_index ).MoveGridCursor( direction );
 			}
 		}
+		ScrollToActiveContainer( GetFocusedContainer() );
 	}
 	
 	void DestroyCargo()
@@ -1125,7 +1157,7 @@ class HandsContainer: Container
 	bool DraggingOverGrid( Widget w,  int x, int y, Widget reciever, CargoContainer cargo )
 	{
 		EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-		if( w == NULL )
+		if( w == null )
 		{
 			return false;
 		}
@@ -1317,23 +1349,6 @@ class HandsContainer: Container
 		Refresh();
 		m_Parent.Refresh();
 	}
-	
-	void Reselect()
-	{
-		EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-		if( item_to_be_swap == NULL || item_to_be_swap == item_in_hands)
-		{
-			if( to_reselect )
-			{
-				if( item_in_hands )
-				{
-					m_MainWidget.FindAnyWidget("Selected").Show( true );
-					m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.85 );
-					to_reselect = false;
-				}
-			}
-		}
-	}
 
 	override void UpdateInterval()
 	{
@@ -1476,7 +1491,7 @@ class HandsContainer: Container
 	{
 		if( button == MouseState.LEFT )
 		{
-			if( w == NULL )
+			if( w == null )
 			{
 				return;
 			}
@@ -1563,29 +1578,6 @@ class HandsContainer: Container
 		}
 	}
 
-	void LoadDefaultState()
-	{
-		//m_Hidden = !ItemManager.GetInstance().GetDefaultOpenStateHands( );
-
-		if( m_Hidden )
-		{
-			for ( int i = 1; i < m_Body.Count(); i++ )
-			{
-				m_Body.Get( i ).OnHide();
-			}
-		}
-		else
-		{
-			for ( i = 1; i < m_Body.Count(); i++ )
-			{
-				m_Body.Get( i ).OnShow();
-			}
-		}
-
-		GetRootWidget().FindAnyWidget("opened").Show(!m_Hidden);
-		GetRootWidget().FindAnyWidget("closed").Show(m_Hidden);
-	}
-
 	void CollapseButtonOnMouseButtonDown( Widget w )
 	{
 		if( !m_Hidden )
@@ -1607,9 +1599,7 @@ class HandsContainer: Container
 
 		w.FindAnyWidget("opened").Show(!m_Hidden);
 		w.FindAnyWidget("closed").Show(m_Hidden);
-
-		ItemManager.GetInstance().SetDefaultOpenStateHands( !m_Hidden );
-
+		
 		m_Parent.Refresh();
 	}
 }

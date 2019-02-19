@@ -3,11 +3,16 @@ class Barrel_ColorBase : Container_Base
 	private bool m_IsLocked = false;
 	private ref Timer m_BarrelOpener;
 	ref RainProcurementManager m_RainProcurement;
+
+	protected ref OpenableBehaviour m_Openable;
 	
 	void Barrel_ColorBase()
 	{
-		m_Opened = false;
 		m_BarrelOpener = new Timer();
+
+		m_Openable = new OpenableBehaviour(false);
+
+		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
 	}
 	
@@ -27,16 +32,50 @@ class Barrel_ColorBase : Container_Base
 		return m_IsLocked;
 	}
 
-	bool IsOpened()
+	override void Open()
 	{
-		if ( GetAnimationPhase("Lid") == 1 )
-		{
-			return true;
-		}
-		
-		return false;
+		m_Openable.Open();
+		m_RainProcurement = new RainProcurementManager( this );
+		m_RainProcurement.InitRainProcurement();
+		GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
+		SoundSynchRemote();
+
+		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+
+		UpdateVisualState();
 	}
-	
+
+	override void Close()
+	{
+		m_Openable.Close();
+		m_RainProcurement.StopRainProcurement();
+		GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
+		SoundSynchRemote();
+
+		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+
+		UpdateVisualState();
+	}
+
+	override bool IsOpen()
+	{
+		return m_Openable.IsOpened();
+	}
+
+	protected void UpdateVisualState()
+	{
+		if ( IsOpen() )
+		{
+			SetAnimationPhase("Lid",1);
+			SetAnimationPhase("Lid2",0);
+		}
+		else
+		{
+			SetAnimationPhase("Lid",0);
+			SetAnimationPhase("Lid2",1);
+		}
+	}
+
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
@@ -57,6 +96,8 @@ class Barrel_ColorBase : Container_Base
 				SoundBarrelClosePlay();
 			}
 		}
+		
+		UpdateVisualState();
 	}
 	
 	void SoundBarrelOpenPlay()
@@ -64,19 +105,7 @@ class Barrel_ColorBase : Container_Base
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
 	}
-	
-	override void Open()
-	{
-		super.Open();
-		SetAnimationPhase("Lid",1);
-		SetAnimationPhase("Lid2",0);	
-		
-		m_RainProcurement = new RainProcurementManager( this );
-		m_RainProcurement.InitRainProcurement();
-		GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
-		SoundSynchRemote();
-	}
-	
+
 	void Lock(float actiontime)
 	{
 		m_IsLocked = true;
@@ -93,17 +122,6 @@ class Barrel_ColorBase : Container_Base
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
-	}
-	
-	override void Close()
-	{
-		super.Close();
-		SetAnimationPhase("Lid",0);
-		SetAnimationPhase("Lid2",1);
-		
-		m_RainProcurement.StopRainProcurement();
-		GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
-		SoundSynchRemote();
 	}
 	
 	void DetermineAction ( PlayerBase player )
@@ -421,7 +439,7 @@ class Barrel_ColorBase : Container_Base
 	override bool CanPutInCargo( EntityAI parent )
 	{
 		if( !super.CanPutInCargo(parent) ) {return false;}		
-		if ( GetNumberOfItems() == 0 && !IsOpened() )
+		if ( GetNumberOfItems() == 0 && !IsOpen() )
 		{
 			return true;
 		}
@@ -434,7 +452,7 @@ class Barrel_ColorBase : Container_Base
 		{
 			return false;
 		}
-		if ( GetNumberOfItems() == 0 && !IsOpened() )
+		if ( GetNumberOfItems() == 0 && !IsOpen() )
 		{
 			return true;
 		}
@@ -444,20 +462,12 @@ class Barrel_ColorBase : Container_Base
 	
 	override bool CanReceiveItemIntoCargo(EntityAI cargo)
 	{
-		if ( IsOpened() )
-		{
-			return true;
-		}
-		return false;
+		return IsOpen();
 	}
 	
 	override bool CanReleaseCargo(EntityAI attachment)
 	{
-		if ( IsOpened() )
-		{
-			return true;
-		}
-		return false;
+		return IsOpen();
 	}
 	
 	//================================================================

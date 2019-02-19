@@ -76,7 +76,7 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Normal
-           text "CAMERA"
+           text "#layout_options_pc_camera"
            font "gui/fonts/sdf_MetronLight72"
            "exact text" 0
            "text halign" center
@@ -306,7 +306,7 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Normal
-           text "HUD"
+           text "#layout_options_pc_hud"
            font "gui/fonts/sdf_MetronLight72"
            "exact text" 0
            "text halign" center
@@ -532,7 +532,7 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Normal
-           text "CHAT"
+           text "#layout_options_pc_chat"
            font "gui/fonts/sdf_MetronLight72"
            "exact text" 0
            "text halign" center

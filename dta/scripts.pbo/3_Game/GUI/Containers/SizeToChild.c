@@ -1,13 +1,15 @@
 class SizeToChild extends ScriptedWidgetEventHandler
 {
-	reference string	m_ChildName;
-	reference float		m_HorizontalOffset;
-	reference float		m_VerticalOffset;
-	reference bool		m_ResizeHorizontal;
-	reference bool		m_ResizeVertical;
+	reference string		m_ChildName;
+	reference float			m_HorizontalOffset;
+	reference float			m_VerticalOffset;
+	reference bool			m_ResizeHorizontal;
+	reference bool			m_ResizeVertical;
 	
-	protected Widget	m_Root;
-	protected Widget	m_Child;
+	protected Widget		m_Root;
+	protected Widget		m_Child;
+	
+	protected static bool	m_IgnoredBool;
 	
 	void OnWidgetScriptInit(Widget w)
 	{
@@ -20,7 +22,12 @@ class SizeToChild extends ScriptedWidgetEventHandler
 		}
 	}
 	
-	bool ResizeParentToChild( int limit = -1 )
+	bool ResizeParentToChild()
+	{
+		return ResizeParentToChild( m_IgnoredBool );
+	}
+	
+	bool ResizeParentToChild( out bool changed_size, int limit = -1 )
 	{
 		float x, y, o_x, o_y, new_x, new_y;
 		if( m_Child )
@@ -56,8 +63,11 @@ class SizeToChild extends ScriptedWidgetEventHandler
 			}
 			
 			if( changed )
+			{
 				m_Root.SetSize( new_x, new_y );
+			}
 			
+			changed_size = changed;
 			return hit_limit;
 		}
 		else

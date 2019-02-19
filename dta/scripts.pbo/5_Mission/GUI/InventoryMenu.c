@@ -12,9 +12,13 @@ class InventoryMenu extends UIScriptedMenu
 	protected bool						m_IsOpened;
 	protected bool						m_OnlyFirstTime;
 	
+	protected float						m_RefreshTimer;
+	
 	protected static ScreenWidthType	m_WidthType;
 	protected static int				m_Width;
 	protected static int				m_Height;
+	
+	
 	
 	void InventoryMenu()
 	{
@@ -86,6 +90,21 @@ class InventoryMenu extends UIScriptedMenu
 
 	void InitContainers(EntityAI target)
 	{
+		
+	}
+	
+	override void Update( float timeslice )
+	{
+		if( m_Inventory )
+			m_Inventory.UpdateInterval();
+		
+		m_RefreshTimer += timeslice;
+		if( m_RefreshTimer > 10 )
+		{
+			m_Inventory.Refresh();
+			m_RefreshTimer = timeslice;
+			Print( "Refresh" );
+		}
 	}
 
 	override void OnShow()

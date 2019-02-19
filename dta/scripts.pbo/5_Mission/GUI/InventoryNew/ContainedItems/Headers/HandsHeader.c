@@ -9,6 +9,10 @@ class HandsHeader: Header
 		m_DefaultFontSize	= 24;
 		m_ItemHeader		= m_MainWidget.FindAnyWidget( "hands_item_header" );
 		m_CollapseButton	= m_MainWidget.FindAnyWidget( "collapse_button" );
+		m_HeaderText		= TextWidget.Cast( GetMainWidget().FindAnyWidget( "hands_title" ) );
+		
+		m_MainWidget		= GetMainWidget().FindAnyWidget( "height_wrapper" );
+		m_DefaultColor		= GetMainWidget().GetAlpha();
 	}
 	
 	override void SetLayoutName()

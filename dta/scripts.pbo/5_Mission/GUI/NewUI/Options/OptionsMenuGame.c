@@ -332,15 +332,15 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	
 		#ifdef PLATFORM_WINDOWS
 		m_TextMap.Insert( 3, new Param2<string, string>( "#options_game_show_quickbar",			"#options_game_show_quickbar_desc" ) );
-		m_TextMap.Insert( 4, new Param2<string, string>( "#layout_options_pc_game_messages",	"#options_game_show_game_msg" ) );
-		m_TextMap.Insert( 5, new Param2<string, string>( "#layout_options_pc_admin_mes",		"#options_game_show_admin_msg" ) );
-		m_TextMap.Insert( 6, new Param2<string, string>( "#layout_options_pc_player_messages",	"#options_game_show_player_msg" ) );
+		m_TextMap.Insert( 4, new Param2<string, string>( "#options_pc_game_messages",	"#options_game_show_game_msg" ) );
+		m_TextMap.Insert( 5, new Param2<string, string>( "#options_pc_admin_mes",		"#options_game_show_admin_msg" ) );
+		m_TextMap.Insert( 6, new Param2<string, string>( "#options_pc_player_messages",	"#options_game_show_player_msg" ) );
 		#else
 		#ifdef PLATFORM_CONSOLE
 		m_TextMap.Insert( AT_OPTIONS_BRIGHT_SLIDER, new Param2<string, string>( "#options_video_brightness", "#options_video_brightness_desc" ) );
-		m_TextMap.Insert( 4, new Param2<string, string>( "#layout_options_xbox_game_messages",	"#options_game_show_game_msg" ) );
-		m_TextMap.Insert( 5, new Param2<string, string>( "#layout_options_xbox_admin_mes",		"#options_game_show_admin_msg" ) );
-		m_TextMap.Insert( 6, new Param2<string, string>( "#layout_options_xbox_player_messages","#options_game_show_player_msg" ) );
+		m_TextMap.Insert( 4, new Param2<string, string>( "#options_xbox_game_messages",	"#options_game_show_game_msg" ) );
+		m_TextMap.Insert( 5, new Param2<string, string>( "#options_xbox_admin_mes",		"#options_game_show_admin_msg" ) );
+		m_TextMap.Insert( 6, new Param2<string, string>( "#options_xbox_player_messages","#options_game_show_player_msg" ) );
 		#endif
 		#endif
 	}

@@ -14,6 +14,6 @@ class Thermometer extends ItemBase
 			value = Math.RandomFloatInclusive(PlayerConstants.NORMAL_TEMPERATURE_L, PlayerConstants.NORMAL_TEMPERATURE_H);
 		}
 		temp = value.ToString();
-		return "Thermometer displays "+temp+" ?C";
+		return "Thermometer displays "+temp+" °C";
 	}
 }

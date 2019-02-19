@@ -1,3 +1,0 @@
-prefix=gui
-product=dayz
-version=74053

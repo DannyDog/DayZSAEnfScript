@@ -766,7 +766,8 @@ void DayZPlayerTypeRegisterItems(DayZPlayerType pType)
 		pType.AddItemInHandsProfileIK("WoodenStick", "dz/anims/workspaces/player/player_main/weapons/player_main_1h_pipe.asi", toolsOneHanded,			"dz/anims/anm/player/ik/gear/WoodenStick.anm"); 
 		pType.AddItemInHandsProfileIK("LongWoodenStick", "dz/anims/workspaces/player/player_main/weapons/player_main_1h_pipe.asi", toolsOneHanded,		"dz/anims/anm/player/ik/gear/LongWoodenStick.anm");
 		pType.AddItemInHandsProfileIK("BurlapSack", "dz/anims/workspaces/player/player_main/player_main_1h.asi", toolsOneHanded, 						"dz/anims/anm/player/ik/gear/bp_burlap_sack.anm");
-	
+		pType.AddItemInHandsProfileIK("LongTorch", "dz/anims/workspaces/player/player_main/props/player_main_1h_torch.asi", toolsOneHanded,				"dz/anims/anm/player/ik/gear/longTorch.anm");
+
 		//! Crafting 2hd	
 		pType.AddItemInHandsProfileIK("Spear", "dz/anims/workspaces/player/player_main/player_main_2h.asi", twoHanded,				 					"dz/anims/anm/player/ik/two_handed/advanced_spear.anm"); 
 	

@@ -271,64 +271,16 @@ class MissionGameplay extends MissionBase
 			}
 		}
 
-		//Switch beween weapons in quickslots 
-		if( !menu && input.GetActionDown("UAUIRadialMenuPick",false) )
-		{
-			if ( !GetGame().IsInventoryOpen() )
-			{
-				EntityAI entity_in_hands = playerPB.GetHumanInventory().GetEntityInHands();
-				EntityAI quickbar_entity;
-				int quickbar_index = 0;
-				
-				if ( entity_in_hands )
-				{			
-					int quickbar_entity_hands_index = playerPB.FindQuickBarEntityIndex( entity_in_hands );
-					
-					if ( quickbar_entity_hands_index > -1 && quickbar_entity_hands_index < MAX_QUICKBAR_SLOTS_COUNT - 1 )	//(0->8)
-					{
-						quickbar_index = quickbar_entity_hands_index + 1;
-					}
-				}
-
-				//find next weapon
-				for ( int iter = 0; iter < MAX_QUICKBAR_SLOTS_COUNT; ++iter )
-				{
-					quickbar_entity = playerPB.GetQuickBarEntity( quickbar_index );
-					
-					if ( quickbar_entity && ( quickbar_entity.IsWeapon() || ( quickbar_entity.IsMeleeWeapon() && !quickbar_entity.IsMagazine() ) ) )
-					{
-						break;
-					}
-					
-					quickbar_index += 1;
-					if ( quickbar_index > MAX_QUICKBAR_SLOTS_COUNT - 1 )
-					{
-						quickbar_index = 0;	//reset
-					}
-				}
-				
-				//swap
-				int slot_id;
-				if ( quickbar_index > -1 )
-				{
-					slot_id = quickbar_index + 1;
-					if ( slot_id == MAX_QUICKBAR_SLOTS_COUNT )
-					{
-						slot_id = 0;
-					}
-					
-					playerPB.RadialQuickBarSingleUse( slot_id );
-				}
-			}
-		}
-
 		//Radial quickbar
 		if( input.GetActionDown("UAUIQuickbarRadialOpen",false) )
 		{
 			//open gestures menu
-			if ( !GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
+			if ( !playerPB.IsRaised() && !playerPB.IsInProne() )
 			{
-				RadialQuickbarMenu.OpenMenu();
+				if ( !GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
+				{
+					RadialQuickbarMenu.OpenMenu();
+				}	
 			}
 		}
 		
@@ -351,15 +303,52 @@ class MissionGameplay extends MissionBase
 				RadialQuickbarMenu.CloseMenu();
 				RadialQuickbarMenu.SetItemToAssign( NULL );
 			}
-		}		
+		}
+		
+		//Special behaviour for leaning [CONSOLE ONLY]
+		if ( playerPB )
+		{
+			if ( playerPB.IsRaised() || playerPB.IsInProne() )
+			{
+				GetUApi().GetInputByName( "UALeanLeft" 	).Unlock();
+				GetUApi().GetInputByName( "UALeanRight" ).Unlock();
+			}
+			else
+			{
+				GetUApi().GetInputByName( "UALeanLeft" 	).Lock();
+				GetUApi().GetInputByName( "UALeanRight" ).Lock();	
+			}		
+		}
+		
+		//Special behaviour for freelook & zeroing [CONSOLE ONLY]
+		if ( playerPB )
+		{
+			if ( playerPB.IsRaised() )
+			{
+				GetUApi().GetInputByName( "UALookAround" 	).Lock();		//disable freelook
+				
+				GetUApi().GetInputByName( "UAZeroingUp" 	).Unlock();		//enable zeroing
+				GetUApi().GetInputByName( "UAZeroingDown" 	).Unlock();
+			}
+			else
+			{
+				GetUApi().GetInputByName( "UALookAround" 	).Unlock();	//enable freelook
+				
+				GetUApi().GetInputByName( "UAZeroingUp" 	).Lock();		//disable zeroing
+				GetUApi().GetInputByName( "UAZeroingDown" 	).Lock();
+			}		
+		}
 #endif
 		//Gestures
 		if( input.GetActionDown("UAUIGesturesOpen",false) )
 		{
 			//open gestures menu
-			if ( !GetUIManager().IsMenuOpen( MENU_GESTURES ) )
+			if ( !playerPB.IsRaised() && !playerPB.IsInProne() )
 			{
-				GesturesMenu.OpenMenu();
+				if ( !GetUIManager().IsMenuOpen( MENU_GESTURES ) )
+				{
+					GesturesMenu.OpenMenu();
+				}
 			}
 		}
 		
@@ -569,6 +558,9 @@ class MissionGameplay extends MissionBase
 				}
 				else if(input.GetActionDown("UAUIBack",false))
 				{
+					if ( menu == quickbar_menu ) return;		//workaround until context input are fixed
+					if ( menu == gestures_menu ) return;
+					
 					m_UIManager.Back();
 					PlayerControlEnable();
 				}
@@ -578,12 +570,12 @@ class MissionGameplay extends MissionBase
 				}
 				else if(menu == gestures_menu && !m_ControlDisabled)
 				{
-					PlayerMouseControlDisable();
+					PlayerMouseControlDisableRadial();
 					//GetUApi().GetInputByName("UAUIGesturesOpen")->Unlock();
 				}
 				else if(menu == quickbar_menu && !m_ControlDisabled)
 				{
-					PlayerMouseControlDisableQuickslot();
+					PlayerMouseControlDisableRadial();
 					//GetUApi().GetInputByName("UAUIGesturesOpen")->Unlock();
 				}
 				
@@ -742,7 +734,7 @@ class MissionGameplay extends MissionBase
 		m_ControlDisabled = true;
 	}
 	
-	void PlayerMouseControlDisableQuickslot()
+	void PlayerMouseControlDisableRadial()
 	{
 		//Print("Disabling Mouse Controls Quickslot");
 		GetUApi().ActivateExclude("radialmenu");

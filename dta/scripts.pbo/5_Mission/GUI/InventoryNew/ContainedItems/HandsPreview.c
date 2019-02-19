@@ -55,25 +55,24 @@ class HandsPreview: LayoutHolder
 		if( !p )
 			return;
 		m_Item = p.GetHumanInventory().GetEntityInHands();
-
 		if ( ( !m_Item && m_Icon ) || ( m_Icon && m_Item != m_Icon.GetObject() ) )
 		{
 			RemoveItem();
 			( HandsContainer.Cast( m_Parent ) ).RemoveItem();
 			( HandsContainer.Cast( m_Parent ) ).DestroyAtt();
 			( HandsContainer.Cast( m_Parent ) ).DestroyCargo();
-			m_AttachmentsInitialized = NULL;
+			m_AttachmentsInitialized = null;
 			m_RootWidget.SetColor( ARGB( 166, 80, 80, 80 ) );
+			m_Parent.GetParent().Refresh();
 		}
 		else if( m_Item && !m_Icon )
 		{
 			CreateNewIcon();
 			m_RootWidget.SetColor( ARGB( 180, 0, 0, 0 ) );
+			m_Parent.GetParent().Refresh();
 		}
 		else if ( m_Icon )
 		{
-			if( !m_Icon.IsDragged() )
-				m_Icon.FullScreen();
 			m_Icon.UpdateInterval();
 		}
 
@@ -96,7 +95,6 @@ class HandsPreview: LayoutHolder
 	{
 		float y;
 		GetMainWidget().GetScreenSize( m_IconSize, y );
-		Print( GetMainWidget().GetName() );
 		m_IconSize = m_IconSize / 10;
 		
 		m_Icon = new Icon( this, true );
@@ -111,7 +109,6 @@ class HandsPreview: LayoutHolder
 			}
 
 			m_Icon.Init( m_Item );
-			( HandsContainer.Cast( m_Parent ) ).Reselect();
 			if( m_Item != m_AttachmentsInitialized )
 			{
 				( HandsContainer.Cast( m_Parent ) ).RemoveItem();

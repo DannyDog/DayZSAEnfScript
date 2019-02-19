@@ -3,6 +3,8 @@ class HandsArea: LayoutHolder
 	protected ScrollWidget			m_Scroller;
 	protected ref HandsContainer	m_HandsContainer;
 	protected ref SizeToChild		m_HandsResizer;
+	
+	protected bool					m_ShouldChangeSize = true;
 
 	void HandsArea( LayoutHolder parent )
 	{
@@ -12,7 +14,6 @@ class HandsArea: LayoutHolder
 		
 		m_ParentWidget.GetScript( m_HandsResizer );
 		m_Scroller = ScrollWidget.Cast( m_ParentWidget );
-		m_HandsResizer.ResizeParentToChild();
 	}
 
 	override void SetActive( bool active )
@@ -80,29 +81,29 @@ class HandsArea: LayoutHolder
 		}
 	}
 	
-	void EquipItem()
+	bool EquipItem()
 	{
-		m_HandsContainer.EquipItem();
+		return m_HandsContainer.EquipItem();
 	}
 	
-	void SelectItem()
+	bool SelectItem()
 	{
-		m_HandsContainer.SelectItem();
+		return m_HandsContainer.SelectItem();
 	}
 
-	void Select()
+	bool Select()
 	{
-		m_HandsContainer.Select();
+		return m_HandsContainer.Select();
 	}
 	
-	void TransferItem()
+	bool TransferItem()
 	{
-		m_HandsContainer.TransferItem();
+		return m_HandsContainer.TransferItem();
 	}
 	
-	void TransferItemToVicinity()
+	bool TransferItemToVicinity()
 	{
-		m_HandsContainer.TransferItemToVicinity();
+		return m_HandsContainer.TransferItemToVicinity();
 	}
 	
 	bool IsItemActive()
@@ -122,12 +123,17 @@ class HandsArea: LayoutHolder
 
 	override void UpdateInterval()
 	{
-		if( m_HandsResizer.ResizeParentToChild( InventoryMenu.GetHeight() * 0.5 ) )
+		m_Scroller.VScrollToPos01( m_Scroller.GetVScrollPos01() );
+		m_HandsContainer.UpdateInterval();
+		
+		bool changed_size;
+		if( m_ShouldChangeSize && m_HandsResizer.ResizeParentToChild( changed_size, InventoryMenu.GetHeight() * 0.5 ) )
 			m_Scroller.SetAlpha( 0.3921 );
 		else
 			m_Scroller.SetAlpha( 0 );
-		m_Scroller.VScrollToPos01( m_Scroller.GetVScrollPos01() );
-		m_HandsContainer.UpdateInterval();
+		
+		if( changed_size )
+			m_ShouldChangeSize = false;
 	}
 
 	void RefreshQuantity( EntityAI item_to_refresh )
@@ -153,9 +159,8 @@ class HandsArea: LayoutHolder
 
 	override void Refresh()
 	{
-		super.Refresh();
 		m_HandsContainer.Refresh();
-		m_MainWidget.Update();
+		m_ShouldChangeSize = true;
 	}
 	
 	void DraggingOverHandsPanel( Widget w, int x, int y, Widget receiver )

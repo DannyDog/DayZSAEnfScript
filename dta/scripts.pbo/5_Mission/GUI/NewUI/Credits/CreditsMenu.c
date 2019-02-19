@@ -2,7 +2,7 @@ class CreditsMenu extends UIScriptedMenu
 {
 	protected static float						MENU_FADEIN_TIME	= 2.0;		//fade starts as soon as menu opens
 	protected static float						LOGO_FADEIN_TIME	= 1.0;		//fade starts halfway through menu fade in
-	protected static float						CREDIT_SCROLL_SPEED	= 40.0;		//pixels per second (relative to 1080p res)
+	protected static float						CREDIT_SCROLL_SPEED	= 400.0;	//pixels per second (relative to 1080p res)
 	
 	protected float								m_MenuFadeInIncrement;
 	protected float								m_MenuFadeInLevel;
@@ -25,18 +25,22 @@ class CreditsMenu extends UIScriptedMenu
 	
 	override Widget Init()
 	{
+		float x_f;
+		int x, y;
+		
 		layoutRoot	= GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/credits/credits_menu.layout", null );
 		m_Logo		= ImageWidget.Cast( layoutRoot.FindAnyWidget( "Logo" ) );
 		m_Scroller	= ScrollWidget.Cast( layoutRoot.FindAnyWidget( "CreditsPanel" ) );
 		m_Content	= WrapSpacerWidget.Cast( layoutRoot.FindAnyWidget( "CreditsContent" ) );
 		
+		GetScreenSize( x, y );
+		
 		m_MenuFadeInIncrement	= 1 / MENU_FADEIN_TIME;
 		m_LogoFadeInIncrement	= 1 / LOGO_FADEIN_TIME;
-		m_ScrollIncrement	= 1 / CREDIT_SCROLL_SPEED;
+		m_ScrollIncrement		= CREDIT_SCROLL_SPEED * ( 1080 / y );
 		
 		m_Scroller.VScrollToPos01( 0 );
-		float x;
-		m_Scroller.GetScreenSize( x, m_ScrollSize );
+		m_Scroller.GetScreenSize( x_f, m_ScrollSize );
 		
 		GetGame().GameScript.Call( this, "LoadDataAsync", null );
 		return layoutRoot;
@@ -78,7 +82,7 @@ class CreditsMenu extends UIScriptedMenu
 		}
 		else if( m_ScrollLevel + m_ScrollSize <= m_Scroller.GetContentHeight() )
 		{
-			float new_scroll_val = m_ScrollLevel + 200 * timeslice;
+			float new_scroll_val = m_ScrollLevel + m_ScrollIncrement * timeslice;
 			m_ScrollLevel = new_scroll_val;
 			m_Scroller.VScrollToPos( m_ScrollLevel );
 		}

@@ -318,7 +318,7 @@ class Icon: LayoutHolder
 
 		InventoryItem receiver_entity = InventoryItem.Cast( receiver_ipw.GetItem() );
 		InventoryItem w_entity = InventoryItem.Cast( w_ipw.GetItem() );
-		if( !w_entity )
+		if( !receiver_entity || !w_entity )
 		{
 			return;
 		}
@@ -882,6 +882,13 @@ class Icon: LayoutHolder
 		{
 			InspectItem( itemAtPos );
 		}
+		else if ( button == MouseState.LEFT && g_Game.IsLeftCtrlDown() )
+		{
+			if( itemAtPos.GetInventory().CanRemoveEntity() )
+			{
+				GetGame().GetPlayer().PredictiveDropEntity( itemAtPos );
+			}
+		}
 	}
 
 	void DropReceivedFromMain( Widget w, int x, int y, Widget receiver )
@@ -1169,7 +1176,8 @@ class Icon: LayoutHolder
 	{
 		super.Refresh();
 
-		SetPos( m_PosX, m_PosY );
+		if( !m_HandsIcon )
+			SetPos( m_PosX, m_PosY );
 		
 		if( m_HasTemperature )
 			SetTemperature();
@@ -1437,16 +1445,13 @@ class Icon: LayoutHolder
 		}
 		
 		#ifndef PLATFORM_CONSOLE
-		if( !m_HandsIcon )
 			GetRootWidget().SetPos( icon_size * column + ( column + 1 ) * space_size, icon_size * row + ( row + 1 ) * space_size );
-		GetRootWidget().SetSize( icon_size * m_SizeX + ( m_SizeX ) * space_size, icon_size * m_SizeY + ( m_SizeY ) * space_size );
+			GetRootWidget().SetSize( icon_size * m_SizeX + ( m_SizeX ) * space_size, icon_size * m_SizeY + ( m_SizeY ) * space_size );
 		#else
-		row = m_CargoPos / 5;
-		column = m_CargoPos % 5;
-		if( !m_HandsIcon )
+			row = m_CargoPos / 5;
+			column = m_CargoPos % 5;
 			GetRootWidget().SetPos( icon_size * column, icon_size * row );
-		GetRootWidget().SetSize( icon_size, icon_size );
-		GetRootWidget().Update();
+			GetRootWidget().SetSize( icon_size, icon_size );
 		#endif
 	}
 	

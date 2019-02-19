@@ -71,23 +71,90 @@ PanelWidgetClass DropzoneX {
       }
       PanelWidgetClass Up {
        clipchildren 0
-       size 36 50
+       size 36 140
        hexactpos 1
        vexactpos 1
        hexactsize 1
        vexactsize 1
        {
-        ImageWidgetClass LT {
+        ImageWidgetClass LT0 {
+         ignorepointer 1
+         position -60 -5
+         size 29 29
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:icon_minus"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass LT1 {
          ignorepointer 1
          position -60 0
+         size 29 29
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:icon_minus"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass LT {
+         ignorepointer 1
+         position 60 19
          size 36 50
+         halign right_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:LT"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass RT {
+         ignorepointer 1
+         position 60 19
+         size 36 50
+         halign right_ref
+         valign bottom_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:RT"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass RT0 {
+         ignorepointer 1
+         position -60 -5
+         size 29 29
          halign center_ref
          valign bottom_ref
          hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         image0 "set:xbox_buttons image:LT"
+         image0 "set:dayz_gui image:icon_plus"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass RT1 {
+         ignorepointer 1
+         position -60 0
+         size 29 29
+         halign center_ref
+         valign bottom_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:icon_plus"
          mode blend
          "src alpha" 1
         }
@@ -101,22 +168,6 @@ PanelWidgetClass DropzoneX {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       {
-        ImageWidgetClass RT {
-         ignorepointer 1
-         position -60 0
-         size 36 50
-         halign center_ref
-         valign bottom_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:xbox_buttons image:RT"
-         mode blend
-         "src alpha" 1
-        }
-       }
       }
      }
      {

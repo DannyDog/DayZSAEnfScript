@@ -92,7 +92,8 @@ class GesturesMenu extends UIScriptedMenu
 	
 	static void CloseMenu()
 	{
-		instance.OnReleaseExecute();
+		//execute on menu release
+		instance.OnMenuRelease();
 		
 		GetGame().GetUIManager().Back();
 	}
@@ -113,6 +114,25 @@ class GesturesMenu extends UIScriptedMenu
 		
 		//create content (widgets) for items
 		RefreshGestures();
+		
+		//set controller toolbar icons
+		#ifdef PLATFORM_CONSOLE
+				ImageWidget toolbar_select = layoutRoot.FindAnyWidget( "SelectIcon" );
+				ImageWidget toolbar_back = layoutRoot.FindAnyWidget( "BackIcon" );
+			#ifdef PLATFORM_XBOX
+				toolbar_select.LoadImageFile( 0, "set:xbox_buttons image:A" );
+				toolbar_back.LoadImageFile( 0, "set:xbox_buttons image:B" );
+			#endif		
+			#ifdef PLATFORM_PS4
+				toolbar_select.LoadImageFile( 0, "set:playstation_buttons image:cross" );
+				toolbar_back.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			#endif
+		#endif
+		
+		#ifdef PLATFORM_WINDOWS
+				Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
+				toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );
+		#endif		
 		
 		return layoutRoot;
 	}
@@ -228,7 +248,7 @@ class GesturesMenu extends UIScriptedMenu
 		//adjust radial parameters for content
 		if ( m_GestureItems.Count() > 0 ) 
 		{
-			RadialMenu.GetInstance().AdjustRadialMenu( 0, 0.5, 0, 0.25, true );
+			RadialMenu.GetInstance().AdjustRadialMenu( 0, 0.5, 0, 0.25, false );
 		}		
 		
 		//refresh radial menu
@@ -253,7 +273,78 @@ class GesturesMenu extends UIScriptedMenu
 	//============================================
 	// Radial Menu Events
 	//============================================
-	void OnSelectionSelect( Widget w )
+	//Common
+	void OnControlsChanged( bool is_using_mouse )
+	{
+		//show/hide controller toolbar
+		Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
+		toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );		
+	}
+	
+	//Mouse
+	void OnMouseSelect( Widget w )
+	{
+		MarkSelected( w );
+	}
+
+	void OnMouseDeselect( Widget w )
+	{
+		UnmarkSelected( w );
+	}
+
+	void OnMouseExecute( Widget w )
+	{
+		ExecuteSelectedCategory( w );
+	}
+			
+	//Controller
+	void OnControllerSelect( Widget w )
+	{
+		MarkSelected( w );
+	}
+
+	void OnControllerDeselect( Widget w )
+	{
+		UnmarkSelected( w );
+	}
+
+	void OnControllerExecute( Widget w )
+	{
+		ExecuteSelectedCategory( w );
+	}
+	
+	void OnControllerPressSelect( Widget w )
+	{
+		ExecuteSelectedItem();
+	}
+	
+	void OnControllerPressBack( Widget w )
+	{
+		//back to category or close menu?
+		if ( instance.m_IsCategorySelected )
+		{
+			RefreshGestures();							//back to categories
+			instance.m_IsCategorySelected = false; 		//reset category selection
+		}
+		else
+		{
+			//close menu
+			CloseMenu();
+		}
+	}		
+	
+	//Gestures Menu
+	protected void OnMenuRelease()
+	{
+		//execute on release (mouse only)
+		if ( RadialMenu.GetInstance().IsUsingMouse() )
+		{
+			ExecuteSelectedItem();
+		}
+	}
+	
+	//Actions
+	protected void MarkSelected( Widget w )
 	{
 		instance.m_SelectedItem = w;
 		
@@ -268,13 +359,11 @@ class GesturesMenu extends UIScriptedMenu
 				//alter item visual
 				TextWidget text_widget = TextWidget.Cast( gesture_item.GetRadialItemCard().FindAnyWidget( RADIAL_TEXT ) );
 				text_widget.SetColor( ARGB( 255, 66, 175, 95 ) );
-			}
-
-			//Print("GesturesMenu->OnSelectionSelect");			
+			}		
 		}
 	}
 	
-	void OnSelectionDeselect( Widget w )
+	protected void UnmarkSelected( Widget w )
 	{
 		instance.m_SelectedItem = NULL;
 		
@@ -290,12 +379,10 @@ class GesturesMenu extends UIScriptedMenu
 				TextWidget text_widget = TextWidget.Cast( gesture_item.GetRadialItemCard().FindAnyWidget( RADIAL_TEXT ) );
 				text_widget.SetColor( ARGB( 255, 255, 255, 255 ) );
 			}
-			
-			//Print("GesturesMenu->OnSelectionDeselect");			
 		}
 	}	
 	
-	void OnSelectionExecute( Widget w )
+	protected void ExecuteSelectedCategory( Widget w )
 	{
 		//only when category is not picked yet
 		if ( w && !instance.m_IsCategorySelected )
@@ -314,12 +401,10 @@ class GesturesMenu extends UIScriptedMenu
 				//set category selected
 				instance.m_IsCategorySelected = true;
 			}
-			
-			//Print("GesturesMenu->OnSelectionExecuted");			
 		}
 	}
 	
-	void OnReleaseExecute()
+	protected void ExecuteSelectedItem()
 	{
 		if ( instance.m_SelectedItem )
 		{
@@ -340,29 +425,4 @@ class GesturesMenu extends UIScriptedMenu
 			}
 		}
 	}
-	
-	/*override bool OnClick(Widget w, int x, int y, int button)
-	{
-		if (button == MouseState.LEFT && instance.m_SelectedItem)
-		{
-			if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
-			{
-				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-				
-				GestureMenuItem gesture_item;
-				instance.m_SelectedItem.GetUserData( gesture_item );
-			
-				if ( gesture_item ) 
-				{
-					if( player.GetEmoteManager() ) 
-					{
-						player.GetEmoteManager().SetGesture( gesture_item.GetID() );
-						player.GetEmoteManager().PlayEmote( gesture_item.GetID() );
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}*/
 }

@@ -27,7 +27,7 @@ class ActionCloseBarrelHoles: ActionInteractBase
 			BarrelHoles_ColorBase ntarget = BarrelHoles_ColorBase.Cast( target_object );
 			if( ntarget )
 			{			
-				if ( ntarget.IsOpened() )
+				if ( ntarget.IsOpen() )
 				{
 					return true;
 				}

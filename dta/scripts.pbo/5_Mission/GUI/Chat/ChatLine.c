@@ -74,7 +74,7 @@ class ChatLine
 		}		
 		*/
 		
-		if ( channel == CCSystem )
+		if ( channel & CCSystem )
 		{
 			// Game
 			if(params.param2 != "")
@@ -83,18 +83,18 @@ class ChatLine
 			} 
 			SetColour(GAME_TEXT_COLOUR);
 		}
-		else if ( channel == CCAdmin )
+		else if ( channel & CCAdmin )
 		{
 			// Admin
 			m_NameWidget.SetText(ADMIN_PREFIX + ": ");
 			SetColour(ADMIN_TEXT_COLOUR);			
 		}
-		else if ( channel == CCTransmitter )
+		else if ( channel & CCTransmitter )
 		{
 			// Radio - Trasnmitter
 			m_NameWidget.SetText(RADIO_PREFIX + params.param2 + " : ");
 		}
-		else if ( channel == 0 || channel == CCDirect )
+		else if ( channel == 0 || channel & CCDirect )
 		{
 			// Player
 			if(params.param2 != "")

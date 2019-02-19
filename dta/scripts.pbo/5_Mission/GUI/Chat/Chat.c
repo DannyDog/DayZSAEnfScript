@@ -89,6 +89,11 @@ class Chat
 			if( g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ) )
 				return;
 		}
+		else
+		{
+			Print("Chat: Unknown channel " + channel);
+			return;
+		}
 		
 		if (total_lenght > max_lenght)
 		{

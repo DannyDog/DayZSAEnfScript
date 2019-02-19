@@ -74,7 +74,7 @@ FrameWidgetClass sound_tab_root {
            hexactsize 0
            vexactsize 1
            style Normal
-           text "SOUND"
+           text "#STR_sound_tab_root_sound_settings_scroll_sound_settings_root_volume_settings_root_volume_settings_header_volume_text0"
            font "gui/fonts/sdf_MetronLight72"
            "exact text" 0
            "text halign" center

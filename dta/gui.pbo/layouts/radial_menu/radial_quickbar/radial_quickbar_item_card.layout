@@ -100,10 +100,12 @@ PanelWidgetClass QuickBarItemCard {
              fixaspect inside
              priority 500
              style Normal
-             text "100"
+             text "99"
              font "gui/fonts/sdf_MetronBook24"
              "bold text" 1
              "exact text" 0
+             "size to text h" 0
+             "size to text v" 0
              "text halign" center
              "text valign" center
             }
@@ -133,7 +135,7 @@ PanelWidgetClass QuickBarItemCard {
     }
     TextWidgetClass ItemName {
      clipchildren 0
-     position 0 95
+     position 0 87
      size 266 20
      hexactpos 1
      vexactpos 1
@@ -142,7 +144,8 @@ PanelWidgetClass QuickBarItemCard {
      fixaspect inside
      text "Item Name"
      font "gui/fonts/sdf_MetronBook24"
-     "exact text" 0
+     "exact text" 1
+     "size to text v" 1
      "text halign" center
      "text valign" center
     }
@@ -161,7 +164,8 @@ PanelWidgetClass QuickBarItemCard {
    vexactsize 1
    text "Title"
    font "gui/fonts/sdf_MetronBook24"
-   "exact text" 0
+   "exact text" 1
+   "size to text v" 1
    "text halign" center
    "text valign" center
   }

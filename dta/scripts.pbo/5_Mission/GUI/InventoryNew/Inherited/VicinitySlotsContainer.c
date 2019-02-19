@@ -60,7 +60,7 @@ class VicinitySlotsContainer: Container
 	bool IsEmptyItemActive()
 	{
 		EntityAI ent = GetActiveItem();
-		return ent == NULL;
+		return ent == null;
 	}
 	
 	override void UnfocusAll()
@@ -134,7 +134,7 @@ class VicinitySlotsContainer: Container
 	int GetRecipeCount( bool recipe_anywhere, EntityAI entity1, EntityAI entity2 )
 	{
 		PluginRecipesManager plugin_recipes_manager = PluginRecipesManager.Cast( GetPlugin( PluginRecipesManager ) );
-		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), NULL, PlayerBase.Cast( GetGame().GetPlayer() ) );
+		return plugin_recipes_manager.GetValidRecipes( ItemBase.Cast( entity1 ), ItemBase.Cast( entity2 ), null, PlayerBase.Cast( GetGame().GetPlayer() ) );
 	}
 	
 	override bool CanCombine()
@@ -171,7 +171,7 @@ class VicinitySlotsContainer: Container
 		}
 	}
 	
-	override void EquipItem( )
+	override bool EquipItem( )
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );
 		ItemManager.GetInstance().SetSelectedVicinityItem( ipw );
@@ -180,10 +180,12 @@ class VicinitySlotsContainer: Container
 		if( ent && !ent.IsInherited( Magazine ))
 		{
 			GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, ent );
+			return true;
 		}
+		return false;
 	}
 		
-	override void TransferItem()
+	override bool TransferItem()
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );
 		ItemManager.GetInstance().SetSelectedVicinityItem( ipw );
@@ -191,13 +193,12 @@ class VicinitySlotsContainer: Container
 		if( ent )
 		{
 			GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, ent );
+			return true;
 		}
-		else
-		{
-		}
+		return false;
 	}
 	
-	override void Combine( )
+	override bool Combine( )
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );
 		ItemManager.GetInstance().SetSelectedVicinityItem( ipw );
@@ -210,20 +211,28 @@ class VicinitySlotsContainer: Container
 		if( item_in_hands && ent && hands_icon )
 		{
 			hands_icon.CombineItems( item_in_hands, ent );
+			return true;
 		}
 		else if( ent && !ent.IsInherited( Magazine ))
 		{
 			GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, ent );
+			return true;
 		}
+		return false;
 	}
 	
-	override void SelectItem()
+	override bool SelectItem()
 	{
 		EntityAI ent = GetActiveItem();
-		ItemManager.GetInstance().SetSelectedItem( ent, NULL, m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ) );
+		if( ent )
+		{
+			ItemManager.GetInstance().SetSelectedItem( ent, null, m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ) );
+			return true;
+		}
+		return false;
 	}
 	
-	override void Select()
+	override bool Select()
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );
 		ItemManager.GetInstance().SetSelectedVicinityItem( ipw );
@@ -235,9 +244,8 @@ class VicinitySlotsContainer: Container
 			if( selected_item && GetGame().GetPlayer().CanDropEntity( selected_item ) )
 			{
 				GetGame().GetPlayer().PredictiveDropEntity( selected_item );
-				ItemManager.GetInstance().SetSelectedItem( NULL, NULL, NULL );
-				GetMainWidget().FindAnyWidget( "Cursor" + 0 ).Show( true );
-				return;
+				ItemManager.GetInstance().SetSelectedItem( null, null, null );
+				return true;
 			}
 		}
 		
@@ -249,6 +257,7 @@ class VicinitySlotsContainer: Container
 				if( GameInventory.CanSwapEntities( item_in_hands, ent ) )
 				{
 					GetGame().GetPlayer().PredictiveSwapEntities( item_in_hands, ent );
+					return true;
 				}
 			}
 			else
@@ -256,12 +265,12 @@ class VicinitySlotsContainer: Container
 				if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityInHands( ent ) )
 				{
 					GetGame().GetPlayer().PredictiveTakeEntityToHands( ent );
+					return true;
 				}
 			}
 		}
-		else
-		{
-		}
+		
+		return false;
 	}
 	
 	void ~VicinitySlotsContainer()
@@ -528,7 +537,7 @@ class VicinitySlotsContainer: Container
 	{
 		if( button == MouseState.LEFT )
 		{
-			if( w == NULL )
+			if( w == null )
 			{
 				return;
 			}

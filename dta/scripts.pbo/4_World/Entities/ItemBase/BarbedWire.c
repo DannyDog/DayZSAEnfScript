@@ -154,17 +154,21 @@ class BarbedWire extends ItemBase
 		
 		//--- Barbed wire data ---
 		//Restore synced parts data
-		bool mounted_state;
-		if ( !ctx.Read( mounted_state ) )
+		if ( !ctx.Read( m_IsMounted ) )
 		{
-			mounted_state = false;		//set default
+			m_IsMounted = false;		//set default
 		}
-		SetMountedState( mounted_state );
 		//---
 		
 		return true;
 	}
-	
+
+	override void AfterStoreLoad()
+	{	
+		// m_IsMounted is already set during Load - but not Active! this is done here because hierarchy
+		SetMountedState(m_IsMounted);
+	}
+
 	// ---
 	override void OnWorkStart()
 	{

@@ -48,22 +48,24 @@ class ActionDismantlePart: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		Object targetObject = target.GetObject();
-		
-		if ( targetObject && targetObject.CanUseConstruction() )
+		if ( player && !player.IsLeaning() )
 		{
-			string part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
-			
-			BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
-			Construction construction = base_building.GetConstruction();		
-			ConstructionPart construction_part = construction.GetConstructionPartToDismantle( part_name, item );
-			
-			if ( construction_part && base_building.IsFacingBack( player, construction_part.GetPartName() ) )
+			Object targetObject = target.GetObject();
+			if ( targetObject && targetObject.CanUseConstruction() )
 			{
-				ConstructionActionData construction_action_data = player.GetConstructionActionData();
-				construction_action_data.SetTargetPart( construction_part );
+				string part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
 				
-				return true;
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
+				Construction construction = base_building.GetConstruction();		
+				ConstructionPart construction_part = construction.GetConstructionPartToDismantle( part_name, item );
+				
+				if ( construction_part && base_building.IsFacingBack( player, construction_part.GetPartName() ) )
+				{
+					ConstructionActionData construction_action_data = player.GetConstructionActionData();
+					construction_action_data.SetTargetPart( construction_part );
+					
+					return true;
+				}
 			}
 		}
 		

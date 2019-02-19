@@ -36,8 +36,6 @@ class ItemBase extends InventoryItem
 	int 	m_ColorComponentB;
 	int 	m_ColorComponentA;
 	//-------------------------------------------------------
-	//open / close actions
-	bool m_Opened = true;
 	
 	ref TIntArray m_SingleUseActions;
 	ref TIntArray m_ContinuousActions;
@@ -129,7 +127,6 @@ class ItemBase extends InventoryItem
 		RegisterNetSyncVariableInt("m_ColorComponentA", 0, 255);
 		
 		RegisterNetSyncVariableBool("m_IsBeingPlaced");
-		RegisterNetSyncVariableBool("m_Opened");
 		RegisterNetSyncVariableBool("m_IsTakeable");
 	}
 	
@@ -988,9 +985,12 @@ class ItemBase extends InventoryItem
 			else
 				split_quantity_new = quantity;
 			
-			destination_entity.GetInventory().FindFreeLocationFor( this, FindInventoryLocationType.ANY, loc );
-			Object o = destination_entity.GetInventory().LocationCreateEntity( loc, GetType(), ECE_IN_INVENTORY, RF_DEFAULT );
-			new_item = ItemBase.Cast( o );
+			if (destination_entity.GetInventory().FindFreeLocationFor( this, FindInventoryLocationType.ANY, loc ))
+			{
+				Object o = destination_entity.GetInventory().LocationCreateEntity( loc, GetType(), ECE_IN_INVENTORY, RF_DEFAULT );
+				new_item = ItemBase.Cast( o );
+			}
+
 			if( new_item )
 			{			
 				MiscGameplayFunctions.TransferItemProperties( this, new_item );
@@ -2829,12 +2829,6 @@ class ItemBase extends InventoryItem
 	}
 	// -------------------------------------------------------------------------
 
-	
-	//! Called when entity is being restored from storage folder
-	override void EEOnStorageLoad()
-	{
-		//Print("EEOnStorageLoad");
-	}
 
 	//! Called when entity is being created as new by CE/ Debug
 	override void EEOnCECreate()
@@ -2848,27 +2842,10 @@ class ItemBase extends InventoryItem
 	//-------------------------
 	// OPEN/CLOSE USER ACTIONS
 	//-------------------------
-	void Open()
-	{
-		SetOpenState( true );
-	}
-
-	void Close()
-	{
-		SetOpenState( false );
-	}
-
-	void SetOpenState( bool state )
-	{
-		m_Opened = state;
-		
-		SetSynchDirty();
-	}
-	
-	bool IsOpen()
-	{
-		return m_Opened;
-	}
+	//! Implementations only
+	void Open() {}
+	void Close() {}
+	bool IsOpen() {}
 	
 	
 	// ------------------------------------------------------------

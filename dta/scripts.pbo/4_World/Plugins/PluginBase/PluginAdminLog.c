@@ -11,6 +11,9 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 	PlayerIdentity				m_Identity;
 	string 						m_PosArray[3];
 	int 						m_DotIndex;
+	PlayerStat<float>			m_StatWater;
+	PlayerStat<float>			m_StatEnergy;
+	BleedingSourcesManagerServer	m_BleedMgr;
 	
 	/* EXE side ADM log messages (not removable)
 		Connect / Disconnect
@@ -18,6 +21,44 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		Player->Admin report (ingame chat: #toadmin <text> )	
 	*/
 
+	void PluginAdminLog()
+	{
+		//filtering prep
+		/*FileHandle file;
+		if ( FileExist( "$profile:AdminLog.cfg" ) )
+		{		
+			file = OpenFile("$profile:AdminLog.cfg", FileMode.READ);
+			if (file != 0)
+			{
+				CloseFile(file);
+			}
+			else
+			{
+				LogPrint("Can't open AdminLog.cfg");
+			}
+		}
+		else
+		{
+			file = OpenFile("$profile:AdminLog.cfg", FileMode.WRITE);
+			if (file != 0)
+			{
+				LogPrint("Configuration not found - creating new AdminLog.cfg");
+				//FPrintln(file, "LogHits=1");
+				//FPrintln(file, "LogPlacement=1");
+				CloseFile(file);
+			}
+			else
+			{
+				LogPrint("Can't create AdminLog.cfg");
+			}
+		}*/
+	}
+	
+	void LogPrint( string message )
+	{
+		GetGame().AdminLog( message );
+	}
+	
 	string GetPlayerPrefix( PlayerBase player, PlayerIdentity identity )  // player name + id + position prefix for log prints
 	{	
 		
@@ -43,7 +84,7 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		
 		return "Player \""  + m_PlayerName + "\" (id=" + m_Pid + " pos=<" +  m_PosArray[0] + ", " + m_PosArray[1] + ", " + m_PosArray[2] + ">)";
 	}
-	
+		
 	void PlayerKilled( PlayerBase player, Object source )  // PlayerBase.c   
 	{
 		
@@ -53,23 +94,38 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 			
 			if( player == source )	// deaths not caused by another object (starvation, dehydration)
 			{
-				GetGame().AdminLog( m_PlayerPrefix + " died. Stats> Water: " + player.GetStatWater().Get().ToString() + " Energy: " + player.GetStatEnergy().Get().ToString() + " Bleed sources: " + player.GetBleedingManagerServer().GetBleedingSourcesCount().ToString() );
+				m_StatWater = player.GetStatWater();
+				m_StatEnergy = player.GetStatEnergy();
+				m_BleedMgr = player.GetBleedingManagerServer();
+				
+				if ( m_StatWater && m_StatEnergy && m_BleedMgr )
+				{
+					LogPrint( m_PlayerPrefix + " died. Stats> Water: " + m_StatWater.Get().ToString() + " Energy: " + m_StatEnergy.Get().ToString() + " Bleed sources: " + m_BleedMgr.GetBleedingSourcesCount().ToString() );
+				}
+				else if ( m_StatWater && m_StatEnergy && !m_BleedMgr )
+				{
+					LogPrint( m_PlayerPrefix + " died. Stats> Water: " + m_StatWater.Get().ToString() + " Energy: " + m_StatEnergy.Get().ToString() );
+				}
+				else
+				{
+					LogPrint( m_PlayerPrefix + " died. Stats> could not fetch");
+				}
 			}
 			else if ( source.IsWeapon() )  // player
 			{				
 				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyParent() );
 				m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
 				
-				GetGame().AdminLog( m_PlayerPrefix + " killed by " + m_PlayerPrefix2 + " with " + source.GetDisplayName() );	
+				LogPrint( m_PlayerPrefix + " killed by " + m_PlayerPrefix2 + " with " + source.GetDisplayName() );	
 			}
 			else					// others
 			{
-				GetGame().AdminLog( m_PlayerPrefix + " killed by " + source.GetDisplayName() );
+				LogPrint( m_PlayerPrefix + " killed by " + source.GetDisplayName() );
 			}
 		}
 		else 
 		{
-			GetGame().AdminLog("DEBUG: PlayerKilled() player/object does not exist");
+			LogPrint("DEBUG: PlayerKilled() player/object does not exist");
 		}	
 	}
 	
@@ -90,14 +146,14 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 			{
 				if ( ammo == "FallDamage" ) // fall damage
 				{
-					GetGame().AdminLog( m_PlayerPrefix + " suffered " + ammo );	
+					LogPrint( m_PlayerPrefix + " suffered " + ammo );	
 					return;
 				}
 				
 				m_Source = PlayerBase.Cast( source );
 				m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
 
-				GetGame().AdminLog( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
+				LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
 				
 			}
 			else if ( Object.Cast(source).IsWeapon() || Object.Cast(source).IsMeleeWeapon() )  // weapon
@@ -108,13 +164,13 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 				
 				if ( source.IsMeleeWeapon() )		// melee
 				{
-					GetGame().AdminLog( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
+					LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
 				}
 				else								// ranged
 				{
 					m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );	
 					
-					GetGame().AdminLog( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo + " from " + m_Distance + " meters ");	
+					LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo + " from " + m_Distance + " meters ");	
 				}
 			}
 			else  // others
@@ -126,7 +182,7 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 					dmgZone = "body";
 				}
 				
-				GetGame().AdminLog( m_PlayerPrefix + " hit by " + m_DisplayName + " into " + dmgZone );	
+				LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + " into " + dmgZone );	
 			}			
 		}
 	}
@@ -135,7 +191,7 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 	{
 		m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() );
 		
-		GetGame().AdminLog( m_PlayerPrefix + " is unconscious" );
+		LogPrint( m_PlayerPrefix + " is unconscious" );
 	}
 	
 	void UnconStop( PlayerBase player ) //  PlayerBase.c 
@@ -144,7 +200,7 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		{
 			m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() );
 			
-			GetGame().AdminLog( m_PlayerPrefix + " regained consciousness" );		
+			LogPrint( m_PlayerPrefix + " regained consciousness" );		
 		}
 	}
 	
@@ -156,11 +212,11 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		
 		if ( m_DisplayName != "")
 		{
-			GetGame().AdminLog( m_PlayerPrefix + " placed " + m_DisplayName );
+			LogPrint( m_PlayerPrefix + " placed " + m_DisplayName );
 		}
 		else
 		{
-			GetGame().AdminLog( m_PlayerPrefix + " placed " + "unknown trap" );
+			LogPrint( m_PlayerPrefix + " placed " + "unknown trap" );
 		}
 	}
 	
@@ -168,13 +224,13 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 	{
 		m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() );
 		
-		GetGame().AdminLog( m_PlayerPrefix + " committed suicide" );
+		LogPrint( m_PlayerPrefix + " committed suicide" );
 	}
 	
 	void BleedingOut( PlayerBase player )  // Bleeding.c
 	{
 		m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() );
 		
-		GetGame().AdminLog( m_PlayerPrefix + " bled out" );
+		LogPrint( m_PlayerPrefix + " bled out" );
 	}
 }

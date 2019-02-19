@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{00021F55AF578D77}Gui/imagesets/dayz_inventory.edds"
- Author "inv1251"
- ChangeDate 705881665
+ Name "{00021F55AF578D77}Gui/imagesets/dayz_inventory.tga"
+ Author "inv3672"
+ ChangeDate 73573957
  Configurations {
   TGAResourceClass PC {
    SourceFile "dayz_inventory.tga"

@@ -75,7 +75,7 @@ FrameWidgetClass controls_tab_root {
            hexactsize 0
            vexactsize 1
            style Normal
-           text "CONTROLLER"
+           text "#layout_pc_controls_controller"
            font "gui/fonts/sdf_MetronLight72"
            "exact text" 0
            "text halign" center

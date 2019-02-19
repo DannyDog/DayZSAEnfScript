@@ -26,7 +26,7 @@ class ActionTakeFireplaceFromBarrel: ActionInteractBase
 			BarrelHoles_ColorBase fireplace_barrel = BarrelHoles_ColorBase.Cast( target_object );
 			
 			//check barrel fireplace state
-			if ( fireplace_barrel && fireplace_barrel.IsOpened() && !fireplace_barrel.HasAshes() && !fireplace_barrel.IsBurning() )
+			if ( fireplace_barrel && fireplace_barrel.IsOpen() && !fireplace_barrel.HasAshes() && !fireplace_barrel.IsBurning() )
 			{
 				//check cargo and attachments
 				if ( fireplace_barrel.IsCargoEmpty() && fireplace_barrel.GetInventory().AttachmentCount() > 0 )

@@ -131,7 +131,7 @@ class VicinityContainer: CollapsibleContainer
 
 	override void DraggingOverHeader( Widget w, int x, int y, Widget receiver )
 	{
-		if( w == NULL )
+		if( w == null )
 		{
 			return;
 		}
@@ -256,7 +256,7 @@ class VicinityContainer: CollapsibleContainer
 		
 		EntityAI item = ipw.GetItem();
 		bool equal_typed = item.GetType() == receiver_item.GetType();
-		if( !receiver_item.IsInherited( ItemBase ) || item == NULL || !equal_typed )
+		if( !receiver_item.IsInherited( ItemBase ) || item == null || !equal_typed )
 		{
 			return;
 		}
@@ -483,6 +483,7 @@ class VicinityContainer: CollapsibleContainer
 									
 									PlayerContainer plyr_cnt = new PlayerContainer( m_Parent );
 									plyr_cnt.SetPlayer( PlayerBase.Cast( entity ) );
+									Container.Cast( GetParent() ).Insert( plyr_cnt );
 									( Container.Cast( m_Parent ) ).Refresh();
 									new_showed_items.Insert( entity, plyr_cnt );
 									showed_items_IDs.Insert( entity.GetID(), plyr_cnt);

@@ -35,7 +35,7 @@ class ActionPlaceFireplaceIntoBarrel: ActionSingleUseBase
 		{
 			BarrelHoles_ColorBase fireplace_barrel = BarrelHoles_ColorBase.Cast( target_object );
 			
-			if ( fireplace_barrel.IsOpened() && fireplace_barrel.GetInventory().AttachmentCount() == 0 && fireplace_barrel.IsCargoEmpty() )
+			if ( fireplace_barrel.IsOpen() && fireplace_barrel.GetInventory().AttachmentCount() == 0 && fireplace_barrel.IsCargoEmpty() )
 			{
 				return true;
 			}

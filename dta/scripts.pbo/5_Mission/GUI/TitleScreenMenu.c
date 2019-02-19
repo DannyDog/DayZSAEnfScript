@@ -24,11 +24,11 @@ class TitleScreenMenu extends UIScriptedMenu
 			GetGame().GetPlayerName(gamertag);
 			
 			#ifdef PLATFORM_XBOX
-					text_widget.SetText("#dayz_game_press" + "" + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
+					text_widget.SetText("#dayz_game_press" + " " + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
 			#endif
 					
 			#ifdef PLATFORM_PS4
-					text_widget.SetText("Press <image set=\"playstation_buttons\" name=\"cross\" /> to start the game");
+					text_widget.SetText("#dayz_game_press" + " " + "<image set=\"playstation_buttons\" name=\"cross\" />" + "" + "#dayz_game_to_start");
 			#endif
 		}
 		return layoutRoot;

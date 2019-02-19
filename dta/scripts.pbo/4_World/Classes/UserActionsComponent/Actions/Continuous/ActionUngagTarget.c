@@ -57,11 +57,8 @@ class ActionUngagTarget: ActionContinuousBase
 			ntarget.DropItem(ItemBase.Cast(attachment));
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		}
-		
-		// enable speaking using VoN
-		GetGame().EnableVoN(ntarget, true);
 	}
-
+	
 	bool IsWearingGag( PlayerBase player )
 	{
 		EntityAI attachment;

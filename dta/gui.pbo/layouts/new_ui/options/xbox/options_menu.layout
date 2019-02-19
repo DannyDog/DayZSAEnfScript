@@ -108,7 +108,7 @@ FrameWidgetClass settings_menu_root {
              hexactsize 0
              vexactsize 0
              priority 250
-             text "GAME"
+             text "#STR_settings_menu_root_Tabber_TabControls_TabBar_Tab_Control_Container_Tab_Control_0_Tab_Control_0_Title0"
              font "gui/fonts/sdf_MetronLight72"
              "text halign" center
              "text valign" center
@@ -164,7 +164,7 @@ FrameWidgetClass settings_menu_root {
              hexactsize 0
              vexactsize 0
              priority 250
-             text "SOUND"
+             text "#STR_settings_menu_root_Tabber_TabControls_TabBar_Tab_Control_Container_Tab_Control_1_Tab_Control_1_Title0"
              font "gui/fonts/sdf_MetronLight72"
              "text halign" center
              "text valign" center
@@ -220,7 +220,7 @@ FrameWidgetClass settings_menu_root {
              hexactsize 0
              vexactsize 0
              priority 250
-             text "CONTROLS"
+             text "#STR_settings_menu_root_Tabber_TabControls_TabBar_Tab_Control_Container_Tab_Control_3_Tab_Control_3_Title0"
              font "gui/fonts/sdf_MetronLight72"
              "text halign" center
              "text valign" center
@@ -358,7 +358,7 @@ FrameWidgetClass settings_menu_root {
    vexactsize 1
    priority 1
    style Normal
-   text "OPTIONS"
+   text "#STR_settings_menu_root_SettingsTextWidget0"
    font "gui/fonts/sdf_MetronLight72"
    "text color" 0.8157 0.1255 0.7843 1
    "exact text" 0

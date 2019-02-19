@@ -641,9 +641,9 @@ class ZombieBase extends DayZInfected
 	bool EvaluateCrawlTransitionAnimation(EntityAI pSource, string pComponent, string pAmmoType, out int pAnimType)
 	{
 		pAnimType = -1;
-		if( pComponent == "LeftLeg" )
+		if( pComponent == "LeftLeg" && GetHealth(pComponent, "Health") == 0 )
 			pAnimType = 0;
-		else if( pComponent == "RightLeg" )
+		else if( pComponent == "RightLeg" && GetHealth(pComponent, "Health") == 0 )
 			pAnimType = 2;
 		
 		if( pAnimType != -1 )

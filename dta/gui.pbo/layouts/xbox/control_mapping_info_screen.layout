@@ -1923,7 +1923,7 @@ PanelWidgetClass rootFrame {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         text "Back"
+         text "#str_rootframe_toolbar_bg_consoletoolbar_back_backtext0"
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 22

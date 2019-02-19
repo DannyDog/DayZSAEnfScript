@@ -555,6 +555,13 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			{
 				InspectItem( itemAtPos );
 			}
+			else if ( button == MouseState.LEFT && g_Game.IsLeftCtrlDown() )
+			{
+				if( itemAtPos.GetInventory().CanRemoveEntity() )
+				{
+					GetGame().GetPlayer().PredictiveDropEntity( itemAtPos );
+				}
+			}
 		}
 	}
 	

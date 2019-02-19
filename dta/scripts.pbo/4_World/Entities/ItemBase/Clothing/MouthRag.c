@@ -6,7 +6,7 @@ class MouthRag extends Clothing
 		Class.CastTo(player, GetHierarchyRootPlayer());
 		if( GetGame() && GetGame().IsServer() && player )
 		{
-			MutePlayer(player,false);
+			MutePlayerByGag(player,false);
 		}
 		
 	}
@@ -23,7 +23,7 @@ class MouthRag extends Clothing
 			//GetGame().GetSoundScene().SetVOIPVolume(0,1);
 			//GetGame().GetSoundScene().SetRadioVolume(0,1);
 			
-			MutePlayer(player,true);
+			MutePlayerByGag(player,true);
 		}
 	}
 
@@ -35,16 +35,16 @@ class MouthRag extends Clothing
 		
 		if ( GetGame().IsServer() && player )
 		{
-			MutePlayer(player,false);
+			MutePlayerByGag(player,false);
 		}
 	}
 	
-	void MutePlayer(PlayerBase player, bool state)
+	void MutePlayerByGag(PlayerBase player, bool state)
 	{
 		//GetGame().GetSoundScene().SetSpeechExVolume(g_Game.m_volume_speechEX,1);
 		//GetGame().GetSoundScene().SetVOIPVolume(g_Game.m_volume_VOIP,1);
 		//GetGame().GetSoundScene().SetRadioVolume(g_Game.m_volume_radio,1);
 		
-		GetGame().EnableVoN(player,state);
+		GetGame().SetVoiceEffect(player, VoiceEffectMumbling, state);
 	}
 };

@@ -15,7 +15,7 @@ class JsonFileLoader<Class T>
 				return;
 			
 			
-			while ( FGets( handle,  line_content ) > 0 )
+			while ( FGets( handle,  line_content ) >= 0 )
 			{
 				file_content += line_content;
 			}
