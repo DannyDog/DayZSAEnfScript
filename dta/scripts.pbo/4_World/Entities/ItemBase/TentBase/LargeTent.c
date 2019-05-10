@@ -20,6 +20,7 @@ class LargeTent extends TentBase
 		m_ShowAnimationsWhenPitched.Insert( "Window5O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window6O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window7O" );
+		m_ShowAnimationsWhenPitched.Insert( "Pack" );
 		
 		m_ShowAnimationsWhenPacked.Insert( "Inventory" );
 	}

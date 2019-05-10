@@ -1,6 +1,10 @@
 class Spotlight extends ItemBase
 {
 	private bool	m_IsFolded;
+	SpotlightLight 	m_Light;
+	
+	static vector 	m_LightLocalPosition 	= "0 1.50668 0.134863";
+	static vector 	m_LightLocalOrientation = "0 0 0";
 	
 	// Spotlight can be extended and compressed
 	static const string SEL_REFLECTOR_COMP_U 		= "reflector";
@@ -14,9 +18,15 @@ class Spotlight extends ItemBase
 	static const string SEL_GLASS_F 				= "glass_folded";
 	static const string SEL_GLASS_U 				= "glass_unfolded";
 	static const string SEL_REFLECTOR_F				= "reflector_folded";
-	static const string SEL_REFLECTOR_FAR_F			= "reflector_far_folded";
 	static const string SEL_REFLECTOR_U				= "reflector_unfolded";
-	static const string SEL_REFLECTOR_FAR_U			= "reflector_far_unfolded";
+	
+	static const int 	ID_GLASS					= 3;
+	static const int 	ID_REFLECTOR				= 4;
+	
+	static string 		LIGHT_OFF_GLASS 			= "dz\\gear\\camping\\Data\\spotlight_glass.rvmat";
+	static string 		LIGHT_OFF_REFLECTOR 		= "dz\\gear\\camping\\Data\\spotlight.rvmat";
+	static string 		LIGHT_ON_GLASS 				= "dz\\gear\\camping\\Data\\spotlight_glass_on.rvmat";
+	static string 		LIGHT_ON_REFLECTOR 			= "dz\\gear\\camping\\Data\\spotlight_glass_on.rvmat";
 	
 	//sound
 	const string 				SOUND_TURN_ON		= "spotlight_turn_on_SoundSet";
@@ -26,13 +36,24 @@ class Spotlight extends ItemBase
 	protected EffectSound 		m_SoundTurnOff;	
 	
 	ref protected EffectSound 	m_DeployLoopSound;
+
 	/*
-	Spotlight, folded and unfolded.
+		Spotlight, folded and unfolded.
 	*/
 	
 	void Spotlight()
 	{
+		m_DeployLoopSound = new EffectSound;
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsDeploySound");
+	}
+	
+	void ~Spotlight()
+	{
+		if ( m_DeployLoopSound )
+		{
+			SEffectManager.DestroySound( m_DeployLoopSound );
+		}
 	}
 	
 	override void OnInitEnergy()
@@ -43,6 +64,17 @@ class Spotlight extends ItemBase
 			Fold();
 		
 		UpdateAllSelections();
+	}
+	
+	override void EOnInit(IEntity other, int extra)
+	{
+		super.EOnInit(other, extra);
+		
+		if ( !IsHologram() )
+		{
+			UpdateAllSelections();
+			HideSelection(SEL_CORD_FOLDED_F);
+		}
 	}
 	
 	//--- POWER EVENTS
@@ -60,16 +92,44 @@ class Spotlight extends ItemBase
 		
 		//sound (client only)
 		SoundTurnOff();
-	}	
+		
+		if (m_Light)
+		{
+			m_Light.FadeOut(0.05);
+			m_Light = null;
+		}
+	}
 	
 	override void OnWorkStart()
 	{
-		SetPilotLight(true);
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() ) // client side
+		{
+			m_Light = SpotlightLight.Cast( ScriptedLightBase.CreateLight( SpotlightLight, "0 0 0") );
+			m_Light.AttachOnObject(this, m_LightLocalPosition, m_LightLocalOrientation);
+			
+			
+		}
+		
+		SetObjectMaterial(ID_GLASS, LIGHT_ON_GLASS);
+		SetObjectMaterial(ID_REFLECTOR, LIGHT_ON_REFLECTOR);
 	}
+	
+	/*override void OnWork(float consumed_energy)
+	{
+			
+		}*/
 
 	override void OnWorkStop()
 	{
-		SetPilotLight(false);
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() ) // client side
+		{
+			if (m_Light)
+				m_Light.FadeOut();
+			
+		}
+		
+		SetObjectMaterial(ID_GLASS, LIGHT_OFF_GLASS);
+		SetObjectMaterial(ID_REFLECTOR, LIGHT_OFF_REFLECTOR);
 	}
 	
 	// Called when this device is picked up
@@ -97,10 +157,11 @@ class Spotlight extends ItemBase
 		
 		if ( IsFolded() )
 		{
+			HideSelection( SEL_REFLECTOR_COMP_U );
+			
 			ShowSelection( SEL_INVENTORY );
 			ShowSelection( SEL_GLASS_F );
 			ShowSelection( SEL_REFLECTOR_F );
-			ShowSelection( SEL_REFLECTOR_FAR_F );
 			
 			if (is_plugged)
 			{
@@ -115,7 +176,6 @@ class Spotlight extends ItemBase
 		{
 			ShowSelection( SEL_PLACING );
 			ShowSelection( SEL_REFLECTOR_U );
-			ShowSelection( SEL_REFLECTOR_FAR_U );
 			ShowSelection( SEL_GLASS_U );
 			ShowSelection( SEL_REFLECTOR_COMP_U );
 			
@@ -264,9 +324,9 @@ class Spotlight extends ItemBase
 		if ( GetGame().IsServer() )
 		{
 			Unfold();
+			
+			SetIsDeploySound( true );
 		}
-		
-		SetIsDeploySound( true );
 	}
 	
 	override bool IsDeployable()
@@ -288,7 +348,7 @@ class Spotlight extends ItemBase
 	{		
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{		
-			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition());
 		}
 	}
 	
@@ -296,8 +356,22 @@ class Spotlight extends ItemBase
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{	
+			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-			delete m_DeployLoopSound;
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionPlugIn);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionTurnOnSpotlight);
+		AddAction(ActionTurnOffSpotlight);
+		AddAction(ActionRepositionPluggedItem);
+		AddAction(ActionDeployObject);
 	}
 }

@@ -1,0 +1,30 @@
+GridSpacerWidgetClass mods_root {
+ position 0 0
+ size 444 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 0
+ Padding 0
+ Margin 0
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Columns 5
+ Rows 1
+ {
+  ImageWidgetClass ModMore {
+   visible 0
+   ignorepointer 0
+   position 0 0
+   size 60 60
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   mode blend
+   "src alpha" 1
+   "no wrap" 1
+   stretch 1
+  }
+ }
+}

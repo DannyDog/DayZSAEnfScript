@@ -48,6 +48,9 @@ class UIScriptedMenu extends UIMenuPanel
 {
 	int m_id;
 	Widget layoutRoot;
+	private Widget	m_AnimAlphaWidget;
+	private bool	m_AnimAlphaIsIncreasing;
+	private float	m_AnimAlphaValue;
 
 	Widget GetLayoutRoot()
 	{
@@ -119,6 +122,12 @@ class UIScriptedMenu extends UIMenuPanel
 		return m_id;
 	}
 
+	void SetWidgetAnimAlpha( Widget widget )
+	{
+		m_AnimAlphaValue = 0.3;
+		m_AnimAlphaWidget = widget;
+	}
+	
 	//create widgets here and return layout root Widget
 	//widgets will be destroyed automatically by c++ side
 	Widget Init()
@@ -145,6 +154,37 @@ class UIScriptedMenu extends UIMenuPanel
 	//! Per frame update, called from engine
 	void Update(float timeslice)
 	{
+		#ifdef PLATFORM_CONSOLE
+		if ( m_AnimAlphaWidget )
+		{
+			float anim_speed = 1.2;
+			float anim_value_max = 1.0;
+			float anim_value_min = 0.3;
+			if ( m_AnimAlphaIsIncreasing )
+			{
+				m_AnimAlphaValue += anim_speed * timeslice;
+				
+				if ( m_AnimAlphaValue >= anim_value_max )
+				{
+					m_AnimAlphaValue = anim_value_max;
+					m_AnimAlphaIsIncreasing = false;
+				}
+			}
+			else
+			{
+				m_AnimAlphaValue -= anim_speed * timeslice;
+				
+				if ( m_AnimAlphaValue <= anim_value_min )
+				{
+					m_AnimAlphaValue = anim_value_min;
+					m_AnimAlphaIsIncreasing = true;
+				}
+			}
+			
+			
+			m_AnimAlphaWidget.SetAlpha( m_AnimAlphaValue );
+		}
+		#endif
 	}
 
 	//! Refresh request, called from anywhere

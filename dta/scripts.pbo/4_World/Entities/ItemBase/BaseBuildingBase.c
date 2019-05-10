@@ -30,7 +30,7 @@ class BaseBuildingBase extends ItemBase
 	const string SOUND_DISMANTLE_WIRE			= "putDown_BarbedWire_SoundSet";
 	
 	protected EffectSound m_Sound;
-		
+	
 	ref map<string, ref AreaDamageRegularDeferred> m_DamageTriggers;
 	
 	// Constructor
@@ -45,31 +45,31 @@ class BaseBuildingBase extends ItemBase
 		RegisterNetSyncVariableInt( "m_InteractedPartId" );
 		RegisterNetSyncVariableInt( "m_PerformedActionId" );
 		RegisterNetSyncVariableBool( "m_HasBase" );
+		
+		//Construction init
+		ConstructionInit();
 	}
 
 	// --- SYNCHRONIZATION
-	void Synchronize()
+	void SynchronizeBaseState()
 	{
 		if ( GetGame().IsServer() )
 		{
 			SetSynchDirty();
-			
-			if ( GetGame().IsMultiplayer() )
-			{
-				Refresh();
-			}
 		}
 	}
 	
-	//refresh visual/physics state
-	void Refresh()
+	//refresh visual/physics state (do not use, performance is horrible)
+	private void RefreshBaseState()
 	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " RefreshBaseState");
 		UpdateVisuals();
-		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( UpdatePhysics, 200, false );
+		UpdatePhysics();
 	}
 	
 	override void OnVariablesSynchronized()
 	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " OnVariablesSynchronized");
 		super.OnVariablesSynchronized();
 
 		//update parts
@@ -79,7 +79,7 @@ class BaseBuildingBase extends ItemBase
 		SetActionFromSyncData();
 		
 		//update visuals (client)
-		Refresh();
+		UpdateVisuals();
 	}
 	
 	//parts synchronization
@@ -211,6 +211,47 @@ class BaseBuildingBase extends ItemBase
 	}
 	//------
 	
+	void SetPartFromSyncData (ConstructionPart part)
+	{
+		string key = part.m_PartName;
+		bool is_base = part.IsBase();
+		bool is_part_built_sync = IsPartBuildInSyncData( part.GetId() );
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " SetPartFromSyncData try to sync: built=" + is_part_built_sync + " key=" + key + " part=" + part.GetPartName() + " part_built=" + part.IsBuilt());
+		if ( is_part_built_sync )
+		{
+			if ( !part.IsBuilt() )
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " SetPartsFromSyncData +++ " + key);
+				GetConstruction().AddToConstructedParts( key );
+				GetConstruction().ShowConstructionPartPhysics(part.GetPartName());
+				
+				if (is_base)
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + ANIMATION_DEPLOYED + " RM");
+					RemoveProxyPhysics( ANIMATION_DEPLOYED );
+				}
+			}
+		}
+		else
+		{
+			if ( part.IsBuilt() )
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " SetPartsFromSyncData --- " + key);
+				GetConstruction().RemoveFromConstructedParts( key );
+				GetConstruction().HideConstructionPartPhysics(part.GetPartName());
+			
+				if (is_base)
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + ANIMATION_DEPLOYED + " ADD");
+					AddProxyPhysics( ANIMATION_DEPLOYED );
+				}
+			}
+		}
+
+		//check slot lock for material attachments	
+		GetConstruction().SetLockOnAttachedMaterials( part.GetPartName(), part.IsBuilt() );		//failsafe for corrupted sync/storage data			
+	}
+	
 	//set construction parts based on synchronized data
 	void SetPartsFromSyncData()
 	{
@@ -221,26 +262,11 @@ class BaseBuildingBase extends ItemBase
 		{
 			string key = construction_parts.GetKey( i );
 			ConstructionPart value = construction_parts.Get( key );
-		
-			bool is_part_built_sync = IsPartBuildInSyncData( value.GetId() );
-			if ( is_part_built_sync )
-			{
-				if ( !value.IsBuilt() )
-				{
-					GetConstruction().AddToConstructedParts( key );
-				}
-			}
-			else
-			{
-				if ( value.IsBuilt() )
-				{
-					GetConstruction().RemoveFromConstructedParts( key );
-				}
-			}
-			
-			//check slot lock for material attachments	
-			GetConstruction().SetLockOnAttachedMaterials( value.GetPartName(), value.IsBuilt() );		//failsafe for corrupted sync/storage data			
+			SetPartFromSyncData(value);
 		}
+		
+		//regenerate navmesh
+		UpdateNavmesh();		
 	}
 	
 	protected ConstructionPart GetConstructionPartById( int id )
@@ -311,6 +337,7 @@ class BaseBuildingBase extends ItemBase
 	//--- CONSTRUCTION
 	void DestroyConstruction()
 	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " DestroyConstruction");
 		GetGame().ObjectDelete( this );
 	}	
 	
@@ -324,7 +351,6 @@ class BaseBuildingBase extends ItemBase
 		ctx.Write( m_SyncParts02 );
 		ctx.Write( m_SyncParts03 );
 		
-		//has base 
 		ctx.Write( m_HasBase );
 	}
 	
@@ -335,73 +361,123 @@ class BaseBuildingBase extends ItemBase
 		
 		//--- Base building data ---
 		//Restore synced parts data
-		//sync parts 01
 		if ( !ctx.Read( m_SyncParts01 ) )
 		{
 			m_SyncParts01 = 0;		//set default
+			return false;
 		}
 		if ( !ctx.Read( m_SyncParts02 ) )
 		{
 			m_SyncParts02 = 0;		//set default
+			return false;
 		}
 		if ( !ctx.Read( m_SyncParts03 ) )
 		{
 			m_SyncParts03 = 0;		//set default
+			return false;
 		}
 		
 		//has base
 		if ( !ctx.Read( m_HasBase ) )
 		{
-			ConstructionPart construction_part = GetConstruction().GetBaseConstructionPart();
-			m_HasBase = construction_part.IsBuilt();
+			m_HasBase = false;
+			return false;
 		}
 		//---
+
+		return true;
+	}
+	
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();		
 		
 		//update server data
 		SetPartsFromSyncData();
-				
+		
+		//set base state
+		ConstructionPart construction_part = GetConstruction().GetBaseConstructionPart();
+		SetBaseState( construction_part.IsBuilt() ) ;
+			
 		//synchronize after load
-		Synchronize();
-
-		return true;
+		SynchronizeBaseState();
 	}
 	
 	override void EEInit()
 	{
 		super.EEInit();
 		
-		//Construction init
-		ConstructionInit();
-		
-		//update visuals and physics
-		Refresh();
+		// init visuals and physics
+		InitBaseState();
 	}
 
 	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged( old_owner, new_owner );
-		
-		//update visuals after location change
-		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( UpdatePhysics, 200, false );
 	}
 	
 	override void EEItemAttached ( EntityAI item, string slot_name )
 	{
 		super.EEItemAttached ( item, slot_name );
 		
-		//update visuals and physics
-		Refresh();
+		// TODO: Update visuals performance
+		UpdateVisuals();
+		UpdateAttachmentPhysics(item, slot_name, true);
 	}
 	
 	override void EEItemDetached ( EntityAI item, string slot_name )
 	{
 		super.EEItemDetached ( item, slot_name );
-		
-		//update visuals and physics
-		Refresh();
+
+		// TODO: Update visuals performance
+		UpdateVisuals();
+		UpdateAttachmentPhysics(item, slot_name, false);
+	}
+	
+	protected void OnSetSlotLock (int slotId, bool locked, bool was_locked)
+	{
+		string slot_name = InventorySlots.GetSlotName(slotId);
+		bsbDebugPrint("inv: OnSetSlotLock " + GetDebugName(this) + " slot=" + slot_name + " locked=" + locked + " was_locked=" + was_locked);
+
+		EntityAI attachment = GetInventory().FindAttachment(slotId);
+		if ( attachment && attachment.IsInherited( BarbedWire ) )
+		{
+			BarbedWire barbed_wire = BarbedWire.Cast( attachment );
+			if (locked && !was_locked)
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " RM / ADD");
+				RemoveProxyPhysics( slot_name );
+				AddProxyPhysics( slot_name + "_Mounted" );
+			}
+
+			if (!locked && was_locked)
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " RM / ADD");
+				AddProxyPhysics( slot_name + "_Mounted" );
+				RemoveProxyPhysics( slot_name );
+			}
+			
+			return;
+		}
+
+		if (locked && !was_locked)
+		{
+			bsbDebugPrint("[bsb] " + GetDebugName(this) + " Locked slot=" + slot_name + " locked=" + locked + " was_locked=" + was_locked);
+			RemoveProxyPhysics( slot_name );
+			RemoveProxyPhysics( slot_name + "_Mounted");
+		}
+
+		if (!locked && was_locked)
+		{
+			string slot_name2 = InventorySlots.GetSlotName(slotId);
+			bsbDebugPrint("[bsb] " + GetDebugName(this) + " UNlocked slot=" + slot_name2 + " locked=" + locked + " was_locked=" + was_locked);
+			AddProxyPhysics( slot_name2 );
+			AddProxyPhysics( slot_name2 + "_Mounted");
+		}
 	}
 	
 	//CONSTRUCTION EVENTS
+	//Build
 	void OnPartBuiltServer( string part_name, int action_id )
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
@@ -422,7 +498,10 @@ class BaseBuildingBase extends ItemBase
 		RegisterActionForSync( constrution_part.GetId(), action_id );
 		
 		//synchronize
-		Synchronize();
+		SynchronizeBaseState();
+		
+		if (GetGame().IsMultiplayer() && GetGame().IsServer())
+			SetPartFromSyncData(constrution_part); // server part of sync, client will be synced from SetPartsFromSyncData
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -434,15 +513,17 @@ class BaseBuildingBase extends ItemBase
 		SoundBuildStart( part_name );
 	}	
 	
+	//Dismantle
 	void OnPartDismantledServer( string part_name, int action_id )
 	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " OnPartDismantledServer " + part_name);
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
 		//check base state
 		if ( constrution_part.IsBase() )
 		{
 			//Destroy construction
-			DestroyConstruction();
+			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( DestroyConstruction, 200, false, this );
 		}
 					
 		//register constructed parts for synchronization
@@ -452,7 +533,10 @@ class BaseBuildingBase extends ItemBase
 		RegisterActionForSync( constrution_part.GetId(), action_id );
 		
 		//synchronize
-		Synchronize();
+		SynchronizeBaseState();
+
+		if (GetGame().IsMultiplayer() && GetGame().IsServer())
+			SetPartFromSyncData(constrution_part); // server part of sync, client will be synced from SetPartsFromSyncData
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -462,12 +546,20 @@ class BaseBuildingBase extends ItemBase
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
+		//receive materials (client)
+		GetConstruction().ReceiveMaterialsClient( part_name );
+		
+		//drop non-usable materials (client)
+		GetConstruction().DropNonUsableMaterialsServer( part_name );
+		
 		//play sound
 		SoundDismantleStart( part_name );
 	}	
 	
+	//Destroy
 	void OnPartDestroyedServer( string part_name, int action_id )
 	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " OnPartDestroyedServer " + part_name);
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
 		//check base state
@@ -484,7 +576,7 @@ class BaseBuildingBase extends ItemBase
 		RegisterActionForSync( constrution_part.GetId(), action_id );
 		
 		//synchronize
-		Synchronize();
+		SynchronizeBaseState();
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -492,11 +584,30 @@ class BaseBuildingBase extends ItemBase
 	
 	void OnPartDestroyedClient( string part_name, int action_id )
 	{
+		//drop non-usable materials (client)
+		GetConstruction().DropNonUsableMaterialsServer( part_name );
+		
 		//play sound
 		SoundDestroyStart( part_name );
 	}	
 	
 	// --- UPDATE
+	void InitVisuals()
+	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " InitVisuals");
+		//check base
+		if ( !HasBase() )
+		{
+			SetAnimationPhase( ANIMATION_DEPLOYED, 0 );
+		}
+		else
+		{
+			SetAnimationPhase( ANIMATION_DEPLOYED, 1 );
+		}
+		
+		GetConstruction().UpdateVisuals();
+	}
+
 	void UpdateVisuals()
 	{
 		//update attachments visuals
@@ -563,11 +674,77 @@ class BaseBuildingBase extends ItemBase
 		GetConstruction().UpdateVisuals();
 	}
 	
+	void UpdateAttachmentPhysics (notnull EntityAI attachment, string slot_name, bool attached)
+	{
+		string slot_name_mounted = slot_name + "_Mounted";
+		
+		if ( attached )
+		{
+			bsbDebugPrint("[bsb] " + GetDebugName(this) + " Adding ATT=" + Object.GetDebugName(attachment));
+			if ( attachment.IsInherited( BarbedWire ) )
+			{
+				BarbedWire barbed_wire = BarbedWire.Cast( attachment );
+				if ( IsAttachmentSlotLocked( attachment ) )
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + " RM / ADD");
+					RemoveProxyPhysics( slot_name );
+					AddProxyPhysics( slot_name_mounted );
+				}
+				else
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + " RM / ADD");
+					RemoveProxyPhysics( slot_name_mounted );
+					AddProxyPhysics( slot_name );
+				}
+			}
+			else
+			{
+				if ( IsAttachmentSlotLocked( attachment ) )
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + " RM / RM");
+					RemoveProxyPhysics( slot_name_mounted );
+					RemoveProxyPhysics( slot_name );
+				}
+				else
+				{
+					bsbDebugPrint("[bsb] " + GetDebugName(this) + " ADD");
+					AddProxyPhysics( slot_name );
+				}
+			}
+		}
+		else
+		{
+			if ( IsAttachmentSlotLocked( attachment ) )
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " Removing LCK ATT=" + Object.GetDebugName(attachment) + " NO-OP");
+			}
+			else
+			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " Removing ATT=" + Object.GetDebugName(attachment) + " RM / RM");
+				RemoveProxyPhysics( slot_name_mounted );
+				RemoveProxyPhysics( slot_name );
+			}
+		}
+	}
+	
+	void InitBaseState ()
+	{
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " BaseBuildingBase::InitBaseState ");
+
+		InitVisuals();
+		UpdateNavmesh(); //regenerate navmesh
+		GetConstruction().InitBaseState();
+	}
+	
+	// avoid calling this function on frequent occasions, it's a massive performance hit
 	void UpdatePhysics()
 	{
 		//update attachments physics
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " BaseBuildingBase::UpdatePhysics");
+
 		ref array<string> attachment_slots = new ref array<string>;
 		GetAttachmentSlots( this, attachment_slots );
+		bsbDebugPrint("[bsb] " + GetDebugName(this) + " att_cnt=" + attachment_slots.Count());
 		for ( int i = 0; i < attachment_slots.Count(); i++ )
 		{
 			string slot_name = attachment_slots.Get( i );
@@ -581,11 +758,13 @@ class BaseBuildingBase extends ItemBase
 					BarbedWire barbed_wire = BarbedWire.Cast( attachment );
 					if ( barbed_wire.IsMounted() )
 					{
+						bsbDebugPrint("[bsb] " + GetDebugName(this) + " i=" + i + " RM / ADD");
 						RemoveProxyPhysics( slot_name );
 						AddProxyPhysics( slot_name_mounted );
 					}
 					else
 					{
+						bsbDebugPrint("[bsb] " + GetDebugName(this) + " i=" + i + " RM / ADD");
 						RemoveProxyPhysics( slot_name_mounted );
 						AddProxyPhysics( slot_name );
 					}
@@ -594,17 +773,20 @@ class BaseBuildingBase extends ItemBase
 				{
 					if ( IsAttachmentSlotLocked( attachment ) )
 					{
+						bsbDebugPrint("[bsb] " + GetDebugName(this) + " i=" + i + " RM / RM");
 						RemoveProxyPhysics( slot_name_mounted );
 						RemoveProxyPhysics( slot_name );
 					}
 					else
 					{
+						bsbDebugPrint("[bsb] " + GetDebugName(this) + " i=" + i + " ADD");
 						AddProxyPhysics( slot_name );
 					}
 				}
 			}
 			else
 			{
+				bsbDebugPrint("[bsb] " + GetDebugName(this) + " i=" + i + " RM / RM");
 				RemoveProxyPhysics( slot_name_mounted );
 				RemoveProxyPhysics( slot_name );
 			}
@@ -613,10 +795,12 @@ class BaseBuildingBase extends ItemBase
 		//check base
 		if ( !HasBase() )
 		{
+			bsbDebugPrint("[bsb] " + GetDebugName(this) + ANIMATION_DEPLOYED + "  ADD");
 			AddProxyPhysics( ANIMATION_DEPLOYED );
 		}
 		else
 		{
+			bsbDebugPrint("[bsb] " + GetDebugName(this) + ANIMATION_DEPLOYED + " RM");
 			RemoveProxyPhysics( ANIMATION_DEPLOYED );
 		}
 		
@@ -658,6 +842,16 @@ class BaseBuildingBase extends ItemBase
 		{
 			GetGame().ConfigGetTextArray( config_path, attachment_slots );
 		}
+	}
+
+	bool CheckSlotVerticalDistance( int slot_id, PlayerBase player )
+	{
+		return true;
+	}
+		
+	protected bool CheckMemoryPointVerticalDistance( float max_dist, string selection, PlayerBase player )	
+	{
+		return true;
 	}
 	
 	// --- INIT
@@ -718,16 +912,17 @@ class BaseBuildingBase extends ItemBase
 	
 	//--- ACTION CONDITIONS
 	//direction
-	bool IsFacingFront( PlayerBase player, string selection )
+	bool IsFacingPlayer( PlayerBase player, string selection )
 	{
 		return true;
 	}
-	
-	bool IsFacingBack( PlayerBase player, string selection )
+		
+	//camera direction check
+	bool IsFacingCamera( string selection )
 	{
-		return !IsFacingFront( player, selection );
+		return true;
 	}
-	
+		
 	//folding
 	bool CanFoldBaseBuildingObject()
 	{
@@ -746,7 +941,7 @@ class BaseBuildingBase extends ItemBase
 	}
 	
 	//Damage triggers (barbed wire)
-	void CreateAreaDamage( string slot_name )
+	void CreateAreaDamage( string slot_name, float rotation_angle = 0 )
 	{
 		if ( GetGame() && GetGame().IsServer() )
 		{
@@ -775,8 +970,13 @@ class BaseBuildingBase extends ItemBase
 			center = GetConstruction().GetBoxCenter( min_max );
 			center = ModelToWorld( center );
 			
+			//rotate center if needed
+			vector orientation = GetOrientation();;
+			CalcDamageAreaRotation( rotation_angle, center, orientation );
+			
 			area_damage.SetExtents( extents[0], extents[1] );
 			area_damage.SetAreaPosition( center );
+			area_damage.SetAreaOrientation( orientation );
 			area_damage.SetLoopInterval( 0.5 );
 			area_damage.SetDeferInterval( 0.5 );
 			area_damage.SetHitZones( { "Head","Torso","LeftHand","LeftLeg","LeftFoot","RightHand","RightLeg","RightFoot" } );
@@ -786,7 +986,27 @@ class BaseBuildingBase extends ItemBase
 			m_DamageTriggers.Insert( slot_name, area_damage );
 		}
 	}
-	
+		
+	void CalcDamageAreaRotation( float angle_deg, out vector center, out vector orientation )
+	{
+		if ( angle_deg != 0 )
+		{
+			//orientation
+			orientation[0] = orientation[0] - angle_deg;
+			
+			//center
+			vector rotate_axis;
+			if ( MemoryPointExists( "rotate_axis" ) )
+			{
+				rotate_axis = ModelToWorld( GetMemoryPointPos( "rotate_axis" ) );
+			}			
+			float r_center_x = ( Math.Cos( angle_deg * Math.DEG2RAD ) * ( center[0] - rotate_axis[0] ) ) - ( Math.Sin( angle_deg * Math.DEG2RAD ) * ( center[2] - rotate_axis[2] ) ) + rotate_axis[0];
+			float r_center_z = ( Math.Sin( angle_deg * Math.DEG2RAD ) * ( center[0] - rotate_axis[0] ) ) + ( Math.Cos( angle_deg * Math.DEG2RAD ) * ( center[2] - rotate_axis[2] ) ) + rotate_axis[2];
+			center[0] = r_center_x;
+			center[2] = r_center_z;
+		}
+	}
+		
 	void DestroyAreaDamage( string slot_name )
 	{
 		if ( GetGame() && GetGame().IsServer() )
@@ -853,4 +1073,9 @@ class BaseBuildingBase extends ItemBase
 		
 		return "";
 	}	
+}
+
+void bsbDebugPrint (string s)
+{
+	//Print("" + s); // comment/uncomment to hide/see debug logs
 }

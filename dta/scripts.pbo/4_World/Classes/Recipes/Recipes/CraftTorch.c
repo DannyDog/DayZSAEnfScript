@@ -68,7 +68,7 @@ class CraftTorch extends RecipeBase
 		ItemBase rag = ingredients[0];
 		Torch torch = Torch.Cast(results[0]);
 		
-		if ( GetGame().IsMultiplayer()  &&  GetGame().IsServer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
 			player.ServerTakeEntityToTargetAttachment(torch, rag);
 			torch.StandUp();

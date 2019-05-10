@@ -49,7 +49,7 @@ FrameWidgetClass HudDebugFrameWidget {
   }
   WindowWidgetClass wdw_CharacterModifiers {
    position 4.01487 0.41983
-   size 260 500
+   size 300.14902 500
    halign right_ref
    hexactpos 1
    vexactpos 0
@@ -78,7 +78,7 @@ FrameWidgetClass HudDebugFrameWidget {
     PanelWidgetClass pnl_CharModifiers_Values {
      disabled 1
      position 13 30
-     size 235 22
+     size 273.81 25.4275
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -158,8 +158,8 @@ FrameWidgetClass HudDebugFrameWidget {
   }
   WindowWidgetClass wdw_CharacterAgents {
    visible 1
-   position 280 51
-   size 232 218
+   position 357.621 51
+   size 337.72501 218
    halign right_ref
    hexactpos 1
    vexactpos 1
@@ -168,6 +168,22 @@ FrameWidgetClass HudDebugFrameWidget {
    style rover_sim_black_2
    "title visible" 0
    {
+    PanelWidgetClass AgentList {
+     ignorepointer 1
+     position 10 32.2504
+     size 281.52798 26.7658
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "AutoHeightSpacer"
+     {
+      ScriptParamsClass {
+       AlignChilds 1
+       MinHeight 20
+      }
+     }
+    }
     TextWidgetClass txt_CharAgents_Title {
      disabled 0
      position 8 4
@@ -182,23 +198,11 @@ FrameWidgetClass HudDebugFrameWidget {
      "exact text" 1
      "text valign" center
     }
-    TextListboxWidgetClass txl_CharAgents_Values {
-     disabled 1
-     position 13 30
-     size 208 177
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     colums "text;52;text2;48;"
-     lines 0
-     font "gui/fonts/MetronBook16"
-    }
    }
   }
   WindowWidgetClass wdw_CharacterLevels {
-   position 268.996 453.681
-   size 318.33499 529.78406
+   position 311.17502 455.01901
+   size 502.056 531.78003
    halign right_ref
    hexactpos 1
    vexactpos 1
@@ -207,8 +211,8 @@ FrameWidgetClass HudDebugFrameWidget {
    style rover_sim_black_2
    {
     TextWidgetClass txt_CharLvels_Title {
-     position 77.8665 8.62855
-     size 185.84399 27.9257
+     position 47.0859 8.62855
+     size 156.40199 27.9257
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -219,14 +223,16 @@ FrameWidgetClass HudDebugFrameWidget {
     }
     TextListboxWidgetClass txl_CharLevels_Values {
      disabled 1
-     position 18.4651 39.93
-     size 280.862 481.60602
+     clipchildren 0
+     position 15.4041 42.7892
+     size 467.85199 481.60602
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
      style NoScrollBar
-     colums "text;52;text2;48;"
+     "title visible" 0
+     colums "text;55;text2;5;text3;0;"
      lines 0
     }
    }

@@ -117,6 +117,14 @@ class Trap_FishNet extends TrapSpawnBase
 	{
 		return "fishnet_deploy_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
+	}
 }
 
 class FishNetTrap extends Trap_FishNet 

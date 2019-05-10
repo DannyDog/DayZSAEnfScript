@@ -1,4 +1,4 @@
-bool chamberFromAttachedMagazine (Weapon_Base weapon, int muzzleIndex)
+bool pushToChamberFromAttachedMagazine (Weapon_Base weapon, int muzzleIndex)
 {
 	Magazine mag = weapon.GetMagazine(muzzleIndex);
 	if (mag)
@@ -14,7 +14,7 @@ bool chamberFromAttachedMagazine (Weapon_Base weapon, int muzzleIndex)
 		else
 			Error("[wpnfsm] chamberFromAttachedMagazine, error - cannot take cartridge from magazine");
 
-		if (weapon.LoadChamber(muzzleIndex, damage, type))
+		if (weapon.PushCartridgeToChamber(muzzleIndex, damage, type))
 		{
 			wpnDebugPrint("[wpnfsm] chamberFromAttachedMagazine, ok - loaded chamber");
 			return true;
@@ -29,11 +29,36 @@ bool chamberFromAttachedMagazine (Weapon_Base weapon, int muzzleIndex)
 	return false;
 }
 
+bool pushToChamberFromInnerMagazine (Weapon_Base weapon, int muzzleIndex)
+{
+
+	wpnDebugPrint("[wpnfsm] chamberFromInnerMagazine, using inner magazine.");
+	float damage;
+	string type;
+	if (weapon.PopCartridgeFromInternalMagazine(muzzleIndex,damage, type))
+	{
+		weapon.SelectionBulletShow();
+		wpnDebugPrint("[wpnfsm] chamberFromInnerMagazine, ok - cartridge acquired: dmg=" + damage + " type=" + type);
+	}
+	else
+		Error("[wpnfsm] chamberFromInnerMagazine, error - cannot take cartridge from magazine");
+
+	if (weapon.PushCartridgeToChamber(muzzleIndex, damage, type))
+	{
+		wpnDebugPrint("[wpnfsm] chamberFromInnerMagazine, ok - loaded chamber");
+		return true;
+	}
+	else
+		Error("[wpnfsm] chamberFromInnerMagazine, error - cannot load chamber!");
+
+	return false;
+}
+
 void ejectBulletAndStoreInMagazine (Weapon_Base weapon, int muzzleIndex, Magazine mag, DayZPlayer p)
 {
 	float damage = 0;
 	string type = string.Empty;
-	string magazineTypeName = weapon.GetCartridgeMagazineTypeName(muzzleIndex);
+	string magazineTypeName = weapon.GetChamberedCartridgeMagazineTypeName(muzzleIndex);
 	if (weapon.EjectCartridge(muzzleIndex, damage, type))
 		wpnDebugPrint("[wpnfsm] ejectBulletAndStoreInMagazine, ejected chambered cartridge");
 	else

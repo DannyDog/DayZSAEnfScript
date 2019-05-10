@@ -27,9 +27,10 @@ class RDG2SmokeGrenade_Black : ItemGrenade
 	override void OnWorkStart()
 	{
 		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer())
+		{
 			m_LoopSoundEntity = PlaySoundLoop(BURNING_SOUND, 30);
-		
-		m_ParMainFire = Particle.Play(ParticleList.RDG2, this, m_FlameLocalPos);
+			m_ParMainFire = Particle.PlayOnObject(ParticleList.RDG2, this, m_FlameLocalPos);
+		}
 	}
 	
 	// When the flare stops burning

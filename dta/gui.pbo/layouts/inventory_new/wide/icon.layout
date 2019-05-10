@@ -11,7 +11,7 @@ FrameWidgetClass Icon {
  {
   ItemPreviewWidgetClass Render {
    visible 0
-   clipchildren 0
+   clipchildren 1
    ignorepointer 1
    color 0.702 0.702 0.702 1
    size 1 1
@@ -28,7 +28,7 @@ FrameWidgetClass Icon {
   PanelWidgetClass Color {
    clipchildren 0
    ignorepointer 1
-   color 0.8824 0.8824 0.8824 0.098
+   color 1 1 1 0.0392
    position 0 0
    size 1 1
    halign center_ref
@@ -229,10 +229,12 @@ FrameWidgetClass Icon {
        vexactsize 0
        priority 500
        style Light
-       text "99"
+       text "100"
        font "gui/fonts/sdf_MetronLight24"
-       "exact text" 0
-       text_proportion 0.9
+       "exact text" 1
+       "exact text size" 15
+       "size to text h" 0
+       "size to text v" 0
        "text halign" center
        "text valign" center
       }

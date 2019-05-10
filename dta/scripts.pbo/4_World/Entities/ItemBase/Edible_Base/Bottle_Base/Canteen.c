@@ -60,4 +60,9 @@ class Canteen extends Bottle_Base
 		
 		return false;
 	}
+	
+	override bool IsOpen()
+	{
+		return true;
+	}
 }

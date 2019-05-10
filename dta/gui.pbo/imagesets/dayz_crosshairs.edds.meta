@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{D04B1074A5317A0E}Gui/imagesets/dayz_crosshairs.edds"
- Author "inv1906"
- ChangeDate 139125913
+ Name "{D04B1074A5317A0E}Gui/imagesets/dayz_crosshairs.tga"
+ Author "1836"
+ ChangeDate 1680598637
  Configurations {
   TGAResourceClass PC {
    SourceFile "dayz_crosshairs.tga"

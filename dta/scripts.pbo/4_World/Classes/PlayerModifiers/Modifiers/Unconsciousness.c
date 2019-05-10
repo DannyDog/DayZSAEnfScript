@@ -30,6 +30,11 @@ class UnconsciousnessMdfr: ModifierBase
 		DayZPlayerSyncJunctures.SendPlayerUnconsciousness(player, false);
 	}
 	
+	override string GetDebugText()
+	{
+		return (PlayerConstants.CONSCIOUS_THRESHOLD - m_Player.GetHealth("","Shock")).ToString();
+	}
+	
 	override void OnReconnect(PlayerBase player)
 	{
 	}

@@ -1,3 +1,21 @@
+// Commands using action data chanel sync
+const int INPUT_UDT_STANDARD_ACTION_START			= 1;
+const int INPUT_UDT_STANDARD_ACTION_END_REQUEST		= 2;
+const int INPUT_UDT_STANDARD_ACTION_INPUT_END		= 3;
+const int INPUT_UDT_QUICKABARSHORTCUT				= 4;
+const int INPUT_UDT_MELEE_TARGET					= 5;
+const int INPUT_UDT_WEAPON_ACTION					= 6;
+const int INPUT_UDT_ITEM_MANIPULATION				= 7;
+const int INPUT_UDT_INVENTORY						= 8;
+const int INPUT_UDT_ADVANCED_PLACEMENT				= 9;
+//const int INPUT_UDT_WEAPON_REMOTE_SYNC			= 9; // obsolette
+const int INPUT_UDT_WEAPON_REMOTE_EVENT				= 10;
+const int INPUT_UDT_USER_MUTE_XBOX					= 11;
+const int INPUT_UDT_USER_SYNC_PERMISSIONS			= 12;
+const int INPUT_UDT_HAND_REMOTE_EVENT				= 13;
+const int INPUT_UDT_WEAPON_LIFT_EVENT 				= 14;
+const int INPUT_UDT_RESET_ADS						= 15;
+const int INPUT_UDT_GESTURE							= 16;
 
 // ELECTRICITY SYSTEM CONSTANTS
 

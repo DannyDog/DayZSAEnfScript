@@ -8,8 +8,9 @@ FrameWidgetClass OnlineInfo {
  scriptclass ""
  {
   TextWidgetClass OnlineTextWidget {
-   position 31 48
-   size 0.3 50
+   clipchildren 0
+   position 100 80
+   size 0.5 50
    halign right_ref
    hexactpos 1
    vexactpos 1
@@ -20,13 +21,14 @@ FrameWidgetClass OnlineInfo {
    font "gui/fonts/sdf_MetronBook72"
    "text color" 0.8157 0.1255 0.7843 1
    "exact text" 0
-   "text halign" center
+   "text halign" right
    "text valign" center
   }
   FrameWidgetClass ServerInfoPanel {
    clipchildren 1
-   position 80 120
-   size 1760 840
+   position 100 150
+   size 600 800
+   halign right_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{EAA45FAEB23A18C4}Gui/textures/SplashScreenTransitionMask_8bit.png"
+ Author "1562"
+ ChangeDate -2127337866
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "SplashScreenTransitionMask_8bit.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

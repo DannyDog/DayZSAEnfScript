@@ -2,7 +2,7 @@ class CanisterGasoline extends Bottle_Base
 {
 	void CanisterGasoline()
 	{
-		
+		m_LiquidEmptyRate = 2000;
 	}
 	
 	void ~CanisterGasoline()
@@ -60,4 +60,30 @@ class CanisterGasoline extends Bottle_Base
 		
 		return false;
 	}
+	
+	override bool IsOpen()
+	{
+		return true;
+	}
+/*
+	override void SetActions()
+	{
+//		super.SetActions();
+
+		AddAction(ActionWorldLiquidActionSwitch);
+		AddAction(ActionFillCoolant);
+		AddAction(ActionFillFuel);
+		AddAction(ActionFillGeneratorTank);
+		AddAction(ActionExtinguishFireplaceByLiquid);
+		AddAction(ActionFillBottleBase);
+		AddAction(ActionWaterGardenSlot);
+		AddAction(ActionWaterPlant);
+		AddAction(ActionForceDrink);
+		AddAction(ActionPourLiquid);
+		AddAction(ActionDrainLiquid);
+		AddAction(ActionEmptyBottleBase);
+		AddAction(ActionDrink);
+		
+	}
+*/
 }

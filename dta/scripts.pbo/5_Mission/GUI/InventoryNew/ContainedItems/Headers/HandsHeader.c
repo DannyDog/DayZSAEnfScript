@@ -1,18 +1,18 @@
 class HandsHeader: Header
 {
-	bool	m_ForceHideCollapseButtons;
-	Widget	m_ItemHeader;
-	Widget	m_CollapseButton;
+	protected bool		m_ForceHideCollapseButtons;
+	protected Widget	m_ItemHeader;
 	
 	void HandsHeader( LayoutHolder parent, string function_name )
 	{
 		m_DefaultFontSize	= 24;
 		m_ItemHeader		= m_MainWidget.FindAnyWidget( "hands_item_header" );
-		m_CollapseButton	= m_MainWidget.FindAnyWidget( "collapse_button" );
-		m_HeaderText		= TextWidget.Cast( GetMainWidget().FindAnyWidget( "hands_title" ) );
 		
 		m_MainWidget		= GetMainWidget().FindAnyWidget( "height_wrapper" );
-		m_DefaultColor		= GetMainWidget().GetAlpha();
+		m_DefaultColor		= GetMainWidget().GetColor();
+		#ifdef PLATFORM_CONSOLE
+		ShowCollapseButtons( false, true );
+		#endif
 	}
 	
 	override void SetLayoutName()
@@ -43,6 +43,10 @@ class HandsHeader: Header
 	void ShowCollapseButtons( bool show, bool force = false )
 	{
 		m_ForceHideCollapseButtons = force;
+		#ifdef PLATFORM_CONSOLE
+		m_CollapseButton.Show( false );
+		#else
 		m_CollapseButton.Show( show );
+		#endif
 	}
 }

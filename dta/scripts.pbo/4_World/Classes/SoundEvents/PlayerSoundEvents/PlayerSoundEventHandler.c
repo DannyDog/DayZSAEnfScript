@@ -148,8 +148,10 @@ class PlayerSoundEventHandler extends SoundEventHandler
 		}
 		m_CurrentState = PlayerSoundEventBase.Cast(requested_state.ClassName().ToType().Spawn());
 		m_CurrentState.Init(m_Player);
-		m_CurrentState.Play();
-		m_CurrentState.OnPlay(m_Player);
+		if(m_CurrentState.Play())
+		{
+			m_CurrentState.OnPlay(m_Player);
+		}
 		return true;
 	}
 }

@@ -2,10 +2,10 @@ PanelWidgetClass widget {
  visible 1
  clipchildren 0
  ignorepointer 1
- size 520 105
+ size 1 105
  hexactpos 1
  vexactpos 1
- hexactsize 1
+ hexactsize 0
  vexactsize 1
  priority 8
  scriptclass "SizeToChild"
@@ -44,7 +44,6 @@ PanelWidgetClass widget {
    style Colorable
    Padding 0
    Margin 0
-   "Size To Content H" 1
    "Size To Content V" 1
    Columns 5
    Rows 1
@@ -126,7 +125,7 @@ PanelWidgetClass widget {
   ScriptParamsClass {
    m_ChildName "spacer"
    m_VerticalOffset 1
-   m_ResizeHorizontal 1
+   m_ResizeHorizontal 0
    m_ResizeVertical 1
   }
  }

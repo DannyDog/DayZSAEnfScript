@@ -21,10 +21,12 @@ class Weapon_Base extends Weapon
 	protected ref WeaponFSM m_fsm;	/// weapon state machine
 	protected bool m_isJammed = false;
 	protected bool m_LiftWeapon = false;
-	protected bool m_canEnterIronsights = true; /// if false, weapon goes straight into optics view
+	protected bool m_BayonetAttached;
+	protected bool m_ButtstockAttached;
 	protected int m_weaponAnimState = -1; /// animation state the weapon is in, -1 == uninitialized
+	protected int m_weaponHideBarrelIdx = -1; //index in simpleHiddenSelections cfg array
 	protected float m_DmgPerShot;
-	protected ref array<string> m_ironsightsExcludingOptics = new array<string>; /// optics that go straight into optics view (skip ironsights)
+	protected float m_WeaponLength;
 	ref array<float> m_DOFProperties = new array<float>;
 	ref array<float> m_ChanceToJam = new array<float>;
 	protected float m_ChanceToJamSync = 0;
@@ -33,9 +35,18 @@ class Weapon_Base extends Weapon
 
 	void Weapon_Base ()
 	{
-		m_DmgPerShot = ConfigGetFloat("damagePerShot");
+		m_DmgPerShot 		= ConfigGetFloat("damagePerShot");
+		m_BayonetAttached 	= false;
+		m_ButtstockAttached = false;
 		
-		InitExcludedScopesArray(m_ironsightsExcludingOptics);
+		if ( ConfigIsExisting("simpleHiddenSelections") )
+		{
+			TStringArray selectionNames = new TStringArray;
+			ConfigGetTextArray("simpleHiddenSelections",selectionNames);
+			m_weaponHideBarrelIdx = selectionNames.Find("hide_barrel");
+		}
+		
+		InitWeaponLength();
 		InitDOFProperties(m_DOFProperties);
 		if(GetGame().IsServer())
 		{
@@ -136,7 +147,7 @@ class Weapon_Base extends Weapon
 
 	bool CanChamberBullet (int muzzleIndex, Magazine mag)
 	{
-		return CanChamberFromMag(muzzleIndex, mag) && (!IsChamberFull(muzzleIndex) || IsChamberFiredOut(muzzleIndex)) );
+		return CanChamberFromMag(muzzleIndex, mag) && (!IsChamberFull(muzzleIndex) || IsChamberFiredOut(muzzleIndex) || !IsInternalMagazineFull(muzzleIndex)) );
 	}
 
 	void SetWeaponAnimState (int state)
@@ -172,23 +183,24 @@ class Weapon_Base extends Weapon
 			if (suppressor)
 				suppressor.AddHealth("","Health",-m_DmgPerShot); //damages suppressor; TODO add suppressor damage coeficient/parameter (?) to suppressors/weapons (?)
 		}
-		JamCheck(muzzleType);
+		//JamCheck(muzzleType);
 		
 		#ifdef DEVELOPER
 		MiscGameplayFunctions.UnlimitedAmmoDebugCheck(this);
 		#endif
 	}
 	
-	void JamCheck (int muzzleIndex )
+	bool JamCheck (int muzzleIndex )
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		if ( player )
 		{
 			float rnd = player.GetRandomGeneratorSyncManager().GetRandom01(RandomGeneratorSyncUsage.RGSJam);
-			//Print("Random Jam - " + rnd);
+			Print("Random Jam - " + rnd);
 			if (rnd < GetSyncChanceToJam())
-				m_isJammed = true;
+				return true;
 		}
+		return false;
 	}
 	
 	bool IsJammed () { return m_isJammed; }
@@ -221,6 +233,23 @@ class Weapon_Base extends Weapon
 	{
 		if ( !super.OnStoreLoad(ctx, version) )
 			return false;
+		
+		if (version >= 105)
+		{
+			int mode_count = 0;
+			if (!ctx.Read(mode_count))
+				Error("Weapon.OnStoreLoad " + this + " cannot read mode count!");
+
+			for (int m = 0; m < mode_count; ++m)
+			{
+				int mode = 0;
+				if (!ctx.Read(mode))
+					Error("Weapon.OnStoreLoad " + this + " cannot read mode[" + m + "]");
+				
+				wpnDebugPrint("[wpnfsm] OnStoreLoad - loaded muzzle[" + m + "].mode = " + mode);
+				SetCurrentMode(m, mode);
+			}
+		}
 
 		if (m_fsm)
 		{
@@ -296,6 +325,13 @@ class Weapon_Base extends Weapon
 	override void OnStoreSave (ParamsWriteContext ctx)
 	{
 		super.OnStoreSave(ctx);
+		
+		// fire mode added in version 105
+		int mode_count = GetMuzzleCount();
+		ctx.Write(mode_count);
+		for (int m = 0; m < mode_count; ++m)
+			ctx.Write(GetCurrentMode(m));
+
 		if (m_fsm)
 			m_fsm.OnStoreSave(ctx);
 		else
@@ -378,7 +414,7 @@ class Weapon_Base extends Weapon
 	{
 		if (m_PropertyModifierObject)
 		{
-			delete m_PropertyModifierObject;
+			m_PropertyModifierObject = null;
 			return true;
 		}
 		return false;
@@ -402,16 +438,16 @@ class Weapon_Base extends Weapon
 	{
 		super.EEItemAttached(item, slot_name);
 
-		if ( GetPropertyModifierObject() ) 	GetPropertyModifierObject().UpdateModifiers();
-		if ( ItemOptics.Cast(item) ) 		OpticsAllowsIronsightsCheck(ItemOptics.Cast(item));
+		if ( GetPropertyModifierObject() ) 	
+			GetPropertyModifierObject().UpdateModifiers();
 	}
 
 	override void EEItemDetached (EntityAI item, string slot_name)
 	{
 		super.EEItemDetached(item, slot_name);
 
-		if ( GetPropertyModifierObject() ) 	GetPropertyModifierObject().UpdateModifiers();
-		if ( ItemOptics.Cast(item) ) 		m_canEnterIronsights = true;
+		if ( GetPropertyModifierObject() ) 	
+			GetPropertyModifierObject().UpdateModifiers();
 	}
 	
 	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
@@ -424,6 +460,7 @@ class Weapon_Base extends Weapon
 		{ 
 			player.SetReturnToOptics(false);
 		}
+		HideWeaponBarrel(false);
 	}
 	
 	override bool CanReleaseAttachment(EntityAI attachment)
@@ -468,6 +505,7 @@ class Weapon_Base extends Weapon
 		}
 	}
 
+	
 	RecoilBase SpawnRecoilObject ()
 	{
 		return new DefaultRecoil(this);
@@ -496,41 +534,14 @@ class Weapon_Base extends Weapon
 		
 		return Math.Round((item_wetness + 1) * (ConfWeight + AttachmentWeight));
 	}
-	
-	//! Initializes list of optics, that do not allow ironsights camera for the weapon
-	bool InitExcludedScopesArray (out array<string> temp_array)
-	{
-		if (GetGame().ConfigIsExisting("cfgWeapons " + GetType() + " ironsightsExcludingOptics"))
-		{
-			GetGame().ConfigGetTextArray("cfgWeapons " + GetType() + " ironsightsExcludingOptics",temp_array);
-			return true;
-		}
-		return false;
-	}
-	
-	//! Checks if attached optic allows ironsights, sets m_canEnterIronsights accordingly
-	void OpticsAllowsIronsightsCheck (ItemOptics optic)
-	{
-		if (!optic)
-		{
-			m_canEnterIronsights = true;
-			return;
-		}
-		string type = optic.GetType();
-		int can;
-		can = m_ironsightsExcludingOptics.Find(type);
-		if (can > -1)
-		{
-			m_canEnterIronsights = false;
-			return;
-		}
-		
-		m_canEnterIronsights = true;
-	}
-	
+			
 	bool CanEnterIronsights ()
 	{
-		return m_canEnterIronsights;
+		ItemOptics optic = GetAttachedOptics();
+		if( !optic )
+			return true;
+		
+		return optic.HasWeaponIronsightsOverride();
 	}
 	
 	//! Initializes DOF properties for weapon's ironsight/optics cameras
@@ -554,6 +565,18 @@ class Weapon_Base extends Weapon
 		return false;
 	}
 	
+	//!gets weapon length from config for weaponlift raycast
+	bool InitWeaponLength()
+	{
+		if (ConfigIsExisting("WeaponLength"))
+		{
+			m_WeaponLength = ConfigGetFloat("WeaponLength");
+			return true;
+		}
+		m_WeaponLength = 0;
+		return false;
+	}
+	
 	ref array<float> GetWeaponDOF ()
 	{
 		return m_DOFProperties;
@@ -562,6 +585,17 @@ class Weapon_Base extends Weapon
 	// lifting weapon on obstcles
 	bool LiftWeaponCheck (PlayerBase player)
 	{
+		int idx;
+		float distance;
+		float hit_fraction; //junk
+		vector start, end;
+		vector direction;
+		vector usti_hlavne_position;
+		vector trigger_axis_position;
+		vector hit_pos, hit_normal; //junk
+		Object obj;
+		ItemBase attachment;
+		
 		m_LiftWeapon = false;
 		// not a gun, no weap.raise for now
 		if ( HasSelection("Usti hlavne") )
@@ -577,16 +611,10 @@ class Weapon_Base extends Weapon
 		if ( player.GetInputController() && !player.GetInputController().IsWeaponRaised() )
 			return false;
 		
-		vector usti_hlavne_position = GetSelectionPositionLS( "Usti hlavne" ); 	// Usti hlavne
+		usti_hlavne_position = GetSelectionPositionLS( "Usti hlavne" ); 	// Usti hlavne
 		//vector weapon_back_position = GetSelectionPosition( "Weapon back" ); 	// back of weapon; barrel length
-		vector trigger_axis_position = GetSelectionPositionLS("trigger_axis");
+		trigger_axis_position = GetSelectionPositionLS("trigger_axis");
 		//usti_hlavne_position = ModelToWorld(usti_hlavne_position);
-		
-		vector hit_pos, hit_normal; //junk
-		float hit_fraction; //junk
-		Object obj;
-		vector start, end;
-		vector direction;
 		
 		// freelook raycast
 		if (player.GetInputController().CameraIsFreeLook())
@@ -606,24 +634,18 @@ class Weapon_Base extends Weapon
 			direction = GetGame().GetCurrentCameraDirection(); // exception for freelook. Much better this way!
 		}
 		
-		// TODO cast from "Head" in prone?
-		int idx = player.GetBoneIndexByName("Neck");
+		idx = player.GetBoneIndexByName("Neck"); //RightHandIndex1
 		if ( idx == -1 )
 			{ start = player.GetPosition()[1] + 1.5; }
 		else
 			{ start = player.GetBonePositionWS(idx); }
 		
-		float distance;
-		// used to get razcast distance from weapon config; may be needed, if universal calculation fails?
-		/*if (m_ItemModelLength != 0)
-			distance = m_ItemModelLength; //TODO
-		else
-			distance = 1;
-		*/
-		distance = vector.Distance(usti_hlavne_position,trigger_axis_position) + 0.1;
-		if (distance < 0.65) // approximate minimal cast distance for short pistols
-			distance = 0.65;
-		ItemBase attachment;
+		//distance = vector.Distance(usti_hlavne_position,trigger_axis_position) + 0.1;
+		//! snippet below measures distance from "RightHandIndex1" bone for lifting calibration
+		/*usti_hlavne_position = ModelToWorld(usti_hlavne_position);
+		distance = vector.Distance(start,usti_hlavne_position);*/
+		distance = m_WeaponLength;// - 0.05; //adjusted raycast length
+
 		// if weapon has battel attachment, does longer cast
 		if (ItemBase.CastTo(attachment,FindAttachmentBySlotName("weaponBayonet")) || ItemBase.CastTo(attachment,FindAttachmentBySlotName("weaponBayonetAK")) || ItemBase.CastTo(attachment,FindAttachmentBySlotName("weaponBayonetMosin")) || ItemBase.CastTo(attachment,FindAttachmentBySlotName("weaponBayonetSKS")) || ItemBase.CastTo(attachment,GetAttachedSuppressor()))
 		{
@@ -654,6 +676,104 @@ class Weapon_Base extends Weapon
 	void SetSyncJammingChance( float jamming_chance )
 	{
 		m_ChanceToJamSync = jamming_chance;
+	}
+	
+	/**@fn		EjectCartridge
+	 * @brief	unload bullet from chamber or internal magazine
+	 *
+	 * @NOTE: 	EjectCartridge = GetCartridgeInfo + PopCartridge
+	 *
+	 * @param[in] muzzleIndex
+	 * @param[out] ammoDamage \p  damage of the ammo
+	 * @param[out] ammoTypeName \p	 type name of the ejected ammo
+	 * @return	true if bullet removed from chamber
+	 **/
+	bool EjectCartridge (int muzzleIndex, out float ammoDamage, out string ammoTypeName)
+	{
+		if (IsChamberEjectable(muzzleIndex))
+		{
+			if (PopCartridgeFromChamber(muzzleIndex, ammoDamage, ammoTypeName))
+				return true;
+		}
+		else if (GetInternalMagazineCartridgeCount(muzzleIndex) > 0)
+		{
+			if (PopCartridgeFromInternalMagazine(muzzleIndex, ammoDamage, ammoTypeName))
+				return true;
+		}
+		return false;
+	}
+	
+	bool CopyWeaponStateFrom (notnull Weapon_Base src)
+	{
+		float damage = 0.0;
+		string type;
+
+		for (int mi = 0; mi < src.GetMuzzleCount(); ++mi)
+		{
+			if (!src.IsChamberEmpty(mi))
+			{
+				if (src.GetCartridgeInfo(mi, damage, type))
+				{
+					PushCartridgeToChamber(mi, damage, type);
+				}
+			}
+			
+			for (int ci = 0; ci < src.GetInternalMagazineCartridgeCount(mi); ++ci)
+			{
+				if (src.GetInternalMagazineCartridgeInfo(mi, ci, damage, type))
+				{
+					PushCartridgeToInternalMagazine(mi, damage, type);
+				}
+			}
+		}
+		
+		int dummy_version = int.MAX;
+		ScriptReadWriteContext ctx = new ScriptReadWriteContext;
+		src.OnStoreSave(ctx.GetWriteContext());
+		OnStoreLoad(ctx.GetReadContext(), dummy_version);
+		return true;
+	}
+	
+	//! attachment helpers (firearm melee)
+	override void SetBayonetAttached(bool pState)
+	{
+		m_BayonetAttached = pState;
+	}
+	
+	override bool HasBayonetAttached()
+	{
+		return m_BayonetAttached;
+	}
+	
+	override void SetButtstockAttached(bool pState)
+	{
+		m_ButtstockAttached = pState;
+	}
+
+	override bool HasButtstockAttached()
+	{
+		return m_ButtstockAttached;
+	}
+	
+	void HideWeaponBarrel(bool state)
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )//hidden for client only
+		{
+			ItemOptics optics = GetAttachedOptics();
+			if ( optics && !optics.AllowsDOF() && m_weaponHideBarrelIdx != -1 )
+			{
+				SetSimpleHiddenSelectionState(m_weaponHideBarrelIdx,!state);
+			}
+		}
+	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(FirearmActionAttachMagazine);
+		AddAction(FirearmActionLoadBullet);
+		AddAction(ActionTurnOnWeaponFlashlight);
+		AddAction(ActionTurnOffWeaponFlashlight);
 	}
 };
 

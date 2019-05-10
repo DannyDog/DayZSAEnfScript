@@ -21,5 +21,8 @@ class SvdRecoil: RecoilBase
 		m_MouseOffsetRangeMax = 110;//in degrees max
 		m_MouseOffsetDistance = 1.8;//how far should the mouse travel
 		m_MouseOffsetRelativeTime = 0.5;//[0..1] a time it takes to move the mouse the required distance relative to the reload time of the weapon(firing mode)
+	
+		m_CamOffsetDistance = 0.015;
+		m_CamOffsetRelativeTime = 1;
 	}
 }

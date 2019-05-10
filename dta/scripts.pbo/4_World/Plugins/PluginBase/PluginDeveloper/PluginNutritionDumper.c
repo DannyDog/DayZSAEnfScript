@@ -7,7 +7,6 @@ class PluginNutritionDumper extends PluginBase
 	string config_path;
 	string child_name;
 	int scope;
-	bool isInRecipe;
 	string path;
 	PlayerBase m_Player;
 	override void OnInit()

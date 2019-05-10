@@ -54,14 +54,14 @@ FrameWidgetClass sound_tab_root {
         PanelWidgetClass volume_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
-         size 1 36
+         size 1 40
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass volume_text {
            visible 1
@@ -84,22 +84,31 @@ FrameWidgetClass sound_tab_root {
         }
         GridSpacerWidgetClass volume_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          Rows 1
          {
+          FrameWidgetClass FrameWidget0 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
           ButtonWidgetClass master_button {
            position 0 0
            size 1 30
@@ -109,10 +118,12 @@ FrameWidgetClass sound_tab_root {
            vexactsize 1
            style Colorable
            "no focus" 0
+           "next left" "master_button"
+           "next right" "master_button"
            "next up" "music_button"
            "next down" "effects_button"
            {
-            GridSpacerWidgetClass master_setting {
+            GridSpacerWidgetClass master_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -146,7 +157,7 @@ FrameWidgetClass sound_tab_root {
                  vexactsize 0
                  text "#STR_sound_tab_root_sound_settings_scroll_sound_settings_root_volume_settings_root_volume_settings_content_master_button_master_setting_master_setting_panel_master_button_label0"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -187,10 +198,12 @@ FrameWidgetClass sound_tab_root {
            vexactsize 1
            style Colorable
            "no focus" 0
+           "next left" "effects_button"
+           "next right" "effects_button"
            "next up" "master_button"
            "next down" "voip_button"
            {
-            GridSpacerWidgetClass effects_setting {
+            GridSpacerWidgetClass effects_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -224,7 +237,7 @@ FrameWidgetClass sound_tab_root {
                  vexactsize 0
                  text "#STR_sound_tab_root_sound_settings_scroll_sound_settings_root_volume_settings_root_volume_settings_content_effects_button_effects_setting_effects_setting_panel_effects_button_label0"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -265,10 +278,12 @@ FrameWidgetClass sound_tab_root {
            vexactsize 1
            style Colorable
            "no focus" 0
+           "next left" "voip_button"
+           "next right" "voip_button"
            "next up" "effects_button"
            "next down" "music_button"
            {
-            GridSpacerWidgetClass voip_setting {
+            GridSpacerWidgetClass voip_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -302,7 +317,7 @@ FrameWidgetClass sound_tab_root {
                  vexactsize 0
                  text "#STR_sound_tab_root_sound_settings_scroll_sound_settings_root_volume_settings_root_volume_settings_content_voip_button_voip_setting_voip_setting_panel_voip_button_label0"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -347,7 +362,7 @@ FrameWidgetClass sound_tab_root {
            "next up" "voip_button"
            "next down" "master_button"
            {
-            GridSpacerWidgetClass music_setting {
+            GridSpacerWidgetClass music_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -381,7 +396,7 @@ FrameWidgetClass sound_tab_root {
                  vexactsize 0
                  text "#STR_sound_tab_root_sound_settings_scroll_sound_settings_root_volume_settings_root_volume_settings_content_music_button_music_setting_music_setting_panel_music_button_label0"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -412,6 +427,15 @@ FrameWidgetClass sound_tab_root {
              style rover_sim_colorable
             }
            }
+          }
+          FrameWidgetClass FrameWidget1 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
           }
          }
         }

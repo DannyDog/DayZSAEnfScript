@@ -18,6 +18,7 @@ class DayZPlayerSyncJunctures
 	static const int SJ_DEATH					     	= 12;
 	static const int SJ_PLAYER_FB_MODIFIER				= 13;
 	static const int SJ_PLAYER_ADD_MODIFIER				= 14;
+	static const int SJ_KURU_REQUEST					= 15;
 	
 	//-------------------------------------------------------------
 	//!
@@ -231,6 +232,24 @@ class DayZPlayerSyncJunctures
 			pPlayer.SendSyncJuncture(SJ_WEAPON_ACTION_ACK_REJECT, ctx);
 	}
 		
+	//-------------------------------------------------------------
+	//!
+	//! Kuru Disease Shake
+	//! 
+	
+	static bool ReadKuruRequest(ParamsReadContext pCtx, out float amount)
+	{
+		if ( !pCtx.Read(amount) )
+			return false; // error		
+		return true;
+	}
+	
+	static void SendKuruRequest(DayZPlayer pPlayer, float amount)
+	{
+		ScriptJunctureData ctx = new ScriptJunctureData;
+		ctx.Write(amount);
+		pPlayer.SendSyncJuncture(SJ_KURU_REQUEST, ctx);
+	}
 	
 	//-------------------------------------------------------------
 	//!

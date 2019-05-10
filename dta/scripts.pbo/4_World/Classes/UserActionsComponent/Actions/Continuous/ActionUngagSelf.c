@@ -33,7 +33,7 @@ class ActionUngagSelf: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if ( IsWearingGag(player) ) 
+		if ( IsWearingGag(player) && null == player.GetHumanInventory().GetEntityInHands()) 
 			return true;
 
 		return false;
@@ -45,10 +45,9 @@ class ActionUngagSelf: ActionContinuousBase
 		Class.CastTo(attachment, action_data.m_Player.GetInventory().FindAttachment(InventorySlots.MASK));
 		if ( attachment && attachment.GetType() == "MouthRag" )
 		{
-			/*TurnItemIntoItemLambda lamb = new TurnItemIntoItemLambda(attachment, "Rag", action_data.m_Player);
-			lamb.SetTransferParams(true, true, true, false,1);
-			MiscGameplayFunctions.TurnItemIntoItemEx(action_data.m_Player, lamb);*/
-			action_data.m_Player.DropItem(ItemBase.Cast(attachment));
+			UngagSelfLambda lamb = new UngagSelfLambda(attachment, "Rag", action_data.m_Player);
+			lamb.SetTransferParams(true, true, true, false, 1);
+			action_data.m_Player.ServerReplaceItemElsewhereWithNewInHands(lamb);
 		}
 		//action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
@@ -62,5 +61,31 @@ class ActionUngagSelf: ActionContinuousBase
 			return true;
 		}
 		return false;
+	}
+};
+
+class UngagSelfLambda : TurnItemIntoItemLambda
+{
+	MouthRag gag;
+	
+	void UngagSelfLambda (EntityAI old_item, string new_item_type, PlayerBase player)
+	{
+		gag = MouthRag.Cast(m_OldItem);
+		if (gag)
+			gag.SetIncomingLambaBool(true);
+		InventoryLocation targetHnd = new InventoryLocation;
+		targetHnd.SetHands(player, null);
+		OverrideNewLocation(targetHnd);
+	}
+	
+	/*override void OnSuccess (EntityAI new_item)
+	{
+		
+	}
+	*/
+	override void OnAbort ()
+	{
+		if (gag)
+			gag.SetIncomingLambaBool(false);
 	}
 };

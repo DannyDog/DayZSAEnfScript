@@ -1,6 +1,10 @@
 class BloodBagEmpty extends BloodContainerBase
 {
-	void BloodBagEmpty()
+	override void SetActions()
 	{
+		super.SetActions();
+		
+		AddAction(ActionCollectBloodTarget);
+		AddAction(ActionCollectBloodSelf);
 	}
 }

@@ -5,4 +5,11 @@ class PartyTent extends TentBase
 		SetObjectTexture( 0, "dz\gear\camping\data\party_tent_cloth_co.tga" );
 		SetObjectMaterial( 0, "dz\gear\camping\data\party_tent_cloth.rvmat" );
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		RemoveAction(ActionToggleTentOpen);
+	}
 };

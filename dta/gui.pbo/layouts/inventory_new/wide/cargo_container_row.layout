@@ -14,7 +14,7 @@ PanelWidgetClass widget {
  {
   ImageWidgetClass SpacerTop {
    ignorepointer 1
-   color 1 1 1 0.098
+   color 1 1 1 0.0314
    position 0 0
    size 1 1
    hexactpos 1
@@ -42,6 +42,7 @@ PanelWidgetClass widget {
    vexactpos 1
    hexactsize 0
    vexactsize 1
+   style Colorable
    Padding 0
    Margin 0
    "Size To Content H" 1
@@ -52,7 +53,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer0 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -82,7 +83,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer1 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -110,7 +111,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer2 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -138,7 +139,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer3 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -166,7 +167,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer4 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -194,7 +195,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer5 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -222,7 +223,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer6 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -250,7 +251,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer7 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -278,7 +279,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer8 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -306,7 +307,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer9 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1
@@ -334,7 +335,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer10 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
+     color 1 1 1 0.0314
      position 0 0
      size 1 1
      hexactpos 1

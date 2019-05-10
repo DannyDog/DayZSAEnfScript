@@ -12,6 +12,11 @@ class AttachmentsWrapper: Container
 		m_LayoutName = WidgetLayoutName.AttachmentsWrapper;
 	}
 	
+	override void SetLastActive()
+	{
+		m_Attachments.SetLastActive();
+	}
+	
 	override bool Select()
 	{
 		return m_Attachments.Select();

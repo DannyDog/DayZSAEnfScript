@@ -57,6 +57,17 @@ class ModifierBase
 		m_LastTickedActive = 0;
 	}
 
+	string GetDebugText()
+	{
+		return "";
+	}
+	
+	string GetDebugTextSimple()
+	{
+		return "";
+	}
+	
+	
 
 	void Tick(float delta_time)
 	{
@@ -145,7 +156,11 @@ class ModifierBase
 	
 	string GetName()
 	{
-		return this.ClassName();
+		string name = ClassName();
+		int index_start = name.Length() - 4;
+		int index_end = name.Length(;
+		name = name.SubstringInverted(name, index_start, index_end);
+		return name;
 	}
 
 	bool ActivateCondition(PlayerBase player)

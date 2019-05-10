@@ -16,7 +16,8 @@ class Hologram
 
 	protected vector 			m_DefaultOrientation;
 	protected vector			m_Rotation;
-		
+	protected vector			m_y_p_r_previous;
+	protected vector 			m_ContactDir;
 	protected const string 		ANIMATION_PLACING 				= "Placing";
 	protected const string 		ANIMATION_INVENTORY 			= "Inventory";
 	protected const string 		SELECTION_PLACING 				= "placing";
@@ -28,6 +29,10 @@ class Hologram
 	protected const float		LARGE_PROJECTION_DISTANCE_LIMIT	= 6;
 	protected const float 		PROJECTION_TRANSITION			= 0.25;
 	protected const float 		LOOKING_TO_SKY					= 0.75;
+	
+	protected float 			m_SlopeTolerance;
+	protected bool				m_AlignToTerrain;
+	protected vector 			m_YawPitchRollLimit;
 	
 	protected ref set<string> 	m_SelectionsToRefresh 			= new set<string>;
 
@@ -69,6 +74,24 @@ class Hologram
 		if ( !projection_entity.IsInherited(GardenBase)) // Garden plot is a special case
 		{
 			GetProjectionIB().SetIsHologram( true );
+		}
+		
+		string config_path_slope = "CfgVehicles" + " " + GetProjectionEntity().GetType() + " " + "slopeTolerance";
+		if ( GetGame().ConfigIsExisting( config_path_slope ) )
+		{
+			m_SlopeTolerance = GetGame().ConfigGetFloat( config_path_slope );
+		}
+		
+		string config_path_align = "CfgVehicles" + " " + GetProjectionEntity().GetType() + " " + "alignHologramToTerain";
+		if ( GetGame().ConfigIsExisting( config_path_align ) )
+		{
+			m_AlignToTerrain = GetGame().ConfigGetInt( config_path_align );
+		}
+		
+		string config_path_w_p_r = "CfgVehicles" + " " + GetProjectionEntity().GetType() + " " + "yawPitchRollLimit";
+		if ( GetGame().ConfigIsExisting( config_path_w_p_r ) )
+		{
+			m_YawPitchRollLimit = GetGame().ConfigGetVector( config_path_w_p_r );
 		}
 	}
 	
@@ -146,7 +169,7 @@ class Hologram
 	}
 		
 	// update loop for visuals and collisions of the hologram
-	void UpdateHologram()
+	void UpdateHologram( float timeslice )
 	{		
 		if ( !m_Parent )
 		{
@@ -174,8 +197,90 @@ class Hologram
 
 		// update hologram position	
 		SetProjectionPosition( GetProjectionEntityPosition( m_Player ) );
-		SetProjectionOrientation( GetDefaultOrientation() + GetProjectionRotation() );		
+		SetProjectionOrientation( AlignProjectionOnTerrain( timeslice ) );		
 		m_Projection.OnHologramBeingPlaced( m_Player );
+	}
+	
+	vector AlignProjectionOnTerrain( float timeslice )
+	{
+		vector y_p_r;
+		
+		if ( m_AlignToTerrain )
+		{
+			vector projection_orientation_angles = GetDefaultOrientation() + GetProjectionRotation();	
+			vector mat0[3];
+			vector mat1[3];
+			vector mat2[3];
+			vector projection_position = m_Projection.GetPosition();
+			vector normal;
+			
+			if ( m_ContactDir.Length() > 0 )
+			{
+				normal = m_ContactDir;
+			} 
+			else
+			{
+				normal = GetGame().SurfaceGetNormal( projection_position[0], projection_position[2] );
+			}
+			
+			vector angles = normal.VectorToAngles();
+			angles[1] = angles[1] + 270;
+					
+			angles[0] = Math.Clamp( angles[0], 0, 360 ); 
+			angles[1] = Math.Clamp( angles[1], 0, 360 );
+			angles[2] = Math.Clamp( angles[2], 0, 360 );
+				
+			projection_orientation_angles[0] = projection_orientation_angles[0] + ( 360 - angles[0] );
+			
+			Math3D.YawPitchRollMatrix( projection_orientation_angles, mat0 );
+			Math3D.YawPitchRollMatrix( angles, mat1 );
+			Math3D.MatrixMultiply3( mat1, mat0, mat2 );	
+			
+			y_p_r = Math3D.MatrixToAngles( mat2 );
+		}
+		else
+		{
+			y_p_r = GetDefaultOrientation() + GetProjectionRotation();
+			
+			if ( y_p_r[0] > 180 )
+			{
+				y_p_r[0] = y_p_r[0] - 360;
+			}
+			
+			if ( y_p_r[0] < -180 )
+			{
+				y_p_r[0] = y_p_r[0] + 360;
+			}
+		}	
+		
+		return SmoothProjectionMovement( y_p_r, timeslice );
+	}
+	
+	vector SmoothProjectionMovement( vector y_p_r, float timeslice )
+	{	
+		if ( m_y_p_r_previous )
+		{					
+			if ( Math.AbsFloat( y_p_r[0] - m_y_p_r_previous[0] ) > 100 )
+			{												
+				if ( y_p_r[0] > 0 )
+				{		
+					m_y_p_r_previous[0] = m_y_p_r_previous[0] + 360; 
+				}
+				
+				if ( y_p_r[0] < 0 )
+				{		
+					m_y_p_r_previous[0] = m_y_p_r_previous[0] - 360;
+				}
+			}
+			
+			y_p_r[0] = Math.Lerp( m_y_p_r_previous[0], y_p_r[0], 15 * timeslice );
+			y_p_r[1] = Math.Lerp( m_y_p_r_previous[1], y_p_r[1], 15 * timeslice );
+			y_p_r[2] = Math.Lerp( m_y_p_r_previous[2], y_p_r[2], 15 * timeslice );
+		}
+		
+		m_y_p_r_previous = y_p_r;
+		
+		return y_p_r;
 	}
 	
 	void CreateTrigger()
@@ -201,7 +306,7 @@ class Hologram
 	{	
 		bool is_surface_water = IsSurfaceWater( m_Projection.GetPosition() );		
 		
-		if ( IsHidden() || IsCollidingBBox() || IsCollidingPlayer() || IsCollidingBase() || IsCollidingGPlot() || IsCollidingZeroPos() || IsBehindObstacle() )
+		if ( IsHidden() || IsCollidingBBox() || IsCollidingPlayer() || IsCollidingBase() || IsCollidingGPlot() || IsCollidingZeroPos() || IsBehindObstacle() || IsCollidingAngle() )
 		{
 			SetIsColliding( true );							
 		}	
@@ -233,6 +338,20 @@ class Hologram
 					SetIsColliding( false );
 				}				
 			}
+		}
+	}
+	
+	bool IsCollidingAngle()
+	{
+		vector projection_orientation = m_Projection.GetOrientation();
+		
+		if ( Math.AbsFloat( projection_orientation[1] ) > m_YawPitchRollLimit[1] || Math.AbsFloat(  projection_orientation[2] ) > m_YawPitchRollLimit[2] )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	
@@ -416,7 +535,7 @@ class Hologram
 		array<Object> coneObjects = new array<Object>;
 		vector c_MaxTargetDistance = GetProjectionPosition() - m_Player.GetPosition();
 		float c_ConeAngle = c_MaxTargetDistance.Length() * 5;
-	 	float c_ConeHeightMin = 0;
+	 	float c_ConeHeightMin = 0.25;
 	 	float c_ConeHeightMax = 1;
 		Building building;
 		
@@ -469,7 +588,6 @@ class Hologram
 					//Print( "Mame Cartent" );
 					continue;
 				}
-				
 				
 				//Print( "Mame obstacle" );
 				return true;
@@ -590,12 +708,6 @@ class Hologram
 		float slope_pos_right_close = projection_pos[1] - contact_pos_right_close[1];
 		float slope_pos_left_far = projection_pos[1] - contact_pos_left_far[1];
 		float slope_pos_right_far = projection_pos[1] - contact_pos_right_far[1];
-		string config_path = "CfgVehicles" + " " + GetProjectionEntity().GetType() + " " + "slopeLimit";
-		
-		if ( GetGame().ConfigIsExisting( config_path ) )
-		{
-			float slope_limit = GetGame().ConfigGetFloat( config_path );
-		}
 		
 		/*
 		Print(slope_pos_left_close);
@@ -604,13 +716,13 @@ class Hologram
 		Print(slope_pos_right_far);
 		*/
 		
-		if( slope_pos_left_close < slope_limit )
+		if( slope_pos_left_close < m_SlopeTolerance )
 		{
-			if( slope_pos_right_close < slope_limit )
+			if( slope_pos_right_close < m_SlopeTolerance )
 			{
-				if( slope_pos_left_far < slope_limit )
+				if( slope_pos_left_far < m_SlopeTolerance )
 				{
-					if(  slope_pos_right_far < slope_limit )
+					if(  slope_pos_right_far < m_SlopeTolerance )
 					{
 						//Print("base is flat");
 						return true;	
@@ -675,14 +787,7 @@ class Hologram
 		{
 			Class.CastTo(entity_for_placing, GetGame().CreateObject( m_Projection.GetType(), m_Projection.GetPosition() ));
 		}
-			
-		if( entity_for_placing.CanAffectPathgraph() )
-		{		
-			entity_for_placing.SetAffectPathgraph( true, false );
-			
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().UpdatePathgraphRegionByObject, 100, false, entity_for_placing);
-		}
-		
+					
 		return entity_for_placing;
 	}		
 		
@@ -751,7 +856,7 @@ class Hologram
 	{
 		float min_projection_dist;
 		float max_projection_dist; 
-		
+		m_ContactDir = vector.Zero;
 		vector min_max[2];
 		float projection_radius = GetProjectionRadius();
 		float camera_to_player_distance = vector.Distance( GetGame().GetCurrentCameraPosition(), player.GetPosition() );
@@ -771,11 +876,10 @@ class Hologram
 		vector from = GetGame().GetCurrentCameraPosition();
 		vector to = from + ( GetGame().GetCurrentCameraDirection() * ( max_projection_dist + camera_to_player_distance ) );
 		vector contact_pos;
-		vector contact_dir;
 		int contact_component;
 		set<Object> hit_object = new set<Object>;
 
-		DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, hit_object, player, m_Projection, false, false );
+		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, hit_object, player, m_Projection, false, false );
 
 		float player_to_projection_distance = vector.Distance( player.GetPosition(), contact_pos );
 		vector player_to_projection_vector;
@@ -931,7 +1035,8 @@ class Hologram
 	void SetProjectionPosition( vector position )
 	{	
 		m_Projection.SetPosition( position );			
-		if( IsFloating() )
+		
+		if ( IsFloating() )
 		{
 			m_Projection.SetPosition( SetOnGround( position ) );
 		}
@@ -975,10 +1080,10 @@ class Hologram
 
 		vector to = from + ground;
 		vector contact_pos;
-		vector contact_dir;
+		//vector contact_dir;
 		int contact_component;
 		
-		DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, NULL, NULL, m_Projection, false, false );
+		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, NULL, NULL, m_Projection, false, false );
 
 		HideWhenClose( contact_pos );
 

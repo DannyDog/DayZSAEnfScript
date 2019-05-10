@@ -26,6 +26,11 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	protected ref array<ref Widget>							m_ModifierWidgets;
 	protected ref map<Widget, ref DebugModifierData>		m_ModifierWidgetData;
 	protected PluginDeveloperSync m_PluginDeveloperSync;
+	protected Widget 										m_WgtDetailedInfo;
+	protected TextWidget 									m_WgtDetailedInfoText;
+	protected int 											m_DetailedInfoIndex;
+
+//m_RPCSent
 	
 	//============================================
 	// HudDebugWinCharModifiers
@@ -55,7 +60,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	//============================================
 	// Update
 	//============================================
-	void SetUpdate( bool state )
+	override void SetUpdate( bool state )
 	{
 		//Disable update on server (PluginDeveloperSync)
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -67,6 +72,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 			if ( player )
 			{
 				player.RPCSingleParam( ERPCs.DEV_MODS_UPDATE, params, true );
+				SetRPCSent();
 			}
 		}
 		//else set directly
@@ -109,7 +115,13 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	
 	void Refresh()
 	{
-		SetModifiers();		
+		SetModifiers();
+		if(m_WgtDetailedInfo && m_WgtDetailedInfo.IsVisible())
+		{
+			if(!m_WgtDetailedInfoText)
+				m_WgtDetailedInfoText = TextWidget.Cast(m_WgtDetailedInfo.FindAnyWidget( "TextWidget" ));
+			m_WgtDetailedInfoText.SetText(m_PluginDeveloperSync.m_PlayerModsDetailedSynced);
+		}
 	}
 	
 	//============================================
@@ -150,15 +162,15 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 			//set active mods
 			for ( int i = 0; i < m_PluginDeveloperSync.m_PlayerModsSynced.Count(); ++i )
 			{
-				SyncedValue synced_value = m_PluginDeveloperSync.m_PlayerModsSynced.Get( i );
-				AddModifier( synced_value.GetName(), synced_value.GetValue(), synced_value.GetState() );
+				SyncedValueModifier synced_value = m_PluginDeveloperSync.m_PlayerModsSynced.Get( i );
+				AddModifier( synced_value.GetName(), synced_value.GetID(), synced_value.GetActive(),synced_value.GetLocked() );
 			}
 		}
 		
 		FitWindow();
 	}
 	
-	void AddModifier( string name, int id, bool state )
+	void AddModifier( string name, int id, bool active, bool locked )
 	{
 		//create widget
 		Widget widget = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/debug/day_z_hud_debug_modifier.layout", m_WgtModifiersContent );
@@ -167,25 +179,28 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 		m_ModifierWidgets.Insert( widget );
 		
 		//set widget name
-		TextWidget mod_name_text = TextWidget.Cast( widget.FindAnyWidget( "TextModifierName" ) );
+		ButtonWidget mod_name_text = ButtonWidget.Cast( widget.FindAnyWidget( "TextModifierName" ) );
 		mod_name_text.SetText( name );
-		if ( id > 0 )
+		if ( active )
 		{
-			mod_name_text.SetColor( ARGB( 255, 0, 255, 0 ) );
+			mod_name_text.SetTextColor( ARGB( 255, 0, 255, 0 ) );
 		}
 		else
 		{
-			mod_name_text.SetColor( ARGB( 255, 255, 0, 0 ) );
+			mod_name_text.SetTextColor( ARGB( 255, 255, 0, 0 ) );
 		}
 		
 		//set set data for interactive parts (modifier ID should be enough)
 		DebugModifierData data = new DebugModifierData( name, id );
+		
+		Widget modifier_button = widget.FindAnyWidget( "TextModifierName" );
+		m_ModifierWidgetData.Insert( modifier_button, data );
 		//Activate button
-		Widget activate_button = widget.FindAnyWidget( "ButtonActivate" );
+		Widget activate_button = widget.FindAnyWidget( "ButtonModifierActivate" );
 		m_ModifierWidgetData.Insert( activate_button, data );
 		
 		//Deactivate button
-		Widget deactivate_button = widget.FindAnyWidget( "ButtonDeactivate" );
+		Widget deactivate_button = widget.FindAnyWidget( "ButtonModifierDeactivate" );
 		m_ModifierWidgetData.Insert( deactivate_button, data );
 
 		//Lock checkbox
@@ -193,7 +208,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 		m_ModifierWidgetData.Insert( checkbox_widget, data );
 		//set lock based on checkbox value
 		CheckBoxWidget checkbox = CheckBoxWidget.Cast( checkbox_widget );
-		checkbox.SetChecked( state );
+		checkbox.SetChecked( locked );
 		
 		AutoHeightSpacer WgtModifiersContent_panel_script;
 		m_WgtModifiersContent.GetScript( WgtModifiersContent_panel_script );
@@ -220,8 +235,39 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	{	
 		if ( w )
 		{
+			if ( w.GetName() == "TextModifierName" )
+			{
+				//Print("clicked");
+				DebugModifierData bc_data = m_ModifierWidgetData.Get( w );
+				
+				Print( bc_data.GetID() );
+				
+				if(bc_data.GetID() == m_DetailedInfoIndex)//repeated request --> hide
+				{
+					if(m_WgtDetailedInfo && m_WgtDetailedInfo.IsVisible())
+					{
+						m_WgtDetailedInfo.Show(false);
+					}
+					m_DetailedInfoIndex = 0;
+				}
+				else
+				{
+					if(!m_WgtDetailedInfo)
+						m_WgtDetailedInfo = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/debug/day_z_hud_debug_modifier_detailed.layout");
+					if(!m_WgtDetailedInfo.IsVisible())
+					{
+						m_WgtDetailedInfo.Show(true);
+					}
+					m_DetailedInfoIndex = bc_data.GetID();
+				}
+				if( m_WgtDetailedInfoText )
+					m_WgtDetailedInfoText.SetText("");
+				m_PluginDeveloperSync.m_PlayerModsDetailedSynced = "";
+				RequestDetailedInfo(bc_data.GetID());
+				return true;
+			}
 			//Button activate
-			if ( w.GetName() == "ButtonActivate" )
+			if ( w.GetName() == "ButtonModifierActivate" )
 			{
 				DebugModifierData ba_data = m_ModifierWidgetData.Get( w );
 				
@@ -234,7 +280,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 				return true;
 			}
 			//Button deactivate
-			else if ( w.GetName() == "ButtonDeactivate" )
+			else if ( w.GetName() == "ButtonModifierDeactivate" )
 			{
 				DebugModifierData bd_data = m_ModifierWidgetData.Get( w );
 				
@@ -268,6 +314,27 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	//============================================
 	// Actions
 	//============================================
+	void RequestDetailedInfo( int id )
+	{
+		//Disable update on server (PluginDeveloperSync)
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		
+		//if client, send RPC
+		if ( GetGame().IsClient() )
+		{
+			ref Param1<int> params = new Param1<int>( id );
+			if ( player )
+			{
+				player.RPCSingleParam( ERPCs.DEV_RPC_MODS_DETAILED, params, true );
+			}
+		}
+		//else set directly
+		else
+		{
+			m_PluginDeveloperSync.RequestDetailedInfo( id );
+		}
+	}
+	
 	void ActivateModifier( int id )
 	{
 		//Disable update on server (PluginDeveloperSync)

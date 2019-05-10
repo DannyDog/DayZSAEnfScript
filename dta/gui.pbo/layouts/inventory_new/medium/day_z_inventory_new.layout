@@ -191,6 +191,44 @@ FrameWidgetClass inventory_root {
           }
          }
         }
+        PanelWidgetClass CenterBackground {
+         visible 1
+         clipchildren 0
+         ignorepointer 0
+         color 0.1961 0 0 0
+         size 520 1.2
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 1
+         vexactsize 0
+         draggable 0
+         style rover_sim_colorable
+         "no focus" 0
+        }
+       }
+      }
+      WrapSpacerWidgetClass QuickbarGrid {
+       visible 1
+       disabled 0
+       position 0 0
+       size 1 66
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       priority 100
+       scriptclass "InventoryGrid"
+       Margin 0
+       "Size To Content H" 1
+       content_halign center
+       content_valign bottom
+       {
+        ScriptParamsClass {
+        }
        }
       }
      }
@@ -207,29 +245,7 @@ FrameWidgetClass inventory_root {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-    }
-    FrameWidgetClass QuickbarGrid {
-     inheritalpha 0
-     ignorepointer 1
-     color 1 1 1 0.502
-     position 0.3355 0
-     size 0.329 48
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 1
-     hexactsize 0
-     vexactsize 1
-     priority 100
-     scriptclass "InventoryGrid"
-     {
-      ScriptParamsClass {
-       Gap 2
-       ItemSizeHeight 40
-       ItemsHorizontal 10
-       ItemsVertical 1
-       DebugOutput 0
-      }
-     }
+     priority 1
     }
    }
   }

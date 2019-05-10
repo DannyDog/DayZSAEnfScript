@@ -150,31 +150,6 @@ class NotifierBase
 		
 	}
 	
-	/*
-	float GetDeltaAvaraged()//for tendency
-	{
-		array<float> values = new array<float>;
-		for(int i = 0; i < m_TendencyBuffer.Count(); i++)
-		{
-			values.Insert(ReadFromCyclicBuffer(i));
-		}
-		SmoothOutFloatValues(values);
-		//--------------------------------------------------------------------------
-		
-		float values_sum = 0;
-		for(int i = 0; i < m_TendencyBufferSize; i++)
-		{
-			float value = ReadFromCyclicBuffer(i);
-			values_sum += value;
-		}
-		float sma = values_sum / m_TendencyBufferSize;
-		float tnd = sma - m_LastMA;
-		m_LastMA = sma;
-		return tnd;
-		
-		//--------------------------------------------------------------------------
-	}
-	*/
 	void SmoothOutFloatValues(array<float> values)
 	{
 		float value1;
@@ -218,16 +193,14 @@ class NotifierBase
 		return tendency;
 	}
 	
-	protected DSLevels DetermineLevel(float value, float warning_treshold, float critical_treshold, float empty_treshold, float extra_treshold )
+	
+	protected eBadgeLevel DetermineBadgeLevel(float value, float lvl_1, float lvl_2, float lvl_3)
 	{
-		/*
-		DSLevels level;
-		if(value < warning_treshold) level = DSLevels.WARNING;
-		if(value < critical_treshold) level = DSLevels.CRITICAL;
-		if(value <= empty_treshold) level = DSLevels.BLINKING;
-		if(value <= extra_treshold) level = DSLevels.EXTRA;
-		return level;
-		*/
+		eBadgeLevel level = eBadgeLevel.NONE;
+		if ( value > lvl_1 ) 	level = eBadgeLevel.FIRST;
+		if ( value > lvl_2 )  	level = eBadgeLevel.SECOND;
+		if ( value > lvl_3 ) 	level = eBadgeLevel.THIRD;
+		return 	level;
 	}
 	
 

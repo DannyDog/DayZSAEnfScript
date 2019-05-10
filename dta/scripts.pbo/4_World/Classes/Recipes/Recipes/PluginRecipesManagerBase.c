@@ -1,17 +1,22 @@
-
+enum Ingredient
+{
+	FIRST = 1,
+	SECOND = 2,
+	BOTH = 3;
+}
 
 class PluginRecipesManagerBase extends PluginBase
 {	
-	protected void RegisterRecipe(RecipeBase recipe)
-	{
-	}
+	protected void RegisterRecipe(RecipeBase recipe);
+	protected void UnregisterRecipe(string clasname);
 	
 	//! Please do not delete commented recipes, they are usually commented out for a reason
 	void RegisterRecipies()
 	{
 		RegisterRecipe(new CraftTorch);
+		RegisterRecipe(new CraftFireplace);
 		RegisterRecipe(new CraftLongTorch);
-		RegisterRecipe(new SharpenStick);
+		//RegisterRecipe(new SharpenStick);
 		RegisterRecipe(new PokeHolesBarrel);
 		RegisterRecipe(new CraftBaseBallBatNailed);
 		RegisterRecipe(new CraftGhillieHood);
@@ -28,7 +33,6 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftBait);
 		RegisterRecipe(new CraftRagRope);
 		RegisterRecipe(new CraftSuppressor);
-		RegisterRecipe(new PaintFirefighterAxe);
 		RegisterRecipe(new CleanWeapon);
 		RegisterRecipe(new RepairWithTape);
 		//RegisterRecipe(new CraftArrow);
@@ -65,11 +69,41 @@ class PluginRecipesManagerBase extends PluginBase
 		//RegisterRecipe(new CraftCamoNetShelter);
 		RegisterRecipe(new DeCraftCamoNetShelter);
 		RegisterRecipe(new FuelChainsaw);
-		RegisterRecipe(new CraftFireplace);
 		//RegisterRecipe(new CraftTripWire);
 		//RegisterRecipe(new CraftRabbitSnare);
 		RegisterRecipe(new DeCraftSnareTrap);
 		RegisterRecipe(new DeCraftTripWire);
+		RegisterRecipe(new DisinfectItem);
+		RegisterRecipe(new FillSyringe);
+		RegisterRecipe(new BloodTest);
+		RegisterRecipe(new SharpenMelee);
+		RegisterRecipe(new RepairEpoxy);
+		RegisterRecipe(new CraftArmbandRaincoat);
+		RegisterRecipe(new RepairElectric);
+		RegisterRecipe(new RefuelTorch);
+		RegisterRecipe(new ExtinguishTorch);
+		RegisterRecipe(new AttachHolsterPouch);
+		RegisterRecipe(new AttachPouchesHolster);
+		//RegisterRecipe(new CraftGorkaHelmetComplete);
+		RegisterRecipe(new SawoffShotgunIzh43);
+		RegisterRecipe(new SawoffMosin);
+		//RegisterRecipe(new SawoffMosinPainted);
+		RegisterRecipe(new SawOffIzh18);
+		RegisterRecipe(new CleanRags);
+		RegisterRecipe(new CraftArmbandRag);
+		RegisterRecipe(new CraftRag);
+		RegisterRecipe(new CraftGutsRope);
+		RegisterRecipe(new CraftBoneBait);
+		RegisterRecipe(new SplitStones);
+		RegisterRecipe(new UpgradeTorchWithLard);
+		//RegisterRecipe(new LightItemOnFire);
+		RegisterRecipe(new CraftFenceKit);
+		RegisterRecipe(new CraftWatchtowerKit);
+		RegisterRecipe(new CraftWoodenPlank);
+		RegisterRecipe(new SawWoodenLog);
+		
+		//"paint" recipes
+		/*RegisterRecipe(new PaintFirefighterAxe);
 		RegisterRecipe(new PaintGhillieHoodGreen);
 		RegisterRecipe(new PaintGhillieHoodBlack);
 		RegisterRecipe(new PaintGhillieHoodGreenMossy);
@@ -85,12 +119,6 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new PaintGhillieSuitGreen);
 		RegisterRecipe(new PaintGhillieSuitBlack);
 		RegisterRecipe(new PaintGhillieSuitGreenMossy);
-		RegisterRecipe(new DisinfectItem);
-		RegisterRecipe(new FillSyringe);
-		RegisterRecipe(new BloodTest);
-		RegisterRecipe(new SharpenMelee);
-		RegisterRecipe(new RepairEpoxy);
-		RegisterRecipe(new CraftArmbandRaincoat);
 		RegisterRecipe(new PaintSKS);
 		RegisterRecipe(new PaintMosin);
 		RegisterRecipe(new PaintMosinCamoBlack);
@@ -110,16 +138,6 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new PaintZSh3PilotHelmet);
 		RegisterRecipe(new PaintGorkaHelmet);
 		RegisterRecipe(new PaintGorkaHelmetComplete);
-		RegisterRecipe(new RepairElectric);
-		RegisterRecipe(new RefuelTorch);
-		RegisterRecipe(new ExtinguishTorch);
-		RegisterRecipe(new AttachHolsterPouch);
-		RegisterRecipe(new AttachPouchesHolster);
-		//RegisterRecipe(new CraftGorkaHelmetComplete);
-		RegisterRecipe(new SawoffShotgunIzh43);
-		RegisterRecipe(new SawoffMosin);
-		RegisterRecipe(new SawoffMosinPainted);
-		RegisterRecipe(new SawOffIzh18);
 		RegisterRecipe(new PaintCMAG10);
 		RegisterRecipe(new PaintCMAG20);
 		RegisterRecipe(new PaintCMAG30);
@@ -144,20 +162,9 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new PaintAK74WoodBttstckCamo);
 		RegisterRecipe(new PaintAKS74UBttstck);
 		RegisterRecipe(new PaintAKPlasticBttstck);
-		RegisterRecipe(new CleanRags);
-		RegisterRecipe(new CraftArmbandRag);
-		RegisterRecipe(new CraftRag);
 		RegisterRecipe(new PaintMosinCamoGreen);
 		RegisterRecipe(new PaintSawedoffMosinCamoGreen);
-		RegisterRecipe(new PaintCz527CamoGreen);
-		RegisterRecipe(new CraftGutsRope);
-		RegisterRecipe(new CraftBoneBait);
-		RegisterRecipe(new SplitStones);
-		RegisterRecipe(new UpgradeTorchWithLard);
-		//RegisterRecipe(new LightItemOnFire);
-		RegisterRecipe(new CraftFenceKit);
-		RegisterRecipe(new CraftWatchtowerKit);
-		RegisterRecipe(new CraftWoodenPlank);
-		RegisterRecipe(new SawWoodenLog);
+		RegisterRecipe(new PaintCz527CamoGreen);*/
+		
 	}
 };

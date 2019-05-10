@@ -1,7 +1,7 @@
 class CollapsibleContainer: Container
 {
-	protected ref CollapsibleHeader	m_CollapsibleHeader;
-	protected bool					m_Hidden;
+	protected ref CollapsibleHeader		m_CollapsibleHeader;
+	protected bool						m_Hidden;
 	
 	void CollapsibleContainer( LayoutHolder parent, int sort = -1 )
 	{
@@ -64,6 +64,7 @@ class CollapsibleContainer: Container
 
 	void UpdateCollapseButtons()
 	{
+		#ifndef PLATFORM_CONSOLE
 		if( m_Body.Count() < 3 )
 		{
 			m_CollapsibleHeader.GetMainWidget().FindAnyWidget("collapse_button").Show(false);
@@ -72,6 +73,7 @@ class CollapsibleContainer: Container
 		{
 			m_CollapsibleHeader.GetMainWidget().FindAnyWidget("collapse_button").Show(true);
 		}
+		#endif
 	}
 	
 	void LoadDefaultState()
@@ -104,7 +106,7 @@ class CollapsibleContainer: Container
 	void SetFirstActive()
 	{
 		UnfocusAll();
-		Container cont = Container.Cast( m_Body[m_ActiveIndex] );
+		Container cont = Container.Cast( m_OpenedContainers[m_ActiveIndex] );
 		if( m_ActiveIndex != 1 && cont )
 			cont.SetActive( false );
 		if( m_FocusedContainer )
@@ -114,21 +116,27 @@ class CollapsibleContainer: Container
 		cont.SetActive( true );
 		SetFocusedContainer( cont );
 		m_ActiveIndex = 1;
+		m_CollapsibleHeader.SetActive( true );
 	}
 	
-	void SetLastActive()
+	override void SetLastActive()
 	{
 		UnfocusAll();
-		Container cont = Container.Cast( m_Body[m_ActiveIndex] );
+		Container cont = Container.Cast( m_OpenedContainers[m_ActiveIndex] );
 		if( cont )
 			cont.SetActive( false );
 		if( m_FocusedContainer )
 			m_FocusedContainer.SetActive( false );
 		
-		cont = Container.Cast( m_Body[Count() - 1] );
+		cont = Container.Cast( m_OpenedContainers[m_OpenedContainers.Count() - 1] );
 		cont.SetActive( true );
+		cont.SetLastActive();
 		SetFocusedContainer( cont );
-		m_ActiveIndex = Count() - 1;
+		m_ActiveIndex = m_OpenedContainers.Count() - 1;
+		if( m_ActiveIndex == 1 )
+			m_CollapsibleHeader.SetActive( true );
+		else
+			m_CollapsibleHeader.SetActive( false );
 	}
 	
 	override void SetActive( bool active )
@@ -137,7 +145,7 @@ class CollapsibleContainer: Container
 		m_IsActive = active;
 		if( active )
 		{
-			cont = Container.Cast( m_Body[1] );
+			cont = Container.Cast( m_OpenedContainers[1] );
 			cont.SetActive( true );
 			SetFocusedContainer( cont );
 			m_ActiveIndex = 1;
@@ -145,9 +153,9 @@ class CollapsibleContainer: Container
 		}
 		else
 		{
-			for ( int i = 1; i < m_Body.Count(); i++ )
+			for ( int i = 1; i < m_OpenedContainers.Count(); i++ )
 			{
-				cont = Container.Cast( m_Body[i] );
+				cont = Container.Cast( m_OpenedContainers[i] );
 				if( cont.IsActive() )
 				{
 					cont.SetActive( false );
@@ -158,11 +166,15 @@ class CollapsibleContainer: Container
 		m_CollapsibleHeader.SetActive( active );
 	}
 	
+	bool IsHidden()
+	{
+		return m_Hidden;
+	}
+	
 	void CollapseButtonOnMouseButtonDown( Widget w )
 	{
 		if( !m_Hidden )
 		{
-			//OnHide();
 			for (int i = 2; i < m_Body.Count(); i++)
 			{
 				m_Body.Get( i ).OnHide();
@@ -176,8 +188,8 @@ class CollapsibleContainer: Container
 			OnShow();
 		}
 		
-		w.FindAnyWidget("opened").Show(!m_Hidden);
-		w.FindAnyWidget("closed").Show(m_Hidden);
+		m_CollapsibleHeader.GetRootWidget().FindAnyWidget("opened").Show(!m_Hidden);
+		m_CollapsibleHeader.GetRootWidget().FindAnyWidget("closed").Show(m_Hidden);
 
 		UpdateCollapseButtons();
 	}

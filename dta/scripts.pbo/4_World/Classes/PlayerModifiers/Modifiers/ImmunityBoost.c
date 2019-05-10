@@ -24,6 +24,11 @@ class ImmunityBoost: ModifierBase
 		OnActivate(player);
 	}
 	
+	override string GetDebugText()
+	{
+		return (m_RegenTime - GetAttachedTime()).ToString();
+	}
+	
 	override void OnActivate(PlayerBase player)
 	{
 		player.SetImmunityBoosted(true);

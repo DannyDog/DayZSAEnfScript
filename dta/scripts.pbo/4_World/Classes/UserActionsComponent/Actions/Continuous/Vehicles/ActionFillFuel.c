@@ -10,6 +10,8 @@ class ActionFillFuelCB : ActionContinuousBaseCB
 
 class ActionFillFuel: ActionContinuousBase
 {
+	const string FUEL_SELECTION_NAME = "refill";
+	
 	void ActionFillFuel()
 	{
 		m_CallbackClass = ActionFillFuelCB;
@@ -44,47 +46,42 @@ class ActionFillFuel: ActionContinuousBase
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
-		if( !target ) return false;
-
-		if( !IsTransport(target) )
+	{
+		if( !target || !IsTransport(target) )
 			return false;
 
 		if( item.GetQuantity() <= 0 )
 			return false;
-		
+
 		if( item.GetLiquidType() != LIQUID_GASOLINE )
 			return false;
+
+		Car car = Car.Cast( target.GetObject() );
+		if( !car )
+			return false;
 		
-		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
+		if( car.GetFluidFraction( CarFluid.FUEL ) >= 0.98 )
 			return false;
 
-		Car car = Car.Cast(target.GetObject());
-		if( car && car.GetFluidFraction( CarFluid.FUEL ) >= 0.98 )
-			return false;
+		array<string> selections = new array<string>;
+		target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
 
-		if( car.IsActionComponentPartOfSelection(target.GetComponentIndex(), "refill") )
+		CarScript carS = CarScript.Cast(car);
+		
+		if( carS )
 		{
-			/* not full tank con &&*/
-			return true;
+			for (int s = 0; s < selections.Count(); s++)
+			{
+				if ( selections[s] == carS.GetActionCompNameFuel() )
+				{
+					float dist = vector.Distance( carS.GetRefillPointPosWS(), player.GetPosition() );
+
+					if ( dist < carS.GetActionDistanceFuel() )
+						return true;
+				}
+			}
 		}
-		
+
 		return false;
 	}
-/*
-	override void OnCompleteServer( ActionData action_data )
-	{
-		Car car = Car.Cast(action_data.m_Target.GetObject());
-		Param1<float> nacdata;
-		Class.CastTo(nacdata,  action_data.m_ActionComponent.GetACData() );
-		float amount = nacdata.param1;
-		if ( car && action_data.m_MainItem && action_data.m_MainItem.GetQuantity() <= UAQuantityConsumed.FUEL )
-		{
-			action_data.m_MainItem.AddQuantity( -amount );
-			car.Fill( CarFluid.FUEL, amount );
-
-			action_data.m_Player.GetSoftSkillManager().AddSpecialty( m_SpecialtyWeight );
-		}
-	}
-*/
 };

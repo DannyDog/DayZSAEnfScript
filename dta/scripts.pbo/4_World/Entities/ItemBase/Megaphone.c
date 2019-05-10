@@ -31,6 +31,15 @@ class Megaphone extends ItemMegaphone
 	
 	//TODO add turn on/off actions
 	//proto native bool CanSpeak();
-	//proto native void SetCanSpeak(bool onOff); 	
+	//proto native void SetCanSpeak(bool onOff); 
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnTransmitter);
+		AddAction(ActionTurnOffTransmitter);
+		AddAction(ActionRaiseMegaphone);
+	}	
 	
 }

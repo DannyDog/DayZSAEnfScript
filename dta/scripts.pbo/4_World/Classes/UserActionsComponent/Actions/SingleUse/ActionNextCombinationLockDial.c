@@ -54,6 +54,19 @@ class ActionNextCombinationLockDial: ActionSingleUseBase
 		
 		//set next dial
 		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
-		construction_action_data.SetNextDialIndex();
+		construction_action_data.SetNextCombinationLockDial();
+	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		//single player
+		CombinationLock combination_lock = CombinationLock.Cast( action_data.m_MainItem );
+		combination_lock.SoundLockChangeDial();
+	}	
+	
+	override void OnStartClient( ActionData action_data )
+	{
+		CombinationLock combination_lock = CombinationLock.Cast( action_data.m_MainItem );
+		combination_lock.SoundLockChangeDial();
 	}
 }

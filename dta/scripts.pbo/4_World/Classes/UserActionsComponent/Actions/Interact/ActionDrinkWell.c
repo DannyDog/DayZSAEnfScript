@@ -49,7 +49,7 @@ class ActionDrinkWell extends ActionInteractBase
 		action_data.m_Player.Consume(NULL, UAQuantityConsumed.DRINK, EConsumeType.ENVIRO_WELL);
 		if(action_data.m_Player.HasBloodyHands())
 		{
-			action_data.m_Player.InsertAgent(eAgents.CHOLERA, UAQuantityConsumed.DRINK);
+			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
 		}
 	}
 }

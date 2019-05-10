@@ -14,7 +14,7 @@ class ActionManager
 	proto native external bool RegisterAction(string actionName);
 	proto native external bool RegisterContext(string contextName);
 	
-	proto native external float GetActionValue(string actionName);
+	proto native external float LocalValue(string actionName);
 	proto native external bool GetActionTriggered(string actionName);
 	
 	proto native external bool ActivateAction(string actionName, int duration = 0);	

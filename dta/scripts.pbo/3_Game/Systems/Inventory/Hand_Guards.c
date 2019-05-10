@@ -65,7 +65,7 @@ class HandGuardHasItemInEvent extends HandGuardBase
 
 	override bool GuardCondition (HandEventBase e)
 	{
-		EntityAI eai = e.m_Entity;
+		EntityAI eai = e.GetSrcEntity();
 		if (eai != NULL /* && CanTakeInHands*/)
 		{
 			hndDebugPrint("[hndfsm] HandGuardHasItemInEvent guard - has valid entity in event");
@@ -82,7 +82,7 @@ class HandGuardHasWeaponInEvent extends HandGuardHasItemInEvent
 
 	override bool GuardCondition (HandEventBase e)
 	{
-		EntityAI eai = e.m_Entity;
+		EntityAI eai = e.GetSrcEntity();
 		if (eai != NULL)
 		{
 			if (eai.IsWeapon())
@@ -108,7 +108,7 @@ class HandGuardIsSameItemInHands extends HandGuardBase
 
 	override bool GuardCondition (HandEventBase e)
 	{
-		if (e.m_Entity == m_Player.GetHumanInventory().GetEntityInHands())
+		if (e.GetSrcEntity() == m_Player.GetHumanInventory().GetEntityInHands())
 		{
 			hndDebugPrint("[hndfsm] HandGuardIsSameItemInHands guard - has same entity in hands");
 			return true;
@@ -126,11 +126,11 @@ class HandGuardHasDestroyedItemInHands extends HandGuardBase
 
 	override bool GuardCondition (HandEventBase e)
 	{
-		hndDebugSpam("[hndfsm] HandGuardHasDestroyedItemInHands guard - has same entity in hands ev=" + e.m_Entity + " hnd=" + m_Player.GetHumanInventory().GetEntityInHands());
+		hndDebugSpam("[hndfsm] HandGuardHasDestroyedItemInHands guard - has same entity in hands ev=" + e.GetSrcEntity() + " hnd=" + m_Player.GetHumanInventory().GetEntityInHands());
 		EntityAI hnd = m_Player.GetHumanInventory().GetEntityInHands();
-		if (e.m_Entity)
+		if (e.GetSrcEntity())
 		{
-			if (e.m_Entity == hnd)
+			if (e.GetSrcEntity() == hnd)
 			{
 				hndDebugPrint("[hndfsm] HandGuardHasDestroyedItemInHands guard - has same entity in hands");
 				return true;
@@ -181,7 +181,7 @@ class HandGuardHasRoomForItem extends HandGuardBase
 		if (e.GetDst())
 		{
 			if (!GameInventory.LocationTestAddEntity(e.GetDst(), false, true, true, true, true))
-				Error("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + e.GetDst().DumpToString());
+				Error("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + InventoryLocation.DumpToStringNullSafe(e.GetDst()));
 			return true;
 		}
 

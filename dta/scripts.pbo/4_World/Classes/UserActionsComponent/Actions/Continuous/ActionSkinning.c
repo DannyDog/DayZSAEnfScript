@@ -236,7 +236,7 @@ class ActionSkinning: ActionContinuousBase
 			
 			if ( target_obj.IsKindOf( "Animal_CapreolusCapreolus" ) || target_obj.IsKindOf( "Animal_CapreolusCapreolusF" ) || target_obj.IsKindOf( "Animal_CervusElaphus" ) || target_obj.IsKindOf( "Animal_CervusElaphusF" ) )
 			{
-				AnalyticsManager.OnActionFinishedGutDeer();
+				GetGame().GetAnalyticsClient().OnActionFinishedGutDeer();
 			}
 		}
 	}

@@ -38,6 +38,11 @@ class GardenPlot extends GardenBase
 			m_ClutterCutter = NULL;
 		}
 	}
+	
+	override bool IsInventoryVisible()
+	{
+		return true;
+	}
 
 	override int GetGardenSlotsCount()
 	{

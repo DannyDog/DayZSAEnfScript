@@ -127,6 +127,15 @@ class ScriptInputUserData : ParamsWriteContext
 	proto native static bool CanStoreInputUserData ();
 };
 
+class ScriptReadWriteContext
+{
+	void ScriptReadWriteContext ();
+	void ~ScriptReadWriteContext ();
+
+	proto native ParamsWriteContext GetWriteContext ();
+	proto native ParamsReadContext GetReadContext ();
+};
+
 class ScriptRemoteInputUserData : ParamsWriteContext
 {
 	void ScriptRemoteInputUserData ();
@@ -270,15 +279,14 @@ class ItemPreviewWidget: Widget
 //-----------------------------------------------------------------------------
 class PlayerPreviewWidget: Widget
 {
-	proto native void		SetItemInHands(InventoryItem object);
-	proto native InventoryItem		GetItemInHands();
-	proto native void		SetPlayer(Man player);
-	proto native Man		GetPlayer();
+	proto native void		UpdateItemInHands(EntityAI object);
+	proto native void		SetPlayer(DayZPlayer player);
+	proto native DayZPlayer	GetDummyPlayer();
 
 	proto native void		SetModelOrientation(vector vOrientation);
-	proto native vector GetModelOrientation();
+	proto native vector		GetModelOrientation();
 	proto native void		SetModelPosition(vector vPos);
-	proto native vector GetModelPosition();
+	proto native vector		GetModelPosition();
 };
 
 //-----------------------------------------------------------------------------
@@ -371,6 +379,10 @@ typedef Param1<int> LogoutEventParams;
 typedef Param3<int, int, bool> WindowsResizeEventParams;
 //! Enabled
 typedef Param1<bool> VONStateEventParams;
+//! player name, player id
+typedef Param2<string, string> VONStartSpeakingEventParams;
+//! player name, player id
+typedef Param2<string, string> VONStopSpeakingEventParams;
 //! Camera
 typedef Param1<FreeDebugCamera> SetFreeCameraEventParams;
 //! Duration
@@ -437,6 +449,10 @@ enum EventType
 	ScriptLogEventTypeID,
 	//! params: \ref VONStateEventParams
 	VONStateEventTypeID,
+	//! params: \ref VONStartSpeakingEventParams
+	VONStartSpeakingEventTypeID,
+	//! params: \ref VONStopSpeakingEventParams
+	VONStopSpeakingEventTypeID,
 	//! params: \ref SetFreeCameraEventParams
 	SetFreeCameraEventTypeID,
 	//! params: \ref MPConnectionLostEventParams
@@ -515,7 +531,7 @@ class Hud: Managed
 	ref Timer m_Timer;
 	void Init( Widget hud_panel_widget ) {}
 	void DisplayNotifier( int key, int tendency, int status ) {}
-	void DisplayBadge( int key, bool show ) {}
+	void DisplayBadge( int key, int value ) {}
 	void SetStamina( int value, int range ) {}
 	void DisplayStance( int stance ) {}
 	void DisplayPresence() {}
@@ -530,11 +546,9 @@ class Hud: Managed
 	void SetWalkieTalkieText( string text ) { }
 	void RefreshQuickbar( bool itemChanged = false ) {}
 	void Show(bool show) {}
-	void RefreshQuantity( EntityAI item_to_refresh ) {}
 	void UpdateBloodName() {}
-	void RefreshItemPosition( EntityAI item_to_refresh ) {}
+	void SetTemperature( string temp );
 	void Update( float timeslice ){}
-	void InitInventory();
 	bool IsXboxDebugCursorEnabled();
 	void ShowVehicleInfo();
 	void HideVehicleInfo();
@@ -564,6 +578,7 @@ class Mission
 	void OnItemUsed(InventoryItem item, Man owner) {}	
 	void AddDummyPlayerToScheduler(Man player){}
 	void Reset(){}
+	void ResetGUI(){}
 	
 	Hud GetHud()
 	{ 
@@ -621,8 +636,10 @@ class Mission
 		return false;
 	}
 	
+	bool IsControlDisabled() {}
+	
 	void PlayerControlEnable() {}
-	void PlayerControlDisable() {}
+	void PlayerControlDisable(int mode) {}
 
 	void ShowInventory() {}
 	void HideInventory() {}
@@ -638,6 +655,7 @@ class MenuData: Managed
 {
 	proto native int	GetCharactersCount();
 	proto native int 	GetLastPlayedCharacter();
+	//! Return Character person or null if character initialization failed (inventory load, or corrupted data)
 	proto native Man 	CreateCharacterPerson(int index);
 	
 	proto void 			GetLastServerAddress(int index, out string address);
@@ -695,7 +713,6 @@ const int AT_OPTIONS_MASTER_VOLUME = 42;
 const int AT_OPTIONS_HWACC = 46;
 const int AT_OPTIONS_EAX = 47;
 const int AT_OPTIONS_LANGUAGE = 49;
-const int AT_OPTIONS_SUBTITLES = 50;
 const int AT_OPTIONS_RADIO = 51;
 const int AT_CONFIG_XAXIS = 52;
 const int AT_CONFIG_YAXIS = 53;
@@ -873,6 +890,21 @@ proto native void DestroyHive();
 proto native Hive GetHive();
 
 
+
+// constants for device (binding device) type determine:
+//
+//	EUAINPUT_DEVICE_KEYBOARD
+//	EUAINPUT_DEVICE_MOUSE
+//	EUAINPUT_DEVICE_KEYBOARDMOUSE
+//	EUAINPUT_DEVICE_CONTROLLER
+//	EUAINPUT_DEVICE_IR
+
+// -------------------------------------------------------------------------
+class UAIDWrapper
+{
+	proto native UAInput InputP();			// get input pointer
+};
+
 // -------------------------------------------------------------------------
 class UAInput
 {
@@ -892,17 +924,21 @@ class UAInput
 	proto native void SelectAlternative( int iIndex );		// select binding alternative by index
 	proto native int AlternativeCount();					// get currently assigned alternative count
 	proto native int AlternativeIndex();					// get currently selected alternative index
-
+	proto native void ClearDeviceBind( int iDeviceFlags );	// clear binding for specific device(s)
 
 	proto native int BindKeyCount(); // binded key count (for selected alternative)
-	proto native int GetBindKey( int iIndex ); // binded key at index (for selected alternative)
+	proto native int GetBindKey( int iIndex ); // binded "control" at index (for selected alternative)
+	proto native int GetBindDevice( int iIndex ); // binded "control" device type at index (for selected alternative)
+	proto native bool CheckBindDevice( int iIndex, int iDeviceFlags ); // compare binded device "control" type :: EUAINPUT_DEVICE_KEYBOARD for example
 
 	proto native float LocalValue();
 
 	proto native bool LocalPress();
 	proto native bool LocalRelease();
 	proto native bool LocalHold();
+	proto native bool LocalHoldBegin();
 	proto native bool LocalDoubleClick();
+	proto native bool LocalClick();
 
 	proto native bool IsCombo();	// return true if there is currently combo bind - use Binding() result !!!
 
@@ -913,9 +949,12 @@ class UAInput
 	proto native bool IsPressLimit();		// if limited to PRESS
 	proto native bool IsReleaseLimit();		// if limited to RELEASE
 	proto native bool IsHoldLimit();		// if limited to HOLD
+	proto native bool IsClickLimit();		// if limited to SINGLE CLICK
 	proto native bool IsDoubleClickLimit();	// if limited to DOUBLE CLICK
 
 	proto native bool HasSorting( int iIndex );		// has sorting group index?
+
+	proto native void Supress();			// supress press event for next frame (while not pressed ATM - otherwise until release)
 
 	proto native bool IsLocked();			// determine if locked (not active ATM)
 	proto native void Lock();				// lock (until unlock called or exclusion is selected)
@@ -923,9 +962,82 @@ class UAInput
 
 	proto native int ConflictCount();		// get number of conflicts with other inputs
 
+	proto native void ForceEnable( bool bEnable );	// force enable on/ off
+	proto native void ForceDisable( bool bEnable );	// force disable on/ off
+
 	proto native void Backlit_Override( int eType, int iColor ); // enable/ disable backlit of associated controls (EUABACKLIT_*)
 	proto native bool Backlit_Enabled(); // check whether associated controls are backlit
 
+	proto native UAIDWrapper GetPersistentWrapper(); // create persistent object for input access
+
+	private void UAInput();
+	private void ~UAInput();
+};
+
+// -------------------------------------------------------------------------
+class UAInterface
+{
+	// getting action state
+	/**
+	\brief Get action state
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return actual action state as float, for regular two state buttons returns 0 or 1, for analog buttons/axes returns value in interval <0, 1> with consideration of defined deadzones
+	@see SyncedValue()
+	*/
+	proto native float	SyncedValue_ID(int action, bool check_focus = true);
+	proto native float	SyncedValue(string action, bool check_focus = true);
+		
+	/**  
+	\brief Returns true just in frame, when action was invoked (button was pressed)
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return true if action was invoked in that frame, false otherwise
+	@see SyncedPress()
+	*/
+	proto native bool	SyncedPress_ID(int action, bool check_focus = true);
+	proto native bool	SyncedPress(string action, bool check_focus = true);
+	
+	/**  
+	\brief Returns true just in frame, when release action happened (button was released)
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return true if action was released in that frame, false otherwise
+	@see SyncedRelease()
+	*/
+	proto native bool	SyncedRelease_ID(int action, bool check_focus = true);
+	proto native bool	SyncedRelease(string action, bool check_focus = true);
+
+	/**  
+	\brief Returns true just in frame, when hold action invoked (button is hold)
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return true if action was released in that frame, false otherwise
+	@see SyncedHold()
+	*/
+	proto native bool	SyncedHold_ID(int action, bool check_focus = true);
+	proto native bool	SyncedHold(string action, bool check_focus = true);
+
+	/**  
+	\brief Returns true just in frame, when double click action invoked (button double clicked)
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return true if action was released in that frame, false otherwise
+	@see SyncedDbl()
+	*/
+	proto native bool	SyncedDbl_ID(int action, bool check_focus = true);
+	proto native bool	SyncedDbl(string action, bool check_focus = true);
+	
+	/**  
+	\brief Returns true just in frame, when single click action invoked (button pressed and released before hold timer)
+	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
+	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
+	@return true if action was released in that frame, false otherwise
+	@see SyncedClick()
+	*/
+	proto native bool	SyncedClick_ID(int action, bool check_focus = true);
+	proto native bool	SyncedClick(string action, bool check_focus = true);
+	
 };
 
 // -------------------------------------------------------------------------
@@ -935,6 +1047,8 @@ class UAInputAPI
 	proto native void ListCurrentPreset();
 	proto native void ListAvailableButtons();
 	proto native void ListActiveGroup();
+
+	proto native void GetActiveInputs( out TIntArray items ); // return list of all bindable inputs
 
 	proto native UAInput GetInputByID( int iID );
 	proto native UAInput GetInputByName( string sInputName );
@@ -949,15 +1063,13 @@ class UAInputAPI
 	proto native int DeterminedCount(); // all buttons (keys, etc.) pressed during determination test (call only when DeterminePressedButton() returned something !)
 	proto native int GetDetermined( int iIndex ); // total count of pressed buttons (call only when DeterminePressedButton() returned something !)
 
-/*raist todo: remove*/	proto bool GetButtonNameByDik( int iDikCode, out string sName );
-/*raist todo: remove*/	proto native int GetButtonIDByDik( int iDikCode );
-
 	proto native UAInput RegisterInput( string sInputName, string sLoc, string sGroupName );
 	proto native void DeRegisterInput( string sInputName );
 
 	proto native void RegisterGroup( string sGroupName, string sLoc );
 	proto native void DeRegisterGroup( string sGroupName );
 
+	proto native void UpdateControls(); // call this on each change of exclusion
 	proto native void ActivateGroup( string sGroupName );
 	proto native void ActivateExclude( string sExcludeName );
 	proto native void ActivateContext( string sContextName );
@@ -1002,10 +1114,13 @@ const int ECE_CENTER						= 8;	// use center from shape (model) for placement
 
 const int ECE_UPDATEPATHGRAPH				= 32;	// update navmesh when object placed upon it
 
-const int ECE_EQUIP							= 256;	// equip with configured attachments/ cargo
 const int ECE_ROTATIONFLAGS					= 512;	// enable rotation flags for object placement
 const int ECE_CREATEPHYSICS					= 1024;	// create collision envelope and related physics data (if object has them)
 const int ECE_AIRBORNE						= 4096;	// create flying unit in the air
+
+const int ECE_EQUIP_ATTACHMENTS				= 8192;		// equip with configured attachments
+const int ECE_EQUIP_CARGO					= 16384;	// equip with configured cargo
+const int ECE_EQUIP							= 24576;	// equip with configured attachments + cargo
 
 const int ECE_NOSURFACEALIGN				= 262144;	// do not align object on surface/ terrain
 const int ECE_KEEPHEIGHT					= 524288;	// keep height when creating object (do not use trace or placement on surface)
@@ -1115,9 +1230,9 @@ typedef Link<Object> OLinkT;
  * @param[in] inv_loc \p Inventory Location of the spawned item
  * @return		created entity in case of success, null otherwise
  **/
-EntityAI SpawnEntity (string object_name, notnull InventoryLocation inv_loc)
+EntityAI SpawnEntity (string object_name, notnull InventoryLocation inv_loc, int iSetupFlags, int iRotation)
 {
-	return GameInventory.LocationCreateEntity(inv_loc, object_name,ECE_IN_INVENTORY,RF_DEFAULT);
+	return GameInventory.LocationCreateEntity(inv_loc, object_name,iSetupFlags,iRotation);
 }
 
 class Static : Object

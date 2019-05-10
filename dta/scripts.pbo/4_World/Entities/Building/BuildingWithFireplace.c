@@ -1,4 +1,4 @@
-class BuildingWithFireplace extends Building
+class BuildingWithFireplace extends BuildingSuper
 {
 	void BuildingWithFireplace()
 	{

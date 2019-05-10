@@ -4,6 +4,7 @@ class ActionWorldLiquidActionSwitch: ActionSingleUseBase
 	bool 	m_switch_to;
 	void ActionWorldLiquidActionSwitch()
 	{
+		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
 	}
 	
 	override void CreateConditionComponents()  

@@ -62,6 +62,8 @@ class World: Managed
 
 	proto native void	LoadNewLightingCfg(string path);
 	
+	proto native AIWorld GetAIWorld();
+	
 	/*!
 	@code
 	Material matColors = GetGame().GetWorld().GetMaterial("postprocess/glow");
@@ -107,6 +109,28 @@ class World: Managed
 	checks if crosshair is disabled from server
 	*/
 	proto native bool IsCrosshairDisabled();
+	
+	/*!
+	enable/disable transmiting voice over network globally
+	\param disable	if true, then VoN is no more usable for transmiting voice
+	*/
+	proto native void DisableTransmitVoN(bool disable);
+	
+	/*!
+	enable/disable receiving all voice over network globally
+	\param disable	if true, then player is not able listen any voice from VoN
+	*/
+	proto native void DisableReceiveVoN(bool disable);
+	
+	/*!
+	\return true if transmiting voice over network is disabled, so player can not talking
+	*/
+	proto native bool IsDisabledTransmitingVoN();
+	
+	/*!
+	\return true, if receiving voice over network is disabled, so player can not listen anybody
+	*/
+	proto native bool IsDisabledReceivingVoN();
 	
 	/*!
 	enables/disables player's voice communication

@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{2E141DDA4A41B752}Gui/textures/tutorials/infected.edds"
+ Author "inv1967"
+ ChangeDate -808704421
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "infected.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -8,6 +8,41 @@ enum EActivationType {
 const int DEFAULT_TICK_TIME_ACTIVE = 3;
 const int DEFAULT_TICK_TIME_INACTIVE = 3;
 
+class ModifierDebugObj
+{
+	string 	m_Name;
+	int 	m_ID;
+	bool 	m_IsActive;
+	bool	m_IsLocked;
+	
+	void ModifierDebugObj(int id, string name, bool active, bool locked)
+	{
+		m_Name = name;
+		m_ID = id;
+		m_IsActive = active;
+		m_IsLocked = locked;
+	}
+	
+	string GetName()
+	{
+		return m_Name;
+	}
+	
+	int GetID()
+	{
+		return m_ID;
+	}
+	
+	bool IsActive()
+	{
+		return m_IsActive;
+	}
+	
+	bool IsLocked()
+	{
+		return m_IsLocked;
+	}
+}
 
 class ModifiersManager
 {
@@ -64,6 +99,7 @@ class ModifiersManager
 		AddModifier(new ImmunityBoost);
 		AddModifier(new AntibioticsMdfr);
 		AddModifier(new ToxicityMdfr);
+		AddModifier(new BreathVapourMdfr);
 	}
 
 	void SetModifiers(bool enable)
@@ -233,20 +269,28 @@ class ModifiersManager
 		return m_ModifierList.Get(modifier_id).IsLocked();
 	}
 
-	void DbgGetModifiers(map<int, string> modifiers_map)
+	void DbgGetModifiers(array<ref ModifierDebugObj> modifiers)
 	{
-		for(int i = 0;i < m_ModifierList.Count(); i++)
+		modifiers.Clear();
+		for(int i = 1;i < eModifiers.COUNT; i++)
 		{
-			ModifierBase modifier = m_ModifierList.GetElement(i);
-			int modifier_id = modifier.GetModifierID();
-			string modifier_name = modifier.GetName();
-			
-			if( !modifier.IsActive() ) 
+			if(m_ModifierList.Contains(i))
 			{
-				modifier_id = -modifier_id;
+				ModifierBase modifier = m_ModifierList.Get(i);
+				int modifier_id = modifier.GetModifierID();
+				string modifier_name = modifier.GetName();
+				bool active = modifier.IsActive();
+				string debug_text = modifier.GetDebugTextSimple();
+				bool is_locked = modifier.IsLocked();
+
+				if(active && debug_text != "")
+				{
+					modifier_name +=" | "+debug_text; 
+				}
+				ModifierDebugObj obj = new ModifierDebugObj(modifier_id, modifier_name, active, is_locked);
+	
+				modifiers.Insert( obj );
 			}
-			
-			modifiers_map.Insert( modifier_id, modifier_name );
 		}
 	}
 }

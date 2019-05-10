@@ -1,6 +1,6 @@
 class TendencyTemperature extends DisplayElementTendency 
 {
-	void TendencyTemperature()
+	void TendencyTemperature(PlayerBase player)
 	{
 		TENDENCY_MASK = 7;// 3 bits
 		SERIOUSNESS_BIT_MASK = 7;// 3 bits

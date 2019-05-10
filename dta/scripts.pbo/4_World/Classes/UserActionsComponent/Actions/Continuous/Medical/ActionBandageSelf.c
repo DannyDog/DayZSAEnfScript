@@ -14,11 +14,6 @@ class ActionBandageSelf: ActionContinuousBase
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_BANDAGE;
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
-		m_MessageStartFail = "There's nothing to bandage.";
-		m_MessageStart = "I have started bandaging myself";
-		m_MessageSuccess = "I have bandaged myself.";
-		m_MessageFail = "I have moved and bandaging was canceled.";
-		m_MessageCancel = "I stopped bandaging.";
 		m_SpecialtyWeight = UASoftSkillsWeight.PRECISE_LOW;
 	}
 
@@ -55,9 +50,13 @@ class ActionBandageSelf: ActionContinuousBase
 			action_data.m_Player.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();	
 		}
 		
-		if (action_data.m_MainItem.GetQuantity() > 0)
+		if (action_data.m_MainItem.HasQuantity())
 		{
 			action_data.m_MainItem.AddQuantity(-1,true);
+		}
+		else
+		{
+			action_data.m_MainItem.Delete();
 		}
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

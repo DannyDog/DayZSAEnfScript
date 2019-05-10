@@ -52,6 +52,11 @@ class ActionRestrainSelf: ActionContinuousBase
 	{
 		return false;
 	}
+	
+	override bool HasAlternativeInterrupt()
+	{
+		return true;
+	}
 		
 	override string GetText()
 	{

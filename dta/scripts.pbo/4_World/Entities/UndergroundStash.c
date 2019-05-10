@@ -62,4 +62,9 @@ class UndergroundStash extends ItemBase
 		
 		return false;
 	}
+	
+	override bool IsInventoryVisible()
+	{
+		return false;
+	}
 }

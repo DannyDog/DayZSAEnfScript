@@ -6,7 +6,7 @@ class MeleeAttackSoundEvents extends PlayerSoundEventBase
 		m_HasPriorityOverTypes = -1;
 	}
 	
-	override bool CanPlay()
+	override bool CanPlay(PlayerBase player)
 	{
 		return true;
 	}

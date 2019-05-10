@@ -55,14 +55,14 @@ FrameWidgetClass video_tab_root {
         PanelWidgetClass overall_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass overall_text {
            visible 1
@@ -85,16 +85,16 @@ FrameWidgetClass video_tab_root {
         }
         GridSpacerWidgetClass overall_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
-         Padding 4
-         Margin 8
+         style DayZDefaultPanel
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -111,12 +111,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass overall_quality_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -197,14 +199,14 @@ FrameWidgetClass video_tab_root {
         PanelWidgetClass screen_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass screen_text {
            visible 1
@@ -227,17 +229,17 @@ FrameWidgetClass video_tab_root {
         }
         GridSpacerWidgetClass screen_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -253,12 +255,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass display_mode_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -328,12 +332,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass resolution_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -403,12 +409,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass brightness_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -478,12 +486,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass vsync_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -553,12 +563,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass color_depth_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -639,14 +651,14 @@ FrameWidgetClass video_tab_root {
         PanelWidgetClass scene_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass scene_text {
            visible 1
@@ -669,17 +681,17 @@ FrameWidgetClass video_tab_root {
         }
         GridSpacerWidgetClass scene_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -695,12 +707,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass object_detail_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -770,12 +784,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass terrain_detail_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -845,12 +861,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass texture_detail_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -909,81 +927,6 @@ FrameWidgetClass video_tab_root {
             }
            }
           }
-          FrameWidgetClass clouds_detail_setting_container {
-           ignorepointer 1
-           position 0 0
-           size 1 30
-           hexactpos 1
-           vexactpos 1
-           hexactsize 0
-           vexactsize 1
-           {
-            GridSpacerWidgetClass clouds_detail_setting {
-             ignorepointer 0
-             position 0 0
-             size 1 30
-             hexactpos 1
-             vexactpos 1
-             hexactsize 0
-             vexactsize 1
-             "no focus" 1
-             Padding 0
-             Margin 0
-             "Size To Content H" 1
-             Columns 2
-             Rows 1
-             {
-              FrameWidgetClass clouds_detail_panel {
-               ignorepointer 1
-               position 0 0
-               size 0.5 0.6
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-               {
-                TextWidgetClass clouds_detail_setting_label {
-                 ignorepointer 1
-                 size 1 0.55
-                 valign center_ref
-                 hexactpos 1
-                 vexactpos 1
-                 hexactsize 0
-                 vexactsize 0
-                 text "#STR_video_tab_root_video_settings_scroll_video_settings_root_scene_settings_root_scene_settings_content_clouds_detail_setting_container_clouds_detail_setting_clouds_detail_panel_clouds_detail_label0"
-                 font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
-                 "exact text" 0
-                 "exact text size" 18
-                 "text valign" center
-                }
-               }
-              }
-              FrameWidgetClass clouds_detail_option {
-               ignorepointer 1
-               position 0 0
-               size 0.5 1
-               hexactpos 1
-               vexactpos 1
-               hexactsize 0
-               vexactsize 0
-              }
-             }
-            }
-            PanelWidgetClass clouds_detail_setting_disable {
-             visible 0
-             ignorepointer 1
-             color 0.1569 0.1569 0.1569 0.902
-             position 0 0
-             size 1 1
-             hexactpos 1
-             vexactpos 1
-             hexactsize 0
-             vexactsize 0
-             style rover_sim_colorable
-            }
-           }
-          }
           FrameWidgetClass shadow_detail_setting_container {
            ignorepointer 1
            position 0 0
@@ -995,12 +938,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass shadow_detail_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1081,14 +1026,14 @@ FrameWidgetClass video_tab_root {
         PanelWidgetClass rendering_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass rendering_text {
            visible 1
@@ -1111,17 +1056,17 @@ FrameWidgetClass video_tab_root {
         }
         GridSpacerWidgetClass rendering_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -1137,12 +1082,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass texture_filtering_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1212,12 +1159,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass terrain_surface_detail_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1287,12 +1236,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass ppaa_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1362,12 +1313,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass hwaa_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1437,12 +1390,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass atoc_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1512,12 +1467,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass ao_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -1587,12 +1544,14 @@ FrameWidgetClass video_tab_root {
            {
             GridSpacerWidgetClass pp_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0

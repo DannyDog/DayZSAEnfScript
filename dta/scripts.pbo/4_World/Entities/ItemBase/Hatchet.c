@@ -1,6 +1,15 @@
 class Hatchet extends ToolBase
 {
-	void Hatchet()
+	override void SetActions()
 	{
+		super.SetActions();
+		AddAction(ActionBuildPartSwitch);
+		AddAction(ActionMineTree);
+		AddAction(ActionMineBush);
+		AddAction(ActionBuildPart);
+		AddAction(ActionDismantlePart);
+		AddAction(ActionDestroyPart);
+		AddAction(ActionSawPlanks);
+		AddAction(ActionUnrestrainTarget);
 	}
 }

@@ -66,6 +66,8 @@ class OptionsMenuSounds extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "sound_settings_root" ).GetScreenSize( x, y2 );
 		int f = ( y2 > y );
 		m_Root.FindAnyWidget( "sound_settings_scroll" ).SetAlpha( f );
+		
+		m_Root.SetHandler( this );
 	}
 	
 	void Focus()
@@ -73,6 +75,29 @@ class OptionsMenuSounds extends ScriptedWidgetEventHandler
 		#ifdef PLATFORM_CONSOLE
 			SetFocus( m_MasterSelector.GetParent() );
 		#endif
+	}
+	
+	override bool OnMouseEnter( Widget w, int x, int y )
+	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorHighlight( w );
+		
+		return true;
+	}
+	
+	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
+	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorNormal( w );
+		return true;
 	}
 	
 	override bool OnFocus( Widget w, int x, int y )
@@ -168,9 +193,16 @@ class OptionsMenuSounds extends ScriptedWidgetEventHandler
 	void FillTextMap()
 	{
 		m_TextMap = new map<int, ref Param2<string, string>>;
+		#ifdef PLATFORM_PS4
+		m_TextMap.Insert( AT_OPTIONS_MASTER_VOLUME, new Param2<string, string>( "#ps4_options_sound_master_volume", "#ps4_options_sound_master_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_EFFECTS_SLIDER, new Param2<string, string>( "#ps4_options_sound_effects_volume", "#ps4_options_sound_effects_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_VON_SLIDER, new Param2<string, string>( "#ps4_options_sound_VOIP_volume", "#ps4_options_sound_VOIP_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#ps4_options_sound_music_volume", "#ps4_options_sound_music_volume_desc" ) );
+		#else
 		m_TextMap.Insert( AT_OPTIONS_MASTER_VOLUME, new Param2<string, string>( "#options_sound_master_volume", "#options_sound_master_volume_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_EFFECTS_SLIDER, new Param2<string, string>( "#options_sound_effects_volume", "#options_sound_effects_volume_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_VON_SLIDER, new Param2<string, string>( "#options_sound_VOIP_volume", "#options_sound_VOIP_volume_desc" ) );
-		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#options_sound_music_volume", "#options_sound_music_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#options_sound_music_volume", "#options_sound_music_volume_desc" ) ); 
+		#endif
 	}
 }

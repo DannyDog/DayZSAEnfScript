@@ -137,12 +137,12 @@ class ActionStartEngine: ActionContinuousBase
 						}
 						else
 						{
-							if ( !m_FuelCon )
-								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_fuel_SoundSet", car.GetPosition() );
+							if ( !m_BatteryCon )
+								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_battery_SoundSet", car.GetPosition() );
 							else if ( !m_SparkCon )
 								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_sparkplugs_SoundSet", car.GetPosition() );
-							else if ( !m_BatteryCon )
-								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_battery_SoundSet", car.GetPosition() );
+							else if ( !m_FuelCon )
+								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_fuel_SoundSet", car.GetPosition() );
 						}
 						
 						WaveKind waveKind = WaveKind.WAVEEFFECT;
@@ -168,15 +168,11 @@ class ActionStartEngine: ActionContinuousBase
 		HumanCommandVehicle vehCommand = action_data.m_Player.GetCommand_Vehicle();
 		if( vehCommand )
 		{
-			Transport trans = vehCommand.GetTransport();
-			if ( trans )
+			CarScript car;
+			if ( Class.CastTo(car, vehCommand.GetTransport()) )
 			{
-				CarScript car;
-				if ( Class.CastTo(car, trans) )
-				{
-					if ( m_FuelCon && m_BeltCon && m_SparkCon && m_BatteryCon )
-						car.EngineStart();
-				}
+				if ( m_FuelCon && m_BeltCon && m_SparkCon && m_BatteryCon )
+					car.EngineStart();
 			}
 		}
 	}

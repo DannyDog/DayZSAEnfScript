@@ -60,7 +60,7 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 	{		
 		EntityAI target_EAI = EntityAI.Cast( target.GetObject() );
 		
-		if ( target_EAI.HasEnergyManager()  &&  item.HasEnergyManager() )
+		if ( target_EAI  &&  item  &&  target_EAI.HasEnergyManager()  &&  item.HasEnergyManager() )
 		{
 			if ( !target_EAI.GetCompEM().IsPlugged()  &&  item.GetCompEM().CanReceivePlugFrom(target_EAI) )
 			{

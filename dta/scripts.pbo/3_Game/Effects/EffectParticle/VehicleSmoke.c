@@ -3,6 +3,7 @@ class EffVehicleSmoke : EffectParticle
 	void EffVehicleSmoke()
 	{
 		SetParticleStateLight();
+		SetEnableEventFrame(true);
 	}
 	
 	
@@ -16,7 +17,6 @@ class EffVehicleSmoke : EffectParticle
 	{
 		SetParticleState( ParticleList.HATCHBACK_COOLANT_OVERHEATED );
 	}
-	
 	
 	void SetParticleState( int state )
 	{

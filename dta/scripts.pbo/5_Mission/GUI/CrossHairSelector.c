@@ -57,8 +57,8 @@ class CrossHairSelector extends ScriptedWidgetEventHandler
 
 	void CrossHairSelector()
 	{
-		m_Player 		= NULL;
-		m_AM 			= NULL;
+		m_Player 		= null;
+		m_AM 			= null;
 		m_CrossHairs 	= new set<ref CrossHair>;
 
 		GetGame().GetUpdateQueue(CALL_CATEGORY_GUI).Insert(Update);
@@ -102,8 +102,8 @@ class CrossHairSelector extends ScriptedWidgetEventHandler
 
 		if(m_Player && !m_Player.IsAlive()) // handle respawn
 		{
-			m_Player = NULL;
-			m_AM = NULL;
+			m_Player = null;
+			m_AM = null;
 		}
 		if(!m_Player) GetPlayer();
 		if(!m_AM) GetActionManager();
@@ -127,7 +127,7 @@ class CrossHairSelector extends ScriptedWidgetEventHandler
 			Class.CastTo(m_AM, m_Player.GetActionManager());
 		}
 		else
-			m_AM = NULL;
+			m_AM = null;
 	}
 	
 	protected CrossHair GetCrossHairByName(string widgetName)
@@ -154,23 +154,41 @@ class CrossHairSelector extends ScriptedWidgetEventHandler
 	
 	protected void SelectCrossHair()
 	{
+		if(!m_AM) return;
+
 		HumanInputController hic = m_Player.GetInputController();
 		ActionBase action = m_AM.GetRunningAction();
+		
+		bool firearmInHands = m_Player.GetItemInHands() && m_Player.GetItemInHands().IsWeapon();
 
-		if ( m_Player.IsFireWeaponRaised() && !m_Player.IsInIronsights() && !m_Player.IsInOptics() && !hic.CameraIsFreeLook() )	// Firearms
+		//! firearms
+		if ( firearmInHands && m_Player.IsRaised() && !m_Player.IsInIronsights() && !m_Player.IsInOptics() && !hic.CameraIsFreeLook() && !m_Player.GetCommand_Melee2() )
+		{
 			ShowCrossHair(GetCrossHairByName("crossT_128x128"));
-			//ShowCrossHair(GetCrossHairByName("cross_128x128"));
-		else if (action && action.GetActionCategory() == AC_CONTINUOUS) // On Continuous Actions
+		}
+		//! On Continuous Actions
+		else if (action && action.GetActionCategory() == AC_CONTINUOUS)
 		{
 			int actionState = m_AM.GetActionState(action);
 
 			if ( actionState != UA_NONE )
 				ShowCrossHair(null);
 		}
-		else if ( m_Player.IsRaised() || m_Player.GetCommand_Melee() || GetGame().GetUIManager().GetMenu() != null )
+		//! raised hands(bare + non-firearm) + melee cmd
+		else if ( m_Player.IsRaised() || m_Player.GetCommand_Melee2() || GetGame().GetUIManager().GetMenu() != null )
+		{
 			ShowCrossHair(null);
+		}
+		//! handle unconscious state
+		else if ( m_Player.GetCommand_Unconscious() )
+		{
+			ShowCrossHair(null);
+		}
+		//! default
 		else
+		{
 			ShowCrossHair(GetCrossHairByName("dot"));
+		}
 	}
 	
 	protected void ShowCrossHair(CrossHair crossHair)

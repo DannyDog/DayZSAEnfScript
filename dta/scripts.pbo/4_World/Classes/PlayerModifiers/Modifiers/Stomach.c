@@ -28,7 +28,10 @@ class StomachMdfr: ModifierBase
 		
 		float stomachs_combined_before = player.GetStatStomachWater().Get() + player.GetStatStomachEnergy().Get();
 		if(stomachs_combined_before <=0) // takes care of division by 0 also there is no point in doing anything if there is nothing to transfer
+		{
+			player.GetStatStomachVolume().Set(0);
 			return;
+		}
 		
 		// Energy
 		if ( player.GetStatStomachEnergy().Get() >= PlayerConstants.STOMACH_ENERGY_TRANSFERED_PER_SEC*deltaT )

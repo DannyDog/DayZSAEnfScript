@@ -10,13 +10,14 @@ modded class ParticleList
 
 class ParticleList
 {
-	ref static map<int, string> m_ParticlePaths;
+	ref static map<int, string> m_ParticlePaths; // Contains paths to all particles. WARNING: Paths are without the '.ptc' suffix!
 	static int m_lastID = 0;
 	
 	// REGISTER ALL PARTICLES BELOW:
 	
 	static const int INVALID						= -1;
 	static const int PARTICLE_TEST					= RegisterParticle("_test_orientation");
+	static const int DEBUG_DOT						= RegisterParticle("debug_dot");
 	
 	// FIREPLACE
 	// Normal fireplace
@@ -28,6 +29,9 @@ class ParticleList
 	static const int CAMP_FIRE_END					= RegisterParticle("fire_small_camp_01_end");
 	static const int CAMP_STEAM_2END				= RegisterParticle("steam_medium_camp_2end");
 	static const int CAMP_STEAM_EXTINGUISH_START	= RegisterParticle("default_01");
+	static const int CAMP_STOVE_FIRE				= RegisterParticle("fire_small_stove_01");
+	static const int CAMP_STOVE_FIRE_START			= RegisterParticle("fire_small_stove_01_start");
+	static const int CAMP_STOVE_FIRE_END			= RegisterParticle("fire_small_stove_01_end");
 	// Fireplace indoor
 	static const int HOUSE_FIRE_START				= RegisterParticle("fire_small_house_01_start");
 	static const int HOUSE_SMALL_FIRE 				= RegisterParticle("fire_small_house_01");
@@ -78,6 +82,7 @@ class ParticleList
 
 	// PLAYER
 	static const int BLEEDING_SOURCE				= RegisterParticle("blood_bleeding_01");
+	static const int BLEEDING_SOURCE_LIGHT			= RegisterParticle("blood_bleeding_02");
 	static const int BLOOD_SURFACE_DROPS			= RegisterParticle("blood_surface_drops");
 	static const int BLOOD_SURFACE_CHUNKS			= RegisterParticle("blood_surface_chunks");
 	static const int VOMIT							= RegisterParticle("character_vomit_01");
@@ -106,6 +111,12 @@ class ParticleList
 	static const int GUN_UMP45						= RegisterParticle("weapon_shot_ump45_01");
 	static const int GUN_M4A1						= RegisterParticle("weapon_shot_m4a1_01");
 	static const int GUN_MP133						= RegisterParticle("weapon_shot_mp133_01");
+	static const int GUN_MOSIN9130					= RegisterParticle("weapon_shot_mosin9130_01");
+	static const int GUN_MOSIN_COMPENSATOR			= RegisterParticle("weapon_shot_mosin_compensator_01");
+	static const int GUN_CZ527						= RegisterParticle("weapon_shot_cz527_01");
+	static const int GUN_SKS						= RegisterParticle("weapon_shot_sks_01");
+	static const int GUN_WINCHESTER70				= RegisterParticle("weapon_shot_winch70_01");
+	static const int GUN_VSS						= RegisterParticle("weapon_shot_vss_01");
 	
 	static const int GUN_CZ61						= RegisterParticle("weapon_shot_cz61_01");
 	static const int GUN_LONG_WINDED_SMOKE			= RegisterParticle("weapon_shot_winded_smoke");
@@ -115,6 +126,7 @@ class ParticleList
 	static const int SMOKING_BARREL_HEAVY			= RegisterParticle("smoking_barrel_heavy");
 	static const int SMOKING_BARREL_STEAM			= RegisterParticle("smoking_barrel_steam");
 	static const int SMOKING_BARREL_STEAM_SMALL		= RegisterParticle("smoking_barrel_steam_small");
+	static const int SMARKS_CHAMBER					= RegisterParticle("weapon_shot_chamber_spark");
 	
 	// BULLET & MELEE IMPACTS
 	static const int IMPACT_TEST					= RegisterParticle("impacts/bullet_impact_placeholder");
@@ -240,5 +252,30 @@ class ParticleList
 	static string GetPathToParticles()
 	{
 		return "graphics/particles/";
+	}
+	
+	//! Preloads all particles
+	static void PreloadParticles()
+	{
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() ) // client side
+		{
+			int count = m_ParticlePaths.Count();
+			
+			//Print("START PRELOAD OF PARTICLES");
+			//Print(count);
+			
+			for (int i = 0; i < count; ++i)
+			{
+				string path = m_ParticlePaths.Get(i);
+				path = path + ".ptc";
+				//Print(path);
+				vobject vobj;
+				vobj = GetObject( path );
+				//Print(vobj);
+				ReleaseObject(vobj);
+			}
+			
+			//Print("END PARTICLE PRELOAD");
+		}
 	}
 }

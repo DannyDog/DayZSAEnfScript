@@ -18,6 +18,9 @@ class int
 	protected const int ZERO_PAD_SIZE = 8;
 	protected static string m_ZeroPad[ZERO_PAD_SIZE] = {"", "0", "00", "000", "0000", "00000", "000000", "0000000"};
 	
+	const int MAX = 2147483647;
+	const int MIN = -2147483647;
+	
 	proto string ToString();
 	
 	/**

@@ -3,7 +3,7 @@ class FireplaceIndoor extends FireplaceBase
 	protected float 				m_SmokePosX;
 	protected float 				m_SmokePosY;
 	protected float 				m_SmokePosZ;
-	protected int					m_FirePointIndex;	//limited to 1 decimal place (0-9)
+	protected int					m_FirePointIndex = 1;	//limited to 1 decimal place (1-9)
 	
 	static const string FIREPOINT_ACTION_SELECTION	= "fireplace_action";
 	static const string FIREPOINT_FIRE_POSITION 	= "fireplace_point";
@@ -53,29 +53,30 @@ class FireplaceIndoor extends FireplaceBase
 		if( !ctx.Read( m_FirePointIndex ) )
 		{
 			m_FirePointIndex = 1;		//set default
+			return false;
 		}
 		
 		//smoke position
 		if ( !ctx.Read( m_SmokePosX ) )
 		{
 			m_SmokePosX = 0;		//set default
+			return false;
 		}
 		if ( !ctx.Read( m_SmokePosY ) )
 		{
 			m_SmokePosY = 0;		//set default
+			return false;
 		}
 		if ( !ctx.Read( m_SmokePosZ ) )
 		{
 			m_SmokePosZ = 0;		//set default
+			return false;
 		}
 		//---
-		
-		//synchronize
-		Synchronize();
 
 		return true;
 	}
-	
+		
 	//================================================================
 	// FIRE POINT (HOUSE)
 	// LIMITED TO 1 DECIMAL PLACE (0-9)
@@ -436,5 +437,13 @@ class FireplaceIndoor extends FireplaceBase
 		}
 		
 		return true;	
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTakeFireplaceIndoor);
+		//AddAction(ActionLightItemOnFire);
 	}
 }

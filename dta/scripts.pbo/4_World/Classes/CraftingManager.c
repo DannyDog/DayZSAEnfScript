@@ -72,12 +72,23 @@ const int CM_MODE_INVENTORY = 2;
 			return;
 		
 		ref array<int> recipes = new array<int>;
-		int recipeCount = m_recipesManager.GetValidRecipes(item1,item2,recipes, m_player);
+		int recipeCount = 0;
+		
+		if(m_craftingMode == CM_MODE_INVENTORY)
+		{
+			recipeCount = m_recipesManager.GetValidRecipes(m_item1,m_item2,recipes, m_player);
+			m_recipeCount = recipeCount;
+			m_recipeID = recipes.Get(m_contextualRecipeID);
+			return;
+		}
+		
+		
+		recipeCount = m_recipesManager.GetValidRecipes(item1,item2,recipes, m_player);
 
 		if(recipeCount == 0)
 		{
 			m_recipeCount = 0;
-			m_craftingMode = CM_MODE_NONE;					
+			m_craftingMode = CM_MODE_NONE;	
 		}
 		else
 		{
@@ -89,7 +100,7 @@ const int CM_MODE_INVENTORY = 2;
 				m_item1 = item1;
 				m_item2 = item2;
 			}
-			m_recipeID = recipes.Get(m_contextualRecipeID);			
+			m_recipeID = recipes.Get(m_contextualRecipeID);
 		}
 		
 	}
@@ -120,16 +131,26 @@ const int CM_MODE_INVENTORY = 2;
 
 					ActionManagerClient am = ActionManagerClient.Cast(m_player.GetActionManager());
 					
-					
+#ifdef OLD_ACTIONS					
 					if( m_player.GetItemInHands() == item1) am.SetInventoryAction(InventoryActionHandler.IAH_CONTINUOUS, AT_WORLD_CRAFT, item2);
 					else am.SetInventoryAction(InventoryActionHandler.IAH_CONTINUOUS, AT_WORLD_CRAFT, item1);
+#else
 					
+					if( m_player.GetItemInHands() == item1) am.SetInventoryAction( am.GetAction(ActionWorldCraft), item2, item1);
+					else am.SetInventoryAction( am.GetAction(ActionWorldCraft), item1, item2);					
+#endif					
 					return true;
 				}		
 			}			
 			
 		}	
 		return false;
+	}
+	
+	void ResetInventoryCraft()
+	{
+		m_recipeCount = 0;
+		m_craftingMode = CM_MODE_NONE;
 	}
 	
 	bool IsEnableDebugCrafting()

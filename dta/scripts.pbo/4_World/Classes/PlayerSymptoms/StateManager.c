@@ -26,6 +26,13 @@ enum SymptomTypes
 	SECONDARY
 };
 
+enum EAnimPlayState
+{
+	OK,
+	POSTPONED,
+	FAILED,
+};
+
 const int DEBUG_PADDING_OFFSET = 2;
 const int MAX_QUEUE_SIZE = 5; 
 
@@ -153,6 +160,12 @@ class SymptomManager
 		}
 	}
 	
+	void OnAnimationStarted()
+	{
+		if( GetCurrentPrimaryActiveSymptom() )
+			GetCurrentPrimaryActiveSymptom().AnimationStart();
+	}
+	
 	int CreateUniqueID()
 	{
 		int uid = Math.RandomInt( 1, 2147483647);
@@ -227,7 +240,7 @@ class SymptomManager
 			if( !m_AnimMeta.IsPlaying() )
 			{
 
-				if( !m_AnimMeta.PlayRequest() )
+				if( m_AnimMeta.PlayRequest() == EAnimPlayState.FAILED )
 				{
 					OnAnimationFinished(eAnimFinishType.FAILURE);
 				}

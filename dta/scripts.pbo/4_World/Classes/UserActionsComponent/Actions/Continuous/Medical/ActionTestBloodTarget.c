@@ -38,14 +38,35 @@ class ActionTestBloodTarget: ActionContinuousBase
 		return "#test_targets_blood";
 	}
 
+	override void OnFinishProgressClient( ActionData action_data )
+	{
+		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
+
+		if( ntarget )
+		{
+			string blood_type_name, blood_name;
+			bool positive;
+			blood_type_name = BloodTypes.GetBloodTypeName( ntarget.GetBloodType(), blood_name, positive );
+	
+			ntarget.SetLastUAMessage(blood_type_name);
+		}
+	}
+
+	override void OnStartServer( ActionData action_data )
+	{
+		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
+		PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
+		int blood_type = ntarget.GetStatBloodType().Get();
+		
+		module_lifespan.UpdateBloodType( ntarget, blood_type );			
+	}
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
-		PlayerBase ntraget = PlayerBase.Cast( action_data.m_Target.GetObject() );
+		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
 		PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
-		int blood_type = ntraget.GetStatBloodType().Get();
 		
-		module_lifespan.UpdateBloodTypeVisibility( ntraget, true );
-		module_lifespan.UpdateBloodType( ntraget, blood_type );
+		module_lifespan.UpdateBloodTypeVisibility( ntarget, true );
 		
 		action_data.m_MainItem.Delete();
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

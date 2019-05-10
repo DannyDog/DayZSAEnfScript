@@ -24,7 +24,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	protected ref OptionSelectorMultistate	m_ObjectDetailSelector;
 	protected ref OptionSelectorMultistate	m_TerrainDetailSelector;
 	protected ref OptionSelectorMultistate	m_TextureDetailSelector;
-	protected ref OptionSelectorMultistate	m_CloudsDetailSelector;
 	protected ref OptionSelectorMultistate	m_ShadowDetailSelector;
 	
 	//Rendering
@@ -50,7 +49,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	protected ref ListOptionsAccess			m_ObjectDetailOption;
 	protected ref ListOptionsAccess			m_TerrainDetailOption;
 	protected ref ListOptionsAccess			m_TextureDetailOption;
-	protected ref ListOptionsAccess			m_CloudsDetailOption;
 	protected ref ListOptionsAccess			m_ShadowDetailOption;
 	
 	//Rendering
@@ -85,7 +83,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "object_detail_setting_option" ).SetUserID( AT_OBJECTS_DETAIL );
 		m_Root.FindAnyWidget( "terrain_detail_setting_option" ).SetUserID( AT_OPTIONS_TERRAIN );
 		m_Root.FindAnyWidget( "texture_detail_setting_option" ).SetUserID( AT_TEXTURE_DETAIL );
-		m_Root.FindAnyWidget( "clouds_detail_option" ).SetUserID( AT_OPTIONS_SW_VALUE );
 		m_Root.FindAnyWidget( "shadow_detail_setting_option" ).SetUserID( AT_SHADOW_DETAIL );
 		
 		//Rendering
@@ -103,7 +100,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		ref array<string> opt2			= { "#options_video_fullscreen", "#options_video_windowed" };
 		ref array<string> opt3			= { "#options_video_low", "#options_video_medium", "#options_video_high" };
 		ref array<string> opt4			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
-		ref array<string> opt41			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high" };
+		ref array<string> opt41			= { "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
 		ref array<string> opt5			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme", "#options_video_custom" };
 		ref array<string> opt6			= { "#options_controls_disabled", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
 		ref array<string> opt7			= { "#options_controls_disabled", "#options_video_low", "#options_video_medium", "#options_video_high" };
@@ -130,7 +127,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ObjectDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "object_detail_setting_option" ), m_ObjectDetailOption.GetIndex(), this, false, opt4 );
 		m_TerrainDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "terrain_detail_setting_option" ), m_TerrainDetailOption.GetIndex(), this, false, opt4 );
 		m_TextureDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "texture_detail_setting_option" ), m_TextureDetailOption.GetIndex(), this, false, opt4 );
-		m_CloudsDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "clouds_detail_option" ), m_CloudsDetailOption.GetIndex(), this, false, opt4 );
 		m_ShadowDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "shadow_detail_setting_option" ), m_ShadowDetailOption.GetIndex(), this, false, opt4 );
 		
 		//Rendering
@@ -157,7 +153,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ObjectDetailSelector.m_OptionChanged.Insert( OnObjectDetailChanged );
 		m_TerrainDetailSelector.m_OptionChanged.Insert( OnTerrainDetailChanged );
 		m_TextureDetailSelector.m_OptionChanged.Insert( OnTextureDetailChanged );
-		m_CloudsDetailSelector.m_OptionChanged.Insert( OnCloudsDetailChanged );
 		m_ShadowDetailSelector.m_OptionChanged.Insert( OnShadowDetailChanged );
 		
 		//Rendering
@@ -177,6 +172,8 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "video_settings_root" ).GetScreenSize( x, y2 );
 		int f = ( y2 > y );
 		m_Root.FindAnyWidget( "video_settings_scroll" ).SetAlpha( f );
+		
+		m_Root.SetHandler( this );
 	}
 	
 	void ~OptionsMenuVideo()
@@ -235,7 +232,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ObjectDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OBJECTS_DETAIL ) );
 		m_TerrainDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_TERRAIN ) );
 		m_TextureDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_TEXTURE_DETAIL ) );
-		m_CloudsDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_SW_VALUE ) );
 		m_ShadowDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_SHADOW_DETAIL ) );
 		
 		//Rendering
@@ -255,7 +251,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ObjectDetailSelector.SetValue( m_ObjectDetailOption.GetIndex(), false );
 		m_TerrainDetailSelector.SetValue( m_TerrainDetailOption.GetIndex(), false );
 		m_TextureDetailSelector.SetValue( m_TextureDetailOption.GetIndex(), false );
-		m_CloudsDetailSelector.SetValue( m_CloudsDetailOption.GetIndex(), false );
 		m_ShadowDetailSelector.SetValue( m_ShadowDetailOption.GetIndex(), false );
 		
 		//Rendering
@@ -274,6 +269,29 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ATOCSelector.SetValue( m_ATOCOption.GetIndex(), false );
 		m_AOSelector.SetValue( m_AOOption.GetIndex(), false );
 		m_PPQualitySelector.SetValue( m_PPQualityOption.GetIndex(), false );
+	}
+	
+	override bool OnMouseEnter( Widget w, int x, int y )
+	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorHighlight( w );
+		
+		return true;
+	}
+	
+	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
+	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorNormal( w );
+		return true;
 	}
 	
 	void OnOptionChanged()
@@ -341,13 +359,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	void OnTextureDetailChanged( int value )
 	{
 		m_TextureDetailOption.SetIndex( value );
-		OnOptionChanged();
-		m_Menu.OnChanged();
-	}
-	
-	void OnCloudsDetailChanged( int value )
-	{
-		m_CloudsDetailOption.SetIndex( value );
 		OnOptionChanged();
 		m_Menu.OnChanged();
 	}
@@ -455,7 +466,6 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_TextMap.Insert( AT_OBJECTS_DETAIL, new Param2<string, string>( "#options_video_object_detail", "#options_video_object_detail_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_TERRAIN, new Param2<string, string>( "#options_video_terrain_detail", "#options_video_terrain_detail_desc" ) );
 		m_TextMap.Insert( AT_TEXTURE_DETAIL, new Param2<string, string>( "#options_video_texture_detail", "#options_video_texture_detail_desc" ) );
-		m_TextMap.Insert( AT_OPTIONS_SW_VALUE, new Param2<string, string>( "#options_video_clouds_detail", "#options_video_clouds_detail_desc" ) );
 		m_TextMap.Insert( AT_SHADOW_DETAIL, new Param2<string, string>( "#options_video_shadow_detail", "#options_video_shadow_detail_desc" ) );
 		m_TextMap.Insert( AT_ANISO_DETAIL, new Param2<string, string>( "#options_video_texture_filtering", "#options_video_texture_filtering_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_TERRAIN_SHADER, new Param2<string, string>( "#options_video_terrain_surface_detail", "#options_video_terrain_surface_detail_desc" ) );

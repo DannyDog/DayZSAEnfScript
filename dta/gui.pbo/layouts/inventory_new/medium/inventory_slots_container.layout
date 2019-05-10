@@ -2,16 +2,17 @@ GridSpacerWidgetClass height_wrapper {
  clipchildren 0
  ignorepointer 1
  color 0 0 0 0
- size 491 62
+ size 1 62
  hexactpos 1
  vexactpos 1
- hexactsize 1
+ hexactsize 0
  vexactsize 1
  priority 8
  userID -1
  style Colorable
- Padding 1
+ Padding 0
  Margin 0
+ "Size To Content V" 1
  content_valign center
  Columns 8
  Rows 1
@@ -377,7 +378,6 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 1 0.8824 1 1
          position 0 0
          size 1 1
          hexactpos 1

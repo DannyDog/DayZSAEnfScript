@@ -50,6 +50,9 @@ class ActionAnimateSeats: ActionAnimateCarSelection
 						if ( car.GetCarDoorsState( "NivaCoDriverDoors" ) == CarDoorState.DOORS_CLOSED || transport.CrewMember( DayZPlayerConstants.VEHICLESEAT_CODRIVER )  )
 							return false;
 					}
+					
+					if ( !transport.CanReachSeatFromDoors(selections[i], player.GetPosition(), 1.0) )
+						return false;
 
 					return true;
 				}

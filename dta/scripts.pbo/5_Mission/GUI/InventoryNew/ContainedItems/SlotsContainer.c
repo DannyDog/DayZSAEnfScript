@@ -1,10 +1,25 @@
 class SlotsContainer: LayoutHolder
 {
-	int m_ColumnCount;
+	protected int						m_ColumnCount;
+	protected ref array<ref SlotsIcon>	m_Icons;
+	
 	void SlotsContainer( LayoutHolder parent ) 
 	{
-		//TODO: create layout for SlotsContainer and set ARGB there
-		//m_ParentWidget.SetColor( ARGB( 175, 155, 155, 155 ) );
+		m_Icons = new array<ref SlotsIcon>;
+		for( int i = 0; i < ITEMS_IN_ROW; i++ )
+		{
+			if( GetRootWidget().FindAnyWidget( "Icon" + i ) )
+				m_Icons.Insert( new SlotsIcon( this, GetRootWidget().FindAnyWidget( "Icon" + i ), i ) );
+			else
+			{
+				Widget child = GetRootWidget().GetChildren();
+				while( child )
+				{
+					Print( child.GetName() );
+					child = child.GetSibling();
+				}
+			}
+		}
 	}
 
 	void SetColumnCount( int column_count )
@@ -15,6 +30,16 @@ class SlotsContainer: LayoutHolder
 	int GetColumnCount()
 	{
 		return m_ColumnCount;
+	}
+	
+	SlotsIcon GetSlotIcon( int index )
+	{
+		if( m_Icons.IsValidIndex( index ) )
+		{
+			return m_Icons.Get( index );
+		}
+		
+		return null;
 	}
 
 	override void SetLayoutName()

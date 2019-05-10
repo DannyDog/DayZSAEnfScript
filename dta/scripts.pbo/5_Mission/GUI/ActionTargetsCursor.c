@@ -50,27 +50,28 @@ class ATCCachedObject
 	}
 };
 
-class ActionTargetsCursor extends ObjectFollower
+class ActionTargetsCursor extends ScriptedWidgetEventHandler
 {
 	protected PlayerBase 					m_Player;
 	protected ActionTarget 					m_Target;
 	protected ref ATCCachedObject			m_CachedObject;
 
 	protected ActionBase					m_Interact;
+	protected ActionBase					m_ContinuousInteract;
 	protected ActionBase					m_Single;
 	protected ActionBase					m_Continuous;
 	protected ActionManagerClient 			m_AM;
 
 	protected int							m_InteractActionsNum;
+	protected int							m_ContinuousInteractActionsNum;
 	protected bool 							m_HealthEnabled;
 	protected bool							m_QuantityEnabled;	
 	protected bool							m_FixedOnPosition;
 	protected bool 							m_Hidden;
 
+	protected Widget						m_Root;
 	protected Widget						m_Container;
 	protected Widget 						m_ItemLeft;
-	ref AutoHeightSpacer					m_MainSpacer;
-	ref AutoHeightSpacer					m_HealthQuantitySpacer;
 
 	//! widget width
 	protected float m_MaxWidthChild;
@@ -79,19 +80,20 @@ class ActionTargetsCursor extends ObjectFollower
 
 	void ActionTargetsCursor()
 	{
-		m_Interact = null;
-		m_Single = null;
-		m_Continuous = null;
-		m_AM = null;
+		m_Interact 				= null;
+		m_ContinuousInteract	= null;
+		m_Single				= null;
+		m_Continuous			= null;
+		m_AM					= null;
 		
-		m_HealthEnabled = true;
-		m_QuantityEnabled = true;
+		m_HealthEnabled			= true;
+		m_QuantityEnabled		= true;
 		
-		m_CachedObject = new ATCCachedObject;
-		m_Hidden = false;
-		
-		//KeysToUIElements.Init(); // Initialiaze of KeysToUIElements
+		m_CachedObject 			= new ATCCachedObject;
+		m_Hidden 				= false;
 	}
+	
+	void ~ActionTargetsCursor() {}
 	
 	// Controls appearance of the builded cursor
 	void SetHealthVisibility( bool state)
@@ -107,6 +109,11 @@ class ActionTargetsCursor extends ObjectFollower
 	void SetInteractXboxIcon( string imageset_name, string image_name )
 	{
 		SetXboxIcon( "interact", imageset_name, image_name );
+	}
+
+	void SetContinuousInteractXboxIcon( string imageset_name, string image_name )
+	{
+		SetXboxIcon( "continuous_interact", imageset_name, image_name );
 	}
 	
 	void SetSingleXboxIcon( string imageset_name, string image_name )
@@ -125,31 +132,28 @@ class ActionTargetsCursor extends ObjectFollower
 		w.LoadImageFile( 0, "set:"+ imageset_name + " image:" + image_name );
 	}
 
-	override protected void OnWidgetScriptInit(Widget w)
+	protected void OnWidgetScriptInit(Widget w)
 	{
-		super.OnWidgetScriptInit(w);
-
 		m_Root = w;
 		m_Root.Show(false);
+		m_Root.SetHandler(this);
 
 		m_Container = w.FindAnyWidget("container");
-		m_Container.GetScript(m_MainSpacer);
 		m_ItemLeft = w.FindAnyWidget("item_left");
-		m_ItemLeft.GetScript(m_HealthQuantitySpacer);
 		m_Root.Update();
-		m_MainSpacer.Update();
-		m_HealthQuantitySpacer.Update();
 
 #ifdef PLATFORM_XBOX		
 		SetSingleXboxIcon("xbox_buttons", "RT");
 		SetContinuousXboxIcon("xbox_buttons", "RT");
 		SetInteractXboxIcon("xbox_buttons", "X");
+		SetContinuousInteractXboxIcon("xbox_buttons", "X");
 #endif
 
 #ifdef PLATFORM_PS4		
 		SetSingleXboxIcon("playstation_buttons", "R2");
 		SetContinuousXboxIcon("playstation_buttons", "R2");
 		SetInteractXboxIcon("playstation_buttons", "square");
+		SetContinuousInteractXboxIcon("playstation_buttons", "square");
 #endif
 	}
 
@@ -173,6 +177,10 @@ class ActionTargetsCursor extends ObjectFollower
 		SetInteractActionIcon("interact", "interact_icon_frame", "interact_btn_inner_icon", "interact_btn_text");
 		SetItemDesc(GetItemDesc(m_Interact), cargoCount, "item", "item_desc");
 		SetActionWidget(m_Interact, GetActionDesc(m_Interact), "interact", "interact_action_name");
+		#ifndef OLD_ACTIONS
+		SetInteractActionIcon("continuous_interact", "continuous_interact_icon_frame", "continuous_interact_btn_inner_icon", "continuous_interact_btn_text");
+		SetActionWidget(m_ContinuousInteract, GetActionDesc(m_ContinuousInteract), "continuous_interact", "continuous_interact_action_name");
+		#endif
 		SetActionWidget(m_Single, GetActionDesc(m_Single), "single", "single_action_name");
 		SetActionWidget(m_Continuous, GetActionDesc(m_Continuous), "continuous", "continuous_action_name");
 		SetMultipleInteractAction("interact_mlt_wrapper");
@@ -188,10 +196,6 @@ class ActionTargetsCursor extends ObjectFollower
 		y = h/2 + 32;
 
 		m_Root.SetPos(x, y);
-
-		UpdateWidth();
-		m_MainSpacer.Update();
-		m_HealthQuantitySpacer.Update();	
 	}
 	
 	protected void BuildFloatingCursor(bool forceRebuild)
@@ -218,49 +222,36 @@ class ActionTargetsCursor extends ObjectFollower
 		pos_y = Math.Ceil(pos_y);
 
 		m_Root.SetPos(pos_x, pos_y);
-
-		UpdateWidth();
-		m_MainSpacer.Update();
-		m_HealthQuantitySpacer.Update();
+	}
+	
+	override bool OnUpdate(Widget w)
+	{
+		if (m_Root == w)
+		{
+			Update();
+			return true;
+		}
+		
+		return false;
 	}
 
-	protected void UpdateWidth()
+	protected void HideWidget()
 	{
-		m_Root.GetSize(m_RootWidth, m_RootHeight);
-		Widget child = m_Root.GetChildren();
-		int index = 0;
-		int width;
-
-		if (m_MaxWidthChild > 100 && m_MaxWidthChild < m_RootWidth)
+		if (m_Root.IsVisible())
 		{
-			m_Root.SetSize(m_MaxWidthChild + 60, 0);
-			while (child)
-			{
-				child.SetSize(m_MaxWidthChild + 60, 40);
-				index++;
-				child = child.GetSibling();
-			}
-		}
-		else
-		{
-			m_Root.SetSize(350, 170);
-			while (child)
-			{
-				child.SetSize(290, 40);
-				index++;
-				child = child.GetSibling();
-			}
+			m_Root.Show(false);
+			m_CachedObject.Invalidate();
 		}
 	}
 	
-	override protected void Update()
+	void Update()
 	{
 		//! don't show floating widget if it's disabled in profile
-		if(!g_Game.GetProfileOption(EDayZProfilesOptions.HUD))
+		if(GetGame().GetUIManager().GetMenu() != null || !g_Game.GetProfileOption(EDayZProfilesOptions.HUD))
 		{
-			m_Root.Show(false);
+			HideWidget();
 			return;
-		};
+		}
 
 		// TODO: if we choose to have it configurable throught options or from server settings
 		// we need to change setting of these methods;
@@ -272,19 +263,21 @@ class ActionTargetsCursor extends ObjectFollower
 			m_Player = null;
 			m_AM = null;
 		}
+
 		if(!m_Player) GetPlayer();
 		if(!m_AM) GetActionManager();
+
 		GetTarget();
 		GetActions();
 
 #ifdef PLATFORM_CONSOLE
-		if(((m_Target && !m_Hidden) && ((m_Interact || m_Single || m_Continuous)) && m_AM.GetRunningAction() == null) && GetGame().GetUIManager().GetMenu() == null)
+		if((m_Target && !m_Hidden) && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
 #else
-		if(((m_Target && !m_Hidden) || ((m_Interact || m_Single || m_Continuous)) && m_AM.GetRunningAction() == null) && GetGame().GetUIManager().GetMenu() == null)
+		if((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
 #endif
 		{
 			//! cursor with fixed position (environment interaction mainly)
-			if ( m_Target.GetObject() == null && m_Interact)
+			if ( m_Target.GetObject() == null && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous))
 			{
 				//Print(">> fixed widget");
 				m_CachedObject.Invalidate();
@@ -347,7 +340,6 @@ class ActionTargetsCursor extends ObjectFollower
 					// remove previous backlit
 					GetDayZGame().GetBacklit().HintClear();
 				}
-				
 			}
 		}
 		else
@@ -361,7 +353,6 @@ class ActionTargetsCursor extends ObjectFollower
 				// remove previous backlit
 				GetDayZGame().GetBacklit().HintClear();
 			}
-			
 		}
 		
 		m_MaxWidthChild = 350;
@@ -392,7 +383,7 @@ class ActionTargetsCursor extends ObjectFollower
 		return transformed_pos;
 	}
 
-	override protected void GetOnScreenPosition(out float x, out float y)
+	protected void GetOnScreenPosition(out float x, out float y)
 	{
 		const float 	DEFAULT_HANDLE_OFFSET 	= 0.2;
 		const string 	CE_CENTER_COMP_NAME 	= "ce_center";
@@ -624,6 +615,7 @@ class ActionTargetsCursor extends ObjectFollower
   	protected void GetActions()
 	{
 		m_Interact = null;
+		m_ContinuousInteract = null;
 		m_Single = null;
 		m_Continuous = null;
 
@@ -631,7 +623,28 @@ class ActionTargetsCursor extends ObjectFollower
 		if(!m_Target) return;
 		if(m_Player.IsSprinting()) return;
 		if(m_Player.IsInVehicle()) return; // TODO: TMP: Car AM rework needed
-
+#ifndef OLD_ACTIONS			
+		array<ActionBase> possible_interact_actions = m_AM.GetPossibleActions(InteractActionInput);
+		array<ActionBase> possible_continuous_interact_actions = m_AM.GetPossibleActions(ContinuousInteractActionInput);
+		int possible_interact_actions_index = m_AM.GetPossibleActionIndex(InteractActionInput);
+		int possible_continuous_interact_actions_index = m_AM.GetPossibleActionIndex(ContinuousInteractActionInput);
+		
+		m_InteractActionsNum = possible_interact_actions.Count();
+		if( m_InteractActionsNum > 0 )
+		{
+			m_Interact = possible_interact_actions[possible_interact_actions_index];
+		}
+		
+		m_ContinuousInteractActionsNum = possible_continuous_interact_actions.Count();
+		if( m_ContinuousInteractActionsNum > 0 )
+		{
+			m_ContinuousInteract = possible_continuous_interact_actions[possible_continuous_interact_actions_index];
+		}
+		
+		
+		m_Single = m_AM.GetPossibleAction(DefaultActionInput);
+		m_Continuous = m_AM.GetPossibleAction(ContinuousDefaultActionInput);
+#else
 		TSelectableActionInfoArray selectableActions = m_AM.GetSelectableActions();
 		int selectedActionIndex = m_AM.GetSelectedActionIndex();
 		m_InteractActionsNum = selectableActions.Count();
@@ -642,6 +655,7 @@ class ActionTargetsCursor extends ObjectFollower
 				
 		m_Single = m_AM.GetSingleUseAction();
 		m_Continuous = m_AM.GetContinuousAction();
+#endif
 	}
 
 	protected void GetTarget()
@@ -788,10 +802,14 @@ class ActionTargetsCursor extends ObjectFollower
 	protected void SetItemDesc(string descText, int cargoCount, string itemWidget, string descWidget)
 	{
 		Widget widget;
-		
 		widget = m_Root.FindAnyWidget(itemWidget);
 		
-		if(descText.Length() == 0)
+		//! Last message from finished User Action on target (Thermometer, Blood Test Kit, etc. )
+		PlayerBase playerT = PlayerBase.Cast(m_Target.GetObject());
+		if (playerT)
+			string msg = playerT.GetLastUAMessage();
+				
+		if(descText.Length() == 0 && msg.Length() == 0)
 		{
 			widget.Show(false);
 			return;
@@ -800,22 +818,16 @@ class ActionTargetsCursor extends ObjectFollower
 		descText.ToUpper();
 		TextWidget itemName;
 		Class.CastTo(itemName, widget.FindAnyWidget(descWidget));
-
+	
 		//! when cargo in container
 		if (cargoCount > 0)
 		{
-			descText = string.Format("[+] %1 ", descText, cargoCount);
+			descText = string.Format("[+] %1  %2", descText, msg);
 			itemName.SetText(descText);		
 		}
 		else
+			descText = string.Format("%1  %2", descText, msg);
 			itemName.SetText(descText);
-		
-		/*
-		int x, y;
-		itemName.GetTextSize(x, y);
-		if (x > m_MaxWidthChild);
-			m_MaxWidthChild = x;
-		*/
 
 		widget.Show(true);
 	}
@@ -940,7 +952,11 @@ class ActionTargetsCursor extends ObjectFollower
 			{
 				TextWidget actionName;
 				Class.CastTo(actionName, widget.FindAnyWidget(descWidget));
+				#ifndef OLD_ACTIONS
+				if(action.GetInput().GetInputType() == ActionInputType.AIT_CONTINUOUS)
+				#else
 				if(action.GetActionCategory() == AC_CONTINUOUS)
+				#endif
 				{
 					descText = descText + " " + "#action_target_cursor_hold";
 					actionName.SetText(descText);

@@ -20,10 +20,10 @@ class KeybindingsGroup extends ScriptedWidgetEventHandler
 		m_Root	= GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/options/keybindings_selectors/keybinding_group.layout", parent );
 		Widget subgroup	= m_Root.FindAnyWidget( "group_content" );
 		
-		for( int i = 0; i < 1; i++ )
-		{
-			AddSubgroup( index, subgroup, input );
-		}
+//		for( int i = 0; i < 1; i++ )
+//		{
+			AddSubgroup( /*index, */subgroup, input );
+//		}
 		
 		InitPresets( index, m_Root.FindAnyWidget( "group_header" ), input );
 		
@@ -76,7 +76,7 @@ class KeybindingsGroup extends ScriptedWidgetEventHandler
 		}
 	}
 	
-	void AddSubgroup( int index, Widget parent, Input input )
+	void AddSubgroup( /*int index, */Widget parent, Input input )
 	{
 		Widget subgroup				= GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/options/keybindings_selectors/keybinding_subgroup.layout", parent );
 		TextWidget subgroup_name	= TextWidget.Cast( subgroup.FindAnyWidget( "subgroup_text" ) );
@@ -85,7 +85,7 @@ class KeybindingsGroup extends ScriptedWidgetEventHandler
 		Widget subgroup_content = subgroup.FindAnyWidget( "subgroup_content" );
 		
 		TIntArray actions = new TIntArray;
-		input.GetActionGroupItems( index, actions );
+		GetUApi().GetActiveInputs(actions);
 		for( int i = 0; i < actions.Count(); i++ )
 		{
 			AddAction( actions.Get( i ), subgroup_content, input );
@@ -177,14 +177,15 @@ class KeybindingsGroup extends ScriptedWidgetEventHandler
 			{
 				array<int> new_keys		= element.GetChangedBinds();
 				
-				if( input.AlternativeCount() == 0 )
+/*				if( input.AlternativeCount() == 0 )
 				{
 					input.AddAlternative();
 				}
-				else
+				else*/
 				{
-					input.SelectAlternative( 0 );
-					input.ClearAlternative( 0 );
+					input.ClearDeviceBind(EUAINPUT_DEVICE_KEYBOARDMOUSE);
+//					input.SelectAlternative( 0 );
+//					input.ClearAlternative( 0 );
 				}
 				
 				if( new_keys.Count() > 0 )
@@ -206,14 +207,15 @@ class KeybindingsGroup extends ScriptedWidgetEventHandler
 					input.AddAlternative();				
 				}
 				
-				if( input.AlternativeCount() < 2 )
+/*				if( input.AlternativeCount() < 2 )
 				{
 					input.AddAlternative();
 				}
-				else
+				else*/
 				{
-					input.SelectAlternative( 1 );
-					input.ClearAlternative( 1 );
+					input.ClearDeviceBind(EUAINPUT_DEVICE_CONTROLLER);
+//					input.SelectAlternative( 1 );
+//					input.ClearAlternative( 1 );
 				}
 				
 				if( new_alt_keys.Count() > 0 )

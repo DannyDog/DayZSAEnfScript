@@ -1,6 +1,8 @@
 /*! Xbox menu */
 class TitleScreenMenu extends UIScriptedMenu
 {
+	RichTextWidget m_TextPress;
+	
 	void TitleScreenMenu()
 	{
 		g_Game.SetGameState( DayZGameState.MAIN_MENU );
@@ -17,18 +19,27 @@ class TitleScreenMenu extends UIScriptedMenu
 		
 		MissionMainMenu mission = MissionMainMenu.Cast( g_Game.GetMission() );
 		
-		RichTextWidget text_widget = RichTextWidget.Cast( layoutRoot.FindAnyWidget("InputPromptText") );
-		if (text_widget)
+		m_TextPress = RichTextWidget.Cast( layoutRoot.FindAnyWidget("InputPromptText") );
+		if (m_TextPress)
 		{
 			string gamertag;
 			GetGame().GetPlayerName(gamertag);
 			
 			#ifdef PLATFORM_XBOX
-					text_widget.SetText("#dayz_game_press" + " " + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
+				m_TextPress.SetText("#dayz_game_press" + " " + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
 			#endif
 					
 			#ifdef PLATFORM_PS4
-					text_widget.SetText("#dayz_game_press" + " " + "<image set=\"playstation_buttons\" name=\"cross\" />" + "" + "#dayz_game_to_start");
+				string confirm = "cross";
+				if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+				{
+					confirm = "cross";
+				}
+				else
+				{
+					confirm = "circle";
+				}
+				m_TextPress.SetText("#ps4_dayz_game_press" + "" + "<image set=\"playstation_buttons\" name=\"" + confirm + "\" />" + "" + "#ps4_dayz_game_to_start");
 			#endif
 		}
 		return layoutRoot;
@@ -42,6 +53,8 @@ class TitleScreenMenu extends UIScriptedMenu
 				g_Game.GamepadCheck();
 			#endif
 		}
+		
+		SetWidgetAnimAlpha( m_TextPress );
 	}
 	
 	override void OnHide()
@@ -50,12 +63,14 @@ class TitleScreenMenu extends UIScriptedMenu
 	
 	override void Update(float timeslice)
 	{
-		if( GetGame().GetInput().GetActionDown("UAUISelect",false) )
+		super.Update( timeslice );
+		
+		if( GetGame().GetInput().LocalPress("UAUISelect",false) )
 		{
 			#ifdef PLATFORM_WINDOWS
 				EnterScriptedMenu(MENU_MAIN);
 			#endif
-			#ifdef PLATFORM_CONSOLE
+			#ifdef PLATFORM_XBOX
 				g_Game.GamepadCheck();
 			#endif
 		}

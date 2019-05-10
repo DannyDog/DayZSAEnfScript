@@ -129,6 +129,11 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 	}
 	
+	override EntityAI GetFocusedContainerEntity()
+	{
+		return m_Entity;
+	}
+	
 	override Container GetFocusedContainer()
 	{
 		int index = m_ActiveIndex - 1;
@@ -197,8 +202,44 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 	{
 		super.SetActive( active );
 		UnfocusAll();
+		
+		if( GetFocusedContainer() )
+			GetFocusedContainer().SetActive( active );
 		if( active )
 			SetFocusToIndex( true );
+	}
+	
+	override void SetLastActive()
+	{
+		if( GetFocusedContainer() )
+		{
+			GetFocusedContainer().UnfocusAll();
+		}
+		
+		Container old = GetFocusedContainer();
+		m_ActiveIndex = m_Body.Count() - 1;
+		if( old != GetFocusedContainer() )
+			old.SetActive( false );
+		
+		SetFocusToIndex( true, true );
+	}
+	
+	void EquipmentMoveUp()
+	{
+		PlayerContainer pc = PlayerContainer.Cast( m_Parent );
+		if( pc )
+		{
+			pc.MoveContainerUp( this );
+		}
+	}
+	
+	void EquipmentMoveDown()
+	{
+		PlayerContainer pc = PlayerContainer.Cast( m_Parent );
+		if( pc )
+		{
+			pc.MoveContainerDown( this );
+		}
 	}
 
 	void SetDefaultFocus()
@@ -339,20 +380,24 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else
 		{
+			if( GetFocusedContainer() )
+				GetFocusedContainer().SetActive( false );
 			SetFocusToIndex( false );
 			m_ActiveIndex++;
+			if( GetFocusedContainer() )
+				GetFocusedContainer().SetActive( true );
 			SetFocusToIndex( true );
 		}
 	}
 
-	override void SetPreviousActive()
+	override void SetPreviousActive( bool force = false )
 	{
 		if( ItemManager.GetInstance().IsMicromanagmentMode() )
 		{
 			ItemManager.GetInstance().SetItemMoving( true );
 		}
 		
-		if( IsFirstIndex() )
+		if( IsFirstIndex() || force )
 		{
 			Container.Cast( GetParent() ).SetPreviousActive();
 			m_ActiveIndex = 1;
@@ -360,13 +405,17 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else
 		{
+			if( GetFocusedContainer() )
+				GetFocusedContainer().SetActive( false );
 			SetFocusToIndex( false );
 			m_ActiveIndex--;
+			if( GetFocusedContainer() )
+				GetFocusedContainer().SetActive( true );
 			SetFocusToIndex( true );
 		}
 	}
 	
-	void SetFocusToIndex( bool focus )
+	void SetFocusToIndex( bool focus, bool last = false )
 	{
 		int index = m_ActiveIndex - 1;
 		int attachment_start_index = -1;
@@ -397,24 +446,52 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				if( index == 0 )
 				{
 					if( focus )
-						m_Atts.SetDefaultFocus();
+					{
+						m_Atts.SetActive(true);
+						if( last )
+							m_Atts.SetLastActive();
+						else
+							m_Atts.SetDefaultFocus();
+					}
 					else
+					{
 						m_Atts.UnfocusAll();
+						m_Atts.SetActive(false);
+					}
 				}
 				else
 				{
 					if( focus )
-						m_AttachmentAttachments.GetElement( index - 1 ).SetDefaultFocus();
+					{
+						m_AttachmentAttachments.GetElement( index - 1 ).SetActive(true);
+						if( last )
+							m_AttachmentAttachments.GetElement( index - 1 ).SetLastActive();
+						else
+							m_AttachmentAttachments.GetElement( index - 1 ).SetDefaultFocus();
+					}
 					else
+					{
 						m_AttachmentAttachments.GetElement( index - 1 ).UnfocusAll();
+						m_AttachmentAttachments.GetElement( index - 1 ).SetActive(false);
+					}
+					
 				}
 			}
 			else
 			{
 				if( focus )
-					m_AttachmentAttachments.GetElement( index ).SetDefaultFocus();
+				{
+					m_AttachmentAttachments.GetElement( index ).SetActive(true);
+					if( last )
+						m_AttachmentAttachments.GetElement( index ).SetLastActive();
+					else
+						m_AttachmentAttachments.GetElement( index ).SetDefaultFocus();
+				}
 				else
+				{
 					m_AttachmentAttachments.GetElement( index ).UnfocusAll();
+					m_AttachmentAttachments.GetElement( index ).SetActive(false);
+				}
 			}
 		}
 		else if( index.InRange( cargo_start_index, cargo_end_index ) )
@@ -424,24 +501,51 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				if( index == cargo_start_index )
 				{
 					if( focus )
-						m_CargoGrid.SetDefaultFocus();
+					{
+						m_CargoGrid.SetActive(true);
+						if( last )
+							m_CargoGrid.SetLastActive();
+						else
+							m_CargoGrid.SetDefaultFocus();
+					}
 					else
+					{
 						m_CargoGrid.UnfocusAll();
+						m_CargoGrid.SetActive(false);
+					}	
 				}
 				else
 				{
 					if( focus )
-						m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).SetDefaultFocus();
+					{
+						m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).SetActive(true);
+						if( last )
+							m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).SetLastActive();
+						else
+							m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).SetDefaultFocus();
+					}
 					else
+					{
 						m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).UnfocusAll();
+						m_AttachmentCargos.GetElement( index - 1 - cargo_start_index ).SetActive(false);
+					}
 				}
 			}
 			else
 			{
 				if( focus )
-					m_AttachmentCargos.GetElement( index - cargo_start_index ).SetDefaultFocus();
+				{
+					m_AttachmentCargos.GetElement( index - cargo_start_index ).SetActive(true);
+					if( last )
+						m_AttachmentCargos.GetElement( index - cargo_start_index ).SetLastActive();
+					else
+						m_AttachmentCargos.GetElement( index - cargo_start_index ).SetDefaultFocus();
+				}
 				else
+				{
 					m_AttachmentCargos.GetElement( index - cargo_start_index ).UnfocusAll();
+					m_AttachmentCargos.GetElement( index - cargo_start_index ).SetActive(false);
+				}
 			}
 		}
 	}
@@ -449,20 +553,25 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 	void SetEntity( EntityAI entity )
 	{
 		m_Entity = entity;
-
-		Header h = Header.Cast( m_Body.Get(0) );
-		h.SetName( entity.GetDisplayName() );
-		h.SetItemPreview( m_Entity );
 		
 		m_Atts = new Attachments( this, entity );
 		m_Atts.InitAttachmentGrid( 1 );
 		
-		if( entity.GetInventory().GetCargo() != NULL)
+		m_ClosableHeader.SetItemPreview( entity );
+		
+		if( entity.GetInventory().GetCargo() )
 		{
 			m_CargoGrid = new CargoContainer( this );
 			m_CargoGrid.GetRootWidget().SetSort( 2 );
 			m_CargoGrid.SetEntity( entity );
+			m_CargoGrid.UpdateHeaderText();
 			this.Insert( m_CargoGrid );
+		}
+		else
+		{
+			string name = m_Entity.GetDisplayName();
+			name.ToUpper();
+			m_ClosableHeader.SetName( name );
 		}
 
 		m_AttachmentCargos					= new map<EntityAI, ref CargoContainer>;
@@ -575,13 +684,12 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		ItemManager.GetInstance().HideDropzones();
 		if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 		{
-			ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 		}
 		else
 		{
-			ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+			ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 		}
-		ItemManager.GetInstance().SetIsDragging( true );
 		string name = w.GetName();
 		name.Replace( "PanelWidget", "Render" );
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget(name) );
@@ -589,33 +697,39 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		int m_sizeX, m_sizeY;
 
 		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-		m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-		icon_x = x_content / 10;
-		icon_y = x_content / 10;
-		w.SetFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( icon_x, icon_y );
-		w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-
-		if( !ipw.GetItem() )
+		if( i_item ) 
 		{
-			return;
+			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
+	
+			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
+			icon_x = x_content / 10;
+			icon_y = x_content / 10;
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			if( i_item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
+			}
+			else
+			{
+				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
+			}
+
+			name.Replace( "Render", "Col" );
+			w.FindAnyWidget( name ).Show( true );
+			name.Replace( "Col", "RadialIcon" );
+			w.GetParent().FindAnyWidget( name ).Show( false );
+			name.Replace( "RadialIcon", "Temperature" );
+			w.FindAnyWidget( name ).Show( false );
+			name.Replace( "Temperature", "Selected" );
+			w.FindAnyWidget( name ).Show( true );
+			ItemManager.GetInstance().SetDraggedItem( i_item );
+			ItemManager.GetInstance().SetIsDragging( true );
 		}
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( true );
-		name.Replace( "Col", "RadialIcon" );
-		w.GetParent().FindAnyWidget( name ).Show( false );
-		name.Replace( "RadialIcon", "Temperature" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Temperature", "Selected" );
-		w.FindAnyWidget( name ).Show( true );
 	}
 
 	void OnIconDrop( Widget w )
 	{
 		ItemManager.GetInstance().HideDropzones();
-
 		ItemManager.GetInstance().SetIsDragging( false );
 		w.ClearFlags( WidgetFlags.EXACTSIZE );
 		w.SetSize( 1, 1 );
@@ -626,8 +740,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		w.FindAnyWidget( name ).Show( false );
 		name.Replace( "Temperature", "Selected" );
 		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Selected", "GhostSlot" );
-		w.GetParent().FindAnyWidget( name ).Show( true );
+		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
 	}
 
 	void DropReceived( Widget w, int x, int y, CargoContainer cargo )
@@ -668,7 +781,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		else
 			return;
 		
-		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y ) )
+		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 
@@ -678,38 +791,47 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			
 			if( icon )
 			{
-				w.FindAnyWidget("Selected").SetColor( ColorManager.BASE_COLOR );
+				if( w && w.FindAnyWidget("Selected") )
+					w.FindAnyWidget("Selected").SetColor( ColorManager.BASE_COLOR );
 				icon.Refresh();
 				Refresh();
 			}
 		}
 		
 		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 	}
 	
 	void TakeIntoCargo( notnull PlayerBase player, notnull EntityAI entity, notnull EntityAI item, int idx = -1, int row = 0, int col = 0 )
 	{
 		ItemBase item_base = ItemBase.Cast( item );
-		float stackable = item_base.ConfigGetFloat("varStackMax");
-		
-		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
-			return;
-		
-		if( stackable == 0 || stackable >= item_base.GetQuantity() )
+		if( item_base )
 		{
-			if( idx != -1 )
-				player.PredictiveTakeEntityToTargetCargoEx( entity, item, idx, row, col );
-			else
-				player.PredictiveTakeEntityToTargetAttachment(entity, item);
+			float stackable = item_base.ConfigGetFloat("varStackMax");
+			
+			if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
+				return;
+			
+			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			{
+				if( idx != -1 )
+					player.PredictiveTakeEntityToTargetCargoEx( entity, item, idx, row, col );
+				else
+					player.PredictiveTakeEntityToTargetAttachment(entity, item);
+			}
+			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			{
+				item_base.SplitIntoStackMaxCargoClient( entity, idx, row, col );
+			}
 		}
-		else if( stackable != 0 && stackable < item_base.GetQuantity() )
-		{
-			item_base.SplitIntoStackMaxCargoClient( entity, idx, row, col );
-		}
+		
 	}
 
 	void TakeAsAttachment( Widget w, Widget receiver )
 	{
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
+		
 		EntityAI receiver_item;
 		int slot_id = -1;
 		string name = receiver.GetName();
@@ -772,7 +894,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
 			}
 		}
-		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			TakeIntoCargo( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
 		}
@@ -897,7 +1019,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		else
 			return false;
 		
-		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y ) )
+		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		{
 			color = ColorManager.GREEN_COLOR;
 		}
@@ -959,11 +1081,11 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					ItemManager.GetInstance().HideDropzones();
 					if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 					}
 					else
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 					}
 					ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 				}
@@ -971,16 +1093,17 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			else if( receiver_item )
 			{
 				ItemBase receiver_itemIB	= ItemBase.Cast( receiver_item );
-				if( receiver_itemIB && receiver_itemIB.CanBeCombined( ItemBase.Cast( item ) ) )
+				ItemBase itemIB				= ItemBase.Cast( receiver_item );
+				if( receiver_itemIB && itemIB && receiver_itemIB.CanBeCombined( itemIB ) )
 				{
 					ItemManager.GetInstance().HideDropzones();
 					if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 					}
 					else
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 					}
 					ColorManager.GetInstance().SetColor( w, ColorManager.COMBINE_COLOR );
 				}
@@ -989,11 +1112,11 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					ItemManager.GetInstance().HideDropzones();
 					if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 					}
 					else
 					{
-						ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+						ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 					}
 					ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 				}
@@ -1003,24 +1126,24 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				ItemManager.GetInstance().HideDropzones();
 				if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 				{
-					ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+					ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 				}
 				else
 				{
-					ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+					ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				}
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 			}
-			else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+			else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 			{
 				ItemManager.GetInstance().HideDropzones();
 				if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 				{
-					ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+					ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 				}
 				else
 				{
-					ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+					ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				}
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 			}

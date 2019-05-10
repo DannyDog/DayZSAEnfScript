@@ -8,6 +8,8 @@ class JsonControlMappingInfo
 
 class ControlsXbox extends UIScriptedMenu
 {
+	protected string 		m_BackButtonTextID;
+	
 	protected ImageWidget 	m_ControlsLayoutImage;
 	protected const int 	TABS_COUNT = 4;
 	protected ImageWidget 	m_tab_images[TABS_COUNT];
@@ -46,6 +48,7 @@ class ControlsXbox extends UIScriptedMenu
 		float draw_pos_x, draw_pos_y;
 		
 		CanvasWidget canvas_widget = CanvasWidget.Cast( layoutRoot.FindAnyWidget("CanvasWidget_" + index) );
+		canvas_widget.Clear();
 		control_mapping_info  = GetControlMappingInfo();
 		
 		for( int i = 0; i < m_TabScript.GetTabCount(); i++ )
@@ -223,7 +226,23 @@ class ControlsXbox extends UIScriptedMenu
 			{
 				group_point_x = group_point_x/element.Count() - 50;
 			}
-			group_point_y = group_point_y/element.Count() + text_widget_height/2;
+
+			if ( element.Count() % 2 == 0 )
+			{
+				group_point_y = ( ( text_widget_pos_y + text_widget_height/2 ) - first_y ) / 2 + first_y;
+			}
+			else
+			{
+				float text_widget_pos_x_center, text_widget_pos_y_center;
+				float text_widget_width_center, text_widget_height_center;
+				
+				panel_widget = layoutRoot.FindAnyWidget( "PanelWidget" + element[1] );
+				
+				panel_widget.GetScreenPos( text_widget_pos_x_center, text_widget_pos_y_center );
+				panel_widget.GetScreenSize( text_widget_width_center, text_widget_height_center );
+				
+				group_point_y = text_widget_pos_y_center + text_widget_height_center / 2;
+			}
 			
 			button_marker_widget.GetScreenPos( dot_pos_x, dot_pos_y );
 			button_marker_widget.GetScreenSize( dot_width, dot_height );
@@ -291,8 +310,17 @@ class ControlsXbox extends UIScriptedMenu
 			layoutRoot.FindAnyWidget("XboxControlsImage").Show( true );
 		#else
 		#ifdef PLATFORM_PS4
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				back = "circle";
+			}
+			else
+			{
+				back = "cross";
+			}
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			layoutRoot.FindAnyWidget("PSControlsImage").Show( true );
 		#endif
 		#endif
@@ -307,22 +335,42 @@ class ControlsXbox extends UIScriptedMenu
 	
 	override void Update( float timeslice )
 	{
-		if( GetGame().GetInput().GetActionDown("UAUITabLeft",false) )
+		if( GetGame().GetInput().LocalPress("UAUITabLeft",false) )
 		{
 			m_TabScript.PreviousTab();
 			DrawConnectingLines( m_TabScript.GetSelectedIndex() );
 		}
 		
 		//RIGHT BUMPER - TAB RIGHT
-		if( GetGame().GetInput().GetActionDown("UAUITabRight",false) )
+		if( GetGame().GetInput().LocalPress("UAUITabRight",false) )
 		{
 			m_TabScript.NextTab();
 			DrawConnectingLines( m_TabScript.GetSelectedIndex() );
 		}
 		
-		if( GetGame().GetInput().GetActionDown("UAUIBack",false) )
+		if( GetGame().GetInput().LocalPress("UAUIBack",false) )
 		{
 			Back();
 		}
+	}
+	
+	/// Initial texts load for the footer buttons
+	protected void LoadFooterButtonTexts()
+	{
+		TextWidget uiBackText 	= TextWidget.Cast(layoutRoot.FindAnyWidget( "BackText" ));		
+		
+		if (uiBackText)
+		{
+			uiBackText.SetText(m_BackButtonTextID);
+		}
+	}
+	/// Set correct bottom button texts based on platform (ps4 vs xbox texts)
+	protected void LoadTextStrings()
+	{
+		#ifdef PLATFORM_PS4
+			m_BackButtonTextID = "ps4_ingame_menu_back";
+		#else 
+			m_BackButtonTextID = "STR_rootFrame_toolbar_bg_ConsoleToolbar_Back_BackText0";	
+		#endif
 	}
 }

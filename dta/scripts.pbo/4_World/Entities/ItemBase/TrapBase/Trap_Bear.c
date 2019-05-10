@@ -66,9 +66,10 @@ class BearTrap extends TrapBase
 						if ( victim_MB.IsInherited(Man) ) // Do not damage OLD player through new damage system! Otherwise the game might crash!
 						{
 							string dmg_zone_hit = victim_MB.GetDamageZoneNameByComponentIndex(contactComponent);
-							Print(dmg_zone_hit);
-							victim_MB.ProcessDirectDamage(DT_CLOSE_COMBAT, this, dmg_zone_hit, "MeleeFist", "0 0 0", 1);
-							victim_MB.ProcessDirectDamage(DT_FIRE_ARM, this, dmg_zone_hit, "Bullet_556x45", "0 0 0", 1);
+							//Print(dmg_zone_hit);
+							victim_MB.ProcessDirectDamage(DT_CLOSE_COMBAT, this, dmg_zone_hit, "BearTrapHit", "0 0 0", 1);
+							
+							CauseVictimToStartLimping( victim_MB );
 
 							//debug
 							/* 
@@ -89,10 +90,11 @@ class BearTrap extends TrapBase
 					if ( Math.RandomIntInclusive(0, 1) == 1 )
 						dmg_zone_rnd = "RightFoot";
 					
-					Print(dmg_zone_rnd);
-					victim_MB.ProcessDirectDamage(DT_CLOSE_COMBAT, this, dmg_zone_rnd, "MeleeFist", "0 0 0", 1);
-					victim_MB.ProcessDirectDamage(DT_FIRE_ARM, this, dmg_zone_rnd, "Bullet_556x45", "0 0 0", 1);
+					//Print(dmg_zone_rnd);
+					victim_MB.ProcessDirectDamage(DT_CLOSE_COMBAT, this, dmg_zone_rnd, "BearTrapHit", "0 0 0", 1);
 
+					CauseVictimToStartLimping( victim_MB );
+					
 					//debug
 					/* 
 					PlayerBase player2 = PlayerBase.Cast( victim );
@@ -118,10 +120,22 @@ class BearTrap extends TrapBase
 			PlaySoundBiteEmpty();
 		}
 	}
+	
+	// Causes the player to start limping. Temporal solution until broken limbs are properly simulated.
+	void CauseVictimToStartLimping( ManBase player_MB )
+	{
+		PlayerBase player_PB = PlayerBase.Cast(player_MB);
+		
+		if (player_PB)
+		{
+			float target_health = player_PB.GetHealth() * 0.2;
+			player_PB.SetHealth(target_health);
+		}
+	}
 		
 	void PlaySoundBiteLeg()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapCloseDamage_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -129,7 +143,7 @@ class BearTrap extends TrapBase
 	
 	void PlaySoundBiteEmpty()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapClose_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -137,7 +151,7 @@ class BearTrap extends TrapBase
 	
 	void PlaySoundOpen()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapOpen_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -145,9 +159,12 @@ class BearTrap extends TrapBase
 	
 	override void OnActivate()
 	{
-		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer())
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			PlaySoundOpen();
+			if ( GetGame().GetPlayer() )
+			{
+				PlaySoundOpen();
+			}
 		}
 	}
 	
@@ -156,9 +173,7 @@ class BearTrap extends TrapBase
 	//================================================================
 	
 	override void OnPlacementComplete( Man player ) 
-	{
-		super.OnPlacementComplete( player );
-		
+	{		
 		if ( GetGame().IsServer() )
 		{
 			PlayerBase player_PB = PlayerBase.Cast( player );
@@ -176,5 +191,14 @@ class BearTrap extends TrapBase
 	override string GetLoopDeploySoundset()
 	{
 		return "beartrap_deploy_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
 	}
 }

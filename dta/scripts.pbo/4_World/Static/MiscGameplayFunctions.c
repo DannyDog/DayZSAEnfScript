@@ -53,10 +53,10 @@ class TurnItemIntoItemLambda extends ReplaceItemWithNewLambda
 			TIntArray inventory_slots_idx = new TIntArray;
 			TStringArray attach_types = new TStringArray;
 			
-			m_OldItem.ConfigGetTextArray("inventorySlot",inventory_slots);
+			m_OldItem.ConfigGetTextArray("ChangeInventorySlot",inventory_slots);
 			if (inventory_slots.Count() < 1) //is string
 			{
-				inventory_slots_idx.Insert(InventorySlots.GetSlotIdFromString(m_OldItem.ConfigGetString("inventorySlot")));
+				inventory_slots_idx.Insert(InventorySlots.GetSlotIdFromString(m_OldItem.ConfigGetString("ChangeInventorySlot")));
 				attach_types.Insert(m_OldItem.ConfigGetString("ChangeIntoOnAttach"));
 			}
 			else //is array
@@ -76,6 +76,14 @@ class TurnItemIntoItemLambda extends ReplaceItemWithNewLambda
 				m_NewItemType = str;
 			}
 		}
+	}
+	
+	override void OnSuccess (EntityAI new_item)
+	{
+		super.OnSuccess(new_item);
+		Human player = Human.Cast(m_Player);
+		if (player)
+			player.GetItemAccessor().OnItemInHandsChanged();
 	}
 };
 
@@ -189,6 +197,28 @@ enum TransferInventoryResult
 
 class MiscGameplayFunctions
 {	
+	//! Produces ACII "progress bar" based on an 0..1 'value' input
+	static string ValueToBar(float value, string bar = "[----------]", string mark = "x")
+	{
+		int length = bar.Length() - 2;
+		float index = Math.Lerp(0,length, value);
+		index = Math.Round(index);
+		index = Math.Clamp(index,0,length);
+		
+		return InsertAtPos(bar,mark,index);
+	}
+	
+	//! Insert 'insert' behind index 'pos' of the 'base' string
+	static string InsertAtPos(string base, string insert, int pos)
+	{
+		int length_first = pos+1;
+		int length_base = base.Length();
+		int length_second = length_base - length_first;
+		string first = base.Substring(0,length_first);
+		string second = base.Substring(pos+1,length_second);
+		return first + insert + second;
+	}
+	
 	//! will transform item' variables, agents and other local scripted properties as well as any relevant non-scripted properties like health
 	static void TransferItemProperties(EntityAI source, notnull EntityAI target, bool transfer_agents = true, bool transfer_variables = true, bool transfer_health = true, bool exclude_quantity = false)
 	{
@@ -220,6 +250,13 @@ class MiscGameplayFunctions
 			
 			target_mag.ServerSetAmmoCount( source_mag.GetAmmoCount() );
 		}
+		else if( source.IsWeapon() && target.IsWeapon() )
+		{
+			Weapon_Base source_wpn = Weapon_Base.Cast(source);
+			Weapon_Base target_wpn = Weapon_Base.Cast(target);
+			
+			target_wpn.CopyWeaponStateFrom(source_wpn);
+		}
 	}
 
 	static TransferInventoryResult TransferInventory( EntityAI sourceItem, EntityAI targetItem, PlayerBase player)
@@ -243,7 +280,7 @@ class MiscGameplayFunctions
 
 				bool drop = false;
 
-				if (GameInventory.LocationCanMoveEntity(child_src, child_dst))
+				if (GameInventory.LocationCanAddEntity(child_dst))
 				{
 					// try to move it to the same exact place in dst
 					player.LocalTakeToDst(child_src, child_dst);
@@ -465,7 +502,7 @@ class MiscGameplayFunctions
 		return dir.Normalized();
 	}
 
-	static float GetHeadingAngle(notnull PlayerBase player)
+	static float GetHeadingAngle(notnull DayZPlayerImplement player)
 	{
 		HumanInputController hic = player.GetInputController();
 		float headingAngle = hic.GetHeadingAngle();
@@ -593,6 +630,6 @@ class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda
 	protected override void RemoveOldItemFromLocation ()
 	{
 		super.RemoveOldItemFromLocation();
-		m_Player.GetHumanInventory().OnEntityInHandsDestroyed(m_OldItem);
+		m_Player.GetHumanInventory().OnEntityInHandsDestroyed(m_OldLocation);
 	}
 }

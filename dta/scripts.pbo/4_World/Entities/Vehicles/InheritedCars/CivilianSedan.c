@@ -1,5 +1,10 @@
 class CivilianSedan extends CarScript
 {
+	void CivilianSedan()
+	{
+		m_dmgContactCoef = 0.065;
+	}
+	
 	override int GetAnimInstance()
 	{
 		return VehicleAnimInstances.SEDAN;
@@ -20,6 +25,21 @@ class CivilianSedan extends CarScript
 		}
 
 		return 0;
+	}
+	
+	override bool CanReleaseAttachment( EntityAI attachment )
+	{
+		super.CanReleaseAttachment( attachment );
+		
+		string attType = attachment.GetType();
+		
+		if ( EngineIsOn() || GetCarDoorsState("CivSedanHood") == CarDoorState.DOORS_CLOSED )
+		{
+			if ( attType == "CarRadiator" || attType == "CarBattery" || attType == "SparkPlug" )
+				return false;
+		}
+
+		return true;
 	}
 	
 	override int GetCarDoorsState( string slotType )
@@ -63,7 +83,7 @@ class CivilianSedan extends CarScript
 					return CarDoorState.DOORS_CLOSED;
 			break;
 			
-			case "CivSedanDoorsTrunk":
+			case "CivSedanTrunk":
 				if ( GetAnimationPhase("DoorsTrunk") > 0.5 )
 					return CarDoorState.DOORS_OPEN;
 				else
@@ -71,7 +91,7 @@ class CivilianSedan extends CarScript
 
 			break;
 			
-			case "CivSedanDoorsHood":
+			case "CivSedanHood":
 				if ( GetAnimationPhase("DoorsHood") > 0.5 )
 					return CarDoorState.DOORS_OPEN;
 				else
@@ -119,8 +139,9 @@ class CivilianSedan extends CarScript
 
 		return false;
 	}
-	
-	
+
+	// 0 full ambient and engine sound
+	// 1 zero ambient and engine sound
 	override float OnSound( CarSoundCtrl ctrl, float oldValue )
 	{
 		switch ( ctrl )
@@ -143,9 +164,20 @@ class CivilianSedan extends CarScript
 				//-----
 				if ( GetCarDoorsState( "CivSedanCargo2Doors" ) == CarDoorState.DOORS_CLOSED )
 					newValue += 0.25;
+			
+				//-----
+				if ( GetHealthLevel( "WindowFront") == STATE_RUINED )
+					newValue -= 0.6;
 
+				//-----
+				if ( GetHealthLevel( "WindowBack") == STATE_RUINED )
+					newValue -= 0.6;
+			
 				if ( newValue > 1 )
 					newValue = 1;
+			
+				if ( newValue < 0 )
+					newValue = 0;
 			
 				m_enviroCoef = newValue;
 				return newValue;
@@ -155,7 +187,7 @@ class CivilianSedan extends CarScript
 		m_enviroCoef = oldValue;
 		return oldValue;
 	}
-	
+
 	override string GetAnimSourceFromSelection( string selection )
 	{
 		switch( selection )
@@ -176,7 +208,6 @@ class CivilianSedan extends CarScript
 
 		return "";
 	}
-
 
 	override bool IsVitalTruckBattery()
 	{
@@ -245,4 +276,39 @@ class CivilianSedan extends CarScript
 		
 		return false;		
 	}
+
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+
+			entity.GetInventory().CreateInInventory( "CarBattery" );
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+			entity.GetInventory().CreateInInventory( "CarRadiator" );
+
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_Driver" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_CoDriver" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackLeft" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackRight" );
+			entity.GetInventory().CreateInInventory( "CivSedanHood" );
+			entity.GetInventory().CreateInInventory( "CivSedanTrunk" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		};
+
+		Fill( CarFluid.FUEL, 50 );
+		Fill( CarFluid.COOLANT, 6.0 );
+		Fill( CarFluid.OIL, 4.0 );
+		
+		//hotfix 
+		GetController().ShiftUp();
+		GetController().ShiftDown();
+	};
 }

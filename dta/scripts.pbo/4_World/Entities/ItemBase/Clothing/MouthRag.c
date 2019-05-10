@@ -1,5 +1,12 @@
 class MouthRag extends Clothing
 {
+	bool m_IncomingLambdaChange;
+	
+	void MouthRag()
+	{
+		m_IncomingLambdaChange = false;
+	}
+	
 	void ~MouthRag()
 	{
 		PlayerBase player;
@@ -10,6 +17,12 @@ class MouthRag extends Clothing
 		}
 		
 	}
+	
+	override bool CanDetachAttachment(EntityAI parent)
+	{
+		return m_IncomingLambdaChange;
+	}
+	
 	override void OnWasAttached(EntityAI parent, int slot_id)
 	{
 		super.OnWasAttached(parent,slot_id);
@@ -39,6 +52,7 @@ class MouthRag extends Clothing
 		}
 	}
 	
+	//! Enables/disables player's VON; false DISABLES VON
 	void MutePlayerByGag(PlayerBase player, bool state)
 	{
 		//GetGame().GetSoundScene().SetSpeechExVolume(g_Game.m_volume_speechEX,1);
@@ -46,5 +60,15 @@ class MouthRag extends Clothing
 		//GetGame().GetSoundScene().SetRadioVolume(g_Game.m_volume_radio,1);
 		
 		GetGame().SetVoiceEffect(player, VoiceEffectMumbling, state);
+	}
+	
+	void SetIncomingLambaBool(bool state)
+	{
+		m_IncomingLambdaChange = state;
+	}
+	
+	bool GetIncomingLambdaBool()
+	{
+		return m_IncomingLambdaChange;
 	}
 };

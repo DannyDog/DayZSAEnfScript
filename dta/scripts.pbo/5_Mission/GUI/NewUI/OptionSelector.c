@@ -29,7 +29,7 @@ class OptionSelector extends OptionSelectorBase
 		#endif
 		#endif
 		
-		m_DisablePanel				= m_Parent.GetParent().FindAnyWidget( m_Parent.GetName() + "_disable" );
+		//m_DisablePanel				= m_Parent.GetParent().FindAnyWidget( m_Parent.GetName() + "_disable" );
 		
 		m_SelectedOption			= TextWidget.Cast( m_Root.FindAnyWidget( "option_label" ) );
 		m_PreviousOption			= m_Root.FindAnyWidget( "prev_option" );
@@ -51,7 +51,13 @@ class OptionSelector extends OptionSelectorBase
 		}
 		
 		m_SelectedOption.SetText( m_Options.Get( m_SelectedOptionIndex ) );
+		
+		#ifdef PLATFORM_CONSOLE
 		m_Parent.SetHandler( this );
+		#endif
+		
+		m_PreviousOption.SetHandler( this );		
+		m_NextOption.SetHandler( this );
 	}
 	
 	void ~OptionSelector()
@@ -92,7 +98,7 @@ class OptionSelector extends OptionSelectorBase
 		m_SelectedOptionIndex = 0;
 		
 		m_SelectedOption.SetText( m_Options.Get( m_SelectedOptionIndex ) );
-		ColorOption();
+		//ColorOption();
 		
 		m_OptionChanged.Invoke( m_SelectedOptionIndex );
 	}
@@ -106,7 +112,7 @@ class OptionSelector extends OptionSelectorBase
 		}
 		
 		m_SelectedOption.SetText( m_Options.Get( m_SelectedOptionIndex ) );
-		ColorOption();
+		//ColorOption();
 		
 		m_OptionChanged.Invoke( m_SelectedOptionIndex );
 	}
@@ -120,10 +126,16 @@ class OptionSelector extends OptionSelectorBase
 		}
 		
 		m_SelectedOption.SetText( m_Options.Get( m_SelectedOptionIndex ) );
-		ColorOption();
+		//ColorOption();
 		
 		m_OptionChanged.Invoke( m_SelectedOptionIndex );
 	}
+	
+	array<string> GetOptions()
+	{
+		return m_Options;
+	}
+	
 	
 	bool IsSet()
 	{
@@ -134,6 +146,18 @@ class OptionSelector extends OptionSelectorBase
 	{
 		return m_SelectedOptionIndex == 1;
 	}
+	
+	/*
+	int GetOptionIndex()
+	{
+		return m_SelectedOptionIndex;
+	}
+	
+	void SetOptionIndex(int option_index)
+	{
+		m_SelectedOptionIndex = option_index;
+	}
+	*/
 	
 	string GetStringValue()
 	{
@@ -147,7 +171,7 @@ class OptionSelector extends OptionSelectorBase
 		{
 			m_SelectedOptionIndex = index;
 			m_SelectedOption.SetText( m_Options.Get( m_SelectedOptionIndex ) );
-			ColorOption();
+			//ColorOption();
 			
 			if( fire_event )
 				m_OptionChanged.Invoke( m_SelectedOptionIndex );
@@ -205,62 +229,5 @@ class OptionSelector extends OptionSelectorBase
 			m_PreviousOption.SetFlags( WidgetFlags.IGNOREPOINTER );
 			m_PreviousOption.Show( false );
 		#endif
-	}
-	
-	//Coloring functions (Until WidgetStyles are useful)
-	override void Darken( Widget w, int x, int y )
-	{
-		if( !m_Enabled )
-			return;
-		
-		super.Darken( w, x, y );
-		
-		TextWidget text_label;
-		if( w.GetParent() == m_Root )
-		{
-			text_label = TextWidget.Cast( m_Parent.FindAnyWidget( m_Parent.GetName() + "_label" ) );
-			if( text_label )
-				text_label.SetColor( ARGB( 255, 255, 0, 0 ) );
-			m_PreviousOption.SetColor( ARGB( 255, 255, 0, 0 ) );
-			m_NextOption.SetColor( ARGB( 255, 255, 0, 0 ) );
-			return;
-		}
-		m_PreviousOption.SetColor( ARGB( 255, 255, 0, 0 ) );
-		m_NextOption.SetColor( ARGB( 255, 255, 0, 0 ) );
-		
-		text_label = TextWidget.Cast( w.FindAnyWidget( w.GetName() + "_label" ) );
-		if( text_label )
-			text_label.SetColor( ARGB( 255, 255, 0, 0 ) );
-	}
-	
-	override void Lighten( Widget w, Widget enterW, int x, int y )
-	{
-		if( !m_Enabled )
-			return;
-		
-		super.Lighten( w, enterW, x, y );
-		
-		if( IsFocusable( enterW ) )
-		{
-			return;
-		}
-		
-		TextWidget text_label;
-		if( w.GetParent() == m_Root )
-		{
-			text_label = TextWidget.Cast( m_Parent.FindAnyWidget( m_Parent.GetName() + "_label" ) );
-			if( text_label )
-				text_label.SetColor( ARGB( 255, 255, 255, 255 ) );
-			m_PreviousOption.SetColor( ARGB( 255, 255, 255, 255 ) );
-			m_NextOption.SetColor( ARGB( 255, 255, 255, 255 ) );
-			return;
-		}
-			
-		m_PreviousOption.SetColor( ARGB( 255, 255, 255, 255 ) );
-		m_PreviousOption.SetColor( ARGB( 255, 255, 255, 255 ) );
-		
-		text_label = TextWidget.Cast( w.FindAnyWidget( w.GetName() + "_label" ) );
-		if( text_label )
-			text_label.SetColor( ARGB( 255, 255, 255, 255 ) );
 	}
 }

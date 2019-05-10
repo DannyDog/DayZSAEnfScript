@@ -1,6 +1,7 @@
 class EffectParticle : Effect
 {
     protected vector    		m_ParticleOrientation;
+    protected bool    			m_ForceRotationRelativeToWorld = false;
 	protected Particle 			m_ParticleObj;
 	protected int				m_ParticleID;
 	protected vector			m_Orientation;
@@ -79,6 +80,22 @@ class EffectParticle : Effect
 	}
 	
 	//=====================================
+	// ForceParticleRotationRelativeToWorld
+	//=====================================
+	void ForceParticleRotationRelativeToWorld(bool state)
+	{
+		m_ForceRotationRelativeToWorld = state;
+	}
+	
+	//=====================================
+	// IsParticleRotationRelativeToWorld
+	//=====================================
+	bool IsParticleRotationRelativeToWorld()
+	{
+		return m_ForceRotationRelativeToWorld;
+	}
+	
+	//=====================================
 	// SetAttachedLocalPos
 	//=====================================
 	override void SetAttachedLocalPos(vector pos)
@@ -126,9 +143,9 @@ class EffectParticle : Effect
 	//=====================================
 	// AttachTo
 	//=====================================
-	void AttachTo(Object obj, vector local_pos = "0 0 0", vector local_ori = "0 0 0")
+	void AttachTo(Object obj, vector local_pos = "0 0 0", vector local_ori = "0 0 0", bool force_rotation_to_world = false)
 	{
-		GetParticle().AddAsChild(obj, local_pos, local_ori);
+		GetParticle().AddAsChild(obj, local_pos, local_ori, force_rotation_to_world);
 	}
 	
 	// !Plays all elements this effects consists of
@@ -140,7 +157,7 @@ class EffectParticle : Effect
 		if (m_ParticleID > 0)
 		{
 			Particle p;
-			p = Particle.Play(m_ParticleID, GetPosition());
+			p = Particle.PlayInWorld(m_ParticleID, GetPosition());
 			
 			p.SetOrientation( GetOrientation() );
 			//p.SetEffectHolder(this);
@@ -150,7 +167,7 @@ class EffectParticle : Effect
 		
 		if ( GetAttachmentParent() )
 		{
-			AttachTo( GetAttachmentParent(), GetAttachedLocalPos(), GetAttachedLocalOri());
+			AttachTo( GetAttachmentParent(), GetAttachedLocalPos(), GetAttachedLocalOri(), IsParticleRotationRelativeToWorld());
 		}
 		
 		super.Start();

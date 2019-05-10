@@ -87,7 +87,7 @@ class Hit_MeatBones : EffBulletImpactBase
 			blood.SetOrientation(ori);
 			blood.ScaleParticleParam(EmitorParam.SIZE, upscale);
 			
-			Particle blood_chunks = Particle.Play(ParticleList.BLOOD_SURFACE_CHUNKS, pos);
+			Particle blood_chunks = Particle.PlayInWorld(ParticleList.BLOOD_SURFACE_CHUNKS, pos);
 			blood_chunks.SetOrientation(ori);
 			
 			power = power * decay_coef;

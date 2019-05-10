@@ -308,6 +308,7 @@ class AnimDamageParams
 	string m_sAmmoName;	
 	float m_fRadius;
 	float m_fDuration;
+	bool m_bInvertTeams;
 
 	static const string DAMAGE_CFG_CLASS = "CfgDamages ";
 	void AnimDamageParams(string damageName)
@@ -319,6 +320,15 @@ class AnimDamageParams
 		GetGame().ConfigGetText(damagePath + "ammo", m_sAmmoName);
 		m_fRadius = GetGame().ConfigGetFloat(damagePath + "radius");
 		m_fDuration = GetGame().ConfigGetFloat(damagePath + "duration");
+		
+		m_bInvertTeams = false;
+		string str_invert_teams_cfg;
+		GetGame().ConfigGetText(damagePath + "invertTeams", str_invert_teams_cfg);
+		str_invert_teams_cfg.ToLower();
+		if (str_invert_teams_cfg == "true")
+		{
+			m_bInvertTeams = true;
+		}
 	}
 }
 

@@ -23,13 +23,19 @@ class DayZCreatureAI extends DayZCreature
 	proto native AIAgent GetAIAgent();
 
 	proto native bool IsSoundInsideBuilding();
-
+#ifdef DEVELOPER
 	proto native void DebugDisableAIControl();
 	proto native void DebugRestoreAIControl();
-	
-	proto native void AddDamageSphere(string bone_name, string ammo_name, float radius, float duration);
+#endif
+	proto native void AddDamageSphere(string bone_name, string ammo_name, float radius, float duration, bool invertTeams);
 	
 	proto native DayZCreatureAIType GetCreatureAIType();
+	/*!
+	AIAgent initialization.
+	Manual ai initialization for creatures created with CreateObject(... init_ai = false...).
+	*/
+	proto native void InitAIAgent(AIGroup group);
+	proto native void DestroyAIAgent();
 	
 	void DayZCreatureAI()
 	{
@@ -38,7 +44,7 @@ class DayZCreatureAI extends DayZCreature
 	
 	void AddDamageSphere(AnimDamageParams damage_params)
 	{ 
-		AddDamageSphere(damage_params.m_sBoneName, damage_params.m_sAmmoName, damage_params.m_fRadius, damage_params.m_fDuration); 
+		AddDamageSphere(damage_params.m_sBoneName, damage_params.m_sAmmoName, damage_params.m_fRadius, damage_params.m_fDuration, damage_params.m_bInvertTeams); 
 	}
 	
 	override void EEKilled(Object killer)
@@ -227,11 +233,15 @@ class DayZAnimalInputController
 	}	
 };
 
-//in configs all the animals inherits from AnimalBase class
-typedef DayZAnimal AnimalBase;
-
 class DayZAnimal extends DayZCreatureAI
-{	
+{
+
+	//! Melee hit components (AI targeting)	
+	protected ref array<ref DayZAIHitComponent> m_HitComponentsForAI;
+	protected string m_DefaultHitComponent;
+	protected string m_DefaultHitPositionComponent;
+	protected vector m_DefaultHitPosition;
+
 	proto native DayZAnimalInputController GetInputController();
 
 	proto native void StartCommand_Death(int pType, int pDirection);
@@ -247,6 +257,13 @@ class DayZAnimal extends DayZCreatureAI
 	{
 		// testing: animals have no inventory by default
 		//GetInventory().LockInventory(LOCK_FROM_SCRIPT); // Hides animals from vicinity in inventory. Remove this if wanted otherwise.
+		
+		m_HitComponentsForAI = new array<ref DayZAIHitComponent>;
+
+		RegisterHitComponentsForAI();
+		
+		//! sets default hit position and cache it here (mainly for impact particles)
+		m_DefaultHitPosition = SetDefaultHitPosition(GetDefaultHitPositionComponent());
 	}
 	
 	override bool IsHealthVisible()
@@ -257,6 +274,11 @@ class DayZAnimal extends DayZCreatureAI
 	override bool IsAnimal()
 	{
 		return true;
+	}
+	
+	override bool IsInventoryVisible()
+	{
+		return false;
 	}
 	
 	void CommandHandler(float dt, int currentCommandID, bool currentCommandFinished)
@@ -471,29 +493,74 @@ class DayZAnimal extends DayZCreatureAI
 	vector m_TransportHitVelocity;
 	
 	void RegisterTransportHit(Transport transport)
-	{
+	{	
 		if( !m_TransportHitRegistered )
-		{
-			m_TransportHitRegistered = true;
-			
-			// compute impulse & damage 
+		{	
+			m_TransportHitRegistered = true; 
 			m_TransportHitVelocity = GetVelocity(transport);
-			float damage = 15 * m_TransportHitVelocity.Length();
-			//Print("Transport damage: " + damage.ToString());
 			
-			vector impulse = 40 * m_TransportHitVelocity;
-			impulse[1] = 40 * 1.5;
-			//Print("Impulse: " + impulse.ToString());
+			// compute impulse
+			if (m_TransportHitVelocity.Length() > 0.3)
+			{
+				vector impulse = 40 * m_TransportHitVelocity;
+				impulse[1] = 40 * 1.5;
+				//Print("Impulse: " + impulse.ToString());
+				dBodyApplyImpulse(this, impulse);
+			}
 			
-			dBodyApplyImpulse(this, impulse);
-			
-			ProcessDirectDamage( 3, transport, "", "TransportHit", "0 0 0", damage );
+			// avoid damage because of small movements
+			if (m_TransportHitVelocity.Length() > 1.5)
+			{
+				float damage = 15 * m_TransportHitVelocity.Length();
+				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
+				ProcessDirectDamage( 3, transport, "", "TransportHit", "0 0 0", damage );
+			}
+			else
+				m_TransportHitRegistered = false; // EEHitBy is not called if no damage
 		}
 	}
-}
 
+	//! register hit components for AI melee (used by attacking AI)
+	void RegisterHitComponentsForAI()
+	{
+		//! registers default hit compoent for the entity
+		m_DefaultHitComponent = "Zone_Chest";
+		//! registers default hit position component for entity
+		m_DefaultHitPositionComponent = "Pelvis";
+
+		//! register hit components that are selected by probability
+		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "Zone_Chest", 50);
+	}
 	
+	override string GetHitComponentForAI()
+	{
+		string hitComp;
+		
+		if (DayZAIHitComponentHelpers.SelectMostProbableHitComponent(m_HitComponentsForAI, hitComp))
+		{
+			return hitComp;
+		}	
+		
+		return GetDefaultHitComponent();
+	}
+	
+	override string GetDefaultHitComponent()
+	{
+		return m_DefaultHitComponent;
+	}
+	
+	override string GetDefaultHitPositionComponent()
+	{
+		return m_DefaultHitPositionComponent;
+	}
 
-class Animal_CervusElaphus_2 extends DayZAnimal
-{
+	override vector GetDefaultHitPosition()
+	{
+		return m_DefaultHitPosition;
+	}
+
+	protected vector SetDefaultHitPosition(string pSelection)
+	{
+		return GetSelectionPositionMS(pSelection);
+	}
 }

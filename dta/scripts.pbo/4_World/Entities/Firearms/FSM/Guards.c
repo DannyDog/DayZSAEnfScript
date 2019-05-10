@@ -120,7 +120,7 @@ class WeaponGuardHasAmmoInnerMagazine extends WeaponGuardBase
 	override bool GuardCondition (WeaponEventBase e)
 	{
 		int mi = m_weapon.GetCurrentMuzzle();
-		if (m_weapon.GetChamberCartridgeCount(mi) > 1)
+		if (m_weapon.GetInternalMagazineCartridgeCount(mi) >= 1)
 		{
 			wpnDebugPrint("[wpnfsm] guard - has ammo in inner magazine");
 			return true;
@@ -205,6 +205,44 @@ class WeaponGuardChamberFull extends WeaponGuardBase
 };
 
 
+class WeaponGuardInnerMagazineFull extends WeaponGuardBase
+{
+	protected Weapon_Base m_weapon;
+	void WeaponGuardInnerMagazineFull (Weapon_Base w = NULL) { m_weapon = w; }
+
+	override bool GuardCondition (WeaponEventBase e)
+	{
+		int mi = m_weapon.GetCurrentMuzzle();
+		if (m_weapon.IsInternalMagazineFull(mi))
+		{
+			wpnDebugPrint("[wpnfsm] guard - internal magazine full");
+			return true;
+		}
+		wpnDebugPrint("[wpnfsm] guard - internal magazine not full");
+		return false;
+	}
+};
+
+class WeaponGuardInnerMagazineFullShareChamber extends WeaponGuardBase
+{
+	protected Weapon_Base m_weapon;
+	void WeaponGuardInnerMagazineFullShareChamber (Weapon_Base w = NULL) { m_weapon = w; }
+
+	override bool GuardCondition (WeaponEventBase e)
+	{
+		int mi = m_weapon.GetCurrentMuzzle();
+		
+		if ( m_weapon.IsChamberFull(mi) && m_weapon.IsInternalMagazineFull(mi))
+		{
+			wpnDebugPrint("[wpnfsm] guard - internal magazine with share chamber is full");
+			return true;
+		}
+		wpnDebugPrint("[wpnfsm] guard - internal magazine with share chamber is not full");
+		return false;
+	}
+}; 
+
+
 class WeaponGuardChamberFiredOut extends WeaponGuardBase
 {
 	protected Weapon_Base m_weapon;
@@ -267,7 +305,7 @@ class WeaponGuardChamberHasRoomForMoreThanOne extends WeaponGuardBase
 	override bool GuardCondition (WeaponEventBase e)
 	{
 		int mi = m_weapon.GetCurrentMuzzle();
-		if (m_weapon.GetChamberMaxCartridgeCount(mi) - m_weapon.GetChamberCartridgeCount(mi) > 1)
+		if (m_weapon.GetInternalMagazineMaxCartridgeCount(mi) - m_weapon.GetInternalMagazineCartridgeCount(mi) > 1)
 		{
 			wpnDebugPrint("[wpnfsm] guard - chamber has room for more than 1b");
 			return true;
@@ -285,7 +323,7 @@ class WeaponGuardChamberHasRoomForOne extends WeaponGuardBase
 	override bool GuardCondition (WeaponEventBase e)
 	{
 		int mi = m_weapon.GetCurrentMuzzle();
-		if (m_weapon.GetChamberMaxCartridgeCount(mi) - m_weapon.GetChamberCartridgeCount(mi) == 1)
+		if (m_weapon.GetTotalMaxCartridgeCount(mi) - m_weapon.GetTotalCartridgeCount(mi) == 1)
 		{
 			wpnDebugPrint("[wpnfsm] guard - chamber has room for 1b");
 			return true;
@@ -297,8 +335,8 @@ class WeaponGuardChamberHasRoomForOne extends WeaponGuardBase
 
 class WeaponGuardHasAmmoInLoopedState extends WeaponGuardBase
 {
-	WeaponChambering_Cartridge m_state;
-	void WeaponGuardHasAmmoInLoopedState (WeaponChambering_Cartridge state) { m_state = state; }
+	WeaponChambering_Base m_state;
+	void WeaponGuardHasAmmoInLoopedState (WeaponChambering_Base state) { m_state = state; }
 
 	override bool GuardCondition (WeaponEventBase e)
 	{

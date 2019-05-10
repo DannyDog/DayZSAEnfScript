@@ -393,4 +393,55 @@ class FoodStage
 		
 		return "Raw";
 	}
+	
+	//================================================================
+	// SERIALIZATION
+	//================================================================	
+	void OnStoreSave( ParamsWriteContext ctx )
+	{   
+		//Food stage type 
+		ctx.Write( m_FoodStageType );
+		
+		//Selection index
+		ctx.Write( m_SelectionIndex );
+
+		//Texture index
+		ctx.Write( m_TextureIndex );
+
+		//Material index
+		ctx.Write( m_MaterialIndex );
+	}
+	
+	bool OnStoreLoad( ParamsReadContext ctx, int version )
+	{
+		//Food stage type 
+		if ( !ctx.Read( m_FoodStageType ) )
+		{
+			m_FoodStageType = FoodStageType.RAW;	//set default
+			return false;
+		}
+		
+		//Selection index
+		if ( !ctx.Read( m_SelectionIndex ) )
+		{
+			m_SelectionIndex = 0;			//set default
+			return false;
+		}
+		
+		//Texture index
+		if ( !ctx.Read( m_TextureIndex ) )
+		{
+			m_TextureIndex = 0;				//set default
+			return false;
+		}
+		
+		//Material index
+		if ( !ctx.Read( m_MaterialIndex ) )
+		{
+			m_MaterialIndex = 0;			//set default			
+			return false;
+		}
+		
+		return true;
+	}
 }

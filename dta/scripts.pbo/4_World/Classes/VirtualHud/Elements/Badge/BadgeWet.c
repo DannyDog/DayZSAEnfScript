@@ -1,6 +1,6 @@
 class BadgeWet extends DisplayElementBadge 
 {
-	void BadgeWet()
+	void BadgeWet(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
 		m_Key 	= 	NTFKEY_WETNESS;

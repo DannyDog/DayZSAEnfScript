@@ -22,7 +22,7 @@ class ActionTurnOnWhileOnGround: ActionInteractBase
 	{
 		EntityAI target_entity = EntityAI.Cast( target.GetObject() );
 		
-		if ( player.IsAlive()  &&  target_entity.HasEnergyManager()  &&  target_entity.GetCompEM().CanSwitchOn() )
+		if ( player.IsAlive()  &&  target_entity.HasEnergyManager()  &&  target_entity.GetCompEM().CanSwitchOn() && target_entity.GetCompEM().CanWork() )
 		{
 			return true;
 		}

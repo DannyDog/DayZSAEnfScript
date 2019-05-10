@@ -57,7 +57,7 @@ class ActionWorldCraft: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{	
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTObject(UAMaxDistances.DEFAULT);
 	}
 
 	override int GetType()
@@ -191,7 +191,7 @@ class ActionWorldCraft: ActionContinuousBase
 			return false;
 		}
 		
-		ref ActionTarget target;
+		ActionTarget target;
 		target = new ActionTarget(item2 , NULL, -1,vector.Zero, 0);
 					
 		recive_data_wc.m_MainItem = item1;
@@ -207,7 +207,7 @@ class ActionWorldCraft: ActionContinuousBase
 		WorldCraftActionData action_data_wc = WorldCraftActionData.Cast(action_data);
 		
 		action_data_wc.m_MainItem = recive_data_wc.m_MainItem;
-		if (!action_data_wc.m_Target)
+		if (!action_recive_data.m_Target)
 		{
 			Error("Action WC target not created.");
 			action_data.m_Target = new ActionTarget(NULL, NULL, -1, vector.Zero, 0); 

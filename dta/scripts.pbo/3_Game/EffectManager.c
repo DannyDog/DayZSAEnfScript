@@ -135,11 +135,21 @@ class SEffectManager
 	//===============================
 	// PlayOnObject
 	//===============================
-	static int PlayOnObject(Effect eff, Object obj, vector local_pos = "0 0 0", vector local_ori = "0 0 0")
+	static int PlayOnObject(Effect eff, Object obj, vector local_pos = "0 0 0", vector local_ori = "0 0 0", bool force_rotation_relative_to_world = false)
 	{
 		eff.SetAttachmentParent(obj);
 		eff.SetAttachedLocalPos(local_pos);
 		eff.SetAttachedLocalOri(local_ori);
+		
+		if (force_rotation_relative_to_world)
+		{
+			EffectParticle eff_particle = EffectParticle.Cast(eff);
+			
+			if (eff_particle)
+			{
+				eff_particle.ForceParticleRotationRelativeToWorld(force_rotation_relative_to_world);
+			}
+		}
 		
 		eff.Start();
 		int id = EffectRegister(eff);

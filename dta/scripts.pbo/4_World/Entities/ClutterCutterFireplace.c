@@ -1,3 +1,3 @@
-class ClutterCutterFireplace : Building
+class ClutterCutterFireplace : BuildingSuper
 {
 }

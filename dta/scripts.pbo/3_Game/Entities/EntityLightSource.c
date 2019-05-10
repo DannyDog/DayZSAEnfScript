@@ -20,6 +20,9 @@ class EntityLightSource extends Entity
 	proto native bool 			GetCastShadow();
 
 	proto native bool 			EnableSpecular(bool pState);
+	proto native bool 			EnableLinear(bool pState);
+
+	proto native void 			SetPulseCoef(float pState);
 
 	proto native void 			SetVisibleDuringDaylight(bool pState);
 	proto native bool 			IsVisibleDuringDaylight();
@@ -45,6 +48,14 @@ class EntityLightSource extends Entity
 	proto native void   		SetBrightness(float pValue);
 	proto native float  		GetBrightness();
 	
+	//---------------------------------------------------------------------------
+	// flares
+	//---------------------------------------------------------------------------
+	proto native void 			SetFlareVisible(bool pState);
+	proto native bool			IsFlareVisible();
+	proto native void			SetFlareRelPosition(vector pPosition);
+	proto native vector			GetFlareRelPosition();
+
 	//---------------------------------------------------------------------------
 	// spot light specifics
 	//---------------------------------------------------------------------------

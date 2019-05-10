@@ -8,7 +8,7 @@ FrameWidgetClass game_tab_root {
  vexactsize 0
  {
   ScrollWidgetClass game_settings_scroll {
-   ignorepointer 0
+   ignorepointer 1
    position 0 0
    size 600 1
    hexactpos 1
@@ -54,14 +54,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass general_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass general_text {
            visible 1
@@ -84,16 +84,16 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass general_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
-         Padding 4
-         Margin 8
+         style DayZDefaultPanel
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -118,6 +118,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -198,14 +199,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass camera_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass camera_text {
            visible 1
@@ -228,16 +229,16 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass camera_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
-         Padding 4
-         Margin 8
+         style DayZDefaultPanel
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -262,6 +263,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -342,14 +344,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass hud_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass hud_text {
            visible 1
@@ -372,17 +374,17 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass hud_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -406,6 +408,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -483,6 +486,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -560,6 +564,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -640,14 +645,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass chat_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass chat_text {
            visible 1
@@ -670,17 +675,17 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass chat_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -704,6 +709,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -781,6 +787,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -858,6 +865,7 @@ FrameWidgetClass game_tab_root {
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0

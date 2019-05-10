@@ -5,16 +5,16 @@ class BleedingSourcesManagerRemote extends BleedingSourcesManagerBase
 	bool m_ShowingDiag;
 	Shape m_Point;
 	
-	void OnVariablesSynchronized()
+	void OnVariablesSynchronized(int current_bits)
 	{
-		if (m_Player.GetBleedingBits() != m_BleedingBits)
+		if (current_bits != m_BleedingBits)
 		{
 			if(m_BleedingBits == 0)
 			{
 				m_Player.OnBleedingBegin();
 			}
-			OnBleedingBitsUpdate(m_BleedingBits, m_Player.GetBleedingBits());
-			m_BleedingBits = m_Player.GetBleedingBits();
+			OnBleedingBitsUpdate(m_BleedingBits, current_bits);
+			m_BleedingBits = current_bits;
 			if(m_BleedingBits == 0)
 			{
 				m_Player.OnBleedingEnd();

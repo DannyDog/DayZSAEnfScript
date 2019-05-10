@@ -32,14 +32,14 @@ PanelWidgetClass QuickBarItemCard {
       ItemPreviewWidgetClass ItemPreview {
        clipchildren 0
        position 0 0
-       size 90 90
+       size 0.9 0.83
        halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       fixaspect inside
+       hexactsize 0
+       vexactsize 0
+       priority 200
        {
         PanelWidgetClass QuantityPanel {
          position 0 0

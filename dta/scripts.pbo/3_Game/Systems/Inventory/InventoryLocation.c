@@ -86,6 +86,12 @@ class InventoryLocation
 	 **/
 	proto native int GetCol ();
 	/**
+	 * @fn		GetFlip
+	 * @brief	returns flip status of cargo
+	 * @return	true/false
+	 **/
+	proto native bool GetFlip ();
+	/**
 	 * @fn		GetPos
 	 * @brief	returns position of item in world if type is Ground
 	 * @return	position
@@ -130,7 +136,7 @@ class InventoryLocation
 	 * @param[in]	row		row of the cargo
 	 * @param[in]	col		column of the cargo
 	 **/
-	proto native void SetCargo (notnull EntityAI parent, EntityAI e, int idx, int row, int col);
+	proto native void SetCargo (notnull EntityAI parent, EntityAI e, int idx, int row, int col, bool flip);
 	/**
 	 * @fn		SetProxyCargo
 	 * @brief	sets current inventory location type to ProxyCargo with coordinates (idx, row, col)
@@ -143,7 +149,7 @@ class InventoryLocation
 	 * @param[in]	col		column of the cargo
 	 *
 	 **/
-	proto native void SetProxyCargo (notnull EntityAI parent, EntityAI e, int idx, int row, int col);
+	proto native void SetProxyCargo (notnull EntityAI parent, EntityAI e, int idx, int row, int col, bool flip);
 	/**
 	 * @fn		SetHands
 	 * @brief	sets current inventory location type to Hands
@@ -163,6 +169,7 @@ class InventoryLocation
 	proto native void SetIndex (int idx);
 	proto native void SetRow (int row);
 	proto native void SetCol (int col);
+	proto native void SetFlip (bool flip);
 
 	/**
 	 * @fn		Reset
@@ -192,6 +199,13 @@ class InventoryLocation
 	 **/
 	proto native InventoryLocation CopyLocationFrom (notnull InventoryLocation rhs);
 	
+	static string DumpToStringNullSafe (InventoryLocation loc)
+	{
+		if (loc)
+			return loc.DumpToString();
+		return "{ null }";
+	}
+	
 	string DumpToString ()
 	{
 		string res = "{ type=" + typename.EnumToString(InventoryLocationType, GetType());
@@ -203,7 +217,7 @@ class InventoryLocation
 			}
 			case InventoryLocationType.GROUND:
 			{
-				res = res + " item=" + GetItem();
+				res = res + " item=" + Object.GetDebugName(GetItem());
 				vector pos = GetPos();
 				float dir[4];
 				GetDir(dir);
@@ -213,29 +227,29 @@ class InventoryLocation
 			}
 			case InventoryLocationType.ATTACHMENT:
 			{
-				res = res + " item=" + GetItem();
-				res = res + " parent=" + GetParent();
+				res = res + " item=" + Object.GetDebugName(GetItem());
+				res = res + " parent=" + Object.GetDebugName(GetParent());
 				res = res + " slot=" + GetSlot();
 				break;
 			}
 			case InventoryLocationType.CARGO:
 			{
-				res = res + " item=" + GetItem();
-				res = res + " parent=" + GetParent();
-				res = res + " idx=" + GetIdx() + " row=" + GetRow() + " col=" + GetCol();
+				res = res + " item=" + Object.GetDebugName(GetItem());
+				res = res + " parent=" + Object.GetDebugName(GetParent());
+				res = res + " idx=" + GetIdx() + " row=" + GetRow() + " col=" + GetCol() + " f=" + GetFlip();
 				break;
 			}
 			case InventoryLocationType.HANDS:
 			{
-				res = res + " item=" + GetItem();
-				res = res + " parent=" + GetParent();
+				res = res + " item=" + Object.GetDebugName(GetItem());
+				res = res + " parent=" + Object.GetDebugName(GetParent());
 				break;
 			}
 			case InventoryLocationType.PROXYCARGO:
 			{
-				res = res + " item=" + GetItem();
-				res = res + " parent=" + GetParent();
-				res = res + " idx=" + GetIdx() + " row=" + GetRow() + " col=" + GetCol();
+				res = res + " item=" + Object.GetDebugName(GetItem());
+				res = res + " parent=" + Object.GetDebugName(GetParent());
+				res = res + " idx=" + GetIdx() + " row=" + GetRow() + " col=" + GetCol() + " f=" + GetFlip();
 				break;
 			}
 			default:
@@ -252,10 +266,11 @@ class InventoryLocation
 	{
 		EntityAI parent;
 		EntityAI item;
-		int type;
-		int idx;
-		int row;
-		int col;
+		int type = 0;
+		int idx = -1;
+		int row = -1;
+		int col = -1;
+		bool flp = false;
 		if (!ctx.Read(type))
 			return false;
 
@@ -311,11 +326,13 @@ class InventoryLocation
 					return false;
 				if (!ctx.Read(col))
 					return false;
+				if (!ctx.Read(flp))
+					return false;
 				
 				if (!parent || !item)
 					break; // parent or item is not in bubble
 
-				SetCargo(parent, item, idx, row, col);
+				SetCargo(parent, item, idx, row, col, flp);
 				break;
 			}
 			case InventoryLocationType.HANDS:
@@ -343,11 +360,13 @@ class InventoryLocation
 					return false;
 				if (!ctx.Read(col))
 					return false;
+				if (!ctx.Read(flp))
+					return false;
 				
 				if (!parent || !item)
 					break; // parent or item is not in bubble
 
-				SetProxyCargo(parent, item, idx, row, col);
+				SetProxyCargo(parent, item, idx, row, col, flp);
 				break;
 			}
 			default:
@@ -444,6 +463,11 @@ class InventoryLocation
 					Error("InventoryLocation::WriteToContext - cannot write to context! failed CGO, arg=col");
 					return false;
 				}
+				if (!ctx.Write(GetFlip()))
+				{
+					Error("InventoryLocation::WriteToContext - cannot write to context! failed CGO, arg=flp");
+					return false;
+				}
 				break;
 			}
 			case InventoryLocationType.HANDS:
@@ -487,6 +511,12 @@ class InventoryLocation
 					Error("InventoryLocation::WriteToContext - cannot write to context! failed PXY, arg=col");
 					return false;
 				}
+				if (!ctx.Write(GetFlip()))
+				{
+					Error("InventoryLocation::WriteToContext - cannot write to context! failed PXY, arg=flp");
+					return false;
+				}
+
 				break;
 			}
 			default:

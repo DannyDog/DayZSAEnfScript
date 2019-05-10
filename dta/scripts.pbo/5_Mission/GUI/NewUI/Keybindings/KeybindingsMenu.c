@@ -35,8 +35,17 @@ class KeybindingsMenu extends UIScriptedMenu
 		m_Version.SetText( version );
 
 		#ifdef PLATFORM_PS4
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				back = "circle";
+			}
+			else
+			{
+				back = "cross";
+			}
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 		#endif
 		
 		Input input	= GetGame().GetInput();
@@ -126,7 +135,7 @@ class KeybindingsMenu extends UIScriptedMenu
 	
 	override void Update(float timeslice)
 	{
-		if( GetGame().GetInput().GetActionDown("UAUIBack",false) )
+		if( GetGame().GetInput().LocalPress("UAUIBack",false) )
 		{
 			Back();
 		}

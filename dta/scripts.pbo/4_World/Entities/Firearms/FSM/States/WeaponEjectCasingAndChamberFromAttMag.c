@@ -9,7 +9,10 @@ class WeaponEjectCasing extends WeaponStateBase
 
 		wpnDebugPrint("[wpnfsm] ejected fired out casing");
 		int mi = m_weapon.GetCurrentMuzzle();
-		m_weapon.EjectCasing(mi);
+		if(m_weapon.IsChamberFiredOut(mi))
+		{
+			m_weapon.EjectCasing(mi);
+		}
 		m_weapon.SelectionBulletHide();
 	}
 };
@@ -27,7 +30,7 @@ class WeaponEjectCasingAndChamberFromAttMag extends WeaponEjectCasing
 		super.OnEntry(e);
 
 		int mi = m_weapon.GetCurrentMuzzle();
-		chamberFromAttachedMagazine(m_weapon, mi);
+		pushToChamberFromAttachedMagazine(m_weapon, mi);
 	}
 	override void OnExit (WeaponEventBase e)
 	{

@@ -56,7 +56,7 @@ class HudDebugWinCharStats extends HudDebugWinBase
 	//============================================
 	// SetUpdate
 	//============================================
-	void SetUpdate( bool state )
+	override void SetUpdate( bool state )
 	{
 		//Disable update on server (PluginDeveloperSync)
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );

@@ -11,7 +11,7 @@ FrameWidgetClass ServerBrowserRoot {
  {
   FrameWidgetClass Tabber {
    ignorepointer 1
-   position 0 0
+   position 6.784 0
    size 1 1
    hexactpos 1
    vexactpos 1
@@ -21,7 +21,7 @@ FrameWidgetClass ServerBrowserRoot {
    scriptclass "TabberUI"
    {
     SpacerWidgetClass TabControls {
-     visible 1
+     visible 0
      clipchildren 0
      ignorepointer 1
      position 80 80
@@ -37,7 +37,8 @@ FrameWidgetClass ServerBrowserRoot {
      "Size To Content V" 1
      {
       SpacerWidgetClass TabBar {
-       clipchildren 1
+       visible 1
+       clipchildren 0
        ignorepointer 1
        position 0 0
        size 1 1
@@ -52,7 +53,7 @@ FrameWidgetClass ServerBrowserRoot {
        "Size To Content V" 1
        {
         ImageWidgetClass Tabs_Background {
-         visible 1
+         visible 0
          ignorepointer 1
          color 1 1 1 0.5098
          position 0 0
@@ -68,6 +69,7 @@ FrameWidgetClass ServerBrowserRoot {
          stretch 1
         }
         GridSpacerWidgetClass Tab_Control_Container {
+         clipchildren 0
          ignorepointer 1
          position 0 0
          size 640 1
@@ -86,7 +88,10 @@ FrameWidgetClass ServerBrowserRoot {
          {
           PanelWidgetClass Tab_Control_0 {
            visible 1
+           disabled 0
            clipchildren 1
+           color 0 0 0 1
+           position 0 0
            size 220 1
            hexactpos 1
            vexactpos 1
@@ -94,10 +99,13 @@ FrameWidgetClass ServerBrowserRoot {
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style rover_sim_colorable
+           "no focus" 0
            "next down" "XComboBoxWidget1"
            {
             TextWidgetClass Tab_Control_0_Title {
+             visible 1
+             clipchildren 0
              ignorepointer 1
              position 0 0
              size 1 0.48
@@ -114,7 +122,7 @@ FrameWidgetClass ServerBrowserRoot {
              "text valign" center
             }
             ImageWidgetClass Tab_Control_0_Background {
-             visible 1
+             visible 0
              disabled 0
              inheritalpha 0
              ignorepointer 1
@@ -159,7 +167,7 @@ FrameWidgetClass ServerBrowserRoot {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -176,7 +184,7 @@ FrameWidgetClass ServerBrowserRoot {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -206,6 +214,7 @@ FrameWidgetClass ServerBrowserRoot {
    }
   }
   TextWidgetClass ServerBrowserTextWidget {
+   clipchildren 0
    ignorepointer 1
    position 0.05 80
    size 0.3 50
@@ -245,7 +254,7 @@ FrameWidgetClass ServerBrowserRoot {
   PanelWidgetClass toolbar_bg {
    visible 1
    inheritalpha 0
-   color 1 1 1 0.4706
+   color 0 0 0 0.549
    position 0 0
    size 1 0.1
    halign center_ref
@@ -255,10 +264,11 @@ FrameWidgetClass ServerBrowserRoot {
    hexactsize 0
    vexactsize 0
    priority 3
-   style ToolbarWidget
+   style rover_sim_colorable
    {
     WrapSpacerWidgetClass ConsoleToolbar {
      clipchildren 0
+     color 0 0 0 0.549
      position 0.05 0.1
      size 0.5 0.45
      halign right_ref
@@ -267,8 +277,9 @@ FrameWidgetClass ServerBrowserRoot {
      hexactsize 0
      vexactsize 0
      priority 100
+     style Empty
      "no focus" 1
-     Padding 8
+     Padding 15
      Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
@@ -285,7 +296,7 @@ FrameWidgetClass ServerBrowserRoot {
        hexactsize 1
        vexactsize 1
        priority 3
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -297,7 +308,7 @@ FrameWidgetClass ServerBrowserRoot {
         ImageWidgetClass ConnectIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -329,7 +340,6 @@ FrameWidgetClass ServerBrowserRoot {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -345,7 +355,7 @@ FrameWidgetClass ServerBrowserRoot {
        hexactsize 1
        vexactsize 1
        priority 2
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -358,7 +368,7 @@ FrameWidgetClass ServerBrowserRoot {
          clipchildren 0
          inheritalpha 0
          position 0 0
-         size 36 36
+         size 38 38
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -378,7 +388,7 @@ FrameWidgetClass ServerBrowserRoot {
         TextWidgetClass RefreshText {
          clipchildren 0
          position 0 0
-         size 168 36
+         size 143.87201 36
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -390,7 +400,6 @@ FrameWidgetClass ServerBrowserRoot {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -398,7 +407,7 @@ FrameWidgetClass ServerBrowserRoot {
       GridSpacerWidgetClass Reset {
        visible 1
        clipchildren 0
-       size 159 30
+       size 100 30
        halign right_ref
        valign bottom_ref
        hexactpos 1
@@ -406,11 +415,10 @@ FrameWidgetClass ServerBrowserRoot {
        hexactsize 1
        vexactsize 1
        priority 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
-       content_halign center
        content_valign center
        Columns 2
        Rows 1
@@ -418,7 +426,7 @@ FrameWidgetClass ServerBrowserRoot {
         ImageWidgetClass ResetIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -438,19 +446,19 @@ FrameWidgetClass ServerBrowserRoot {
         TextWidgetClass ResetText {
          clipchildren 0
          position 0 0
-         size 132 36
+         size 0 36
          valign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
+         scaled 1
          text "#STR_ServerBrowserRoot_toolbar_bg_ConsoleToolbar_Reset_ResetText0"
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -464,7 +472,7 @@ FrameWidgetClass ServerBrowserRoot {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -476,7 +484,7 @@ FrameWidgetClass ServerBrowserRoot {
         ImageWidgetClass BackIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -508,7 +516,6 @@ FrameWidgetClass ServerBrowserRoot {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -525,7 +532,7 @@ FrameWidgetClass ServerBrowserRoot {
        hexactsize 1
        vexactsize 1
        priority 3
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1

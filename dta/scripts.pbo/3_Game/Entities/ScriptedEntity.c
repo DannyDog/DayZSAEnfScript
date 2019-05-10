@@ -20,4 +20,9 @@ class ScriptedEntity extends EntityAI
 	@endcode
 	*/
 	proto native void SetCollisionBox(vector mins, vector maxs);
+	
+	override bool IsInventoryVisible()
+	{
+		return false;
+	}
 };

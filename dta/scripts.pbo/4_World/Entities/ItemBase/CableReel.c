@@ -9,6 +9,7 @@ class CableReel extends ItemBase
 	{
 		m_ForceIntoHands = false;
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
 	
 	void ForceIntoHandsNow ( PlayerBase player ) 
@@ -144,5 +145,19 @@ class CableReel extends ItemBase
 	override string GetPlaceSoundset()
 	{
 		return "placeCableReel_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionPlugIn);
+		AddAction(ActionPlugTargetIntoThis);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPullOutPlug);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionRepositionPluggedItem);
+		AddAction(ActionPlaceObject);
 	}
 }

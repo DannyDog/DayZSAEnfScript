@@ -43,7 +43,7 @@ class RifleReChambering extends WeaponStateBase
 
 		// prepare magazine for ejected ammo
 		int mi = m_weapon.GetCurrentMuzzle();
-		string magazineTypeName = m_weapon.GetCartridgeMagazineTypeName(mi);
+		string magazineTypeName = m_weapon.GetChamberedCartridgeMagazineTypeName(mi);
 		float damage = 0.0;
 		string type;
 		if (m_weapon.GetCartridgeInfo(mi, damage, type))

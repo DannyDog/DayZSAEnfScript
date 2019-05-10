@@ -2,6 +2,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 {
 	protected bool					m_FirstInit = true;
 	protected Widget				m_Root;
+	protected Widget				m_TabControlsRoot;
 	
 	protected ref map<int, Widget>	m_TabControls;
 	protected ref map<int, Widget>	m_Tabs;
@@ -9,13 +10,17 @@ class TabberUI extends ScriptedWidgetEventHandler
 	protected int					m_SelectedIndex;
 	
 	ref ScriptInvoker				m_OnTabSwitch = new ScriptInvoker();
+	ref Timer						m_InitTimer;
 
 	void OnWidgetScriptInit( Widget w )
 	{
-		m_TabControls	= new map<int, Widget>;
-		m_Tabs			= new map<int, Widget>;
+		m_TabControls		= new map<int, Widget>;
+		m_Tabs				= new map<int, Widget>;
 		
-		m_Root = w;
+		m_Root				= w;
+		m_InitTimer			= new Timer();
+		m_TabControlsRoot	= m_Root.FindAnyWidget( "TabControls" );
+		
 		Widget tab_controls	= m_Root.FindAnyWidget( "Tab_Control_Container" );
 		if( tab_controls )
 		{
@@ -45,7 +50,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 				}
 			}
 			
-			AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+			AlignTabbers();
 			Widget xb_controls = m_Root.FindAnyWidget( "ConsoleControls" );
 			#ifdef PLATFORM_CONSOLE
 				if( xb_controls )
@@ -58,17 +63,21 @@ class TabberUI extends ScriptedWidgetEventHandler
 				toolbar_lb.LoadImageFile( 0, "set:playstation_buttons image:L1" );
 				toolbar_rb.LoadImageFile( 0, "set:playstation_buttons image:R1" );
 			#endif
+			
+			SelectTabControl( 0 );
+			
+			m_InitTimer.Run( 0.01, this, "AlignTabbers" );
 		}
 	}
 	
-	void AlignTabbers( Widget tab_controls )
+	void AlignTabbers()
 	{
 		float total_size;
 		float x, y;
 		
-		Widget tab_controls_container = tab_controls.FindAnyWidget( "Tab_Control_Container" );
+		Widget tab_controls_container = m_TabControlsRoot.FindAnyWidget( "Tab_Control_Container" );
 		
-		tab_controls.Update();
+		m_TabControlsRoot.Update();
 		tab_controls_container.Update();
 		
 		Widget tab_child = tab_controls_container.GetChildren();
@@ -76,6 +85,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 		{
 			TextWidget tab_text = TextWidget.Cast( tab_child.FindAnyWidget( tab_child.GetName() + "_Title" ) );
 			int t_x, t_y;
+			tab_text.Update();
 			tab_text.GetTextSize( t_x, t_y );
 			tab_child.SetSize( t_x + 50, 1 );
 			tab_controls_container.Update();
@@ -100,11 +110,11 @@ class TabberUI extends ScriptedWidgetEventHandler
 			tab_child = tab_child.GetSibling();
 		}
 		
-		tab_controls.GetSize( x, y );
+		m_TabControlsRoot.GetSize( x, y );
 		
-		tab_controls.SetSize( total_size, y );
+		m_TabControlsRoot.SetSize( total_size, y );
 		tab_controls_container.Update();
-		tab_controls.Update();
+		m_TabControlsRoot.Update();
 		
 		#ifdef PLATFORM_CONSOLE
 			m_Root.FindAnyWidget( "ConsoleControls" ).Show( m_Tabs.Count() > 1 );
@@ -129,7 +139,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 		m_TabControls.Insert( new_index, control );
 		m_Tabs.Insert( new_index, tab );
 		
-		AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+		AlignTabbers();
 		
 		return new_index;
 	}
@@ -150,6 +160,43 @@ class TabberUI extends ScriptedWidgetEventHandler
 		return m_Tabs.Count();
 	}
 	
+	override bool OnMouseEnter( Widget w, int x, int y )
+	{
+		int index = m_TabControls.GetKeyByValue( w );
+		if( m_SelectedIndex == index )
+		{
+			return false;
+		}
+		
+		Widget tab_control = m_TabControls.Get( index );
+		if( tab_control )
+		{			
+			Widget tab_title = TextWidget.Cast(tab_control.FindAnyWidget( tab_control.GetName() + "_Title" ));
+			tab_title.SetColor( ARGB(255, 255, 0, 0) );
+			tab_control.SetColor( ARGB(255, 0, 0 ,0) );
+		}
+		
+		return false;
+	}
+	
+	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
+	{
+		int index = m_TabControls.GetKeyByValue( w );
+		if( m_SelectedIndex == index )
+		{
+			return false;
+		}
+		
+		Widget tab_control = m_TabControls.Get( index );
+		if( tab_control )
+		{			
+			Widget tab_title = TextWidget.Cast(tab_control.FindAnyWidget( tab_control.GetName() + "_Title" ));
+			tab_title.SetColor( ARGB(255, 255, 255, 255) );
+			tab_control.SetColor( ARGB(0, 0, 0 ,0) );
+		}
+		return false;
+	}
+	
 	override bool OnMouseButtonUp( Widget w, int x, int y, int button )
 	{
 		if( button == MouseState.LEFT )
@@ -168,7 +215,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 				
 				if( m_FirstInit )
 				{
-					AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+					AlignTabbers();
 					m_FirstInit = false;
 				}
 				
@@ -183,7 +230,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 	{
 		if( w == m_Root.FindAnyWidget( "Tab_Control_Container" ) )
 		{
-			AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+			AlignTabbers();
 			return true;
 		}
 		return false;
@@ -193,7 +240,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 	{
 		if( w == m_Root.FindAnyWidget( "Tab_Control_Container" ) )
 		{
-			AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+			AlignTabbers();
 			return true;
 		}
 		return false;
@@ -204,11 +251,26 @@ class TabberUI extends ScriptedWidgetEventHandler
 		Widget tab_control = m_TabControls.Get( index );
 		if( tab_control )
 		{
+			/*
 			Widget tab_bg = tab_control.FindAnyWidget( tab_control.GetName() + "_Background" );
 			if( tab_bg )
 			{
 				tab_bg.Show( true );
 			}
+			*/
+			
+			Widget tab_title = TextWidget.Cast(tab_control.FindAnyWidget( tab_control.GetName() + "_Title" ));
+			
+			int color_title = ARGB(255, 255, 0, 0);
+			int color_backg = ARGB(255, 0, 0 ,0);
+			
+			#ifdef PLATFORM_CONSOLE
+				color_title = ARGB(255, 255, 255, 255);
+				color_backg = ARGB(255, 200, 0 ,0);
+			#endif
+			
+			tab_title.SetColor( color_title );
+			tab_control.SetColor( color_backg );
 		}
 	}
 	
@@ -226,11 +288,16 @@ class TabberUI extends ScriptedWidgetEventHandler
 		Widget tab_control = m_TabControls.Get( index );
 		if( tab_control )
 		{
+			/*
 			Widget tab_bg = tab_control.FindAnyWidget( tab_control.GetName() + "_Background" );
 			if( tab_bg )
 			{
 				tab_bg.Show( false );
 			}
+			*/
+			Widget tab_title = TextWidget.Cast(tab_control.FindAnyWidget( tab_control.GetName() + "_Title" ));
+			tab_title.SetColor( ARGB(255, 255, 255,255) );
+			tab_control.SetColor( ARGB(0, 0, 0 ,0) );
 		}
 	}
 	
@@ -265,7 +332,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 		
 		if( m_FirstInit )
 		{
-			AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+			AlignTabbers();
 			m_FirstInit = false;
 		}
 	}
@@ -292,7 +359,7 @@ class TabberUI extends ScriptedWidgetEventHandler
 		
 		if( m_FirstInit )
 		{
-			AlignTabbers( m_Root.FindAnyWidget( "TabControls" ) );
+			AlignTabbers();
 			m_FirstInit = false;
 		}
 	}

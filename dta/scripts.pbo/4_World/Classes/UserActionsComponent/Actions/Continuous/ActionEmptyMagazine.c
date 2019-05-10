@@ -164,7 +164,7 @@ class ActionEmptyMagazine: ActionContinuousBase
 						emActionData.m_magazinePile = piles.Get(0);
 				}	
 			}
-			//callback.m_magazinePile.SetSynchDirty();
+			//emActionData.m_magazinePile.SetSynchDirty();
 		}
 		//mag.SetSynchDirty();
 	}

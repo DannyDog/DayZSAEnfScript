@@ -16,7 +16,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 	protected ref map<Widget, ref Param> m_OnFocus;
 	protected ref map<Widget, ref Param> m_OnFocusLost;
 	protected ref map<Widget, ref Param> m_OnController;
-	protected ref map<Widget, ref Param> m_OnUpdate;
 	protected ref map<Widget, ref Param> m_OnChildAdd;
 	protected ref map<Widget, ref Param> m_OnChildRemove;
 
@@ -42,7 +41,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 		m_OnFocus = new map<Widget, ref Param>;
 		m_OnFocusLost = new map<Widget, ref Param>;
 		m_OnController = new map<Widget, ref Param>;
-		m_OnUpdate = new map<Widget, ref Param>;
 		m_OnChildAdd = new map<Widget, ref Param>;
 		m_OnChildRemove = new map<Widget, ref Param>;
 	}
@@ -64,7 +62,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 		m_OnFocus.Remove( w );
 		m_OnFocusLost.Remove( w );
 		m_OnController.Remove( w );
-		m_OnUpdate.Remove( w );
 		m_OnChildAdd.Remove( w );
 		m_OnChildRemove.Remove( w );
 		w.SetHandler( NULL );
@@ -75,13 +72,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 		w.SetHandler( this );
 		Param param = new Param2<Managed, string>( eventHandler, functionName );
 		m_OnMouseButtonDownRegister.Insert( w, param );
-	}
-	
-	void RegisterOnUpdate( Widget w, Managed eventHandler, string functionName )
-	{
-		w.SetHandler( this );
-		Param param = new Param2<Managed, string>( eventHandler, functionName );
-		m_OnUpdate.Insert( w, param );
 	}
 
 	void RegisterOnMouseButtonUp( Widget w, Managed eventHandler, string functionName )
@@ -214,25 +204,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 		}
 
 		Param param2 = new Param4<Widget, int, int, int>( w, x, y, button );
-		GetGame().GameScript.CallFunctionParams( param.param1, param.param2, NULL, param2 );
-
-		return true;
-	}
-	
-	override bool OnUpdate(Widget w)
-	{
-		Param2<Managed, string> param = Param2<Managed, string>.Cast( m_OnUpdate.Get( w ) );
-		if( param == NULL )
-		{
-			return false;
-		}
-
-		if( !param.param1 )
-		{
-			m_OnUpdate.Remove( w );
-		}
-
-		Param param2 = new Param1<Widget>( w );
 		GetGame().GameScript.CallFunctionParams( param.param1, param.param2, NULL, param2 );
 
 		return true;
@@ -390,8 +361,6 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 		}
 
 		Param param2 = new Param4<Widget, int, int, Widget>( w, x, y, reciever );
-		Print( param.param2 );
-		Print( param.param1 );
 		GetGame().GameScript.CallFunctionParams( param.param1, param.param2, NULL, param2 );
 
 		return true;
@@ -448,7 +417,7 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 			m_OnMouseWheel.Remove( w );
 		}
 
-		Param param2 = new Param3<int, int, int>( x, y, wheel );
+		Param param2 = new Param4<Widget, int, int, int>( w, x, y, wheel );
 		GetGame().GameScript.CallFunctionParams( param.param1, param.param2, NULL, param2 );
 
 		return true;

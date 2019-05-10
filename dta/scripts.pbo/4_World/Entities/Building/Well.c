@@ -1,4 +1,4 @@
-class Well extends Building
+class Well extends BuildingSuper
 {
 	override bool IsBuilding()
 	{
@@ -9,4 +9,15 @@ class Well extends Building
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		//AddAction(ActionDrinkWell);
+		AddAction(ActionWashHandsWellOne);
+		AddAction(ActionDrinkWellContinuous);
+	}
+	
+
 }

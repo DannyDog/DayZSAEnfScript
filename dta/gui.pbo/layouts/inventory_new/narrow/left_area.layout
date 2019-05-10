@@ -3,7 +3,7 @@ PanelWidgetClass DropzoneX {
  clipchildren 0
  ignorepointer 1
  color 1 1 1 0
- size 429 1
+ size 371 1
  valign center_ref
  hexactpos 1
  vexactpos 1
@@ -18,7 +18,7 @@ PanelWidgetClass DropzoneX {
    clipchildren 0
    ignorepointer 0
    color 0.1961 0.1961 0.1961 0.3922
-   size 429 0.96
+   size 366 0.96
    valign center_ref
    hexactpos 1
    vexactpos 1
@@ -28,6 +28,7 @@ PanelWidgetClass DropzoneX {
    style blank
    "Ignore invisible" 0
    "Scrollbar V" 1
+   "Scrollbar V Left" 1
    {
     PanelWidgetClass DropzoneXa {
      visible 0
@@ -44,28 +45,30 @@ PanelWidgetClass DropzoneX {
     }
     FrameWidgetClass ContentParent {
      clipchildren 0
-     position 0 0
-     size 409 0
+     size 351 0
+     halign right_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
      scriptclass "SizeToChild"
      {
-      WrapSpacerWidgetClass Content {
+      GridSpacerWidgetClass Content {
        clipchildren 0
        ignorepointer 0
        position 0 0
-       size 409 1
+       size 1 1
        hexactpos 0
        vexactpos 0
-       hexactsize 1
+       hexactsize 0
        vexactsize 0
        scriptclass ""
        style Colorable
        Padding 0
        Margin 0
        "Size To Content V" 1
+       Columns 1
+       Rows 100
       }
       PanelWidgetClass Up {
        clipchildren 0

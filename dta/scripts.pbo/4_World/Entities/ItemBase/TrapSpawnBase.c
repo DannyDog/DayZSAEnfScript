@@ -54,13 +54,18 @@ class TrapSpawnBase extends ItemBase
 		m_CatchesGroundAnimal = NULL;
 		
 		m_PrevTimer = NULL;
+		m_DeployLoopSound = new EffectSound;
 		
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsDeploySound");
 	}
 
 	void ~TrapSpawnBase()
 	{
-		// TODO: ak ma v sebe cargo treba ho rusit v destruktore????
+		if ( m_DeployLoopSound )
+		{
+			SEffectManager.DestroySound( m_DeployLoopSound );
+		}
 	}
 
 	//! this event is called all variables are synchronized on client
@@ -501,16 +506,19 @@ class TrapSpawnBase extends ItemBase
 		if ( GetGame().IsServer() )
 		{
 			SetupTrapPlayer( PlayerBase.Cast( player ), false );
+			
+			SetIsDeploySound( true );
 		}	
-		
-		SetIsDeploySound( true );
 	}
 	
 	void PlayDeployLoopSound()
 	{		
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{		
-			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			if ( !m_DeployLoopSound.IsSoundPlaying() )
+			{
+				m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			}
 		}
 	}
 	
@@ -518,8 +526,8 @@ class TrapSpawnBase extends ItemBase
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{	
+			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-			delete m_DeployLoopSound;
 		}
 	}
 }

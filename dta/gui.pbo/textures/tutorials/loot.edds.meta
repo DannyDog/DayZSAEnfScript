@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{F0E95E39B3D3FE0C}Gui/textures/tutorials/loot.tga"
+ Author "3672"
+ ChangeDate 1316726408
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "loot.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

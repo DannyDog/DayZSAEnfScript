@@ -91,6 +91,26 @@ class AttachmentSoundLookupTable extends SoundLookupTable
 	}
 }
 
+class PlayerVoiceLookupTable extends SoundLookupTable
+{
+	ref NoiseParams m_NoiseParams;
+	
+	void PlayerVoiceLookupTable()
+	{
+		InitTable("CfgVoiceSoundTables", "category");
+	}
+	
+	void SetNoiseParam(NoiseParams param)
+	{
+		m_NoiseParams = param;
+	}
+	
+	NoiseParams GetNoiseParam()
+	{
+		return m_NoiseParams;
+	}
+}
+
 
 class AnimSoundObjectBuilderBank
 {

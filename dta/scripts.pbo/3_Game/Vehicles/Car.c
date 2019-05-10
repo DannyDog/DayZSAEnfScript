@@ -198,6 +198,9 @@ class Car extends Transport
 //-----------------------------------------------------------------------------
 
 
+//-----------------------------------------------------------------------------
+// events
+
 	/*!
 		Is called every time when vehicle collides with other object.
 
@@ -221,6 +224,13 @@ class Car extends Transport
 		// just use the computed value by the game code
 		return oldValue;
 	}
+//-----------------------------------------------------------------------------
+
+
+	// implemented only in internal configuration
+	proto native void ForcePosition( vector pos );
+	// implemented only in internal configuration
+	proto native void ForceDirection( vector dir );
 };
 
 

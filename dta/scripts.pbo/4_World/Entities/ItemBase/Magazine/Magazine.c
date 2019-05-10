@@ -1,3 +1,5 @@
+typedef Magazine Magazine_Base;
+
 class Magazine : InventoryItemSuper
 {
 	ref array<string>	m_CompatiableAmmo;
@@ -188,6 +190,8 @@ class Magazine : InventoryItemSuper
 			ServerAcquireCartridge(damage, cartrige_name);
 			new_pile.ServerStoreCartridge(damage, cartrige_name);
 		}
+		new_pile.SetSynchDirty();
+		SetSynchDirty();
 	}
 	
 	void ApplyManipulationDamage()
@@ -255,13 +259,12 @@ class Magazine : InventoryItemSuper
 	}
 	*/
 	
-	override bool IsCombineAll(ItemBase other_item, bool use_stack_max = false)
+	override bool IsCombineAll( ItemBase other_item, bool use_stack_max = false)
 	{
 		Magazine other_magazine = Magazine.Cast(other_item);
 		int free_space = this.GetAmmoMax() - this.GetAmmoCount();
 		
 		return free_space >= other_magazine.GetAmmoCount();
-	
 	}
 	
 	override void CombineItems( ItemBase other_item, bool use_stack_max = false )
@@ -296,5 +299,12 @@ class Magazine : InventoryItemSuper
 			return player.GetWeaponManager().CanDetachMagazine(wpn,this);
 		}
 		return false;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionLoadMagazine);
+		AddAction(ActionEmptyMagazine);
 	}
 };

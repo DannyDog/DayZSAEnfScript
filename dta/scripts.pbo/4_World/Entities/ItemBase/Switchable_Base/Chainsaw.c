@@ -9,4 +9,11 @@ class Chainsaw extends Switchable_Base
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionSawPlanks);
+		AddAction(ActionDestroyPart);
+	}
 }

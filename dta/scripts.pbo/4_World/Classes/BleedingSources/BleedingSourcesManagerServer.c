@@ -5,7 +5,7 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 	bool	m_DisableBloodLoss = false;
 	ref array<int> m_DeleteList = new array<int>;
 	
-	int STORAGE_VERSION = 103;
+	const int STORAGE_VERSION = 103;
 	
 	protected BleedingSourceZone GetBleedingSourceZone(int bit)
 	{

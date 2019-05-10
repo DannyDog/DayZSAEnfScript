@@ -52,4 +52,9 @@ class InventoryItem extends EntityAI
 		else
 			return false; // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
 	}
+	
+	bool IsMeleeFinisher()
+	{
+		return false;
+	}
 };

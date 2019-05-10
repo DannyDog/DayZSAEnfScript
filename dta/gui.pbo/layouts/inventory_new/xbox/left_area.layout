@@ -1,8 +1,9 @@
 PanelWidgetClass DropzoneX {
- visible 0
+ visible 1
  clipchildren 0
  ignorepointer 1
  color 1 1 1 0
+ position 0 0
  size 533 1
  hexactpos 1
  vexactpos 1
@@ -17,7 +18,7 @@ PanelWidgetClass DropzoneX {
    clipchildren 0
    ignorepointer 0
    color 0.1961 0.1961 0.1961 0.3922
-   size 533 1
+   size 528 1
    valign center_ref
    hexactpos 1
    vexactpos 1
@@ -27,6 +28,7 @@ PanelWidgetClass DropzoneX {
    style blank
    "Ignore invisible" 0
    "Scrollbar V" 1
+   "Scrollbar V Left" 1
    {
     PanelWidgetClass DropzoneXa {
      visible 0
@@ -44,117 +46,115 @@ PanelWidgetClass DropzoneX {
     FrameWidgetClass ContentParent {
      clipchildren 0
      ignorepointer 1
-     position 0 0
      size 513 0
+     halign right_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
      scriptclass "SizeToChild"
      {
-      WrapSpacerWidgetClass Content {
+      GridSpacerWidgetClass Content {
        clipchildren 0
        ignorepointer 1
-       position 0 0
-       size 513 1
+       size 1 1
        hexactpos 0
        vexactpos 0
-       hexactsize 1
+       hexactsize 0
        vexactsize 0
        scriptclass ""
        style Colorable
        Padding 0
        Margin 0
        "Size To Content V" 1
+       Columns 1
+       Rows 100
       }
       PanelWidgetClass Up {
        clipchildren 0
-       ignorepointer 1
-       size 36 140
+       size 40 150
        halign right_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
        vexactsize 1
        {
-        ImageWidgetClass LT0 {
+        ImageWidgetClass UpBackground {
          ignorepointer 1
-         position 60 -5
-         size 29 29
-         halign center_ref
+         color 0 0 0 0.7059
+         position 64 0
+         size 1 1
          hexactpos 1
          vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:dayz_gui image:icon_minus"
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:inv_panel_bg"
          mode blend
          "src alpha" 1
-        }
-        ImageWidgetClass LT1 {
-         ignorepointer 1
-         position 60 0
-         size 29 29
-         halign center_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:dayz_gui image:icon_minus"
-         mode blend
-         "src alpha" 1
-        }
-        ImageWidgetClass LT {
-         ignorepointer 1
-         position 60 19
-         size 36 50
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:xbox_buttons image:LT"
-         mode blend
-         "src alpha" 1
-        }
-        ImageWidgetClass RT {
-         ignorepointer 1
-         position 60 19
-         size 36 50
-         valign bottom_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:xbox_buttons image:RT"
-         mode blend
-         "src alpha" 1
-        }
-        ImageWidgetClass RT1 {
-         ignorepointer 1
-         position 60 -5
-         size 29 29
-         halign center_ref
-         valign bottom_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:dayz_gui image:icon_plus"
-         mode blend
-         "src alpha" 1
-        }
-        ImageWidgetClass RT2 {
-         ignorepointer 1
-         position 60 0
-         size 29 29
-         halign center_ref
-         valign bottom_ref
-         hexactpos 1
-         vexactpos 1
-         hexactsize 1
-         vexactsize 1
-         image0 "set:dayz_gui image:icon_plus"
-         mode blend
-         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         "flip u" 0
+         "flip v" 0
+         {
+          ImageWidgetClass LTArrow {
+           ignorepointer 1
+           position 0 0
+           size 29 29
+           halign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:icon_minus"
+           mode blend
+           "src alpha" 1
+          }
+          ImageWidgetClass LTIcon {
+           ignorepointer 1
+           position 0 24
+           size 32 44.44
+           halign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:LT"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass RTIcon {
+           ignorepointer 1
+           position 0 24
+           size 32 44.44
+           halign center_ref
+           valign bottom_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:RT"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass RTArrow {
+           ignorepointer 1
+           position 0 0
+           size 29 29
+           halign center_ref
+           valign bottom_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:icon_plus"
+           mode blend
+           "src alpha" 1
+          }
+         }
         }
        }
       }

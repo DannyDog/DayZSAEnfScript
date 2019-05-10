@@ -35,6 +35,7 @@ ImageWidgetClass height_wrapper {
      visible 1
      clipchildren 0
      ignorepointer 1
+     color 0 0 0 1
      position 0 0
      size 1 1
      halign right_ref
@@ -45,13 +46,14 @@ ImageWidgetClass height_wrapper {
      vexactsize 0
      priority 500
      image0 "set:dayz_gui image:icon_minus"
-     mode additive
+     mode blend
      "src alpha" 1
     }
     ImageWidgetClass closed {
      visible 0
      clipchildren 0
      ignorepointer 1
+     color 0 0 0 1
      position 0 0
      size 1 1
      halign right_ref
@@ -62,13 +64,14 @@ ImageWidgetClass height_wrapper {
      vexactsize 0
      priority 500
      image0 "set:dayz_gui image:icon_plus"
-     mode additive
+     mode blend
      "src alpha" 1
     }
    }
   }
   TextWidgetClass TextWidget0 {
    ignorepointer 1
+   color 0 0 0 1
    position 0 0
    size 1 0.6
    halign center_ref
@@ -77,9 +80,11 @@ ImageWidgetClass height_wrapper {
    vexactpos 1
    hexactsize 0
    vexactsize 0
-   style Light
+   style Normal
    text "#layout_collapsible_header"
    font "gui/fonts/sdf_MetronBook72"
+   "bold text" 1
+   "text sharpness" 0.5
    "exact text" 1
    "exact text size" 24
    "size to text h" 0

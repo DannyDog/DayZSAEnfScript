@@ -1,6 +1,6 @@
 WindowWidgetClass LicenseDialogRoot {
  clipchildren 0
- color 0.0824 0.0824 0.0824 0.7843
+ color 0.1176 0.1176 0.1176 0.9804
  position 0 0
  size 540 248.5
  halign center_ref

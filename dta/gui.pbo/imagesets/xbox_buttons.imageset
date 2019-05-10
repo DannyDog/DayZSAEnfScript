@@ -14,14 +14,14 @@ ImageSetClass {
  Images {
   ImageSetDefClass view {
    Name "view"
-   Pos 57 6
-   Size 38 38
+   Pos 55 4
+   Size 42 42
    Flags 0
   }
   ImageSetDefClass menu {
    Name "menu"
-   Pos 108 6
-   Size 38 38
+   Pos 106 4
+   Size 42 42
    Flags 0
   }
   ImageSetDefClass LS {
@@ -86,14 +86,14 @@ ImageSetClass {
   }
   ImageSetDefClass RB {
    Name "RB"
-   Pos 5 57
-   Size 40 38
+   Pos 5 60
+   Size 40 32
    Flags 0
   }
   ImageSetDefClass LB {
    Name "LB"
-   Pos 5 108
-   Size 40 38
+   Pos 5 111
+   Size 40 32
    Flags 0
   }
   ImageSetDefClass RT {
@@ -134,26 +134,26 @@ ImageSetClass {
   }
   ImageSetDefClass DPAD_up {
    Name "DPAD_up"
-   Pos 102 51
-   Size 50 50
+   Pos 105 54
+   Size 44 44
    Flags 0
   }
   ImageSetDefClass DPAD_down {
    Name "DPAD_down"
-   Pos 102 102
-   Size 50 50
+   Pos 105 105
+   Size 44 44
    Flags 0
   }
   ImageSetDefClass DPAD_right {
    Name "DPAD_right"
-   Pos 102 153
-   Size 50 50
+   Pos 105 156
+   Size 44 44
    Flags 0
   }
   ImageSetDefClass DPAD_left {
    Name "DPAD_left"
-   Pos 102 204
-   Size 50 50
+   Pos 105 207
+   Size 44 44
    Flags 0
   }
  }

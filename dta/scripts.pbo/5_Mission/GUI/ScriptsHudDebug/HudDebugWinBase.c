@@ -1,6 +1,8 @@
 class HudDebugWinBase
 {
 	Widget m_WgtRoot;
+	protected bool m_Show;
+	protected bool m_RPCSent;
 	
 	//============================================
 	// Constructor
@@ -20,7 +22,25 @@ class HudDebugWinBase
 
 	void Init( Widget widget_root );
 	
-	void Update();
+	void SetUpdate( bool state );
+	
+	void Update()
+	{
+		if(m_Show && !m_RPCSent)
+		{
+			SetUpdate(true);
+		}
+	}
+	
+	
+	//============================================
+	// SetUpdate
+	//============================================
+	void SetRPCSent()
+	{
+		m_RPCSent = true;
+	}
+	
 	
 	//============================================
 	// Show
@@ -28,6 +48,7 @@ class HudDebugWinBase
 	void Show()
 	{
 		m_WgtRoot.Show(true);
+		m_Show = true;
 	}
 	
 	//============================================
@@ -36,6 +57,7 @@ class HudDebugWinBase
 	void Hide()
 	{
 		m_WgtRoot.Show(false);
+		m_Show = false;
 	}
 	
 	//============================================

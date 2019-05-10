@@ -1,6 +1,7 @@
 class DisplayElementBase extends MessageReceiverBase
 {
 	int		m_Value;
+	int		m_ValueLast = -99999;
 	int 	m_Key = 0;
 	int		m_Type = 0;
 	int 	m_Range = 0;
@@ -9,13 +10,15 @@ class DisplayElementBase extends MessageReceiverBase
 	int		m_Pos = 1;
 	int		NUM_OF_BITS;
 	bool 	m_IsClientOnly = false;
+	PlayerBase m_Player;
 	
 	PluginPlayerStatus 	m_ModulePlayerStatus;
 
-	void DisplayElementBase()
+	void DisplayElementBase(PlayerBase player)
 	{
 		m_System = "VirtualHud";
 		m_ModulePlayerStatus = PluginPlayerStatus.Cast(GetPlugin(PluginPlayerStatus));
+		m_Player = player;
 		//SetMaxValue();
 	}
 	
@@ -24,8 +27,16 @@ class DisplayElementBase extends MessageReceiverBase
 	{
 		return m_IsClientOnly;
 	}
-		
-	void UpdateHUD();
+	
+	bool IsValueChanged()
+	{
+		return !(m_Value == m_ValueLast);
+	}
+	
+	void UpdateHUD()
+	{
+		m_ValueLast = m_Value;
+	}
 	
 	int GetNumberOfBits()
 	{

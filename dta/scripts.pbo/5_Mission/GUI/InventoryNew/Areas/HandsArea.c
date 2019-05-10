@@ -19,6 +19,16 @@ class HandsArea: LayoutHolder
 	override void SetActive( bool active )
 	{
 		m_HandsContainer.SetActive( active );
+		
+		/*
+		#ifdef PLATFORM_CONSOLE
+		Widget bg = GetRootWidget().GetParent().GetParent().GetParent().FindAnyWidget( "CenterBackground" );
+		if( active )
+			bg.SetAlpha( 0.4 );
+		else
+			bg.SetAlpha( 0 );
+		#endif
+		*/
 	}
 
 	override bool IsActive()
@@ -126,6 +136,13 @@ class HandsArea: LayoutHolder
 		m_Scroller.VScrollToPos01( m_Scroller.GetVScrollPos01() );
 		m_HandsContainer.UpdateInterval();
 		
+		float x, y;
+		float x2, y2;
+		m_Scroller.GetScreenSize( x, y );
+		m_MainWidget.GetScreenSize( x2, y2 );
+		if( y2 != y )
+			m_ShouldChangeSize = true;
+		
 		bool changed_size;
 		if( m_ShouldChangeSize && m_HandsResizer.ResizeParentToChild( changed_size, InventoryMenu.GetHeight() * 0.5 ) )
 			m_Scroller.SetAlpha( 0.3921 );
@@ -134,11 +151,6 @@ class HandsArea: LayoutHolder
 		
 		if( changed_size )
 			m_ShouldChangeSize = false;
-	}
-
-	void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_HandsContainer.RefreshQuantity( item_to_refresh );
 	}
 
 	override void SetLayoutName()
@@ -159,7 +171,6 @@ class HandsArea: LayoutHolder
 
 	override void Refresh()
 	{
-		m_HandsContainer.Refresh();
 		m_ShouldChangeSize = true;
 	}
 	
@@ -174,24 +185,33 @@ class HandsArea: LayoutHolder
 		
 		if( !ipw )
 		{
-		  string name = w.GetName();
-		  name.Replace( "PanelWidget", "Render" );
-		  ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
+			string name = w.GetName();
+			name.Replace( "PanelWidget", "Render" );
+			ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
 		}
 		
 		if( !ipw )
 		{
-		  ipw = ItemPreviewWidget.Cast( w );
+			ipw = ItemPreviewWidget.Cast( w );
 		}
 		
 		if( !ipw || !ipw.IsInherited( ItemPreviewWidget ) )
 		{
 			return;
 		}
-
-		ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "HandsPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+		
+		if( ipw.GetItem() && GetGame().GetPlayer().GetHumanInventory().CanAddEntityIntoHands( ipw.GetItem() ) )
+		{
+			ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
+			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
+		}
+		else
+		{
+			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
+			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
+		}
 	}
 	
 	void OnHandsPanelDropReceived( Widget w, int x, int y, Widget receiver )
@@ -217,7 +237,7 @@ class HandsArea: LayoutHolder
 		if( !ipw.GetItem().GetInventory().CanRemoveEntity() )
 			return;
 		
-		if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityInHands( ipw.GetItem() ) )
+		if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityIntoHands( ipw.GetItem() ) )
 		{
 			ItemBase item_base = ItemBase.Cast( ipw.GetItem() );
 			float stackable = item_base.ConfigGetFloat("varStackMax");

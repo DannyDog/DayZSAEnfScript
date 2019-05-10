@@ -127,7 +127,7 @@ class ActionViewOptics : ActionContinuousBase
 	override void OnEndClient( ActionData action_data )
 	{
 		ItemOptics optic;
-		if( Class.CastTo(optic, action_data.m_MainItem) )
+		if( Class.CastTo(optic, action_data.m_MainItem) && optic.IsInOptics() )
 		{
 			ExitOptics(optic, action_data.m_Player);
 		}
@@ -136,7 +136,7 @@ class ActionViewOptics : ActionContinuousBase
 	override void OnEndServer( ActionData action_data )
 	{
 		ItemOptics optic;
-		if( Class.CastTo(optic, action_data.m_MainItem) )
+		if( Class.CastTo(optic, action_data.m_MainItem) && optic.IsInOptics() )
 		{
 			ExitOptics(optic, action_data.m_Player);
 		}
@@ -180,6 +180,7 @@ class ActionViewOptics : ActionContinuousBase
 	
 	void EnterOptics(ItemOptics optic, PlayerBase player)
 	{
+		player.SetHandheldOpticsInUse(true);
 		optic.EnterOptics();
 		optic.HideSelection("hide");
 		if (optic.HasEnergyManager()) 	optic.GetCompEM().SwitchOn();
@@ -190,6 +191,7 @@ class ActionViewOptics : ActionContinuousBase
 	{
 		optic.ShowSelection("hide");
 		optic.ExitOptics(); 
+		player.SetHandheldOpticsInUse(false);
 		if (optic.HasEnergyManager()) 	optic.GetCompEM().SwitchOff();
 		player.GetAimingModel().SetAimNoiseAllowed(true);
 	}

@@ -2,7 +2,7 @@ class StuffedNotfr: NotifierBase
 {
 	void StuffedNotfr(NotifiersManager manager)
 	{
-		m_Active = false; 
+		m_Active = true; 
 	}
 
 	override int GetNotifierType()
@@ -12,11 +12,13 @@ class StuffedNotfr: NotifierBase
 
 	override void DisplayBadge()
 	{
+		float volume = m_Player.GetStatStomachVolume().Get();
+		eBadgeLevel lvl = DetermineBadgeLevel(volume, PlayerConstants.BT_STOMACH_VOLUME_LVL3, PlayerConstants.BT_STOMACH_VOLUME_LVL3, PlayerConstants.BT_STOMACH_VOLUME_LVL3); 
 		DisplayElementBadge dis_elm = DisplayElementBadge.Cast(GetVirtualHud().GetElement(eDisplayElements.DELM_BADGE_STUFFED));
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(true);
+			dis_elm.SetLevel(lvl);
 		}
 	}
 
@@ -26,7 +28,7 @@ class StuffedNotfr: NotifierBase
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(false);
+			dis_elm.SetLevel(eBadgeLevel.NONE);
 		}
 	}
 };

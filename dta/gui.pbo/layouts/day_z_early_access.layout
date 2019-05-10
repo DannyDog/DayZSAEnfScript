@@ -14,7 +14,7 @@ WindowWidgetClass WindowWidget {
   PanelWidgetClass Panel {
    clipchildren 1
    inheritalpha 0
-   color 0.0824 0.0824 0.0824 0.9216
+   color 0.1176 0.1176 0.1176 0.9804
    position 0 -2.52632
    size 900 550
    halign center_ref

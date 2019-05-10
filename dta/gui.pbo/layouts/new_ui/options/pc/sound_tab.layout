@@ -53,14 +53,14 @@ FrameWidgetClass sound_tab_root {
         PanelWidgetClass volume_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass volume_text {
            visible 1
@@ -83,16 +83,16 @@ FrameWidgetClass sound_tab_root {
         }
         GridSpacerWidgetClass volume_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
-         Padding 4
-         Margin 8
+         style DayZDefaultPanel
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -109,12 +109,14 @@ FrameWidgetClass sound_tab_root {
            {
             GridSpacerWidgetClass master_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -184,12 +186,14 @@ FrameWidgetClass sound_tab_root {
            {
             GridSpacerWidgetClass effects_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -259,12 +263,14 @@ FrameWidgetClass sound_tab_root {
            {
             GridSpacerWidgetClass voip_setting {
              ignorepointer 0
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0

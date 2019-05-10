@@ -131,9 +131,10 @@ class Bot
 		BotStateBase BotIdle = new BotStateIdle(this, NULL);
 		// unstable (intermediate) states
 		//m_BotTest = new BotTestAttachAndDropCycle(this, NULL);
+		m_BotTest = new BotTestItemMoveBackAndForth(this, NULL);
 		//m_BotTest = new Bot_TestSpawnOpen(this, NULL);
 		//m_BotTest = new Bot_TestSpawnOpenDestroy(this, NULL);
-		m_BotTest = new Bot_TestSpawnOpenEat(this, NULL);
+		//m_BotTest = new Bot_TestSpawnOpenEat(this, NULL);
 		//m_BotTest = new BotTestSwapG2H(this, NULL);
 		//m_BotTest = new BotTestSwapC2H(this, NULL);
 		//m_BotTest = new BotTestSwapInternal(this, NULL);

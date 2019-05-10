@@ -385,7 +385,7 @@ class Weather
 		\param fnMax   Function relative maximum (in range <0, 1>).
 		\param fnSpeed Controls speed of change of function value.
 	*/
-	proto external void GetWindFunctionParams( out float fnMin, out float fnMax, out float fnSpeed );
+	proto void GetWindFunctionParams( out float fnMin, out float fnMax, out float fnSpeed );
 	/*!
 		\brief Sets function parameters that controls the wind behaviour (change in time).
 		\param fnMin   Function relative minimum (in range <0, 1>).

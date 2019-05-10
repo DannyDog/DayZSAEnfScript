@@ -19,7 +19,47 @@ class Debug
 	static private const string	LOG_DEFAULT	= "n/a";
 	
 	static private ref array<Shape>	m_DebugShapes;
+	
+	static Widget m_DebugLayoutCanvas;
+	static CanvasWidget m_CanvasDebug;
+	
+	static void InitCanvas()
+	{
+		if(!m_DebugLayoutCanvas)
+		{
+			m_DebugLayoutCanvas = GetGame().GetWorkspace().CreateWidgets("gui/layouts/debug/day_z_debugcanvas.layout");
+			m_CanvasDebug = CanvasWidget.Cast( m_DebugLayoutCanvas.FindAnyWidget( "CanvasWidget" ) );
+		}
+	}
 
+	static void ClearCanvas()
+	{
+		if(m_CanvasDebug)
+			m_CanvasDebug.Clear();
+	}
+	
+	static void CanvasDrawLine(float x1, float y1, float x2, float y2, float width, int color)
+	{
+		InitCanvas();
+		m_CanvasDebug.DrawLine(x1, y1, x2, y2, width, color);
+	}
+	
+	/**
+	\brief Draws a "point" on the screen at x,y coordinates
+	Debug.ClearCanvas();
+	for(int i = 0; i < 700;i++)
+	{
+		float val = i/700;
+		float y = Easing.EaseInOutExpo(val);
+		Debug.CanvasDrawPoint(i,y*700,ARGBF( 0.6, 1, 1, 1 ));
+	}
+	*/
+	
+	static void CanvasDrawPoint(float x1, float y1, int color)
+	{
+		CanvasDrawLine(x1, y1, x1+1, y1, 1, color);
+	}
+	
 	static void	Init()
 	{
 		m_DebugShapes	= new array<Shape>;

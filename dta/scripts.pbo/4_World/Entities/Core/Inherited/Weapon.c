@@ -30,6 +30,14 @@ class Weapon extends InventoryItemSuper
 	 * @param[in] muzzleIndex
 	 **/
 	proto native void SetCurrentMuzzle (int muzzleIndex);
+	
+	proto native int GetMuzzleModeCount (int muzzleIndex);
+	proto native void SetMuzzleMode (int muzzleIndex, int modeIndex);
+	proto native void SetNextMuzzleMode (int muzzleIndex);
+	proto native int GetCurrentModeBurstSize (int muzzleIndex);
+	proto native bool GetCurrentModeAutoFire (int muzzleIndex);
+	proto native int GetCurrentMode (int muzzleIndex);
+	proto native void SetCurrentMode (int muzzleIndex, int mode);
 
 	/**@fn		CanFire
 	 * @brief 	query whether the weapon can be fired or not
@@ -43,12 +51,7 @@ class Weapon extends InventoryItemSuper
 	 * @brief	ejects casing from chamber
 	 **/
 	proto native bool EjectCasing (int muzzleIndex);
-	
-	proto native int GetMuzzleModeCount (int muzzleIndex);
-	proto native void SetMuzzleMode (int muzzleIndex, int modeIndex);
-	proto native void SetNextMuzzleMode (int muzzleIndex);
-	proto native int GetCurrentModeBurstSize (int muzzleIndex);
-	proto native bool GetCurrentModeAutoFire (int muzzleIndex);
+
 	/**@fn		IsChamberEmpty
 	 * @brief	detects empty chamber
 	 * @returns true if no cartridge in chamber
@@ -64,12 +67,13 @@ class Weapon extends InventoryItemSuper
 	 * @returns true if jammed
 	 **/
 	proto native bool IsChamberJammed (int muzzleIndex);
-	/**@fn		IsCartridgeInChamber
-	 * @brief	detects presence of fire-able cartridge in muzzle's chamber
+	/**@fn		IsChamberEjectable
+	 * @brief	detects presence of ejectable cartridge in muzzle's chamber
 	 *
-	 * @returns true if fire-able
+	 * @returns true if eject-able
 	 **/
-	proto native bool IsCartridgeInChamber (int muzzleIndex);
+	proto native bool IsChamberEjectable (int muzzleIndex);
+
 	/**@fn		IsChamberFull
 	 * @brief	maximum number of cartridges in chamber
 	 * @returns true if full
@@ -79,43 +83,40 @@ class Weapon extends InventoryItemSuper
 	/**@fn		GetChamberCartridgeCount
 	 * @return	returns number of available cartridges in chamber
 	 **/
-	proto native int GetChamberCartridgeCount (int muzzleIndex);
+	proto native int GetInternalMagazineCartridgeCount (int muzzleIndex);
 
 	/**@fn		GetChamberMaxCartridgeCount
 	 * @return	returns number of max cartridges in chamber
 	 **/
-	proto native int GetChamberMaxCartridgeCount (int muzzleIndex);
+	proto native int GetInternalMagazineMaxCartridgeCount (int muzzleIndex);
+	
+	/**@fn		IsInternalMagazineFull
+	 * @brief	maximum number of cartridges in internal magazine
+	 * @returns true if full
+	 **/
+	bool IsInternalMagazineFull (int muzzleIndex) { return GetInternalMagazineMaxCartridgeCount(muzzleIndex) == GetInternalMagazineCartridgeCount(muzzleIndex); }
 
+	/**@fn		GetTotalCartridgeCount
+	 * @return	returns number of available cartridges in chamber + internal magazine
+	 **/
+	proto native int GetTotalCartridgeCount (int muzzleIndex);
+
+	/**@fn		GetTotalMaxCartridgeCount
+	 * @return	returns number of max cartridges in chamber + internal magazine
+	 **/
+	proto native int GetTotalMaxCartridgeCount (int muzzleIndex);	
 
 	/**@fn		GetChamberAmmoTypeCount
 	 * @return	returns number of available ammo types for chambering
 	 **/
-	proto native int GetChamberAmmoTypeCount (int muzzleIndex);
+	//proto native int GetChamberAmmoTypeCount (int muzzleIndex);
 
 	/**@fn		GetChamberAmmoTypeName
 	 * @param[in]
 	 * @return	returns name of i-th ammo type for chambering
 	 **/
 	proto native owned string GetChamberAmmoTypeName (int muzzleIndex);
-	/**@fn		LoadChamber
-	 * @brief	loads cartridge(damage, type) to chamber
-	 * @param[in] muzzleIndex
-	 * @param[in] ammoDamage \p  damage of the ammo
-	 * @param[in] ammoTypeName \p	 type name of the ejected ammo
-	 * @return	true if loaded
-	 **/
-	proto native bool LoadChamber (int muzzleIndex, float ammoDamage, string ammoTypeName);
-	/**@fn		EjectCartridge
-	 * @brief	unload bullet from chamber
-	 *
-	 * @NOTE: 	EjectCartridge = GetCartridgeInfo + PopCartridge
-	 *
-	 * @param[in] muzzleIndex
-	 * @param[out] ammoDamage \p  damage of the ammo
-	 * @param[out] ammoTypeName \p	 type name of the ejected ammo
-	 * @return	true if bullet removed from chamber
-	 **/
-	proto bool EjectCartridge (int muzzleIndex, out float ammoDamage, out string ammoTypeName);
+
 	/**@fn		GetCartridgeInfo
 	 * @brief	get info about the cartridge in the chamber of a muzzle
 	 * @param[in] muzzleIndex
@@ -124,14 +125,34 @@ class Weapon extends InventoryItemSuper
 	 * @return	true if info retrieved
 	 **/
 	proto bool GetCartridgeInfo (int muzzleIndex, out float ammoDamage, out string ammoTypeName);
-	/**@fn		PopCartridge
-	 * @brief	removes top-most cartridge
+
+	/**@fn		GetInternalMagazineCartridgeInfo
+	 * @brief	get info about the cartridge in the internal magazine of a muzzle
+	 * @param[in] muzzleIndex
+	 * @param[in] cartridgeIndex	has to be 0 <= cartridgeIndex < GetInternalMagazineCartridgeCount()
+	 * @param[out] ammoDamage \p  damage of the ammo
+	 * @param[out] ammoTypeName \p	 type name of the ejected ammo
+	 * @return	true if info retrieved
 	 **/
-	proto native bool PopCartridge (int muzzleIndex);
-	/**@fn		PushCartridge
-	 * @brief	push cartridge in chamber into internal magazine (if any)
+	proto bool GetInternalMagazineCartridgeInfo (int muzzleIndex, int cartridgeIndex, out float ammoDamage, out string ammoTypeName);
+	
+	/**@fn		PopCartridgeFromChamber
+	 * @brief	removes cartridge from chamber
 	 **/
-	proto native bool PushCartridge (int muzzleIndex);
+	proto bool PopCartridgeFromChamber (int muzzleIndex, out float ammoDamage, out string ammoTypeName);
+	/**@fn		PushCartridgeToChamber
+	 * @brief	push cartridge to chamber
+	 **/
+	proto native bool PushCartridgeToChamber (int muzzleIndex, float ammoDamage, string ammoTypeName);
+
+	/**@fn		PopCartridgeFromInternalMagazine
+	 * @brief	removes top-most cartridge from internal magazine
+	 **/
+	proto bool PopCartridgeFromInternalMagazine (int muzzleIndex, out float ammoDamage, out string ammoTypeName);
+	/**@fn		PushCartridgeToInternalMagazine
+	 * @brief	push cartridge into internal magazine
+	 **/
+	proto native bool PushCartridgeToInternalMagazine (int muzzleIndex, float ammoDamage, string ammoTypeName);
 	
 	/**@fn		CanAttachMagazine
 	 * @brief 	query if a magazine can be attached to weapon
@@ -180,12 +201,12 @@ class Weapon extends InventoryItemSuper
 	 **/
 	proto native bool CanChamberFromMag (int muzzleIndex, Magazine mag);
 
-	/**@fn		GetCartridgeMagazineTypeName
+	/**@fn		GetChamberedCartridgeMagazineTypeName
 	 * @brief query the type of magazine the cartridge can be unloaded to
 	 * @param[in] muzzleIndex
 	 * @return entity type name
 	 **/
-	proto native owned string GetCartridgeMagazineTypeName (int muzzleIndex);
+	proto native owned string GetChamberedCartridgeMagazineTypeName (int muzzleIndex);
 
 	/**@fn		EnterOptics
 	 * @brief	switches to optics mode if possible
@@ -310,7 +331,41 @@ class Weapon extends InventoryItemSuper
 	 **/
 	proto native ItemSuppressor GetAttachedSuppressor ();
 	
+	/**
+	 * @fn		GetCameraPoint
+	 * @brief	gets camera position & direction in model space of weapon entity
+	 **/
 	proto native void GetCameraPoint (int muzzleIndex, out vector pos, out vector dir);
+
+	/**
+	 * @fn		GetZoomInit
+	 * @brief	gets FOV value, when entering optics
+	 **/
+	proto native float GetZoomInit(int muzzleIndex);
+
+	/**
+	 * @fn		GetZoomMin
+	 * @brief	gets FOV minimum
+	 **/
+	proto native float GetZoomMin(int muzzleIndex);
+
+	/**
+	 * @fn		GetZoomMax
+	 * @brief	gets FOV maximum
+	 **/
+	proto native float GetZoomMax(int muzzleIndex);
+
+	/**
+	 * @fn		GetZeroingDistanceZoomMin
+	 * @brief	Gets Zeroing distance at opticsZoomMin
+	 **/
+	proto native float GetZeroingDistanceZoomMin(int muzzleIndex);
+	
+	/**
+	 * @fn		GetZeroingDistanceZoomMax
+	 * @brief	Gets Zeroing distance at opticsZoomMax
+	 **/
+	proto native float GetZeroingDistanceZoomMax(int muzzleIndex);
 
 	proto native void SelectionBulletShow ();
 	proto native void SelectionBulletHide ();

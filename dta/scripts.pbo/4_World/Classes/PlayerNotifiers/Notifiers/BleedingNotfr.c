@@ -13,17 +13,12 @@ class BleedingNotfr: NotifierBase
 
 	override void DisplayBadge()
 	{
-		
-		//GetVirtualHud().SetStatus(eDisplayElements.DELM_BADGE_BLEEDING,true);
-		
 		DisplayElementBadge dis_elm = DisplayElementBadge.Cast(GetVirtualHud().GetElement(eDisplayElements.DELM_BADGE_BLEEDING));
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(true);
+			dis_elm.SetLevel(eBadgeLevel.FIRST);
 		}
-		
-		////GetVirtualHud().SetStatus(eDisplayElements.DELM_NTFR_BLOOD,DELM_LVL_1);
 	}
 
 	override void HideBadge()
@@ -33,7 +28,7 @@ class BleedingNotfr: NotifierBase
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(false);
+			dis_elm.SetLevel(eBadgeLevel.NONE);
 		}
 	}
 };

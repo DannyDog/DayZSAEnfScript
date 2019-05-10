@@ -23,7 +23,7 @@ FrameWidgetClass settings_menu_root {
      visible 1
      clipchildren 0
      ignorepointer 1
-     position 80 80
+     position 150 80
      size 550 60
      hexactpos 1
      vexactpos 1
@@ -36,7 +36,7 @@ FrameWidgetClass settings_menu_root {
      "Size To Content V" 1
      {
       SpacerWidgetClass TabBar {
-       clipchildren 1
+       clipchildren 0
        ignorepointer 1
        position 0 0
        size 1 1
@@ -51,7 +51,7 @@ FrameWidgetClass settings_menu_root {
        "Size To Content V" 1
        {
         ImageWidgetClass Tabs_Background {
-         visible 1
+         visible 0
          ignorepointer 1
          color 1 1 1 0.5098
          position 0 0
@@ -68,6 +68,7 @@ FrameWidgetClass settings_menu_root {
         }
         GridSpacerWidgetClass Tab_Control_Container {
          ignorepointer 1
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
@@ -75,6 +76,7 @@ FrameWidgetClass settings_menu_root {
          hexactsize 0
          vexactsize 0
          priority 1
+         style DayZDefaultPanel
          "no focus" 1
          Padding 0
          Margin 0
@@ -85,15 +87,17 @@ FrameWidgetClass settings_menu_root {
          {
           PanelWidgetClass Tab_Control_0 {
            visible 1
+           disabled 0
            clipchildren 1
-           size 160 1
+           color 0 0 0 0
+           size 200 1
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -114,7 +118,7 @@ FrameWidgetClass settings_menu_root {
              "text valign" center
             }
             ImageWidgetClass Tab_Control_0_Background {
-             visible 1
+             visible 0
              disabled 0
              inheritalpha 0
              ignorepointer 1
@@ -141,15 +145,16 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_1 {
            visible 1
            clipchildren 1
+           color 0 0 0 0
            position 0 0
-           size 170 1
+           size 200 1
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -197,15 +202,16 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_2 {
            visible 1
            clipchildren 1
+           color 0 0 0 0
            position 0 0
-           size 220 1
+           size 200 1
            hexactpos 1
            vexactpos 1
            hexactsize 1
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -255,7 +261,7 @@ FrameWidgetClass settings_menu_root {
        }
       }
       FrameWidgetClass ConsoleControls {
-       visible 0
+       visible 1
        clipchildren 0
        ignorepointer 1
        size 1 1
@@ -271,7 +277,7 @@ FrameWidgetClass settings_menu_root {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -288,7 +294,7 @@ FrameWidgetClass settings_menu_root {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -308,8 +314,8 @@ FrameWidgetClass settings_menu_root {
     FrameWidgetClass Tab_0 {
      visible 1
      ignorepointer 1
-     position 80 160
-     size 1760 800
+     position 105 160
+     size 1709 800
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -318,7 +324,7 @@ FrameWidgetClass settings_menu_root {
     FrameWidgetClass Tab_1 {
      visible 0
      ignorepointer 1
-     position 80 160
+     position 105 160
      size 1760 800
      hexactpos 1
      vexactpos 1
@@ -328,7 +334,7 @@ FrameWidgetClass settings_menu_root {
     FrameWidgetClass Tab_2 {
      visible 0
      ignorepointer 1
-     position 80 160
+     position 105 160
      size 1760 800
      hexactpos 1
      vexactpos 1
@@ -338,7 +344,7 @@ FrameWidgetClass settings_menu_root {
     FrameWidgetClass Tab_3 {
      visible 0
      ignorepointer 1
-     position 80 160
+     position 105 160
      size 1760 800
      hexactpos 1
      vexactpos 1
@@ -387,7 +393,7 @@ FrameWidgetClass settings_menu_root {
   PanelWidgetClass toolbar_bg {
    visible 1
    inheritalpha 0
-   color 1 1 1 0.4706
+   color 0 0 0 0.4706
    position 0 0
    size 1 0.1
    halign center_ref
@@ -397,7 +403,7 @@ FrameWidgetClass settings_menu_root {
    hexactsize 0
    vexactsize 0
    priority 3
-   style ToolbarWidget
+   style DayZDefaultPanel
    {
     WrapSpacerWidgetClass ConsoleToolbar {
      visible 1
@@ -411,7 +417,7 @@ FrameWidgetClass settings_menu_root {
      vexactsize 0
      priority 100
      "no focus" 1
-     Padding 4
+     Padding 20
      Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
@@ -430,7 +436,7 @@ FrameWidgetClass settings_menu_root {
        vexactsize 1
        priority 3
        "no focus" 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -442,7 +448,7 @@ FrameWidgetClass settings_menu_root {
         ImageWidgetClass ToggleIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -465,13 +471,12 @@ FrameWidgetClass settings_menu_root {
          vexactpos 1
          hexactsize 1
          vexactsize 1
-         text "#STR_settings_menu_root_toolbar_bg_ConsoleToolbar_Toggle_ToggleText0"
+         text "#dialog_change"
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -488,7 +493,7 @@ FrameWidgetClass settings_menu_root {
        vexactsize 1
        priority 2
        "no focus" 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -500,7 +505,7 @@ FrameWidgetClass settings_menu_root {
         ImageWidgetClass ApplyIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -529,7 +534,6 @@ FrameWidgetClass settings_menu_root {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -546,7 +550,7 @@ FrameWidgetClass settings_menu_root {
        vexactsize 1
        priority 1
        "no focus" 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -558,7 +562,7 @@ FrameWidgetClass settings_menu_root {
         ImageWidgetClass ResetIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -587,7 +591,6 @@ FrameWidgetClass settings_menu_root {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }
@@ -603,7 +606,7 @@ FrameWidgetClass settings_menu_root {
        hexactsize 1
        vexactsize 1
        "no focus" 1
-       Padding 4
+       Padding 5
        Margin 0
        "Size To Content H" 1
        "Size To Content V" 1
@@ -615,7 +618,7 @@ FrameWidgetClass settings_menu_root {
         ImageWidgetClass BackIcon {
          clipchildren 0
          inheritalpha 0
-         size 36 36
+         size 38 38
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -644,7 +647,6 @@ FrameWidgetClass settings_menu_root {
          "exact text size" 22
          "size to text h" 1
          "size to text v" 0
-         "text halign" center
          "text valign" center
         }
        }

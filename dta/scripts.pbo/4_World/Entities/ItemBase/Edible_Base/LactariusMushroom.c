@@ -1,17 +1,3 @@
-class LactariusMushroom : Edible_Base
+class LactariusMushroom : MushroomBase
 {
-	override bool CanBeCookedOnStick()
-	{
-		return true;
-	}
-
-	override bool CanBeCooked()
-	{
-		return true;
-	}	
-	
-	override bool IsMushroom()
-	{
-		return true;
-	}
 }

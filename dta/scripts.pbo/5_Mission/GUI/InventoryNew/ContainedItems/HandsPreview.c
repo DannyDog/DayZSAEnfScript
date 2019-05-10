@@ -5,17 +5,29 @@ class HandsPreview: LayoutHolder
 	
 	protected float		m_IconSize;
 
-	protected EntityAI	m_Item
+	protected ItemBase	m_Item
 
 	void HandsPreview( LayoutHolder parent )
 	{
+		GetGame().GetPlayer().GetOnItemAddedToHands().Insert( CreateNewIcon );
+		GetGame().GetPlayer().GetOnItemRemovedFromHands().Insert( DeleteIcon );
+		
+		m_Item = ItemBase.Cast( GetGame().GetPlayer().GetHumanInventory().GetEntityInHands() );
+		if( m_Item )
+			CreateNewIcon( ItemBase.Cast( m_Item ) );
+	}
+	
+	void ~HandsPreview()
+	{
+		GetGame().GetPlayer().GetOnItemAddedToHands().Remove( CreateNewIcon );
+		GetGame().GetPlayer().GetOnItemRemovedFromHands().Remove( DeleteIcon );
 	}
 
 	void RefreshQuantity( EntityAI m_Item_to_refresh )
 	{
 		if( m_Icon )
 		{
-			m_Icon.RefreshQuantity();
+			m_Icon.SetQuantity();
 		}
 	}
 
@@ -50,76 +62,54 @@ class HandsPreview: LayoutHolder
 			m_Icon.GetMainWidget().FindAnyWidget( "Swap" ).Show( show_combine_swap );
 		}
 		#endif
-
-		PlayerBase p = PlayerBase.Cast( GetGame().GetPlayer() );
-		if( !p )
-			return;
-		m_Item = p.GetHumanInventory().GetEntityInHands();
-		if ( ( !m_Item && m_Icon ) || ( m_Icon && m_Item != m_Icon.GetObject() ) )
-		{
-			RemoveItem();
-			( HandsContainer.Cast( m_Parent ) ).RemoveItem();
-			( HandsContainer.Cast( m_Parent ) ).DestroyAtt();
-			( HandsContainer.Cast( m_Parent ) ).DestroyCargo();
-			m_AttachmentsInitialized = null;
-			m_RootWidget.SetColor( ARGB( 166, 80, 80, 80 ) );
-			m_Parent.GetParent().Refresh();
-		}
-		else if( m_Item && !m_Icon )
-		{
-			CreateNewIcon();
-			m_RootWidget.SetColor( ARGB( 180, 0, 0, 0 ) );
-			m_Parent.GetParent().Refresh();
-		}
-		else if ( m_Icon )
+		
+		if ( m_Icon )
 		{
 			m_Icon.UpdateInterval();
 		}
-
-		HandsContainer parent = HandsContainer.Cast( m_Parent );
-		Header header = parent.GetHeader();
-
-		if( m_Item )
-		{
-			string display_name = m_Item.GetDisplayName();
-			display_name.ToUpper();
-			header.SetName( display_name );
-		}
-		else
-		{
-			header.SetName( "#str_widget_textwidget00" );
-		}
 	}
 
-	protected void CreateNewIcon()
+	void CreateNewIcon( ItemBase item )
 	{
 		float y;
-		GetMainWidget().GetScreenSize( m_IconSize, y );
+		GetRootWidget().GetParent().GetParent().GetParent().GetParent().GetScreenSize( m_IconSize, y );
 		m_IconSize = m_IconSize / 10;
 		
 		m_Icon = new Icon( this, true );
 		m_Icon.Refresh();
 		if( m_Icon )
 		{
-			Weapon_Base wpn;
-			if ( Class.CastTo(wpn,  m_Item ) )
-			{
-				int mi = wpn.GetCurrentMuzzle();
-				m_Icon.GetMainWidget().FindAnyWidget( "AmmoIcon" ).Show(  wpn.IsChamberFull( mi )  );
-			}
-
+			m_Item = item;
 			m_Icon.Init( m_Item );
-			if( m_Item != m_AttachmentsInitialized )
-			{
-				( HandsContainer.Cast( m_Parent ) ).RemoveItem();
-				( HandsContainer.Cast( m_Parent ) ).DestroyAtt();
-				( HandsContainer.Cast( m_Parent ) ).DestroyCargo();
-				( HandsContainer.Cast( m_Parent ) ).ShowAtt( m_Item );
-				m_AttachmentsInitialized = m_Item;
-			}
-			
 			m_Icon.FullScreen();
+			( HandsContainer.Cast( m_Parent ) ).ShowAtt( m_Item );
 			m_Icon.Refresh();
 		}
+		
+		m_RootWidget.SetColor( ARGB( 180, 0, 0, 0 ) );
+		m_Parent.GetParent().Refresh();
+		Inventory.GetInstance().UpdateConsoleToolbar();
+		
+		HandsContainer parent = HandsContainer.Cast( m_Parent );
+		HandsHeader header = HandsHeader.Cast( parent.GetHeader() );
+
+		if( m_Item && !m_Item.GetInventory().GetCargo() )
+		{
+			string display_name = m_Item.GetDisplayName();
+			display_name.ToUpper();
+			header.SetName( display_name );
+		}
+	}
+	
+	void DeleteIcon()
+	{
+		RemoveItem();
+		( HandsContainer.Cast( m_Parent ) ).RemoveItem();
+		( HandsContainer.Cast( m_Parent ) ).DestroyAtt();
+		( HandsContainer.Cast( m_Parent ) ).DestroyCargo();
+		m_AttachmentsInitialized = null;
+		m_RootWidget.SetColor( ARGB( 166, 80, 80, 80 ) );
+		m_Parent.GetParent().Refresh();
+		Inventory.GetInstance().UpdateConsoleToolbar();
 	}
 }

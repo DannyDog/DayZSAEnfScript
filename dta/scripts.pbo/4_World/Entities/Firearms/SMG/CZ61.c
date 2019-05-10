@@ -1,7 +1,7 @@
 /**@class	CZ61_Base
  * @brief	basic CZ61 Skorpion submachine gun
  **/
-class CZ61 : RifleBoltLock_Base
+class CZ61_Base : RifleBoltLock_Base
 {
 	void CZ61()
 	{

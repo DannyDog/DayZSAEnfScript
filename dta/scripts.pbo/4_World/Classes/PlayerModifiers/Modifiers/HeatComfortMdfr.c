@@ -23,6 +23,17 @@ class HeatComfortMdfr: ModifierBase
 
 	}
 	
+	override string GetDebugText()
+	{
+		return m_Player.GetStatHeatComfort().Get().ToString();
+	}
+	
+	override string GetDebugTextSimple()
+	{
+		return m_Player.GetStatHeatComfort().Get().ToString();
+	}
+
+	
 	override void OnTick(PlayerBase player, float deltaT)
 	{
 		float heat_comfort = player.GetStatHeatComfort().Get();

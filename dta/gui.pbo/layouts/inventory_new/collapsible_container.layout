@@ -29,7 +29,7 @@ GridSpacerWidgetClass collapsible_container_root {
    Margin 0
    "Size To Content V" 1
   }
-  WrapSpacerWidgetClass body {
+  GridSpacerWidgetClass body {
    visible 1
    clipchildren 0
    ignorepointer 1
@@ -42,11 +42,13 @@ GridSpacerWidgetClass collapsible_container_root {
    vexactsize 1
    priority 90
    scriptclass ""
-   style Empty
+   style Colorable
    Padding 8
    Margin 0
    "Size To Content H" 1
    "Size To Content V" 1
+   Columns 1
+   Rows 100
   }
  }
 }

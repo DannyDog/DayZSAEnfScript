@@ -6,7 +6,8 @@
                 {
                     "SectionName": "#project_lead",
                     "SectionLines": [
-                        "David Durčák"
+                        "David Durčák",
+						"Eugen Harton"
                     ]
                 }
             ]
@@ -17,11 +18,9 @@
                 {
                     "SectionName": "#production",
                     "SectionLines": [
-                        "Eugen Harton",
                         "Julien Vida",
                         "Ľuboš Kubiš",
                         "Roman Múdry",
-                        "Martin Polma",
                         "Matt Lightfoot"
                     ]
                 }
@@ -86,6 +85,7 @@
                         "Boris Vacula",
                         "Daniel Dička",
                         "David Soška",
+                        "Kamil Komínek",
                         "Jakub Palkovič",
                         "Ľuboš Kováč",
                         "Martin Strapko",
@@ -332,6 +332,7 @@
                         "Jan Jirák",
                         "Jiří Dytrych",
                         "Ketrin Bitomská",
+						"Martin Polma",
                         "Rastislav Kluka"
                     ]
                 }
@@ -551,6 +552,7 @@
                     "SectionName": "#localization_team",
                     "SectionLines": [
                         "Andrea Luciano Damico",
+						"Andrew Zhu (S&H Entertainment Localization)",
                         "Artemiy Mikheev",
                         "Curri Barceló",
                         "David Livingstone",
@@ -563,6 +565,7 @@
                         "Ramón Méndez",
                         "Raphaël Rouby",
                         "Sara Cascianelli",
+						"Sibel Wu (S&H Entertainment Localization)",
                         "Tobiáš Zíka",
                         "Vojtěch Schubert"
                     ]
@@ -742,7 +745,6 @@
                         "Jiří Raška",
                         "Josef Plachý",
                         "Juraj Šimon",
-                        "Kamil Komínek",
                         "Kateřina Kohútová",
                         "Kateřina Skalická",
                         "Kateřina Štěpánková",

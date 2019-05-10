@@ -66,24 +66,9 @@ class OffroadHatchback extends CarScript
 
 	override bool CanReleaseAttachment( EntityAI attachment )
 	{
+		super.CanReleaseAttachment( attachment );
+		
 		string attType = attachment.GetType();
-
-		if ( GetSpeedometer() > 1 )
-			return false;
-
-		if ( !GetGame().IsServer() || !GetGame().IsMultiplayer() )
-		{
-			for( int i =0; i < CrewSize(); i++ )
-			{
-				Human crew = CrewMember( i );
-				if ( !crew )
-					continue;
-
-				PlayerBase player;
-				if ( Class.CastTo(player, crew ) )
-					return false;
-			}
-		}
 		
 		if ( EngineIsOn() || GetCarDoorsState("NivaHood") == CarDoorState.DOORS_CLOSED )
 		{
@@ -91,19 +76,6 @@ class OffroadHatchback extends CarScript
 				return false;
 		}
 
-		CarDoor carDoor;
-
-		switch( attType )
-		{
-			case "HatchbackDoors_Driver":
-				if ( GetCarDoorsState("NivaDriverDoors") != CarDoorState.DOORS_OPEN )
-					return false;
-			break;
-			case "HatchbackDoors_CoDriver":
-				if ( GetCarDoorsState("NivaCoDriverDoors") != CarDoorState.DOORS_OPEN )
-					return false;
-			break;
-		}
 		return true;
 	}
 	
@@ -225,6 +197,8 @@ class OffroadHatchback extends CarScript
 		return false;
 	}
 	
+	// 0 full ambient and engine sound
+	// 1 zero ambient and engine sound
 	override float OnSound( CarSoundCtrl ctrl, float oldValue )
 	{
 		switch ( ctrl )
@@ -240,10 +214,22 @@ class OffroadHatchback extends CarScript
 					newValue += 0.5;
 
 				if ( GetCarDoorsState( "NivaTrunk" ) == CarDoorState.DOORS_CLOSED )
-					newValue += 0.1;
+					newValue += 0.3;
+			
+				if ( GetHealthLevel( "WindowFront") == STATE_RUINED )
+					newValue -= 0.6;
+
+				if ( GetHealthLevel( "WindowLR") == STATE_RUINED )
+					newValue -= 0.2;
+			
+				if ( GetHealthLevel( "WindowRR") == STATE_RUINED )
+					newValue -= 0.2;
 
 				if ( newValue > 1 )
 					newValue = 1;
+			
+				if ( newValue < 0 )
+					newValue = 0;
 			
 				m_enviroCoef = newValue;
 				return newValue;
@@ -272,6 +258,25 @@ class OffroadHatchback extends CarScript
 			return "SeatCoDriver";
 		}
 
+		return "";
+	}
+	
+	override string GetDoorConditionPointFromSelection( string selection )
+	{
+		switch( selection )
+		{
+		case "seat_driver":
+		case "seatback_driver":
+		case "seat_cargo1":
+			return "seat_con_1_1";
+		break;
+		case "seat_codriver":
+		case "seatback_codriver":
+		case "seat_cargo2":
+			return "seat_con_2_1";
+		break;
+		}
+		
 		return "";
 	}
 
@@ -397,6 +402,17 @@ class OffroadHatchback extends CarScript
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
 		Fill( CarFluid.OIL, 4.0 );
+		
+		//hotfix 
+		GetController().ShiftUp();
+		GetController().ShiftDown();
 
-	};
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionAnimateSeats);
+	}
 }

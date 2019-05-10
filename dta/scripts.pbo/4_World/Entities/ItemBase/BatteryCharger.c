@@ -39,6 +39,7 @@ class BatteryCharger extends ItemBase
 		SwitchLightOff();
 		RegisterNetSyncVariableInt("m_BatteryEnergy0To100");
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
 	
 	/*override bool IsHeavyBehaviour()
@@ -392,5 +393,17 @@ class BatteryCharger extends ItemBase
 	override string GetPlaceSoundset()
 	{
 		return "placeBatteryCharger_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionPlugIn);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionTurnOnWhileOnGround);		
+		AddAction(ActionTurnOffWhileOnGround);
+		AddAction(ActionPlaceObject);
 	}
 }

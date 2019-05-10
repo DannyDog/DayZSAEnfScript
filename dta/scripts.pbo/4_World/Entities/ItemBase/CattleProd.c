@@ -41,4 +41,11 @@ class CattleProd : ItemBase
 	{
 		return m_MeleeSprintMode;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+	}
 }

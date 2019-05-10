@@ -50,6 +50,16 @@ class InjuryAnimationHandler
 		m_HealthMaxValue 	= m_Player.GetMaxHealth("", "Health");
 	}
 	
+	bool IsInjuryAnimEnabled()
+	{
+		return m_InjuryAnimEnabled;
+	}
+	
+	float GetInjuryAnimValue()
+	{
+		return m_InjuryAnimDamageValue;
+	}
+	
 	ScriptInvoker GetInvoker()
 	{
 		return m_ChangedStateInvoker;

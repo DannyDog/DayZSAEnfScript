@@ -153,7 +153,7 @@ class WeaponChargingInnerMag extends WeaponStateBase
 	ref WeaponEjectCasing_W4T m_onBEFireOut;
 	ref BulletHide_W4T m_hideB;
 	ref WeaponCharging_CK m_onCK;
-	//ref WeaponChamberFromAttMag_W4T m_chamber;
+	ref WeaponChamberFromInnerMag_W4T m_chamber;
 
 	void WeaponChargingInnerMag (Weapon_Base w = NULL, WeaponStateBase parent = NULL, WeaponActions action = WeaponActions.NONE, int actionType = -1)
 	{
@@ -166,7 +166,7 @@ class WeaponChargingInnerMag extends WeaponStateBase
 		m_onBEFireOut = new WeaponEjectCasing_W4T(m_weapon, this);
 		m_hideB = new BulletHide_W4T(m_weapon, this);
 		m_onCK = new WeaponCharging_CK(m_weapon, this);
-		//m_chamber = new WeaponChamberFromAttMag_W4T(m_weapon, this);
+		m_chamber = new WeaponChamberFromInnerMag_W4T(m_weapon, this);
 
 		// events
 		WeaponEventBase __be_ = new WeaponEventAnimBulletEject;
@@ -183,20 +183,20 @@ class WeaponChargingInnerMag extends WeaponStateBase
 		
 		//TODO after inner magazine rework this events must load new bullet
 		
-		//m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon))); // some anims do not send BE event
+		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event
-//		m_fsm.AddTransition(new WeaponTransition(   m_onBE, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon)));
+		m_fsm.AddTransition(new WeaponTransition(   m_onBE, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon)));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, __ck_, m_onCK));
-//		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon)));
+		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon)));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, __ck_, m_onCK));
-//		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon)));
+		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon)));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_onCK));
 		
 		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_onCK, _fin_, NULL));
-		//m_fsm.AddTransition(new WeaponTransition(m_chamber, _fin_, NULL));
+		m_fsm.AddTransition(new WeaponTransition(	m_chamber, _fin_, NULL));
 
 		m_fsm.SetInitialState(m_start);
 	}

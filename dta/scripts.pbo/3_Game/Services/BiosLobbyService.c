@@ -14,34 +14,39 @@ enum ESortType
 enum ESortOrder
 {
 	ASCENDING,		
-	DESCENDING,		
+	DESCENDING,
 };
 
 
 //! GetServersResultRow the output structure of the GetServers operation that represents one game server
 class GetServersResultRow
 {
-	string	m_Id;
-	int		m_Priority;
-	string	m_Name;
-	string	m_Description;
-	string	m_HostIp;
-	int		m_HostPort;
+	string	m_Id;					// PC is IP:Port
+	int		m_Priority;				// PC something is working -> 667223046
+	string	m_Name;					// PC is name of server
+	string	m_Description; 			// PC not work
+	string	m_HostIp; 				// PC not work
+	int		m_HostPort; 			// PC is works
 	bool	m_Invisible;
 	bool	m_Official;
-	bool	m_Modded;
-	int		m_ModeId;
+	bool	m_Modded; 				// PC not work alway 0
+	int		m_ModeId; 				// PC not work alway 0
 	bool	m_AntiCheat;
-	int		m_RegionId;
+	int		m_RegionId; 			// PC not work alway 0
 	int		m_MinPlayers;
-	int		m_MaxPlayers;
-	int		m_FreeSlots;
+	int		m_MaxPlayers; 			// PC - max players
+	int		m_FreeSlots; 			// PC - max players
 	int		m_CurrentNumberPlayers;
-	string	m_GameVersion;
-	bool	m_IsPasswordProtected;
+	string	m_GameVersion; 			// PC not work alway ""
+	bool	m_IsPasswordProtected;	// PC work
 	string	m_CreatedAt;
 	string	m_UpdatedAt;
-	bool	m_IsExpanded;
+	
+	//Scripted
+	bool		m_IsExpanded;
+	int 		m_SortName;	
+	int			m_SortTime;
+	bool		m_IsSelected;
 
 	//characters alive
 	string m_CharactersAlive;
@@ -54,10 +59,63 @@ class GetServersResultRow
   	int m_Disable3rdPerson;  //1 for disabled, ie. hardcore
 	//! time multiplier of environment
 	float m_EnvironmentTimeMul;
+	float m_EnvironmentNightTimeMul;
 	bool		m_AllowedFilePatching;
 	string m_ShardId;
 	int m_SteamQueryPort;
+	
+	bool m_Favorite;
 
+	bool IsSelected()
+	{
+		return m_IsSelected;
+	}
+	
+	string GetValueStr(ESortType sort_type)
+	{
+		switch( sort_type )
+		{
+			case ESortType.HOST:
+			{
+				return m_Name;
+			}
+		}
+		
+		return "";
+	}	
+	
+	int GetValueInt(ESortType sort_type)
+	{
+		switch( sort_type )
+		{
+			case ESortType.TIME:
+			{
+				return m_SortTime;
+			}
+			case ESortType.POPULATION:
+			{
+				return m_CurrentNumberPlayers;
+			}
+			case ESortType.SLOTS:
+			{
+				return m_MaxPlayers;
+			}
+			case ESortType.PING:
+			{
+				return m_Ping;
+			}
+			case ESortType.FAVORITE:
+			{
+			
+			}
+			case ESortType.PASSWORDED:
+			{
+			
+			}
+		}
+		
+		return 0;
+	}
 };
 
 
@@ -314,6 +372,23 @@ class GetServersInput
 		m_SortBy += "N";
 	}
 	
+	void SetPingFilter( int pingMaxValue )
+	{
+		m_SortBy += "M" + pingMaxValue + ";";
+	}
+	
+	void SetBattleyeProtection(bool show)
+	{
+		m_SortBy += "B";
+		AddShow(show);
+	}
+		
+	void SetPassworded(bool show)
+	{
+		m_SortBy += "C";
+		AddShow(show);
+	}
+
 	void AddShow( bool show )
 	{
 		if( show )
@@ -343,6 +418,9 @@ class BiosLobbyService
 				
 	*/
 	proto native EBiosError GetFirstServerWithEmptySlot(GetFirstServerWithEmptySlotInput inputValues);
+	
+	proto native void AddServerFavorite(string ipAddress, int port, int steamQueryPort);
+	proto native void RemoveServerFavorite(string ipAddress, int port, int steamQueryPort);
 
 	//! Async callback for GetServers
 	/*!
@@ -353,6 +431,10 @@ class BiosLobbyService
 	
 	void OnDoneAsync(ref GetServersResult result_list, EBiosError error, string response)
 	{
+		/*
+		if (result_list.m_Results != null && result_list.m_Results.Count() > 0)
+			Print(result_list.m_Results[0].m_TimeOfDay);
+		*/
 		OnlineServices.OnLoadServersAsync( result_list, error, response );
 	}
 	

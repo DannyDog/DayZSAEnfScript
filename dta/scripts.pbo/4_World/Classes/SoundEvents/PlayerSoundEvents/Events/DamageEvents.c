@@ -7,7 +7,7 @@ class DamageSoundEvents extends PlayerSoundEventBase
 		m_Type = EPlayerSoundEventType.DAMAGE;
 	}
 	
-	override bool CanPlay()
+	override bool CanPlay(PlayerBase player)
 	{
 		return true;
 	}

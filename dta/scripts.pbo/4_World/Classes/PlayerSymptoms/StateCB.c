@@ -1,7 +1,7 @@
 class SymptomCB extends HumanCommandActionCallback
 {
 	//int m_SymptomUID;
-	float m_RunningTime;
+	float m_RunTime;
 	float m_StartingTime;
 	PlayerBase m_Player;
 	
@@ -14,17 +14,22 @@ class SymptomCB extends HumanCommandActionCallback
 	}
 	
 	
-	void Init(float running_time, PlayerBase player)
+	void Init(float run_time, PlayerBase player)
 	{
 		EnableCancelCondition(true);
-		m_RunningTime = running_time * 1000;
+		m_RunTime = run_time * 1000;
 		m_StartingTime = GetGame().GetTime();
 		m_Player = player;
+		
+		if( m_Player && m_Player.GetSymptomManager())
+		{
+			m_Player.GetSymptomManager().OnAnimationStarted();
+		}
 	}
 	
 	bool CancelCondition()
 	{
-		if(m_RunningTime > 0 && (GetGame().GetTime() > m_StartingTime + m_RunningTime))
+		if(m_RunTime > 0 && (GetGame().GetTime() > m_StartingTime + m_RunTime))
 		{
 			return true;
 		}

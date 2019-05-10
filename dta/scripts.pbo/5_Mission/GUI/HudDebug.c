@@ -38,6 +38,7 @@ class HudDebug extends Hud
 	ref Timer						m_TimerUpdate;
 	ref HudDebugEventHandler 		m_HudDebugHandler;
 	ref HudDebugWinCharModifiers 	m_WinCharModifiers;
+	ref HudDebugWinCharAgents 		m_WinCharAgents;
 	
 	//============================================
 	// HudDebug
@@ -81,8 +82,8 @@ class HudDebug extends Hud
 		m_Panels.Insert( m_WinCharModifiers );
 		
 		// Register Window Chracter Agents
-		HudDebugWinCharAgents win_char_agents = new HudDebugWinCharAgents( m_WgtRoot.FindAnyWidget( "wdw_CharacterAgents" ) );
-		m_Panels.Insert( win_char_agents );
+		m_WinCharAgents = new HudDebugWinCharAgents( m_WgtRoot.FindAnyWidget( "wdw_CharacterAgents" ) );
+		m_Panels.Insert( m_WinCharAgents );
 		
 		// Register Window Chracter Debug
 		HudDebugWinCharDebug win_char_debug = new HudDebugWinCharDebug( m_WgtRoot.FindAnyWidget( "wdw_CharacterDebug" ) );
@@ -240,9 +241,14 @@ class HudDebug extends Hud
 		//send OnClick to HudDebugWinCharModifiers
 		if ( m_WinCharModifiers )
 		{
-			m_WinCharModifiers.OnClick( w, x, y, button );
-
-			return true;
+			if(m_WinCharModifiers.OnClick( w, x, y, button ))
+				return true;
+		}
+		
+		if ( m_WinCharAgents )
+		{
+			if(m_WinCharAgents.OnClick( w, x, y, button ))
+				return true;
 		}
 		
 		return false;

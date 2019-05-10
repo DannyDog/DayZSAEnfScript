@@ -1,46 +1,40 @@
 class HandForceSwappingAnimated_Show extends HandStartAction
 {
-	EntityAI m_OldEntity; /// entity to be hidden
-	EntityAI m_NewEntity; /// entity to be taken
-	ref InventoryLocation m_Dst = null;
+	ref InventoryLocation m_Src1 = null;
+	ref InventoryLocation m_Src2 = null;
+	ref InventoryLocation m_Dst1 = null;
+	ref InventoryLocation m_Dst2 = null;
 
 	void HandForceSwapingAnimated_Show (Man player = NULL, HandStateBase parent = NULL, WeaponActions action = WeaponActions.NONE, int actionType = -1) { }
 
 	override void OnEntry (HandEventBase e)
 	{
-		if (m_Dst)
+		if (m_Src1 && m_Src2 && m_Dst1 && m_Dst2)
 		{
-			if (m_OldEntity && m_NewEntity)
-			{
-				Man player = e.m_Player;
-				EntityAI itemInHands = m_OldEntity;
-				EntityAI itemToHands = m_NewEntity;
-				hndDebugPrint("[hndfsm] HandForceSwappingAnimated_Show IH=" + itemInHands + "I2H=" + itemToHands);
-
-				HandActionForceSwap.ForceSwap(player, itemInHands, itemToHands, m_Dst);
-			}
-			else
-				Error("[hndfsm] HandForceSwappingAnimated_Show m_OldEntity=" + m_OldEntity + " or m_NewEntity=" + m_NewEntity + " is NULL");
+			GameInventory.LocationSwap(m_Src1, m_Src2, m_Dst1, m_Dst2);
+			e.m_Player.OnItemInHandsChanged();
 		}
 		else
-			Error("[hndfsm] HandForceSwappingAnimated_Show not a HandEventForceSwap event!");
+			Error("[hndfsm] HandForceSwappingAnimated_Show is not properly configured!");
 
 		super.OnEntry(e);
 	}
 
 	override void OnAbort (HandEventBase e)
 	{
-		m_OldEntity = null;
-		m_NewEntity = null;
-		m_Dst = null;
+		m_Src1 = null;
+		m_Src2 = null;
+		m_Dst1 = null;
+		m_Dst2 = null;
 		super.OnAbort(e);
 	}
 
 	override void OnExit (HandEventBase e)
 	{
-		m_OldEntity = null;
-		m_NewEntity = null;
-		m_Dst = null;
+		m_Src1 = null;
+		m_Src2 = null;
+		m_Dst1 = null;
+		m_Dst2 = null;
 		super.OnExit(e);
 	}
 
@@ -50,14 +44,13 @@ class HandForceSwappingAnimated_Show extends HandStartAction
 
 class HandAnimatedForceSwapping extends HandStateBase
 {
-	EntityAI m_OldEntity; /// entity to be hidden
-	EntityAI m_NewEntity; /// entity to be taken
+	ref InventoryLocation m_Src1 = null;
+	ref InventoryLocation m_Src2 = null;
+	ref InventoryLocation m_Dst1 = null;
+	ref InventoryLocation m_Dst2 = null;
 
 	ref HandStartHidingAnimated m_Hide;
 	ref HandForceSwappingAnimated_Show m_Show;
-	
-	ref InventoryLocation m_ilOldEntity;
-	ref InventoryLocation m_ilNewEntity;
 
 	void HandAnimatedForceSwapping (Man player = NULL, HandStateBase parent = NULL)
 	{
@@ -79,29 +72,28 @@ class HandAnimatedForceSwapping extends HandStateBase
 	}
 
 	override void OnEntry (HandEventBase e)
-	{
-		m_OldEntity = e.m_Player.GetHumanInventory().GetEntityInHands();
-		m_NewEntity = e.m_Entity;
-				
+	{		
 		HandEventForceSwap efs = HandEventForceSwap.Cast(e);
 		if (efs)
 		{
 			m_Hide.m_ActionType = efs.m_AnimationID;
+			
+			m_Src1 = efs.GetSrc();
+			m_Src2 = efs.m_Src2;
+			m_Dst1 = efs.GetDst();
+			m_Dst2 = efs.m_Dst2;
 
-			m_Show.m_OldEntity = m_OldEntity;
-			m_Show.m_NewEntity = m_NewEntity;
-			m_Show.m_Dst = efs.GetDst();
+			m_Show.m_Src1 = m_Src1;
+			m_Show.m_Src2 = m_Src2;
+			m_Show.m_Dst1 = m_Dst1;
+			m_Show.m_Dst2 = m_Dst2;
+			
 			m_Show.m_ActionType = efs.m_Animation2ID;
 			
-			if( GetGame().IsClient() || !GetGame().IsMultiplayer())
+			if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 			{
-				m_ilOldEntity = new InventoryLocation;
-				m_OldEntity.GetInventory().GetCurrentInventoryLocation(m_ilOldEntity);
-				m_ilNewEntity = new InventoryLocation;
-				m_NewEntity.GetInventory().GetCurrentInventoryLocation(m_ilNewEntity);
-			
-				e.m_Player.GetHumanInventory().AddInventoryReservation(m_OldEntity, m_ilOldEntity, 3000);
-				e.m_Player.GetHumanInventory().AddInventoryReservation(m_NewEntity, m_ilNewEntity, 3000);
+				e.m_Player.GetHumanInventory().AddInventoryReservation(m_Src2.GetItem(), m_Src2, 3000);
+				e.m_Player.GetHumanInventory().AddInventoryReservation(m_Src1.GetItem(), m_Src1, 3000);
 			}
 		}
 
@@ -112,15 +104,14 @@ class HandAnimatedForceSwapping extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_OldEntity, m_ilOldEntity);
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_NewEntity, m_ilNewEntity);
-			
-			m_ilOldEntity = null;
-			m_ilNewEntity = null;
+			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src2.GetItem(), m_Src2);
+			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src1.GetItem(), m_Src1);
 		}
-		
-		m_OldEntity = null;
-		m_NewEntity = null;
+
+		m_Src1 = null;
+		m_Src2 = null;
+		m_Dst1 = null;
+		m_Dst2 = null;
 
 		super.OnAbort(e);
 	}
@@ -129,15 +120,14 @@ class HandAnimatedForceSwapping extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_OldEntity, m_ilOldEntity);
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_NewEntity, m_ilNewEntity);
-			
-			m_ilOldEntity = null;
-			m_ilNewEntity = null;
+			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src2.GetItem(), m_Src2);
+			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src1.GetItem(), m_Src1);
 		}
 		
-		m_OldEntity = null;
-		m_NewEntity = null;
+		m_Src1 = null;
+		m_Src2 = null;
+		m_Dst1 = null;
+		m_Dst2 = null;
 
 		super.OnExit(e);
 	}

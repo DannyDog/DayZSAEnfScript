@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{60C59BB450EC9899}Gui/imagesets/playstation_buttons@2x.tga"
- Author "inv3672"
- ChangeDate 1838409270
+ Name "{60C59BB450EC9899}Gui/imagesets/playstation_buttons@2x.edds"
+ Author "1967"
+ ChangeDate 406021753
  Configurations {
   TGAResourceClass PC {
    SourceFile "playstation_buttons@2x.tga"

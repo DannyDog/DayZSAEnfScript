@@ -1,0 +1,12 @@
+class M68Optic : ItemOptics {};
+class M4_T3NRDSOptic : ItemOptics {};
+class FNP45_MRDSOptic : ItemOptics {};
+class Crossbow_RedpointOptic : ItemOptics {};
+class ReflexOptic : ItemOptics {};
+class ACOGOptic : ItemOptics {};
+class KashtanOptic : ItemOptics {};
+class LongrangeOptic : ItemOptics {};
+class PistolOptic : ItemOptics {};
+class GrozaOptic : ItemOptics {};
+class KobraOptic : ItemOptics {};
+class KazuarOptic: ItemOptics {};

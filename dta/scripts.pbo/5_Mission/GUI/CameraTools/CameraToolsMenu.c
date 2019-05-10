@@ -88,7 +88,7 @@ class CameraToolsMenu extends UIScriptedMenu
 		{
 			GetGame().GetInput().ChangeGameFocus(1);
 			GetGame().GetUIManager().ShowCursor(true);
-			MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlDisable();
+			MissionGameplay.Cast( GetGame().GetMission() ).PlayerControlDisable(INPUT_EXCLUDE_ALL);
 			
 		}
 	}

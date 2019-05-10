@@ -35,28 +35,20 @@ class ActionAttachToConstruction: ActionSingleUseBase
 		{
 			string selection = target_entity.GetActionComponentName( target.GetComponentIndex() );
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
-			int slot_id  = construction_action_data.GetAttachmentSlotFromSelection( target_entity, item, selection );
-			
+			int slot_id  = construction_action_data.GetAttachmentSlotFromSelection( player, target_entity, item, selection );
 			
 			if ( slot_id != -1 )
 			{
-				if( target_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) && target_entity.CanReceiveAttachment( item, slot_id ) )	
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( target_entity );
+				if (  base_building.CheckSlotVerticalDistance( slot_id, player ) )
 				{
 					construction_action_data.SetSlotId( slot_id );
+					
 					return true;
 				}
-				else
-				{
-					//is entity on slot and can be combined?
-					ItemBase attachment_item = ItemBase.Cast( target_entity.GetInventory().FindAttachment( slot_id ) );
-					if ( attachment_item && attachment_item.CanBeCombined( item, player ) )
-					{
-						construction_action_data.SetSlotId( slot_id );
-						return true;
-					}
-				}
 			}
-		}	
+		}
+		
 		return false;
 	}
 	
@@ -65,9 +57,9 @@ class ActionAttachToConstruction: ActionSingleUseBase
 		//set action initiator
 		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
 		construction_action_data.SetActionInitiator( action_data.m_Player );
-	}	
+	}
 	
-	override void OnExecuteServer( ActionData action_data )
+	protected void OnExecuteImpl( ActionData action_data )
 	{
 		EntityAI target_entity = EntityAI.Cast( action_data.m_Target.GetObject() );
 		ItemBase item = ItemBase.Cast( action_data.m_MainItem );
@@ -82,20 +74,27 @@ class ActionAttachToConstruction: ActionSingleUseBase
 			if ( attachment )
 			{
 				//combine
-				construction_action_data.CombineItems( attachment, item );
+				attachment.CombineItemsClient( item );
 			}
 			else
 			{
-				//attach
-				if ( GetGame().IsMultiplayer() )
-				{
-					action_data.m_Player.ServerTakeEntityToTargetAttachmentEx( target_entity, item, slot_id );
-				}
-				else
-				{
-					action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx( target_entity, item, slot_id );
-				}
+				action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx( target_entity, item, slot_id );
 			}
+		}
+	}
+	
+	override void OnExecuteClient( ActionData action_data )
+	{
+		OnExecuteImpl(action_data);
+	}
+	
+	override void OnExecuteServer( ActionData action_data )
+	{
+		if ( !GetGame().IsMultiplayer() )
+		{
+			ClearInventoryReservation(action_data);
+			
+			OnExecuteImpl(action_data); // single player
 		}
 	}
 }

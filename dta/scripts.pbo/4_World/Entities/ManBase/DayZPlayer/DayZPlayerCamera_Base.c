@@ -51,10 +51,20 @@ float fixAngle_180_180(float pAngle)
 }
 
 
-
+enum NVTypes
+{
+	NONE,
+	NV_GOGGLES,
+	NV_OPTICS_ON,
+	NV_OPTICS_OFF
+	MAX
+}
 
 class DayZPlayerCameraBase extends DayZPlayerCamera
 {
+	protected 	Weapon_Base		m_weaponUsed;
+	protected 	ItemOptics 		m_opticsUsed;
+	
 	//! constructor must be same 
 	void 	DayZPlayerCameraBase(DayZPlayer pPlayer, HumanInputController pInput)
 	{
@@ -84,7 +94,6 @@ class DayZPlayerCameraBase extends DayZPlayerCamera
 
 		m_CommandWeapons = pPlayer.GetCommandModifier_Weapons();
 	};
-
 
 	float UpdateUDAngle(out float pAngle, out float pAngleAdd, float pMin, float pMax, float pDt)
 	{
@@ -200,18 +209,21 @@ class DayZPlayerCameraBase extends DayZPlayerCamera
 		super.OnUpdate(pDt, pOutResult);
 
 		StdFovUpdate(pDt, pOutResult);
+		UpdateCameraNV(PlayerBase.Cast(m_pPlayer));
 	}
 
 	override void OnActivate(DayZPlayerCamera pPrevCamera, DayZPlayerCameraResult pPrevCameraResult)
 	{
 		//PrintString("OnActivate DayZPlayerCameraBase");
-		PlayerBase.Cast(m_pPlayer).OnCameraChanged(this);
+		PlayerBase player = PlayerBase.Cast(m_pPlayer);
+		player.OnCameraChanged(this);
 		SetCameraPPDelay(pPrevCamera);
 		
 		if (DayZPlayerCameraBase.Cast(pPrevCamera) && DayZPlayerCameraBase.Cast(pPrevCamera).IsCameraNV())
 		{
-			PPEffects.SetNVValueEV(0); //sets EV value immediately to avoid bright flashes at night
+			PPEffects.SetEVValuePP(0); //sets EV value immediately to avoid bright flashes at night
 		}
+		
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(SetCameraPP,m_CameraPPDelay*1000,false,true,this); // this takes care of weapon/optics postprocessing
 		DayZPlayerCameraOptics optic_camera;
 		if (DayZPlayerCamera.CastTo(optic_camera,pPrevCamera))
@@ -244,6 +256,18 @@ class DayZPlayerCameraBase extends DayZPlayerCamera
 		return m_IsNightvision;
 	}
 	
+	void UpdateCameraNV(PlayerBase player)
+	{
+		if ( !player )
+			return;
+		
+		if ( player.IsNVGWorking() != IsCameraNV() )
+		{
+			SetCameraNV(player.IsNVGWorking());
+			SetCameraPP(true, this);
+		}
+	}
+	
 	//! by default sets camera PP to zero, regardless of parameter. Override if needed.
 	void SetCameraPP(bool state, DayZPlayerCamera launchedFrom)
 	{
@@ -251,9 +275,21 @@ class DayZPlayerCameraBase extends DayZPlayerCamera
 		PPEffects.SetLensEffect(0, 0, 0, 0);
 		PPEffects.OverrideDOF(false, 0, 0, 0, 0, 1);
 		PPEffects.SetBlurOptics(0);
-		PPEffects.SetColorizationNV(0.0, 0.0, 0.0);
-		PPEffects.SetFilmgrainNV(0.0, 0.0);
-		PPEffects.SetNVValueEV(0);
+		
+		if (IsCameraNV())
+		{
+			SetNVPostprocess(NVTypes.NV_GOGGLES);
+		}
+		else
+		{
+			SetNVPostprocess(NVTypes.NONE);
+		}
+		
+		m_weaponUsed = Weapon_Base.Cast(m_pPlayer.GetHumanInventory().GetEntityInHands());
+		if (m_weaponUsed)
+		{
+			m_weaponUsed.HideWeaponBarrel(false);
+		}
 	}
 	
 	override float GetCurrentPitch()
@@ -264,6 +300,36 @@ class DayZPlayerCameraBase extends DayZPlayerCamera
 	void ForceFreelook(bool state)
 	{
 		m_bForceFreeLook = state;
+	}
+	
+	void SetNVPostprocess(int NVtype)
+	{
+		switch (NVtype)
+		{
+			case NVTypes.NONE:
+				PPEffects.SetEVValuePP(0);
+				PPEffects.SetColorizationNV(0.0, 0.0, 0.0);
+				PPEffects.SetNVParams(1, 0, 2.35, 2.75); //default values
+			break;
+			
+			case NVTypes.NV_OPTICS_ON:
+				PPEffects.SetEVValuePP(7);
+				PPEffects.SetColorizationNV(0.0, 1.0, 0.0);
+				PPEffects.SetNVParams(3, 2, 9, 1);
+			break;
+			
+			case NVTypes.NV_OPTICS_OFF:
+				PPEffects.SetEVValuePP(-7);
+				PPEffects.SetColorizationNV(0.0, 0.0, 0.0);
+				PPEffects.SetNVParams(1, 0, 2.35, 2.75); //default values
+			break;
+			
+			case NVTypes.NV_GOGGLES:
+				PPEffects.SetEVValuePP(7);
+				PPEffects.SetColorizationNV(0.0, 1.0, 0.0);
+				PPEffects.SetNVParams(2, 1, 10, 1);
+			break;
+		}
 	}
 	
 	protected float 				m_fLRAngleVel[1];

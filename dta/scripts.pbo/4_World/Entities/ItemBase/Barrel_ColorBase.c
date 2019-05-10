@@ -14,6 +14,7 @@ class Barrel_ColorBase : Container_Base
 
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
 	
 	override void EEInit()
@@ -136,7 +137,7 @@ class Barrel_ColorBase : Container_Base
 		}
 		else
 		{
-			slot_id = InventorySlots.GetSlotIdFromString("Nails");
+			slot_id = InventorySlots.GetSlotIdFromString("Material_Nails");
 			ingredient = ItemBase.Cast( GetInventory().FindAttachment(slot_id) ); 
 			if ( ingredient && GetQuantity() > 10000 ) 
 			{
@@ -485,7 +486,22 @@ class Barrel_ColorBase : Container_Base
 	{
 		return "placeBarrel_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionOpenBarrel);
+		AddAction(ActionCloseBarrel);
+		AddAction(ActionPlaceObject);
+	}
 };
+
+class Barrel_Green: Barrel_ColorBase {};
+class Barrel_Blue: Barrel_ColorBase {};
+class Barrel_Red: Barrel_ColorBase {};
+class Barrel_Yellow: Barrel_ColorBase {};
 
 class ColourClothesLambda : TurnItemIntoItemLambda
 {

@@ -24,7 +24,7 @@ class ActionTurnOnPowerGenerator: ActionInteractBase
 
 		float c_index = target.GetComponentIndex();		
 		
-		if ( target_PG.HasEnergyManager()  &&  target_PG.GetCompEM().CanSwitchOn()  &&  target_PG.HasSparkplug() )
+		if ( target_PG.HasEnergyManager()  &&  target_PG.GetCompEM().CanSwitchOn()  &&  target_PG.HasSparkplug() && target_PG.GetCompEM().CanWork())
 		{
 			return true;
 		}

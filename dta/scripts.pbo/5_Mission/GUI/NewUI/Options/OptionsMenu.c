@@ -71,15 +71,29 @@ class OptionsMenu extends UIScriptedMenu
 		m_Tabber.m_OnTabSwitch.Insert( OnTabSwitch );
 		
 		#ifdef PLATFORM_PS4
+			string confirm = "cross";
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				confirm = "cross";
+				back = "circle";
+			}
+			else
+			{
+				confirm = "circle";
+				back = "cross";
+			}
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "ToggleIcon" );
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
 			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "ApplyIcon" );
 			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ResetIcon" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif
+		
+		OnChanged();
 		
 		return layoutRoot;
 	}
@@ -168,10 +182,12 @@ class OptionsMenu extends UIScriptedMenu
 			layoutRoot.FindAnyWidget( "Apply" ).Show( false );
 		#else
 		#ifdef PLATFORM_WINDOWS
-			m_Apply.Enable( false );
+			//m_Apply.Enable( false );
 			m_Apply.SetFlags( WidgetFlags.IGNOREPOINTER );
-			m_Reset.Enable( false );
-			m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
+			ColorDisable(m_Apply);
+			//m_Reset.Enable( false );
+			//m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
+			//ColorDisable(m_Reset);
 		#endif
 		#endif
 		
@@ -238,18 +254,23 @@ class OptionsMenu extends UIScriptedMenu
 			layoutRoot.FindAnyWidget( "Reset" ).Show( changed );
 		#else
 		#ifdef PLATFORM_WINDOWS
-			m_Apply.Enable( changed );
-			m_Reset.Enable( changed );
-			
+			//m_Apply.Enable( changed );
+			//m_Reset.Enable( changed );
+		
 			if( changed )
 			{
+				//m_Reset.ClearFlags( WidgetFlags.IGNOREPOINTER );
+				//ColorNormal( m_Reset );
 				m_Apply.ClearFlags( WidgetFlags.IGNOREPOINTER );
-				m_Reset.ClearFlags( WidgetFlags.IGNOREPOINTER );
+				ColorNormal( m_Apply );
 			}
 			else
 			{
 				m_Apply.SetFlags( WidgetFlags.IGNOREPOINTER );
-				m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
+				ColorDisable( m_Apply );
+				//m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
+				//ColorDisable( m_Reset );
+				
 			}
 		#endif
 		#endif
@@ -280,11 +301,11 @@ class OptionsMenu extends UIScriptedMenu
 			layoutRoot.FindAnyWidget( "Reset" ).Show( false );
 		#else
 		#ifdef PLATFORM_WINDOWS
-			m_Apply.Enable( false );
-			m_Apply.SetFlags( WidgetFlags.IGNOREPOINTER );
+			//m_Apply.Enable( false );
+			//m_Apply.SetFlags( WidgetFlags.IGNOREPOINTER );
 		
-			m_Reset.Enable( false );
-			m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
+			//m_Reset.Enable( false );
+			//m_Reset.SetFlags( WidgetFlags.IGNOREPOINTER );
 		#endif
 		#endif
 	}
@@ -344,7 +365,7 @@ class OptionsMenu extends UIScriptedMenu
 	{
 		if( w && IsFocusable( w ) )
 		{
-			ColorRed( w );
+			ColorHighlight( w );
 			return true;
 		}
 		return false;
@@ -354,7 +375,7 @@ class OptionsMenu extends UIScriptedMenu
 	{
 		if( w && IsFocusable( w ) )
 		{
-			ColorWhite( w, enterW );
+			ColorNormal( w );
 			return true;
 		}
 		return false;
@@ -364,17 +385,18 @@ class OptionsMenu extends UIScriptedMenu
 	{
 		if( w && IsFocusable( w ) )
 		{
-			ColorRed( w );
+			ColorHighlight( w );
 			return true;
 		}
-		if( x == -1 && y == 1 )
+		else if( y == 1 )
 		{
 			SliderFocus();
 		}
-		if( x == -1 && y == 2 )
+		else
 		{
 			ToggleFocus();
 		}
+		
 		return false;
 	}
 	
@@ -382,7 +404,7 @@ class OptionsMenu extends UIScriptedMenu
 	{
 		if( w && IsFocusable( w ) )
 		{
-			ColorWhite( w, null );
+			ColorNormal( w );
 			return true;
 		}
 		return false;
@@ -418,55 +440,151 @@ class OptionsMenu extends UIScriptedMenu
 	override void Update( float timeslice )
 	{
 		super.Update( timeslice );
-		if( GetGame().GetInput().GetActionDown("UAUITabLeft",false) )
+		if( GetGame().GetInput().LocalPress("UAUITabLeft",false) )
 		{
 			m_Tabber.PreviousTab();
 		}
 		
 		//RIGHT BUMPER - TAB RIGHT
-		if( GetGame().GetInput().GetActionDown("UAUITabRight",false) )
+		if( GetGame().GetInput().LocalPress("UAUITabRight",false) )
 		{
 			m_Tabber.NextTab();
 		}
 		
-		if( GetGame().GetInput().GetActionDown("UAUICtrlX",false) )
+		if( GetGame().GetInput().LocalPress("UAUICtrlX",false) )
 		{
 			Apply();
 		}
 		
-		if( GetGame().GetInput().GetActionDown("UAUICtrlY",false) )
+		if( GetGame().GetInput().LocalPress("UAUICtrlY",false) )
 		{
 			Reset();
 		}
 		
-		if( GetGame().GetInput().GetActionDown("UAUIBack",false) )
+		if( GetGame().GetInput().LocalPress("UAUIBack",false) )
 		{
 			Back();
 		}
 	}
 	
 	//Coloring functions (Until WidgetStyles are useful)
-	void ColorRed( Widget w )
+	void ColorHighlight( Widget w )
 	{
-		SetFocus( w );
-		
-		ButtonWidget button = ButtonWidget.Cast( w );
-		if( button && button != m_Apply )
+		if( w.IsInherited( ButtonWidget ) )
 		{
+			ButtonWidget button = ButtonWidget.Cast( w );
 			button.SetTextColor( ARGB( 255, 200, 0, 0 ) );
+		}
+		
+		w.SetColor( ARGB( 255, 0, 0, 0) );
+		
+		TextWidget text1	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text" ) );
+		TextWidget text2	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_label" ) );
+		TextWidget text3	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text_1" ) );
+		ImageWidget image	= ImageWidget.Cast( w.FindAnyWidget( w.GetName() + "_image" ) );
+		Widget option		= Widget.Cast( w.FindAnyWidget( w.GetName() + "_option_wrapper" ) );
+		Widget option_label = w.FindAnyWidget( "option_label" );
+		
+		if( text1 )
+		{
+			text1.SetColor( ARGB( 255, 255, 0, 0 ) );
+		}
+		
+		if( text2 )
+		{
+			text2.SetColor( ARGB( 255, 255, 0, 0 ) );
+		}
+		
+		if( text3 )
+		{
+			text3.SetColor( ARGB( 255, 255, 0, 0 ) );
+			w.SetAlpha(1);
+		}
+		
+		if( image )
+		{
+			image.SetColor( ARGB( 255, 200, 0, 0 ) );
+		}
+		
+		if ( option )
+		{
+			option.SetColor( ARGB( 255, 255, 0, 0 ) );
+		}
+		
+		if ( option_label )
+		{
+			option_label.SetColor( ARGB( 255, 255, 0, 0 ) );
 		}
 	}
 	
-	void ColorWhite( Widget w, Widget enterW )
+	void ColorNormal( Widget w )
+	{
+		//Print("ColorNormal -> "+ w.GetName());
+		//DumpStack();
+		
+		if ( (w.GetFlags() & WidgetFlags.IGNOREPOINTER) == WidgetFlags.IGNOREPOINTER )
+		{
+			return;
+		}
+		
+		if( w.IsInherited( ButtonWidget ) )
+		{
+			ButtonWidget button = ButtonWidget.Cast( w );
+			button.SetTextColor( ARGB( 255, 255, 255, 255 ) );
+		}
+		
+		TextWidget text1	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text" ) );
+		TextWidget text2	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text_1" ) );
+		TextWidget text3	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_label" ) );
+		ImageWidget image	= ImageWidget.Cast( w.FindAnyWidget( w.GetName() + "_image" ) );
+		Widget option		= w.FindAnyWidget( w.GetName() + "_option_wrapper" );
+		Widget option_label = w.FindAnyWidget( "option_label" );
+		
+		if( text1 )
+		{
+			text1.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+		
+		if( text2 )
+		{
+			text2.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+		
+		if( text3 )
+		{
+			text3.SetColor( ARGB( 255, 255, 255, 255 ) );
+			w.SetAlpha(0);
+		}
+		
+		if( image )
+		{
+			image.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+		
+		if ( option )
+		{
+			option.SetColor( ARGB( 150, 255, 255, 255 ) );
+		}
+		
+		if ( option_label )
+		{
+			option_label.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+	}
+	
+	void ColorDisable( Widget w )
 	{
 		#ifdef PLATFORM_WINDOWS
 		SetFocus( null );
 		#endif
 		
-		ButtonWidget button = ButtonWidget.Cast( w );
-		if( button && button != m_Apply )
+		if ( w )
 		{
-			button.SetTextColor( ARGB( 255, 255, 255, 255 ) );
+			ButtonWidget button = ButtonWidget.Cast( w );
+			if( button )
+			{
+				button.SetTextColor( ColorManager.COLOR_DISABLED_TEXT );
+			}
 		}
 	}
 }

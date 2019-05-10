@@ -6,7 +6,7 @@ class HoldBreathSoundEventBase extends PlayerSoundEventBase
 		m_SkipForControlledCharacter = true;
 	}
 	
-	override bool CanPlay()
+	override bool CanPlay(PlayerBase player)
 	{
 		return true;
 	}

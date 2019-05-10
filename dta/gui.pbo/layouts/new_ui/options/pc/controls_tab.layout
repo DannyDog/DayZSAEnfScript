@@ -53,14 +53,14 @@ FrameWidgetClass controls_tab_root {
         PanelWidgetClass mouse_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass mouse_text {
            visible 1
@@ -83,17 +83,17 @@ FrameWidgetClass controls_tab_root {
         }
         GridSpacerWidgetClass mouse_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
@@ -113,12 +113,14 @@ FrameWidgetClass controls_tab_root {
            {
             GridSpacerWidgetClass invert_setting {
              ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -136,6 +138,7 @@ FrameWidgetClass controls_tab_root {
                vexactsize 0
                {
                 TextWidgetClass invert_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.6
                  valign center_ref
@@ -191,12 +194,14 @@ FrameWidgetClass controls_tab_root {
            {
             GridSpacerWidgetClass vsensitivity_setting {
              ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -214,6 +219,7 @@ FrameWidgetClass controls_tab_root {
                vexactsize 0
                {
                 TextWidgetClass vsensitivity_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.6
                  valign center_ref
@@ -269,13 +275,15 @@ FrameWidgetClass controls_tab_root {
            "next down" "invert_button"
            {
             GridSpacerWidgetClass hsensitivity_setting {
-             ignorepointer 0
+             ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
+             style DayZDefaultPanel
              "no focus" 1
              Padding 0
              Margin 0
@@ -293,6 +301,7 @@ FrameWidgetClass controls_tab_root {
                vexactsize 0
                {
                 TextWidgetClass hsensitivity_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.55
                  valign center_ref
@@ -341,12 +350,14 @@ FrameWidgetClass controls_tab_root {
       WrapSpacerWidgetClass keyboard_settings_root {
        visible 1
        ignorepointer 1
+       color 0 0 0 0.549
        position 0 0
        size 1 473
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
+       style DayZDefaultPanel
        "no focus" 1
        Padding 0
        Margin 0
@@ -356,14 +367,14 @@ FrameWidgetClass controls_tab_root {
         PanelWidgetClass keyboard_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass keyboard_text {
            visible 1
@@ -386,35 +397,37 @@ FrameWidgetClass controls_tab_root {
         }
         GridSpacerWidgetClass keyboard_settings_content {
          ignorepointer 0
-         color 0 0 0 0.8627
+         color 0 0 0 0
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 0
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          Rows 1
          {
-          ButtonWidgetClass keybinding_setting_container {
-           ignorepointer 0
-           color 0 0 0 1
+          TextWidgetClass keyboard_settings_content_label {
+           clipchildren 0
+           ignorepointer 1
            position 0 0
            size 1 30
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 1
+           style Normal
            text "#layout_pc_controls_configure_keys"
-           text_offset 0 0
-           text_proportion 0.55
            font "gui/fonts/sdf_MetronLight24"
+           text_proportion 0.55
+           "text halign" center
+           "text valign" center
           }
          }
         }
@@ -438,14 +451,14 @@ FrameWidgetClass controls_tab_root {
         PanelWidgetClass controller_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
          size 1 36
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass controller_text {
            visible 1
@@ -468,23 +481,33 @@ FrameWidgetClass controls_tab_root {
         }
         GridSpacerWidgetClass controller_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          Rows 1
          {
-          ButtonWidgetClass controller_invert_container {
+          FrameWidgetClass FrameWidget0 {
+           visible 0
+           ignorepointer 1
+           position 10 10
+           size 0.089 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
+          ButtonWidgetClass controller_invert_button {
            position 0 0
            size 1 30
            hexactpos 1
@@ -498,29 +521,31 @@ FrameWidgetClass controls_tab_root {
            {
             GridSpacerWidgetClass controller_invert_setting {
              ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
-             "no focus" 1
+             style DayZDefaultPanel
              Padding 0
              Margin 0
-             "Size To Content H" 1
              Columns 2
              Rows 1
              {
               FrameWidgetClass controller_invert_setting_panel {
+               visible 1
                ignorepointer 1
                position 0 0
-               size 0.5 0.6
+               size 0.5 1
                hexactpos 1
                vexactpos 1
                hexactsize 0
                vexactsize 0
                {
                 TextWidgetClass controller_invert_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.6
                  valign center_ref
@@ -530,7 +555,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "#layout_xbox_controls_ivnert_vertical"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 20 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -539,11 +564,12 @@ FrameWidgetClass controls_tab_root {
               }
               FrameWidgetClass controller_invert_setting_option {
                ignorepointer 1
-               position 0 0
-               size 0.5 1
-               hexactpos 1
+               position 0.5 0
+               size 290 1
+               valign center_ref
+               hexactpos 0
                vexactpos 1
-               hexactsize 0
+               hexactsize 1
                vexactsize 0
               }
              }
@@ -562,7 +588,7 @@ FrameWidgetClass controls_tab_root {
             }
            }
           }
-          ButtonWidgetClass controller_vsensitivity_container {
+          ButtonWidgetClass controller_vsensitivity_button {
            position 0 0
            size 1 30
            hexactpos 1
@@ -576,29 +602,30 @@ FrameWidgetClass controls_tab_root {
            {
             GridSpacerWidgetClass controller_vsensitivity_setting {
              ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
-             "no focus" 1
+             style DayZDefaultPanel
              Padding 0
              Margin 0
-             "Size To Content H" 1
              Columns 2
              Rows 1
              {
               FrameWidgetClass controller_vsensitivity_setting_panel {
                ignorepointer 1
                position 0 0
-               size 0.5 0.6
+               size 0.5 1
                hexactpos 1
                vexactpos 1
                hexactsize 0
                vexactsize 0
                {
                 TextWidgetClass controller_vsensitivity_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.6
                  valign center_ref
@@ -608,7 +635,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "#layout_pc_controls_sensitivity_ver"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 20 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -617,11 +644,13 @@ FrameWidgetClass controls_tab_root {
               }
               FrameWidgetClass controller_vsensitivity_setting_option {
                ignorepointer 1
-               position 0 0
-               size 0.5 1
+               position 5 0
+               size 290 1
+               halign right_ref
+               valign center_ref
                hexactpos 1
                vexactpos 1
-               hexactsize 0
+               hexactsize 1
                vexactsize 0
               }
              }
@@ -640,7 +669,7 @@ FrameWidgetClass controls_tab_root {
             }
            }
           }
-          ButtonWidgetClass controller_hsensitivity_container {
+          ButtonWidgetClass controller_hsensitivity_button {
            ignorepointer 0
            position 0 0
            size 1 30
@@ -654,30 +683,31 @@ FrameWidgetClass controls_tab_root {
            "next down" "invert_button"
            {
             GridSpacerWidgetClass controller_hsensitivity_setting {
-             ignorepointer 0
+             ignorepointer 1
+             color 0 0 0 0
              position 0 0
              size 1 30
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 1
-             "no focus" 1
+             style DayZDefaultPanel
              Padding 0
              Margin 0
-             "Size To Content H" 1
              Columns 2
              Rows 1
              {
               FrameWidgetClass controller_hsensitivity_setting_panel {
                ignorepointer 1
                position 0 0
-               size 0.5 0.6
+               size 0.5 1
                hexactpos 1
                vexactpos 1
                hexactsize 0
                vexactsize 0
                {
                 TextWidgetClass controller_hsensitivity_setting_label {
+                 clipchildren 0
                  ignorepointer 1
                  size 1 0.55
                  valign center_ref
@@ -687,7 +717,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "##layout_pc_controls_sensitivity_hor"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 20 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -696,11 +726,13 @@ FrameWidgetClass controls_tab_root {
               }
               FrameWidgetClass controller_hsensitivity_setting_option {
                ignorepointer 1
-               position 0 0
-               size 0.5 1
+               position 5 0
+               size 290 1
+               halign right_ref
+               valign center_ref
                hexactpos 1
                vexactpos 1
-               hexactsize 0
+               hexactsize 1
                vexactsize 0
               }
              }
@@ -718,6 +750,16 @@ FrameWidgetClass controls_tab_root {
              style rover_sim_colorable
             }
            }
+          }
+          FrameWidgetClass FrameWidget1 {
+           visible 0
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
           }
          }
         }

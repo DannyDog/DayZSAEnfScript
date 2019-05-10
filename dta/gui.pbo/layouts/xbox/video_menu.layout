@@ -25,140 +25,159 @@ PanelWidgetClass rootFrame {
    "src alpha" 0
    "no wrap" 1
    stretch 1
+   font "gui/fonts/sdf_MetronLight42"
+   "text color" 1 1 1 1
+   "outline size" 1
+   "outline color" 0 0 0 1
+   "text offset" 0 -100
+   "text background" 0
+   "background color" 0 0 0 0.68
   }
-  WrapSpacerWidgetClass ConsoleToolbar {
-   visible 1
-   clipchildren 0
-   position 80 30
-   size 529.43604 36
-   halign right_ref
-   valign bottom_ref
+  FrameWidgetClass frame_save {
+   ignorepointer 1
+   size 0.9 0.9
+   halign center_ref
+   valign center_ref
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   priority 100
-   "no focus" 1
-   Padding 8
-   Margin 0
-   "Size To Content H" 1
-   "Size To Content V" 1
-   content_halign right
-   content_valign center
+   hexactsize 0
+   vexactsize 0
    {
-    GridSpacerWidgetClass Back {
+    WrapSpacerWidgetClass ConsoleToolbar {
+     visible 1
      clipchildren 0
-     size 86 30
+     position 20 20
+     size 529.43604 36
      halign right_ref
      valign bottom_ref
      hexactpos 1
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     Padding 4
-     Margin 0
-     "Size To Content H" 1
-     "Size To Content V" 1
-     content_halign center
-     content_valign center
-     Columns 2
-     Rows 1
-     {
-      ImageWidgetClass BackIcon {
-       clipchildren 0
-       inheritalpha 0
-       size 36 36
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       scaled 1
-       image0 "set:xbox_buttons image:B"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 0
-       "flip u" 0
-       "flip v" 0
-       filter 1
-       nocache 0
-      }
-      TextWidgetClass BackText {
-       clipchildren 0
-       position 40 0
-       size 56 36
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       text "#STR_rootFrame_ConsoleToolbar_Back_BackText0"
-       font "gui/fonts/sdf_MetronLight24"
-       "exact text" 1
-       "exact text size" 22
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" center
-       "text valign" center
-      }
-     }
-    }
-    GridSpacerWidgetClass PauseVideo {
-     visible 0
-     clipchildren 0
-     size 193 1
-     halign right_ref
-     valign bottom_ref
-     hexactpos 1
-     vexactpos 1
-     hexactsize 1
-     vexactsize 0
-     priority 2
+     priority 100
      "no focus" 1
-     Padding 4
+     Padding 8
      Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
-     content_halign center
+     content_halign right
      content_valign center
-     Columns 2
-     Rows 1
      {
-      ImageWidgetClass PauseVideoIcon {
+      GridSpacerWidgetClass Back {
        clipchildren 0
-       inheritalpha 0
-       position 0 0
-       size 36 36
+       size 86 30
+       halign right_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       scaled 1
-       image0 "set:xbox_buttons image:X"
-       mode blend
-       "src alpha" 1
-       "no wrap" 1
-       stretch 0
-       "flip u" 0
-       "flip v" 0
-       filter 1
-       nocache 0
+       Padding 5
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       content_valign center
+       Columns 2
+       Rows 1
+       {
+        ImageWidgetClass BackIcon {
+         clipchildren 0
+         inheritalpha 0
+         size 38 38
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         image0 "set:xbox_buttons image:B"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
+        }
+        TextWidgetClass BackText {
+         clipchildren 0
+         position 40 0
+         size 56 36
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "#STR_rootFrame_ConsoleToolbar_Back_BackText0"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 22
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
-      TextWidgetClass PauseVideoText {
+      GridSpacerWidgetClass PauseVideo {
+       visible 0
        clipchildren 0
-       position 40 0
-       size 80 22
-       valign center_ref
+       size 193 1
+       halign right_ref
+       valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 1
-       vexactsize 1
-       text "#STR_rootFrame_ConsoleToolbar_PauseVideo_PauseVideoText0"
-       font "gui/fonts/sdf_MetronLight24"
-       "text halign" center
-       "text valign" center
+       vexactsize 0
+       priority 2
+       "no focus" 1
+       Padding 4
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       content_valign center
+       Columns 2
+       Rows 1
+       {
+        ImageWidgetClass PauseVideoIcon {
+         clipchildren 0
+         inheritalpha 0
+         position 0 0
+         size 36 36
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         image0 "set:xbox_buttons image:X"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
+        }
+        TextWidgetClass PauseVideoText {
+         clipchildren 0
+         position 40 0
+         size 80 22
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "#STR_rootFrame_ConsoleToolbar_PauseVideo_PauseVideoText0"
+         font "gui/fonts/sdf_MetronLight24"
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
      }
     }

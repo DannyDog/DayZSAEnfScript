@@ -32,143 +32,58 @@ typedef map<InventoryItem, vector> TItemsMap
 class InventoryGrid extends ScriptedWidgetEventHandler
 {
 	// AARRGGBB
-	static int ITEM_COLOR_QUICKBAR_NORMAL = 0x7F858585;
-	static int ITEM_COLOR_QUICKBAR_H_GOOD = 0x7F6e980d;
-	static int ITEM_COLOR_QUICKBAR_H_BAD = 0x7F980d0d;
-	static int ITEM_COLOR_QUICKBAR_I_BAD = 0x7F986e0d;
-	static int ITEM_COLOR_NORMAL = 0xFF999999;
-	static int ITEM_COLOR_TRANSPARENT = 0x00FFFFFF;
-	static int ITEM_COLOR_GRID = 0xFF393939;
-	static int ITEM_COLOR_DRAG = 0xFFB7FFFC;
-	static int ITEM_COLOR_GOOD = 0xFF6DFFB3;
-	static int ITEM_COLOR_SWAP = 0xFF66C1FF;
-	static int ITEM_COLOR_MULTIPLE = 0xFFFF884C;
-	static int ITEM_COLOR_WRONG = 0xFFFF635B;
+	static int ITEM_COLOR_QUICKBAR_NORMAL	= 0x0AFFFFFF;
+	static int ITEM_COLOR_QUICKBAR_H_GOOD	= 0x2A6e980d;
+	static int ITEM_COLOR_QUICKBAR_H_BAD	= 0x2A980d0d;
+	static int ITEM_COLOR_QUICKBAR_I_BAD	= 0x2A986e0d;
+	static int ITEM_COLOR_NORMAL			= 0x0AFFFFFF;
+	static int ITEM_COLOR_DRAG				= 0x0AFFFFFF;
 	
-	protected reference int Border;
-	protected reference int Gap;
-	protected reference int ItemSizeWidth;
-	protected reference int ItemSizeHeight;
-	protected reference int ItemsHorizontal;
-	protected reference int ItemsVertical;
-	protected reference int XShift;
-	reference bool DebugOutput;
+	reference bool						m_IsDebugOutput;
 
-	protected float m_screen_x;
-	protected	float m_screen_y;
+	protected ref map<int, Widget>		m_BackgroundWidgets;
+	protected ref map<int, Widget>		m_ItemWidgets;
+	protected ref TItemsMap				m_Items;
+	protected InventoryGridController	m_Controller;
 
-	protected ref TItemsMap m_Items;
-	protected InventoryGridController m_controller;
-
-	protected Widget m_root;
-	protected int m_count;
-	protected int m_quantity_panel_size;
-	protected bool is_mouse_left_down;
+	
+	protected Widget					m_Root;
+	protected int						m_GridSize;
+	protected bool						m_IsMouseLeftDown;
 
 	void InventoryGrid()
 	{
-		m_Items = new TItemsMap;	
+		m_Items				= new TItemsMap;	
+		m_BackgroundWidgets	= new map<int, Widget>;
+		m_ItemWidgets		= new map<int, Widget>;
 	}
 
 	protected void OnWidgetScriptInit(Widget w)
 	{
-		m_root = w;
-		m_count = 0;
-	
-		Widget child = m_root.GetChildren();
-		while (child)
-		{
-			m_count++;
-			child.SetFlags(WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE, false);
-			child = child.GetSibling();
-		}
-	
-		m_root.SetHandler(this);
-	}
-
-	protected void ShowBackground(int row, int col, int w, int h, bool visible)
-	{
-		w += col; 
-		h += row;
-	
-		for (int r = row; r < h; r++)
-		{
-			for (int c = col; c < w; c++)
-			{
-				if (r == row && c == col) continue;
-				Widget item_w = GetItemAt(r, c);
-				if (item_w) item_w.Show(visible);
-			}	
-		}
-	}
-	
-	protected void UpdateLayout()
-	{
-		m_root.GetScreenPos(m_screen_x, m_screen_y);
-		m_root.SetSize(Border + (ItemsHorizontal * ItemSizeWidth) + ((ItemsHorizontal - 1) * Gap) + Border,	Border + (ItemsVertical * ItemSizeHeight) + ((ItemsVertical - 1) * Gap) + Border);
-		
-		if (m_count == 0) return;
-	
-		Widget child = m_root.GetChildren();
-		
-		int index = 0;
-		while (child)
-		{
-			int col = index % ItemsHorizontal;
-			int row = index / ItemsHorizontal;
-			float itemX = Border + (col * (ItemSizeWidth + Gap));
-			float itemY = Border + (row * (ItemSizeHeight + Gap));
-	
-			child.SetPos(itemX, itemY);
-			//Print("itemX" + itemX);
-			child.SetSize(ItemSizeWidth, ItemSizeHeight);
-			
-			index++;
-			child = child.GetSibling();
-		}
+		m_Root = w;
+		m_Root.SetHandler(this);
 	}
 	
 	// ScriptedWidgetEventHandler override
 	override bool OnUpdate(Widget w)
 	{
-		m_root.GetScreenPos(m_screen_x, m_screen_y);
-		return false;
-	}
-	
-	// -----------------------------------------------------------
-	override bool OnChildAdd( Widget  w, Widget  child)
-	{
-		if (w == m_root)
-		{
-			m_count++;
-			child.SetFlags(WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE, false);
-		}
-		return false;
-	}
-	
-	// -----------------------------------------------------------
-	override bool OnChildRemove( Widget  w, Widget  child)
-	{
-		if (w == m_root)
-		{
-			m_count--;
-		}
 		return false;
 	}
 	
 	// -----------------------------------------------------------
 	override bool OnMouseEnter(Widget w, int x, int y)
 	{
-		int col = GetCol(x);
-		int row = GetRow(y);
-		if ( !IsValidPos(row, col) ) return false;	
+		int col = GetCol( w );
 		
-		if (DebugOutput)
+		if ( !IsValidPos( col ) )
+			return false;	
+		
+		if (m_IsDebugOutput)
 		{
-			PrintString (m_root.GetName() + "::OnMouseEnter(" + row.ToString() + "," + col.ToString() + ")");
+			PrintString (m_Root.GetName() + "::OnMouseEnter(" + col.ToString() + ")");
 		}
 		
-		if (m_controller) m_controller.OnItemEnter(this, w, row, col);
+		if (m_Controller) m_Controller.OnItemEnter(this, w, 0, col);
 	
 		return true;
 	}
@@ -176,7 +91,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	// -----------------------------------------------------------
 	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
 	{
-		if (m_controller) m_controller.OnItemLeave(this, w);
+		if (m_Controller) m_Controller.OnItemLeave(this, w);
 	
 		return true;
 	}
@@ -186,26 +101,26 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	{
 		if (button == MouseState.RIGHT || button == MouseState.LEFT)
 		{
-			int col = GetCol(x);
-			int row = GetRow(y);
+			int col = GetCol( w );
 		
-			if ( !IsValidPos(row, col) ) return false;
+			if ( !IsValidPos( col ) )
+				return false;
 			
-			if (DebugOutput)
+			if (m_IsDebugOutput)
 			{
-				PrintString (m_root.GetName() + "::OnMouseButtonDown(" + row.ToString() + "," + col.ToString() + ")");
+				PrintString (m_Root.GetName() + "::OnMouseButtonDown(" + col.ToString() + ")");
 			}
 		
-			if (m_controller) 
+			if (m_Controller) 
 			{
 				if (button == MouseState.RIGHT )
 				{
-					m_controller.OnItemRightClick(this, w, row, col);
+					m_Controller.OnItemRightClick(this, w, 0, col);
 				}
 
 				if (button == MouseState.LEFT )
 				{
-					is_mouse_left_down = true;
+					m_IsMouseLeftDown = true;
 				}
 			}
 			return true;
@@ -221,23 +136,23 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	{
 		if ( button == MouseState.LEFT )
 		{
-			if( is_mouse_left_down )
+			if( m_IsMouseLeftDown )
 			{
-				m_controller.OnItemLeftClick(this, w, m_row, m_col);
-				is_mouse_left_down = false;
+				m_Controller.OnItemLeftClick(this, w, 0, m_col);
+				m_IsMouseLeftDown = false;
 			}
 		}
 
 		if (button == MouseState.RIGHT || button == MouseState.LEFT)
 		{
-			int col = GetCol(x);
-			int row = GetRow(y);
+			int col = GetCol( w );
 		
-			if ( !IsValidPos(row, col) ) return false;
+			if ( !IsValidPos( col ) )
+				return false;
 			
-			if (DebugOutput)
+			if (m_IsDebugOutput)
 			{
-				PrintString (m_root.GetName() + "::OnMouseButtonUp(" + row.ToString() + "," + col.ToString() + ")");
+				PrintString (m_Root.GetName() + "::OnMouseButtonUp(" + col.ToString() + ")");
 			}
 		
 			return true;
@@ -253,17 +168,17 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	{
 		if (button != MouseState.LEFT) return false;
 		
-		int col = GetCol(x);
-		int row = GetRow(y);
+		int col = GetCol( w );
 	
-		if ( !IsValidPos(row, col) ) return false;
+		if ( !IsValidPos( col ) )
+				return false;
 		
-		if (DebugOutput)
+		if (m_IsDebugOutput)
 		{
-			PrintString (m_root.GetName() + "::OnDoubleClick(" + row.ToString() + "," + col.ToString() + ")");
+			PrintString (m_Root.GetName() + "::OnDoubleClick(" + col.ToString() + ")");
 		}
 	
-		if (m_controller) m_controller.OnItemDoubleClick(this, w, row, col);
+		if (m_Controller) m_Controller.OnItemDoubleClick(this, w, 0, col);
 	
 		return true;
 	}
@@ -271,106 +186,95 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	//--------------------------------------------------------------------------
 	override bool OnDrop(Widget w, int x, int y, Widget reciever)
 	{
-		if (DebugOutput)
+		if (m_IsDebugOutput)
 		{
-			PrintString (m_root.GetName() + "::OnDrop()");
+			PrintString (m_Root.GetName() + "::OnDrop()");
 		}
 	
-		if (m_controller) 
+		if (m_Controller) 
 		{
-			Print("OnDrop " + m_controller);
-			m_controller.OnItemDrop(this, w, m_row, m_col);
+			m_Controller.OnItemDrop(this, w, 0, m_col);
 		}
 		
 		if (w)
 		{
-			if (IsIcon())
+			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( w.FindAnyWidget("Preview") );
+			if (item_preview)
 			{
-				ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( w.FindAnyWidget("Preview") );
-				Widget expandIcons = w.FindAnyWidget("ExpandIcons");
-				expandIcons.Show(true);
-				if (item_preview)
-				{
-					if (IsIcon())
-					{
-						item_preview.SetView(1);
-					}
-					else
-					{
-						item_preview.SetView(0);
-					}
-				}
+				item_preview.SetView( item_preview.GetItem().GetViewIndex() );
 			}
-			
-			CalculateBackgroundVisibility( w, false );
 		}
 		
 		return true;
 	}
 	
-	void CalculateBackgroundVisibility( Widget w , bool visible)
+	int GetCol( Widget w )
 	{
-		float draggedWidgetWidth;
-		float draggedWidgetHeight;
-		float backgroundWidgetX;
-		float backgroundWidgetY;
-		float draggedWidgetX;
-		float draggedWidgetY;
+		int index;
 		
-		if(w.GetParent() != NULL)
+		if( m_ItemWidgets.GetKeyByValueChecked( w, index ) )
+			return index;
+		else if( m_BackgroundWidgets.GetKeyByValueChecked( w, index ) )
+			return index;
+		else
+			return -1;
+	}
+	
+	int GetColFromBg( Widget w )
+	{
+		return m_BackgroundWidgets.GetKeyByValue( w );
+	}
+	
+	int GetGridSize()
+	{
+		return m_GridSize;
+	}
+	
+	void SetGridSize( int size )
+	{
+		m_GridSize = size;
+		for( int i = 0; i < m_BackgroundWidgets.Count(); i++ )
 		{
-			w.GetParent().GetParent().GetParent().GetPos( draggedWidgetX, draggedWidgetY );
-			w.GetSize( draggedWidgetWidth, draggedWidgetHeight );
-			m_on_drag_item.GetPos( backgroundWidgetX, backgroundWidgetY );
-			
-			float draggedWidgetFinalX = draggedWidgetX / ( ItemSizeWidth + Gap );
-			float draggedWidgetFinalY = draggedWidgetY / ( ItemSizeWidth + Gap );
-			
-			float backgroundWidgetFinalX = backgroundWidgetX / ( ItemSizeWidth + Gap );
-			float backgroundWidgetFinalY = backgroundWidgetY / ( ItemSizeWidth + Gap );
-			
-			int finalWidth = ( draggedWidgetWidth + Gap ) / ( ItemSizeWidth + Gap );
-			int finalHeight = ( draggedWidgetHeight + Gap ) / ( ItemSizeWidth + Gap );
-			
-			int finalX = backgroundWidgetFinalX - draggedWidgetFinalX;
-			int finalY = backgroundWidgetFinalY - draggedWidgetFinalY;
-
-			ShowBackground(m_row-finalY, m_col-finalX, finalWidth, finalHeight, visible);
+			if( i < size )
+			{
+				m_BackgroundWidgets.Get( i ).Show( true );
+			}
+			else
+			{
+				m_BackgroundWidgets.Get( i ).Show( false );
+			}
 		}
+	}
+	
+	bool IsValidPos( int index )
+	{
+		return ( m_GridSize > index && index > -1 );
 	}
 	
 	private Widget m_on_drag_item;
 	private int m_col;
-	private int m_row;
+	
 	//--------------------------------------------------------------------------
 	override bool OnDrag(Widget w, int x, int y)
 	{
 		w.SetPos(x, y);
 
-		m_col = GetCol(x);
-		m_row = GetRow(y);
-		m_on_drag_item = GetItemAt(m_row, m_col);
+		m_col = GetCol( w );
 		
-		CalculateBackgroundVisibility( w, true);
+		if ( !IsValidPos( m_col ) )
+			return false;
 		
-		if ( !IsValidPos(m_row, m_col) ) return false;
-		
-		if (DebugOutput)
+		if (m_IsDebugOutput)
 		{
-			PrintString (m_root.GetName() + "::OnDrag(" + m_row.ToString() + "," + m_col.ToString() + ")");
+			PrintString (m_Root.GetName() + "::OnDrag(" + m_col.ToString() + ")");
 		}
 	
-		if (m_controller) m_controller.OnItemDrag(this, w, m_row, m_col);
+		if (m_Controller) m_Controller.OnItemDrag(this, w, 0, m_col);
 	
-		if (IsIcon())
+		ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( w.FindAnyWidget("Preview") );
+		if (item_preview)
 		{
-			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( w.FindAnyWidget("Preview") );
-			Widget expandIcons = w.FindAnyWidget("ExpandIcons");
-			expandIcons.Show(false);
-			if (item_preview)
-			{
-				item_preview.SetView(0);
-			}
+			item_preview.SetView( item_preview.GetItem().GetViewIndex() );
 		}
 		return true;
 	}
@@ -378,18 +282,19 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	//--------------------------------------------------------------------------
 	override bool OnDraggingOver(Widget w, int x, int y, Widget reciever)
 	{
-	
-		int col = GetCol(x);
-		int row = GetRow(y);
+		int col = GetCol( reciever );
 		
-		if ( !IsValidPos(row, col) ) return false;
-		
-		if (DebugOutput)
+		if ( !IsValidPos( col ) )
 		{
-			PrintString (m_root.GetName() + "::OnDraggingOver(" + row.ToString() + "," + col.ToString() + ")");
+			return false;
+		}
+		
+		if (m_IsDebugOutput)
+		{
+			PrintString (m_Root.GetName() + "::OnDraggingOver(" + col.ToString() + ")");
 		}
 	
-		if (m_controller) m_controller.OnItemDraggingOver(this, w, row, col);
+		if (m_Controller) m_Controller.OnItemDraggingOver(this, w, 0, col);
 	
 		
 		return true;
@@ -398,99 +303,47 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	//--------------------------------------------------------------------------
 	override bool OnDropReceived(Widget w, int x, int y, Widget reciever)
 	{
+		int col = GetCol( reciever );
 	
-		int col = GetCol(x);
-		int row = GetRow(y);
-	
-		if ( !IsValidPos(row, col) ) return false;
+		if ( !IsValidPos( col ) )
+			return false;
 		
-		if (DebugOutput)
+		if (m_IsDebugOutput)
 		{
-			PrintString (m_root.GetName() + "::OnDropReceived(" + row.ToString() + "," + col.ToString() + ")");
+			PrintString (m_Root.GetName() + "::OnDropReceived(" + col.ToString() + ")");
 		}
 	
-		if (m_controller) m_controller.OnItemDropReceived(this, w, row, col);
+		if (m_Controller) m_Controller.OnItemDropReceived(this, w, 0, col);
 	
 		
 		return true;
-	}
-	
-	// Interface
-	
-	//! Gets column from screen position
-	int GetCol(float x)
-	{
-		return (x - m_screen_x - Border) / (ItemSizeWidth + Gap);
-	}
-	
-	//! Gets row from screen position
-	int GetRow(float y)
-	{
-		return (y - m_screen_y - Border) / (ItemSizeHeight + Gap);
-	}
-	
-	int GetIndex(int row, int col)
-	{
-		return (row * ItemsHorizontal) + col;
 	}
 	
 	TItemsMap GetItems() {
 		return m_Items;	
 	}
 	
-	bool IsIcon() 
-	{
-		return false;
-	}
-	
-	Widget GetItemAt(int row, int col)
-	{
-		int index = GetIndex(row, col);
-	
-		return GetItem(index);
-	}
-	
-	//--------------------------------------------------------------------------
-	bool IsValidPos(int row, int col)
-	{
-		if (row >= ItemsVertical) return false;
-		if (col >= ItemsHorizontal) return false;
-		if (GetIndex(row, col) >= m_count) return false;
-		return true;
-	}
-	
 	//--------------------------------------------------------------------------
 	Widget GetItem(int index)
 	{
-		Widget child = m_root.GetChildren();
-		while (child && index)
-		{
-			index--;
-			child = child.GetSibling();
-		}
-	
-		return child;
+		if( m_ItemWidgets.Contains( index ) )
+			return m_ItemWidgets.Get( index );
+		else
+			return null;
 	}
 	
 	//--------------------------------------------------------------------------
 	Widget GetItemBackground(int index)
 	{
-		Widget w = GetItem(index);
-		
-		if (!w) return NULL;
-		
-		return w.FindAnyWidget("GridItem");
-	}
-	
-	//--------------------------------------------------------------------------
-	Widget GetItemBackgroundAt(int row, int col)
-	{
-		return GetItemBackground(GetIndex(row, col));
+		if( m_BackgroundWidgets.Contains( index ) )
+			return m_BackgroundWidgets.Get( index );
+		else
+			return null;
 	}
 
 	Widget GetRoot()
 	{
-		return m_root;
+		return m_Root;
 	}
 	
 	void SetItemColor(InventoryItem item, int color)
@@ -500,40 +353,18 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 			vector data = m_Items.Get(item);
 			int index = Math.Round(data[0]);
 			
-			Widget w = GetItemBackground(index);
-			if (w) w.SetColor(color);
-		}
-	}
-	//! Set size in pixels
-	void SetItemSize(InventoryItem item, int pixels_w, int pixels_h)
-	{
-		if (m_Items.Contains(item))
-		{
-			vector data = m_Items.Get(item);
-			int index = Math.Round(data[0]);
-			
-			Widget w = GetItemBackground(index);
-			if (w) w.SetSize(pixels_w, pixels_h);
+			Widget w = GetItem(index);
+			if (w)
+				w.SetColor(color);
 		}
 	}
 	
 	void SetController(InventoryGridController controller) { 
-		m_controller = controller; 
+		m_Controller = controller; 
 	}
 
 	InventoryGridController GetController() { 
-		return m_controller; 
-	}
-	
-	//--------------------------------------------------------------------------
-	void GenerateBackgroundTiles(int count)
-	{
-		for (int i = 0; i < count; i++)
-		{
-			Widget root_widget = GetGame().GetWorkspace().CreateWidgets("gui/layouts/inventory/inventoryGridBackground.layout", m_root);
-			TextWidget label_widget = TextWidget.Cast( root_widget.FindAnyWidget("Label") );
-		}
-		UpdateLayout();
+		return m_Controller; 
 	}
 	
 	//--------------------------------------------------------------------------
@@ -541,17 +372,17 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	{
 		for (int i = 0; i < count; i++)
 		{
-			Widget root_widget = GetGame().GetWorkspace().CreateWidgets("gui/layouts/inventory/inventoryGridBackground.layout", m_root);
-			TextWidget label_widget = TextWidget.Cast( root_widget.FindAnyWidget("Label") );
+			Widget root_widget = GetGame().GetWorkspace().CreateWidgets("gui/layouts/inventory/inventoryGridBackground.layout", m_Root);
+			TextWidget label_widget = TextWidget.Cast( root_widget.FindAnyWidget( "Label1" ) );
+			TextWidget label_widget2 = TextWidget.Cast( root_widget.FindAnyWidget( "Label2" ) );
 			label_widget.SetText( (i+1).ToString() );
-			label_widget.Show( true );
+			label_widget2.SetText( (i+1).ToString() );
+			m_BackgroundWidgets.Insert( i, root_widget );
 		}
-		UpdateLayout();
 	}
-
 	
 	//--------------------------------------------------------------------------
-	void UpdateQuickbarItems(TItemsMap items )
+	void UpdateQuickbarItems( TItemsMap items )
 	{
 		int i;
 		int c;
@@ -722,14 +553,13 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	void RefreshQuickbarItemVariables(InventoryItem item, vector data)
 	{
 		int	index = Math.Round(data[0]);
-		Widget bck = GetItem(index);
-		Widget item_w;
+		Widget bck = GetItemBackground(index);
 		if ( bck )
 		{
-			item_w = bck.FindAnyWidget("GridItem");
+			Widget item_w = bck.FindAnyWidget("GridItem");
 			if ( item_w )
 			{
-				int color = m_controller.GetQuickbarItemColor( this, item ); // !!!!!
+				int color = m_Controller.GetQuickbarItemColor( this, item ); // !!!!!
 				item_w.SetColor( color );
 			}
 		}
@@ -740,7 +570,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	void RefreshItemVariables(InventoryItem item, vector data, bool show_quantity, bool show_temperature )
 	{
 		int	index = Math.Round(data[0]);
-		Widget bck = GetItem(index);
+		Widget bck = GetItemBackground(index);
 		Widget item_w;
 	
 		if ( bck )
@@ -748,7 +578,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 			item_w = bck.FindAnyWidget("GridItem");
 			if ( item_w )
 			{
-				int has_quantity = m_controller.HasItemQuantity( item );
+				int has_quantity = m_Controller.HasItemQuantity( item );
 				Widget quantity_panel = bck.FindAnyWidget("QuantityPanel");
 				TextWidget item_quantity = TextWidget.Cast( bck.FindAnyWidget("Quantity") );
 				ProgressBarWidget quantity_progress = ProgressBarWidget.Cast( bck.FindAnyWidget("QuantityBar") );
@@ -762,7 +592,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 					quantity_panel.Show( true );
 					if ( has_quantity == QUANTITY_COUNT )
 					{
-						item_quantity.SetText( m_controller.GetItemQuantityText( item ) );
+						item_quantity.SetText( m_Controller.GetItemQuantityText( item ) );
 						quantity_stack.Show( true );
 						quantity_progress.Show( false );
 					}
@@ -771,7 +601,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 						float progress_max = quantity_progress.GetMax();
 						int max = item.ConfigGetInt("varQuantityMax");
 						int count = item.ConfigGetInt("count");
-						float quantity = m_controller.GetItemQuantity( item );
+						float quantity = m_Controller.GetItemQuantity( item );
 						if ( count > 0 )
 						{
 							max = count;
@@ -791,7 +621,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 				{
 					if ( item && item.IsInherited( InventoryItem ) )
 					{
-						int color = m_controller.GetItemColor( this, item); // !!!!!
+						int color = m_Controller.GetItemColor( this, item); // !!!!!
 						if ( color )
 						{
 							item_w.SetColor( color );
@@ -803,12 +633,6 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	}
 	
 	//--------------------------------------------------------------------------
-	void SetQuantityPanelSize( int size )
-	{
-		m_quantity_panel_size = size;
-	}
-	
-	//--------------------------------------------------------------------------
 	void AddItem(InventoryItem item, vector data, vector rotation)
 	{
 		m_Items.Set(item, data);			
@@ -817,19 +641,15 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 		int width = Math.Round(data[1]);
 		int height = Math.Round(data[2]);
 				
-		int col = index % ItemsHorizontal;
-		int row = index / ItemsHorizontal;
-		ShowBackground(row, col, width, height, false);
-				
-		Widget bck = GetItem(index);
+		Widget bck = GetItemBackground(index);
 		Widget item_w_bck = GetGame().GetWorkspace().CreateWidgets("gui/layouts/inventory/inventoryGridItem.layout", bck);
-		
-		item_w_bck.SetFlags(WidgetFlags.VISIBLE | WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE);			
-		//item_w_bck.SetPos(XShift, 0);
-		item_w_bck.SetSize((ItemSizeWidth * width) + (Gap * (width - 1)) , (ItemSizeHeight * height) + (Gap * (height - 1)));
-
-			
 		Widget item_w = item_w_bck.FindAnyWidget("GridItem");
+		
+		bck.FindAnyWidget("LabelTR").Show( true );
+		bck.FindAnyWidget("LabelCC").Show( false );
+		
+		m_ItemWidgets.Insert( index, item_w );
+		
 		ResetItemWidget(item_w, width, height);
 		
 		if ( item )
@@ -837,17 +657,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( item_w.FindAnyWidget("Preview") );
 			item_preview.SetItem(item);
 			item_preview.SetModelOrientation( rotation );
-			if (IsIcon())
-			{
-				item_preview.SetView(1);
-			}
-			else
-			{
-				item_preview.SetView(0);
-			}
-		
-			Widget quantity_stack_panel = item_w.FindAnyWidget("QuantityStackPanel");
-			quantity_stack_panel.SetSize( m_quantity_panel_size,m_quantity_panel_size );
+			item_preview.SetView( item_preview.GetItem().GetViewIndex() );
 			
 			RefreshItemVariables( item, data, true, true );
 		}
@@ -862,58 +672,42 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 		int width = Math.Round(data[1]);
 		int height = Math.Round(data[2]);
 				
-		int col = index % ItemsHorizontal;
-		int row = index / ItemsHorizontal;
-		ShowBackground(row, col, width, height, true);
-				
-		Widget bck = GetItem(index);
+		Widget bck = GetItemBackground(index);
 		Widget item_w_bck = bck.FindAnyWidget("GridItemBck");
+		
 		if(item_w_bck)
 		{
-		item_w_bck.SetFlags(WidgetFlags.VISIBLE | WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE);			
-		item_w_bck.SetPos(0,0);
-		item_w_bck.SetSize((ItemSizeWidth * width) + (Gap * (width - 1)), (ItemSizeHeight * height) + (Gap * (height - 1)));
+			bck.FindAnyWidget("LabelTR").Show( true );
+			bck.FindAnyWidget("LabelCC").Show( false );
 			
-		Widget item_w = item_w_bck.FindAnyWidget("GridItem");
-		ResetItemWidget(item_w, width, height);
-		
-		if ( item )
-		{
-			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( item_w.FindAnyWidget("Preview") );
-			item_preview.SetItem(item);
-			item_preview.Show( true );
-			item_preview.SetModelOrientation( rotation );
-				
-			if (IsIcon())
+			Widget item_w = item_w_bck.FindAnyWidget("GridItem");
+			ResetItemWidget(item_w, width, height);
+			
+			if ( item )
 			{
-				item_preview.SetView(1);
+				ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( item_w.FindAnyWidget("Preview") );
+				item_preview.SetItem(item);
+				item_preview.Show( true );
+				item_preview.SetModelOrientation( rotation );
+				item_preview.SetView( item_preview.GetItem().GetViewIndex() );
+				
+				RefreshItemVariables( item, data, true, true );
 			}
 			else
 			{
-				item_preview.SetView(0);
-			}		
-			
-		
-			Widget quantity_stack_panel = item_w.FindAnyWidget("QuantityStackPanel");
-			quantity_stack_panel.SetSize( m_quantity_panel_size,m_quantity_panel_size );
-			
-			RefreshItemVariables( item, data, true, true );
-		}
-		else
-		{
-			item_preview = ItemPreviewWidget.Cast( item_w.FindAnyWidget("Preview") );
-			item_preview.Show( false );
-		}
+				item_preview = ItemPreviewWidget.Cast( item_w.FindAnyWidget("Preview") );
+				item_preview.Show( false );
+			}
 		}
 	}
 	
 	//--------------------------------------------------------------------------
 	protected void ResetItemWidget(Widget item_w, int width, int height)
 	{
-		if (item_w == NULL) return;
-		item_w.SetSize((ItemSizeWidth * width) + (Gap * (width - 1)), (ItemSizeHeight * height) + (Gap * (height - 1)));					
-		item_w.SetFlags(WidgetFlags.VISIBLE | WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE | WidgetFlags.DRAGGABLE);
-		item_w.SetColor(ITEM_COLOR_NORMAL);
+		if( item_w )
+		{
+			item_w.SetColor(ITEM_COLOR_NORMAL);
+		}
 	}
 	
 	//--------------------------------------------------------------------------
@@ -925,7 +719,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 			int index = Math.Round(data[0]);
 			int width = Math.Round(data[1]);
 			int height = Math.Round(data[2]);
-			Widget bck = GetItem(index);
+			Widget bck = GetItemBackground(index);
 			Widget item_w = bck.FindAnyWidget("GridItem");
 			ResetItemWidget(item_w, width, height);
 			RefreshItemVariables( item, data, true, true );
@@ -949,68 +743,18 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 			int index = Math.Round(data[0]);
 			int width = Math.Round(data[1]);
 			int height = Math.Round(data[2]);
-			bck = GetItem(index);
+			bck = GetItemBackground(index);
 			if( bck )
 			{
-				itemW = bck.FindAnyWidget("GridItemBck");
+				itemW = bck.FindAnyWidget("GridCell");
 				if( itemW )
 					delete itemW;
+				bck.FindAnyWidget("LabelTR").Show( false );
+				bck.FindAnyWidget("LabelCC").Show( true );
 			}
 		
-			m_Items.Remove( item );			
-			int col = index % ItemsHorizontal;
-			int row = index / ItemsHorizontal;
-		
-			ShowBackground(row, col, width, height, true);
+			m_Items.Remove( item );
+			m_ItemWidgets.Remove( index );
 		}
 	}
-	
-	// grid api
-	void SetGridSize(int items_horizontal, int items_vertical)
-	{
-		ItemsHorizontal = items_horizontal;
-		ItemsVertical = items_vertical;
-	}
-	
-	void SetGridItemsSize( int item_size_width, int item_size_height )
-	{
-		ItemSizeWidth = item_size_width;
-		ItemSizeHeight = item_size_height;
-	}
-	
-	void SetXShift( int x_shift )
-	{
-		XShift = x_shift;
-	}
-	
-	//--------------------------------------------------------------------------
-	int GetGridItemsHeight()
-	{
-		return ItemSizeHeight;
-	}
-	
-	//--------------------------------------------------------------------------
-	void SetGridGapSize(int gap_size)
-	{
-		Gap = gap_size;
-	}
-};
-
-// -----------------------------------------------------------
-class InventoryGridIcon: InventoryGrid
-{
-	// InventoryGrid override
-	override protected void ResetItemWidget(Widget item_w, int width, int height)
-	{
-		if (item_w == NULL) return;
-		item_w.SetSize((ItemSizeWidth * width) + (Gap * (width - 1)), (ItemSizeHeight * height) + (Gap * (height - 1)));					
-		item_w.SetFlags(WidgetFlags.VISIBLE | WidgetFlags.EXACTPOS | WidgetFlags.EXACTSIZE | WidgetFlags.DRAGGABLE);
-		item_w.SetColor(ITEM_COLOR_TRANSPARENT);
-	}
-	
-	override bool IsIcon() 
-	{
-		return true;
-	}
-	
 };

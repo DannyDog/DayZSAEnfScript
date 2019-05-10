@@ -118,6 +118,12 @@ class ZombieBase extends DayZInfected
 		return GetSelectionPositionMS(pSelection);
 	}
 
+	//! returns suitable hit components for finisher attacks
+	override array<string> GetSuitableFinisherHitComponents()
+	{
+		return GetDayZInfectedType().GetSuitableFinisherHitComponents();
+	}
+
 	//-------------------------------------------------------------
 	//!
 	//! CommandHandler
@@ -176,6 +182,20 @@ class ZombieBase extends DayZInfected
 		}		
 	}
 
+	//-------------------------------------------------------------
+	//!
+	//! CommandHandlerDebug
+	//! 
+
+	void  CommandHandlerDebug(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		if( GetPluginManager() )
+		{
+			PluginDayZInfectedDebug infectedDebug = PluginDayZInfectedDebug.Cast(GetPluginManager().GetPluginByType(PluginDayZInfectedDebug));
+			if( infectedDebug )
+				infectedDebug.CommandHandler(this);
+		}	
+	}
 	//-------------------------------------------------------------
 	//!
 	//! HandleMove
@@ -504,7 +524,7 @@ class ZombieBase extends DayZInfected
 							else
 							{
 								//! infected is playing light attack - do not send damage, play animation instead
-								if( GetGame().IsServer() && m_ActualTarget )
+								if( GetGame().IsServer() )
 								{
 									hitPosWS = m_ActualTarget.GetDefaultHitPosition(); //! override hit pos by pos defined in type
 									m_ActualTarget.EEHitBy(null, 0, EntityAI.Cast(this), -1, m_ActualTarget.GetDefaultHitComponent(), "Dummy_Light", hitPosWS);
@@ -564,15 +584,15 @@ class ZombieBase extends DayZInfected
 					
 		if( m_ActualTarget == NULL )
 			return false;
-	
+
 		vector targetPos = m_ActualTarget.GetPosition();
+		float targetDist = vector.Distance(targetPos, this.GetPosition());
+		float diffY = Math.AbsFloat(GetPosition()[1] - targetPos[1]);
+		int pitch = GetAttackPitch(m_ActualTarget);
+
 		if( !CanAttackToPosition(targetPos) )
 			return false;
-		
-		float targetDist = vector.Distance(targetPos, this.GetPosition());
-		
-		int pitch = GetAttackPitch(m_ActualTarget);
-		
+
 		m_ActualAttackType = GetDayZInfectedType().ChooseAttack(DayZInfectedAttackGroupType.FIGHT, targetDist, pitch);
 		if( m_ActualAttackType )
 		{
@@ -808,21 +828,28 @@ class ZombieBase extends DayZInfected
 	void RegisterTransportHit(Transport transport)
 	{
 		if( !m_TransportHitRegistered )
-		{
-			m_TransportHitRegistered = true;
-			
-			// compute impulse & damage 
+		{	
+			m_TransportHitRegistered = true; 
 			m_TransportHitVelocity = GetVelocity(transport);
-			float damage = 10 * m_TransportHitVelocity.Length();
-			//Print("Transport damage: " + damage.ToString());
 			
-			vector impulse = 40 * m_TransportHitVelocity;
-			impulse[1] = 40 * 1.5;
-			//Print("Impulse: " + impulse.ToString());
+			// compute impulse
+			if (m_TransportHitVelocity.Length() > 0.3)
+			{
+				vector impulse = 40 * m_TransportHitVelocity;
+				impulse[1] = 40 * 1.5;
+				//Print("Impulse: " + impulse.ToString());
+				dBodyApplyImpulse(this, impulse);
+			}
 			
-			dBodyApplyImpulse(this, impulse);
-			
-			ProcessDirectDamage( 3, transport, "", "TransportHit", "0 0 0", damage );
+			// avoid damage because of small movements
+			if (m_TransportHitVelocity.Length() > 1.5)
+			{
+				float damage = 10 * m_TransportHitVelocity.Length();
+				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
+				ProcessDirectDamage( 3, transport, "", "TransportHit", "0 0 0", damage );
+			}
+			else
+				m_TransportHitRegistered = false; // EEHitBy is not called if no damage
 		}
 	}
 }

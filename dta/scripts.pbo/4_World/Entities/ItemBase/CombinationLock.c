@@ -1,21 +1,44 @@
 class CombinationLock extends ItemBase
 {
-	static const int COMBINATION_LENGTH = 3;			//how many digits will the combination contain
-	int m_Combination 		= 111;									//actual combination that is dialed on lock
-	int m_CombinationLocked = 999;							//combination that was dialed on lock before the shuffle
+	int m_LockDigits;					//how many digits will the combination contain
+	int m_Combination;					//actual combination that is dialed on lock
+	int m_CombinationLocked;			//combination that was dialed on lock before the shuffle
 	
-	bool m_IsLockAttached;								//for storing to db
+	bool m_IsLockAttached;				//for storing to db
 	
+	//client only
+	int m_CombinationClient;
+	bool m_IsLockAttachedClient;
+	
+	//Sounds
+	//build
+	const string SOUND_LOCK_OPEN 			= "combinationlock_open_SoundSet";
+	const string SOUND_LOCK_CLOSE 			= "combinationlock_close_SoundSet";
+	const string SOUND_LOCK_CHANGE_NUMBER	= "combinationlock_changenumber_SoundSet";
+	const string SOUND_LOCK_CHANGE_DIAL		= "combinationlock_changedial_SoundSet";
+
+	protected EffectSound m_Sound;
+		
 	void CombinationLock()
 	{
-		int combination_length = Math.Pow( 10, COMBINATION_LENGTH );
+		SetBaseLockValues();
 		
 		//synchronized variables
+		int combination_length = Math.Pow( 10, m_LockDigits );
+		
 		RegisterNetSyncVariableInt( "m_Combination", 		0, combination_length - 1 );
 		RegisterNetSyncVariableInt( "m_CombinationLocked", 	0, combination_length - 1 );
-		RegisterNetSyncVariableBool( "m_IsLockAttached" );
+		RegisterNetSyncVariableBool( "m_IsLockAttached" );	
 	}
 	
+	protected void SetBaseLockValues()
+	{
+		//set lock init values
+		m_LockDigits 			= 3;
+		m_Combination		 	= 111;
+		m_CombinationLocked 	= 999;		
+	}
+
 	override void EEInit()
 	{
 		super.EEInit();
@@ -23,7 +46,7 @@ class CombinationLock extends ItemBase
 		//set visual on init
 		UpdateVisuals();
 	}	
-	
+
 	void SetLockAttachedState( bool state )
 	{
 		m_IsLockAttached = state;
@@ -39,6 +62,22 @@ class CombinationLock extends ItemBase
 	// --- VISUALS
 	void UpdateVisuals()
 	{
+		//Client (only)
+		if ( GetGame().IsMultiplayer() && GetGame().IsClient() )
+		{
+			//was unlocked
+			if ( m_IsLockAttachedClient && !m_IsLockAttached )
+			{
+				Fence fence = Fence.Cast( GetHierarchyParent() );
+				if ( fence )
+				{
+					//drop entity
+					fence.GetInventory().DropEntity( InventoryMode.LOCAL, fence, this );
+				}
+			}
+		}
+		
+		//Client/Server
 		if ( IsLockedOnGate() )
 		{
 			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( HideItem, 		0, false );
@@ -51,25 +90,53 @@ class CombinationLock extends ItemBase
 		}
 	}
 	
+	void UpdateSound()
+	{
+		//dialed new number
+		if ( m_CombinationClient != m_Combination )
+		{
+			SoundLockChangeNumber();
+		}
+		
+		//was locked
+		if ( !m_IsLockAttachedClient && m_IsLockAttached )
+		{
+			SoundLockClose();
+		}
+		//was unlocked
+		else if ( m_IsLockAttachedClient && !m_IsLockAttached )
+		{
+			SoundLockOpen();
+		}
+	}
+	
 	//TODO
 	protected void ShowItem()
 	{
 		SetAnimationPhase( "Combination_Lock_Item", 0 );
+		SetAnimationPhase( "Lock_Item_1", 			0 );
+		SetAnimationPhase( "Lock_Item_2", 			0 );
 	}
 	
 	protected void HideItem()
 	{
 		SetAnimationPhase( "Combination_Lock_Item", 1 );
+		SetAnimationPhase( "Lock_Item_1", 			1 );
+		SetAnimationPhase( "Lock_Item_2", 			1 );
 	}
 	
 	protected void ShowAttached()
 	{
 		SetAnimationPhase( "Combination_Lock_Attached", 0 );
+		SetAnimationPhase( "Lock_Attached_1", 			0 );
+		SetAnimationPhase( "Lock_Attached_2", 			0 );
 	}
 	
 	protected void HideAttached()
 	{
 		SetAnimationPhase( "Combination_Lock_Attached", 1 );
+		SetAnimationPhase( "Lock_Attached_1", 			1 );
+		SetAnimationPhase( "Lock_Attached_2", 			1 );
 	}	
 	// ---
 	
@@ -91,50 +158,54 @@ class CombinationLock extends ItemBase
 		
 		//--- Combination Lock data ---
 		//combination
-		int combination;
-		if ( !ctx.Read( combination ) )
+		if ( !ctx.Read( m_Combination ) )
 		{
-			combination = 0;		//set default
+			m_Combination = 0;
+			return false;
 		}
-		
-		SetCombination( combination );
 		
 		//combination locked
-		int combination_locked;
-		if ( !ctx.Read( combination_locked ) )
+		if ( !ctx.Read( m_CombinationLocked ) )
 		{
-			combination_locked = 0;
+			m_CombinationLocked = 0;
+			return false;
 		}
-		SetCombinationLocked( combination_locked );
 		
-		//lock attached
-		bool is_lock_attached;
-		Fence fence = Fence.Cast( GetHierarchyParent() );
-		if ( !ctx.Read( is_lock_attached ) )
+		//is lock attached
+		if ( !ctx.Read( m_IsLockAttached ) )
 		{
-			//is attached to base building object
-			
-			if ( fence )
-			{
-				//check for gate part
-				is_lock_attached = fence.HasGate();
-			}
+			m_IsLockAttached = false;
+			return false;
 		}
-		//failsafe check when data are not loaded properly
-		//do check for lock not attached but locked
-		if ( is_lock_attached )
+		
+		return true;
+	}
+	
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();		
+		
+		//is lock attached
+		m_IsLockAttached = false;
+		
+		Fence fence = Fence.Cast( GetHierarchyParent() );
+		if ( fence )
 		{
-			if ( fence && !fence.HasGate() )
+			//check for gate part
+			m_IsLockAttached = fence.HasGate();
+			
+			//do check for lock 'not attached but locked' state
+			if ( m_IsLockAttached )
 			{
 				InventoryLocation inventory_location = new InventoryLocation;
 				GetInventory().GetCurrentInventoryLocation( inventory_location );		
-				fence.GetInventory().SetSlotLock( inventory_location.GetSlot(), false );
+				fence.GetInventory().SetSlotLock( inventory_location.GetSlot(), m_IsLockAttached );
 			}
 		}
-		SetLockAttachedState( is_lock_attached );
 		//---
 		
-		return true;
+		//synchronize
+		Synchronize();
 	}
 	
 	// --- SYNCHRONIZATION
@@ -154,7 +225,14 @@ class CombinationLock extends ItemBase
 
 		//update visuals (client)
 		UpdateVisuals();
-	}	
+		
+		//update sound (client)
+		UpdateSound();
+		
+		//update client state
+		m_CombinationClient = m_Combination;
+		m_IsLockAttachedClient = m_IsLockAttached;
+	}
 	
 	void SetCombination( int combination )
 	{
@@ -182,7 +260,7 @@ class CombinationLock extends ItemBase
 		string dialed_text;
 		
 		//insert zeros to dials with 0 value
-		int length_diff = COMBINATION_LENGTH - combination_text.Length();
+		int length_diff = m_LockDigits - combination_text.Length();
 		for ( int i = 0; i < length_diff; ++i )
 		{
 			combination_text = "0" + combination_text;
@@ -210,6 +288,25 @@ class CombinationLock extends ItemBase
 		SetCombination( dialed_text.ToInt() );
 	}
 	
+	void SetNextDial( out int dial_index )
+	{
+		if ( m_LockDigits > 1 )
+		{
+			if ( dial_index <= m_LockDigits - 2 )
+			{
+				dial_index++;
+			}
+			else if ( dial_index >= m_LockDigits >  - 1 )
+			{
+				dial_index = 0;
+			}
+		}
+		else
+		{
+			dial_index = 0;
+		}
+	}	
+	
 	//Lock lock
 	void Lock( EntityAI parent )
 	{
@@ -236,21 +333,12 @@ class CombinationLock extends ItemBase
 		parent.GetInventory().SetSlotLock( inventory_location.GetSlot(), false );			
 		
 		//drop entity from attachment slot
-		if ( GetGame().IsMultiplayer() )
-		{
-			GetGame().RemoteObjectTreeDelete( this );
-			parent.GetInventory().DropEntity( InventoryMode.LOCAL, parent, this );
-			GetGame().RemoteObjectTreeCreate( this );
-		}
-		else
-		{
-			parent.GetInventory().DropEntity( InventoryMode.LOCAL, parent, this );
-		}
+		parent.GetInventory().DropEntity( InventoryMode.PREDICTIVE, parent, this );
 		
 		//set lock attached
 		SetLockAttachedState( false );
 	}
-	
+		
 	//Shuffle lock
 	void ShuffleLock()
 	{
@@ -258,7 +346,7 @@ class CombinationLock extends ItemBase
 		string shuffled_text;
 		
 		//insert zeros to dials with 0 value
-		int length_diff = COMBINATION_LENGTH - combination_text.Length();
+		int length_diff = m_LockDigits - combination_text.Length();
 		for ( int i = 0; i < length_diff; ++i )
 		{
 			combination_text = "0" + combination_text;
@@ -287,5 +375,37 @@ class CombinationLock extends ItemBase
 		}
 		
 		return false;
+	}
+	
+	//================================================================
+	// SOUNDS
+	//================================================================
+	protected void SoundLockOpen()
+	{
+		PlaySoundSet( m_Sound, SOUND_LOCK_OPEN, 0, 0 );
+	}
+
+	protected void SoundLockClose()
+	{
+		PlaySoundSet( m_Sound, SOUND_LOCK_CLOSE, 0, 0 );
+	}
+	
+	void SoundLockChangeNumber()
+	{
+		PlaySoundSet( m_Sound, SOUND_LOCK_CHANGE_NUMBER, 0, 0 );
+	}
+
+	void SoundLockChangeDial()
+	{
+		PlaySoundSet( m_Sound, SOUND_LOCK_CHANGE_DIAL, 0, 0 );
+	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionAttachToConstruction);		
+		AddAction(ActionNextCombinationLockDial);
+		AddAction(ActionDialCombinationLock);
 	}
 }

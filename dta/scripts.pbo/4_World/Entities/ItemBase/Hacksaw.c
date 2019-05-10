@@ -1,6 +1,13 @@
 class Hacksaw extends ToolBase
 {
-	void Hacksaw()
+	override void SetActions()
 	{
+		super.SetActions();
+		
+		AddAction(ActionUnrestrainTarget);
+		AddAction(ActionMineBush);
+		AddAction(ActionSawPlanks);
+		AddAction(ActionDestroyCombinationLock);
+		AddAction(ActionDestroyPart);
 	}
 }

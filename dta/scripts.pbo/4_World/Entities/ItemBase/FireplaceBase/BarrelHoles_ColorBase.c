@@ -144,7 +144,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 
 	override void EEItemAttached ( EntityAI item, string slot_name ) 
 	{
-		super.EEItemAttached ( item, slot_name );
+		super.EEItemAttached( item, slot_name );
 		
 		ItemBase item_base = ItemBase.Cast( item );
 		
@@ -432,19 +432,19 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		
 		//check roof
-		if ( !IsEnoughRoomForFireAbove() )
+		if ( !HasEnoughRoomForFireAbove() )
 		{
 			return false;
 		}
 		
 		//check surface
-		if ( IsWaterSurface() )
+		if ( IsOnWaterSurface() )
 		{
 			return false;
 		}
 
 		//check wetness/rain/wind
-		if ( IsWet() || IsRainingAbove() || IsWindy() )
+		if ( IsWet() || IsRainingAbove() || FireplaceBase.IsWindy() )
 		{
 			return false;
 		}
@@ -459,5 +459,17 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override string GetPlaceSoundset()
 	{
 		return "placeBarrel_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionOpenBarrelHoles);
+		AddAction(ActionCloseBarrelHoles);
+		AddAction(ActionTakeFireplaceFromBarrel);
+		//AddAction(ActionLightItemOnFire);
+		AddAction(ActionPlaceObject);
 	}
 }

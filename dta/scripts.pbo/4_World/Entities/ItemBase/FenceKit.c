@@ -4,7 +4,17 @@ class FenceKit extends ItemBase
 	
 	void FenceKit()
 	{
+		m_DeployLoopSound = new EffectSound;
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsDeploySound");
+	}
+	
+	void ~FenceKit()
+	{
+		if ( m_DeployLoopSound )
+		{
+			SEffectManager.DestroySound( m_DeployLoopSound );
+		}
 	}
 	
 	override void EEInit()
@@ -22,6 +32,11 @@ class FenceKit extends ItemBase
 		
 		//update visuals after location change
 		UpdatePhysics();
+	}
+		
+	override bool HasProxyParts()
+	{
+		return true;
 	}
 	
 	//Update visuals and physics
@@ -81,9 +96,9 @@ class FenceKit extends ItemBase
 			
 			//make the kit invisible, so it can be destroyed from deploy UA when action ends
 			HideAllSelections();
+			
+			SetIsDeploySound( true );
 		}	
-		
-		SetIsDeploySound( true );
 	}
 	
 	override bool IsDeployable()
@@ -105,7 +120,10 @@ class FenceKit extends ItemBase
 	{		
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{		
-			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			if ( !m_DeployLoopSound.IsSoundPlaying() )
+			{
+				m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			}
 		}
 	}
 	
@@ -113,8 +131,16 @@ class FenceKit extends ItemBase
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{	
+			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-			delete m_DeployLoopSound;
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
 	}
 }

@@ -1,12 +1,14 @@
 class PluginDeveloperSync extends PluginBase
 {
+	int m_DetailedInfoRequested = 0;
 	ref Timer m_UpdateTimer;
 	ref array<PlayerBase> m_RegisteredPlayers;
 	
 	ref array<ref SyncedValue> m_PlayerStatsSynced;
-	ref array<ref SyncedValue> m_PlayerLevelsSynced;
-	ref array<ref SyncedValue> m_PlayerModsSynced;
-	ref array<ref SyncedValue> m_PlayerAgentsSynced;
+	ref array<ref SyncedValueLevel> m_PlayerLevelsSynced;
+	ref array<ref SyncedValueModifier> m_PlayerModsSynced;
+	string 	m_PlayerModsDetailedSynced;
+	ref array<ref SyncedValueAgent> m_PlayerAgentsSynced;
 	
 	bool m_StatsUpdateStatus;
 	bool m_LevelsUpdateStatus;
@@ -17,9 +19,9 @@ class PluginDeveloperSync extends PluginBase
 	{
 		m_RegisteredPlayers 	= new array<PlayerBase>;
 		m_PlayerStatsSynced 	= new array<ref SyncedValue>;
-		m_PlayerLevelsSynced 	= new array<ref SyncedValue>;
-		m_PlayerModsSynced 		= new array<ref SyncedValue>;
-		m_PlayerAgentsSynced 	= new array<ref SyncedValue>;
+		m_PlayerLevelsSynced 	= new array<ref SyncedValueLevel>;
+		m_PlayerModsSynced 		= new array<ref SyncedValueModifier>;
+		m_PlayerAgentsSynced 	= new array<ref SyncedValueAgent>;
 		
 		m_StatsUpdateStatus 	= false;
 		m_LevelsUpdateStatus 	= false;
@@ -44,6 +46,7 @@ class PluginDeveloperSync extends PluginBase
 	void EnableUpdate( bool state, int type, PlayerBase player )
 	{
 		//set update by type
+		RegisterPlayer( player );
 		switch ( type )
 		{
 			case ERPCs.DEV_STATS_UPDATE: 
@@ -80,8 +83,6 @@ class PluginDeveloperSync extends PluginBase
 				{
 					m_UpdateTimer.Run( 1, this, "Update", NULL, true );
 					
-					//register player
-					RegisterPlayer( player );	
 				}
 			}
 			else
@@ -105,7 +106,7 @@ class PluginDeveloperSync extends PluginBase
 		if ( m_LevelsUpdateStatus )
 		{
 			//Multiplayer server
-			if ( GetDayZGame().IsMultiplayer() && GetDayZGame().IsServer() )
+			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
 			{
 				for ( int i = 0; i < m_RegisteredPlayers.Count(); i++ )
 				{
@@ -116,7 +117,7 @@ class PluginDeveloperSync extends PluginBase
 				}
 			}	
 			//Local server
-			
+			/*
 			else
 			{
 				if ( GetDayZGame().IsServer() )
@@ -124,7 +125,7 @@ class PluginDeveloperSync extends PluginBase
 					//update local
 					UpdateLevelsLocal();	
 				}
-			}
+			}*/
 		}
 		
 		
@@ -157,32 +158,25 @@ class PluginDeveloperSync extends PluginBase
 		if ( m_ModsUpdateStatus )
 		{
 			//Multiplayer server
-			if ( GetDayZGame().IsMultiplayer() && GetDayZGame().IsServer() )
+			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
 			{
 				for ( int j = 0; j < m_RegisteredPlayers.Count(); j++ )
 				{
 					if ( m_RegisteredPlayers.Get( j ) )
 					{
-						SendRPCMods( m_RegisteredPlayers.Get( j ) );		
+						SendRPCMods( m_RegisteredPlayers.Get( j ) );
+						if( m_DetailedInfoRequested !=0 )
+							SendRPCModsDetail(	m_RegisteredPlayers.Get( j ));
 					}
 				}
 			}	
-			//Local server
-			else
-			{
-				if ( GetDayZGame().IsServer() )
-				{
-					//update local
-					UpdateModsLocal();	
-				}
-			}
 		}
 		
 		//Agents
 		if ( m_AgentsUpdateStatus )
 		{
 			//Multiplayer server
-			if ( GetDayZGame().IsMultiplayer() && GetDayZGame().IsServer() )
+			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
 			{
 				for ( int k = 0; k < m_RegisteredPlayers.Count(); k++ )
 				{
@@ -190,15 +184,6 @@ class PluginDeveloperSync extends PluginBase
 					{
 						SendRPCAgents( m_RegisteredPlayers.Get( k ) );		
 					}
-				}
-			}	
-			//Local server
-			else
-			{
-				if ( GetDayZGame().IsServer() )
-				{
-					//update local
-					UpdateAgentsLocal();	
 				}
 			}
 		}
@@ -272,10 +257,15 @@ class PluginDeveloperSync extends PluginBase
 			{
 				OnRPCLevels( ctx ); break;
 			}
-			
+
 			case ERPCs.DEV_RPC_MODS_DATA:
 			{
 				OnRPCMods( ctx ); break;
+			}
+			
+			case ERPCs.DEV_RPC_MODS_DATA_DETAILED:
+			{
+				OnRPCModsDetailed( ctx ); break;
 			}
 			
 			case ERPCs.DEV_RPC_AGENTS_DATA:
@@ -286,6 +276,10 @@ class PluginDeveloperSync extends PluginBase
 			case ERPCs.DEV_RPC_MODS_ACTIVATE:
 			{
 				ActivateModifier( GetRPCModifierID( ctx ), player ); break;
+			}
+			case ERPCs.DEV_RPC_MODS_DETAILED:
+			{
+				RequestDetailedInfo( GetRPCModifierID( ctx ), player ); break;
 			}
 			
 			case ERPCs.DEV_RPC_MODS_DEACTIVATE:
@@ -417,14 +411,14 @@ class PluginDeveloperSync extends PluginBase
 		{
 			array<ref Param> rpc_params = new array<ref Param>;
 
-			rpc_params.Insert(new Param2<string, float>( "Immunity: "+ typename.EnumToString(EStatLevels, player.GetImmunityLevel() ),player.GetImmunityLevel()));
-			rpc_params.Insert(new Param2<string, float>( "Blood: "+ typename.EnumToString(EStatLevels, player.GetStatLevelBlood()),player.GetStatLevelBlood()));
-			rpc_params.Insert(new Param2<string, float>( "Health: "+ typename.EnumToString(EStatLevels, player.GetStatLevelHealth() ),player.GetStatLevelHealth()));
-			rpc_params.Insert(new Param2<string, float>( "Energy: "+ typename.EnumToString(EStatLevels, player.GetStatLevelEnergy() ),player.GetStatLevelEnergy()));
-			rpc_params.Insert(new Param2<string, float>( "Water: "+ typename.EnumToString(EStatLevels, player.GetStatLevelWater() ),player.GetStatLevelWater()));
+			rpc_params.Insert(new Param3<string, float, float>( "Immunity: "+ typename.EnumToString(EStatLevels, player.GetImmunityLevel() ),player.GetImmunityLevel(), player.GetBordersImmunity()));
+			rpc_params.Insert(new Param3<string, float, float>( "Blood: "+ typename.EnumToString(EStatLevels, player.GetStatLevelBlood()),player.GetStatLevelBlood(), player.GetStatBordersBlood()));
+			rpc_params.Insert(new Param3<string, float, float>( "Health: "+ typename.EnumToString(EStatLevels, player.GetStatLevelHealth() ),player.GetStatLevelHealth(), player.GetStatBordersHealth()));
+			rpc_params.Insert(new Param3<string, float, float>( "Energy: "+ typename.EnumToString(EStatLevels, player.GetStatLevelEnergy() ),player.GetStatLevelEnergy(), player.GetStatBordersEnergy()));
+			rpc_params.Insert(new Param3<string, float, float>( "Water: "+ typename.EnumToString(EStatLevels, player.GetStatLevelWater() ),player.GetStatLevelWater(), player.GetStatBordersWater()));
 			
 			int param_count = rpc_params.Count();
-			rpc_params.InsertAt( new Param2<string, float>( "PARAM_COUNT", param_count ), 0);
+			rpc_params.InsertAt( new Param3<string, float, float>( "PARAM_COUNT", param_count,0 ), 0);
 			//send params
 			GetDayZGame().RPC( player, ERPCs.DEV_RPC_LEVELS_DATA, rpc_params, true, player.GetIdentity() );
 		}
@@ -436,37 +430,38 @@ class PluginDeveloperSync extends PluginBase
 		//clear values
 		m_PlayerLevelsSynced.Clear();
 		
-		ref Param2<string, float> p = new Param2<string, float>( "", 0 );
+		ref Param3<string, float, float> p3 = new Param3<string, float, float>( "", 0,0 );
 		
 		//get param count
 		int param_count = 0;
-		if ( ctx.Read(p) )
+		if ( ctx.Read(p3) )
 		{
-			param_count = p.param2;
+			param_count = p3.param2;
 		}
 		
 		//read values and set 
 		for ( int i = 0; i < param_count; i++ )
 		{
-			ctx.Read(p);
-			m_PlayerLevelsSynced.Insert( new SyncedValue( p.param1, p.param2, false ) );
+			if( ctx.Read(p3) )
+				m_PlayerLevelsSynced.Insert( new SyncedValueLevel( p3.param1, p3.param2, p3.param3 ) );
 		}
 	}
 	
 	//Update data on local
+	/*
 	void UpdateLevelsLocal()
 	{
 		PlayerBase player = PlayerBase.Cast( GetDayZGame().GetPlayer() );
 		
 		//clear values
 		m_PlayerLevelsSynced.Clear();
-		m_PlayerLevelsSynced.Insert(new SyncedValue( "Immunity: "+ typename.EnumToString(EStatLevels, player.GetImmunityLevel() ),player.GetImmunityLevel(), false));
-		m_PlayerLevelsSynced.Insert(new SyncedValue( "Blood: "+ typename.EnumToString(EStatLevels, player.GetStatLevelBlood()),player.GetStatLevelBlood(), false));
-		m_PlayerLevelsSynced.Insert(new SyncedValue( "Health: "+ typename.EnumToString(EStatLevels, player.GetStatLevelHealth() ),player.GetStatLevelHealth(), false));
-		m_PlayerLevelsSynced.Insert(new SyncedValue( "Energy: "+ typename.EnumToString(EStatLevels, player.GetStatLevelEnergy() ),player.GetStatLevelEnergy(), false));
-		m_PlayerLevelsSynced.Insert(new SyncedValue( "Water: "+ typename.EnumToString(EStatLevels, player.GetStatLevelWater() ),player.GetStatLevelWater(), false));
+		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Immunity: "+ typename.EnumToString(EStatLevels, player.GetImmunityLevel() ),player.GetImmunityLevel(),0));
+		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Blood: "+ typename.EnumToString(EStatLevels, player.GetStatLevelBlood()),player.GetStatLevelBlood(), player.GetStatBordersBlood()));
+		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Health: "+ typename.EnumToString(EStatLevels, player.GetStatLevelHealth() ),player.GetStatLevelHealth(), player.GetStatBordersHealth()));
+		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Energy: "+ typename.EnumToString(EStatLevels, player.GetStatLevelEnergy() ),player.GetStatLevelEnergy(), player.GetStatBordersEnergy()));
+		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Water: "+ typename.EnumToString(EStatLevels, player.GetStatLevelWater() ),player.GetStatLevelWater(), player.GetStatBordersWater()));
 	}
-	
+	*/
 	
 	
 	
@@ -474,6 +469,7 @@ class PluginDeveloperSync extends PluginBase
 	// MODS
 	//============================================	
 	//send player mods through RPC
+	/*
 	void SendRPCMods( PlayerBase player )
 	{
 		//write and send values
@@ -504,6 +500,62 @@ class PluginDeveloperSync extends PluginBase
 			GetDayZGame().RPC( player, ERPCs.DEV_RPC_MODS_DATA, rpc_params, true, player.GetIdentity() );
 		}
 	}
+	*/
+	void SendRPCMods( PlayerBase player )
+	{
+		//write and send values
+		if ( player )
+		{
+			array<ref Param> rpc_params = new array<ref Param>;
+			
+			//get modifiers
+			ModifiersManager mods_manager = player.GetModifiersManager();
+			
+			//param count
+			array<ref ModifierDebugObj> modifiers = new array<ref ModifierDebugObj>;
+			mods_manager.DbgGetModifiers( modifiers );
+			
+			float param_count = ( float ) modifiers.Count();
+			rpc_params.Insert( new Param1<int>( param_count ));
+			
+			//set modifiers
+			for ( int i = 0; i < modifiers.Count(); ++i ) 
+			{
+				int id = modifiers.Get(i).GetID();
+				string name = modifiers.Get(i).GetName();
+				bool active =  modifiers.Get(i).IsActive();
+				bool locked =  modifiers.Get(i).IsLocked();
+				
+				rpc_params.Insert( new Param4<int, string, bool, bool>( id, name, active, locked ) );
+			}
+			
+			//send params
+			GetDayZGame().RPC( player, ERPCs.DEV_RPC_MODS_DATA, rpc_params, true, player.GetIdentity() );
+		}
+	}
+	
+	//============================================
+	// MODS
+	//============================================	
+	//send player mods through RPC
+	void SendRPCModsDetail( PlayerBase player )
+	{
+		//write and send values
+		if ( player )
+		{
+			
+			Param1<string> p1 = new Param1<string>("");
+			ModifiersManager mods_manager = player.GetModifiersManager();
+			
+			if(m_DetailedInfoRequested != 0)
+			{
+				p1.param1 = mods_manager.GetModifier(m_DetailedInfoRequested).GetDebugText();
+				//send params
+				if(p1.param1 != "")
+					GetDayZGame().RPCSingleParam( player, ERPCs.DEV_RPC_MODS_DATA_DETAILED, p1, true, player.GetIdentity() );
+			}
+		}
+	}
 
 	//Display player modifiers
 	void OnRPCMods( ParamsReadContext ctx )
@@ -511,49 +563,53 @@ class PluginDeveloperSync extends PluginBase
 		//clear values
 		m_PlayerModsSynced.Clear();
 		
-		ref Param3<string, float, bool> p = new Param3<string, float, bool>( "", 0, false );
-		
+		//ref Param3<string, float, bool> p = new Param3<string, float, bool>( "", 0, false );
+		Param1<int> p1 = new Param1<int>(0);
+		Param4<int, string, bool, bool> p4 = new Param4<int, string, bool, bool>( 0,"", false, false );
 		//get param count
 		int param_count = 0;
-		if ( ctx.Read(p) )
+		if ( ctx.Read(p1) )
 		{
-			param_count = (int) p.param2;
+			param_count = (int) p1.param1;
 		}
 		
 		//read values and set 
 		for ( int i = 0; i < param_count; i++ )
 		{
-			ctx.Read(p);
-			m_PlayerModsSynced.Insert( new SyncedValue( p.param1, p.param2, p.param3 ) );
-		}
-	}
-
-	//Update data on local
-	void UpdateModsLocal()
-	{
-		PlayerBase player = PlayerBase.Cast( GetDayZGame().GetPlayer() );
-		
-		if ( player )
-		{
-			//clear values
-			m_PlayerModsSynced.Clear();
-			
-			//get active/inactive modifiers
-			ModifiersManager mods_manager = player.GetModifiersManager();
-			
-			map<int, string> modifiers = new map<int, string>;
-			mods_manager.DbgGetModifiers( modifiers );
-			
-			//set active modifiers
-			for ( int i = 0; i < modifiers.Count(); i++ ) 
+			if(ctx.Read(p4))
 			{
-				int key = modifiers.GetKey( i );
-				string value = modifiers.Get( key );
-				bool state = IsModifierLocked( key );
-				m_PlayerModsSynced.Insert( new SyncedValue( value, key, state ) );
+				m_PlayerModsSynced.Insert( new SyncedValueModifier( p4.param1, p4.param2, p4.param3, p4.param4 ) );
 			}
 		}
 	}
+	
+	void OnRPCModsDetailed( ParamsReadContext ctx )
+	{
+		Param1<string> p1 = new Param1<string>("");
+		
+		//get param count
+		if ( ctx.Read(p1) )
+		{
+			m_PlayerModsDetailedSynced = p1.param1;
+		}
+	}
+
+	
+	
+	//Activates modifier with given ID
+	void RequestDetailedInfo( int id, PlayerBase player = NULL )
+	{
+		int modifier_id = Math.AbsInt( id );
+		if(id == m_DetailedInfoRequested)
+		{
+			m_DetailedInfoRequested = 0;//repeated request --> disable
+		}
+		else
+		{
+			m_DetailedInfoRequested = modifier_id;
+		}
+	}
+	
 	
 	//Activates modifier with given ID
 	void ActivateModifier( int id, PlayerBase player = NULL )
@@ -608,28 +664,12 @@ class PluginDeveloperSync extends PluginBase
 		//write and send values
 		if ( player )
 		{
-			array<ref Param> rpc_params = new array<ref Param>;
 			
 			//get agent pool data
 			array<ref Param> agent_pool = new array<ref Param>;
 			player.m_AgentPool.GetDebugObject( agent_pool );
-			
-			//agents count
-			ref Param1<int> p1 = Param1<int>.Cast( agent_pool.Get( 0 ) );
-			int agents_count = p1.param1;
-			//param count
-			float param_count = (float) agents_count;
-			rpc_params.Insert( new Param2<string, float>( "PARAM_COUNT", param_count ) );
-			
-			//set synced data
-			for ( int i = 0; i < agents_count; i++ ) 
-			{
-				ref Param2<string, string> p2 = Param2<string, string>.Cast( agent_pool.Get( i + 1 ) );
-				rpc_params.Insert( new Param2<string, float>( p2.param1, p2.param2.ToFloat() ) );
-			}
-			
-			//send params
-			GetDayZGame().RPC( player, ERPCs.DEV_RPC_AGENTS_DATA, rpc_params, true, player.GetIdentity() );
+		
+			GetDayZGame().RPC( player, ERPCs.DEV_RPC_AGENTS_DATA, agent_pool, true, player.GetIdentity() );
 		}
 	}
 
@@ -639,24 +679,26 @@ class PluginDeveloperSync extends PluginBase
 		//clear values
 		m_PlayerAgentsSynced.Clear();
 		
-		ref Param2<string, float> p = new Param2<string, float>( "", 0 );
+		ref Param3<string, string, int> p3 = new Param3<string, string, int>( "", "" ,0 );
+		Param1<int> p1 = new Param1<int>(0);
 		
 		//get param count
 		int param_count = 0;
-		if ( ctx.Read(p) )
+		if ( ctx.Read(p1) )
 		{
-			param_count = (int) p.param2;
+			param_count = p1.param1;
 		}
 		
 		//read values and set 
 		for ( int i = 0; i < param_count; i++ )
 		{
-			ctx.Read(p);
-			m_PlayerAgentsSynced.Insert( new SyncedValue( p.param1, p.param2, false ) );
+			ctx.Read(p3);
+			m_PlayerAgentsSynced.Insert( new SyncedValueAgent( p3.param1, p3.param2, p3.param3 ) );
 		}
 	}
 
 	//Update data on local
+	/*
 	void UpdateAgentsLocal()
 	{
 		PlayerBase player = PlayerBase.Cast( GetDayZGame().GetPlayer() );
@@ -677,12 +719,13 @@ class PluginDeveloperSync extends PluginBase
 			//set synced data
 			for ( int i = 0; i < agents_count; i++ ) 
 			{
-				ref Param2<string, string> p2 = Param2<string, string>.Cast( agent_pool.Get( i + 1 ) );
-				m_PlayerAgentsSynced.Insert( new SyncedValue( p2.param1, p2.param2.ToFloat(), false ) );
+				string name = Param2<string,string>.Cast(agent_pool.Get(i+1)).param1;
+				string count = Param2<string,string>.Cast(agent_pool.Get(i+1)).param2;
+				m_PlayerAgentsSynced.Insert( new SyncedValueAgent( name, count, false ) );
 			}
 		}
 	}
-	
+	*/
 	//================================================================
 	// FOCUS
 	//================================================================ 

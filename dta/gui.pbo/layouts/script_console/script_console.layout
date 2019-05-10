@@ -100,9 +100,9 @@ FrameWidgetClass FrameWidget {
      }
     }
     PanelWidgetClass ItemsPanel {
-     visible 0
+     visible 1
      inheritalpha 1
-     position 0.008 0.05556
+     position 0.00711 0.05556
      size 0.984 0.87778
      style rover_sim_black
      {
@@ -132,8 +132,8 @@ FrameWidgetClass FrameWidget {
       EditBoxWidgetClass ObjectFilter {
        inheritalpha 1
        color 1 1 1 1
-       position 0.01 0.01
-       size 0.27846 0.05063
+       position 0.00819 0.01
+       size 0.98154 0.05063
        hexactsize 0
        vexactsize 0
        priority 1
@@ -144,14 +144,14 @@ FrameWidgetClass FrameWidget {
        "text color" 1 1 1 1
       }
       TextListboxWidgetClass PresetList {
-       position 0.38 0.09
-       size 0.54471 0.36709
+       position 0.38 0.12832
+       size 0.54471 0.32877
        lines 12
       }
       TextWidgetClass TextWidget1 {
        inheritalpha 0
        color 1 1 1 1
-       position 0.38 0.04
+       position 0.38 0.07979
        size 0.17073 0.03797
        halign left
        text "PRESETS"
@@ -454,7 +454,7 @@ FrameWidgetClass FrameWidget {
      }
     }
     PanelWidgetClass GeneralPanel {
-     visible 1
+     visible 0
      inheritalpha 1
      position 0 0.05
      size 1 0.88

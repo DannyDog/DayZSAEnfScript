@@ -1,43 +1,45 @@
 class AreaDamageTrigger extends Trigger
 {
-	private EntityAI	  	m_AreaTriggerParent;
-	private AreaDamageType	m_AreaDamageType;
+	protected EntityAI	  		m_AreaTriggerParent;
+	protected AreaDamageType	m_AreaDamageType;
 
-	private bool			m_Looping;
-	private bool			m_Deferred;
-	private bool			m_Raycasted;
+	protected bool				m_Looping;
+	protected bool				m_Raycasted;
 	
-	private int				m_TriggerUpdateMs;
-	private float			m_LoopingInterval;
-	private float 			m_DeferredInterval;
+	protected int				m_TriggerUpdateMs;
+	protected float				m_LoopingInterval;
+	protected float 			m_DeferredInterval;
 	
-	private vector			m_ExtentMin;
-	private vector			m_ExtentMax;
+	protected vector			m_ExtentMin;
+	protected vector			m_ExtentMax;
 
-	ref TStringArray 		m_HitZones;
-	ref TStringArray 		m_RaycastSources;
-	string					m_AmmoName;
-	int						m_DamageType			//!< DT_CUSTOM (Damage Type)
+	protected ref array<string>	m_HitZones;
+	protected ref array<string> m_RaycastSources;
+	protected string			m_AmmoName;
+	protected int				m_DamageType			//!< DT_CUSTOM (Damage Type)
 	
-	protected ref Timer		m_LoopTimer;
-	protected ref Timer		m_DeferTimer;
+	protected ref Timer			m_LoopTimer;
+	protected ref Timer			m_DeferTimer;
 
 	void AreaDamageTrigger()
 	{
 		m_Looping 			= false;
-		m_Deferred 			= false;
 		m_Raycasted			= false;
 		m_LoopingInterval 	= 0.1;
 		m_DeferredInterval 	= 0.1;
 		m_TriggerUpdateMs   = 100; 
 		m_AreaDamageType 	= AreaDamageType.REGULAR;
-		m_HitZones			= new TStringArray;
+		m_HitZones			= new array<string>;
 		m_HitZones.Insert("Head");
-		m_RaycastSources	= new TStringArray;
+		m_RaycastSources	= new array<string>;
 		m_RaycastSources 	= {"0.0 0.1 0.0", "0.2 0.1 0.2", "-.2 0.1 0.2", "0.2 0.1 -.2", "-.2 0.1 -.2"};
 
 		m_AmmoName 			= "MeleeDamage";
 		m_DamageType		= 3;
+
+		// start main timer
+		m_LoopTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
+		m_DeferTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
 	}
 
 	void ~AreaDamageTrigger() {}
@@ -49,6 +51,11 @@ class AreaDamageTrigger extends Trigger
 		{
 			m_AreaTriggerParent = parent;
 		}
+	}
+	
+	EntityAI GetParentObject()
+	{
+		return m_AreaTriggerParent;
 	}
 	
 	void SetAreaDamageType(int area_dmg_type )
@@ -104,33 +111,61 @@ class AreaDamageTrigger extends Trigger
 
 	override protected void UpdateInsiders(int timeout)
 	{
-		super.UpdateInsiders(m_TriggerUpdateMs);
+		vector max = GetPosition() + m_ExtentMax;
+		vector min = GetPosition() + m_ExtentMin;
+		
+		for(int n = 0; n < m_insiders.Count(); )
+		{
+			TriggerInsider ins = m_insiders.Get(n);
+			if(ins.insider == null)
+			{
+				//object has been deleted. Remove it
+				m_insiders.Remove(n);
+				continue;
+			}
+
+			Object insObj = ins.GetObject();
+			if(insObj && vector.Distance(insObj.GetPosition(), GetPosition()) > GetRadius(m_ExtentMin, m_ExtentMax)/2)
+			{
+				//object left. Remove it
+				OnLeave(ins.insider.Ptr());
+				m_insiders.Remove(n);
+				continue;
+			}
+			 
+			n++;			
+		}
+	}
+	
+	override void SetExtents(vector mins, vector maxs)
+	{
+		m_ExtentMax = maxs;
+		m_ExtentMin = mins;
+
+		super.SetExtents(mins, maxs);
 	}
 	
 	override void OnEnter( Object obj )
 	{
 		super.OnEnter( obj );
 
-		if ( g_Game.IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			EntityAI victim;
 			Class.CastTo(victim, obj);
-			// start main timer
-			m_LoopTimer = new Timer( CALL_CATEGORY_SYSTEM );
-			
+
 			// Run timer for non-deferred AreaDamageTypes only
 			if ( m_AreaDamageType == AreaDamageType.REGULAR || m_AreaDamageType == AreaDamageType.REGULAR_RAYCASTED || m_AreaDamageType == AreaDamageType.ONETIME || m_AreaDamageType == AreaDamageType.ONETIME_RAYCASTED)
 			{
 				PreDamageActions();
 				m_LoopTimer.Run( m_LoopingInterval, this, "SnapOnObject", new Param1<EntityAI>(victim), m_Looping );
 			}
-			
+
 			// Run timer for deferred AreaDamageTypes only
 			if ( m_AreaDamageType == AreaDamageType.REGULAR_DEFERRED || m_AreaDamageType == AreaDamageType.REGULAR_RAYCASTED_DEFERRED || m_AreaDamageType == AreaDamageType.ONETIME_DEFERRED || m_AreaDamageType == AreaDamageType.ONETIME_RAYCASTED_DEFERRED )
 			{
 				PreDamageActions();
-				m_DeferTimer = new Timer( CALL_CATEGORY_SYSTEM );
-				m_DeferTimer.Run( m_DeferredInterval, this, "LoopTimer", new Param1<EntityAI>(victim), m_Looping );
+				m_DeferTimer.Run( m_DeferredInterval, this, "LoopTimer", new Param1<EntityAI>(victim), false );
 			}
 		}
 	}
@@ -139,7 +174,7 @@ class AreaDamageTrigger extends Trigger
 	{
 		super.OnLeave( obj );
 
-		// stop all running timers
+		//! stop all running timers
 		if ( m_DeferTimer && m_DeferTimer.IsRunning() )
 		{
 			m_DeferTimer.Stop();
@@ -190,7 +225,7 @@ class AreaDamageTrigger extends Trigger
 			//#ifdef DEVELOPER
 			//Debug.DrawArrow( raycast_start_pos, raycast_end_pos );
 			//#endif
-			DayZPhysics.RaycastRV( raycast_start_pos, raycast_end_pos, contact_pos, contact_dir, contactComponent, victims , NULL, this, true, false, ObjIntersectIFire);
+			DayZPhysics.RaycastRV( raycast_start_pos, raycast_end_pos, contact_pos, contact_dir, contactComponent, victims , null, this, true, false, ObjIntersectIFire);
 			
 			for ( int j = 0; j < victims.Count(); ++j )
 			{
@@ -224,27 +259,31 @@ class AreaDamageTrigger extends Trigger
 		}
 	}
 
-	// just for running Loop timer throught Defer timer
+	//! just for running Loop timer throught Defer timer
 	protected void LoopTimer(EntityAI victim)
 	{
-		m_LoopTimer.Run( m_LoopingInterval, this, "SnapOnObject", new Param1<EntityAI>(victim), m_Looping );	
+		m_LoopTimer.Run( m_LoopingInterval, this, "SnapOnObject", new Param1<EntityAI>(victim), m_Looping );
 	}
 	
 	protected void SnapOnObject( EntityAI victim )
 	{
-		string hitzone;
-
-		if (victim)
+		if (victim && victim.IsAlive())
 		{
+			string hitzone;
+
 			if ( !m_Raycasted )
-				{ hitzone = GetRandomHitZone(m_HitZones); }
+			{
+				hitzone = GetRandomHitZone(m_HitZones);
+			}
 			else
-				{ hitzone = GetRaycastedHitZone( victim, m_RaycastSources ); }
+			{
+				hitzone = GetRaycastedHitZone( victim, m_RaycastSources );
+			}
 			
 			//! TODO: should be configurable while creating area damage - array of types
 			if ( victim.IsInherited(Man) )
 			{
-				victim.ProcessDirectDamage(m_DamageType, this, hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
+				victim.ProcessDirectDamage(m_DamageType, EntityAI.Cast(this), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
 				PostDamageActions();
 			}
 		}
@@ -253,48 +292,40 @@ class AreaDamageTrigger extends Trigger
 	protected void AreaDamageSelector(int area_dmg_type)
 	{
 		m_AreaDamageType = area_dmg_type;
-		switch (area_dmg_type)
+		switch(area_dmg_type)
 		{
-			case AreaDamageType.REGULAR:
-				m_Looping = true;
-				m_Deferred = false;
-				m_Raycasted = false;
-				break;
-			case AreaDamageType.REGULAR_DEFERRED:
-				m_Looping = true;
-				m_Deferred = true;
-				m_Raycasted = false;
-				break;
-			case AreaDamageType.REGULAR_RAYCASTED:
-				m_Looping = true;
-				m_Deferred = false;
-				m_Raycasted = true;
-				break;
-			case AreaDamageType.REGULAR_RAYCASTED_DEFERRED:
-				m_Looping = true;
-				m_Deferred = true;
-				m_Raycasted = true;
-				break;
-			case AreaDamageType.ONETIME:
-				m_Looping = false;
-				m_Deferred = false;
-				m_Raycasted = false;
-				break;
-			case AreaDamageType.ONETIME_DEFERRED:
-				m_Looping = false;
-				m_Deferred = true;
-				m_Raycasted = false;
-				break;
-			case AreaDamageType.ONETIME_RAYCASTED:
-				m_Looping = false;
-				m_Deferred = false;
-				m_Raycasted = true;
-				break;
-			case AreaDamageType.ONETIME_RAYCASTED_DEFERRED:
-				m_Looping = false;
-				m_Deferred = true;
-				m_Raycasted = true;
-				break;
+		case AreaDamageType.REGULAR:
+			m_Looping = true;
+			m_Raycasted = false;
+		break;
+		case AreaDamageType.REGULAR_DEFERRED:
+			m_Looping = true;
+			m_Raycasted = false;
+		break;
+		case AreaDamageType.REGULAR_RAYCASTED:
+			m_Looping = true;
+			m_Raycasted = true;
+		break;
+		case AreaDamageType.REGULAR_RAYCASTED_DEFERRED:
+			m_Looping = true;
+			m_Raycasted = true;
+		break;
+		case AreaDamageType.ONETIME:
+			m_Looping = false;
+			m_Raycasted = false;
+		break;
+		case AreaDamageType.ONETIME_DEFERRED:
+			m_Looping = false;
+			m_Raycasted = false;
+		break;
+		case AreaDamageType.ONETIME_RAYCASTED:
+			m_Looping = false;
+			m_Raycasted = true;
+		break;
+		case AreaDamageType.ONETIME_RAYCASTED_DEFERRED:
+			m_Looping = false;
+			m_Raycasted = true;
+		break;
 		}
 	}
 }

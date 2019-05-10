@@ -23,9 +23,9 @@ class EmoteCB : HumanCommandActionCallback
 		}
 		else if (GetGame().IsServer() && pEventID == UA_ANIM_EVENT)
 		{
-			if (m_player.GetItemInHands() && m_player.GetItemInHands().GetType() == "SurrenderDummyItem")
+			if ( m_player.GetItemInHands() && SurrenderDummyItem.Cast(m_player.GetItemInHands()) )
 				m_player.GetItemInHands().Delete();
-			if (m_player.GetItemInHands())
+			if ( m_player.GetItemInHands() )
 				m_player.DropItem(m_player.GetItemInHands());
 			else
 				m_player.GetHumanInventory().CreateInHands("SurrenderDummyItem");
@@ -86,6 +86,7 @@ class EmoteManager
 	protected int 			m_RPSOutcome;
 	protected const float 	WATER_DEPTH = 0.15;
 	PluginAdminLog 			m_AdminLog;
+	ref Timer 				m_ReservationTimer;
 	
 	void EmoteManager( PlayerBase player ) 
 	{
@@ -103,14 +104,14 @@ class EmoteManager
 		m_InterruptInputs.Insert("UATurnRight");
 		m_InterruptInputs.Insert("UAMoveLeft");
 		m_InterruptInputs.Insert("UAMoveRight");
-		m_InterruptInputs.Insert("UAEvasiveForward");
+		/*m_InterruptInputs.Insert("UAEvasiveForward");
 		m_InterruptInputs.Insert("UAEvasiveLeft");
 		m_InterruptInputs.Insert("UAEvasiveRight");
-		m_InterruptInputs.Insert("UAEvasiveBack");
+		m_InterruptInputs.Insert("UAEvasiveBack");*/
 		m_InterruptInputs.Insert("UAStand");
 		m_InterruptInputs.Insert("UACrouch");
 		m_InterruptInputs.Insert("UAProne");
-		m_InterruptInputs.Insert("UALeanLeft");
+		/*m_InterruptInputs.Insert("UALeanLeft");
 		m_InterruptInputs.Insert("UALeanRight");
 		m_InterruptInputs.Insert("UALeanIronsightLeft");
 		m_InterruptInputs.Insert("UALeanIronsightRight");
@@ -118,14 +119,30 @@ class EmoteManager
 		m_InterruptInputs.Insert("UALeanRightToggle");
 		m_InterruptInputs.Insert("UAPersonCamSwitchSide");
 		m_InterruptInputs.Insert("UAWalkRunToggle");
-		m_InterruptInputs.Insert("UAWalkRunTemp");
+		m_InterruptInputs.Insert("UAWalkRunTemp");*/
 		// end of new input-based interrupt actions
 		
 		//leave this here?
 		m_HandInventoryLocation = new InventoryLocation;
 		m_HandInventoryLocation.SetHands(m_Player,null);
 		
-		m_AdminLog = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+		if( GetGame().IsServer() )
+		{
+			m_AdminLog = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+		}
+		
+		m_ReservationTimer = new Timer();
+		m_ReservationTimer.Run(8,this,"CheckEmoteLockedState",NULL,true);
+		//GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater( CheckEmoteLockedState, 10000, true );
+	}
+	
+	void ~EmoteManager() 
+	{
+		if (m_ReservationTimer && m_ReservationTimer.IsRunning())
+			m_ReservationTimer.Stop();
+		/*if (GetGame() && GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM )) //yes, we really need to ask for 'GetGame()' here, because of introscene character
+			GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).Remove( CheckEmoteLockedState );*/
+		
 	}
 	
 	void SetGesture(int id)
@@ -155,17 +172,20 @@ class EmoteManager
 		{
 			//Print("---input is there --- ");
 			//Print("---action count? ---" + GetGame().GetInput().GetActionsCount());
+			
+			GetActionsCount() -- was removed !!!
+			
 			for (int i = 1; i < 350; i++)
 			{
-				if (GetGame().GetInput().GetActionDown(i, false))
-					Print("---GetActionDown--- " + i);
+				if (GetGame().GetInput().LocalPress(i, false))
+					Print("---LocalPress--- " + i);
 			}
 		}*/
 		// no updates on restrained characters
 		if (m_Player.IsRestrained())
 			return;
 		
-		CheckEmoteLockedState();
+		//CheckEmoteLockedState();
 		
 		// dummy item has been created, cancels the "soft reservation" bool
 		if (m_Player.GetItemInHands() && m_Player.GetItemInHands().GetType() == "SurrenderDummyItem" && m_ItemToBeCreated)
@@ -272,13 +292,14 @@ class EmoteManager
 				//m_Player.OnSurrenderEnd();
 				return;
 			}
+			//server-side deferred launch
 			else if (m_DeferredMenuEmoteLaunch != -1)
 			{
 				PlayEmote(m_DeferredMenuEmoteLaunch);
 				m_MenuEmote = NULL;
 				m_DeferredMenuEmoteLaunch = -1;
 			}
-			else if (!m_bEmoteIsPlaying && m_MenuEmote && GetGame().IsClient())
+			else if (!m_bEmoteIsPlaying && m_MenuEmote && (GetGame().IsClient() || !GetGame().IsMultiplayer()))
 			{
 				PlayEmoteFromMenu();
 			}
@@ -579,7 +600,7 @@ class EmoteManager
 				
 				case ID_EMOTE_SALUTE:
 					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE)) 	CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SALUTE,DayZPlayerConstants.STANCEMASK_ERECT,true);
-					//HideItemInHands();
+					HideItemInHands();
 				break;
 				
 				case ID_EMOTE_TIMEOUT:
@@ -1246,17 +1267,21 @@ class EmoteManager
 	
 	void CheckEmoteLockedState()
 	{
-		if (!m_EmoteLockState && m_Player.GetItemInHands() && m_Player.GetItemInHands().GetType() == "SurrenderDummyItem")
+		//Print("LockCheckCalled");
+		if ( !m_Player.GetItemInHands() || (m_Player.GetItemInHands() && !SurrenderDummyItem.Cast(m_Player.GetItemInHands())) )
+			return;
+		
+		/*if ( !m_EmoteLockState && SurrenderDummyItem.Cast(m_Player.GetItemInHands()) )
 		{
 			m_IsSurrendered = true;
 			SetEmoteLockState(true);
 			return;
-		}
+		}*/
 		
 		//refreshes reservation in case of unwanted timeout
-		if ( m_EmoteLockState && m_HandInventoryLocation && !m_Player.GetInventory().HasInventoryReservation(null, m_HandInventoryLocation) )
+		if ( m_EmoteLockState && m_HandInventoryLocation/* && !m_Player.GetInventory().HasInventoryReservation(null, m_HandInventoryLocation)*/ )
 		{
-			m_Player.GetInventory().AddInventoryReservation( null, m_HandInventoryLocation, 10000);
+			m_Player.GetInventory().ExtendInventoryReservation( null, m_HandInventoryLocation, 10000);
 		}
 	}
 	

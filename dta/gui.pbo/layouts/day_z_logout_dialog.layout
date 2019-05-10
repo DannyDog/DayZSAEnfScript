@@ -2,7 +2,7 @@ WindowWidgetClass LogoutDialogRoot {
  visible 1
  clipchildren 1
  inheritalpha 0
- color 0.0824 0.0824 0.0824 0.7843
+ color 0.1176 0.1176 0.1176 0.9804
  position 0 0
  size 540 190
  halign center_ref
@@ -49,6 +49,23 @@ WindowWidgetClass LogoutDialogRoot {
      position 14 14
      size 120.5 40
      halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style EmptyHighlight
+     text "#cancel"
+     text_proportion 0.5
+     font "gui/fonts/sdf_MetronBook24"
+    }
+    ButtonWidgetClass bCancelConsole {
+     visible 0
+     inheritalpha 0
+     color 1 0 0 1
+     position 0 14
+     size 120.5 40
+     halign center_ref
      valign bottom_ref
      hexactpos 1
      vexactpos 1

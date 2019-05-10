@@ -94,7 +94,11 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	bool LoadCurrentFSMState (ParamsReadContext ctx, int version)
 	{
 		if (LoadAndSetCurrentFSMState(ctx, version))
-			return m_State.LoadCurrentFSMState(ctx, version);
+		{
+			bool res = m_State.LoadCurrentFSMState(ctx, version);
+			wpnDebugPrint("[wpnfsm] LoadCurrentFSMState - loaded current state=" + GetCurrentState());
+			return res;
+		}
 		return false;
 	}
 	
@@ -106,7 +110,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 			int state_count = m_UniqueStates.Count();
 			for (int idx = 0; idx < state_count; ++idx)
 			{
-				wpnDebugSpam("[wpnfsm] LoadCurrentUnstableFSMState - loading unique state " + idx + "/" + state_count + " with id=" + m_UniqueStates.Get(idx).GetInternalStateID() + " state=" + m_UniqueStates.Get(idx));
+				wpnDebugSpam("[wpnfsm] LoadCurrentUnstableFSMState " + idx + "/" + state_count + " id=" + m_UniqueStates.Get(idx).GetInternalStateID() + " state=" + m_UniqueStates.Get(idx));
 				if (!m_UniqueStates.Get(idx).LoadCurrentFSMState(ctx, version))
 					Error("[wpnfsm] LoadCurrentUnstableFSMState - cannot load unique state " + idx + "/" + state_count + " with id=" + m_UniqueStates.Get(idx).GetInternalStateID() + " state=" + m_UniqueStates.Get(idx));
 			}
@@ -158,7 +162,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 			int state_id = m_UniqueStates.Get(idx).GetInternalStateID();
 			if (state_id != -1)
 			{
-				wpnDebugSpam("[wpnfsm] SaveCurrentUnstableFSMState - saving unique state " + idx + "/" + state_count + " with id=" + state_id);
+				wpnDebugSpam("[wpnfsm] SaveCurrentUnstableFSMState " + idx + "/" + state_count + " id=" + state_id + " name=" + m_UniqueStates.Get(idx));
 				if (!m_UniqueStates.Get(idx).SaveCurrentFSMState(ctx))
 					Error("SaveCurrentUnstableFSMState - cannot save unique state=" + m_UniqueStates.Get(idx) + " idx=" + idx + "/" + state_count + " with id=" + state_id);
 			}

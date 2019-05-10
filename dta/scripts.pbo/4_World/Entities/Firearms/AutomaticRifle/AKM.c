@@ -1,4 +1,4 @@
-class AKM : RifleBoltFree_Base
+class AKM_Base : RifleBoltFree_Base
 {
 	override RecoilBase SpawnRecoilObject()
 	{
@@ -29,5 +29,13 @@ class AKM : RifleBoltFree_Base
 		
 		}
 		return subCommand;
+	}
+	
+	override bool CanEnterIronsights()
+	{
+		ItemOptics optic = GetAttachedOptics();
+		if (optic && PSO1Optic.Cast(optic))
+			return true;
+		return super.CanEnterIronsights();
 	}
 };

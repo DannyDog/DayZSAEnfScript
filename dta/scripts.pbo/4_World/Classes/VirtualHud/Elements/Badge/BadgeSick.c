@@ -1,6 +1,6 @@
 class BadgeSick extends DisplayElementBadge 
 {
-	void BadgeSick()
+	void BadgeSick(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
 		m_Key 	= 	NTFKEY_SICK;

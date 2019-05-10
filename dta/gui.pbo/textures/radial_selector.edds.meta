@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{528E06782E5680C9}Gui/textures/radial_selector.tga"
+ Author "1251"
+ ChangeDate 1635427977
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "radial_selector.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

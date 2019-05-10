@@ -1,0 +1,102 @@
+GridSpacerWidgetClass mods_root {
+ position 0 0
+ size 444 1
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 0
+ Padding 0
+ Margin 0
+ "Size To Content V" 1
+ Columns 1
+ Rows 2
+ {
+  ImageWidgetClass mods_header {
+   clipchildren 0
+   ignorepointer 1
+   color 0 0 0 0.8
+   position 0 0
+   size 1 42
+   halign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   scriptclass ""
+   image0 "set:dayz_gui image:inv_header_1"
+   mode blend
+   "src alpha" 1
+   "no wrap" 1
+   stretch 1
+   {
+    RichTextWidgetClass TextWidget0 {
+     clipchildren 0
+     ignorepointer 1
+     size 0.9 0.9
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style DayZNormal
+     text "MODS"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+     "exact text size" 20
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+     wrap 0
+    }
+    ImageWidgetClass collapse_button {
+     visible 1
+     clipchildren 0
+     position 0 0
+     size 1 1
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     fixaspect fixwidth
+     priority 500
+     image0 "set:dayz_gui image:icon_x"
+     mode additive
+     "src alpha" 1
+     "no wrap" 0
+     stretch 0
+    }
+   }
+  }
+  ScrollWidgetClass mods_scroller {
+   ignorepointer 1
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   "Scrollbar V" 1
+   "Scrollbar V Left" 1
+   {
+    GridSpacerWidgetClass mods_content {
+     ignorepointer 1
+     position 0 0
+     size 1 0
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     Columns 1
+     Rows 100
+    }
+   }
+  }
+ }
+}

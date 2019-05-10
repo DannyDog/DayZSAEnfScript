@@ -1,12 +1,14 @@
 MetaFileClass {
  Name "{4D5D9D938D933399}Gui/imagesets/xbox_buttons.tga"
- Author "inv3672"
- ChangeDate 1712563442
+ Author "1967"
+ ChangeDate 235136634
  Configurations {
   TGAResourceClass PC {
    SourceFile "xbox_buttons.tga"
+   TiledTexture 0
   }
   TGAResourceClass XBOX_ONE : PC {
+   TiledTexture 0
   }
   TGAResourceClass PS4 : PC {
   }

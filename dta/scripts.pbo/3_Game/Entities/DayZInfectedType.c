@@ -30,6 +30,12 @@ class DayZInfectedType extends DayZCreatureAIType
 		m_DefaultHitComponent = "Torso";
 		//! registers default hit position component for entity
 		m_DefaultHitPositionComponent = "Pelvis";
+		
+		//! list of components suitable for melee finisher attacks (used in fight logic)
+		m_SuitableFinisherHitComponents = new array<string>;
+		m_SuitableFinisherHitComponents.Insert("Head");
+		m_SuitableFinisherHitComponents.Insert("Neck");
+		m_SuitableFinisherHitComponents.Insert("Torso");
 
 		//! register hit components that are selected by probability
 		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "Head", 2);
@@ -123,6 +129,11 @@ class DayZInfectedType extends DayZCreatureAIType
 	{
 		return m_DefaultHitPositionComponent;
 	}
+
+	array<string> GetSuitableFinisherHitComponents()
+	{
+		return m_SuitableFinisherHitComponents;
+	}
 	
 	//--------------------------------------------------------
 	// Protected
@@ -196,4 +207,5 @@ class DayZInfectedType extends DayZCreatureAIType
 	protected ref array<ref DayZAIHitComponent> m_HitComponentsForAI;
 	protected string m_DefaultHitComponent;
 	protected string m_DefaultHitPositionComponent;
+	protected ref array<string> m_SuitableFinisherHitComponents;
 }

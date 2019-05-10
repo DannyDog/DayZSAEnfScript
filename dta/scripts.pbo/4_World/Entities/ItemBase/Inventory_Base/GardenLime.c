@@ -63,4 +63,12 @@ class GardenLime extends Inventory_Base
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionFertilizeSlot);
+	}
 }

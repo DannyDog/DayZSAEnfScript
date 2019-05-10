@@ -1,7 +1,7 @@
 class PlayerListScriptedWidget extends ScriptedWidgetEventHandler
 {
 	protected Widget												m_Root;
-	protected TextWidget											m_Header;
+	//protected TextWidget											m_Header;
 	protected ScrollWidget											m_ScrollContainer;
 	protected Widget												m_Content;
 	protected ref map<string, ref PlayerListEntryScriptedWidget>	m_Entries;
@@ -12,13 +12,13 @@ class PlayerListScriptedWidget extends ScriptedWidgetEventHandler
 	void PlayerListScriptedWidget( Widget parent, string header_text )
 	{
 		m_Root				= GetGame().GetWorkspace().CreateWidgets( "gui/layouts/xbox/ingamemenu_xbox/players_info_panel.layout", parent );
-		m_Header			= TextWidget.Cast( m_Root.FindAnyWidget( "header_text" ) );
+		//m_Header			= TextWidget.Cast( m_Root.FindAnyWidget( "header_text" ) );
 		m_ScrollContainer	= ScrollWidget.Cast( m_Root.FindAnyWidget( "ScrollFrame" ) );
 		m_Content			= m_Root.FindAnyWidget( "Content" );
 		
 		m_Entries			= new map<string, ref PlayerListEntryScriptedWidget>;
 		
-		m_Header.SetText( header_text );
+		//m_Header.SetText( header_text );
 		OnlineServices.m_ServersAsyncInvoker.Insert( OnLoadServersAsync );
 		m_ScrollContainer.VScrollToPos01( 0 );
 	}
@@ -83,7 +83,7 @@ class PlayerListScriptedWidget extends ScriptedWidgetEventHandler
 		{
 			header_text = info.m_Name + " - " + info.m_HostIp + ":" + info.m_HostPort;
 		}
-		m_Header.SetText( header_text );
+		//m_Header.SetText( header_text );
 	}
 	
 	void Reload( BiosFriendInfoArray player_list )

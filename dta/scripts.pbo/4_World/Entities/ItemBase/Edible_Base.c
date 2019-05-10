@@ -86,66 +86,31 @@ class Edible_Base extends ItemBase
 
 		if ( GetFoodStage() )
 		{
-			//Food stage type 
-			ctx.Write( GetFoodStage().GetFoodStageType() );
-			
-			//Selection index
-			ctx.Write( GetFoodStage().GetSelectionIndex() );
-
-			//Texture index
-			ctx.Write( GetFoodStage().GetTextureIndex() );
-
-			//Material index
-			ctx.Write( GetFoodStage().GetMaterialIndex() );
+			GetFoodStage().OnStoreSave( ctx );
 		}
 	}
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
 	{
-		super.OnStoreLoad(ctx, version);
+		if ( !super.OnStoreLoad( ctx, version ) )
+			return false;
 
 		if ( GetFoodStage() )
 		{
-			//--- Edible data ---
-			//Food stage name 
-			FoodStageType stage_type;
-			if ( !ctx.Read( stage_type ) )
-			{
-				stage_type = FoodStageType.RAW;		//set default
-			}
-			GetFoodStage().SetFoodStageType( stage_type );
-			
-			//Selection index
-			int selection_idx;
-			if ( !ctx.Read( selection_idx ) )
-			{
-				selection_idx = 0;		//set default
-			}
-			GetFoodStage().SetSelectionIndex( selection_idx );
-			
-			//Texture index
-			int texture_idx;
-			if ( !ctx.Read( texture_idx ) )
-			{
-				texture_idx = 0;		//set default
-			}
-			GetFoodStage().SetTextureIndex( texture_idx );
-			
-			//Material index
-			int material_idx;
-			if ( !ctx.Read( material_idx ) )
-			{
-				material_idx = 0;		//set default			
-			}
-			GetFoodStage().SetMaterialIndex( material_idx );
-			//---
+			if ( !GetFoodStage().OnStoreLoad( ctx, version ) )
+			return false;
 		}
-		
-		//refresh visual after load
-		Synchronize();
 		
 		return true;
 	}
+	
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();
+		
+		//synchronize
+		Synchronize();
+	}	
 
 	//get food stage
 	FoodStage GetFoodStage()

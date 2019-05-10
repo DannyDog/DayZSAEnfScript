@@ -12,13 +12,9 @@ class InventoryMenu extends UIScriptedMenu
 	protected bool						m_IsOpened;
 	protected bool						m_OnlyFirstTime;
 	
-	protected float						m_RefreshTimer;
-	
 	protected static ScreenWidthType	m_WidthType;
 	protected static int				m_Width;
 	protected static int				m_Height;
-	
-	
 	
 	void InventoryMenu()
 	{
@@ -68,19 +64,15 @@ class InventoryMenu extends UIScriptedMenu
 		return m_Height;
 	}
 	
+	static float GetHeightMultiplied( float value )
+	{
+		float height = m_Height;
+		return height / 1080 * value;
+	}
+	
 	void RefreshQuickbar()
 	{
 		m_Inventory.RefreshQuickbar();
-	}
-	
-	void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_Inventory.RefreshQuantity( item_to_refresh );
-	}
-	
-	void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		m_Inventory.RefreshItemPosition( item_to_refresh );
 	}
 	
 	override ContextMenu GetContextMenu()
@@ -97,24 +89,18 @@ class InventoryMenu extends UIScriptedMenu
 	{
 		if( m_Inventory )
 			m_Inventory.UpdateInterval();
-		
-		m_RefreshTimer += timeslice;
-		if( m_RefreshTimer > 10 )
-		{
-			m_Inventory.Refresh();
-			m_RefreshTimer = timeslice;
-			Print( "Refresh" );
-		}
 	}
 
 	override void OnShow()
 	{
 		super.OnShow();
 		m_IsOpened = true;
-		PPEffects.SetBlurInventory(1);
+		PPEffects.SetBlurInventory(0.5);
 		if(m_Inventory)
 			m_Inventory.OnShow();
+		
 		SetFocus( layoutRoot );
+		
 		MissionGameplay mission = MissionGameplay.Cast( GetGame().GetMission() );
 		if( mission )
 		{
@@ -124,19 +110,13 @@ class InventoryMenu extends UIScriptedMenu
 		ItemManager.GetInstance().SetItemMicromanagmentMode( false );
 		ItemManager.GetInstance().SetItemMoving( false );
 		ItemManager.GetInstance().SetSelectedItem( null, null, null );
+
+		m_Inventory.Refresh();
 	}
 	
-	//#ifdef PLATFORM_CONSOLE
 	override bool OnController( Widget w, int control, int value )
 	{
 		return m_Inventory.Controller( w, control, value );
-	}
-	//#endif
-	
-	int Reset()
-	{
-		m_Inventory.Reset();
-		return 1;
 	}
 	
 	bool IsOpened()

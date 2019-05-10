@@ -1,16 +1,25 @@
 class RightArea: Container
 {
-	ref PlayerContainer m_PlayerContainer;
+	ref PlayerContainer	m_PlayerContainer;
+	protected Widget	m_ContentParent;
 	
 	void RightArea( LayoutHolder parent )
 	{
 		m_MainWidget.Show( true );
-		m_MainWidget = m_MainWidget.FindAnyWidget( "Content" );
-		
-		m_PlayerContainer = new PlayerContainer( this );
+		m_MainWidget		= m_MainWidget.FindAnyWidget( "Content" );
+		m_ContentParent		= m_RootWidget.FindAnyWidget( "ContentParent" );
+		m_PlayerContainer	= new PlayerContainer( this );
 		m_PlayerContainer.SetPlayer( PlayerBase.Cast( GetGame().GetPlayer() ) );
 		m_Body.Insert( m_PlayerContainer );
 		m_ActiveIndex = 0;
+		
+		#ifdef PLATFORM_PS4
+		ImageWidget lt = ImageWidget.Cast( m_RootWidget.FindAnyWidget( "LTIcon" ) );
+		ImageWidget rt = ImageWidget.Cast( m_RootWidget.FindAnyWidget( "RTIcon" ) );
+		
+		lt.LoadImageFile( 0, "set:playstation_buttons image:L2" );
+		rt.LoadImageFile( 0, "set:playstation_buttons image:R2" );
+		#endif
 	}
 	
 	override Container GetFocusedContainer()
@@ -84,6 +93,16 @@ class RightArea: Container
 		m_PlayerContainer.ResetFocusedContainer();
 	}
 	
+	bool HasEntityContainerVisible( EntityAI entity )
+	{
+		return m_PlayerContainer.HasEntityContainerVisible( entity );
+	}
+	
+	void SwapItemsInOrder( int slot1, int slot2 )
+	{
+		m_PlayerContainer.SwapItemsInOrder( slot1, slot2 );
+	}
+	
 	bool IsPlayerEquipmentActive()
 	{
 		return m_PlayerContainer.IsPlayerEquipmentActive();
@@ -92,11 +111,6 @@ class RightArea: Container
 	void ExpandCollapseContainer()
 	{
 		m_PlayerContainer.ExpandCollapseContainer();
-	}
-	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		m_PlayerContainer.RefreshItemPosition( item_to_refresh );
 	}
 	
 	override void SetActive( bool active )
@@ -113,9 +127,9 @@ class RightArea: Container
 		m_PlayerContainer.SetNextActive();
 	}
 	
-	override void SetPreviousActive()
+	override void SetPreviousActive( bool force = false )
 	{
-		m_PlayerContainer.SetPreviousActive();
+		m_PlayerContainer.SetPreviousActive( force );
 	}
 	
 	override bool IsActive()
@@ -154,11 +168,6 @@ class RightArea: Container
 		#endif
 			
 	}
-	
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_PlayerContainer.RefreshQuantity( item_to_refresh );
-	}
 
 	override void SetParentWidget()
 	{
@@ -169,5 +178,11 @@ class RightArea: Container
 	{
 		super.OnShow();
 		Refresh();
+	}
+	
+	override void UpdateInterval()
+	{
+		super.UpdateInterval();
+		m_PlayerContainer.UpdateInterval();
 	}
 }

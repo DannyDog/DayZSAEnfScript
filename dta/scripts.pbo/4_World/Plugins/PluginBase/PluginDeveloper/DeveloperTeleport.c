@@ -34,7 +34,20 @@ class DeveloperTeleport
 	{
 		if ( GetGame().IsServer() )
 		{
-			player.SetPosition(position);
+			HumanCommandVehicle vehCmd = player.GetCommand_Vehicle();
+			if ( vehCmd )
+			{
+				Car car = Car.Cast( vehCmd.GetTransport() );
+				if ( car )
+				{
+					car.ForcePosition( position );
+					car.Update();
+				}
+			}
+			else
+			{
+				player.SetPosition( position );
+			}
 		}
 		else
 		{
@@ -48,7 +61,20 @@ class DeveloperTeleport
 	{
 		if ( GetGame().IsServer() )
 		{
-			player.SetDirection(direction);
+			HumanCommandVehicle vehCmd = player.GetCommand_Vehicle();
+			if ( vehCmd )
+			{
+				Car car = Car.Cast( vehCmd.GetTransport() );
+				if ( car )
+				{
+					car.ForceDirection( direction );
+					car.Update();
+				}
+			}
+			else
+			{
+				player.SetDirection( direction );
+			}
 		}
 		else
 		{

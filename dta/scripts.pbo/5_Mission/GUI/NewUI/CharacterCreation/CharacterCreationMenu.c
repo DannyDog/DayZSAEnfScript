@@ -6,6 +6,8 @@ class CharacterCreationMenu extends UIScriptedMenu
 	protected Widget						m_Apply;
 	protected Widget						m_RandomizeCharacter;
 	protected Widget						m_BackButton;
+	protected Widget						m_GeneralName;
+	protected ButtonWidget					m_GeneralNameButton;
 	
 	protected EditBoxWidget					m_PlayerName;
 	protected TextWidget					m_Version;
@@ -21,7 +23,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 		MissionMainMenu mission = MissionMainMenu.Cast( GetGame().GetMission() );
 		
 		m_Scene = mission.GetIntroScenePC();
-		m_Scene.ResetIntroCamera();
+		//m_Scene.ResetIntroCamera();
 	}
 	
 	override Widget Init()
@@ -32,6 +34,9 @@ class CharacterCreationMenu extends UIScriptedMenu
 		m_Apply								= layoutRoot.FindAnyWidget( "apply" );
 		m_RandomizeCharacter				= layoutRoot.FindAnyWidget( "randomize_character" );
 		m_BackButton						= layoutRoot.FindAnyWidget( "back" );
+		m_GeneralName						= layoutRoot.FindAnyWidget( "general_name_setting_text" );
+		m_GeneralNameButton					= ButtonWidget.Cast(layoutRoot.FindAnyWidget( "character_name_button" ));
+		
 		
 		m_PlayerName						= EditBoxWidget.Cast( layoutRoot.FindAnyWidget( "general_name_setting_text" ) );
 		m_Version							= TextWidget.Cast( layoutRoot.FindAnyWidget( "version" ) );
@@ -89,12 +94,25 @@ class CharacterCreationMenu extends UIScriptedMenu
 		m_ShoesSelector.m_OptionChanged.Insert( ShoesChanged );
 		
 		#ifdef PLATFORM_PS4
+			string confirm = "cross";
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				confirm = "cross";
+				back = "circle";
+			}
+			else
+			{
+				confirm = "circle";
+				back = "cross";
+			}
+		
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "SelectIcon" );
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
 			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "ResetIcon" );
 			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "RandomizeIcon" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif
@@ -239,9 +257,28 @@ class CharacterCreationMenu extends UIScriptedMenu
 	}
 	
 	override bool OnKeyPress( Widget w, int x, int y, int key )
-	{
+	{		
 		super.OnKeyPress( w, x, y, key );
 		return false;
+	}
+	
+	override bool OnChange(Widget w, int x, int y, bool finished)
+	{
+		if ( w && w.IsInherited( EditBoxWidget ) )
+		{
+			EditBoxWidget edit_box = EditBoxWidget.Cast( w );
+			
+			string edit_box_text = edit_box.GetText();
+			
+			Print("Character Creation OnChange: "+ finished +" edit_box_text: "+ edit_box_text);
+			
+			if ( edit_box_text.Length() >= 16 )
+			{
+				edit_box.SetText( edit_box_text.Substring(0, 16) );
+			}
+		}
+		
+		return super.OnChange(w, x, y, finished);
 	}
 	
 	override bool OnClick( Widget w, int x, int y, int button )
@@ -283,30 +320,40 @@ class CharacterCreationMenu extends UIScriptedMenu
 	}
 	
 	override bool OnMouseEnter( Widget w, int x, int y )
-	{
-		if( IsFocusable( w ) )
+	{		
+		if ( w == m_GeneralNameButton )
 		{
-			ColorRed( w );
+			m_GeneralNameButton.Enable( false );
+			SetFocus( m_GeneralName );
+			ColorHighlight( m_GeneralName.GetParent().GetParent().GetParent() );
 			return true;
 		}
-		return false;
+		
+		ColorHighlight( w );
+		
+		return true;
 	}
 	
 	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
 	{
-		if( IsFocusable( w ) )
+		if ( w == m_GeneralNameButton )
 		{
-			ColorWhite( w, enterW );
+			m_GeneralNameButton.Enable( true );
+			ColorNormal( m_GeneralName.GetParent().GetParent().GetParent() );
 			return true;
 		}
-		return false;
+		
+		ColorNormal( w );
+		SetFocus( null );
+		
+		return true;
 	}
 	
 	override bool OnFocus( Widget w, int x, int y )
 	{
 		if( IsFocusable( w ) )
 		{
-			ColorRed( w );
+			ColorHighlight( w );
 			return true;
 		}
 		return false;
@@ -316,7 +363,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		if( IsFocusable( w ) )
 		{
-			ColorWhite( w, null );
+			ColorNormal( w );
 			return true;
 		}
 		return false;
@@ -342,16 +389,18 @@ class CharacterCreationMenu extends UIScriptedMenu
 	}
 	
 	override void OnShow()
-	{
+	{		
 #ifdef PLATFORM_CONSOLE
 		SetFocus( m_Apply );
 #endif
 		CheckNewOptions();
 		
+		/*
 		if( m_Scene && m_Scene.GetIntroCamera() )
 		{
 			m_Scene.GetIntroCamera().LookAt( m_Scene.GetIntroCharacter().GetPosition() + Vector( 0, 1, 0 ) );
 		}
+		*/
 	}
 	
 	override void Refresh()
@@ -387,7 +436,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	override void Update(float timeslice)
 	{
-		if ( GetGame().GetInput().GetActionDown("UAUIBack",false) )
+		if ( GetGame().GetInput().LocalPress("UAUIBack",false) )
 		{
 			Back();
 		}
@@ -399,23 +448,26 @@ class CharacterCreationMenu extends UIScriptedMenu
 	}
 	
 	//Coloring functions (Until WidgetStyles are useful)
-	void ColorRed( Widget w )
+void ColorHighlight( Widget w )
 	{
-		SetFocus( w );
-
-		ButtonWidget button = ButtonWidget.Cast( w );
-		if( button && button != m_Apply )
+		if( w.IsInherited( ButtonWidget ) )
 		{
+			ButtonWidget button = ButtonWidget.Cast( w );
 			button.SetTextColor( ARGB( 255, 200, 0, 0 ) );
 		}
 		
-		TextWidget text		= TextWidget.Cast(w.FindWidget( w.GetName() + "_text" ) );
-		TextWidget text2	= TextWidget.Cast(w.FindWidget( w.GetName() + "_text_1" ) );
-		ImageWidget image	= ImageWidget.Cast( w.FindWidget( w.GetName() + "_image" ) );
+		w.SetColor( ARGB( 255, 0, 0, 0) );
 		
-		if( text )
+		TextWidget text1	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text" ) );
+		TextWidget text2	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_label" ) );
+		TextWidget text3	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text_1" ) );
+		ImageWidget image	= ImageWidget.Cast( w.FindAnyWidget( w.GetName() + "_image" ) );
+		Widget option		= Widget.Cast( w.FindAnyWidget( w.GetName() + "_option_wrapper" ) );
+		Widget option_label = w.FindAnyWidget( "option_label" );
+		
+		if( text1 )
 		{
-			text.SetColor( ARGB( 255, 255, 0, 0 ) );
+			text1.SetColor( ARGB( 255, 255, 0, 0 ) );
 		}
 		
 		if( text2 )
@@ -423,31 +475,49 @@ class CharacterCreationMenu extends UIScriptedMenu
 			text2.SetColor( ARGB( 255, 255, 0, 0 ) );
 		}
 		
+		if( text3 )
+		{
+			text3.SetColor( ARGB( 255, 255, 0, 0 ) );
+			w.SetAlpha(1);
+		}
+		
 		if( image )
 		{
-			image.SetColor( ARGB( 255, 255, 0, 0 ) );
+			image.SetColor( ARGB( 255, 200, 0, 0 ) );
+		}
+		
+		if ( option )
+		{
+			option.SetColor( ARGB( 255, 255, 0, 0 ) );
+		}
+		
+		if ( option_label )
+		{
+			option_label.SetColor( ARGB( 255, 255, 0, 0 ) );
 		}
 	}
 	
-	void ColorWhite( Widget w, Widget enterW )
+	void ColorNormal( Widget w )
 	{
-		#ifdef PLATFORM_WINDOWS
-		SetFocus( null );
-		#endif
+		//Print("ColorNormal -> "+ w.GetName());
+		//DumpStack();
 		
-		ButtonWidget button = ButtonWidget.Cast( w );
-		if( button && button != m_Apply )
+		if( w.IsInherited( ButtonWidget ) )
 		{
+			ButtonWidget button = ButtonWidget.Cast( w );
 			button.SetTextColor( ARGB( 255, 255, 255, 255 ) );
 		}
 		
-		TextWidget text		= TextWidget.Cast(w.FindWidget( w.GetName() + "_text" ) );
-		TextWidget text2	= TextWidget.Cast(w.FindWidget( w.GetName() + "_text_1" ) );
-		ImageWidget image	= ImageWidget.Cast( w.FindWidget( w.GetName() + "_image" ) );
+		TextWidget text1	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text" ) );
+		TextWidget text2	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_text_1" ) );
+		TextWidget text3	= TextWidget.Cast(w.FindAnyWidget( w.GetName() + "_label" ) );
+		ImageWidget image	= ImageWidget.Cast( w.FindAnyWidget( w.GetName() + "_image" ) );
+		Widget option		= w.FindAnyWidget( w.GetName() + "_option_wrapper" );
+		Widget option_label = w.FindAnyWidget( "option_label" );
 		
-		if( text )
+		if( text1 )
 		{
-			text.SetColor( ARGB( 255, 255, 255, 255 ) );
+			text1.SetColor( ARGB( 255, 255, 255, 255 ) );
 		}
 		
 		if( text2 )
@@ -455,9 +525,41 @@ class CharacterCreationMenu extends UIScriptedMenu
 			text2.SetColor( ARGB( 255, 255, 255, 255 ) );
 		}
 		
+		if( text3 )
+		{
+			text3.SetColor( ARGB( 255, 255, 255, 255 ) );
+			w.SetAlpha(0);
+		}
+		
 		if( image )
 		{
 			image.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+		
+		if ( option )
+		{
+			option.SetColor( ARGB( 150, 255, 255, 255 ) );
+		}
+		
+		if ( option_label )
+		{
+			option_label.SetColor( ARGB( 255, 255, 255, 255 ) );
+		}
+	}
+	
+	void ColorDisable( Widget w )
+	{
+		#ifdef PLATFORM_WINDOWS
+		SetFocus( null );
+		#endif
+		
+		if ( w )
+		{
+			ButtonWidget button = ButtonWidget.Cast( w );
+			if( button )
+			{
+				button.SetTextColor( ColorManager.COLOR_DISABLED_TEXT );
+			}
 		}
 	}
 }

@@ -46,9 +46,15 @@ class ChatInputMenu extends UIScriptedMenu
 
 		m_close_timer.Run(0.1, this, "Close");
 		
-		GetGame().GetMission().HideChat();
+		GetUApi().GetInputByName("UAPersonView").Supress();	
 		
 		return true;
+	}
+	
+	override void OnHide()
+	{
+		super.OnHide();
+		GetGame().GetMission().HideChat();
 	}
 
 	
@@ -58,7 +64,6 @@ class ChatInputMenu extends UIScriptedMenu
 	
 	override void Update(float timeslice)
 	{
-		GetGame().GetInput().DisableKey(KeyCode.KC_RETURN);
 	}
 	
 	void UpdateChannel()

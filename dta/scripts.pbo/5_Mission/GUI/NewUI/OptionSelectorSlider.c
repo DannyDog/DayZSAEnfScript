@@ -20,13 +20,20 @@ class OptionSelectorSlider extends OptionSelectorBase
 		m_Slider					= SliderWidget.Cast( m_Root.FindAnyWidget( "option_value" ) );
 		m_Slider.SetCurrent( value );
 		
-		m_DisablePanel				= m_Parent.GetParent().FindAnyWidget( m_Parent.GetName() + "_disable" );
+		//m_DisablePanel				= m_Parent.GetParent().FindAnyWidget( m_Parent.GetName() + "_disable" );
 		
+		/*
+		if ( !m_DisablePanel )
+		{
+			Print("Cant found disable panel: "+ m_Parent.GetName() );
+		}
+		*/
 		m_MinValue					= min;
 		m_MaxValue					= max;
 		
 		SetValue( value );
-		
+		Enable();
+		/*
 		m_Enabled = !disabled;
 		if( m_Enabled )
 		{
@@ -36,8 +43,11 @@ class OptionSelectorSlider extends OptionSelectorBase
 		{
 			Disable();
 		}
+		*/
 		
+		//#ifdef PLATFORM_CONSOLE
 		m_Parent.SetHandler( this );
+		//#endif
 	}
 	
 	void ~OptionSelectorSlider()
@@ -57,6 +67,28 @@ class OptionSelectorSlider extends OptionSelectorBase
 		super.Disable();
 		
 		m_Slider.SetFlags( WidgetFlags.IGNOREPOINTER );
+	}
+	
+	override bool OnMouseEnter( Widget w, int x, int y )
+	{
+		if( m_ParentClass )
+		{
+			m_ParentClass.OnMouseEnter( m_Root.GetParent().GetParent(), x, y );
+			ColorHighlight(w);
+		}
+		
+		return true;
+	}
+	
+	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
+	{
+		if( m_ParentClass )
+		{
+			m_ParentClass.OnMouseLeave( m_Root.GetParent().GetParent(), enterW, x, y );
+			ColorNormal( w );
+		}
+			
+		return true;
 	}
 	
 	override bool OnMouseButtonUp( Widget w, int x, int y, int button )
@@ -87,6 +119,33 @@ class OptionSelectorSlider extends OptionSelectorBase
 		return false;
 	}
 	
+	override bool OnFocus( Widget w, int x, int y )
+	{
+		#ifdef PLATFORM_CONSOLE
+		Print("Slider Option OnFocus: "+ w.GetName());
+		if( GetFocus() != m_Slider )
+		{
+			SetFocus( m_Slider );
+			m_Parent.Enable( false );
+		}
+		
+		return super.OnFocus( m_Parent, x, y );
+		
+		#else
+		return false;
+		#endif
+	}
+	
+	override bool OnFocusLost( Widget w, int x, int y )
+	{
+		if( w == m_Slider )
+		{
+			m_Parent.Enable( true );
+			return super.OnFocusLost( m_Parent, x, y );
+		}
+		return false;
+	}
+	
 	float NormalizeInput( float value )
 	{
 		float ret = ( value - m_MinValue) / ( m_MaxValue - m_MinValue );
@@ -106,71 +165,34 @@ class OptionSelectorSlider extends OptionSelectorBase
 		return ret;
 	}
 	
-	//Coloring functions (Until WidgetStyles are useful)
-	override void Darken( Widget w, int x, int y )
+	override void ColorHighlight( Widget w )
 	{
-		if( !m_Enabled )
+		if( !w )
 			return;
 		
-		if( w.GetParent() == m_Root )
-		{
-			m_Parent.SetAlpha( 1 );
-		}
+		//SliderWidget slider = SliderWidget.Cast( w.FindAnyWidget("option_value") );
 		
-		if( GetFocus() != m_Slider )
+		if ( m_Slider )
 		{
 			SetFocus( m_Slider );
-			return;
+			m_Slider.SetColor( ARGB(255, 200, 0, 0) );
 		}
 		
-		m_Parent.SetFlags( WidgetFlags.NOFOCUS );
-		
-		m_Parent.SetAlpha( 1 );
-		
-		TextWidget text_label;
-		if( w.GetParent().GetParent() == m_Root )
-		{
-			text_label = TextWidget.Cast( m_Parent.FindAnyWidget( m_Parent.GetName() + "_label" ) );
-			if( text_label )
-				text_label.SetColor( ARGB( 255, 255, 0, 0 ) );
-			m_Slider.SetColor( ARGB( 255, 255, 0, 0 ) );
-			return;
-		}
-		m_Slider.SetColor( ARGB( 255, 255, 0, 0 ) );
-		
-		text_label = TextWidget.Cast( w.FindAnyWidget( w.GetName() + "_label" ) );
-		if( text_label )
-			text_label.SetColor( ARGB( 255, 255, 0, 0 ) );
+		super.ColorHighlight( w );
 	}
 	
-	override void Lighten( Widget w, Widget enterW, int x, int y )
+	override void ColorNormal( Widget w )
 	{
-		if( !m_Enabled )
+		if( !w )
 			return;
 		
-		super.Lighten( w, enterW, x, y );
+		//SliderWidget slider = SliderWidget.Cast( w.FindAnyWidget("option_value") );
 		
-		if( IsFocusable( enterW ) )
+		if ( m_Slider )
 		{
-			return;
+			m_Slider.SetColor( ARGB(140, 255, 255, 255) );
 		}
 		
-		m_Parent.ClearFlags( WidgetFlags.NOFOCUS );
-		
-		TextWidget text_label;
-		if( w.GetParent().GetParent() == m_Root )
-		{
-			text_label = TextWidget.Cast( m_Parent.FindAnyWidget( m_Parent.GetName() + "_label" ) );
-			if( text_label )
-				text_label.SetColor( ARGB( 255, 255, 255, 255 ) );
-			m_Slider.SetColor( ARGB( 255, 255, 255, 255 ) );
-			return;
-		}
-			
-		m_Slider.SetColor( ARGB( 255, 255, 255, 255 ) );
-		
-		text_label = TextWidget.Cast( w.FindAnyWidget( w.GetName() + "_label" ) );
-		if( text_label )
-			text_label.SetColor( ARGB( 255, 255, 255, 255 ) );
+		super.ColorNormal( w );
 	}
 }

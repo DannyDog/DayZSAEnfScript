@@ -1,17 +1,3 @@
-class PleurotusMushroom : Edible_Base
+class PleurotusMushroom : MushroomBase
 {
-	override bool CanBeCookedOnStick()
-	{
-		return true;
-	}
-
-	override bool CanBeCooked()
-	{
-		return true;
-	}	
-	
-	override bool IsMushroom()
-	{
-		return true;
-	}
 }

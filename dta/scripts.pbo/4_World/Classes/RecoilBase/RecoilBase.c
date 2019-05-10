@@ -7,18 +7,20 @@ class RecoilBase
 	protected bool m_DeleteRequested;
 	protected float m_Time;//how much time has elapsed since first update
 	protected float m_ReloadTime;//reload time config parameter of the weapon
-	
+	protected vector m_RecoilModifier;
+	protected bool m_IsClient;
 	// for mouse offset
 	float m_MouseOffsetRangeMin;//in degrees min
 	float m_MouseOffsetRangeMax;//in degrees max
 	float m_MouseOffsetRelativeTime = 1;//[0..1] a time it takes to move the mouse the required distance relative to the reload time of the weapon(firing mode)
 	float m_HandsOffsetRelativeTime = 1;//[0..1] a time it takes to move the hands the required distance given by the curve relative to the reload time of the weapon(firing mode)
+	float m_CamOffsetRelativeTime = 1;//[0..1] a time it takes to move the camera the required distance relative to the reload time of the weapon(firing mode)
+	float m_CamOffsetDistance = 0.05;//how far the camera will travel along the z-axis in cm
 	float m_MouseOffsetDistance;//how far should the mouse travel
-	
+	float m_TimeNormalized;
 	//protected float m_MouseOffsetResult;//in degrees max
 	protected vector m_MouseOffsetTarget;//move the mouse towards this point
 	protected vector m_MouseOffsetTargetAccum;//the overall mouse offset so far(all deltas accumulated)
-	
 	protected float m_Angle;//result between the min and max
 	// mouse end
 	
@@ -55,12 +57,14 @@ class RecoilBase
 		Magazine magazine = weapon.GetMagazine(muzzleIndex);
 
 		m_Angle = m_Player.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSRecoil, m_MouseOffsetRangeMin, m_MouseOffsetRangeMax);
-
+		m_RecoilModifier = GetRecoilModifier( GetWeapon() );
 		if(m_DebugMode) Print(m_Angle);
 		
 		m_ReloadTime = weapon.GetReloadTime(muzzleIndex);
 		m_MouseOffsetTarget = vector.YawToVector(m_Angle);
 		m_MouseOffsetTarget = m_MouseOffsetTarget * m_MouseOffsetDistance;
+		m_IsClient = GetGame().IsClient() || !GetGame().IsMultiplayer();
+		m_CamOffsetDistance *= m_RecoilModifier[2];
 	}
 	
 	//! Destroys this object next update tick
@@ -70,23 +74,26 @@ class RecoilBase
 	}
 	
 	// called externally per update, not to be overriden in children
-	void Update( out float axis_mouse_x, out float axis_mouse_y, out float axis_hands_x, out float axis_hands_y, float pDt )
+	void Update( SDayZPlayerAimingModel pModel, out float axis_mouse_x, out float axis_mouse_y, out float axis_hands_x, out float axis_hands_y, float pDt )
 	{
 		if( m_DeleteRequested )
 		{
 			delete this;
 		}
 		
+		m_TimeNormalized = Math.InverseLerp(0, m_ReloadTime, m_Time);
+		m_TimeNormalized = Math.Clamp(m_TimeNormalized, 0,0.99);
+		
 		ApplyMouseOffset(pDt, axis_mouse_x, axis_mouse_y);
 		ApplyHandsOffset(pDt, axis_hands_x, axis_hands_y);
+		if(m_IsClient)
+			ApplyCamOffset(pModel);
 		
-		vector recoil_modifier = GetRecoilModifier( GetWeapon() );
+		axis_mouse_x = axis_mouse_x * m_RecoilModifier[0];
+		axis_mouse_y = axis_mouse_y * m_RecoilModifier[1];
 		
-		axis_mouse_x = axis_mouse_x * recoil_modifier[0];
-		axis_mouse_y = axis_mouse_y * recoil_modifier[1];
-		
-		axis_hands_x = axis_hands_x * recoil_modifier[0];
-		axis_hands_y = axis_hands_y * recoil_modifier[1];
+		axis_hands_x = axis_hands_x * m_RecoilModifier[0];
+		axis_hands_y = axis_hands_y * m_RecoilModifier[1];
 	
 		
 		if( m_Time >= m_ReloadTime )
@@ -99,11 +106,26 @@ class RecoilBase
 		
 	}
 	
+	void ApplyCamOffset(SDayZPlayerAimingModel pModel)
+    {
+        float time_rel = Math.Clamp(Math.InverseLerp(0, m_CamOffsetRelativeTime, m_TimeNormalized), 0, 1);
+        float offset = 0;
+        float time = Easing.EaseOutBack(time_rel);
+        if(time == 1)
+        {
+            offset = 0;
+        }
+        else
+        {
+            offset = Math.Lerp(0,m_CamOffsetDistance,time);
+        }
+        
+        pModel.m_fCamPosOffsetZ = offset;
+    }
+	
 	void ApplyHandsOffset(float pDt, out float pRecResultX, out float pRecResultY)
 	{
-		float time_normalized = Math.InverseLerp(0, m_ReloadTime, m_Time);
-		time_normalized = Math.Clamp(time_normalized, 0,0.99);
-		float relative_time = time_normalized / Math.Clamp(m_HandsOffsetRelativeTime, 0.001,1);
+		float relative_time = m_TimeNormalized / Math.Clamp(m_HandsOffsetRelativeTime, 0.001,1);
 		vector pos_on_curve = GetPositionOnCurve(m_HandsCurvePoints, relative_time);
 		/*
 		float offset_x = pos_on_curve[0] - m_LastPosOnCurve[0];
@@ -113,7 +135,7 @@ class RecoilBase
 		*/
 		if(m_DebugMode)
 		{
-			PrintString("normalized time: " + time_normalized.ToString());
+			PrintString("normalized time: " + m_TimeNormalized.ToString());
 			PrintString("elapsed time: " + m_Time.ToString());
 			PrintString("curve pos x: " + pos_on_curve[0].ToString());
 			PrintString("curve pos y: " + pos_on_curve[1].ToString());
@@ -167,7 +189,7 @@ class RecoilBase
 		vector recoil_modifier;
 		if( weapon && weapon.GetPropertyModifierObject() )
 		{
-			recoil_modifier = weapon.GetPropertyModifierObject().GetRecoilModifiers();
+			recoil_modifier = weapon.GetPropertyModifierObject().m_RecoilModifiers;
 		}
 		return recoil_modifier;
 	}

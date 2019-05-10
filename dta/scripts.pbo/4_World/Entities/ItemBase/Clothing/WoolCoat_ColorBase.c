@@ -1,4 +1,11 @@
-class WoolCoat_ColorBase extends Clothing {};
+class WoolCoat_ColorBase extends Clothing
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};
 class WoolCoat_Black extends WoolCoat_ColorBase {};
 class WoolCoat_Red extends WoolCoat_ColorBase {};
 class WoolCoat_Blue extends WoolCoat_ColorBase {};

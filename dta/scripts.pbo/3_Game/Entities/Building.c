@@ -10,6 +10,7 @@ class Building extends EntityAI
 	proto native int GetDoorIndex(int componentIndex);
 	proto native bool IsDoorOpen(int index);
 	proto native bool IsDoorLocked(int index);
+	proto native void PlayDoorSound(int index);
 	proto native void OpenDoor(int index);
 	proto native void CloseDoor(int index);
 	proto native void LockDoor(int index);
@@ -33,7 +34,7 @@ class Building extends EntityAI
 		m_InteractActions = new TIntArray;
 		g_Game.ConfigGetIntArray("cfgVehicles " +GetType() + " InteractActions", m_InteractActions);
 	}
-	
+#ifdef OLD_ACTIONS
 	override void GetInteractActions( out TIntArray actions)
 	{
 		if ( m_InteractActions )
@@ -43,5 +44,15 @@ class Building extends EntityAI
 				actions.Insert(m_InteractActions.Get(i));
 			}
 		}
+	}
+#endif
+	override bool IsInventoryVisible()
+	{
+		return false;
+	}
+
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
 	}
 };

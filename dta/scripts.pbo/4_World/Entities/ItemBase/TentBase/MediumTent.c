@@ -6,6 +6,7 @@ class MediumTent extends TentBase
 			
 		m_ShowAnimationsWhenPitched.Insert( "Body" );
 		m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
+		m_ShowAnimationsWhenPitched.Insert( "Pack" );
 
 		m_ShowAnimationsWhenPacked.Insert( "Inventory" );
 	}

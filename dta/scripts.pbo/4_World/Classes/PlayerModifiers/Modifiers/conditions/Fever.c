@@ -18,7 +18,7 @@ class FeverMdfr: ModifierBase
 	override void OnActivate(PlayerBase player)
 	{
 		//Print(GetGame().GetTime());
-		if( player.m_NotifiersManager ) player.m_NotifiersManager.AttachByType(eNotifiers.NTF_FEVERISH);
+		if( player.m_NotifiersManager ) player.m_NotifiersManager.ActivateByType(eNotifiers.NTF_FEVERISH);
 		
 		player.GetSymptomManager().QueueUpSecondarySymptom(SymptomIDs.SYMPTOM_FEVERBLUR);
 		
@@ -32,7 +32,7 @@ class FeverMdfr: ModifierBase
 
 	override void OnDeactivate(PlayerBase player)
 	{
-		if( player.m_NotifiersManager ) player.m_NotifiersManager.DetachByType(eNotifiers.NTF_FEVERISH);
+		if( player.m_NotifiersManager ) player.m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FEVERISH);
 		player.GetSymptomManager().RemoveSecondarySymptom(SymptomIDs.SYMPTOM_FEVERBLUR);
 	}
 

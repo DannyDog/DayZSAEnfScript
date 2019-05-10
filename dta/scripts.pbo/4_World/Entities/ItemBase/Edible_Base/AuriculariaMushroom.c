@@ -1,17 +1,3 @@
-class AuriculariaMushroom : Edible_Base
+class AuriculariaMushroom : MushroomBase
 {
-	override bool CanBeCookedOnStick()
-	{
-		return true;
-	}
-
-	override bool CanBeCooked()
-	{
-		return true;
-	}	
-	
-	override bool IsMushroom()
-	{
-		return true;
-	}
 }

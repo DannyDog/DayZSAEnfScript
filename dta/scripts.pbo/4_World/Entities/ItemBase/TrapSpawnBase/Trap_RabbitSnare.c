@@ -131,6 +131,14 @@ class Trap_RabbitSnare extends TrapSpawnBase
 	{
 		return "rabbitsnare_deploy_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
+	}
 }
 
 class RabbitSnareTrap extends Trap_RabbitSnare 

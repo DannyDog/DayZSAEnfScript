@@ -1,6 +1,6 @@
 class BadgePills extends DisplayElementBadge 
 {
-	void BadgePills()
+	void BadgePills(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
 		m_Key 	= 	NTFKEY_PILLS;

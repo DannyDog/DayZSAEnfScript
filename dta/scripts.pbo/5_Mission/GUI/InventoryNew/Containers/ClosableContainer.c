@@ -9,8 +9,6 @@ class ClosableContainer extends Container
 		m_Body				= new array<ref LayoutHolder>;
 		m_ClosableHeader	= new ClosableHeader( this, "CloseButtonOnMouseButtonDown" );
 		
-		WidgetEventHandler.GetInstance().RegisterOnMouseEnter( GetRootWidget(),  this, "EnterContainer" );
-		WidgetEventHandler.GetInstance().RegisterOnMouseLeave( GetRootWidget(),  this, "LeaveContainer" );
 		m_Body.Insert( m_ClosableHeader );
 		
 		if( sort > -1 )
@@ -40,6 +38,11 @@ class ClosableContainer extends Container
 			OnHide();
 		}
 	}
+	
+	override Header GetHeader()
+	{
+		return m_ClosableHeader;
+	}
 
 	void Close()
 	{
@@ -51,24 +54,6 @@ class ClosableContainer extends Container
 	bool IsOpened()
 	{
 		return !m_Closed;
-	}
-	
-	void EnterContainer()
-	{
-		PlayerContainer p = PlayerContainer.Cast( m_Parent );
-		if( p )
-		{
-			p.EnterContainer( this );
-		}
-	}
-	
-	void LeaveContainer()
-	{
-		PlayerContainer p = PlayerContainer.Cast( m_Parent );
-		if( p )
-		{
-			p.LeaveContainer( this );
-		}
 	}
 
 	override void SetLayoutName()
@@ -117,7 +102,7 @@ class ClosableContainer extends Container
 		float x, y;
 		if( contents && GetFocusedContainer() )
 			y = GetFocusedContainer().GetFocusedContainerHeight( contents );
-		else
+		else if( GetRootWidget() )
 			GetRootWidget().GetScreenSize( x, y );
 		return y;
 	}
@@ -127,7 +112,7 @@ class ClosableContainer extends Container
 		float x, y;
 		if( contents && GetFocusedContainer() )
 			y = GetFocusedContainer().GetFocusedContainerYPos( contents );
-		else
+		else if( GetRootWidget() )
 			GetRootWidget().GetPos( x, y );
 		return y;
 	}
@@ -137,7 +122,7 @@ class ClosableContainer extends Container
 		float x, y;
 		if( contents && GetFocusedContainer() )
 			y = GetFocusedContainer().GetFocusedContainerYScreenPos( contents );
-		else
+		else if( GetRootWidget() )
 			GetRootWidget().GetScreenPos( x, y );
 		return y;
 	}

@@ -23,6 +23,7 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		( Container.Cast( m_Parent ) ).m_Body.Insert( this );
 		m_Parent.Refresh();
 		SetHeaderName( entity );
+		RecomputeOpenedContainers();
 	}
 
 	void SetHeaderName( EntityAI entity )
@@ -99,20 +100,45 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		active_container.MoveGridCursor( direction );
 	}
 	
+	override void SetNextActive()
+	{
+		super.SetNextActive();
+		if( m_ActiveIndex == 1 )
+			m_CollapsibleHeader.SetActive( true );
+		else
+			m_CollapsibleHeader.SetActive( false );
+	}
+	
+	override void SetPreviousActive( bool force = false )
+	{
+		super.SetPreviousActive( force );
+		if( m_ActiveIndex == 1 )
+			m_CollapsibleHeader.SetActive( true );
+		else
+			m_CollapsibleHeader.SetActive( false );
+	}
+	
 	void LoadAttachmentCategoriesIcon( SlotsContainer items_cont, string icon_name, int slot_number )
 	{
-		Widget item_preview			= items_cont.GetMainWidget().FindAnyWidget( "Icon"+ slot_number );
-		ImageWidget image_widget	= ImageWidget.Cast( item_preview.FindAnyWidget( "GhostSlot" + slot_number ) );
+		SlotsIcon icon				= items_cont.GetSlotIcon( slot_number );
+		ImageWidget image_widget	= icon.GetGhostSlot();
 		image_widget.Show( true );
 		image_widget.LoadImageFile( 0, "set:dayz_inventory image:" + icon_name );
+		
 		if( m_Body.Count() > ( slot_number + 2 ) )
 		{
 			ClosableContainer c = ClosableContainer.Cast( m_Body.Get( slot_number + 2 ) );
-			item_preview.FindAnyWidget( "RadialIconPanel" + slot_number ).Show( true );
+			icon.GetRadialIconPanel().Show( true );
 			if( c && c.IsOpened() )
-				item_preview.FindAnyWidget( "RadialIcon" + slot_number ).Show( true );
+			{
+				icon.GetRadialIconClosed().Show( false );
+				icon.GetRadialIcon().Show( true );
+			}
 			else
-				item_preview.FindAnyWidget( "RadialIcon" + slot_number ).Show( false );
+			{
+				icon.GetRadialIcon().Show( false );
+				icon.GetRadialIconClosed().Show( true );
+			}
 		}
 	}
 
@@ -135,7 +161,7 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		SlotsContainer items_cont		= GetSlotsContainer( index / ITEMS_IN_ROW );
 		if( items_cont )
 		{
-			Widget icon_widget			= items_cont.GetMainWidget().FindAnyWidget( "Icon" + slot_number );
+			Widget icon_widget			= items_cont.GetSlotIcon( slot_number ).GetMainWidget();
 			if( icon_widget )
 				icon_widget.Show( show );
 			icon_widget.GetParent().Update();
@@ -188,6 +214,44 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		}
 	}
 	
+	void ExpandCollapseContainer()
+	{
+		if( m_Body.Count() > m_ActiveIndex )
+		{
+			AttachmentCategoriesSlotsContainer acsc = AttachmentCategoriesSlotsContainer.Cast( m_Body.Get( m_ActiveIndex ) );
+			if( acsc )
+			{
+				int index = acsc.GetParentID() * ITEMS_IN_ROW + acsc.GetFocusedID() + m_SlotsCount + 1;
+				
+				ClosableContainer c = ClosableContainer.Cast( m_Body.Get( index ) );
+				
+				if( c )
+				{
+					string icon_name_open = "RadialIcon" + ( acsc.GetFocusedID() );
+					string icon_name_closed = "RadialIconClosed" + ( acsc.GetFocusedID() );
+					if( c.IsOpened() )
+					{
+						c.Close();
+						acsc.GetRootWidget().FindAnyWidget( icon_name_open ).Show( true );
+						acsc.GetRootWidget().FindAnyWidget( icon_name_closed ).Show( false );
+					}
+					else
+					{
+						c.Open();
+						acsc.GetRootWidget().FindAnyWidget( icon_name_closed ).Show( true );
+						acsc.GetRootWidget().FindAnyWidget( icon_name_open ).Show( false );
+					}
+					RecomputeOpenedContainers();
+				}
+			}
+		}
+	}
+	
+	bool IsHeaderActive()
+	{
+		return ( AttachmentCategoriesSlotsContainer.Cast( m_Body.Get( m_ActiveIndex ) ) != null );
+	}
+	
 	void InitIconsContainers( EntityAI entity )
 	{
 		m_SlotsCount = 0;
@@ -216,6 +280,7 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		int attachments_categories_count = GetAttachmentCategoriesCount( config_path_attachment_categories );
 
 		SlotsContainer items_cont;
+		SlotsIcon icon;
 		string attachment_category;
 		string icon_name;
 		for (int i = 0; i < attachments_categories_count; i++)
@@ -228,9 +293,8 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 			{
 				int slot_number = i % ITEMS_IN_ROW;
 				m_CategorySlotIndex.Insert( attachment_category, i );
-				Widget icon_widget				= items_cont.GetMainWidget().FindAnyWidget( "Icon" + slot_number );
-				ImageWidget item_preview		= ImageWidget.Cast( items_cont.GetMainWidget().FindAnyWidget( "GhostSlot" + slot_number ) );
-				item_preview.SetFlags( WidgetFlags.IGNOREPOINTER );
+				icon = items_cont.GetSlotIcon( slot_number );
+				icon.GetGhostSlot().SetFlags( WidgetFlags.IGNOREPOINTER );
 				
 				LoadAttachmentCategoriesIcon( items_cont, icon_name, slot_number );
 				
@@ -238,17 +302,10 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 				if( m_Body.Count() > num )
 				{
 					ClosableContainer c = ClosableContainer.Cast( m_Body.Get( num ) );
-					icon_widget.FindAnyWidget( "RadialIconPanel" + slot_number ).Show( true );
-					if( c.IsOpened() )
-					{
-						icon_widget.FindAnyWidget( "RadialIcon" + slot_number ).Show( false );
-						icon_widget.FindAnyWidget( "RadialIconClosed" + slot_number ).Show( true );
-					}
-					else
-					{
-						icon_widget.FindAnyWidget( "RadialIcon" + slot_number ).Show( true );
-						icon_widget.FindAnyWidget( "RadialIconClosed" + slot_number ).Show( false );
-					}
+					icon.GetRadialIconPanel().Show( true );
+					Widget rad_ic = icon.GetRadialIcon();
+					rad_ic.Show( !c.IsOpened() );
+					icon.GetRadialIconClosed().Show( c.IsOpened() );
 				}
 				
 				AttachmentCategoriesRow ar;
@@ -260,7 +317,6 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 				else
 				{
 					ar = AttachmentCategoriesRow.Cast( m_Body.Get( i + 2 + attachments_categories_count / ITEMS_IN_ROW ) );
-					ar.Refresh();
 				}
 				
 				ar.Init(attachments_categories_count, i, attachment_category, config_path_attachment_categories, entity,m_Body.Count() );
@@ -279,36 +335,38 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 				items_cont = GetSlotsContainer( attachments_categories_count / ITEMS_IN_ROW );
 				if( items_cont )
 				{
-					ImageWidget ghost_widget = ImageWidget.Cast( items_cont.GetMainWidget().FindAnyWidget( "GhostSlot" + attachments_categories_count ) );
-					if( ghost_widget )
-					{
-						ghost_widget.Show( true );
-						ghost_widget.LoadImageFile( 0, "set:dayz_inventory image:cat_common_cargo" );
-						ghost_widget.SetFlags( WidgetFlags.IGNOREPOINTER );
-					}
-					items_cont.GetMainWidget().FindAnyWidget( "RadialIconPanel" + slot_number ).Show( true );
-					items_cont.GetMainWidget().FindAnyWidget( "Icon" + slot_number ).Show( true );
+					icon = items_cont.GetSlotIcon( attachments_categories_count );
+					icon.GetGhostSlot().Show( true );
+					icon.GetGhostSlot().LoadImageFile( 0, "set:dayz_inventory image:cat_common_cargo" );
+					icon.GetGhostSlot().SetFlags( WidgetFlags.IGNOREPOINTER );
+					
+					icon.GetRadialIconPanel().Show( true );
+					icon.GetMainWidget().Show( true );
 				}
+				
 				ContainerWithCargo iwc = new ContainerWithCargo( this, -1 );
 				iwc.Get( 0 ).GetRootWidget().ClearFlags( WidgetFlags.DRAGGABLE );
 				iwc.SetEntity( entity );
+				Insert( iwc );
 			}
 		}
 		else
 		{
 			ContainerWithCargo iwc2 = ContainerWithCargo.Cast( m_Body.Get(attachments_categories_count + 2 + attachments_categories_count / ITEMS_IN_ROW ) );
 			iwc2.UpdateInterval();
-			items_cont.GetMainWidget().FindAnyWidget( "Icon" + attachments_categories_count ).Show( true );
-			items_cont.GetMainWidget().FindAnyWidget( "RadialIconPanel" + attachments_categories_count ).Show( true );
+			
+			icon = items_cont.GetSlotIcon( attachments_categories_count );
+			icon.GetMainWidget().Show( true );
+			icon.GetRadialIconPanel().Show( true );
 			if( iwc2.IsOpened() )
 			{
-				items_cont.GetMainWidget().FindAnyWidget( "RadialIcon" + attachments_categories_count ).Show( false );
-				items_cont.GetMainWidget().FindAnyWidget( "RadialIconClosed" + attachments_categories_count ).Show( true );
+				icon.GetRadialIcon().Show( false );
+				icon.GetRadialIconClosed().Show( true );
 			}
 			else
 			{
-				items_cont.GetMainWidget().FindAnyWidget( "RadialIcon" + attachments_categories_count ).Show( true );
-				items_cont.GetMainWidget().FindAnyWidget( "RadialIconClosed" + attachments_categories_count ).Show( false );
+				icon.GetRadialIcon().Show( true );
+				icon.GetRadialIconClosed().Show( false );
 			}
 		}
 	}
@@ -327,6 +385,8 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		
 		string name = w.GetName();
 		name.Replace( "PanelWidget", "RadialIcon" );
+		name.Replace( "GhostSlot", "Selected" );
+		w.GetParent().FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
 		ClosableContainer c = ClosableContainer.Cast( m_Body.Get( w.GetUserID() + 2 ) );
 		w.GetParent().FindAnyWidget( name ).Show( c.IsOpened() );
 	}
@@ -377,21 +437,14 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		{
 			return;
 		}
-		if( m_Entity.GetInventory().CanAddAttachment( iw.GetItem() ) || m_Entity.GetInventory().CanAddEntityToInventory( iw.GetItem() ) )
-		{
-			ItemManager.GetInstance().HideDropzones();
-			ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
-			ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
-		}
-		else
-		{
-			ItemManager.GetInstance().ShowSourceDropzone( iw.GetItem() );
-			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
-		}
+		
+		ItemManager.GetInstance().ShowSourceDropzone( iw.GetItem() );
+		ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
 	}
 	
 	override void CollapseButtonOnMouseButtonDown(Widget w)
 	{
 		super.CollapseButtonOnMouseButtonDown(w);
+		RecomputeOpenedContainers();
 	}
 }

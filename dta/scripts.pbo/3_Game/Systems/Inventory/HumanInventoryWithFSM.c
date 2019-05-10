@@ -34,6 +34,7 @@ class HumanInventoryWithFSM : HumanInventory
 		// events
 		HandEventBase __T__ = new HandEventTake;
 		HandEventBase __D__ = new HandEventDrop;
+		HandEventBase __Tw_ = new HandEventThrow;
 		HandEventBase __M__ = new HandEventMoveTo;
 		HandEventBase __W__ = new HandEventSwap;
 		HandEventBase __F__ = new HandEventForceSwap;
@@ -41,20 +42,40 @@ class HumanInventoryWithFSM : HumanInventory
 		HandEventBase __Xd_ = new HandEventDestroyed;
 		HandEventBase __R__ = new HandEventDestroyAndReplaceWithNew;
 		HandEventBase __Re_ = new HandEventDestroyAndReplaceWithNewElsewhere;
+		HandEventBase __Rh_ = new HandEventDestroyElsewhereAndReplaceWithNewInHands;
 		HandEventBase __Rd_ = new HandEventReplaced;
 		HandEventBase __Cd_ = new HandEventCreated;
+		HandEventBase _fin_ = new HandEventHumanCommandActionFinished;
+		HandEventBase _abt_ = new HandEventHumanCommandActionAborted;
+
+
+		HandReplacingItemInHands replacing = new HandReplacingItemInHands(GetManOwner());
+		HandReplacingItemInHands replacingElsewhere = new HandReplacingItemInHands(GetManOwner());
+		HandReplacingItemElsewhereWithNewInHands replacingElsewhere3 = new HandReplacingItemElsewhereWithNewInHands(GetManOwner());
 
 		// setup transitions
 		m_FSM.AddTransition(new HandTransition( m_Empty   , __T__,  m_Equipped, new HandActionTake, new HandGuardHasItemInEvent(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition( m_Empty   , __Cd_,  m_Equipped, new HandActionCreated, new HandGuardHasItemInEvent(GetManOwner())));
 
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __D__,    m_Empty, new HandActionDrop, null));
+		m_FSM.AddTransition(new HandTransition(m_Equipped, __Tw_,    m_Empty, new HandActionThrow, null));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __M__,    m_Empty, new HandActionMoveTo, new HandGuardAnd(HandGuardHasItemInHands(GetManOwner()), new HandGuardHasRoomForItem(GetManOwner()))));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __X__,    m_Empty, new HandActionDestroy, new HandGuardHasItemInHands(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __Xd_,    m_Empty, new HandActionDestroyed, new HandGuardHasDestroyedItemInHands(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __Xd_, m_Equipped, new HandActionDestroyed, new HandGuardNot(new HandGuardHasDestroyedItemInHands(GetManOwner()))));
-		m_FSM.AddTransition(new HandTransition(m_Equipped, __R__, m_Equipped, new HandActionDestroyAndReplaceWithNew, null));
-		m_FSM.AddTransition(new HandTransition(m_Equipped, __Re_, 	 m_Empty, new HandActionDestroyAndReplaceWithNewElsewhere, null));
+
+		m_FSM.AddTransition(new HandTransition(m_Equipped, __R__, replacing));
+		m_FSM.AddTransition(new HandTransition(replacing, _fin_, m_Equipped));
+			replacing.AddTransition(new HandTransition(replacing.m_Replacing, _abt_, m_Equipped));
+
+		m_FSM.AddTransition(new HandTransition(m_Equipped, __Re_, replacingElsewhere));
+		m_FSM.AddTransition(new HandTransition(replacingElsewhere, _fin_, m_Empty));
+			replacingElsewhere.AddTransition(new HandTransition(replacingElsewhere.m_Replacing, _abt_, m_Equipped));
+		
+		m_FSM.AddTransition(new HandTransition(m_Empty, __Rh_, replacingElsewhere3));
+		m_FSM.AddTransition(new HandTransition(replacingElsewhere3, _fin_, m_Equipped));
+			replacingElsewhere.AddTransition(new HandTransition(replacingElsewhere3.m_Replacing, _abt_, m_Empty));
+		
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __Rd_, m_Equipped, new HandActionReplaced, null));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __W__, m_Equipped, new HandActionSwap, new HandGuardHasItemInHands(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __F__, m_Equipped, new HandActionForceSwap, new HandGuardHasItemInHands(GetManOwner())));

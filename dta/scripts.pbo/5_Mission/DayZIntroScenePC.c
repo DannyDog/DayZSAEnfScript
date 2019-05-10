@@ -31,6 +31,8 @@ class DayZIntroScenePC : DayZIntroScene
 			m_Radius = Math.Sqrt (Math.Pow(m_DeltaX, 2) + Math.Pow(m_DeltaZ, 2));
 			m_Radius_original = m_Radius;
 		}
+		
+		PPEffects.SetVignette(0.5, 0, 0, 0);
 	}
 
 	// ------------------------------------------------------------
@@ -75,15 +77,15 @@ class DayZIntroScenePC : DayZIntroScene
 	// ------------------------------------------------------------
 	void CharacterRotate()
 	{
-		int actual_mouse_x;
-		int actual_mouse_y;
-		float coef;
-		g_Game.GetMousePos(actual_mouse_x, actual_mouse_y);
-	
-		m_DiffX = m_RotatingCharacterMouseX - actual_mouse_x;
-		
-		if (m_Character)
+		if (m_Character && m_Character.GetCharacterObj())
 		{
+			int actual_mouse_x;
+			int actual_mouse_y;
+			float coef;
+			g_Game.GetMousePos(actual_mouse_x, actual_mouse_y);
+		
+			m_DiffX = m_RotatingCharacterMouseX - actual_mouse_x;
+			
 			coef = ( m_RotatingCharacterRot + (m_DiffX * 0.5) ) / 360;
 			coef = coef - Math.Floor(coef);
 			m_CharacterRot[0] = coef * 360;

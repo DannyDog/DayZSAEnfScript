@@ -19,6 +19,18 @@ class ActionTakeItemToHands: ActionInteractBase
 		return true;
 	}
 	
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+	
+	override bool HasProgress()
+	{
+		return false;
+	}
+	
 	override int GetType()
 	{
 		return AT_TAKE_ITEM_TO_HANDS;
@@ -32,22 +44,21 @@ class ActionTakeItemToHands: ActionInteractBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		ItemBase tgt_item = ItemBase.Cast( target.GetObject() );
-		if ( tgt_item && !tgt_item.IsTakeable() ) return false;
-		if ( tgt_item && tgt_item.IsBeingPlaced() ) return false;
+		if ( !tgt_item || !tgt_item.IsTakeable() ) return false;
+		if ( tgt_item.IsBeingPlaced() ) return false;
+		if ( target.GetParent() ) return false;
 		
-		if ( player.GetCommand_Vehicle() )
-			return false;
-		
-		EntityAI tgt_parent = EntityAI.Cast( target.GetParent() );
-		EntityAI tgt_entity = EntityAI.Cast( target.GetObject() );
-
-		if ( tgt_entity && !tgt_parent )
+#ifdef OLD_ACTIONS
+		if ( !player.GetInventory().CanAddEntityIntoInventory(tgt_item) && player.GetInventory().CanAddEntityIntoHands(tgt_item) )
 		{
-			if ( tgt_entity && tgt_entity.IsItemBase() && !player.GetInventory().CanAddEntityIntoInventory(tgt_entity) && player.GetInventory().CanAddEntityIntoHands(tgt_entity) && tgt_entity.GetHierarchyRootPlayer() != player )
-			{
-				return true;
-			}
+			return true;
 		}
+#else
+		if ( player.GetInventory().CanAddEntityIntoHands(tgt_item) )
+		{
+			return true;
+		}
+#endif
 		return false;
 	}
 	
@@ -80,15 +91,12 @@ class ActionTakeItemToHands: ActionInteractBase
 	
 	override void CreateAndSetupActionCallback( ActionData action_data )
 	{
-		Object target = action_data.m_Target.GetObject();
-		bool heavy_item = false;
+		EntityAI target = EntityAI.Cast(action_data.m_Target.GetObject());
 		ActionBaseCB callback;
-		if (target && target.ConfigIsExisting("heavyItem") && target.ConfigGetBool("heavyItem"))
-		{
-			heavy_item = true;
-		}
-			
-		if(heavy_item)
+		if (!target)
+			return;
+		
+		if (target.IsHeavyBehaviour())
 		{
 			Class.CastTo(callback, action_data.m_Player.StartCommand_Action(DayZPlayerConstants.CMD_ACTIONFB_PICKUP_HEAVY,GetCallbackClassTypename(),DayZPlayerConstants.STANCEMASK_ERECT));
 		}

@@ -41,6 +41,18 @@ class ActionTakeMaterialToHands: ActionInteractBase
 		return "";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+	
+	override bool HasProgress()
+	{
+		return false;
+	}
+
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		EntityAI target_entity = EntityAI.Cast( target.GetObject() );
@@ -69,7 +81,12 @@ class ActionTakeMaterialToHands: ActionInteractBase
 		return true;
 	}
 	
-	override void OnExecuteServer( ActionData action_data )
+	override void OnExecuteClient( ActionData action_data )
+	{
+		OnExecuteImpl(action_data);
+	}
+	
+	protected void OnExecuteImpl( ActionData action_data )
 	{
 		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
 		ItemBase item_target = ItemBase.Cast( construction_action_data.GetActualAttachmentToDetach() );
@@ -80,21 +97,22 @@ class ActionTakeMaterialToHands: ActionInteractBase
 			if( stackable == 0 || stackable >= item_target.GetQuantity() )
 			{
 				//take to hands
-				if ( GetGame().IsMultiplayer() )
-				{
-					action_data.m_Player.ServerTakeEntityToHands( item_target );
-				}
-				else
-				{
-					action_data.m_Player.PredictiveTakeEntityToHands( item_target );
-				}
+				action_data.m_Player.PredictiveTakeEntityToHands( item_target );
 			}
 			else if( stackable != 0 && stackable < item_target.GetQuantity() )
 			{
 				//split and take to hands
-				item_target.SplitIntoStackMaxHands( action_data.m_Player );
+				item_target.SplitIntoStackMaxHandsClient( action_data.m_Player );
 			}
 		}
+	}
+	
+	override void OnExecuteServer( ActionData action_data )
+	{
+		if (GetGame().IsMultiplayer())
+			return; // multiplayer handled on client side via OnExecuteClient
+		else
+			OnExecuteImpl(action_data); // single player
 	}
 	
 	override void CreateAndSetupActionCallback( ActionData action_data )

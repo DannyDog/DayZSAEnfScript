@@ -3,7 +3,7 @@ PanelWidgetClass BackPanelWidget {
  clipchildren 0
  ignorepointer 1
  position 0 0
- size 480 195
+ size 550 195
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -15,10 +15,10 @@ PanelWidgetClass BackPanelWidget {
    clipchildren 0
    ignorepointer 1
    color 0 0 0 0.9412
-   size 480 40
+   size 1 40
    hexactpos 0
    vexactpos 0
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    image0 "set:dayz_gui image:inv_header_3"
    mode blend
@@ -50,7 +50,7 @@ PanelWidgetClass BackPanelWidget {
      clipchildren 0
      ignorepointer 1
      position 36 3
-     size 188 16
+     size 258 16
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -69,7 +69,7 @@ PanelWidgetClass BackPanelWidget {
      clipchildren 0
      ignorepointer 1
      position 36 3
-     size 188 16
+     size 258 16
      valign bottom_ref
      hexactpos 1
      vexactpos 1
@@ -136,10 +136,10 @@ PanelWidgetClass BackPanelWidget {
    ignorepointer 1
    color 0 0 0 0.8627
    position 0 40
-   size 480 1
+   size 1 1
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 0
    style Colorable
    Padding 0
@@ -164,10 +164,10 @@ PanelWidgetClass BackPanelWidget {
     GridSpacerWidgetClass GridSpacerWidget1 {
      ignorepointer 1
      position 0 0
-     size 324 0
+     size 1 0
      hexactpos 1
      vexactpos 1
-     hexactsize 1
+     hexactsize 0
      vexactsize 1
      priority 202
      style Colorable
@@ -177,7 +177,7 @@ PanelWidgetClass BackPanelWidget {
      Columns 1
      Rows 2
      {
-      WrapSpacerWidgetClass GridSpacerWidget0 {
+      GridSpacerWidgetClass GridSpacerWidget0 {
        visible 1
        ignorepointer 1
        position 0 0
@@ -190,6 +190,8 @@ PanelWidgetClass BackPanelWidget {
        Padding 4
        Margin 0
        "Size To Content V" 1
+       Columns 2
+       Rows 2
        {
         ImageWidgetClass ItemWetnessWidgetBackground {
          visible 1

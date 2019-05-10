@@ -40,7 +40,7 @@ class NotifiersManager
 		m_Notifiers.Insert(new HealthNotfr(this));
 		m_Notifiers.Insert(new FeverNotfr(this));
 		m_Notifiers.Insert(new SickNotfr(this));
-		m_Notifiers.Insert(new BleedingNotfr(this));
+		//m_Notifiers.Insert(new BleedingNotfr(this));
 		m_Notifiers.Insert(new StuffedNotfr(this));
 		m_Notifiers.Insert(new BloodNotfr(this));
 		m_Notifiers.Insert(new AgentsNotfr(this));
@@ -72,12 +72,12 @@ class NotifiersManager
 		return null;
 	}
 
-	void AttachByType(int notifier, bool triggerEvent = true)
+	void ActivateByType(int notifier, bool triggerEvent = true)
 	{
 		FindNotifier(notifier).SetActive(true);
 	}
 
-	void DetachByType(int notifier, bool triggerEvent = true)
+	void DeactivateByType(int notifier, bool triggerEvent = true)
 	{
 		FindNotifier(notifier).SetActive(false);
 	}

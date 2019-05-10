@@ -46,4 +46,12 @@ class CaninaBerry extends Edible_Base
 		
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionForceFeed);
+		AddAction(ActionEatSmall);
+	}
 }

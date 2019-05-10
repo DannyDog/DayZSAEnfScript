@@ -56,14 +56,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass camera_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
-         size 1 36
+         size 1 40
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass camera_text {
            visible 1
@@ -86,23 +86,34 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass camera_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          Rows 1
          {
+          FrameWidgetClass FrameWidget0 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
           ButtonWidgetClass fov_button {
+           ignorepointer 0
+           color 0 0 0 0
            position 0 0
            size 1 30
            hexactpos 1
@@ -115,7 +126,7 @@ FrameWidgetClass game_tab_root {
            "next up" "player_button"
            "next down" "brightness_button"
            {
-            GridSpacerWidgetClass fov_setting {
+            GridSpacerWidgetClass fov_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -149,7 +160,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_fow"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -264,6 +275,15 @@ FrameWidgetClass game_tab_root {
             }
            }
           }
+          FrameWidgetClass FrameWidget1 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
          }
         }
        }
@@ -286,14 +306,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass hud_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
-         size 1 36
+         size 1 40
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass hud_text {
            visible 1
@@ -316,21 +336,30 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass hud_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          {
+          FrameWidgetClass FrameWidget2 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
           ButtonWidgetClass hud_button {
            position 0 0
            size 1 30
@@ -340,10 +369,12 @@ FrameWidgetClass game_tab_root {
            vexactsize 1
            style Colorable
            "no focus" 0
+           "next left" "hud_button"
+           "next right" "hud_button"
            "next up" "brightness_button"
            "next down" "crosshair_button"
            {
-            GridSpacerWidgetClass hud_setting {
+            GridSpacerWidgetClass hud_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -378,7 +409,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_show_hud"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -420,10 +451,12 @@ FrameWidgetClass game_tab_root {
            vexactsize 1
            style Colorable
            "no focus" 0
+           "next left" "crosshair_button"
+           "next right" "crosshair_button"
            "next up" "hud_button"
            "next down" "game_button"
            {
-            GridSpacerWidgetClass crosshair_setting {
+            GridSpacerWidgetClass crosshair_button_panel {
              ignorepointer 1
              position 0 0
              size 1 30
@@ -457,7 +490,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_show_crosshair"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -490,6 +523,15 @@ FrameWidgetClass game_tab_root {
             }
            }
           }
+          FrameWidgetClass FrameWidget3 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
          }
         }
        }
@@ -512,14 +554,14 @@ FrameWidgetClass game_tab_root {
         PanelWidgetClass chat_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
-         size 1 36
+         size 1 40
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass chat_text {
            visible 1
@@ -542,21 +584,30 @@ FrameWidgetClass game_tab_root {
         }
         GridSpacerWidgetClass chat_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          {
+          FrameWidgetClass FrameWidget4 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
+          }
           ButtonWidgetClass game_button {
            ignorepointer 1
            color 0 0 0 0
@@ -567,10 +618,12 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Colorable
+           "next left" "game_button"
+           "next right" "game_button"
            "next up" "crosshair_button"
            "next down" "admin_button"
            {
-            GridSpacerWidgetClass game_setting {
+            GridSpacerWidgetClass game_button_panel {
              ignorepointer 0
              color 0 0 0 0
              position 0 0
@@ -586,7 +639,7 @@ FrameWidgetClass game_tab_root {
              Columns 2
              Rows 1
              {
-              FrameWidgetClass game_setting_panel {
+              FrameWidgetClass game_setting_frame {
                ignorepointer 1
                position 0 0
                size 0.5 0.6
@@ -605,7 +658,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_game_messages"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -647,10 +700,12 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Colorable
+           "next left" "admin_button"
+           "next right" "admin_button"
            "next up" "game_button"
            "next down" "player_button"
            {
-            GridSpacerWidgetClass admin_setting {
+            GridSpacerWidgetClass admin_button_panel {
              ignorepointer 0
              color 0 0 0 0
              position 0 0
@@ -685,7 +740,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_admin_mes"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -727,10 +782,12 @@ FrameWidgetClass game_tab_root {
            hexactsize 0
            vexactsize 1
            style Colorable
+           "next left" "player_button"
+           "next right" "player_button"
            "next up" "admin_button"
            "next down" "fov_button"
            {
-            GridSpacerWidgetClass player_setting {
+            GridSpacerWidgetClass player_button_panel {
              ignorepointer 0
              color 0 0 0 0
              position 0 0
@@ -765,7 +822,7 @@ FrameWidgetClass game_tab_root {
                  vexactsize 0
                  text "#layout_options_xbox_player_messages"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -796,6 +853,15 @@ FrameWidgetClass game_tab_root {
              style rover_sim_colorable
             }
            }
+          }
+          FrameWidgetClass FrameWidget5 {
+           ignorepointer 1
+           position 10 10
+           size 1 5
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 1
           }
          }
         }

@@ -83,6 +83,13 @@ class RefuelTorch extends RecipeBase
 		Rag rag = Rag.Cast(ingredients[0]);
 		Torch torch = Torch.Cast(ingredients[1]);
 		
+		if ( !GetGame().IsMultiplayer() )
+		{
+			InventoryLocation loc = new InventoryLocation;
+			rag.GetInventory().GetCurrentInventoryLocation( loc );
+			player.GetInventory().ClearInventoryReservation( rag, loc );
+		}	
+		
 		Rag rag_on_torch = Rag.Cast(  torch.GetInventory().FindAttachment( rag.GetInventory().GetSlotId(0) )  );
 		
 		if (rag_on_torch)

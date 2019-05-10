@@ -1,17 +1,3 @@
-class MacrolepiotaMushroom : Edible_Base
+class MacrolepiotaMushroom : MushroomBase
 {
-	override bool CanBeCookedOnStick()
-	{
-		return true;
-	}
-
-	override bool CanBeCooked()
-	{
-		return true;
-	}	
-	
-	override bool IsMushroom()
-	{
-		return true;
-	}
 }

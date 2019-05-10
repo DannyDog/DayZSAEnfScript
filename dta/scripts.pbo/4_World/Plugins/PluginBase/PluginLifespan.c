@@ -212,7 +212,7 @@ class PluginLifespan extends PluginBase
 		if ( player != NULL )
 		{
 			// NEW STATS API
-			if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
+			if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 			{
 				float player_playtime = player.StatGet("playtime");
 			}
@@ -296,7 +296,7 @@ class PluginLifespan extends PluginBase
 					
 					player.SetFaceTexture( level.GetTextureName() );
 					player.SetFaceMaterial( level.GetMaterialName() );
-										
+
 					player.SetLifeSpanStateVisible(LifeSpanState.BEARD_NONE);
 					//Print("LifeSpanState.BEARD_NONE");
 					break;
@@ -321,7 +321,7 @@ class PluginLifespan extends PluginBase
 							
 					player.SetFaceTexture( level.GetTextureName() );
 					player.SetFaceMaterial( level.GetMaterialName() );
-										
+			
 					player.SetLifeSpanStateVisible(LifeSpanState.BEARD_LARGE);
 					//Print("LifeSpanState.BEARD_LARGE");
 					break;
@@ -331,9 +331,10 @@ class PluginLifespan extends PluginBase
 				{
 					players_head.SetObjectTexture( 0, level.GetTextureName() );
 					players_head.SetObjectMaterial( 0, level.GetMaterialName() );
-
-					LifespanLevel prev_level = GetLifespanLevel( player.GetPlayerClass(), LifeSpanState.BEARD_EXTRA );
 					
+					array< ref LifespanLevel> lifespan_levels = m_LifespanLevels.Get( player.GetPlayerClass() );
+					LifespanLevel prev_level = lifespan_levels.Get(LifeSpanState.BEARD_LARGE);
+
 					player.SetFaceTexture( prev_level.GetTextureName() );
 					player.SetFaceMaterial( prev_level.GetMaterialName() );
 					
@@ -482,5 +483,29 @@ class PluginLifespan extends PluginBase
 	void SynchShowBloodType( PlayerBase player, int blood_type )
 	{
 		UpdateBloodType( player, blood_type );
+	}
+	
+//-----------------------------
+// Getters for other systems
+//-----------------------------
+	
+	string GetCurrentHeadTexture(PlayerBase player)
+	{
+		if ( m_PlayerCurrentLevel.Contains(player) )
+		{
+			LifespanLevel current_level = m_PlayerCurrentLevel.Get( player );
+			return current_level.GetTextureName();
+		}
+		return "";
+	}
+	
+	string GetCurrentHeadMaterial(PlayerBase player)
+	{
+		if ( m_PlayerCurrentLevel.Contains(player) )
+		{
+			LifespanLevel current_level = m_PlayerCurrentLevel.Get( player );
+			return current_level.GetMaterialName();
+		}
+		return "";
 	}
 }

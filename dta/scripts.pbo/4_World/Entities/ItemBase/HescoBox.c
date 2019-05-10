@@ -13,6 +13,7 @@ class HescoBox extends Inventory_Base
 	void HescoBox()
 	{
 		m_State = FOLDED;
+		m_DeployLoopSound = new EffectSound;
 		
 		if (!m_SurfaceForSetup)
 		{
@@ -23,12 +24,16 @@ class HescoBox extends Inventory_Base
 		//synchronized variables
 		RegisterNetSyncVariableInt( "m_State", FOLDED, FILLED );
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
+		RegisterNetSyncVariableBool("m_IsDeploySound");
 	}
 	
-	/*override bool IsHeavyBehaviour()
+	void ~HescoBox()
 	{
-		return true;
-	}*/
+		if ( m_DeployLoopSound )
+		{
+			SEffectManager.DestroySound( m_DeployLoopSound );
+		}
+	}
 
 	override bool CanPutIntoHands( EntityAI parent )
 	{
@@ -272,9 +277,9 @@ class HescoBox extends Inventory_Base
 		if ( GetGame().IsServer() )
 		{
 			Unfold();
+			
+			SetIsDeploySound( true );
 		}
-				
-		SetIsDeploySound( true );
 	}
 		
 	override bool IsDeployable()
@@ -296,7 +301,10 @@ class HescoBox extends Inventory_Base
 	{		
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{		
-			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			if ( !m_DeployLoopSound.IsSoundPlaying() )
+			{
+				m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			}
 		}
 	}
 	
@@ -304,8 +312,17 @@ class HescoBox extends Inventory_Base
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{	
+			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-			delete m_DeployLoopSound;
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionFoldObject);
+		AddAction(ActionDeployObject);
 	}
 }

@@ -26,6 +26,13 @@ class ActionHarvestCrops: ActionInteractBase
 		return "#harvest";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+
 	override void CreateConditionComponents()  
 	{	
 		

@@ -156,6 +156,11 @@ class WeaponStateBase
 	 * @return	true if this state is idle
 	 **/
 	bool IsIdle () { return false; }
+	
+	/**@fn		IsBoltOpen
+	 * @return	true if weapon bolt is open
+	 **/
+	bool IsBoltOpen () { return false; }
 
 	/**@fn		OnSubMachineChanged
 	 * @brief	called when sub-machine has changed its state

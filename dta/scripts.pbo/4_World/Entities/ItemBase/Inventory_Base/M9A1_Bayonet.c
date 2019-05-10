@@ -3,10 +3,40 @@ class M9A1_Bayonet extends Inventory_Base
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
 		if(!super.CanPutAsAttachment(parent)) {return false;}
-		if ( parent.FindAttachmentBySlotName("suppressorImpro") == NULL && parent.FindAttachmentBySlotName("weaponMuzzleM4") == NULL )
+		if ( parent.FindAttachmentBySlotName("suppressorImpro") == null && parent.FindAttachmentBySlotName("weaponMuzzleM4") == null )
 		{
 			return true;
 		}
 		return false;
+	}
+
+	override void OnWasAttached(EntityAI parent, int slot_id)
+	{
+		if( parent.IsWeapon() )
+		{
+			parent.SetBayonetAttached(true);
+		}		
+	}
+	
+	override void OnWasDetached(EntityAI parent, int slot_id)
+	{
+		if( parent.IsWeapon() )
+		{
+			parent.SetBayonetAttached(false);
+		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionBurnSewTarget);
+		AddAction(ActionUnrestrainTarget);
+		AddAction(ActionSkinning);
+		AddAction(ActionMineBush);
+		AddAction(ActionMineTreeBark);
+		AddAction(ActionBurnSewSelf);
+		AddAction(ActionShaveTarget);
+		AddAction(ActionShave);
 	}
 }

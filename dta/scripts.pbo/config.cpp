@@ -330,13 +330,13 @@ class CfgSlots
 		displayName="weaponMuzzleMosin";
 		ghostIcon="weaponmuzzlemosin";
 	};
-	class Slot_weaponUngerSlugM4
+	class Slot_weaponUnderSlugM4
 	{
 		name="weaponUnderSlugM4";
 		displayName="weaponUnderSlugM4";
 		ghostIcon="weaponunderslungm4";
 	};
-	class Slot_weaponUngerSlugAK
+	class Slot_weaponUnderSlugAK
 	{
 		name="weaponUnderSlugAK";
 		displayName="weaponUnderSlugAK";
@@ -450,6 +450,7 @@ class CfgSlots
 		name="Book";
 		displayName="Book";
 		ghostIcon="book";
+		stackMax=1;
 	};
 	class Slot_ButaneTorchCanister
 	{
@@ -1190,6 +1191,70 @@ class CfgSlots
 		displayName="CivHatchbackCargo2Doors";
 		ghostIcon="doorrear";
 	};
+	class Slot_Hatchback_02_Wheel_1_1
+	{
+		name="Hatchback_02_Wheel_1_1";
+		displayName="Front Left CivHatchback Wheel";
+		selection="wheel_1_1";
+		ghostIcon="wheel";
+	};
+	class Slot_Hatchback_02_Wheel_1_2
+	{
+		name="Hatchback_02_Wheel_1_2";
+		displayName="Back Right CivHatchback Wheel";
+		selection="wheel_1_2";
+		ghostIcon="wheel";
+	};
+	class Slot_Hatchback_02_Wheel_2_1
+	{
+		name="Hatchback_02_Wheel_2_1";
+		displayName="Front Left CivHatchback Wheel";
+		selection="wheel_2_1";
+		ghostIcon="wheel";
+	};
+	class Slot_Hatchback_02_Wheel_2_2
+	{
+		name="Hatchback_02_Wheel_2_2";
+		displayName="Back Right CivHatchback Wheel";
+		selection="wheel_2_2";
+		ghostIcon="wheel";
+	};
+	class Slot_Hatchback_02_Door_1_1
+	{
+		name="Hatchback_02_Door_1_1";
+		displayName="CivHatchbackDriverDoors";
+		ghostIcon="doorfront";
+	};
+	class Slot_Hatchback_02_Door_1_2
+	{
+		name="Hatchback_02_Door_1_2";
+		displayName="CivHatchbackCoDriverDoors";
+		ghostIcon="doorrear";
+	};
+	class Slot_Hatchback_02_Door_2_1
+	{
+		name="Hatchback_02_Door_2_1";
+		displayName="CivHatchbackCargo1Doors";
+		ghostIcon="doorfront";
+	};
+	class Slot_Hatchback_02_Door_2_2
+	{
+		name="Hatchback_02_Door_2_2";
+		displayName="CivHatchbackCargo2Doors";
+		ghostIcon="doorrear";
+	};
+	class Slot_Hatchback_02_Hood
+	{
+		name="Hatchback_02_Hood";
+		displayName="CivHatchbackHood";
+		ghostIcon="hood";
+	};
+	class Slot_Hatchback_02_Trunk
+	{
+		name="Hatchback_02_Trunk";
+		displayName="CivHatchbackTrunk";
+		ghostIcon="trunk";
+	};
 	class Slot_UtilityVehicleWheel_1_1
 	{
 		name="UtilityVehicleWheel_1_1";
@@ -1755,5 +1820,53 @@ class CfgSlots
 		displayName="LargeBattery";
 		selection="battery";
 		ghostIcon="carbattery";
+	};
+	class Slot_Knife_Holster
+	{
+		name="KnifeHolster";
+		displayName="KnifeHolster";
+		ghostIcon="muzzle";
+	};
+	class Slot_Chemlight
+	{
+		name="Chemlight";
+		displayName="Chemlight";
+		ghostIcon="muzzle";
+	};
+	class Slot_WalkieTalkie
+	{
+		name="WalkieTalkie";
+		displayName="WalkieTalkie";
+		ghostIcon="muzzle";
+	};
+	class Slot_NVG
+	{
+		name="NVG";
+		displayName="NVG";
+		ghostIcon="muzzle";
+	};
+	class Slot_helmetFlashlight
+	{
+		name="helmetFlashlight";
+		displayName="helmetFlashlight";
+		ghostIcon="muzzle";
+	};
+	class Slot_Belt_Left
+	{
+		name="Belt_Left";
+		displayName="Belt_Left";
+		ghostIcon="";
+	};
+	class Slot_Belt_Right
+	{
+		name="Belt_Right";
+		displayName="Belt_Right";
+		ghostIcon="";
+	};
+	class Slot_Belt_Back
+	{
+		name="Belt_Back";
+		displayName="Belt_Back";
+		ghostIcon="";
 	};
 };

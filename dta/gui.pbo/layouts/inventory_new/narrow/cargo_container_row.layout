@@ -2,7 +2,7 @@ PanelWidgetClass widget {
  visible 1
  clipchildren 0
  ignorepointer 1
- size 441 44
+ size 351 35
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -13,7 +13,7 @@ PanelWidgetClass widget {
  {
   ImageWidgetClass SpacerTop {
    ignorepointer 1
-   color 1 1 1 0.098
+   color 1 1 1 0.0314
    position 0 0
    size 1 1
    hexactpos 1
@@ -36,7 +36,7 @@ PanelWidgetClass widget {
    visible 1
    ignorepointer 1
    position 0 1
-   size 1 43
+   size 1 35
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -51,8 +51,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer0 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -67,9 +66,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      scaled 1
@@ -80,8 +79,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer1 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -96,10 +94,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.1 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -108,8 +105,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer2 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -124,10 +120,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.1 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -136,8 +131,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer3 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -152,10 +146,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.3 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -164,8 +157,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer4 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -180,10 +172,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.4 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -192,8 +183,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer5 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -208,10 +198,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.5 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -220,8 +209,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer6 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -236,9 +224,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -247,8 +235,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer7 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -263,10 +250,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.7 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -275,8 +261,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer8 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -291,10 +276,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.8 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -303,8 +287,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer9 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1
@@ -319,10 +302,9 @@ PanelWidgetClass widget {
      visible 1
      clipchildren 0
      inheritalpha 0
-     position 0.8 0
-     size 43 43
-     hexactpos 0
-     vexactpos 0
+     size 35 35
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect fixwidth
@@ -331,8 +313,7 @@ PanelWidgetClass widget {
     ImageWidgetClass Spacer10 {
      visible 1
      ignorepointer 1
-     color 1 1 1 0.098
-     position 0 0
+     color 1 1 1 0.0314
      size 1 1
      hexactpos 1
      vexactpos 1

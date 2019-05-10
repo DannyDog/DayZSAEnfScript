@@ -21,6 +21,13 @@ class Matchbox extends ItemBase
 		}
 	}
 	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionLightItemOnFire);
+	}
+	
 	/*
 	override bool IsTargetIgnitionSuccessful( EntityAI item_target = NULL )
 	{

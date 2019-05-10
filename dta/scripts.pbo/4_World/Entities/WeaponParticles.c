@@ -8,6 +8,7 @@ class WeaponParticlesBase // This class represents every particle effect you see
 {
 	bool			m_IlluminateWorld;
 	bool			m_IgnoreIfSuppressed;
+	bool			m_OnlyIfBoltIsOpen;
 	int 			m_OverrideParticle;
 	int 			m_OnlyWithinHealthLabelMin;
 	int 			m_OnlyWithinHealthLabelMax;
@@ -30,6 +31,9 @@ class WeaponParticlesBase // This class represents every particle effect you see
 	{
 		// ignoreIfSuppressed
 		m_IgnoreIfSuppressed = GetGame().ConfigGetFloat(config_OnFire_entry + " " + "ignoreIfSuppressed");
+		
+		// onlyIfBoltIsOpen
+		m_OnlyIfBoltIsOpen = GetGame().ConfigGetFloat(config_OnFire_entry + " " + "onlyIfBoltIsOpen");
 		
 		// illuminateWorld
 		m_IlluminateWorld = GetGame().ConfigGetFloat(config_OnFire_entry + " " + "illuminateWorld");
@@ -162,36 +166,39 @@ class WeaponParticlesBase // This class represents every particle effect you see
 			// Handle effect's parameters
 			if ( PrtTest.m_GunParticlesState ) // Check if particles are enabled by debug
 			{
-				if ( !suppressor  ||  !(m_IgnoreIfSuppressed) ) // ignoreIfSuppressed
+				if ( CheckBoltStateCondition(weapon) ) // onlyIfBoltIsOpen
 				{
-					if ( CheckHealthCondition( muzzle_owner.GetHealthLevel() ) ) // onlyWithinHealthLabel
+					if ( !suppressor  ||  !(m_IgnoreIfSuppressed) ) // ignoreIfSuppressed
 					{
-						if (CheckOverheatingCondition( muzzle_owner.GetOverheatingCoef() ) ) // onlyWithinOverheatLimits
+						if ( CheckHealthCondition( muzzle_owner.GetHealthLevel() ) ) // onlyWithinHealthLabel
 						{
-							if (CheckRainCondition( GetGame().GetWeather().GetRain().GetActual() ) ) // onlyWithinRainLimits
+							if (CheckOverheatingCondition( muzzle_owner.GetOverheatingCoef() ) ) // onlyWithinOverheatLimits
 							{
-								if ( m_OnlyIfBulletIs == ""  ||  m_OnlyIfBulletIs == ammoType ) // onlyIfBulletIs
+								if (CheckRainCondition( GetGame().GetWeather().GetRain().GetActual() ) ) // onlyWithinRainLimits
 								{
-									if ( m_OnlyIfWeaponIs == ""  ||  m_OnlyIfWeaponIs == weapon.GetType() ) // onlyIfWeaponIs
+									if ( m_OnlyIfBulletIs == ""  ||  m_OnlyIfBulletIs == ammoType ) // onlyIfBulletIs
 									{
-										// Get particle ID
-										int particle_id = CheckParticleOverride(ammoType);
-										
-										// Get position of the particle
-										vector local_pos = muzzle_owner.GetSelectionPositionLS(m_OverridePoint);
-										local_pos += m_PositionOffset;
-										
-										// Set orientation of the particle
-										vector particle_ori = CheckOrientationOverride(local_pos, muzzle_owner);
-										
-										Particle p = Particle.Play( particle_id, muzzle_owner, local_pos, particle_ori );
-										
-										OnParticleCreated(weapon, ammoType, muzzle_owner, suppressor, config_to_search, p);
-										
-										if (m_IlluminateWorld)
+										if ( m_OnlyIfWeaponIs == ""  ||  m_OnlyIfWeaponIs == weapon.GetType() ) // onlyIfWeaponIs
 										{
-											vector global_pos = muzzle_owner.ModelToWorld(local_pos + Vector(-0.2, 0, 0));
-											ScriptedLightBase.CreateLight(MuzzleFlashLight, global_pos);
+											// Get particle ID
+											int particle_id = CheckParticleOverride(ammoType);
+											
+											// Get position of the particle
+											vector local_pos = muzzle_owner.GetSelectionPositionLS(m_OverridePoint);
+											local_pos += m_PositionOffset;
+											
+											// Set orientation of the particle
+											vector particle_ori = CheckOrientationOverride(local_pos, muzzle_owner);
+											
+											Particle p = Particle.PlayOnObject( particle_id, muzzle_owner, local_pos, particle_ori );
+											
+											OnParticleCreated(weapon, ammoType, muzzle_owner, suppressor, config_to_search, p);
+											
+											if (m_IlluminateWorld)
+											{
+												vector global_pos = muzzle_owner.ModelToWorld(local_pos + Vector(-0.2, 0, 0));
+												ScriptedLightBase.CreateLight(MuzzleFlashLight, global_pos);
+											}
 										}
 									}
 								}
@@ -223,6 +230,19 @@ class WeaponParticlesBase // This class represents every particle effect you see
 	//  		 HANDLE CONFIG PARAMETERS          
 	//==============================================
 	
+	
+	// OnlyWithinHealthLabelMin & OnlyWithinHealthLabelMax
+	bool CheckBoltStateCondition(ItemBase weapon)
+	{
+		if ( m_OnlyIfBoltIsOpen )
+		{
+			Weapon_Base wb = Weapon_Base.Cast( weapon );
+			WeaponStateBase current_state =  wb.GetCurrentState();
+			return current_state.IsBoltOpen();
+		}
+		
+		return true;
+	}
 	
 	// OnlyWithinHealthLabelMin & OnlyWithinHealthLabelMax
 	bool CheckHealthCondition(int health_label)
@@ -331,6 +351,9 @@ class WeaponParticlesBase // This class represents every particle effect you see
 // FIRE particles
 class WeaponParticlesOnFire : WeaponParticlesBase {}
 
+// BULLET EJECT particles
+class WeaponParticlesOnBulletCasingEject : WeaponParticlesBase {}
+
 // OVERHEATING particles
 class WeaponParticlesOnOverheating: WeaponParticlesBase
 {
@@ -422,5 +445,3 @@ class OverheatingParticle
 		return m_LocalOri;
 	}
 }
-
-//class WeaponParticlesOnJammed : WeaponParticlesBase {} // MAYBE TO DO: Create functionality that would use this

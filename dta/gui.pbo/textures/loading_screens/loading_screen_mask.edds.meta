@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{EAC38F88EAF203A1}Gui/textures/loading_screens/loading_screen_mask.edds"
+ Author "1967"
+ ChangeDate 1616651897
+ Configurations {
+  PNGResourceClass PC {
+   SourceFile "loading_screen_mask.png"
+  }
+  PNGResourceClass XBOX_ONE : PC {
+  }
+  PNGResourceClass PS4 : PC {
+  }
+  PNGResourceClass LINUX : PC {
+  }
+ }
+}

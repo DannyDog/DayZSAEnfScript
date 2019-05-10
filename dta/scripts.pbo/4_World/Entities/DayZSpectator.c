@@ -14,17 +14,17 @@ class DayZSpectator : Camera
 	{
 		Input input = GetGame().GetInput();
 		
-		if( input.GetActionDown("UACarShiftGearUp") )
+		if( input.LocalPress("UACarShiftGearUp") )
 			m_SpeedMultiplier = m_SpeedMultiplier + 2;
-		if( input.GetActionDown("UACarShiftGearDown") )
+		if( input.LocalPress("UACarShiftGearDown") )
 			m_SpeedMultiplier = m_SpeedMultiplier - 2;
 		
 		float speed = 5.0 * m_SpeedMultiplier;
-		if( input.GetAction("UATurbo") )
+		if( input.LocalValue("UATurbo") )
 			speed *= 2;
 		
-		float forward = input.GetAction("UAMoveForward") - input.GetAction("UAMoveBack");
-		float strafe = input.GetAction("UATurnRight") - input.GetAction("UATurnLeft");
+		float forward = input.LocalValue("UAMoveForward") - input.LocalValue("UAMoveBack");
+		float strafe = input.LocalValue("UATurnRight") - input.LocalValue("UATurnLeft");
 		
 		vector direction = GetDirection();
 		vector directionAside = vector.Up * direction;
@@ -39,8 +39,8 @@ class DayZSpectator : Camera
 		
 		SetPosition(newPos);
 		
-		float yawDiff = input.GetAction("UAAimLeft") - input.GetAction("UAAimRight");
-		float pitchDiff = input.GetAction("UAAimDown") - input.GetAction("UAAimUp");
+		float yawDiff = input.LocalValue("UAAimLeft") - input.LocalValue("UAAimRight");
+		float pitchDiff = input.LocalValue("UAAimDown") - input.LocalValue("UAAimUp");
 		vector oldOrient = GetOrientation();
 		vector newOrient = oldOrient;
 		newOrient[0] = newOrient[0] - Math.RAD2DEG * yawDiff * timeSlice;

@@ -109,6 +109,8 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "game_settings_root" ).GetScreenSize( x, y2 );
 		int f = ( y2 > y );
 		m_Root.FindAnyWidget( "game_settings_scroll" ).SetAlpha( f );
+		
+		m_Root.SetHandler( this );
 	}
 	
 	void ~OptionsMenuGame()
@@ -150,7 +152,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		g_Game.SetProfileOption( EDayZProfilesOptions.ADMIN_MESSAGES, m_ShowAdminSelector.GetValue() );
 		g_Game.SetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES, m_ShowPlayerSelector.GetValue() );
 		
-		#ifdef PLATFORM_WINDOWS
+		#ifndef PLATFORM_CONSOLE
 			g_Game.SetProfileOption( EDayZProfilesOptions.QUICKBAR, m_ShowQuickbarSelector.GetValue() );
 			if( hud )
 			{
@@ -286,10 +288,41 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	}
 #endif
 	
-	override bool OnFocus( Widget w, int x, int y )
+	override bool OnMouseEnter( Widget w, int x, int y )
 	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		if ( w && w.IsInherited( SliderWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorHighlight( w );
+		
+		return true;
+	}
+	
+	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
+	{
+		if ( w && w.IsInherited( ScrollWidget ) )
+		{
+			return false;
+		}
+		
+		m_Menu.ColorNormal( w );
+		return true;
+	}
+	
+	override bool OnFocus( Widget w, int x, int y )
+	{		
 		if( m_Menu )
+		{
 			m_Menu.OnFocus( w, x, y );
+		}
+		
 		if( w )
 		{
 			if ( TextMapUpdateWidget( w.GetUserID() ) ) 
@@ -331,16 +364,23 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_TextMap.Insert( 2, new Param2<string, string>( "#options_game_show_crosshair", "#options_game_show_crosshair_desc" ) );
 	
 		#ifdef PLATFORM_WINDOWS
-		m_TextMap.Insert( 3, new Param2<string, string>( "#options_game_show_quickbar",			"#options_game_show_quickbar_desc" ) );
+		m_TextMap.Insert( 3, new Param2<string, string>( "#options_game_show_quickbar",	"#options_game_show_quickbar_desc" ) );
 		m_TextMap.Insert( 4, new Param2<string, string>( "#options_pc_game_messages",	"#options_game_show_game_msg" ) );
 		m_TextMap.Insert( 5, new Param2<string, string>( "#options_pc_admin_mes",		"#options_game_show_admin_msg" ) );
 		m_TextMap.Insert( 6, new Param2<string, string>( "#options_pc_player_messages",	"#options_game_show_player_msg" ) );
 		#else
-		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
 		m_TextMap.Insert( AT_OPTIONS_BRIGHT_SLIDER, new Param2<string, string>( "#options_video_brightness", "#options_video_brightness_desc" ) );
 		m_TextMap.Insert( 4, new Param2<string, string>( "#options_xbox_game_messages",	"#options_game_show_game_msg" ) );
 		m_TextMap.Insert( 5, new Param2<string, string>( "#options_xbox_admin_mes",		"#options_game_show_admin_msg" ) );
 		m_TextMap.Insert( 6, new Param2<string, string>( "#options_xbox_player_messages","#options_game_show_player_msg" ) );
+		#else 
+		#ifdef PLATFORM_PS4
+		m_TextMap.Insert( AT_OPTIONS_BRIGHT_SLIDER, new Param2<string, string>( "#ps4_options_video_brightness", "#ps4_options_video_brightness_desc" ) );
+		m_TextMap.Insert( 4, new Param2<string, string>( "#ps4_options_game_messages",	"#ps4_options_game_show_game_msg" ) );
+		m_TextMap.Insert( 5, new Param2<string, string>( "#ps4_options_admin_mes",		"#ps4_options_game_show_admin_msg" ) );
+		m_TextMap.Insert( 6, new Param2<string, string>( "#ps4_options_player_messages","#ps4_options_game_show_player_msg" ) );		
+		#endif
 		#endif
 		#endif
 	}

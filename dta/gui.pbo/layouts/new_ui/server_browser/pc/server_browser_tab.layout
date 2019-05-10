@@ -9,7 +9,7 @@ FrameWidgetClass server_browser_tab_root {
  {
   GridSpacerWidgetClass server_list_root {
    ignorepointer 1
-   color 0 0 0 0.8627
+   color 0 0 0 0.549
    position 80 0
    size 0.6 1
    hexactpos 1
@@ -463,6 +463,7 @@ FrameWidgetClass server_browser_tab_root {
        filter 0
       }
       ScrollWidgetClass server_list_scroller {
+       visible 1
        ignorepointer 0
        position 0 0
        size 1 1
@@ -514,7 +515,7 @@ FrameWidgetClass server_browser_tab_root {
   }
   GridSpacerWidgetClass filters_root {
    ignorepointer 1
-   color 0 0 0 0.8627
+   color 0 0 0 0.549
    position 80 0
    size 0.26 1
    halign right_ref
@@ -612,6 +613,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass search_name_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -638,7 +640,8 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             EditBoxWidgetClass search_name_setting_option {
-             ignorepointer 0
+             ignorepointer 1
+             color 0 0 0 1
              size 1 0.6
              valign center_ref
              hexactpos 1
@@ -701,6 +704,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass search_ip_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -727,7 +731,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             EditBoxWidgetClass search_ip_setting_option {
-             ignorepointer 0
+             ignorepointer 1
              size 1 0.6
              valign center_ref
              hexactpos 1
@@ -944,6 +948,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass ping_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1019,6 +1024,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass favorites_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1094,6 +1100,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass friends_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1169,6 +1176,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass battleye_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1244,6 +1252,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass password_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1319,6 +1328,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass prev_played_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1394,6 +1404,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass ver_match_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1469,6 +1480,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass full_server_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1544,6 +1556,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass tps_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1619,6 +1632,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass public_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1694,6 +1708,7 @@ FrameWidgetClass server_browser_tab_root {
            vexactsize 0
            {
             TextWidgetClass accelerated_time_setting_label {
+             clipchildren 0
              ignorepointer 1
              size 1 0.55
              valign center_ref
@@ -1765,26 +1780,28 @@ FrameWidgetClass server_browser_tab_root {
     }
     ButtonWidgetClass apply_filter_button {
      ignorepointer 0
+     color 0 0 0 1
      position 0 0
      size 1 30
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     style Empty
+     style DayZDefaultButtonBottom
      text "#STR_server_browser_tab_root_filters_root_filters_content_apply_filter_button0"
      text_proportion 0.55
      font "gui/fonts/sdf_MetronLight24"
     }
     ButtonWidgetClass refresh_list_button {
      ignorepointer 0
+     color 0 0 0 1
      position 0 0
      size 1 30
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     style Empty
+     style DayZDefaultButtonBottom
      text "#STR_server_browser_tab_root_filters_root_filters_content_refresh_list_button0"
      text_proportion 0.55
      font "gui/fonts/sdf_MetronLight24"

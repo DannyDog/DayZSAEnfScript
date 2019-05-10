@@ -3,6 +3,11 @@ class WeaponChamberFromAttMag_W4T extends WeaponChamberFromAttMag
 	override bool IsWaitingForActionFinish () { return true; }
 };
 
+class WeaponChamberFromInnerMag_W4T extends WeaponChamberFromInnerMag
+{
+	override bool IsWaitingForActionFinish () { return true; }
+};
+
 class WeaponUnjamming_Start extends WeaponStartAction
 {
 	float m_dtAccumulator;

@@ -108,6 +108,19 @@ class DayZPlayerTypeStepSoundLookupTable
 }
 
 // *************************************************************************************
+// ! DayZPlayerTypeVoiceSoundLookupTable - virtual 
+// *************************************************************************************
+class DayZPlayerTypeVoiceSoundLookupTable
+{
+	SoundObjectBuilder GetSoundBuilder(int eventId, int parameterHash)
+	{
+		return null;
+	}
+	
+	NoiseParams GetNoiseParams(int eventId);
+}
+
+// *************************************************************************************
 // ! DayZPlayerTypeAttachmentSoundLookupTable - virtual 
 // *************************************************************************************
 class DayZPlayerTypeAttachmentSoundLookupTable
@@ -256,7 +269,7 @@ class DayZPlayerType
 		return m_pStepSoundLookupTable;
 	}
 	
-	void 				 RegisterAttachmentSoundLookupTable(DayZPlayerTypeAttachmentSoundLookupTable pASLUT)
+	void RegisterAttachmentSoundLookupTable(DayZPlayerTypeAttachmentSoundLookupTable pASLUT)
 	{
 		m_pAttachmentSoundLookupTable = pASLUT;
 	}
@@ -264,6 +277,16 @@ class DayZPlayerType
 	DayZPlayerTypeAttachmentSoundLookupTable	GetAttachmentSoundLookupTable()
 	{
 		return m_pAttachmentSoundLookupTable;
+	}
+	
+	void RegisterVoiceSoundLookupTable(DayZPlayerTypeVoiceSoundLookupTable pASLUT)
+	{
+		m_pVoiceSoundLookupTable = pASLUT;
+	}
+	
+	DayZPlayerTypeVoiceSoundLookupTable	GetVoiceSoundLookupTable()
+	{
+		return m_pVoiceSoundLookupTable;
 	}
 	
 	void RegisterSoundTable(DayZPlayerTypeAnimTable pST)
@@ -276,6 +299,7 @@ class DayZPlayerType
 		return m_pSoundTable;
 	}
 	
+	/*
 	void RegisterSoundVoiceTable(DayZPlayerTypeAnimTable pVST)
 	{
 		m_pSoundVoiceTable = pVST;
@@ -285,6 +309,7 @@ class DayZPlayerType
 	{
 		return m_pSoundVoiceTable;
 	}
+	*/
 	
 	array<ref VegetationSound> GetVegetationSounds()
 	{
@@ -385,8 +410,12 @@ class DayZPlayerType
 		//! registers default hit position for entity
 		m_DefaultHitPositionComponent = "Pelvis";
 
+		//! list of components suitable for melee finisher attacks (used in fight logic)
+		m_SuitableFinisherHitComponents = new array<string>;
+		m_SuitableFinisherHitComponents.Insert("Head");
+
 		//! register hit components that are selected by probability
-		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "dmgZone_head", 5);
+		//DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "dmgZone_head", 5); // TMP comment out
 		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "dmgZone_leftArm", 50);
 		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "dmgZone_torso", 65);
 		DayZAIHitComponentHelpers.RegisterHitComponent(m_HitComponentsForAI, "dmgZone_rightArm", 50);
@@ -414,6 +443,11 @@ class DayZPlayerType
 	string GetDefaultHitPositionComponent()
 	{
 		return m_DefaultHitPositionComponent;
+	}
+	
+	array<string> GetSuitableFinisherHitComponents()
+	{
+		return m_SuitableFinisherHitComponents;
 	}
 	
 	private void DayZPlayerType()
@@ -465,8 +499,9 @@ class DayZPlayerType
 	//!< it's downcasted to StepSoundLookupTable
 	ref DayZPlayerTypeStepSoundLookupTable m_pStepSoundLookupTable;
 	ref DayZPlayerTypeAttachmentSoundLookupTable m_pAttachmentSoundLookupTable;
+	ref DayZPlayerTypeVoiceSoundLookupTable m_pVoiceSoundLookupTable;
 	ref DayZPlayerTypeAnimTable m_pSoundTable;
-	ref DayZPlayerTypeAnimTable m_pSoundVoiceTable;
+	//ref DayZPlayerTypeAnimTable m_pSoundVoiceTable;
 	ref NoiseParams m_pNoiseStepStand;
 	ref NoiseParams m_pNoiseStepCrouch;
 	ref NoiseParams m_pNoiseStepProne;
@@ -479,6 +514,8 @@ class DayZPlayerType
 	protected ref array<ref DayZAIHitComponent> m_HitComponentsForAI;
 	protected string m_DefaultHitComponent;
 	protected string m_DefaultHitPositionComponent;
+
+	protected ref array<string> m_SuitableFinisherHitComponents;
 	
 	ref array<ref AnimSoundEvent> m_animSoundEventsAttack;
 }
@@ -570,7 +607,6 @@ enum DayZPlayerConstants
 	COMMANDID_UNCONSCIOUS,	// type is int (overridden from C++) - unconscious
 	COMMANDID_SWIM,			// type is int (overridden from C++) - swimming
 	COMMANDID_VEHICLE,		// type is int (overridden from C++) - vehicle
-	COMMANDID_MODIFIER,		// type is int (overridden from C++) - modifier
 
 
 	//! modifier commands - additive behaviour 
@@ -578,7 +614,6 @@ enum DayZPlayerConstants
 	COMMANDID_MOD_WEAPONS,   	// weapons - always on 
     COMMANDID_MOD_ACTION,		// action - additive action 
 	COMMANDID_MOD_DAMAGE,		// damage - additive damage 
-	COMMANDID_MOD_MODIFIER,		// modifier - additive modifier
 
 
 
@@ -650,6 +685,8 @@ enum DayZPlayerConstants
 	CMD_ACTIONMOD_INTERACTONCE			= 521,		// erc,cro
 	CMD_ACTIONMOD_ATTACHITEM			= 522,		// erc,cro
 	CMD_ACTIONMOD_CLOSEITEM_ONCE		= 523,		// erc,cro,pne
+	CMD_ACTIONMOD_FOLDITEM_ONCE			= 524,		// erc,cro
+	CMD_ACTIONMOD_UNFOLDITEM_ONCE		= 525,		// erc,cro
 	
 	CMD_ACTIONMOD_DROPITEM_HANDS		= 900,		// erc, cro
 	CMD_ACTIONMOD_DROPITEM_INVENTORY	= 901,		// erc, cro
@@ -920,15 +957,16 @@ class SDayZPlayerAimingModel
 	float	m_fCurrentAimX;			//[in]		- horizontal aim angle - in degrees
 	float	m_fCurrentAimY;			//[in]		- vertical aim angle - in degrees
 
-	float	m_fAimXCamOffset;		//!< [out] 	- camera offset modifier
-	float	m_fAimYCamOffset;		//!< [out] 	- camera offset modifier
-	float	m_fAimXHandsOffset;		//!< [out] 	- hands offset modifier
-	float	m_fAimYHandsOffset;		//!< [out] 	- hands offset modifier
+	float	m_fAimXCamOffset;		//[out] 	- camera (angle) offset modifier
+	float	m_fAimYCamOffset;		//[out] 	- camera (angle) offset modifier
+	float	m_fAimXHandsOffset;		//[out] 	- hands offset modifier
+	float	m_fAimYHandsOffset;		//[out] 	- hands offset modifier
 	float	m_fAimXMouseShift;		//[out]		- shift like mouse does
 	float	m_fAimYMouseShift;		//[out]		- shift like mouse does
 	float	m_fAimSensitivity;		//[out]		- aim sensitivity
-	float 	m_fCamPosOffsetX;		//[out]		- currently not supported
-	float 	m_fCamPosOffsetY;		//[out]		- currently not supported
+	float 	m_fCamPosOffsetX;		//[out]		- camera (position) offset modifier
+	float 	m_fCamPosOffsetY;		//[out]		- camera (position) offset modifier
+	float 	m_fCamPosOffsetZ;		//[out]		- camera (position) offset modifier
 
 	//! cannot be created from script
 	protected void SDayZPlayerAimingModel()

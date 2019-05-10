@@ -56,7 +56,7 @@ class HudDebugWinCharLevels extends HudDebugWinBase
 	//============================================
 	// SetUpdate
 	//============================================
-	void SetUpdate( bool state )
+	override void SetUpdate( bool state )
 	{
 		//Disable update on server (PluginDeveloperSync)
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -105,20 +105,36 @@ class HudDebugWinCharLevels extends HudDebugWinBase
 			//set
 			for ( int i = 0; i < developer_sync.m_PlayerLevelsSynced.Count(); i++ )
 			{
-				AddValue( developer_sync.m_PlayerLevelsSynced.Get( i ).GetName(), developer_sync.m_PlayerLevelsSynced.Get( i ).GetValue().ToString() );
+				string bar = MiscGameplayFunctions.ValueToBar(developer_sync.m_PlayerLevelsSynced.Get( i ).GetValue2());
+				AddValue( developer_sync.m_PlayerLevelsSynced.Get( i ).GetName(), developer_sync.m_PlayerLevelsSynced.Get( i ).GetValue().ToString() ,bar );
 			}
 		}
 		
 		//fit to screen
-		FitWindow();		
+		FitWindow();
 	}
 
-	void AddValue( string title, string value )
+	void AddValue( string title, string value, string value2 )
 	{
 		int index = m_WgtValues.AddItem( title, NULL, 0 );
 		m_WgtValues.SetItem( index, value, NULL, 1 );
+		m_WgtValues.SetItem( index, value2, NULL, 2 );
 	}
-
+	
+	/*
+	string ValueToBar(float value)
+	{
+		string bar = "[----------]";
+		string mark = "x";
+		int length = bar.Length() - 2;
+		float index = Math.Lerp(0,length, value);
+		index = Math.Round(index);
+		index = Math.Clamp(index,0,length);
+		
+		return InsertAtPos(bar,mark,index);
+	}
+	*/
+	
 	void ClearValues()
 	{
 		m_WgtValues.ClearItems();

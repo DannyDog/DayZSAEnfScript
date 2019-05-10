@@ -12,6 +12,7 @@ class SmptAnimMetaBase
 	int m_AnimID;
 	int m_SymptomType;
 	bool m_DestroyRequested;
+	bool m_Canceled;
 	
 	void SmptAnimMetaBase()
 	{
@@ -40,7 +41,7 @@ class SmptAnimMetaBase
 		
 		if( type == eAnimFinishType.FAILURE)//   <--------------- FAILED
 		{
-			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer())
 			{
 				if( Symptom ) 
 				{
@@ -50,7 +51,7 @@ class SmptAnimMetaBase
 		}
 		else if( type == eAnimFinishType.SUCCESS)//   <--------------- SUCCESS
 		{
-			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer())
 			{
 				if( Symptom )
 				{
@@ -60,22 +61,19 @@ class SmptAnimMetaBase
 		}
 	}
 	
-	bool PlayRequest()
+	EAnimPlayState PlayRequest()
 	{
-		bool played = Play();
+		EAnimPlayState played = Play();
 		
-		if(played)
-		{
-			
-		}
-		else
+		if(played == EAnimPlayState.FAILED)
 		{
 			m_Manager.OnAnimationFinished(eAnimFinishType.FAILURE);
 		}
 		return played;
 	}
 	
-	protected bool Play();
+	protected EAnimPlayState Play();
+	
 	void Update(HumanMovementState movement_state);
 
 };
@@ -85,14 +83,21 @@ class SmptAnimMetaFB extends SmptAnimMetaBase
 	int m_StanceMask;
 	float m_Duration;
 	
+	void ~SmptAnimMetaFB()
+	{
+		m_Player.m_isFBsymptomPlaying = false;
+	}
+	
 	override void Init(ParamsReadContext ctx, SymptomManager manager, PlayerBase player)
 	{
 		super.Init(ctx, manager, player);
 		DayZPlayerSyncJunctures.ReadPlayerSymptomFBParams( ctx,  m_AnimID, m_StanceMask, m_Duration);
 	}
 	
-	override bool Play()
+	override EAnimPlayState Play()
 	{
+		m_Canceled = false;
+		
 		HumanCommandActionCallback callback = m_Player.GetCommand_Action();
 		
 		if (!callback)
@@ -102,31 +107,38 @@ class SmptAnimMetaFB extends SmptAnimMetaBase
 		if( callback )
 		{
 			callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_INTERRUPT);
+			m_Canceled = true;
 		}
 		
-		SymptomCB anim_callback = SymptomCB.Cast(m_Player.StartCommand_Action(m_AnimID, SymptomCB, m_StanceMask));
-		
-		if(anim_callback)
+		if(!m_Canceled)
 		{
-			anim_callback.Init(m_Duration, m_Player);
-			m_IsPlaying = true;
-			return true;
+			SymptomCB anim_callback = SymptomCB.Cast(m_Player.StartCommand_Action(m_AnimID, SymptomCB, m_StanceMask));
+			
+			if(anim_callback)
+			{
+				anim_callback.Init(m_Duration, m_Player);
+				m_IsPlaying = true;
+				m_Player.m_isFBsymptomPlaying = true;
+				return EAnimPlayState.OK;
+			}
+			else
+			{
+				return EAnimPlayState.FAILED;
+			}
 		}
-		return false;
+		return EAnimPlayState.POSTPONED;
 	}
 }
 
 class SmptAnimMetaADD extends SmptAnimMetaBase
 {
-	HumanCommandModifierAdditive m_Hcma;
-	
 	override void Init(ParamsReadContext ctx, SymptomManager manager, PlayerBase player)
 	{
 		super.Init(ctx, manager, player);
 		DayZPlayerSyncJunctures.ReadPlayerSymptomADDParams( ctx, m_AnimID);
 	}
 	
-	override bool Play()
+	override EAnimPlayState Play()
 	{
 		HumanCommandActionCallback callback = m_Player.GetCommand_Action();
 		if (!callback)
@@ -135,23 +147,26 @@ class SmptAnimMetaADD extends SmptAnimMetaBase
 		}
 		if( !callback )
 		{
-			m_Hcma = m_Player.AddCommandModifier_Modifier(m_AnimID);
-			
-			if(m_Hcma)
+			HumanCommandAdditives ad = m_Player.GetCommandModifier_Additives();
+			if(ad)
 			{
+				//Print("------------------ Playing -----------------");
+				ad.StartModifier(m_AnimID);
 				m_IsPlaying = true;
-				return true;
+				return EAnimPlayState.OK;
 			}
 		}
-		return false;
+		return EAnimPlayState.FAILED;
 	}
 	
 	override void Update(HumanMovementState movement_state)
 	{
 		if( m_IsPlaying )
 		{
-			if(!m_Player.GetCommandModifier_Modifier())
+			HumanCommandAdditives ad = m_Player.GetCommandModifier_Additives();
+			if(!ad || !ad.IsModifierActive())
 			{
+				//Print("------------------ Not Playing -----------------");
 				m_Manager.OnAnimationFinished();
 			}
 		}
@@ -163,11 +178,16 @@ class HeatComfortmMetaADD extends SmptAnimMetaADD
 {
 	override void Update(HumanMovementState movement_state)
 	{
-		super.Update(movement_state);
-		if( movement_state.m_iMovement != DayZPlayerConstants.MOVEMENTIDX_IDLE)
+		//if( movement_state.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_WALK || movement_state.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_RUN || movement_state.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_SPRINT)
+		if( movement_state.m_iMovement != DayZPlayerConstants.MOVEMENTIDX_IDLE || movement_state.IsInProne())
 		{
-			m_Player.DeleteCommandModifier_Modifier(m_Hcma);
+			HumanCommandAdditives ad = m_Player.GetCommandModifier_Additives();
+			if(ad && ad.IsModifierActive())
+			{
+				ad.CancelModifier();
+			}
 		}
-
+		
+		super.Update(movement_state);
 	}
 }

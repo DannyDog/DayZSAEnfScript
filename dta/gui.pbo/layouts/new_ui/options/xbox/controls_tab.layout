@@ -55,14 +55,14 @@ FrameWidgetClass controls_tab_root {
         PanelWidgetClass controller_settings_header {
          visible 1
          ignorepointer 1
-         color 0 0 0 0.9608
+         color 0 0 0 1
          position 0 0
-         size 1 36
+         size 1 40
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 1
-         style rover_sim_colorable
+         style DayZDefaultPanel
          {
           TextWidgetClass controller_text {
            visible 1
@@ -85,38 +85,42 @@ FrameWidgetClass controls_tab_root {
         }
         GridSpacerWidgetClass controller_settings_content {
          ignorepointer 1
-         color 0 0 0 0.8627
+         color 0 0 0 0.549
          position 0 0
          size 1 1
          hexactpos 1
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         style Colorable
+         style DayZDefaultPanel
          "no focus" 1
-         Padding 4
-         Margin 8
+         Padding 0
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
          Columns 1
          Rows 1
          {
           ButtonWidgetClass controller_invert_button {
+           disabled 0
            position 0 0
-           size 1 30
+           size 1 38
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 1
            style Colorable
            "no focus" 0
-           "next up" "hsensitivity_button"
-           "next down" "vsensitivity_button"
+           "next left" "controller_invert_button"
+           "next right" "controller_invert_button"
+           "next up" "controller_hsensitivity_button"
+           "next down" "controller_vsensitivity_button"
            {
-            GridSpacerWidgetClass controller_invert_setting {
+            GridSpacerWidgetClass controller_invert_button_panel {
              ignorepointer 1
-             position 0 0
              size 1 30
+             halign center_ref
+             valign center_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
@@ -147,7 +151,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "#layout_xbox_controls_ivnert_vertical"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -181,20 +185,23 @@ FrameWidgetClass controls_tab_root {
           }
           ButtonWidgetClass controller_vsensitivity_button {
            position 0 0
-           size 1 30
+           size 1 38
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 1
            style Colorable
            "no focus" 0
-           "next up" "invert_button"
-           "next down" "hsensitivity_button"
+           "next left" "controller_vsensitivity_button"
+           "next right" "controller_vsensitivity_button"
+           "next up" "controller_invert_button"
+           "next down" "controller_hsensitivity_button"
            {
-            GridSpacerWidgetClass controller_vsensitivity_setting {
+            GridSpacerWidgetClass controller_vsensitivity_button_panel {
              ignorepointer 1
-             position 0 0
              size 1 30
+             halign center_ref
+             valign center_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
@@ -225,7 +232,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "#layout_xbox_controls_sensitivity_ver"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center
@@ -260,20 +267,23 @@ FrameWidgetClass controls_tab_root {
           ButtonWidgetClass controller_hsensitivity_button {
            ignorepointer 0
            position 0 0
-           size 1 30
+           size 1 38
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 1
            style Colorable
            "no focus" 0
-           "next up" "vsensitivity_button"
-           "next down" "invert_button"
+           "next left" "controller_hsensitivity_button"
+           "next right" "controller_hsensitivity_button"
+           "next up" "controller_vsensitivity_button"
+           "next down" "controller_invert_button"
            {
-            GridSpacerWidgetClass controller_hsensitivity_setting {
+            GridSpacerWidgetClass controller_hsensitivity_button_panel {
              ignorepointer 0
-             position 0 0
              size 1 30
+             halign center_ref
+             valign center_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
@@ -304,7 +314,7 @@ FrameWidgetClass controls_tab_root {
                  vexactsize 0
                  text "#layout_xbox_controls_sensitivity_hor"
                  font "gui/fonts/sdf_MetronLight24"
-                 "text offset" 8 0
+                 "text offset" 10 0
                  "exact text" 0
                  "exact text size" 18
                  "text valign" center

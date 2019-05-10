@@ -10,8 +10,6 @@ class MissionGameplay extends MissionBase
 	Widget							m_HudRootWidget;
 	ImageWidget 					m_MicrophoneIcon;
 	
-	private ref WidgetCache 		m_WidgetsCache;
-	
 	ref InventoryMenu				m_InventoryMenu;
 	ref Chat 						m_Chat;
 	ref ActionMenu					m_ActionMenu;
@@ -51,10 +49,7 @@ class MissionGameplay extends MissionBase
 		g_Game.m_IsPlayerSpawning	= true;
 		
 		SyncEvents.RegisterEvents();
-		g_Game.SetGameState( DayZGameState.IN_GAME );
 		PlayerBase.Event_OnPlayerDeath.Insert( Pause );
-		
-		AnalyticsManager.RegisterEvents();
 	}
 	
 	void ~MissionGameplay()
@@ -70,9 +65,6 @@ class MissionGameplay extends MissionBase
 			g_Game.GetUIManager().ScreenFadeOut(0);
 		}
 	#endif
-		
-		AnalyticsManager.UnregisterEvents();
-
 	}
 	
 	InventoryMenu GetInventory()
@@ -82,6 +74,8 @@ class MissionGameplay extends MissionBase
 	
 	override void OnInit()
 	{
+		super.OnInit();
+
 		if ( m_Initialized )
 		{
 			return;
@@ -107,11 +101,9 @@ class MissionGameplay extends MissionBase
 			
 			m_Hud.Init( m_HudRootWidget.FindAnyWidget("HudPanel") );
 			
-			m_MicrophoneIcon		= ImageWidget.Cast( m_HudRootWidget.FindAnyWidget("mic") );
+			m_MicrophoneIcon = ImageWidget.Cast( m_HudRootWidget.FindAnyWidget("mic") );
+			m_MicrophoneIcon.Show(false);
 
-			// notification window
-			m_NotificationWidget	= new NotificationMessage( m_HudRootWidget );
-			
 			// chat channel
 			m_ChatChannelArea		= m_HudRootWidget.FindAnyWidget("ChatChannelPanel");
 			m_ChatChannelText		= TextWidget.Cast( m_HudRootWidget.FindAnyWidget("ChatChannelText") );
@@ -133,8 +125,6 @@ class MissionGameplay extends MissionBase
 		//AIBehaviourHL.RegAIBehaviour("zombie2",AIBehaviourHLZombie2,AIBehaviourHLDataZombie2);
 		//RegBehaviour("zombie2",AIBehaviourHLZombie2,AIBehaviourHLDataZombie2);
 		
-		m_WidgetsCache				= new WidgetCache;
-		
 		if( GetGame().IsMultiplayer() )
 		{
 			OnlineServices.m_MuteUpdateAsyncInvoker.Insert( SendMuteListToServer );
@@ -148,6 +138,7 @@ class MissionGameplay extends MissionBase
 
 	override void OnMissionStart()
 	{
+		g_Game.SetConnecting(false);
 		//does not display HUD until player is fully loaded
 		//m_HudRootWidget.Show(true);
 		GetUIManager().ShowUICursor(false);
@@ -156,17 +147,11 @@ class MissionGameplay extends MissionBase
 	
 	void InitInventory()
 	{
-		DestroyAllMenus();
 		if ( !m_InventoryMenu )
 		{
 			m_InventoryMenu = InventoryMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_INVENTORY, NULL) );
 			GetUIManager().HideScriptedMenu( m_InventoryMenu );
 		}
-	}
-
-	WidgetCache GetWidgetCache()
-	{
-		return m_WidgetsCache;
 	}
 	
 	void TickScheduler(float timeslice)
@@ -174,7 +159,7 @@ class MissionGameplay extends MissionBase
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 				
 		if( player )
-			player.OnTick();
+			player.OnScheduledTick(timeslice);
 	}
 	
 	void SendMuteListToServer( map<string, bool> mute_list )
@@ -241,24 +226,39 @@ class MissionGameplay extends MissionBase
 		//UAInput input = GetUApi().GetInputByID(GetUApi().DeterminePressedButton());
 		
 		//TODO should be switchable
-		if (playerPB && playerPB.enterNoteMenuRead)
+		if( playerPB )
 		{
-			playerPB.enterNoteMenuRead = false;
-			Paper paper = Paper.Cast(playerPB.GetItemInHands());
-			m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
-			m_Note.InitRead(paper.m_AdvancedText);
-		}
+			if( playerPB.GetHologramLocal() )
+			{
+				playerPB.GetHologramLocal().UpdateHologram( timeslice );
+			}
 		
-		if (playerPB && playerPB.enterNoteMenuWrite)
-		{
-			playerPB.enterNoteMenuWrite = false;
-			m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
-			m_Note.InitWrite(playerPB.m_paper,playerPB.m_writingImplement,playerPB.m_Handwriting);
+			if( playerPB.enterNoteMenuRead )
+			{
+				playerPB.enterNoteMenuRead = false;
+				Paper paper = Paper.Cast(playerPB.GetItemInHands());
+				m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
+				m_Note.InitRead(paper.m_AdvancedText);
+				m_Hud.ToggleHud( false, true );
+			}
+		
+			if( playerPB.enterNoteMenuWrite )
+			{
+				playerPB.enterNoteMenuWrite = false;
+				m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
+				m_Note.InitWrite(playerPB.m_paper,playerPB.m_writingImplement,playerPB.m_Handwriting);
+				m_Hud.ToggleHud( false, true );
+			}
+			
+			if( !menu && m_ControlDisabled && !playerPB.GetCommand_Melee2() )
+			{
+				PlayerControlEnable();
+			}
 		}
 
 #ifdef PLATFORM_CONSOLE
 		//Quick Reload Weapon
-		if ( !menu && input.GetActionDown("UAQuickReload",false) )
+		if ( !menu && input.LocalPress("UAQuickReload",false) )
 		{
 			if ( !GetGame().IsInventoryOpen() && playerPB )
 			{
@@ -272,43 +272,45 @@ class MissionGameplay extends MissionBase
 		}
 
 		//Radial quickbar
-		if( input.GetActionDown("UAUIQuickbarRadialOpen",false) )
+		if( input.LocalPress("UAUIQuickbarRadialOpen",false) )
 		{
 			//open gestures menu
-			if ( !playerPB.IsRaised() && !playerPB.IsInProne() )
+			if ( playerPB.IsAlive() && !playerPB.IsRaised() && !playerPB.GetCommand_Vehicle() )	//player hands not raised, player is not in prone and player is not interacting with vehicle
 			{
 				if ( !GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
 				{
 					RadialQuickbarMenu.OpenMenu();
+					m_Hud.ToggleHud( false, true );
 				}	
 			}
 		}
 		
-		if( input.GetActionUp("UAUIQuickbarRadialOpen",false) )
+		if( input.LocalRelease("UAUIQuickbarRadialOpen",false) )
 		{
 			//close gestures menu
 			if ( GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
 			{
 				RadialQuickbarMenu.CloseMenu();
+				m_Hud.ToggleHud( m_Hud.GetHudState(), true );
 			}
 		}
 		
 		//Radial Quickbar from inventory
-		if( GetGame().GetInput().GetActionUp("UAUIQuickbarRadialInventoryOpen",false) )
+		if( GetGame().GetInput().LocalRelease("UAUIQuickbarRadialInventoryOpen",false) )
 		{
 			//close radial quickbar menu
 			if ( GetGame().GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
 			{
-				PlayerControlDisable();
+				PlayerControlDisable( INPUT_EXCLUDE_ALL );
 				RadialQuickbarMenu.CloseMenu();
 				RadialQuickbarMenu.SetItemToAssign( NULL );
 			}
 		}
 		
 		//Special behaviour for leaning [CONSOLE ONLY]
-		if ( playerPB )
+		if ( playerPB && !GetGame().IsInventoryOpen() )
 		{
-			if ( playerPB.IsRaised() || playerPB.IsInProne() )
+			if ( playerPB.IsRaised() || playerPB.IsInRasedProne() )
 			{
 				GetUApi().GetInputByName( "UALeanLeft" 	).Unlock();
 				GetUApi().GetInputByName( "UALeanRight" ).Unlock();
@@ -317,7 +319,7 @@ class MissionGameplay extends MissionBase
 			{
 				GetUApi().GetInputByName( "UALeanLeft" 	).Lock();
 				GetUApi().GetInputByName( "UALeanRight" ).Lock();	
-			}		
+			}
 		}
 		
 		//Special behaviour for freelook & zeroing [CONSOLE ONLY]
@@ -337,32 +339,34 @@ class MissionGameplay extends MissionBase
 				GetUApi().GetInputByName( "UAZeroingUp" 	).Lock();		//disable zeroing
 				GetUApi().GetInputByName( "UAZeroingDown" 	).Lock();
 			}		
-		}
+		}	
 #endif
 		//Gestures
-		if( input.GetActionDown("UAUIGesturesOpen",false) )
+		if( input.LocalPress("UAUIGesturesOpen",false) )
 		{
 			//open gestures menu
-			if ( !playerPB.IsRaised() && !playerPB.IsInProne() )
+			if ( !playerPB.IsRaised() /*&& !playerPB.IsInProne()*/ && !playerPB.GetCommand_Vehicle() )
 			{
 				if ( !GetUIManager().IsMenuOpen( MENU_GESTURES ) )
 				{
 					GesturesMenu.OpenMenu();
+					m_Hud.ToggleHud( false, true );
 				}
 			}
 		}
 		
-		if( input.GetActionUp("UAUIGesturesOpen",false) )
+		if( input.LocalRelease("UAUIGesturesOpen",false) )
 		{
 			//close gestures menu
 			if ( GetUIManager().IsMenuOpen( MENU_GESTURES ) )
 			{
 				GesturesMenu.CloseMenu();
+				m_Hud.ToggleHud( m_Hud.GetHudState(), true );
 			}
 		}
 		
 		//if(GetUApi().GetInputByName("UADropitem").LocalPress())
-		/*if( input.GetActionDown("UADropitem",false) )
+		/*if( input.LocalPress("UADropitem",false) )
 		{
 			//drops item
 			if (playerPB && playerPB.GetItemInHands() && !GetUIManager().GetMenu())
@@ -390,11 +394,12 @@ class MissionGameplay extends MissionBase
 			
 		#endif
 		
-			if( input.GetActionDown("UAGear",false) )
+			if( input.LocalPress("UAGear",false) )
 			{
 				if( !inventory && playerPB.CanManipulateInventory() )
 				{
 					ShowInventory();
+					menu = m_InventoryMenu;
 				}
 				else if( menu == inventory )
 				{
@@ -402,7 +407,7 @@ class MissionGameplay extends MissionBase
 				}
 			}
 
-			if( input.GetActionDown("UAChat",false) )
+			if( input.LocalPress("UAChat",false) )
 			{
 				ChatInputMenu chat = ChatInputMenu.Cast( m_UIManager.FindMenu(MENU_CHAT) );		
 				if( menu == NULL )
@@ -411,14 +416,14 @@ class MissionGameplay extends MissionBase
 				}
 			}
 			
-			if( input.GetActionDown("UAUIQuickbarToggle",false) )
+			if( input.LocalPress("UAUIQuickbarToggle",false) )
 			{
 				SetActionDownTime( GetGame().GetTime() );
 				bool hud_state = m_Hud.GetHudState();
 				m_ToggleHudTimer.Run( 0.3, m_Hud, "ToggleHud", new Param1<bool>( !hud_state ) );
 			}
 			
-			if( input.GetActionUp("UAUIQuickbarToggle",false) )
+			if( input.LocalRelease("UAUIQuickbarToggle",false) )
 			{
 				SetActionUpTime( GetGame().GetTime() );
 				
@@ -440,7 +445,7 @@ class MissionGameplay extends MissionBase
 				m_ToggleHudTimer.Stop();
 			}
 			
-			if ( g_Game.GetInput().GetActionDown("UAZeroingUp",false) || g_Game.GetInput().GetActionDown("UAZeroingDown",false) || g_Game.GetInput().GetActionDown("UAToggleWeapons",false) )
+			if ( g_Game.GetInput().LocalPress("UAZeroingUp",false) || g_Game.GetInput().LocalPress("UAZeroingDown",false) || g_Game.GetInput().LocalPress("UAToggleWeapons",false) )
 			{
 
 				m_Hud.ZeroingKeyPress();
@@ -450,12 +455,12 @@ class MissionGameplay extends MissionBase
 			{
 				m_ActionMenu.Refresh();
 				
-				if (input.GetActionDown("UANextAction",false))
+				if (input.LocalPress("UANextAction",false))
 				{
 					m_ActionMenu.NextAction();
 				}
 				
-				if (input.GetActionDown("UAPrevAction",false))
+				if (input.LocalPress("UAPrevAction",false))
 				{
 					m_ActionMenu.PrevAction();
 				}
@@ -468,12 +473,12 @@ class MissionGameplay extends MissionBase
 			//hologram rotation
 			if (menu == NULL && playerPB.IsPlacingLocal())
 			{
-				if( input.GetActionUp("UANextAction",false) )
+				if( input.LocalRelease("UANextAction",false) )
 				{
 					playerPB.GetHologramLocal().SubtractProjectionRotation(15);
 				}
 				
-				if( input.GetActionUp("UAPrevAction",false) )
+				if( input.LocalRelease("UAPrevAction",false) )
 				{
 					playerPB.GetHologramLocal().AddProjectionRotation(15);
 				}
@@ -517,83 +522,78 @@ class MissionGameplay extends MissionBase
 		{
 			if ( menu )
 			{
-
-				if ( IsPaused() )
+				if( menu == inspect )
 				{
-					if( input.GetActionDown("UAUIBack",false) )
-					{
-						Continue();						
-					}
-					else if( input.GetActionDown("UAUIMenu",false) )
-					{
-						Continue();
-					}
-				}
-				else if ( menu == inventory )
-				{
-					if(input.GetActionDown("UAUIBack",false))
-					{
-						if( !ItemManager.GetInstance().GetSelectedItem() )
-						{
-							//HideInventory();
-						}
-					}
-				}
-				else if( menu == inspect )
-				{
-					if(input.GetActionDown("UAGear",false))
+					if(input.LocalPress("UAGear",false))
 					{
 						if( ItemManager.GetInstance().GetSelectedItem() == NULL )
 						{
 							HideInventory();
 						}
 					}
-					else if(input.GetActionDown("UAUIBack",false))
+					else if(input.LocalPress("UAUIBack",false))
 					{
 						if( ItemManager.GetInstance().GetSelectedItem() == NULL )
 						{
 							HideInventory();
 						}
 					}
-				}
-				else if(input.GetActionDown("UAUIBack",false))
-				{
-					if ( menu == quickbar_menu ) return;		//workaround until context input are fixed
-					if ( menu == gestures_menu ) return;
-					
-					m_UIManager.Back();
-					PlayerControlEnable();
 				}
 				else if(menu == map_menu && !m_ControlDisabled)
 				{
-					PlayerControlDisable();
+					PlayerControlDisable(INPUT_EXCLUDE_INVENTORY);
 				}
 				else if(menu == gestures_menu && !m_ControlDisabled)
 				{
-					PlayerMouseControlDisableRadial();
+					PlayerControlDisable(INPUT_EXCLUDE_MOUSE_RADIAL);
 					//GetUApi().GetInputByName("UAUIGesturesOpen")->Unlock();
 				}
 				else if(menu == quickbar_menu && !m_ControlDisabled)
 				{
-					PlayerMouseControlDisableRadial();
+					PlayerControlDisable(INPUT_EXCLUDE_MOUSE_RADIAL);
 					//GetUApi().GetInputByName("UAUIGesturesOpen")->Unlock();
+				}
+				else if( IsPaused() )
+				{
+					if( input.LocalPress("UAUIMenu",false) )
+					{
+						Continue();
+					}
+					if( input.LocalPress( "UAUIBack", false ) )
+					{
+						InGameMenuXbox	menu_xb	= InGameMenuXbox.Cast( GetGame().GetUIManager().GetMenu() );
+						if( menu_xb && menu_xb.IsOnlineOpen() )
+						{
+							menu_xb.CloseOnline();
+						}
+						else
+						{
+							Continue();
+						}
+					}
 				}
 				
 			}
-			else if (input.GetActionDown("UAUIMenu",false))
+			else if (input.LocalPress("UAUIMenu",false))
 			{
 				Pause();
-				PlayerControlDisable();
 			}
+			
+			/*
 			else if (!menu && m_ControlDisabled)
 			{
 				PlayerControlEnable();
 			}
+			*/
 		}
 		
 		UpdateDebugMonitor();
 		
 		SEffectManager.Event_OnFrameUpdate(timeslice);
+		
+#ifdef DEVELOPER
+		DisplayHairDebug();
+#endif
 	}
 	
 	override void OnKeyPress(int key)
@@ -615,28 +615,11 @@ class MissionGameplay extends MissionBase
 		
 		if ( key == KeyCode.KC_Q )
 		{
-			//SEffectManager.PlaySound("HandCuffs_A_SoundSet", GetGame().GetPlayer().GetPosition(), 0, 0, false);
-			/*
-			PlayerBase player2 = PlayerBase.Cast( GetGame().GetPlayer() );
-		
-			ItemBase item;
-			for ( int i = 0; i < player2.GetInventory().GetAttachmentSlotsCount(); ++i )
-			{
-				int slot_id = player2.GetInventory().GetAttachmentSlotId( i );
-				
-				Print("index: "+ i +"  slot_id: "+ slot_id);
-				
-				EntityAI att_item = player2.GetInventory().FindAttachment( slot_id );
-				
-				Print("Item: "+ att_item);
-			}
-			*/
+			
 			
 		}
 #endif
 	}
-		
-			
 	
 	override void OnKeyRelease(int key)
 	{
@@ -675,10 +658,6 @@ class MissionGameplay extends MissionBase
 			break;
 			
 		case WindowsResizeEventTypeID:
-			if( WidgetCache.GetInstance() )
-			{
-				WidgetCache.GetInstance().Reset();
-			}
 			DestroyAllMenus();
 			m_Hud.OnResizeScreen();
 			
@@ -721,37 +700,74 @@ class MissionGameplay extends MissionBase
 	
 	override void PlayerControlEnable()
 	{
+		super.PlayerControlEnable();
+
 		//Print("Enabling Controls");
-		GetUApi().ActivateGroup("infantry");
-		m_ControlDisabled = false;	
+		GetUApi().GetInputByName("UAWalkRunTemp").ForceEnable(false); // force walk off!
+		GetUApi().UpdateControls();
+		m_ControlDisabled = false;
+		
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		if (!player)
+			return;
+			
+		HumanInputController hic = player.GetInputController();
+		hic.LimitsDisableSprint(false);
 	}
 
-	override void PlayerControlDisable()
+	//!movement restrictions
+	override void PlayerControlDisable(int mode)
 	{
+		super.PlayerControlDisable(mode);
+
 		//Print("Disabling Controls");
-		GetUApi().ActivateExclude("inventory");
-		GetUApi().ActivateGroup("infantry");
+		switch (mode)
+		{
+			case INPUT_EXCLUDE_ALL:
+			{
+				GetUApi().ActivateExclude("menu");
+				break;
+			}
+			case INPUT_EXCLUDE_INVENTORY:
+			{
+#ifdef PLATOFRM_CONSOLE
+				GetUApi().ActivateExclude("inventory_console");
+#else
+				GetUApi().ActivateExclude("inventory");
+				GetUApi().GetInputByName("UAWalkRunTemp").ForceEnable(true); // force walk on!
+#endif
+				break;
+			}
+			case INPUT_EXCLUDE_MOUSE_ALL:
+			{
+				GetUApi().ActivateExclude("radialmenu");
+				break;
+			}
+			case INPUT_EXCLUDE_MOUSE_RADIAL:
+			{
+				GetUApi().ActivateExclude("radialmenu");
+#ifdef PLATOFRM_CONSOLE
+				GetUApi().ActivateExclude("inventory_console");
+#else
+				GetUApi().ActivateExclude("inventory");
+#endif
+				break;
+			}
+		}
+		
+		GetUApi().UpdateControls();
 		m_ControlDisabled = true;
+		
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		if( player )
+		{
+			HumanInputController hic = player.GetInputController();
+			//hic.ResetADS();
+			player.RequestResetADSSync();
+		}
 	}
 	
-	void PlayerMouseControlDisableRadial()
-	{
-		//Print("Disabling Mouse Controls Quickslot");
-		GetUApi().ActivateExclude("radialmenu");
-		GetUApi().ActivateExclude("inventory");
-		GetUApi().ActivateGroup("infantry");
-		m_ControlDisabled = true;
-	}
-	
-	void PlayerMouseControlDisable()
-	{
-		//Print("Disabling Mouse Controls");
-		GetUApi().ActivateExclude("radialmenu");
-		GetUApi().ActivateGroup("infantry");
-		m_ControlDisabled = true;
-	}
-
-	bool IsControlDisabled()
+	override bool IsControlDisabled()
 	{
 		return m_ControlDisabled;
 	}
@@ -796,57 +812,50 @@ class MissionGameplay extends MissionBase
 	
 	override void ShowInventory()
 	{
-		bool init = false;
 		UIScriptedMenu menu = GetUIManager().GetMenu();
 		
-		if (menu == NULL && GetGame().GetPlayer().GetHumanInventory().CanOpenInventory() && !GetGame().GetPlayer().IsInventorySoftLocked() && GetGame().GetPlayer().GetHumanInventory().IsInventoryUnlocked() )
+		if ( !menu && GetGame().GetPlayer().GetHumanInventory().CanOpenInventory() && !GetGame().GetPlayer().IsInventorySoftLocked() && GetGame().GetPlayer().GetHumanInventory().IsInventoryUnlocked() )
 		{
-			if (m_InventoryMenu == NULL)
+			if( !m_InventoryMenu )
 			{
-				m_InventoryMenu = InventoryMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_INVENTORY, NULL) );
+				InitInventory();
 			}
-			else if ( GetUIManager().FindMenu(MENU_INVENTORY) == NULL )
+			
+			if( !GetUIManager().FindMenu( MENU_INVENTORY ) )
 			{
-				GetUIManager().ShowScriptedMenu(m_InventoryMenu, NULL);
+				GetUIManager().ShowScriptedMenu(m_InventoryMenu, null);
+				PlayerBase.Cast(GetGame().GetPlayer()).OnInventoryMenuOpen();
 			}
 			MoveHudForInventory( true );
-			init = true;
-		}
-		
-		if (menu && menu == m_InventoryMenu)
-		{
-			init = true;
-		}
-		
-		if (m_InventoryMenu && init)
-		{
-			PlayerControlDisable();		
+			PlayerControlDisable(INPUT_EXCLUDE_INVENTORY);
 		}
 	}
 	
 	override void HideInventory()
 	{
-		InventoryMenu inventory = InventoryMenu.Cast( GetUIManager().FindMenu(MENU_INVENTORY) );
-		if (inventory)
+		if( m_InventoryMenu )
 		{
-			GetUIManager().HideScriptedMenu(inventory);
+			GetUIManager().HideScriptedMenu(m_InventoryMenu);
 			MoveHudForInventory( false );
-			PlayerControlEnable();	
+			PlayerControlEnable();
+			PlayerBase.Cast(GetGame().GetPlayer()).OnInventoryMenuClose();
+			VicinityItemManager.ResetRefreshCounter();
 		}	
 	}
 	
 	void DestroyInventory()
 	{
-		if (m_InventoryMenu)
+		if( m_InventoryMenu )
 		{
 			m_InventoryMenu.Close();
 			m_InventoryMenu = NULL;
 		}
-		if (m_InventoryMenu)
-		{
-			m_InventoryMenu.Close();
-			m_InventoryMenu = NULL;
-		}
+	}
+	
+	override void ResetGUI()
+	{
+		DestroyInventory();
+		InitInventory();
 	}
 	
 	override void ShowChat()
@@ -856,7 +865,7 @@ class MissionGameplay extends MissionBase
 		m_ChatChannelArea.Show(false);
 		m_UIManager.EnterScriptedMenu(MENU_CHAT_INPUT, NULL);
 		
-		PlayerControlDisable();		
+		PlayerControlDisable(INPUT_EXCLUDE_ALL);		
 	}
 
 	override void HideChat()
@@ -913,6 +922,7 @@ class MissionGameplay extends MissionBase
 		
 		// open ingame menu
 		GetUIManager().EnterScriptedMenu( MENU_INGAME, GetGame().GetUIManager().GetMenu() );
+		PlayerControlDisable(INPUT_EXCLUDE_ALL);
 	}
 	
 	override void Continue()
@@ -922,7 +932,7 @@ class MissionGameplay extends MissionBase
 		{
 			return;
 		}
-
+		
 		PlayerControlEnable();
 		GetUIManager().CloseMenu(MENU_INGAME);
 	}
@@ -1021,19 +1031,67 @@ class MissionGameplay extends MissionBase
 		m_ActionUpTime = time_up;
 	}
 	
-	int GetActionDownTime()
+	int LocalPressTime()
 	{
 		return m_ActionDownTime;
 	}
 	
-	int GetActionUpTime()
+	int LocalReleaseTime()
 	{
 		return m_ActionUpTime;
 	}
 	
 	float GetHoldActionTime()
 	{
-		float hold_action_time = GetActionUpTime() - GetActionDownTime();
+		float hold_action_time = LocalReleaseTime() - LocalPressTime();
 		return hold_action_time;
+	}
+	
+	void DisplayHairDebug()
+	{
+		if ( DiagMenu.GetBool(DiagMenuIDs.DM_HAIR_DISPLAY_DEBUG) )
+		{
+			if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+				ShowHairDebugValues(true);
+		}
+		else
+		{
+			if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+				ShowHairDebugValues(false);
+		}
+	}
+	
+	void ShowHairDebugValues(bool state)
+	{
+#ifdef DEVELOPER
+		if( state )
+		{
+			PluginDiagMenu diagmenu = PluginDiagMenu.Cast(GetPlugin(PluginDiagMenu));
+			
+			int i 					= DiagMenu.GetValue(DiagMenuIDs.DM_HAIR_LEVEL);
+			bool bState 			= diagmenu.m_HairHidingStateMap.Get(i);
+			string selectionState;
+			if (!bState)
+				selectionState 		= "Hidden";
+			else
+				selectionState 		= "Shown";
+			string selectionName 	= diagmenu.m_HairSelectionArray.Get(i);
+			
+			DbgUI.BeginCleanupScope();
+	        DbgUI.Begin("Hair Debug", 50, 150);
+	        DbgUI.Text("Current Hair Selection:" + selectionName);
+			DbgUI.Text("State: " + selectionState);
+			
+	        DbgUI.End();
+	        DbgUI.EndCleanupScope();
+		}
+		else
+		{
+			DbgUI.BeginCleanupScope();
+			DbgUI.Begin("Hair Debug", 50, 50);
+			DbgUI.End();
+	        DbgUI.EndCleanupScope();
+		}
+#endif
 	}
 }

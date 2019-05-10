@@ -190,6 +190,14 @@ class TripwireTrap : TrapBase
 	{
 		return "tripwire_deploy_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
+	}
 }
 
 class TripwireTrapDeployed : TripwireTrap

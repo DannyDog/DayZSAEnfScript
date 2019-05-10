@@ -20,7 +20,14 @@ class ActionTurnOnSpotlight: ActionInteractBase
 	{
 		Object targetObject = target.GetObject();
 		ItemBase target_IB = ItemBase.Cast( targetObject );
-		string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
+		
+		Spotlight s = Spotlight.Cast(target_IB);
+		
+		if (s  &&  s.IsFolded())
+				return false;
+		
+		int component_id = target.GetComponentIndex();
+		string selection = targetObject.GetActionComponentName(component_id);
 
 		if ( selection == Spotlight.SEL_REFLECTOR_COMP_U  &&  target_IB.HasEnergyManager()  &&  target_IB.GetCompEM().CanSwitchOn() )
 		{

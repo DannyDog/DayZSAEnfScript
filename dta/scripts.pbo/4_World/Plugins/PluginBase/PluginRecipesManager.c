@@ -7,16 +7,17 @@ enum ERecipeSanityCheck
 
 const float ACCEPTABLE_DISTANCE = 5;
 
-const int SANITY_CHECK_ACCEPTABLE_RESULT = ERecipeSanityCheck.NOT_OWNED_BY_ANOTHER_LIVE_PLAYER + ERecipeSanityCheck.CLOSE_ENOUGH;
+const int SANITY_CHECK_ACCEPTABLE_RESULT = ERecipeSanityCheck.NOT_OWNED_BY_ANOTHER_LIVE_PLAYER | ERecipeSanityCheck.CLOSE_ENOUGH;
+
 class PluginRecipesManager extends PluginRecipesManagerBase
 {
+	static ref map<string,ref CacheObject > m_RecipeCache = new map<string,ref CacheObject >;
+	static ref map<typename, bool> m_RecipesInitializedItem = new ref map<typename, bool>;
+	
+	
 	ref Timer m_TestTimer;
-	const string KEYWORD_NEW_ITEM = "Item:";
-	const string PATH_CACHE_FILE = "Scripts/Data/cache_recipes.cache";
 	const int MAX_NUMBER_OF_RECIPES = GetMaxNumberOfRecipes();
 	const int MAX_CONCURENT_RECIPES = 20;
-	const int MASK_BOTH_INGREDIENTS = 3;
-	
 	const int MAX_INGREDIENTS = 5;
 	
 	int m_RegRecipeIndex;
@@ -28,8 +29,6 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	int m_IngredientBitMaskSize[MAX_INGREDIENTS];
 	
 	int m_BitsResults[MAX_INGREDIENTS];
-	int m_ResolvePasses;
-	
 	
 	ItemBase m_ingredient1[MAX_CONCURENT_RECIPES];
 	ItemBase m_ingredient2[MAX_CONCURENT_RECIPES];
@@ -38,31 +37,10 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	ItemBase m_sortedIngredients[MAX_NUMBER_OF_INGREDIENTS];
 	
 	ref array<int> m_RecipesMatched = new array<int>;
-	
-	RecipeBase m_Recipe;//member variable for max perf
-	 
-	CacheObject co_item_a;
-	CacheObject co_item_b;
-	
-	array<int> item_a_recipes;
-	array<int> item_b_recipes;
-	
-	array<int> item_a_masks;
-	array<int> item_b_masks;
-	
-	
-	ref map<string,ref CacheObject> m_CacheItemMap;//this is the final result of caching
-	ref map<string,ref CacheObject> m_CacheBasesMap;//this is an optimization base map, used as an intermediary to speed up the cache generation by not looking up the already resolved base classes in recipes
-	
-	ref array<string> m_CachedItems;
-	//array<string>	m_Items;
-	int m_NumberOfRecipes = 0;
+	ref array<string> m_CachedItems = new array<string>;
 
-	int m_NumOfConfRecipes;
-	
-	
-	//ref RecipeBase m_RecipeList[MAX_NUMBER_OF_RECIPES];//all recipes
 	ref array<ref RecipeBase> m_RecipeList = new array<ref RecipeBase>;//all recipes
+	static ref map<string, int> m_RecipeNamesList = new map<string, int>;//all recipes
 	
 	ref Timer myTimer1;
 	
@@ -73,18 +51,9 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	
 	void PluginRecipesManager()
 	{
-		
-		m_CacheItemMap = new map<string,ref CacheObject>;
-		m_CacheBasesMap = new map<string,ref CacheObject>;
-		
-		m_NumberOfRecipes = 0;
-		/*
-		for(int i = 0; i < MAX_NUMBER_OF_RECIPES; i++)
-		{
-			m_RecipeList[i] = NULL;
-		}
-		*/
+
 		CreateAllRecipes();
+		GenerateRecipeCache();
 		
 		myTimer1 = new Timer();
 	}
@@ -120,7 +89,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 			if(ids) ids.Clear();
 			return 0;
 		}
-		
+
 		m_Ingredients[0] = item1;
 		m_Ingredients[1] = item2;
 		
@@ -130,7 +99,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	int GetValidRecipesProper(int num_of_items, ItemBase items[], array<int> ids, PlayerBase player)
 	{
 		if(ids) ids.Clear();
-		GetRecipeIntersection(num_of_items,items, m_RecipesMatched);
+		GetRecipeIntersection(num_of_items,items);
 		int numOfRecipes = SortIngredients(num_of_items,items,m_ResolvedRecipes);
 		//will return number of cached recipes for the 2 items being considered, 
 		//and save their indexes in m_ResolvedRecipes, please note the m_ResolvedRecipes is a static array, 
@@ -176,7 +145,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	override void OnInit()
 	{
 		super.OnInit();
-		ReadCacheFromFile(PATH_CACHE_FILE);//read the cache from a file
+		//ReadCacheFromFile(PATH_CACHE_FILE);//read the cache from a file
 		//GenerateHumanReadableRecipeList();
 	}
 
@@ -184,16 +153,18 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	void CallbackGenerateCache()
 	{
 		Debug.Log("CallbackGenerateCache","recipes");
-		SaveCacheToFile(PATH_CACHE_FILE);//generate the cache and save it to a file
-		ReadCacheFromFile(PATH_CACHE_FILE);
+		GenerateRecipeCache();
+		//SaveCacheToFile(PATH_CACHE_FILE);//generate the cache and save it to a file
+		//ReadCacheFromFile(PATH_CACHE_FILE);
 	}
 
-	protected void GenerateRecipeCache(array<string> cached_items)
+	protected void GenerateRecipeCache()
 	{
-		GetGame().ProfilerStart("RECIPE_CACHE");
+		GetGame().ProfilerStart("m_RecipeCache");
 		
-		m_CacheBasesMap.Clear();
-		m_CacheItemMap.Clear();
+		//m_CacheBasesMap.Clear();
+		m_CachedItems.Clear();
+		PluginRecipesManager.m_RecipeCache.Clear();
 		
 		ref TStringArray all_config_paths = new TStringArray;
 		
@@ -204,9 +175,8 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		string config_path;
 		string child_name;
 		int scope;
-		bool isInRecipe;
 		ref TStringArray full_path = new TStringArray;
-		
+		WalkRecipes();
 		for(int i = 0; i < all_config_paths.Count(); i++)
 		{
 			config_path = all_config_paths.Get(i);
@@ -220,149 +190,89 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 				if ( scope == 2 )
 				{
 					GetGame().ConfigGetFullPath(config_path +" "+ child_name,/*out*/ full_path);
-					EvaluateFullPathAgainstRecipes(full_path, cached_items);
+					MatchItems(full_path);
 				}
 			}
 		}
-		SortRecipesOrderInCache();
-		GetGame().ProfilerStop("RECIPE_CACHE");
+		GetGame().ProfilerStop("m_RecipeCache");
 	}
 
-	protected void EvaluateFullPathAgainstRecipes(TStringArray full_path, array<string> cached_items)
+	void WalkRecipes()
 	{
-		ResolveBaseClasses(full_path);
-		ResolveItemClasses(full_path);
-		LeechRecipesFromBases(full_path);
-	}
-	
-	protected void SortRecipesOrderInCache()
-	{
-		for(int i = 0; i < m_CacheItemMap.Count(); i++)
+		//Print("------------- WalkRecipes --------------");
+		for(int c = 0; c < m_RecipeList.Count(); c++)
 		{
-			string key = m_CacheItemMap.GetKey(i);
-			CacheObject value = m_CacheItemMap.GetElement(i);
-			
-			//Sort( value.GetRecipes(), value.GetRecipes().Count() ); //use the sort here
+			RecipeBase recipe = m_RecipeList.Get(c);
+			if(recipe)
+			{
+				//Print(recipe.ClassName());
+				int recipe_id = recipe.GetID();
+				for(int i = 0; i < MAX_NUMBER_OF_INGREDIENTS; i++)
+				{
+					array<string> list = recipe.m_Ingredients[i];
+					
+					for(int x = 0; x < list.Count(); x++)
+					{
+						string ingredient = list.Get(x);
+						int mask = Math.Pow(2,i);
+						CacheObject co = m_RecipeCache.Get(ingredient);
+	
+						if(!co)
+						{
+							co = new CacheObject;
+							m_RecipeCache.Insert(ingredient,co);
+						}
+						co.AddRecipe(recipe_id, mask);
+					}
+				}
+			}
 		}
 	}
 
-	protected void ResolveBaseClasses(TStringArray full_path)
+	
+	// moved outside method to speed things up
+	ref array<int> m_RcpsArray;
+	string m_BaseName;
+	int m_RecipeID;
+	int item_mask;
+	int m_BaseMask;
+	string m_ItemName;
+	ref CacheObject m_CoItem;
+	ref CacheObject m_CoBase;
+	
+	//this will take the item class name and resolve it against all processed recipes
+	protected void MatchItems(TStringArray full_path)
 	{
-		int mask;
-		string item;
-		RecipeBase p_recipe;
-		CacheObject co_base = NULL;
+		m_ItemName = full_path.Get(0);
+		m_CoItem = m_RecipeCache.Get(m_ItemName);
+		//Print(m_ItemName);
+		if( !m_CoItem )
+		{
+			m_CoItem = new CacheObject;
+			m_RecipeCache.Insert(m_ItemName,m_CoItem);
+		}
 		for(int i = 1; i < full_path.Count(); i++)
 		{
-			item = full_path.Get(i);
-			
-			if( !m_CacheBasesMap.Contains( item ) )//resolve new base classes
+			m_BaseName = full_path.Get(i);
+			m_CoBase = m_RecipeCache.Get(m_BaseName);
+			if( m_CoBase )//resolve new base classes
 			{
-				for(int x = 0; x < m_RecipeList.Count(); x++)
+				m_RcpsArray = m_RecipeCache.Get(m_BaseName).GetRecipes();
+				
+				for( int x = 0; x < m_RcpsArray.Count(); x++ )//base recipes
 				{
-					if (m_RecipeList[x] != NULL)
-					{
-						p_recipe = m_RecipeList[x];
-						mask = p_recipe.GetIngredientMaskForItem( item );
-						
-						if( mask > 0 )
-						{
-							if(!co_base)
-							{
-								m_CacheBasesMap.Insert(item,new CacheObject);
-								co_base = m_CacheBasesMap.Get(item);
-							}
-							co_base.AddRecipe(x, mask);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	protected void LeechRecipesFromBases(TStringArray full_path)
-	{
-		string item_name = full_path.Get(0);
-		
-		string base_name;
-		
-		RecipeBase p_recipe;
-		
-		array<int> temp_base_rcps_array = NULL;
-		array<int> temp_base_msks_array = NULL;
-
-		CacheObject co_item;
-		for(int i = 1/*skip the item classname*/; i < full_path.Count(); i++)
-		{
-			base_name = full_path.Get(i);
-			
-			if( m_CacheBasesMap.Contains( base_name ) )
-			{
-				temp_base_rcps_array = m_CacheBasesMap.Get(base_name).GetRecipes();
-				temp_base_msks_array = m_CacheBasesMap.Get(base_name).GetMasks();
-				if( !m_CacheItemMap.Get(item_name) )
-				{
-					CreateNewCacheItem(item_name);
-				}
-				co_item = m_CacheItemMap.Get(item_name);
-				for( int x = 0; x < temp_base_rcps_array.Count(); x++ )//base recipes
-				{
-					int recipe_id = temp_base_rcps_array.Get(x);
-					int base_mask = temp_base_msks_array.Get(x);
+					m_RecipeID = m_RcpsArray.Get(x);
 					
-					int item_mask = co_item.GetMaskByRecipeID(recipe_id);
+					//item_mask = m_CoItem.GetMaskByRecipeID(m_RecipeID);
+					m_BaseMask = m_CoBase.GetMaskByRecipeID(m_RecipeID);
 						
-					if( item_mask > 0 )
-					{
-						co_item.UpdateMask(recipe_id, base_mask | item_mask );
-					}
-					else
-					{
-						co_item.AddRecipe(recipe_id,base_mask);
-					}
+					m_CoItem.AddRecipe(m_RecipeID,m_BaseMask);
 				}
-				
 			}
 		}
-	}
-	
-	//this will take the item class name and resolve it against all recipes
-	protected void ResolveItemClasses(TStringArray full_path)
-	{
-		string item_name = full_path.Get(0);
-		RecipeBase p_recipe;
+
 		
-		for(int i = 0; i < m_RecipeList.Count(); i++)
-		{
-			if (m_RecipeList[i] != NULL)
-			{
-				p_recipe = m_RecipeList[i];
-				int mask = p_recipe.GetIngredientMaskForItem( item_name );
-				
-	
-				if( mask > 0)
-				{
-					if( m_CacheItemMap.Contains( item_name ) )//this should not happen as every item should be unique
-					{
-						m_CacheItemMap.Get(item_name).AddRecipe(i,mask);
-					}
-					else
-					{
-						CreateNewCacheItem(item_name);
-						m_CacheItemMap.Get(item_name).AddRecipe(i,mask);
-					}
-				}
-			}
-		}
 	}
-
-	protected void CreateNewCacheItem(string item_name)
-	{
-		m_CacheItemMap.Insert(item_name, new CacheObject);
-		m_CachedItems.Insert(item_name);
-	}
-
-
 
 	void PerformRecipeServer(int id, ItemBase item_a,ItemBase item_b ,PlayerBase player)
 	{
@@ -374,6 +284,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 			Error("PerformRecipeServer - one of the items null !!");
 			return;
 		}
+		
 		SortIngredientsInRecipe(id, 2,m_Ingredients, m_sortedIngredients);
 
 		bool is_recipe_valid = CheckRecipe(id,m_sortedIngredients[0],m_sortedIngredients[1],player);
@@ -397,7 +308,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	
 	void GenerateHumanReadableRecipeList()
 	{
-		FileHandle file = OpenFile("$profile:RecipeDump.txt", FileMode.WRITE);
+		FileHandle file = OpenFile("RecipeDump.txt", FileMode.WRITE);
 		if( file == 0 )
 		{
 			//error message
@@ -405,10 +316,10 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 			return;
 		}
 		array<int> recipes = new array<int>;
-		for(int i = 0; i < m_CacheItemMap.Count(); i++)
+		for(int i = 0; i < PluginRecipesManager.m_RecipeCache.Count(); i++)
 		{
-			string key = m_CacheItemMap.GetKey(i);
-			CacheObject value = m_CacheItemMap.GetElement(i);
+			string key = PluginRecipesManager.m_RecipeCache.GetKey(i);
+			CacheObject value = PluginRecipesManager.m_RecipeCache.GetElement(i);
 			
 			string line = key;
 			recipes.Clear();
@@ -427,16 +338,6 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		CloseFile(file);
 	}
 	
-	bool CheckRecipeUnsorted(int id, ItemBase item_a,ItemBase item_b,PlayerBase player)
-	{
-		m_Ingredients[0] = item_a;
-		m_Ingredients[1] = item_b;
-		if( !item_a || !item_b ) return false;
-		SortIngredientsInRecipe(id, 2,m_Ingredients, m_sortedIngredients);
-
-		return CheckRecipe(id,m_sortedIngredients[0],m_sortedIngredients[1],player);
-	}
-
 	protected bool RecipeSanityCheck(int num_of_ingredients, InventoryItemBase items[], PlayerBase player)
 	{
 		int check_results[MAX_INGREDIENTS];
@@ -481,51 +382,48 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 			Error("Exceeded max. number of recipes, max set to: "+MAX_NUMBER_OF_RECIPES.ToString());
 		}
 		
+		m_RegRecipeIndex = m_RecipeList.Insert(recipe);
 		recipe.SetID(m_RegRecipeIndex);
-		m_RecipeList.Insert(recipe);
-		m_RegRecipeIndex++;
+		m_RecipeNamesList.Insert(recipe.ClassName(), m_RegRecipeIndex);
+		//Print("RegisterRecipe: " +recipe.ClassName() + ", "+ m_RegRecipeIndex.ToString());
 	}
 
+	override protected void UnregisterRecipe(string clasname)
+	{
+		int recipe_id = RecipeIDFromClassname(clasname);
+		//Print("UnregisterRecipe: " + recipe_id.ToString());
+		if(recipe_id != -1)
+		{
+			m_RecipeNamesList.Remove(clasname);
+			Print(m_RecipeList[recipe_id]);
+			m_RecipeList[recipe_id] = null;
+			Print(m_RecipeList[recipe_id]);
+		}
+	}
+	
+	static int RecipeIDFromClassname(string classname)
+	{
+		if(m_RecipeNamesList.Contains(classname))
+			return m_RecipeNamesList.Get(classname);
+		return -1;
+	}
+	
 	protected bool CheckRecipe(int id, ItemBase item1, ItemBase item2, PlayerBase player)//requires ordered items
 	{
 		RecipeBase p_recipe = m_RecipeList[id];
 		return p_recipe.CheckRecipe(item1,item2, player);
 	}
 	
-	protected void RecipeSelected(int id, ItemBase item1, ItemBase item2, PlayerBase player)//requires ordered items
-	{
-		RecipeBase p_recipe = m_RecipeList[id];
-		p_recipe.OnSelectedRecipe(item1,item2, player);
-	}
-
-	
-	protected bool CheckMaskOverlay(int mask_a, int mask_b )
-	{
-		if( mask_a | mask_b == MASK_BOTH_INGREDIENTS ) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
 	protected void PrintCache()
 	{
-		for(int i = 0; i < m_CacheItemMap.Count(); i++)
+		for(int i = 0; i < PluginRecipesManager.m_RecipeCache.Count(); i++)
 		{
-			string key = m_CacheItemMap.GetKey(i);
-			CacheObject value = m_CacheItemMap.GetElement(i);
-			ref array<int> recipes = new array<int>;
+			string key = PluginRecipesManager.m_RecipeCache.GetKey(i);
+			CacheObject co = PluginRecipesManager.m_RecipeCache.GetElement(i);
 
-			recipes.InsertAll( value.GetRecipes() );
 			PrintString("Item: " + key);
-			
-			for(int x = 0; x < recipes.Count(); x++)
-			{
-				PrintString("Recipe: " + recipes.Get(x).ToString());
-			}
+			co.DebugPrint();
+			PrintString("----------------");
 		}
 	}
 	//!sorts ingredients correctly as either first or second ingredient based on their masks
@@ -535,7 +433,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		
 		for(int i = 0; i < num_of_ingredients; i++)
 		{
-			CacheObject co_item = m_CacheItemMap.Get( ingredients_unsorted[i].GetType() );
+			CacheObject co_item = PluginRecipesManager.m_RecipeCache.Get( ingredients_unsorted[i].GetType() );
 			m_IngredientBitMask[i] = co_item.GetMaskByRecipeID(id);
 			m_IngredientBitMaskSize[i] = co_item.GetBitCountByRecipeID(id);
 		}
@@ -622,13 +520,13 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		}
 	}
 	
-	//!fills an array given as a parameter with recipe IDs which 'item_a' and 'item_b' share and where they can function as different ingredients, will return number of recipes in this array
-	protected int GetRecipeIntersection(int num_of_ingredients, ItemBase items[], array<int> matches)
+	//!fills an array with recipe IDs which 'item_a' and 'item_b' share
+	protected int GetRecipeIntersection(int num_of_ingredients, ItemBase items[])
 	{
 		int count = 0;
 		int smallest = 9999;
 		int smallest_index = 0;
-		matches.Clear();
+		m_RecipesMatched.Clear();
 		
 		/*
 		m_Ingredients[0] = item_a;
@@ -639,7 +537,7 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		
 		for(int i = 0; i < num_of_ingredients; i++)
 		{
-			CacheObject cobject = m_CacheItemMap.Get( items[i].GetType() );
+			CacheObject cobject = PluginRecipesManager.m_RecipeCache.Get( items[i].GetType() );
 			if(!cobject) 
 			{
 				return 0;
@@ -654,19 +552,17 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 		
 		//look for matches
 		array<int> recipes = co_least_recipes.GetRecipes();
-		bool fail;
 		for(int x = 0; x < recipes.Count(); x++)
 		{
 			int id = recipes.Get(x);
-			fail = false;
 			for(int z = 0; z < num_of_ingredients; z++)
 			{
 				if( z!= smallest_index)
 				{
-					CacheObject cobject2 = m_CacheItemMap.Get( items[z].GetType() );
+					CacheObject cobject2 = PluginRecipesManager.m_RecipeCache.Get( items[z].GetType() );
 					if( cobject2.IsContainRecipe(id) )
 					{
-						matches.Insert(id);
+						m_RecipesMatched.Insert(id);
 						count++;
 					}
 				}
@@ -698,87 +594,5 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	protected void CreateAllRecipes()
 	{
 		RegisterRecipies();
-	}
-	
-	protected void ReadTest()
-	{
-		ReadCacheFromFile("PATH_CACHE_FILE");//read the cache from a file
-	}
-
-	
-	protected void SaveCacheToFile(string filename)
-	{
-		FileHandle file = OpenFile(filename, FileMode.WRITE);
-		if( file!=0 )
-		{
-			m_CachedItems = new array<string>;
-			GenerateRecipeCache(m_CachedItems);
-		
-			for(int i = 0; i < m_CachedItems.Count(); i++)
-			{
-				string cache_key = m_CachedItems.Get(i);
-				array<int> recipe_array = m_CacheItemMap.Get(cache_key).GetRecipes();
-				array<int> mask_array = m_CacheItemMap.Get(cache_key).GetMasks();
-				
-				
-				FPrintln(file, KEYWORD_NEW_ITEM);
-				FPrintln(file,cache_key);
-				
-				for(int x = 0; x < recipe_array.Count(); x++)
-				{
-					int recipe_id = recipe_array.Get(x);
-					int mask = mask_array.Get(x);
-					FPrintln(file,"recipeID:");
-					FPrintln(file,recipe_id);
-					FPrintln(file,"mask:");
-					FPrintln(file,mask);
-				}
-			}
-			CloseFile(file);
-			m_CachedItems.Clear();
-		}
-		else
-		{
-			Debug.Log("failed to open the cache file");
-		}
-	}
-	
-	protected void ReadCacheFromFile(string filename)
-	{
-		GetGame().ProfilerStart("RECIPE_CACHE_READ");
-		Debug.Log("Reading cache from file","recipes");
-		FileHandle file = OpenFile(filename, FileMode.READ);
-//		Print(file);
-		int line_index = 0;
-		int num_of_items = 0;
-		string cache_key;
-		string curr_line;
-		m_CacheItemMap.Clear();
-		
-		while(true)
-		{
-			int fg = FGets(file,curr_line);
-			//PrintString("fg: "+ToString(fg));
-			if( fg == -1) break;
-			//Debug.Log("Got here","recipes");
-			if( curr_line == KEYWORD_NEW_ITEM)
-			{
-				FGets(file,curr_line);//skip the keyword to get to the classname
-				cache_key = curr_line;
-				m_CacheItemMap.Insert(cache_key, new CacheObject);
-			}
-			else
-			{
-				FGets(file,curr_line);//skip keyword for recipeID
-				int item = curr_line.ToInt();
-				FGets(file,curr_line);//skip keyword for mask
-				FGets(file,curr_line);//get the mask
-				int mask = curr_line.ToInt();
-				m_CacheItemMap.Get(cache_key).AddRecipe(item, mask);
-			}
-		}
-		//PrintCache();
-		CloseFile(file);
-		GetGame().ProfilerStop("RECIPE_CACHE_READ");
 	}
 }

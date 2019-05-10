@@ -405,6 +405,21 @@ class array<Class T>
 			RemoveOrdered(remove_index);
 		}
 	}
+	
+	bool IsValidIndex( int index )
+	{
+		return ( index > -1 && index < Count() );
+	}
+	
+	/*
+	T GetChecked( int index )
+	{
+		if( IsValidIndex( index ) )
+			return Get( index );
+		else
+			return null;
+	}
+	*/
 
 	/**
 	\brief Print all elements in array
@@ -424,11 +439,7 @@ class array<Class T>
 		{
 			T item = Get(i);
 
-			if ( item )
-			{
-				PrintString( "["+i.ToString()+"] => " + string.ToString(item) );
-				//Print( item );
-			}
+			PrintString( "["+i.ToString()+"] => " + string.ToString(item) );
 		}
 	}
 
@@ -481,6 +492,21 @@ class array<Class T>
 		}
 	}
 	
+	void Invert()
+	{
+		int left = 0;
+		int right = Count() - 1;
+		if( right > 1 )
+		{
+			while( left < right )
+			{
+				T temp = Get(left);
+				Set(left++, Get(right));
+				Set(right--, temp);
+			}
+		}
+	}
+	
 	/**
 	\brief Returns a index in array moved by specific number
 		\return \p int Moved index in this array
@@ -527,6 +553,8 @@ class array<Class T>
 		// move_number is 0
 		return new_index;
 	}
+	
+	
 };
 
 //force these to compile so we can link C++ methods to them
@@ -709,6 +737,19 @@ class map<Class TKey,Class TValue>
 		}
 
 		return ret;
+	}
+	
+	bool GetKeyByValueChecked(TValue value, out TKey key)
+	{
+		for (int i = 0; i < Count(); i++)
+		{
+			if (GetElement(i) == value) 
+			{
+				key = GetKey(i);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	proto native MapIterator Begin();

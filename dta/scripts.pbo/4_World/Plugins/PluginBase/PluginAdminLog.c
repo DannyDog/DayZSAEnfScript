@@ -1,64 +1,69 @@
 class PluginAdminLog extends PluginBase			// Class for admin log messages handled by script
 {
-	string 						m_PlayerName;
-	string						m_Pid;
-	vector 						m_Position; 
-	string						m_PlayerPrefix;
-	string 						m_PlayerPrefix2;
-	string						m_DisplayName;
-	float						m_Distance;
-	PlayerBase					m_Source;
-	PlayerIdentity				m_Identity;
-	string 						m_PosArray[3];
-	int 						m_DotIndex;
-	PlayerStat<float>			m_StatWater;
-	PlayerStat<float>			m_StatEnergy;
+	string 							m_PlayerName;
+	string							m_Pid;
+	vector 							m_Position; 
+	string							m_PlayerPrefix;
+	string 							m_PlayerPrefix2;
+	string							m_Message;
+	string							m_DisplayName;
+	string 							m_HitMessage;
+	float							m_Distance;
+	PlayerBase						m_Player;
+	PlayerBase						m_Source;
+	string							m_ItemInHands;
+	string 							m_PosArray[3];
+	int 							m_DotIndex;
+	PlayerStat<float>				m_StatWater;
+	PlayerStat<float>				m_StatEnergy;
 	BleedingSourcesManagerServer	m_BleedMgr;
+	// filters
+	protected int 					m_HitFilter;
+	protected int 					m_PlacementFilter;
+	protected int 					m_ActionsFilter;
+	protected int 					m_PlayerListFilter;
 	
-	/* EXE side ADM log messages (not removable)
+	ref Timer						m_Timer;
+	autoptr array<Man>				m_PlayerArray; 	
+	const int 						TIMER_PLAYERLIST = GetPlayerListTimer();
+		
+	static int GetPlayerListTimer()
+	{
+		return 300; // seconds
+	} 
+	
+	/* 
+		EXE side ADM log messages (not removable):
 		Connect / Disconnect
 		Chat
-		Player->Admin report (ingame chat: #toadmin <text> )	
+		Player->Admin report (ingame chat: #toadmin <text>)	
 	*/
-
+	
 	void PluginAdminLog()
 	{
-		//filtering prep
-		/*FileHandle file;
-		if ( FileExist( "$profile:AdminLog.cfg" ) )
-		{		
-			file = OpenFile("$profile:AdminLog.cfg", FileMode.READ);
-			if (file != 0)
-			{
-				CloseFile(file);
-			}
-			else
-			{
-				LogPrint("Can't open AdminLog.cfg");
-			}
-		}
-		else
+		m_HitFilter = GetGame().ServerConfigGetInt("adminLogPlayerHitsOnly");  //  1 - log player hits only / 0 - log all hits ( animals/infected )
+		m_PlacementFilter = GetGame().ServerConfigGetInt("adminLogPlacement"); //  1 - log placement ( traps, tents )
+		m_ActionsFilter = GetGame().ServerConfigGetInt("adminLogBuildActions"); //  1 - log basebuilding actions ( build, dismantle, destroy )
+		m_PlayerListFilter = GetGame().ServerConfigGetInt("adminLogPlayerList"); // 1 - log periodic player list with position every 5 minutes
+		
+		m_PlayerArray = new array<Man>;
+		
+		if ( m_PlayerListFilter == 1 )
 		{
-			file = OpenFile("$profile:AdminLog.cfg", FileMode.WRITE);
-			if (file != 0)
-			{
-				LogPrint("Configuration not found - creating new AdminLog.cfg");
-				//FPrintln(file, "LogHits=1");
-				//FPrintln(file, "LogPlacement=1");
-				CloseFile(file);
-			}
-			else
-			{
-				LogPrint("Can't create AdminLog.cfg");
-			}
-		}*/
+			m_Timer = new Timer();
+			m_Timer.Run( TIMER_PLAYERLIST , this, "PlayerList", NULL, true );
+		}
 	}
 	
+	void ~PluginAdminLog()
+	{
+	}
+			
 	void LogPrint( string message )
 	{
 		GetGame().AdminLog( message );
 	}
-	
+			
 	string GetPlayerPrefix( PlayerBase player, PlayerIdentity identity )  // player name + id + position prefix for log prints
 	{	
 		
@@ -76,13 +81,31 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		
 		if ( !identity ) 	// return partial message even if it fails to fetch identity 
 		{
-			return "Player \""  + "Unknown Entity" + "\" (id=" + "Unknown" + " pos=<" +  m_PosArray[0] + ", " + m_PosArray[1] + ", " + m_PosArray[2] + ">)";
+			return "Player \"" + "Unknown/Dead Entity" + "\" (id=" + "Unknown" + " pos=<" +  m_PosArray[0] + ", " + m_PosArray[1] + ", " + m_PosArray[2] + ">)";
 		}
 		
-		m_PlayerName = identity.GetName();
+		m_PlayerName = "\"" + identity.GetName() + "\"";
 		m_Pid = identity.GetId();
 		
-		return "Player \""  + m_PlayerName + "\" (id=" + m_Pid + " pos=<" +  m_PosArray[0] + ", " + m_PosArray[1] + ", " + m_PosArray[2] + ">)";
+		if ( !player.IsAlive() )
+		{
+		 	m_PlayerName = m_PlayerName + " (DEAD)"; 
+		}
+		
+		return "Player " + m_PlayerName + " (id=" + m_Pid + " pos=<" +  m_PosArray[0] + ", " + m_PosArray[1] + ", " + m_PosArray[2] + ">)";
+	}
+	
+	string GetHitMessage( TotalDamageResult damageResult, int component, string zone, string ammo) 
+	{	
+		if ( damageResult )	
+		{
+			float dmg = damageResult.GetHighestDamage("Health");
+			return " into " + zone + "(" + component.ToString() + ") for " + dmg.ToString() + " damage (" + ammo + ")";
+		}
+		else 				// block
+		{
+			return " into Block" + "(" + component.ToString() + ") for 0 damage ";
+		}
 	}
 		
 	void PlayerKilled( PlayerBase player, Object source )  // PlayerBase.c   
@@ -111,79 +134,127 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 					LogPrint( m_PlayerPrefix + " died. Stats> could not fetch");
 				}
 			}
-			else if ( source.IsWeapon() )  // player
+			else if ( source.IsWeapon() || source.IsMeleeWeapon() )  // player
 			{				
 				m_Source = PlayerBase.Cast( EntityAI.Cast( source ).GetHierarchyParent() );
 				m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
 				
-				LogPrint( m_PlayerPrefix + " killed by " + m_PlayerPrefix2 + " with " + source.GetDisplayName() );	
+				if ( source.IsMeleeWeapon() )
+				{	
+					LogPrint( m_PlayerPrefix + " killed by " + m_PlayerPrefix2 + " with " + source.GetDisplayName() );	
+				}
+				else
+				{
+					m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
+					LogPrint( m_PlayerPrefix + " killed by " + m_PlayerPrefix2 + " with " + source.GetDisplayName() + " from " + m_Distance + " meters " );
+				}
 			}
 			else					// others
 			{
-				LogPrint( m_PlayerPrefix + " killed by " + source.GetDisplayName() );
+				LogPrint( m_PlayerPrefix + " killed by " + source.GetType() );
 			}
 		}
 		else 
 		{
-			LogPrint("DEBUG: PlayerKilled() player/object does not exist");
+			LogPrint("DEBUG: PlayerKilled() player/source does not exist");
 		}	
 	}
-	
-	void PlayerHitBy( PlayerBase player, EntityAI source, string dmgZone, string ammo ) // PlayerBase.c 
+		
+	void PlayerHitBy( TotalDamageResult damageResult, int damageType, PlayerBase player, EntityAI source, int component, string dmgZone, string ammo ) // PlayerBase.c 
 	{
-		if ( !player.IsAlive() )
+		if ( player && source )		
 		{
-			return;
-		}
-		
-		m_Identity = player.GetIdentity();
-		
-		if ( !source.IsZombie() && !source.IsAnimal() && m_Identity )		// don't log infected/animal hits or if it fails to fetch the identity
-		{
-			m_PlayerPrefix = this.GetPlayerPrefix( player ,  m_Identity );
+			m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() ) + "[HP: " + player.GetHealth().ToString() + "]";
+			m_HitMessage = this.GetHitMessage( damageResult, component, dmgZone, ammo );
 			
-			if ( source.IsPlayer() ) 		// player 
+			switch ( damageType )
 			{
-				if ( ammo == "FallDamage" ) // fall damage
-				{
-					LogPrint( m_PlayerPrefix + " suffered " + ammo );	
-					return;
-				}
+				case DT_CLOSE_COMBAT:	// Player melee, animals, infected 
 				
-				m_Source = PlayerBase.Cast( source );
-				m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
-
-				LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
-				
-			}
-			else if ( Object.Cast(source).IsWeapon() || Object.Cast(source).IsMeleeWeapon() )  // weapon
-			{
-							
-				m_Source = PlayerBase.Cast( source.GetHierarchyParent() );
-				m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );	
-				
-				if ( source.IsMeleeWeapon() )		// melee
-				{
-					LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo );	
-				}
-				else								// ranged
-				{
-					m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );	
+					if ( m_HitFilter != 1 && ( source.IsZombie() || source.IsAnimal() ) )  // Infected & Animals
+					{
+						m_DisplayName = Object.Cast( source ).GetDisplayName();
+												
+						LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + m_HitMessage );	
+					}			
+					else if ( source.IsPlayer() )				// Fists
+					{
+						m_Source = PlayerBase.Cast( source );
+						m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
 					
-					LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + " into " + dmgZone + " with " + ammo + " from " + m_Distance + " meters ");	
-				}
+						LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + m_HitMessage );
+					}
+					else if ( source.IsMeleeWeapon() )			// Melee weapons
+					{				
+						m_ItemInHands = source.GetDisplayName();		
+						m_Source = PlayerBase.Cast( source.GetHierarchyParent() );
+						m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
+			
+						LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + m_HitMessage + " with " + m_ItemInHands );				
+					}
+					else
+					{
+						m_DisplayName = Object.Cast(source).GetType();
+					
+						LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + m_HitMessage );					
+					} 
+					break;
+				
+				case DT_FIRE_ARM:		// Player ranged
+				
+					if ( source.IsWeapon() )
+					{
+						m_ItemInHands = source.GetDisplayName();				
+						m_Source = PlayerBase.Cast( source.GetHierarchyParent() );
+						m_PlayerPrefix2 = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
+						m_Distance = vector.Distance( player.GetPosition(), m_Source.GetPosition() );
+					
+						LogPrint( m_PlayerPrefix + " hit by " + m_PlayerPrefix2 + m_HitMessage + " with " + m_ItemInHands + " from " + m_Distance + " meters ");
+					}
+					else 
+					{
+						m_DisplayName = Object.Cast(source).GetType();
+					
+						LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + m_HitMessage );			
+					}
+					break;
+				
+				case DT_EXPLOSION:		// Explosion
+				
+					LogPrint( m_PlayerPrefix + " hit by explosion (" + ammo + ")" );
+					break;
+				
+				case DT_CUSTOM:			// Others (Vehicle hit, fall, fireplace, barbed wire ...)
+								
+					if ( ammo == "FallDamage" )			// Fall
+					{
+						LogPrint( m_PlayerPrefix + " hit by " + ammo );	
+					}
+					else if ( Object.Cast(source).GetType() == "AreaDamageTrigger" )  
+					{
+						EntityAI parent = AreaDamageTrigger.Cast( source ).GetParentObject();
+						if ( parent )
+						{
+							LogPrint( m_PlayerPrefix + " hit by " + Object.Cast( parent ).GetType() + " with " + ammo );	
+						}
+					}
+					else
+					{
+						m_DisplayName = Object.Cast(source).GetType();
+										
+						LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + " with " + ammo );
+					}
+					break;
+							
+				default:
+				
+					LogPrint("DEBUG: PlayerHitBy() unknown damageType");
+					break;
 			}
-			else  // others
-			{
-				m_DisplayName = Object.Cast(source).GetDisplayName();
-				
-				if ( dmgZone == "" )
-				{
-					dmgZone = "body";
-				}
-				
-				LogPrint( m_PlayerPrefix + " hit by " + m_DisplayName + " into " + dmgZone );	
-			}			
+		}
+		else
+		{
+			LogPrint("DEBUG: player/source does not exist");
 		}
 	}
 	
@@ -203,21 +274,66 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 			LogPrint( m_PlayerPrefix + " regained consciousness" );		
 		}
 	}
-	
-	void OnPlacementComplete( Man player, TrapBase item ) // TrapBase.c 
-	{
-		m_Source = PlayerBase.Cast( player ); 
-		m_PlayerPrefix = this.GetPlayerPrefix( m_Source ,  m_Source.GetIdentity() );
-		m_DisplayName = item.GetDisplayName();		
 		
-		if ( m_DisplayName != "")
-		{
-			LogPrint( m_PlayerPrefix + " placed " + m_DisplayName );
+	void OnPlacementComplete( Man player, ItemBase item ) // ItemBase.c
+	{
+		if ( m_PlacementFilter == 1 )
+		{		
+			m_Source = PlayerBase.Cast( player ); 
+			m_PlayerPrefix = this.GetPlayerPrefix( m_Source , m_Source.GetIdentity() );		
+			m_DisplayName = item.GetDisplayName();
+			
+			if ( m_DisplayName == "" )
+			{
+				LogPrint( m_PlayerPrefix + " placed unknown object" );
+			} 
+			else
+			{
+				LogPrint( m_PlayerPrefix + " placed " + m_DisplayName );
+			}
 		}
-		else
-		{
-			LogPrint( m_PlayerPrefix + " placed " + "unknown trap" );
-		}
+	}
+	
+	void OnContinouousAction( ActionData action_data )	// ActionContinouousBase.c
+	{
+		if ( m_ActionsFilter == 1 )
+		{						
+			switch ( action_data.m_Action.GetType() )
+			{
+			case AT_DESTROY_COMBINATION_LOCK :
+				
+				m_Message = " destroyed combination lock with " + action_data.m_MainItem.GetDisplayName();
+				break;	
+							
+			case AT_BUILD_PART :
+				
+				m_Message = " built " + action_data.m_Target.GetObject().GetDisplayName() + " with " + action_data.m_MainItem.GetDisplayName();
+				break;		
+				
+			case AT_DISMANTLE_PART :
+				
+				m_Message = " dismantled " + action_data.m_Target.GetObject().GetDisplayName() + " with " + action_data.m_MainItem.GetDisplayName();
+				break;	
+				
+			case AT_DESTROY_PART :
+				
+				m_Message = " destroyed " + action_data.m_Target.GetObject().GetDisplayName() + " with " + action_data.m_MainItem.GetDisplayName();
+				break;		
+				
+			case AT_FOLD_BASEBUILDING_OBJECT :
+				
+				m_Message = " folded " + action_data.m_Target.GetObject().GetDisplayName();
+				break;	
+												
+			default:
+				
+				return;		
+			}
+			
+			m_PlayerPrefix = this.GetPlayerPrefix( action_data.m_Player , action_data.m_Player.GetIdentity() );
+			
+			LogPrint( m_PlayerPrefix + m_Message );
+		}	
 	}
 	
 	void Suicide( PlayerBase player )  // EmoteManager.c 
@@ -232,5 +348,25 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 		m_PlayerPrefix = this.GetPlayerPrefix( player ,  player.GetIdentity() );
 		
 		LogPrint( m_PlayerPrefix + " bled out" );
+	}
+	
+	void PlayerList()
+	{
+		GetGame().GetPlayers( m_PlayerArray );
+		
+		if ( m_PlayerArray.Count() != 0 )
+		{	
+			LogPrint( "##### PlayerList log: " + m_PlayerArray.Count().ToString() + " players" );
+						
+			foreach ( Man player: m_PlayerArray )
+			{
+				m_Player = PlayerBase.Cast(player);
+				m_PlayerPrefix = this.GetPlayerPrefix( m_Player ,  m_Player.GetIdentity() );
+				
+				LogPrint( m_PlayerPrefix );							
+			}
+			
+			LogPrint( "#####" );
+		}
 	}
 }

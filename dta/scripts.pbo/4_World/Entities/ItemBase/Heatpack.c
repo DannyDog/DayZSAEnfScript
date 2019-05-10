@@ -23,4 +23,11 @@ class Heatpack : ItemBase
 			SetHealth(0);
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnHeatpack);
+	}
 };

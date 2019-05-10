@@ -88,7 +88,7 @@ class HumanItemBehaviorCfg
 class HumanItemAccessor
 {
 	//! signalization from script to engine that item in hands changed
-	proto native void 	OnItemInHandsChanged();
+	proto native void 	OnItemInHandsChanged(bool pInstant = false);
 	
 	//! reset weapon anim override in case of premature death
 	proto native void 	ResetWeaponInHands();

@@ -44,6 +44,60 @@ const int EUABACKLIT_FADEIN_FAST		= 7;	// fast in -> then stay on
 //
 
 
+const int EUAB_OFF						= 0;	// all off
+
+// logos :: anims
+const int EUAB_LOGO_DAYZ				= 10;
+const int EUAB_LOGO_CONNECTING			= 11;
+
+// menus :: anims
+const int EUAB_MENU_BROWSER				= 20;
+const int EUAB_MENU_MAIN				= 21;
+const int EUAB_MENU_KEYBINDING			= 22;
+const int EUAB_MENU_OPTIONS				= 23;
+
+// car :: basic background colour + overlay + transition anims
+const int EUAB_CAR_OFF					= 100;	// sitting in car with engine off
+const int EUAB_CAR_ON_NOLIGHTS			= 101;	// driving w/o lights (day)
+const int EUAB_CAR_ON_LIGHTS			= 102;	// driving with headlights (night)
+const int EUAB_CAR_STARTING				= 103;	// short starting animation
+const int EUAB_CAR_ENTER				= 104;	// entering car
+const int EUAB_CAR_LEAVE				= 105;	// leaving car
+const int EUAB_CAR_CRASH				= 106;	// crashed
+
+// character :: basic background colour + overlay + transition anims
+const int EUAB_PLR_WALK					= 200;
+const int EUAB_PLR_RUN					= 201;
+const int EUAB_PLR_SPRINT				= 202;
+const int EUAB_PLR_SWIM					= 203;
+const int EUAB_PLR_HITBY				= 204;
+const int EUAB_PLR_CONSUME				= 205;
+const int EUAB_PLR_CRAFTING				= 206;
+const int EUAB_PLR_EMOTE				= 207;	// playing emote
+const int EUAB_PLR_UNCONSCIOUS			= 208;
+const int EUAB_PLR_DEAD					= 209;
+
+// modes :: these are set of background colours
+const int EUAB_MODE_NIGHT				= 300;
+const int EUAB_MODE_MORNING_BAD			= 301;
+const int EUAB_MODE_MORNING_GOOD		= 302;
+const int EUAB_MODE_DAY_FOGGY			= 303;
+const int EUAB_MODE_DAY_OVERCAST		= 304;
+const int EUAB_MODE_DAY_NICE			= 305;
+const int EUAB_MODE_EVENING_BAD			= 306;
+const int EUAB_MODE_EVENING_GOOD		= 307;
+
+const int EUAB_MODE_FLASHLIGHT			= 320;
+const int EUAB_MODE_CHEMLIGHT			= 321;
+
+
+// overlay types
+const int EUAB_OVERLAY_NONE				= 400;	// no overlay
+const int EUAB_OVERLAY_CONTROLS			= 401;	// highlighted controls
+const int EUAB_OVERLAY_STATUS			= 402;	// numpad + mouse used for health/ blood level visualisation
+const int EUAB_OVERLAY_VON				= 403;	// VON status
+
+
 //-----------------------------------------------------------------------------
 //! Backlit effect class
 
@@ -74,7 +128,7 @@ class Backlit
 		GetUApi().Backlit_KeyByName("kA",EUABLAYER_LOADING,EUABACKLIT_ON,0xffcf0000);
 		GetUApi().Backlit_KeyByName("kY",EUABLAYER_LOADING,EUABACKLIT_ON,0xffaf0000);
 		GetUApi().Backlit_KeyByName("kZ",EUABLAYER_LOADING,EUABACKLIT_ON,0xff8f0000);
-		GetUApi().Backlit_Animation("Animations/Loading/",2,0xffc8c8c8,0xff080808);
+		GetUApi().Backlit_Animation("Loading/",2,0xffc8c8c8,0xff080808);
 		GetUApi().Backlit_ForceUpdate();
 	}
 
@@ -86,7 +140,7 @@ class Backlit
 	
 		// lighten up your desktop
 		GetUApi().Backlit_Remove(EUABLAYER_ALL);
-		GetUApi().Backlit_Animation("Animations/MainMenu/",2,0xffff0000,0xff080000);
+		GetUApi().Backlit_Animation("MainMenu/",2,0xffff0000,0xff080000);
 		GetUApi().Backlit_ForceUpdate();
 	}
 	
@@ -135,7 +189,7 @@ class Backlit
 		// reset queue
 		GetUApi().Backlit_EmptyQueue();
 		// play hit animation
-		GetUApi().Backlit_Animation("Animations/Water/",0,0xff00ffff,0xffffffff);
+		GetUApi().Backlit_Animation("Water/",0,0xff00ffff,0xffffffff);
 	}
 
 	// ...

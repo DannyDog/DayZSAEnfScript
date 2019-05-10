@@ -72,4 +72,13 @@ class Land_Radio_PanelBig extends StaticTransmitter
 		EnableReceive ( false );	
 		SwitchOn ( false );		
 	}
+	
+#ifndef OLD_ACTIONS
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTuneFrequencyOnGround);
+	}
+#endif
 }

@@ -56,6 +56,63 @@ class KeybindingElement extends ScriptedWidgetEventHandler
 		return m_CustomAlternateBind;
 	}
 	
+	// assembly all related binding at widget element
+	void SetElementTitle( ButtonWidget btnWidget, UAInput pInput, int iDeviceFlags )
+	{
+		string output;
+		int a, i, countbind = 0;
+	
+		for( a = 0; a < pInput.AlternativeCount(); a++ )
+		{
+			pInput.SelectAlternative(a);
+			if( pInput.IsCombo() )
+			{
+				if( pInput.BindingCount() > 0 )
+				{
+					if( pInput.Binding(0) != 0 && pInput.CheckBindDevice(0,iDeviceFlags) )
+					{
+						if( countbind > 0 )
+							output += ", ";
+						
+						output += GetUApi().GetButtonName( pInput.Binding(0) );
+						countbind++;
+						
+						for( i = 1; i < pInput.BindingCount(); i++ )
+						{
+							if( pInput.Binding(i) != 0 )
+							{
+								output += " + " + GetUApi().GetButtonName( pInput.Binding(i) );
+								countbind++;
+							}
+						}
+						
+					}
+				}
+			}
+			else
+			{
+				if( pInput.BindingCount() > 0 )
+				{
+					if( pInput.Binding(0) != 0 && pInput.CheckBindDevice(0,iDeviceFlags) )
+					{
+						if( countbind > 0 )
+							output += ", ";
+
+						output += GetUApi().GetButtonName( pInput.Binding(0) );
+						countbind++;
+					}
+				}
+			}
+			
+		}
+
+		// nothing may be available - we do not want "null" or "0" in string
+		if( countbind > 0 )
+			btnWidget.SetText(output);
+		else
+			btnWidget.SetText("");
+	}
+	
 	void Reload()
 	{
 		UAInput input			= GetUApi().GetInputByID( m_ElementIndex );
@@ -78,6 +135,10 @@ class KeybindingElement extends ScriptedWidgetEventHandler
 			{
 				m_ElementModifier.SetText( "#keybind_hold" );
 			}
+			if( input.IsClickLimit() )
+			{
+				m_ElementModifier.SetText( "#keybind_click" );
+			}
 			if( input.IsDoubleClickLimit() )
 			{
 				m_ElementModifier.SetText( "#keybind_doubletap" );
@@ -90,65 +151,15 @@ class KeybindingElement extends ScriptedWidgetEventHandler
 		
 		string option_text;
 		string name;
-		string output;
-		int i;
 		
 		GetGame().GetInput().GetActionDesc( m_ElementIndex, option_text );
 		m_ElementName.SetText( option_text );
+		
+		// column #1 :: keyboard + mouse
+		SetElementTitle(m_PrimaryBindButton, input, EUAINPUT_DEVICE_KEYBOARDMOUSE);
 
-		if( input.AlternativeCount() > 0 )
-		{
-			input.SelectAlternative( 0 );
-			if( input.IsCombo() )
-			{
-				if( input.BindingCount() > 0 )
-				{
-					if( input.Binding( 0 ) != 0 )
-						output = GetUApi().GetButtonName( input.Binding( 0 ) );
-				}
-				for( i = 1; i < input.BindingCount(); i++ )
-				{
-					if( input.Binding( i ) != 0 )
-						output += " + " + GetUApi().GetButtonName( input.Binding( i ) );
-				}
-			}
-			else
-			{
-				if( input.BindingCount() > 0 )
-				{
-					if( input.Binding( 0 ) != 0 )
-						output = GetUApi().GetButtonName( input.Binding( 0 ) );
-				}
-			}
-			m_PrimaryBindButton.SetText( output );
-		}
-			
-		if( input.AlternativeCount() > 1 )
-		{
-			input.SelectAlternative( 1 );
-			if( input.IsCombo() )
-			{
-				if( input.BindingCount() > 0 )
-				{
-					if( input.Binding( 0 ) != 0 )
-						output = GetUApi().GetButtonName( input.Binding( 0 ) );
-				}
-				for( i = 1; i < input.BindingCount(); i++ )
-				{
-					if( input.Binding( i ) != 0 )
-						output += " + " + GetUApi().GetButtonName( input.Binding( i ) );
-				}
-			}
-			else
-			{
-				if( input.BindingCount() > 0 )
-				{
-					if( input.Binding( 0 ) != 0 )
-						output = GetUApi().GetButtonName( input.Binding( 0 ) );
-				}
-			}
-			m_AlternativeBindButton.SetText( output );
-		}
+		// column #2 :: controller
+		SetElementTitle(m_AlternativeBindButton, input, EUAINPUT_DEVICE_CONTROLLER);
 	}
 	
 	void Reload( array<int> custom_binds, bool is_alternate )
@@ -247,6 +258,7 @@ class KeybindingElement extends ScriptedWidgetEventHandler
 		{
 			m_PrimaryBindButton.SetColor( ARGBF( 1, 1, 0, 0 ) );
 			m_PrimaryClear.Show( true );
+			m_PrimaryClear.Update();
 			m_AlternativeClear.Show( false );
 			return true;
 		}
@@ -255,6 +267,7 @@ class KeybindingElement extends ScriptedWidgetEventHandler
 			m_AlternativeBindButton.SetColor( ARGBF( 1, 1, 0, 0 ) );
 			m_PrimaryClear.Show( false );
 			m_AlternativeClear.Show( true );
+			m_AlternativeClear.Update();
 			return true;
 		}
 		else

@@ -4,7 +4,7 @@ class DisplayElementTendency extends DisplayElementBase
 	protected int SERIOUSNESS_BIT_MASK = 7;// second x bits
 	protected int SERIOUSNESS_BIT_OFFSET = 3;//bit offset - points to where seriousness bit starts(TODO: get as log from mask)
 	
-	void DisplayElementTendency()
+	void DisplayElementTendency(PlayerBase player)
 	{
 		NUM_OF_BITS = 6;//the overall num of bits this element occupies(can be calculated from masks, better leave it explicit)
 	}
@@ -17,6 +17,7 @@ class DisplayElementTendency extends DisplayElementBase
 	
 	override void UpdateHUD()
 	{
+		super.UpdateHUD();
 		int seriousness = m_Value >> SERIOUSNESS_BIT_OFFSET;
 		int tendency = TENDENCY_MASK & m_Value;
 		//PrintString(tendency.ToString());

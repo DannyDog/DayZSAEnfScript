@@ -205,7 +205,8 @@ class PluginDeveloper extends PluginBase
 
 	void SetupSpawnedEntity (EntityAI entity, float health, float quantity, bool special = false)
 	{
-		entity.OnDebugSpawn();
+		if(special)
+			entity.OnDebugSpawn();
 		if ( entity.IsInherited( PlayerBase ) ) 
 		{
 			PlayerBase plr = PlayerBase.Cast( entity );
@@ -306,7 +307,7 @@ class PluginDeveloper extends PluginBase
 					}
 					else
 					{
-						EntityAI eai = GetGame().SpawnEntity(item_name, il);
+						EntityAI eai = GetGame().SpawnEntity(item_name, il, ECE_IN_INVENTORY, RF_DEFAULT);
 						if ( eai && eai.IsInherited(ItemBase) )
 						{
 							ItemBase i = ItemBase.Cast( eai );
@@ -435,7 +436,7 @@ class PluginDeveloper extends PluginBase
 			if ( g_Game.GetUIManager().GetMenu() == NULL )
 			{
 				g_Game.GetUIManager().EnterScriptedMenu(MENU_SCRIPTCONSOLE, NULL);
-				GetGame().GetMission().PlayerControlDisable();
+				GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
 			}
 			else if ( g_Game.GetUIManager().IsMenuOpen(MENU_SCRIPTCONSOLE) )
 			{
@@ -554,5 +555,13 @@ class PluginDeveloper extends PluginBase
 	void SortStringArray( TStringArray arr )
 	{
 		QuickSort( arr, 0, arr.Count() - 1 );
+	}
+	
+	void ResetGUI()
+	{
+		if( GetGame() && GetGame().GetMission() )
+		{
+			GetGame().GetMission().ResetGUI();
+		}
 	}
 }

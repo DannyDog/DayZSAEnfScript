@@ -32,12 +32,12 @@ class InventorySlots
 	 * @param[in]	slot_id	\p	slot id to be find.
 	 * @return		string or null string
 	 **/
-	static proto string GetSlotName (int id);
+	static proto native owned string GetSlotName (int id);
 	/**@fn		IsSlotIdValid
 	 * @brief	verifies existence of the slot id
 	 * @return	true if slot valid
 	 **/
-	static proto native bool IsSlotIdValid (int slot_Id);
+	static proto native bool IsSlotIdValid (int slotId);
 	/**@fn		GetStackMaxForSlotId
 	 * @param[in]	slot_id	\p	queried slot
 	 * @return	stackMax attribute from corresponding entry (or default value == 1)

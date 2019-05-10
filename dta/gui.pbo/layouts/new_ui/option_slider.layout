@@ -27,7 +27,7 @@ GridSpacerWidgetClass option_slider_root {
     SliderWidgetClass option_value {
      clipchildren 0
      ignorepointer 0
-     color 1 1 1 0.9961
+     color 1 1 1 0.549
      size 0.94 0.55
      halign center_ref
      valign center_ref

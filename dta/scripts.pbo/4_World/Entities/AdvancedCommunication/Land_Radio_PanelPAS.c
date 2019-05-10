@@ -80,5 +80,5 @@ class Land_Radio_PanelPAS extends PASBroadcaster
 	protected void SoundTurnOff()
 	{
 		PlaySoundSet( m_Sound, SOUND_PAS_TURN_OFF, 0, 0 );
-	}	
+	}
 }

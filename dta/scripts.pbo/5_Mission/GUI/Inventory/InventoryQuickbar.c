@@ -1,18 +1,12 @@
 class InventoryQuickbar extends InventoryGridController
 {
 	
-	protected ref TItemsMap	m_Items;//tmp
+	protected ref TItemsMap	m_Items;
 	protected InventoryGrid	m_Grid;
 	protected int			m_DraggingIndex;
-	protected int			m_QuickbarSize;
-
-	protected int			m_QuickBarGridWidth;
 	
 	void InventoryQuickbar(Widget quickbarGridWidget)
 	{
-		float x, y;
-		quickbarGridWidget.GetScreenSize( x, y );
-		m_QuickBarGridWidth = y;
 		m_DraggingIndex = INDEX_NOT_FOUND;
 		m_Items = new TItemsMap;
 		UpdateItems( quickbarGridWidget );
@@ -34,14 +28,13 @@ class InventoryQuickbar extends InventoryGridController
 			return;
 		
 		int i;
-		float width, height, x, y, screen_w, screen_h;
-		quickbarGridWidget.GetScreenSize( x, y );
-		m_QuickBarGridWidth = y;
 
 		// create grid and align it to center
-		if( quickbarGridWidget )
+		if( !m_Grid )
 		{
 			quickbarGridWidget.GetScript( m_Grid );
+			m_Grid.SetController( this );
+			m_Grid.GenerateQuickBarBackgroundTiles( 10 );
 		}
 		
 		m_Items.Clear();
@@ -49,43 +42,13 @@ class InventoryQuickbar extends InventoryGridController
 		
 		if( m_Grid )
 		{
-			if( m_QuickbarSize != player.GetQuickBarSize() )
+			if( m_Grid.GetGridSize() != player.GetQuickBarSize() )
 			{
-				while( m_Grid.GetRoot().GetChildren() )
-				{
-					delete m_Grid.GetRoot().GetChildren();
-				}
-
-				m_QuickbarSize = player.GetQuickBarSize();
-				m_Grid.SetGridItemsSize( m_QuickBarGridWidth, m_QuickBarGridWidth );
-				m_Grid.SetGridSize( m_QuickbarSize, 1 );
-				m_Grid.SetController( this );		
-				m_Grid.GenerateQuickBarBackgroundTiles( m_QuickbarSize );
-				
-				float size = m_QuickBarGridWidth / 2.5;
-				m_Grid.SetQuantityPanelSize( size );
-				
-				for (i = 0; i < m_QuickbarSize; i++)
-				{
-					item = InventoryItem.Cast( player.GetQuickBarEntity(i) );
-					if( item )
-					{
-						m_Grid.AddItem(item, Vector(i, 1, 1), Vector(0,0,0) );
-					}
-				}
+				m_Grid.SetGridSize( player.GetQuickBarSize() );
 			}
 		}
 		
-		// align quickbar to center
-		quickbarGridWidget.GetSize( width, height );
-		quickbarGridWidget.GetPos(x, y);
-		quickbarGridWidget.GetParent().GetScreenSize( screen_w, screen_h );
-		float new_x =  0.5 - ( ( width / screen_w ) * 0.5 );
-		quickbarGridWidget.SetPos( new_x, y );
-		quickbarGridWidget.SetColor( 0x7FFFFFFF );
-
-		m_QuickbarSize = player.GetQuickBarSize();
-		for( i = 0; i < m_QuickbarSize; i++)
+		for( i = 0; i < m_Grid.GetGridSize(); i++)
 		{
 			item = InventoryItem.Cast( player.GetQuickBarEntity(i) );
 			if( item )
@@ -104,7 +67,7 @@ class InventoryQuickbar extends InventoryGridController
 	{
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 
-		for ( int i = 0; i < m_QuickbarSize; i++ )
+		for ( int i = 0; i < m_Grid.GetGridSize(); i++ )
 		{
 			InventoryItem item = InventoryItem.Cast( player.GetQuickBarEntity(i) );
 			if(item == itemToRemove) 
@@ -135,20 +98,21 @@ class InventoryQuickbar extends InventoryGridController
 
 	override void OnItemDraggingOver(InventoryGrid grid, Widget w, int row, int col)
 	{
-		bool old_inventory = false;
 		ItemPreviewWidget iw;
 		InventoryItem dragged_item;
 		iw = ItemPreviewWidget.Cast( w.FindAnyWidget( "Render" ) );
 		if( !iw )
 		{
-		  string name = w.GetName();
-		  name.Replace( "PanelWidget", "Render" );
-		  iw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
+			string name = w.GetName();
+			name.Replace( "PanelWidget", "Render" );
+			iw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
 		} 
+		
 		if( !iw || !iw.GetItem() )
 		{
 			return;
 		}
+		
 		if(!dragged_item && iw)
 			dragged_item = InventoryItem.Cast( iw.GetItem() );
 
@@ -169,7 +133,6 @@ class InventoryQuickbar extends InventoryGridController
 			{
 				name = w.GetName();
 				name.Replace( "PanelWidget", "Cursor" );
-				w.FindAnyWidget( name ).SetColor( color );
 				if( w.FindAnyWidget( name ) )
 				{
 					w.FindAnyWidget( name ).SetColor( color );
@@ -205,9 +168,9 @@ class InventoryQuickbar extends InventoryGridController
 		ItemPreviewWidget iw = ItemPreviewWidget.Cast( w.FindAnyWidget( "Render" ) );
 		if( !iw )
 		{
-		  string name = w.GetName();
-		  name.Replace( "PanelWidget", "Render" );
-		  iw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
+			string name = w.GetName();
+			name.Replace( "PanelWidget", "Render" );
+			iw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
 		}
 		
 		if(!dragged_item && iw)
@@ -266,14 +229,9 @@ class InventoryQuickbar extends InventoryGridController
 		}
 	}
 	
-	int GetQuickbarWidth()
-	{
-		return m_QuickBarGridWidth;
-	}
-	
 	override int GetQuickbarItemColor( InventoryGrid grid, InventoryItem item )
 	{
-		int color = InventoryGrid.ITEM_COLOR_QUICKBAR_NORMAL;
+		int color = 0x0AFFFFFF;
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		EntityAI itemInHand = player.GetHumanInventory().GetEntityInHands();
 		if( player && itemInHand == item )
@@ -309,13 +267,4 @@ class InventoryQuickbar extends InventoryGridController
 	{
 		return QuantityConversions.GetItemQuantity( item );
 	}
-
-	/*void OnItemEnter(InventoryGrid grid, Widget w, int row, int col);
-	void OnItemLeave(InventoryGrid grid, Widget w);
-	void OnItemDrag(InventoryGrid grid, Widget w, int row, int col);
-	void OnItemDraggingOver(InventoryGrid grid, Widget w, int row, int col);
-	void OnItemDrop(InventoryGrid grid, Widget w);
-	void OnItemDropReceived(InventoryGrid grid, Widget w, int row, int col);
-	void OnItemRightClick(InventoryGrid grid, Widget w, int row, int col);
-	void OnItemDoubleClick(InventoryGrid grid, Widget w, int row, int col);*/
 }

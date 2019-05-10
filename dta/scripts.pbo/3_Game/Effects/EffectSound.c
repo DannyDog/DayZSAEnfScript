@@ -344,6 +344,7 @@ class EffectSound : Effect
 				else
 				{
 					SetSoundVolume( m_SoundWaveVolumeMax );
+					m_SoundWaveStarting = false;
 				}
 			}
 			

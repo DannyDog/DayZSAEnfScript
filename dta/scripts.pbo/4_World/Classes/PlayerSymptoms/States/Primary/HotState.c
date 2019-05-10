@@ -25,19 +25,25 @@ class HotSymptom extends SymptomBase
 		
 	}
 	
+	override bool CanActivate()
+	{
+		return true;
+	}
+	
 	//!gets called once on an Symptom which is being activated
 	override void OnGetActivatedServer(PlayerBase player)
 	{	
 		HumanMovementState hms = new HumanMovementState();
 		player.GetMovementState(hms);
+		ItemBase item = m_Player.GetItemInHands();
 		
-		if( m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE && hms.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_IDLE )
+		if(!(item && item.IsHeavyBehaviour()) && m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE && hms.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_IDLE && !player.IsRestrained() )
 		{
 			PlayAnimationADD(3);
 		}
 		else
 		{
-			PlaySound(EPlayerSoundEventID.FREEZING);
+			//PlaySound(EPlayerSoundEventID.FREEZING);
 		}
 	}
 
@@ -60,6 +66,6 @@ class HotSymptom extends SymptomBase
 	
 	override SmptAnimMetaBase SpawnAnimMetaObject()
 	{
-		return new SmptAnimMetaADD();
+		return new HeatComfortmMetaADD();
 	}
 }

@@ -117,4 +117,14 @@ class Defibrillator extends ItemBase
 		
 		GetCompEM().SwitchOff();
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+		AddAction(ActionDefibrilateTarget);
+		AddAction(ActionDefibrilateSelf);
+	}
 }

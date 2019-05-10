@@ -8,7 +8,7 @@ class PCOHandlerStats
 	void PCOHandlerStats()
 	{
 		RegisterPCO(new PlayerStatsPCO_v100);
-		RegisterPCO(new PlayerStatsPCO_v101);
+		RegisterPCO(new PlayerStatsPCO_current);
 	}
 	
 	void RegisterPCO(PlayerStatsPCO_Base pco)
@@ -198,7 +198,7 @@ class PlayerStatsPCO_v101 extends PlayerStatsPCO_Base
 		RegisterStat(EPlayerStats_v101.STAMINA,  		new PlayerStat<float>	(0,						STAMINA_MAX,			100,					"Stamina",			EPSstatsFlags.EMPTY) );
 		RegisterStat(EPlayerStats_v101.SPECIALTY,  		new PlayerStat<float>	(-1,					1,						0,						"Specialty",		EPSstatsFlags.EMPTY) );
 		RegisterStat(EPlayerStats_v101.BLOODTYPE,  		new PlayerStat<int>		(0,						128,					BloodTypes.GenerateBloodType(),	"BloodType",		EPSstatsFlags.EMPTY) );
-		RegisterStat(EPlayerStats_v101.TOXICITY,  		new PlayerStat<float>		(0,						100,					0,						"Toxicity",			EPSstatsFlags.EMPTY) );
+		RegisterStat(EPlayerStats_v101.TOXICITY,  		new PlayerStat<float>	(0,						100,					0,						"Toxicity",			EPSstatsFlags.EMPTY) );
 	}
 };
 
@@ -212,10 +212,8 @@ enum EPlayerStats_current: EPlayerStats_v101
 	
 };
 
-
+//mod this class, it will always point to the latest version
 class PlayerStatsPCO_current extends PlayerStatsPCO_v101
 {
 
 };
-//---------------------------------------------------------------
-//---------------------------------------------------------------

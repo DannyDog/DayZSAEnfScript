@@ -1,7 +1,5 @@
 class AntibioticsMdfr: ModifierBase
 {
-	float 			m_LastWaterLevel;
-	ref HumanMovementState		m_MovementState	= new HumanMovementState();
 	float m_RegenTime;
 	const int ANTIBIOTICS_LIFETIME = 300;
 	const float ANTIBIOTICS_STRENGTH = 4;
@@ -26,14 +24,20 @@ class AntibioticsMdfr: ModifierBase
 		OnActivate(player);
 	}
 	
+	override string GetDebugText()
+	{
+		return (ANTIBIOTICS_LIFETIME - GetAttachedTime()).ToString();
+	}
+
+	
 	override void OnActivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().AttachByType(eNotifiers.NTF_PILLS);
+		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DetachByType(eNotifiers.NTF_PILLS);
+		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)

@@ -89,13 +89,13 @@ class ScriptCamera: GenericEntity
 		imanager.ActivateContext("ScriptCameraFreeFlyContext");
 		
 		// get input
-		float turnX 		= imanager.GetActionValue("CamTurnRight") * 20.0 * timeSlice;
-		float turnY 		= imanager.GetActionValue("CamTurnUp") * 20.0 * timeSlice;
-		float turnZ			= imanager.GetActionValue("CamRotate") * 20.0 * timeSlice;
-		float moveForward	= imanager.GetActionValue("CamForward");
-		float moveRight 	= imanager.GetActionValue("CamRight");
-		float moveAscend 	= imanager.GetActionValue("CamAscend");
-		float speedDelta   	= imanager.GetActionValue("CamSpeedDelta") * timeSlice;
+		float turnX 		= imanager.LocalValue("CamTurnRight") * 20.0 * timeSlice;
+		float turnY 		= imanager.LocalValue("CamTurnUp") * 20.0 * timeSlice;
+		float turnZ			= imanager.LocalValue("CamRotate") * 20.0 * timeSlice;
+		float moveForward	= imanager.LocalValue("CamForward");
+		float moveRight 	= imanager.LocalValue("CamRight");
+		float moveAscend 	= imanager.LocalValue("CamAscend");
+		float speedDelta   	= imanager.LocalValue("CamSpeedDelta") * timeSlice;
 		bool speedBoostHigh   	= imanager.GetActionTriggered("CamSpeedBoostHigh");
 		bool speedBoostLow  = imanager.GetActionTriggered("CamSpeedBoostLow");
 
@@ -156,12 +156,12 @@ class ScriptCamera: GenericEntity
 		DbgUI.SliderFloat("Mouse sensitivity", sensitivity, 1, 1999);
 		m_MouseSensitivity = 1 / (2000 - sensitivity);
 		
-		DbgUI.Text("CamTurnRight: " + imanager.GetActionValue("CamTurnRight"));
-		DbgUI.Text("CamTurnUp: " + imanager.GetActionValue("CamTurnUp"));
-		DbgUI.Text("CamSpeedDelta: " + imanager.GetActionValue("CamSpeedDelta"));
-		DbgUI.Text("CamForward: " + imanager.GetActionValue("CamForward"));
-		DbgUI.Text("CamRight: " +imanager.GetActionValue("CamRight"));
-		DbgUI.Text("CamAscend: " + imanager.GetActionValue("CamAscend"));
+		DbgUI.Text("CamTurnRight: " + imanager.LocalValue("CamTurnRight"));
+		DbgUI.Text("CamTurnUp: " + imanager.LocalValue("CamTurnUp"));
+		DbgUI.Text("CamSpeedDelta: " + imanager.LocalValue("CamSpeedDelta"));
+		DbgUI.Text("CamForward: " + imanager.LocalValue("CamForward"));
+		DbgUI.Text("CamRight: " +imanager.LocalValue("CamRight"));
+		DbgUI.Text("CamAscend: " + imanager.LocalValue("CamAscend"));
 		DbgUI.Text("CamSpeedBoostHigh: " + imanager.GetActionTriggered("CamSpeedBoostHigh"));
 		DbgUI.Text("CamSpeedBoostLow:" + imanager.GetActionTriggered("CamSpeedBoostLow"));		
 		

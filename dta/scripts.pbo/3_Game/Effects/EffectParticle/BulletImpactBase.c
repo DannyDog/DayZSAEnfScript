@@ -198,7 +198,7 @@ class EffBulletImpactBase : EffectParticle
 		
 		if ( m_ImpactType == ImpactTypes.RICOCHET )
 		{
-			p = Particle.Play(m_ParticleRicochet, m_Pos);
+			p = Particle.PlayInWorld(m_ParticleRicochet, m_Pos);
 			
 			if (p)
 			{
@@ -211,7 +211,7 @@ class EffBulletImpactBase : EffectParticle
 		}
 		else
 		{
-			p = Particle.Play(m_ParticleEnter, m_Pos );
+			p = Particle.PlayInWorld(m_ParticleEnter, m_Pos );
 			
 			if (p)
 			{
@@ -232,7 +232,7 @@ class EffBulletImpactBase : EffectParticle
 			
 			if (outSpeedf > 0  &&  m_SurfNormal != INVALID)
 			{
-				p = Particle.Play(m_ParticleExit, m_ExitPos);
+				p = Particle.PlayInWorld(m_ParticleExit, m_ExitPos);
 				
 				if (p)
 				{
@@ -255,7 +255,7 @@ class EffBulletImpactBase : EffectParticle
 					
 					if ( dot > m_AngledEnter )
 					{
-						p = Particle.Play(m_ParticleRicochet, m_Pos);
+						p = Particle.PlayInWorld(m_ParticleRicochet, m_Pos);
 			
 						if (p)
 						{
@@ -295,7 +295,7 @@ class EffBulletImpactBase : EffectParticle
 			
 			if (scaling_by_distance > 1.1)
 			{
-				Particle p_distant = Particle.Play(ParticleList.IMPACT_DISTANT_DUST, m_Pos);
+				Particle p_distant = Particle.PlayInWorld(ParticleList.IMPACT_DISTANT_DUST, m_Pos);
 				
 				particle_orientation = m_SurfNormal.VectorToAngles();
 				particle_orientation[1] = particle_orientation[1] + 270;

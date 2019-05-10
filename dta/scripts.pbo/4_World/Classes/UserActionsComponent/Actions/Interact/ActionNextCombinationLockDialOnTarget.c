@@ -55,6 +55,26 @@ class ActionNextCombinationLockDialOnTarget: ActionInteractBase
 		
 		//set next dial
 		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
-		construction_action_data.SetNextDialIndex();
+		construction_action_data.SetNextCombinationLockDial();
 	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		Fence fence = Fence.Cast( action_data.m_Target.GetObject() );
+		if ( fence )
+		{
+			CombinationLock combination_lock = fence.GetCombinationLock();
+			combination_lock.SoundLockChangeDial();			
+		}
+	}	
+	
+	override void OnStartClient( ActionData action_data )
+	{
+		Fence fence = Fence.Cast( action_data.m_Target.GetObject() );
+		if ( fence )
+		{
+			CombinationLock combination_lock = fence.GetCombinationLock();
+			combination_lock.SoundLockChangeDial();			
+		}
+	}	
 }

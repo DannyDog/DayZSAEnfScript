@@ -180,10 +180,14 @@ class PluginTransmissionAgents extends PluginBase
 				break;
 
 			case AGT_AIRBOURNE:
-				float prot_level_mask = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.MASK, Man.Cast( target ));
-				float prot_level_headgear = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.HEADGEAR, Man.Cast( target ));
-				float prot_level_final = Math.Max(prot_level_mask, prot_level_headgear);//find the bigger of the 2, TODO: should be improved
-				InjectAgentsWithPlayer( target, sourceAgents , prot_level_final, dose_size, InjectTypes.PLAYER_AIR_PLAYER );
+				float prot_level_mask_target = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.MASK, Man.Cast( target ));
+				float prot_level_mask_source = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.MASK, Man.Cast( source ));
+				float prot_level_headgear_target = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.HEADGEAR, Man.Cast( target ));
+				float prot_level_headgear_source = GetProtectionLevel(DEF_BIOLOGICAL,InventorySlots.HEADGEAR, Man.Cast( source ));
+				float prot_level_target = Math.Max(prot_level_mask_target, prot_level_headgear_target);//find the bigger of the 2, TODO: should be improved
+				float prot_level_source = Math.Max(prot_level_mask_source, prot_level_headgear_source);//find the bigger of the 2, TODO: should be improved
+				float prot_level_combined = 1 - (1 - prot_level_target) * (1 - prot_level_source);
+				InjectAgentsWithPlayer( target, sourceAgents , prot_level_combined, dose_size, InjectTypes.PLAYER_AIR_PLAYER );
 		}
 	}
 	
@@ -235,9 +239,10 @@ class PluginTransmissionAgents extends PluginBase
 	static void BuildAgentArray(int agents, array<int> agents_out)
 	{
 		int mask = 1;
-		for(int i = 0; i < 31; i++)
+		for(int i = 0; i < BIT_INT_SIZE; i++)
 		{
-			if( mask & agents ) agents_out.Insert(mask);
+			if( mask & agents ) 
+				agents_out.Insert(mask);
 			mask = mask * 2;
 		}
 	}

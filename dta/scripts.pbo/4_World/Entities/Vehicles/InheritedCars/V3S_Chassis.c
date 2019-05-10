@@ -197,4 +197,34 @@ class V3S_Chassis extends CarScript
 	{
 		return false;
 	}
+	
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "V3SWheel" );
+			entity.GetInventory().CreateInInventory( "V3SWheel" );
+			entity.GetInventory().CreateInInventory( "V3SWheel" );
+			entity.GetInventory().CreateInInventory( "V3SWheel" );
+			
+			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
+			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
+			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
+			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
+
+			entity.GetInventory().CreateInInventory( "TruckBattery" );
+
+			entity.GetInventory().CreateInInventory( "V3SDoors_Driver" );
+			entity.GetInventory().CreateInInventory( "V3SDoors_CoDriver" );
+			entity.GetInventory().CreateInInventory( "V3SHood" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		};
+
+		Fill( CarFluid.FUEL, 120 );
+		Fill( CarFluid.OIL, 4.0 );
+	};
 }

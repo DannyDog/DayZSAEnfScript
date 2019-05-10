@@ -12,7 +12,7 @@ class SalmonellaMdfr: ModifierBase
 	
 	override protected bool ActivateCondition(PlayerBase player)
 	{
-		if(player.GetSingleAgentCount(eAgents.CHOLERA) > SALMONELLA_AGENT_THRESHOLD_ACTIVATE) 
+		if(player.GetSingleAgentCount(eAgents.SALMONELLA) > SALMONELLA_AGENT_THRESHOLD_ACTIVATE) 
 		{
 			return true;
 		}
@@ -24,7 +24,7 @@ class SalmonellaMdfr: ModifierBase
 
 	override protected void OnActivate(PlayerBase player)
 	{
-		//if( player.m_NotifiersManager ) player.m_NotifiersManager.AttachByType(eNotifiers.NTF_SICK);
+		//if( player.m_NotifiersManager ) player.m_NotifiersManager.ActivateByType(eNotifiers.NTF_SICK);
 		player.IncreaseDiseaseCount();
 		
 	}
@@ -36,7 +36,7 @@ class SalmonellaMdfr: ModifierBase
 
 	override protected bool DeactivateCondition(PlayerBase player)
 	{
-		if(player.GetSingleAgentCount(eAgents.CHOLERA) < SALMONELLA_AGENT_THRESHOLD_DEACTIVATE) 
+		if(player.GetSingleAgentCount(eAgents.SALMONELLA) < SALMONELLA_AGENT_THRESHOLD_DEACTIVATE) 
 		{
 			return true;
 		}

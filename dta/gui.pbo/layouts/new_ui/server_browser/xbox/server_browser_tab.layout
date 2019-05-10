@@ -9,8 +9,7 @@ FrameWidgetClass server_browser_tab_root {
  {
   GridSpacerWidgetClass server_list_root {
    ignorepointer 1
-   color 0 0 0 0.8627
-   position 80 0
+   position 105 0
    size 0.6 1
    hexactpos 1
    vexactpos 1
@@ -21,11 +20,150 @@ FrameWidgetClass server_browser_tab_root {
    Margin 0
    "Size To Content H" 1
    "Size To Content V" 1
+   content_halign center
    Columns 1
+   Rows 4
    {
-    PanelWidgetClass server_list_header {
+    PanelWidgetClass server_list_root_nav {
      ignorepointer 1
-     color 0 0 0 0.9608
+     color 0 0 0 0
+     position 0 0
+     size 1 45
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 1
+     style blank
+     {
+      GridSpacerWidgetClass server_list_root_nav_wrapper {
+       visible 1
+       clipchildren 0
+       ignorepointer 1
+       color 0 0 0 0.549
+       size 45 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Colorable
+       Padding 0
+       Margin 0
+       "Size To Content H" 1
+       Columns 7
+       Rows 1
+       {
+        FrameWidgetClass server_list_root_nav_sep_l {
+         visible 1
+         ignorepointer 1
+         position 10 10
+         size 5 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        ImageWidgetClass server_list_root_nav_img_left {
+         ignorepointer 1
+         position 10 10
+         size 23 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:arrow_left"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass server_list_root_nav_img_lb_xbox {
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:LB"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass server_list_root_nav_img_l1_ps4 {
+         visible 0
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:playstation_buttons image:L1"
+         mode blend
+         "src alpha" 1
+        }
+        FrameWidgetClass server_list_root_nav_sep_mid {
+         ignorepointer 1
+         position 10 10
+         size 8 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        ImageWidgetClass server_list_root_nav_img_rb_xbox {
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:RB"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass server_list_root_nav_img_r1_ps4 {
+         visible 0
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:playstation_buttons image:R1"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass server_list_root_nav_img_right {
+         ignorepointer 1
+         position 10 10
+         size 23 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass ""
+         image0 "set:dayz_gui image:arrow_right"
+         mode blend
+         "src alpha" 1
+        }
+        FrameWidgetClass server_list_root_nav_sep_r {
+         ignorepointer 1
+         position 10 10
+         size 5 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+       }
+      }
+     }
+    }
+    PanelWidgetClass server_list_header {
+     visible 0
+     ignorepointer 1
+     color 0 0 0 1
      position 0 0
      size 1 40
      hexactpos 1
@@ -54,7 +192,9 @@ FrameWidgetClass server_browser_tab_root {
      }
     }
     GridSpacerWidgetClass server_list_content_root {
+     visible 1
      ignorepointer 1
+     color 0 0 0 0.549
      position 0 0
      size 1 1
      hexactpos 1
@@ -63,7 +203,7 @@ FrameWidgetClass server_browser_tab_root {
      vexactsize 0
      "no focus" 1
      Padding 0
-     Margin 8
+     Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
      Columns 1
@@ -71,8 +211,9 @@ FrameWidgetClass server_browser_tab_root {
       GridSpacerWidgetClass basic_infoserver_list_content_header {
        visible 1
        ignorepointer 1
-       color 0 0 0 0.3137
-       size 1 30
+       color 0 0 0 1
+       position 0 0
+       size 1 38.59
        halign center_ref
        hexactpos 1
        vexactpos 1
@@ -87,6 +228,7 @@ FrameWidgetClass server_browser_tab_root {
        Rows 2
        {
         FrameWidgetClass server_list_content_header_spacer {
+         visible 1
          ignorepointer 1
          position 0 0
          size 110 1
@@ -122,12 +264,12 @@ FrameWidgetClass server_browser_tab_root {
             TextWidgetClass host_label {
              clipchildren 0
              ignorepointer 1
-             size 1 0.6
+             size 1 22
              valign center_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
-             vexactsize 0
+             vexactsize 1
              text "#server_browser_column_host"
              font "gui/fonts/sdf_MetronLight24"
              "exact text" 0
@@ -209,7 +351,7 @@ FrameWidgetClass server_browser_tab_root {
          visible 1
          ignorepointer 0
          position 0 0
-         size 180 1
+         size 190 1
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -218,12 +360,13 @@ FrameWidgetClass server_browser_tab_root {
           TextWidgetClass population_label {
            clipchildren 0
            ignorepointer 1
-           size 120 0.6
+           size 1 22
+           halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
-           hexactsize 1
-           vexactsize 0
+           hexactsize 0
+           vexactsize 1
            text "#players_title"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 0
@@ -237,7 +380,7 @@ FrameWidgetClass server_browser_tab_root {
          visible 1
          ignorepointer 0
          position 0 0
-         size 70 1
+         size 120 1
          hexactpos 1
          vexactpos 1
          hexactsize 1
@@ -246,12 +389,13 @@ FrameWidgetClass server_browser_tab_root {
           TextWidgetClass slots_label {
            clipchildren 0
            ignorepointer 1
-           size 60 0.6
+           size 60 22
+           halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 1
-           vexactsize 0
+           vexactsize 1
            text "#server_browser_column_slots"
            font "gui/fonts/sdf_MetronLight24"
            "exact text" 0
@@ -290,19 +434,9 @@ FrameWidgetClass server_browser_tab_root {
         }
        }
       }
-      ImageWidgetClass separator {
-       visible 0
-       color 0 0 0 0.3922
-       position 0 0
-       size 1 2
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 1
-       filter 0
-      }
       ScrollWidgetClass server_list_scroller {
        ignorepointer 0
+       color 0 0 0 0.1961
        position 0 0
        size 1 1
        halign center_ref
@@ -315,6 +449,7 @@ FrameWidgetClass server_browser_tab_root {
        "Scrollbar V" 1
        {
         WrapSpacerWidgetClass server_list_content {
+         disabled 0
          ignorepointer 1
          position 0 0
          size 1 1
@@ -325,36 +460,59 @@ FrameWidgetClass server_browser_tab_root {
          "no focus" 1
          "Ignore invisible" 0
          Padding 0
-         Margin 8
+         Margin 0
          "Size To Content H" 1
          "Size To Content V" 1
+        }
+        FrameWidgetClass separator {
+         visible 1
+         color 0 0 0 0.3922
+         position 0 0
+         size 1 5
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
         }
        }
       }
      }
     }
-    TextWidgetClass loading_servers_info {
-     visible 1
-     position 435.37997 1082.39001
-     size 1 20
-     halign right_ref
+    PanelWidgetClass loading_info_panel {
+     ignorepointer 1
+     color 0 0 0 1
+     size 1 30
+     halign center_ref
+     valign bottom_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     font "gui/fonts/sdf_MetronLight24"
-     "text offset" -10 0
-     "exact text" 0
-     text_proportion 0.8
-     "text halign" right
-     "text valign" center
+     style rover_sim_colorable
+     {
+      TextWidgetClass loading_servers_info {
+       visible 1
+       size 1 0.7
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "#dayz_game_loading"
+       font "gui/fonts/sdf_MetronLight24"
+       "text offset" -10 0
+       "exact text" 0
+       text_proportion 0.8
+       "text halign" right
+       "text valign" center
+      }
+     }
     }
    }
   }
   GridSpacerWidgetClass filters_root {
    ignorepointer 1
-   color 0 0 0 0.8627
-   position 80 0
+   position 105 0
    size 0.26 1
    halign right_ref
    hexactpos 1
@@ -369,10 +527,147 @@ FrameWidgetClass server_browser_tab_root {
    "Size To Content H" 1
    "Size To Content V" 1
    Columns 1
+   Rows 4
    {
+    PanelWidgetClass filters_root_nav {
+     ignorepointer 1
+     color 0 0 0 0
+     position 0 0
+     size 1 45
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 1
+     style blank
+     {
+      GridSpacerWidgetClass filters_root_nav_wrapper {
+       visible 1
+       clipchildren 0
+       ignorepointer 1
+       color 0 0 0 0.549
+       size 45 35
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Colorable
+       Padding 0
+       Margin 0
+       "Size To Content H" 1
+       Columns 7
+       Rows 1
+       {
+        FrameWidgetClass filters_root_nav_sep_l {
+         visible 1
+         ignorepointer 1
+         position 10 10
+         size 5 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        ImageWidgetClass filters_root_nav_img_left {
+         ignorepointer 1
+         position 10 10
+         size 23 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:arrow_left"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass filters_root_nav_img_lb_xbox {
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:LB"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass filters_root_nav_img_l1_ps4 {
+         visible 0
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:playstation_buttons image:L1"
+         mode blend
+         "src alpha" 1
+        }
+        FrameWidgetClass filters_root_nav_sep_mid {
+         ignorepointer 1
+         position 10 10
+         size 8 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+        ImageWidgetClass filters_root_nav_img_rb_xbox {
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:xbox_buttons image:RB"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass filters_root_nav_img_r1_ps4 {
+         visible 0
+         ignorepointer 1
+         position 10 10
+         size 40 32
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:playstation_buttons image:R1"
+         mode blend
+         "src alpha" 1
+        }
+        ImageWidgetClass filters_root_nav_img_right {
+         ignorepointer 1
+         position 10 10
+         size 23 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scriptclass ""
+         image0 "set:dayz_gui image:arrow_right"
+         mode blend
+         "src alpha" 1
+        }
+        FrameWidgetClass filters_root_nav_sep_r {
+         ignorepointer 1
+         position 10 10
+         size 5 35
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+        }
+       }
+      }
+     }
+    }
     PanelWidgetClass filters_header {
      ignorepointer 1
-     color 0 0 0 0.8627
+     color 0 0 0 1
      position 0 0
      size 1 40
      hexactpos 1
@@ -384,13 +679,13 @@ FrameWidgetClass server_browser_tab_root {
      {
       TextWidgetClass filters_header_text {
        ignorepointer 1
-       size 1 0.5
+       size 1 22
        halign center_ref
        valign center_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
-       vexactsize 0
+       vexactsize 1
        text "#str_server_browser_tab_root_filters_root_filters_header_filters_header_text0"
        font "gui/fonts/sdf_MetronLight24"
        "exact text" 0
@@ -401,15 +696,18 @@ FrameWidgetClass server_browser_tab_root {
      }
     }
     GridSpacerWidgetClass filters_content {
+     disabled 0
      ignorepointer 1
+     color 0 0 0 0.549
      size 1 0.6
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 0
+     style DayZDefaultPanel
      "no focus" 1
      Padding 0
-     Margin 8
+     Margin 0
      "Size To Content H" 1
      "Size To Content V" 1
      content_halign center
@@ -417,6 +715,15 @@ FrameWidgetClass server_browser_tab_root {
      Columns 1
      Rows 6
      {
+      FrameWidgetClass FrameWidget0 {
+       ignorepointer 1
+       position 10 10
+       size 1 5
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+      }
       ButtonWidgetClass sort_button {
        position 0 0
        size 1 30
@@ -425,10 +732,11 @@ FrameWidgetClass server_browser_tab_root {
        hexactsize 0
        vexactsize 1
        style Colorable
+       "no focus" 0
        "next up" "full_server_button"
        "next down" "region_button"
        {
-        GridSpacerWidgetClass sort_setting {
+        GridSpacerWidgetClass sort_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -454,6 +762,7 @@ FrameWidgetClass server_browser_tab_root {
            {
             TextWidgetClass sort_button_label {
              ignorepointer 1
+             position 0 0
              size 1 0.55
              valign center_ref
              hexactpos 1
@@ -462,7 +771,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactsize 0
              text "#STR_server_browser_tab_root_filters_root_filters_content_sort_button_sort_setting_sort_setting_panel_sort_button_label0"
              font "gui/fonts/sdf_MetronLight24"
-             "text offset" 8 0
+             "text offset" 10 0
              "exact text" 0
              "exact text size" 18
              "text valign" center
@@ -505,7 +814,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "sort_button"
        "next down" "ping_button"
        {
-        GridSpacerWidgetClass region_setting {
+        GridSpacerWidgetClass region_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -531,6 +840,7 @@ FrameWidgetClass server_browser_tab_root {
            {
             TextWidgetClass region_button_label {
              ignorepointer 1
+             position 0 0
              size 1 0.55
              valign center_ref
              hexactpos 1
@@ -539,7 +849,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactsize 0
              text "#STR_server_browser_tab_root_filters_root_filters_content_region_button_region_setting_region_setting_panel_region_button_label0"
              font "gui/fonts/sdf_MetronLight24"
-             "text offset" 8 0
+             "text offset" 10 0
              "exact text" 0
              "exact text size" 18
              "text valign" center
@@ -583,7 +893,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "accelerated_time_button"
        "next down" "favorites_button"
        {
-        GridSpacerWidgetClass ping_setting {
+        GridSpacerWidgetClass ping_button_button {
          ignorepointer 1
          position 0 0
          size 1 1
@@ -660,7 +970,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "region_button"
        "next down" "friends_button"
        {
-        GridSpacerWidgetClass favorites_setting {
+        GridSpacerWidgetClass favorites_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -686,6 +996,7 @@ FrameWidgetClass server_browser_tab_root {
            {
             TextWidgetClass favorites_button_label {
              ignorepointer 1
+             position 0 0
              size 1 0.55
              valign center_ref
              hexactpos 1
@@ -694,7 +1005,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactsize 0
              text "#STR_server_browser_tab_root_filters_root_filters_content_favorites_button_favorites_setting_favorites_setting_panel_favorites_button_label0"
              font "gui/fonts/sdf_MetronLight24"
-             "text offset" 8 0
+             "text offset" 10 0
              "exact text" 0
              "exact text size" 18
              "text valign" center
@@ -738,7 +1049,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "favorites_button"
        "next down" "prev_played_button"
        {
-        GridSpacerWidgetClass friends_setting {
+        GridSpacerWidgetClass friends_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -805,6 +1116,7 @@ FrameWidgetClass server_browser_tab_root {
        }
       }
       ButtonWidgetClass prev_played_button {
+       visible 0
        position 0 0
        size 1 30
        hexactpos 1
@@ -815,7 +1127,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "friends_button"
        "next down" "full_server_button"
        {
-        GridSpacerWidgetClass prev_played_setting {
+        GridSpacerWidgetClass prev_played_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -841,6 +1153,7 @@ FrameWidgetClass server_browser_tab_root {
            {
             TextWidgetClass prev_played_button_label {
              ignorepointer 1
+             position 0 0
              size 1 0.55
              valign center_ref
              hexactpos 1
@@ -849,7 +1162,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactsize 0
              text "#STR_server_browser_tab_root_filters_root_filters_content_prev_played_button_prev_played_setting_prev_played_setting_panel_prev_played_button_label0"
              font "gui/fonts/sdf_MetronLight24"
-             "text offset" 8 0
+             "text offset" 10 0
              "exact text" 0
              "exact text size" 18
              "text valign" center
@@ -892,7 +1205,7 @@ FrameWidgetClass server_browser_tab_root {
        "next up" "prev_played_button"
        "next down" "sort_button"
        {
-        GridSpacerWidgetClass full_server_setting {
+        GridSpacerWidgetClass full_server_button_panel {
          ignorepointer 1
          position 0 0
          size 1 30
@@ -918,6 +1231,7 @@ FrameWidgetClass server_browser_tab_root {
            {
             TextWidgetClass full_server_button_label {
              ignorepointer 1
+             position 0 0
              size 1 0.55
              valign center_ref
              hexactpos 1
@@ -926,7 +1240,7 @@ FrameWidgetClass server_browser_tab_root {
              vexactsize 0
              text "#STR_server_browser_tab_root_filters_root_filters_content_full_server_button_full_server_setting_full_server_setting_panel_full_server_button_label0"
              font "gui/fonts/sdf_MetronLight24"
-             "text offset" 8 0
+             "text offset" 10 0
              "exact text" 0
              "exact text size" 18
              "text valign" center
@@ -1038,12 +1352,21 @@ FrameWidgetClass server_browser_tab_root {
         }
        }
       }
+      FrameWidgetClass FrameWidget1 {
+       ignorepointer 1
+       position 0 0
+       size 1 5
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+      }
      }
     }
     TextWidgetClass unapplied_filters_notify {
      visible 0
      position 0 0
-     size 1 30
+     size 1 20
      hexactpos 1
      vexactpos 1
      hexactsize 0
@@ -1051,7 +1374,7 @@ FrameWidgetClass server_browser_tab_root {
      text "#server_browser_filters_changed_console"
      font "gui/fonts/sdf_MetronLight24"
      "exact text" 1
-     "exact text size" 20
+     "exact text size" 16
      "text halign" center
      "text valign" center
     }

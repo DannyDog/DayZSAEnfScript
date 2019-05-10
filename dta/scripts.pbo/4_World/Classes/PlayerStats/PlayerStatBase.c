@@ -58,6 +58,14 @@ class PlayerStat<Class T> extends PlayerStatBase
 	
 	void Set( T value, string system = "" )
 	{
+		/*
+		Print("setting stat: " + this.GetLabel() + "| value:" +value.ToString());
+		
+		if( this.GetLabel() == "Toxicity" )
+		{
+			DebugPrint.LogAndTrace("stack");
+		}
+		*/
 		if( value > m_MaxValue )
 		{
 			m_Value = m_MaxValue;

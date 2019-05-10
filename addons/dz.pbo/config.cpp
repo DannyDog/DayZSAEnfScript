@@ -251,141 +251,9 @@ class CfgWorlds
 				class Weather5;
 			};
 		};
-		class SimulWeather
-		{
-			class DefaultKeyframe;
-			class Overcast
-			{
-				class Weather1;
-				class Weather2;
-				class Weather3;
-				class Weather4;
-				class Weather5;
-				class Weather6;
-			};
-		};
 	};
 	class CAWorld: DefaultWorld
 	{
-		class SimulWeather: SimulWeather
-		{
-			numKeyframesPerDay=144;
-			windSpeedCoef="10.0f";
-			moonIrradianceCoef="10.0f";
-			fadeMaxDistanceKm=100;
-			fadeMaxAltitudeKm=15;
-			fadeNumAltitudes=8;
-			fadeNumElevations=8;
-			fadeNumDistances=8;
-			fadeEarthTest=0;
-			autoBrightness=1;
-			autoBrightnessStrength=0.1;
-			cloudGridWidth=64;
-			cloudGridLength=64;
-			cloudGridHeight=16;
-			helperGridElevationSteps=24;
-			helperGridAzimuthSteps=15;
-			helperEffectiveEarthRadius=1100000;
-			helperCurvedEarth=1;
-			helperAdjustCurvature=0;
-			helperNumLayers=80;
-			helperMaxDistance=100000;
-			helperNearCloudFade=0.1;
-			helperChurn=10;
-			cloudWidth=40000;
-			cloudLength=40000;
-			wrapClouds=1;
-			noiseResolution=8;
-			noisePeriod=4;
-			opticalDensity=1.5;
-			alphaSharpness=0.80000001;
-			selfShadowScale=0.001;
-			mieAsymmetry=0.50870001;
-			minimumLightElevationDegrees=6;
-			directLightCoef=1;
-			indirectLightCoef=0.0099999998;
-			fogStart=0;
-			fogEnd=40000;
-			fogHeight=1000;
-			class DefaultKeyframe: DefaultKeyframe
-			{
-				rayleigh[]={0.0074900002,0.01388,0.02878};
-				mie[]={0.0046000001,0.0046000001,0.0046000001};
-				haze=1;
-				hazeBaseKm=1;
-				hazeScaleKm=0.5;
-				hazeEccentricity=0.81999999;
-				brightnessAdjustment=1;
-				cloudiness=0.34999999;
-				cloudBaseKm=2.8499999;
-				cloudHeightKm=6;
-				directLight=1;
-				indirectLight=0.80000001;
-				ambientLight=0.80000001;
-				noiseOctaves=4.3000002;
-				noisePersistence=0.55000001;
-				fractalAmplitude=2.3;
-				fractalWavelength=240;
-				extinction=1.7;
-				diffusivity=0.1;
-			};
-			class Overcast
-			{
-				class Weather1: DefaultKeyframe
-				{
-					overcast=0;
-					cloudiness=0;
-				};
-				class Weather2: DefaultKeyframe
-				{
-					overcast=0.2;
-				};
-				class Weather3: DefaultKeyframe
-				{
-					overcast=0.40000001;
-					cloudiness=0.44999999;
-					directLight=0.80000001;
-					indirectLight=0.69999999;
-					ambientLight=0.69999999;
-					extinction=3;
-					diffusivity=0.25;
-				};
-				class Weather4: DefaultKeyframe
-				{
-					overcast=0.60000002;
-					cloudiness=0.64999998;
-					directLight=0.80000001;
-					indirectLight=0.5;
-					ambientLight=0.5;
-					extinction=3.25;
-					diffusivity=0.25;
-				};
-				class Weather5: DefaultKeyframe
-				{
-					overcast=0.80000001;
-					cloudiness=0.80000001;
-					cloudBaseKm=1.9;
-					cloudHeightKm=8;
-					directLight=0.63999999;
-					indirectLight=0.30000001;
-					ambientLight=0.30000001;
-					extinction=3.5;
-					diffusivity=0.0099999998;
-				};
-				class Weather6: DefaultKeyframe
-				{
-					overcast=1;
-					cloudiness=1;
-					cloudBaseKm=1.7;
-					cloudHeightKm=10;
-					directLight=0.44;
-					indirectLight=0.25;
-					ambientLight=0.2;
-					extinction=4.5;
-					diffusivity=0.0099999998;
-				};
-			};
-		};
 		class Weather: Weather
 		{
 			class LightingNew
@@ -397,26 +265,26 @@ class CfgWorlds
 					sunAngle=-18;
 					sunOrMoon=0;
 					diffuse[]={0.050000001,0.075000003,0.15000001};
-					ambient[]={0.016000001,0.031599998,0.048};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.050000001,0.075000003,0.15000001};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.016000001,0.031599998,0.048};
+					ambientCloud[]={0.016000001,0.031599998,0.048};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.017999999,0.028000001,0.043000001};
 					skyAroundSun[]={0.017999999,0.028000001,0.043000001};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Astro1
 				{
@@ -425,26 +293,26 @@ class CfgWorlds
 					sunAngle=-17;
 					sunOrMoon=0.5;
 					diffuse[]={0,0,0};
-					ambient[]={0.016000001,0.031599998,0.048};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0,0,0};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.032000002,0.063199997,0.096000001};
+					ambientCloud[]={0.032000002,0.063199997,0.096000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.035999998,0.056000002,0.086999997};
 					skyAroundSun[]={0.035999998,0.056000002,0.086999997};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Astro2
 				{
@@ -453,26 +321,26 @@ class CfgWorlds
 					sunAngle=-16;
 					sunOrMoon=1;
 					diffuse[]={0,0,0};
-					ambient[]={0.032000002,0.063199997,0.096000001};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0,0,0};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.032000002,0.063199997,0.096000001};
+					ambientCloud[]={0.032000002,0.063199997,0.096000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.035999998,0.056000002,0.086999997};
 					skyAroundSun[]={0.1011,0.1063,0.092600003};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Astro3
 				{
@@ -481,26 +349,26 @@ class CfgWorlds
 					sunAngle=-14;
 					sunOrMoon=1;
 					diffuse[]={0,0,0};
-					ambient[]={0.032000002,0.063199997,0.096000001};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0,0,0};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.032000002,0.063199997,0.096000001};
+					ambientCloud[]={0.032000002,0.063199997,0.096000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.1,0.14,0.22};
 					skyAroundSun[]={0.3035,0.31900001,0.278};
-					swBrightness=0;
-					desiredLuminanceCoef=-0.1;
+					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Nautical1
 				{
@@ -508,27 +376,27 @@ class CfgWorlds
 					overcast=0.5;
 					sunAngle=-12;
 					sunOrMoon=1;
-					diffuse[]={0.1011,0.1063,0.092600003};
-					ambient[]={0.064000003,0.12639999,0.192};
-					groundReflection[]={0,0,0};
+					diffuse[]={0,0,0};
+					diffuseCloud[]={0,0,0};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.064000003,0.12639999,0.192};
+					ambientCloud[]={0.064000003,0.12639999,0.192};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.15000001,0.20999999,0.34};
 					skyAroundSun[]={0.60390002,0.54110003,0.45089999};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.1;
+					desiredLuminanceCoefCloud=-0.1;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.011;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Nautical2
 				{
@@ -537,26 +405,26 @@ class CfgWorlds
 					sunAngle=-10;
 					sunOrMoon=1;
 					diffuse[]={0.1011,0.1063,0.092600003};
-					ambient[]={0.064000003,0.12639999,0.192};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.1011,0.1063,0.092600003};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.064000003,0.12639999,0.192};
+					ambientCloud[]={0.064000003,0.12639999,0.192};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.15000001,0.20999999,0.34};
 					skyAroundSun[]={0.8039,0.54110003,0.45089999};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.1;
+					desiredLuminanceCoefCloud=-0.1;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.0099999998;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Nautical3
 				{
@@ -565,26 +433,26 @@ class CfgWorlds
 					sunAngle=-8;
 					sunOrMoon=1;
 					diffuse[]={0.23109999,0.2112,0.184};
-					ambient[]={0.064000003,0.12639999,0.192};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.23109999,0.2112,0.184};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.064000003,0.12639999,0.192};
+					ambientCloud[]={0.064000003,0.12639999,0.192};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.15000001,0.20999999,0.34};
 					skyAroundSun[]={0.8039,0.54110003,0.45089999};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.050000001;
+					desiredLuminanceCoefCloud=-0.050000001;
 					EVMin=-2;
 					EVMax=0.5;
 					filmGrainIntensity=0.0099999998;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Civil1
 				{
@@ -593,26 +461,26 @@ class CfgWorlds
 					sunAngle=-6;
 					sunOrMoon=1;
 					diffuse[]={0.34599999,0.1803,0.0836};
-					ambient[]={0.12800001,0.25279999,0.384};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.34599999,0.1803,0.0836};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.12800001,0.25279999,0.384};
+					ambientCloud[]={0.12800001,0.25279999,0.384};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.30000001,0.22499999,0.32699999};
 					skyAroundSun[]={0.93900001,0.54110003,0.2509};
-					swBrightness=0;
 					desiredLuminanceCoef=0.050000001;
+					desiredLuminanceCoefCloud=0.050000001;
 					EVMin=-2;
 					EVMax=0.5;
-					filmGrainIntensity=0.0049999999;
-					desiredLuminanceCoefCloud=0;
+					filmGrainIntensity=0.0099999998;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Civil2
 				{
@@ -623,15 +491,27 @@ class CfgWorlds
 					diffuse[]=
 					{
 						{0.44600001,0.1803,0.0836},
-						0.5
+						0.2
 					};
+					diffuseCloud[]=
+					{
+						{0.44600001,0.1803,0.0836},
+						0.2
+					};
+					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
 					ambient[]=
 					{
 						{0.12800001,0.25279999,0.384},
-						1.5
+						0.1
+					};
+					ambientCloud[]=
+					{
+						{0.12800001,0.25279999,0.384},
+						0.1
 					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.60000002,0.54900002,0.745},
@@ -642,21 +522,17 @@ class CfgWorlds
 						{0.93900001,0.54110003,0.2509},
 						1.5
 					};
-					swBrightness=0;
 					desiredLuminanceCoef=0.25;
+					desiredLuminanceCoefCloud=0.25;
 					EVMin=-2;
 					EVMax=0.2;
-					filmGrainIntensity=0.0049999999;
-					desiredLuminanceCoefCloud=0;
+					filmGrainIntensity=0.0099999998;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Civil3
 				{
@@ -664,43 +540,27 @@ class CfgWorlds
 					overcast=0.5;
 					sunAngle=-2;
 					sunOrMoon=1;
-					diffuse[]=
-					{
-						{3.5,1.64,1},
-						2.5
-					};
-					ambient[]=
-					{
-						{0.2,0.23,0.44999999},
-						4.0999999
-					};
-					groundReflection[]={0,0,0};
+					diffuse[]={1.3,0.40400001,0.294};
+					diffuseCloud[]={1.3,0.40400001,0.294};
 					bidirect[]={0,0,0};
-					sky[]=
-					{
-						{1.2,0.63999999,1},
-						2
-					};
-					skyAroundSun[]=
-					{
-						{1.239,0.4411,0.2509},
-						4.0999999
-					};
-					swBrightness=0;
-					desiredLuminanceCoef=0.25;
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.2,0.23,0.44999999};
+					ambientCloud[]={0.2,0.23,0.44999999};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
+					sky[]={0.80000001,0.63999999,1};
+					skyAroundSun[]={1.239,0.4411,0.2509};
+					desiredLuminanceCoef=0.30000001;
+					desiredLuminanceCoefCloud=0.30000001;
 					EVMin=-2;
-					EVMax=0.1;
+					EVMax=0.2;
 					filmGrainIntensity=0.0049999999;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day0
 				{
@@ -708,43 +568,27 @@ class CfgWorlds
 					overcast=0.5;
 					sunAngle=0;
 					sunOrMoon=1;
-					diffuse[]=
-					{
-						{1.3,0.40400001,0.294},
-						4.5
-					};
-					ambient[]=
-					{
-						{0.2,0.23,0.44999999},
-						6.1999998
-					};
-					groundReflection[]={0,0,0};
+					diffuse[]={1.3,0.40400001,0.294};
+					diffuseCloud[]={1.3,0.40400001,0.294};
 					bidirect[]={0,0,0};
-					sky[]=
-					{
-						{1.2,0.63999999,1},
-						5.6999998
-					};
-					skyAroundSun[]=
-					{
-						{3.5,1.64,1},
-						6.6999998
-					};
-					swBrightness=1.25;
-					desiredLuminanceCoef=0.25;
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.2,0.23,0.44999999};
+					ambientCloud[]={0.2,0.23,0.44999999};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
+					sky[]={1.2,0.63999999,1};
+					skyAroundSun[]={3.5,1.64,1};
+					desiredLuminanceCoef=0.34999999;
+					desiredLuminanceCoefCloud=0.34999999;
 					EVMin=-2;
 					EVMax=0.1;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day4
 				{
@@ -757,13 +601,25 @@ class CfgWorlds
 						{1.2,0.40400001,0.294},
 						7.4000001
 					};
+					diffuseCloud[]=
+					{
+						{1.2,0.40400001,0.294},
+						7.4000001
+					};
+					bidirect[]={0.029999999,0.029999999,0.029999999};
+					bidirectCloud[]={0.029999999,0.029999999,0.029999999};
 					ambient[]=
 					{
 						{0.2,0.23,0.44999999},
 						7.1999998
 					};
+					ambientCloud[]=
+					{
+						{0.2,0.23,0.44999999},
+						7.1999998
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.029999999,0.029999999,0.029999999};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -774,21 +630,17 @@ class CfgWorlds
 						{2.2,1.24,1},
 						8.1999998
 					};
-					swBrightness=0.80000001;
-					desiredLuminanceCoef=0.30000001;
+					desiredLuminanceCoef=0.34999999;
+					desiredLuminanceCoefCloud=0.34999999;
 					EVMin=-2;
 					EVMax=0.1;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day8
 				{
@@ -801,13 +653,25 @@ class CfgWorlds
 						{1,0.60399997,0.294},
 						10.4
 					};
+					diffuseCloud[]=
+					{
+						{1,0.60399997,0.294},
+						10.4
+					};
+					bidirect[]={0.029999999,0.029999999,0.029999999};
+					bidirectCloud[]={0.029999999,0.029999999,0.029999999};
 					ambient[]=
 					{
 						{0.12,0.18000001,0.37},
 						10.2
 					};
+					ambientCloud[]=
+					{
+						{0.12,0.18000001,0.37},
+						10.2
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.029999999,0.029999999,0.029999999};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -818,21 +682,17 @@ class CfgWorlds
 						{1.2,0.67400002,0.294},
 						11
 					};
-					swBrightness=0.5;
-					desiredLuminanceCoef=0.34999999;
+					desiredLuminanceCoef=0.44999999;
+					desiredLuminanceCoefCloud=0.44999999;
 					EVMin=-2;
 					EVMax=0.1;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day12
 				{
@@ -845,13 +705,25 @@ class CfgWorlds
 						{1,0.63999999,0.31},
 						11.4
 					};
+					diffuseCloud[]=
+					{
+						{1,0.63999999,0.31},
+						11.4
+					};
+					bidirect[]={0.029999999,0.029999999,0.029999999};
+					bidirectCloud[]={0.029999999,0.029999999,0.029999999};
 					ambient[]=
 					{
 						{0.12,0.18000001,0.34},
 						10.6
 					};
+					ambientCloud[]=
+					{
+						{0.12,0.18000001,0.34},
+						10.6
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.029999999,0.029999999,0.029999999};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -862,21 +734,17 @@ class CfgWorlds
 						{1,0.87400001,0.49399999},
 						11.4
 					};
-					swBrightness=0.2;
-					desiredLuminanceCoef=0.47;
+					desiredLuminanceCoef=0.54000002;
+					desiredLuminanceCoefCloud=0.54000002;
 					EVMin=-2;
 					EVMax=0.1;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day16
 				{
@@ -889,13 +757,25 @@ class CfgWorlds
 						{1,0.87,0.85000002},
 						11.8
 					};
+					diffuseCloud[]=
+					{
+						{1,0.87,0.85000002},
+						11.8
+					};
+					bidirect[]={0.079999998,0.079999998,0.07};
+					bidirectCloud[]={0.079999998,0.079999998,0.07};
 					ambient[]=
 					{
 						{0.12,0.18000001,0.31999999},
 						10.8
 					};
+					ambientCloud[]=
+					{
+						{0.12,0.18000001,0.31999999},
+						10.8
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.079999998,0.079999998,0.07};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -906,21 +786,17 @@ class CfgWorlds
 						{1,1,1},
 						11.2
 					};
-					swBrightness=0.1;
-					desiredLuminanceCoef=0.55000001;
+					desiredLuminanceCoef=0.60000002;
+					desiredLuminanceCoefCloud=0.60000002;
 					EVMin=-2;
 					EVMax=0.1;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day35
 				{
@@ -933,13 +809,25 @@ class CfgWorlds
 						{1,0.87,0.85000002},
 						12.8
 					};
+					diffuseCloud[]=
+					{
+						{1,0.87,0.85000002},
+						12.8
+					};
 					bidirect[]={0.079999998,0.079999998,0.07};
+					bidirectCloud[]={0.079999998,0.079999998,0.07};
 					ambient[]=
 					{
 						{0.12,0.18000001,0.31999999},
 						11
 					};
+					ambientCloud[]=
+					{
+						{0.12,0.18000001,0.31999999},
+						11
+					};
 					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -950,21 +838,17 @@ class CfgWorlds
 						{1,1,1},
 						12.5
 					};
-					swBrightness=0.1;
-					desiredLuminanceCoef=0.60000002;
+					desiredLuminanceCoef=0.63999999;
+					desiredLuminanceCoefCloud=0.63999999;
 					EVMin=-2;
 					EVMax=0.2;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class C_Day60
 				{
@@ -977,13 +861,25 @@ class CfgWorlds
 						{1,0.87,0.85000002},
 						13.8
 					};
+					diffuseCloud[]=
+					{
+						{1,0.87,0.85000002},
+						13.8
+					};
+					bidirect[]={0.079999998,0.079999998,0.07};
+					bidirectCloud[]={0.079999998,0.079999998,0.07};
 					ambient[]=
 					{
 						{0.12,0.18000001,0.31999999},
 						11.8
 					};
+					ambientCloud[]=
+					{
+						{0.12,0.18000001,0.31999999},
+						11.8
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.079999998,0.079999998,0.07};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.5,0.63999999,1},
@@ -994,21 +890,17 @@ class CfgWorlds
 						{1,1,1},
 						13
 					};
-					swBrightness=0.1;
-					desiredLuminanceCoef=0.62;
+					desiredLuminanceCoef=0.68000001;
+					desiredLuminanceCoefCloud=0.68000001;
 					EVMin=-2;
 					EVMax=0.2;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Night
 				{
@@ -1017,26 +909,26 @@ class CfgWorlds
 					sunAngle=-18;
 					sunOrMoon=0;
 					diffuse[]={0,0,0};
-					ambient[]={0.035999998,0.057,0.085000001};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0,0,0};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.035999998,0.057,0.085000001};
+					ambientCloud[]={0.035999998,0.057,0.085000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.012,0.012,0.012};
 					skyAroundSun[]={0.012,0.012,0.012};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Astro1
 				{
@@ -1045,26 +937,26 @@ class CfgWorlds
 					sunAngle=-17;
 					sunOrMoon=0.5;
 					diffuse[]={0.035999998,0.057,0.085000001};
-					ambient[]={0.035999998,0.057,0.085000001};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.035999998,0.057,0.085000001};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.035999998,0.057,0.085000001};
+					ambientCloud[]={0.035999998,0.057,0.085000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.035999998,0.056000002,0.086999997};
 					skyAroundSun[]={0.035999998,0.056000002,0.086999997};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0125;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Nautical1
 				{
@@ -1073,26 +965,26 @@ class CfgWorlds
 					sunAngle=-12;
 					sunOrMoon=1;
 					diffuse[]={0.035999998,0.057,0.085000001};
-					ambient[]={0.035999998,0.057,0.085000001};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.035999998,0.057,0.085000001};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.035999998,0.057,0.085000001};
+					ambientCloud[]={0.035999998,0.057,0.085000001};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.035999998,0.056000002,0.086999997};
 					skyAroundSun[]={0.1011,0.1063,0.092600003};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.12;
+					desiredLuminanceCoefCloud=-0.12;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0099999998;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Civil1
 				{
@@ -1101,26 +993,26 @@ class CfgWorlds
 					sunAngle=-6;
 					sunOrMoon=1;
 					diffuse[]={0.017999999,0.017999999,0.017999999};
-					ambient[]={0.1,0.18000001,0.28999999};
-					groundReflection[]={0,0,0};
+					diffuseCloud[]={0.017999999,0.017999999,0.017999999};
 					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.1,0.18000001,0.28999999};
+					ambientCloud[]={0.1,0.18000001,0.28999999};
+					groundReflection[]={0,0,0};
+					groundReflectionCloud[]={0,0,0};
 					sky[]={0.1,0.14,0.22};
 					skyAroundSun[]={0.1,0.14,0.22};
-					swBrightness=0;
 					desiredLuminanceCoef=-0.07;
+					desiredLuminanceCoefCloud=-0.07;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0099999998;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Civil2
 				{
@@ -1129,38 +1021,26 @@ class CfgWorlds
 					sunAngle=-2;
 					sunOrMoon=1;
 					diffuse[]={0.017999999,0.017999999,0.017999999};
-					ambient[]=
-					{
-						{0.145,0.227,0.34900001},
-						1.6
-					};
+					diffuseCloud[]={0.017999999,0.017999999,0.017999999};
+					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.145,0.227,0.34900001};
+					ambientCloud[]={0.145,0.227,0.34900001};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.029999999,0.029999999,0.029999999};
-					sky[]=
-					{
-						{0.1,0.14,0.22},
-						1.715
-					};
-					skyAroundSun[]=
-					{
-						{0.1,0.14,0.22},
-						2.799
-					};
-					swBrightness=0;
-					desiredLuminanceCoef=-0.050000001;
+					groundReflectionCloud[]={0,0,0};
+					sky[]={0.1,0.14,0.22};
+					skyAroundSun[]={0.1,0.14,0.22};
+					desiredLuminanceCoef=0.050000001;
+					desiredLuminanceCoefCloud=0.050000001;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0.0074999998;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day0
 				{
@@ -1168,43 +1048,27 @@ class CfgWorlds
 					overcast=0.89999998;
 					sunAngle=0;
 					sunOrMoon=1;
-					diffuse[]=
-					{
-						{0.27000001,0.27000001,0.27000001},
-						0.40000001
-					};
-					ambient[]=
-					{
-						{0.145,0.227,0.34900001},
-						3.4000001
-					};
+					diffuse[]={0.27000001,0.27000001,0.27000001};
+					diffuseCloud[]={0.27000001,0.27000001,0.27000001};
+					bidirect[]={0,0,0};
+					bidirectCloud[]={0,0,0};
+					ambient[]={0.145,0.227,0.34900001};
+					ambientCloud[]={0.145,0.227,0.34900001};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.064999998,0.064999998,0.064999998};
-					sky[]=
-					{
-						{0.1,0.14,0.22},
-						3.5150001
-					};
-					skyAroundSun[]=
-					{
-						{0.1,0.14,0.22},
-						3.799
-					};
-					swBrightness=0;
-					desiredLuminanceCoef=0.050000001;
+					groundReflectionCloud[]={0,0,0};
+					sky[]={0.1,0.14,0.22};
+					skyAroundSun[]={0.1,0.14,0.22};
+					desiredLuminanceCoef=0.30000001;
+					desiredLuminanceCoefCloud=0.30000001;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day4
 				{
@@ -1217,13 +1081,25 @@ class CfgWorlds
 						{0.27000001,0.27000001,0.28999999},
 						4.4000001
 					};
+					diffuseCloud[]=
+					{
+						{0.27000001,0.27000001,0.28999999},
+						4.4000001
+					};
+					bidirect[]={0.13,0.13,0.13};
+					bidirectCloud[]={0.13,0.13,0.13};
 					ambient[]=
 					{
 						{0.145,0.227,0.34900001},
 						5.4000001
 					};
+					ambientCloud[]=
+					{
+						{0.145,0.227,0.34900001},
+						5.4000001
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.13,0.13,0.13};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.1,0.18000001,0.28999999},
@@ -1234,21 +1110,17 @@ class CfgWorlds
 						{0.1,0.18000001,0.28999999},
 						6.7989998
 					};
-					swBrightness=0;
 					desiredLuminanceCoef=0.40000001;
+					desiredLuminanceCoefCloud=0.40000001;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day8
 				{
@@ -1261,38 +1133,46 @@ class CfgWorlds
 						{0.27000001,0.27000001,0.30000001},
 						7.4000001
 					};
+					diffuseCloud[]=
+					{
+						{0.27000001,0.27000001,0.30000001},
+						7.4000001
+					};
+					bidirect[]={0.13,0.13,0.13};
+					bidirectCloud[]={0.13,0.13,0.13};
 					ambient[]=
 					{
 						{0.145,0.227,0.34900001},
 						8.1000004
 					};
+					ambientCloud[]=
+					{
+						{0.145,0.227,0.34900001},
+						8.1000004
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.13,0.13,0.13};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
-						{0.2,0.36000001,0.57999998},
+						{1,1,1},
 						8
 					};
 					skyAroundSun[]=
 					{
-						{0.2,0.36000001,0.57999998},
+						{1,1,1},
 						8.8000002
 					};
-					swBrightness=0;
 					desiredLuminanceCoef=0.44999999;
+					desiredLuminanceCoefCloud=0.44999999;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day12
 				{
@@ -1305,38 +1185,46 @@ class CfgWorlds
 						{0.27000001,0.27000001,0.30000001},
 						8.1999998
 					};
+					diffuseCloud[]=
+					{
+						{0.27000001,0.27000001,0.30000001},
+						8.1999998
+					};
+					bidirect[]={0.13,0.13,0.13};
+					bidirectCloud[]={0.13,0.13,0.13};
 					ambient[]=
 					{
 						{0.145,0.227,0.34900001},
 						10.1
 					};
+					ambientCloud[]=
+					{
+						{0.145,0.227,0.34900001},
+						10.1
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.13,0.13,0.13};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
-						{0.40000001,0.72000003,1},
+						{1,1,1},
 						9
 					};
 					skyAroundSun[]=
 					{
-						{0.40000001,0.72000003,1},
+						{1,1,1},
 						9.8000002
 					};
-					swBrightness=0;
-					desiredLuminanceCoef=0.47;
+					desiredLuminanceCoef=0.52999997;
+					desiredLuminanceCoefCloud=0.52999997;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day35
 				{
@@ -1349,13 +1237,25 @@ class CfgWorlds
 						{0.27000001,0.27000001,0.30000001},
 						9.3999996
 					};
+					diffuseCloud[]=
+					{
+						{0.27000001,0.27000001,0.30000001},
+						9.3999996
+					};
+					bidirect[]={0.23,0.23,0.23};
+					bidirectCloud[]={0.23,0.23,0.23};
 					ambient[]=
 					{
 						{0.15000001,0.2,0.25},
 						11.1
 					};
+					ambientCloud[]=
+					{
+						{0.15000001,0.2,0.25},
+						11.1
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.23,0.23,0.23};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{1,1,1},
@@ -1366,21 +1266,17 @@ class CfgWorlds
 						{1,1,1},
 						11.8
 					};
-					swBrightness=0;
+					desiredLuminanceCoef=0.57999998;
+					desiredLuminanceCoefCloud=0.57999998;
 					EVMin=-2;
 					EVMax=0;
-					desiredLuminanceCoef=0.51999998;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 				class O_Day60
 				{
@@ -1393,13 +1289,25 @@ class CfgWorlds
 						{0.27000001,0.27000001,0.30000001},
 						10.4
 					};
+					diffuseCloud[]=
+					{
+						{0.27000001,0.27000001,0.30000001},
+						10.4
+					};
+					bidirect[]={0.33000001,0.33000001,0.33000001};
+					bidirectCloud[]={0.33000001,0.33000001,0.33000001};
 					ambient[]=
 					{
 						{0.2,0.23999999,0.28999999},
 						12.4
 					};
+					ambientCloud[]=
+					{
+						{0.2,0.23999999,0.28999999},
+						12.4
+					};
 					groundReflection[]={0,0,0};
-					bidirect[]={0.33000001,0.33000001,0.33000001};
+					groundReflectionCloud[]={0,0,0};
 					sky[]=
 					{
 						{0.80000001,0.80000001,0.80000001},
@@ -1410,21 +1318,17 @@ class CfgWorlds
 						{1,1,1},
 						12.8
 					};
-					swBrightness=0;
-					desiredLuminanceCoef=0.55000001;
+					desiredLuminanceCoef=0.60000002;
+					desiredLuminanceCoefCloud=0.60000002;
 					EVMin=-2;
 					EVMax=0;
 					filmGrainIntensity=0;
-					desiredLuminanceCoefCloud=0;
 					luminanceRectCoef=0;
 					luminanceRectCoefCloud=0;
 					rayleigh[]={0,0,0};
 					mie[]={0,0,0};
 					cloudsColor[]={0,0,0};
-					diffuseCloud[]={0,0,0};
-					ambientCloud[]={0,0,0};
-					groundReflectionCloud[]={0,0,0};
-					bidirectCloud[]={0,0,0};
+					swBrightness=0;
 				};
 			};
 			dayTemperature=10;
@@ -1440,119 +1344,87 @@ class CfgWorlds
 				class Weather1: Weather1
 				{
 					overcast=0;
-					sky="dz\data\data\sky_semicloudy_sky.paa";
-					skyR="dz\data\data\sky_semicloudy_lco.paa";
-					horizon="dz\data\data\sky_semicloudy_horizont_sky.paa";
-					waves=0.15000001;
 					lightingOvercast=0;
-					through=1;
+					sky="DZ\data\data\sky_clear_sky.paa";
+					skyR="DZ\data\data\sky_clear_lco.paa";
+					horizon="DZ\data\data\sky_clear_horizont_sky.paa";
 					alpha=0;
 					bright=0;
-					speed=0;
-					size=0;
-					height=0;
+					speed=0.1;
+					size=0.5;
+					height=1;
+					through=1;
 					diffuse=1;
 					cloudDiffuse=1;
+					waves=0;
 				};
-				class Weather2: Weather1
-				{
-					overcast=0.1;
-					sky="dz\data\data\sky_semicloudy_sky.paa";
-					skyR="dz\data\data\sky_semicloudy_lco.paa";
-					horizon="dz\data\data\sky_semicloudy_horizont_sky.paa";
-					waves=0.2;
-					lightingOvercast=0.1;
-					through=1;
-				};
-				class Weather3: Weather1
-				{
-					overcast=0.2;
-					sky="dz\data\data\sky_semicloudy_sky.paa";
-					skyR="dz\data\data\sky_semicloudy_lco.paa";
-					horizon="dz\data\data\sky_semicloudy_horizont_sky.paa";
-					waves=0.25;
-					lightingOvercast=0.2;
-					through=1;
-				};
-				class Weather4: Weather1
+				class Weather2: Weather2
 				{
 					overcast=0.30000001;
-					sky="dz\data\data\sky_semicloudy_sky.paa";
-					skyR="dz\data\data\sky_semicloudy_lco.paa";
-					horizon="dz\data\data\sky_semicloudy_horizont_sky.paa";
-					waves=0.30000001;
 					lightingOvercast=0.30000001;
+					sky="DZ\data\data\sky_almostclear_sky.paa";
+					skyR="DZ\data\data\sky_almostclear_lco.paa";
+					horizon="DZ\data\data\sky_almostclear_horizont_sky.paa";
+					alpha=0.1;
+					bright=0.2;
+					speed=0.30000001;
+					size=0.55000001;
+					height=0.89999998;
 					through=1;
+					diffuse=1;
+					cloudDiffuse=1;
+					waves=0;
 				};
-				class Weather5: Weather1
-				{
-					overcast=0.40000001;
-					sky="dz\data\data\sky_semicloudy_sky.paa";
-					skyR="dz\data\data\sky_semicloudy_lco.paa";
-					horizon="dz\data\data\sky_semicloudy_horizont_sky.paa";
-					waves=0.34999999;
-					lightingOvercast=0.64999998;
-					through=1;
-				};
-				class Weather6: Weather1
+				class Weather3: Weather3
 				{
 					overcast=0.5;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.34999999;
-					lightingOvercast=0.85000002;
-					through=0.80000001;
+					lightingOvercast=0.5;
+					sky="DZ\data\data\sky_semicloudy_sky.paa";
+					skyR="DZ\data\data\sky_semicloudy_lco.paa";
+					horizon="DZ\data\data\sky_semicloudy_horizont_sky.paa";
+					alpha=0.25;
+					bright=0.2;
+					speed=0.5;
+					size=0.64999998;
+					height=0.85000002;
+					through=0.55000001;
+					diffuse=1;
+					cloudDiffuse=1;
+					waves=0;
 				};
-				class Weather7: Weather1
-				{
-					overcast=0.60000002;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.34999999;
-					lightingOvercast=0.89999998;
-					through=0.69999999;
-				};
-				class Weather8: Weather1
+				class Weather4: Weather4
 				{
 					overcast=0.69999999;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.34999999;
-					lightingOvercast=1;
-					through=0.40000001;
+					lightingOvercast=0.69999999;
+					sky="DZ\data\data\sky_cloudy_sky.paa";
+					skyR="DZ\data\data\sky_cloudy_lco.paa";
+					horizon="DZ\data\data\sky_cloudy_horizont_sky.paa";
+					alpha=0.34999999;
+					bright=0.2;
+					speed=0.75;
+					size=0.85000002;
+					height=0.80000001;
+					through=0.25;
+					diffuse=1;
+					cloudDiffuse=1;
+					waves=0;
 				};
-				class Weather9: Weather1
+				class Weather5: Weather5
 				{
-					overcast=0.80000001;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.44999999;
+					overcast=1.01;
 					lightingOvercast=1;
+					sky="DZ\data\data\sky_mostlycloudy_sky.paa";
+					skyR="DZ\data\data\sky_mostlycloudy_lco.paa";
+					horizon="DZ\data\data\sky_mostlycloudy_horizont_sky.paa";
+					alpha=0.34999999;
+					bright=0.1;
+					speed=0.80000001;
+					size=1;
+					height=0.75;
 					through=0;
-				};
-				class Weather10: Weather1
-				{
-					overcast=0.89999998;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.55000001;
-					lightingOvercast=1;
-					through=0;
-				};
-				class Weather11: Weather1
-				{
-					overcast=1;
-					sky="dz\data\data\sky_mostlycloudy_sky.paa";
-					skyR="dz\data\data\sky_mostlycloudy_lco.paa";
-					horizon="dz\data\data\sky_mostlycloudy_horizont_sky.paa";
-					waves=0.75;
-					lightingOvercast=1;
-					through=0;
+					diffuse=1;
+					cloudDiffuse=1;
+					waves=0;
 				};
 			};
 		};
@@ -1582,6 +1454,42 @@ class CfgWorlds
 		flareMinDistanceLerp=1;
 		farLightSpotMul=2;
 		farLightPointMul=2;
+		minTreesInForestSquare=10;
+		minRocksInRockSquare=5;
+		soundMapAttenCoef=0.0099999998;
+		class SoundMapValues
+		{
+			treehard=0.029999999;
+			treesoft=0.029999999;
+			bushhard=0;
+			bushsoft=0;
+			forest=1;
+			house=0.30000001;
+			church=0.5;
+		};
+		class Sounds
+		{
+			sounds[]={};
+		};
+		class Subdivision
+		{
+			class Fractal
+			{
+				rougness=5;
+				maxRoad=0.02;
+				maxTrack=0.5;
+				maxSlopeFactor=0.050000001;
+			};
+			class WhiteNoise
+			{
+				rougness=2;
+				maxRoad=0.0099999998;
+				maxTrack=0.050000001;
+				maxSlopeFactor=0.0024999999;
+			};
+			minY=-0;
+			minSlope=0.02;
+		};
 	};
 };
 class CfgMaterials
@@ -2385,78 +2293,6 @@ class PreloadTextures
 		NoMipmapTextures="@*";
 	};
 };
-class AirplaneHUD
-{
-	class Pos10Vector;
-	class bones
-	{
-		class AGLMove1;
-		class AGLMove2;
-		class ASLMove1;
-		class ASLMove2;
-		class VertSpeed;
-		class SpdMove2;
-		class ILS;
-		class WeaponAim;
-		class Target;
-		class TargetDistanceMissile;
-		class TargetDistanceMGun;
-		class Level0;
-		class LevelP5;
-		class LevelM5;
-		class LevelP10;
-		class LevelM10;
-		class LevelP15;
-		class LevelM15;
-		class Velocity;
-		class PlaneW;
-	};
-	class Draw
-	{
-		class Altitude;
-		class DimmedBase
-		{
-			class AltitudeBase;
-		};
-		class Speed;
-		class SpeedNumber;
-		class PlaneW
-		{
-			class LineHL;
-			class Velocity;
-		};
-		class MGun
-		{
-			class Circle;
-		};
-		class Missile
-		{
-			class Circle;
-			class Target;
-		};
-		class Horizont
-		{
-			class Dimmed
-			{
-				class Level0;
-			};
-			class LevelP5;
-			class LevelM5;
-			class LevelP10;
-			class LevelM10;
-			class LevelP15;
-			class LevelM15;
-		};
-		class ILS
-		{
-			class Glideslope
-			{
-				class ILS;
-			};
-			class AOABracket;
-		};
-	};
-};
 class CfgVehicles
 {
 	class All
@@ -2469,14 +2305,12 @@ class CfgVehicles
 	};
 	class AllVehicles: All
 	{
-		side=3;
 		htMin=60;
 		htMax=1800;
 		afMax=200;
 		mfMax=100;
 		mFact=0;
 		tBody=0;
-		class ViewPilot;
 		driverFreelook=1;
 	};
 	class Man: AllVehicles
@@ -2489,28 +2323,23 @@ class CfgVehicles
 	};
 	class DZ_LightAI_old: Man
 	{
-		weaponSlots=0;
 		class Wounds
 		{
 			tex[]={};
 			mat[]={};
 		};
-		class ViewPilot;
 	};
 	class DZ_LightAI: Man_Base
 	{
-		weaponSlots=0;
 		class Wounds
 		{
 			tex[]={};
 			mat[]={};
 		};
-		class ViewPilot;
 	};
 	class Air: AllVehicles
 	{
 		class AnimationSources;
-		class NewTurret;
 		accuracy=0;
 		irScanRangeMin=500;
 		class MarkerLights
@@ -2579,8 +2408,6 @@ class CfgVehicles
 	class House: Static
 	{
 		scope=1;
-		armor=150;
-		side=3;
 		ladders[]={};
 		simulation="house";
 		nameSound="obj_building";
@@ -2599,8 +2426,6 @@ class CfgVehicles
 	class HouseHighCost: House
 	{
 		displayName="STRUCTUR HIGH COST";
-		armor=350;
-		cost=1000000;
 	};
 	class Ruins: House
 	{
@@ -2619,7 +2444,6 @@ class CfgVehicles
 		weight=1000;
 		heavyItem=0;
 		itemSize[]={1,1};
-		baseAttachments[]={};
 		attachments[]={};
 		SingleUseActions[]={};
 		ContinuousActions[]={};
@@ -2637,7 +2461,9 @@ class CfgVehicles
 		heatIsolation=0;
 		heatReduction=0;
 		coldReduction=0;
-		slopeLimit=0.050000001;
+		slopeTolerance=0.050000001;
+		alignHologramToTerain=1;
+		yawPitchRollLimit[]={10,10,10};
 		spawnDamageRange[]={0,0.60000002};
 		canBeSplit=0;
 		stackedUnit="pc.";
@@ -2647,7 +2473,6 @@ class CfgVehicles
 		reversed=1;
 		vehicleClass="Inventory";
 		mapSize=1;
-		side=3;
 		supplyRadius=1.4;
 		hiddenSelections[]={};
 		hiddenSelectionsTextures[]={};
@@ -2752,10 +2577,6 @@ class CfgVehicles
 		stackedUnit="g";
 		quantityBar=1;
 	};
-	class Tearable_Base: Inventory_Base
-	{
-		ragQuantity=0;
-	};
 	class Trap_Base: Inventory_Base
 	{
 		itemSize[]={2,2};
@@ -2808,6 +2629,7 @@ class CfgVehicles
 			"Clothing"
 		};
 		visibilityModifier=1;
+		soundVoiceType="none";
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -2821,15 +2643,33 @@ class CfgVehicles
 			{
 				class Projectile
 				{
-					Health=1;
-					Blood=1;
-					Shock=1;
+					class Health
+					{
+						damage=1;
+					};
+					class Blood
+					{
+						damage=1;
+					};
+					class Shock
+					{
+						damage=1;
+					};
 				};
 				class Melee
 				{
-					Health=1;
-					Blood=1;
-					Shock=1;
+					class Health
+					{
+						damage=1;
+					};
+					class Blood
+					{
+						damage=1;
+					};
+					class Shock
+					{
+						damage=1;
+					};
 				};
 			};
 		};
@@ -2839,6 +2679,7 @@ class CfgVehicles
 	};
 	class Box_Base: Inventory_Base
 	{
+		iconType=0;
 		ContinuousActions[]={212};
 		isMeleeWeapon=1;
 	};
@@ -2859,7 +2700,7 @@ class CfgVehicles
 	{
 		scope=1;
 		simulation="itemoptics";
-		optics=1;
+		selectionFireAnim="zasleh";
 		SingleUseActions[]={};
 		ContinuousActions[]={236};
 		class AnimationSources
@@ -3001,1008 +2842,56 @@ class CfgNonAIVehicles
 				class Health
 				{
 					hitpoints=100;
+					healthLevels[]=
+					{
+						
+						{
+							1,
+							{}
+						},
+						
+						{
+							0.69999999,
+							{}
+						},
+						
+						{
+							0.5,
+							{}
+						},
+						
+						{
+							0.30000001,
+							{}
+						},
+						
+						{
+							0,
+							{}
+						}
+					};
 				};
 			};
 			class GlobalArmor
 			{
 				class Projectile
 				{
-					Health=0;
-					Blood=0;
-					Shock=0;
+					class Health
+					{
+						damage=0;
+					};
+					class Blood
+					{
+						damage=0;
+					};
+					class Shock
+					{
+						damage=0;
+					};
 				};
 			};
 		};
 	};
-	class ProxyFlag
-	{
-		scope=2;
-		model="";
-		autocenter=0;
-		reversed=0;
-		simulation="flag";
-		selectionFabric="latka";
-	};
-	class ProxyCargo;
-	class ProxyCargo01: ProxyCargo
-	{
-	};
-	class ProxyCargo02: ProxyCargo
-	{
-	};
-	class ProxyCargo03: ProxyCargo
-	{
-	};
-	class ProxyCargo04: ProxyCargo
-	{
-	};
-};
-class cfgRecoils
-{
-	pistolBase[]={0,0,0,0.079999998,0.003,0.02,0.050000001,-0.003,-0.033,0.050000001,0,0};
-	subMachineGunBase[]={0,0,0,0.059999999,0.0049999999,0.0049999999,0.050000001,0,-0.02,0.059999999,-0.0049999999,0.0049999999,0.050000001,0,0};
-	assaultRifleBase[]={0,0,0,0.059999999,0.0099999998,0.0099999998,0.1,0,-0.02,0.1,-0.0099999998,0.0099999998,0.050000001,0,0};
-	machinegunBase[]={0,0,0,0.079999998,0.0099999998,0.039999999,0.050000001,-0.003,-0.0099999998,0.2,0,0};
-	launcherBase[]={0,0,0,0.0099999998,0,0.050000001,0.025,0,0};
-	AK74Recoil[]={0,0,0,0.059999999,0.0099999998,0.012,0.1,0,-0.02,0.1,-0.0099999998,0.0099999998,0.050000001,0,0};
-	M249Recoil[]={0,0,0,0.07,0.0020000001,0.0099999998,0.035,-0.0020000001,-0.02,0.050000001,0,0};
-	M249RecoilProne[]={0,0,0,0.1,0.003,0.0040000002,0.050000001,-0.003,-0.0080000004,0.050000001,0,0};
-	M4Recoil[]={0,0,0,0.059999999,0.0099999998,0.0099999998,0.1,0,-0.017999999,0.1,-0.0099999998,0.0099999998,0.050000001,0,0};
-	PKMRecoil[]={0,0,0,0.1,0.029999999,0.039999999,0.050000001,-0.029999999,-0.079999998,0.050000001,0,0};
-	PKMRecoilProne[]={0,0,0,0.1,0.003,0.0049999999,0.050000001,-0.003,-0.0099999998,0.050000001,0,0};
-	recoil_single_primary_1outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (1/7))",
-		"0.05*.5*(  (1/7))",
-		0.0099999998,
-		"0.009*(  (1/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (1/7))"
-	};
-	recoil_single_primary_2outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (2/7))",
-		"0.05*.5*(  (2/7))",
-		0.0099999998,
-		"0.009*(  (2/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (2/7))"
-	};
-	recoil_single_primary_3outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (3/7))",
-		"0.05*.5*(  (3/7))",
-		0.0099999998,
-		"0.009*(  (3/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (3/7))"
-	};
-	recoil_single_primary_4outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (4/7))",
-		"0.05*.5*(  (4/7))",
-		0.0099999998,
-		"0.009*(  (4/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (4/7))"
-	};
-	recoil_single_primary_5outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (5/7))",
-		"0.05*.5*(  (5/7))",
-		0.0099999998,
-		"0.009*(  (5/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (5/7))"
-	};
-	recoil_single_primary_6outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (6/7))",
-		"0.05*.5*(  (6/7))",
-		0.0099999998,
-		"0.009*(  (6/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (6/7))"
-	};
-	recoil_single_primary_7outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (7/7))",
-		"0.05*.5*(  (7/7))",
-		0.0099999998,
-		"0.009*(  (7/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (7/7))"
-	};
-	recoil_single_primary_8outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (8/7))",
-		"0.05*.5*(  (8/7))",
-		0.0099999998,
-		"0.009*(  (8/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (8/7))"
-	};
-	recoil_single_primary_9outof10[]=
-	{
-		0.039999999,
-		"0.006*(  (9/7))",
-		"0.05*.5*(  (9/7))",
-		0.0099999998,
-		"0.009*(  (9/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (9/7))"
-	};
-	recoil_single_primary_10outof10[]=
-	{
-		0.039999999,
-		"0.006*( (10/7))",
-		"0.05*.5*( (10/7))",
-		0.0099999998,
-		"0.009*( (10/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*( (10/7))"
-	};
-	recoil_single_primary_prone_1outof10[]=
-	{
-		0.035,
-		"0.004*(  (1/7))",
-		"0.035*.5*(  (1/7))",
-		0.0099999998,
-		"0.006*(  (1/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (1/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (1/7))"
-	};
-	recoil_single_primary_prone_2outof10[]=
-	{
-		0.035,
-		"0.004*(  (2/7))",
-		"0.035*.5*(  (2/7))",
-		0.0099999998,
-		"0.006*(  (2/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (2/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (2/7))"
-	};
-	recoil_single_primary_prone_3outof10[]=
-	{
-		0.035,
-		"0.004*(  (3/7))",
-		"0.035*.5*(  (3/7))",
-		0.0099999998,
-		"0.006*(  (3/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (3/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (3/7))"
-	};
-	recoil_single_primary_prone_4outof10[]=
-	{
-		0.035,
-		"0.004*(  (4/7))",
-		"0.035*.5*(  (4/7))",
-		0.0099999998,
-		"0.006*(  (4/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (4/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (4/7))"
-	};
-	recoil_single_primary_prone_5outof10[]=
-	{
-		0.035,
-		"0.004*(  (5/7))",
-		"0.035*.5*(  (5/7))",
-		0.0099999998,
-		"0.006*(  (5/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (5/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (5/7))"
-	};
-	recoil_single_primary_prone_6outof10[]=
-	{
-		0.035,
-		"0.004*(  (6/7))",
-		"0.035*.5*(  (6/7))",
-		0.0099999998,
-		"0.006*(  (6/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (6/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (6/7))"
-	};
-	recoil_single_primary_prone_7outof10[]=
-	{
-		0.035,
-		"0.004*(  (7/7))",
-		"0.035*.5*(  (7/7))",
-		0.0099999998,
-		"0.006*(  (7/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (7/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (7/7))"
-	};
-	recoil_single_primary_prone_8outof10[]=
-	{
-		0.035,
-		"0.004*(  (8/7))",
-		"0.035*.5*(  (8/7))",
-		0.0099999998,
-		"0.006*(  (8/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (8/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (8/7))"
-	};
-	recoil_single_primary_prone_9outof10[]=
-	{
-		0.035,
-		"0.004*(  (9/7))",
-		"0.035*.5*(  (9/7))",
-		0.0099999998,
-		"0.006*(  (9/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (9/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (9/7))"
-	};
-	recoil_single_primary_prone_10outof10[]=
-	{
-		0.035,
-		"0.004*( (10/7))",
-		"0.035*.5*( (10/7))",
-		0.0099999998,
-		"0.006*( (10/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*( (10/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*( (10/7))"
-	};
-	recoil_auto_primary_1outof10[]=
-	{
-		0,
-		"0.006*(  (1/7))",
-		"0.035*.5*(  (1/7))",
-		0.039999999,
-		"0.009*(  (1/7))",
-		"0.015*(  (1/7))",
-		0.025,
-		0,
-		"0.0125*(  (1/7))"
-	};
-	recoil_auto_primary_2outof10[]=
-	{
-		0,
-		"0.006*(  (2/7))",
-		"0.035*.5*(  (2/7))",
-		0.039999999,
-		"0.009*(  (2/7))",
-		"0.015*(  (2/7))",
-		0.025,
-		0,
-		"0.0125*(  (2/7))"
-	};
-	recoil_auto_primary_3outof10[]=
-	{
-		0,
-		"0.006*(  (3/7))",
-		"0.035*.5*(  (3/7))",
-		0.039999999,
-		"0.009*(  (3/7))",
-		"0.015*(  (3/7))",
-		0.025,
-		0,
-		"0.0125*(  (3/7))"
-	};
-	recoil_auto_primary_4outof10[]=
-	{
-		0,
-		"0.006*(  (4/7))",
-		"0.035*.5*(  (4/7))",
-		0.039999999,
-		"0.009*(  (4/7))",
-		"0.015*(  (4/7))",
-		0.025,
-		0,
-		"0.0125*(  (4/7))"
-	};
-	recoil_auto_primary_5outof10[]=
-	{
-		0,
-		"0.006*(  (5/7))",
-		"0.035*.5*(  (5/7))",
-		0.039999999,
-		"0.009*(  (5/7))",
-		"0.015*(  (5/7))",
-		0.025,
-		0,
-		"0.0125*(  (5/7))"
-	};
-	recoil_auto_primary_6outof10[]=
-	{
-		0,
-		"0.006*(  (6/7))",
-		"0.035*.5*(  (6/7))",
-		0.039999999,
-		"0.009*(  (6/7))",
-		"0.015*(  (6/7))",
-		0.025,
-		0,
-		"0.0125*(  (6/7))"
-	};
-	recoil_auto_primary_7outof10[]=
-	{
-		0,
-		"0.006*(  (7/7))",
-		"0.035*.5*(  (7/7))",
-		0.039999999,
-		"0.009*(  (7/7))",
-		"0.015*(  (7/7))",
-		0.025,
-		0,
-		"0.0125*(  (7/7))"
-	};
-	recoil_auto_primary_8outof10[]=
-	{
-		0,
-		"0.006*(  (8/7))",
-		"0.035*.5*(  (8/7))",
-		0.039999999,
-		"0.009*(  (8/7))",
-		"0.015*(  (8/7))",
-		0.025,
-		0,
-		"0.0125*(  (8/7))"
-	};
-	recoil_auto_primary_9outof10[]=
-	{
-		0,
-		"0.006*(  (9/7))",
-		"0.035*.5*(  (9/7))",
-		0.039999999,
-		"0.009*(  (9/7))",
-		"0.015*(  (9/7))",
-		0.025,
-		0,
-		"0.0125*(  (9/7))"
-	};
-	recoil_auto_primary_10outof10[]=
-	{
-		0,
-		"0.006*( (10/7))",
-		"0.035*.5*( (10/7))",
-		0.039999999,
-		"0.009*( (10/7))",
-		"0.015*( (10/7))",
-		0.025,
-		0,
-		"0.0125*( (10/7))"
-	};
-	recoil_auto_primary_prone_1outof10[]=
-	{
-		0,
-		"0.004*(  (1/7))",
-		"0.035*.25*(  (1/7))",
-		0.035,
-		"0.006*(  (1/7))",
-		"0.035*(  (1/7))",
-		0.0099999998,
-		"0.006*(  (1/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (1/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (1/7))"
-	};
-	recoil_auto_primary_prone_2outof10[]=
-	{
-		0,
-		"0.004*(  (2/7))",
-		"0.035*.25*(  (2/7))",
-		0.035,
-		"0.006*(  (2/7))",
-		"0.035*(  (2/7))",
-		0.0099999998,
-		"0.006*(  (2/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (2/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (2/7))"
-	};
-	recoil_auto_primary_prone_3outof10[]=
-	{
-		0,
-		"0.004*(  (3/7))",
-		"0.035*.25*(  (3/7))",
-		0.035,
-		"0.006*(  (3/7))",
-		"0.035*(  (3/7))",
-		0.0099999998,
-		"0.006*(  (3/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (3/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (3/7))"
-	};
-	recoil_auto_primary_prone_4outof10[]=
-	{
-		0,
-		"0.004*(  (4/7))",
-		"0.035*.25*(  (4/7))",
-		0.035,
-		"0.006*(  (4/7))",
-		"0.035*(  (4/7))",
-		0.0099999998,
-		"0.006*(  (4/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (4/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (4/7))"
-	};
-	recoil_auto_primary_prone_5outof10[]=
-	{
-		0,
-		"0.004*(  (5/7))",
-		"0.035*.25*(  (5/7))",
-		0.035,
-		"0.006*(  (5/7))",
-		"0.035*(  (5/7))",
-		0.0099999998,
-		"0.006*(  (5/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (5/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (5/7))"
-	};
-	recoil_auto_primary_prone_6outof10[]=
-	{
-		0,
-		"0.004*(  (6/7))",
-		"0.035*.25*(  (6/7))",
-		0.035,
-		"0.006*(  (6/7))",
-		"0.035*(  (6/7))",
-		0.0099999998,
-		"0.006*(  (6/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (6/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (6/7))"
-	};
-	recoil_auto_primary_prone_7outof10[]=
-	{
-		0,
-		"0.004*(  (7/7))",
-		"0.035*.25*(  (7/7))",
-		0.035,
-		"0.006*(  (7/7))",
-		"0.035*(  (7/7))",
-		0.0099999998,
-		"0.006*(  (7/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (7/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (7/7))"
-	};
-	recoil_auto_primary_prone_8outof10[]=
-	{
-		0,
-		"0.004*(  (8/7))",
-		"0.035*.25*(  (8/7))",
-		0.035,
-		"0.006*(  (8/7))",
-		"0.035*(  (8/7))",
-		0.0099999998,
-		"0.006*(  (8/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (8/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (8/7))"
-	};
-	recoil_auto_primary_prone_9outof10[]=
-	{
-		0,
-		"0.004*(  (9/7))",
-		"0.035*.25*(  (9/7))",
-		0.035,
-		"0.006*(  (9/7))",
-		"0.035*(  (9/7))",
-		0.0099999998,
-		"0.006*(  (9/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*(  (9/7))",
-		0.0099999998,
-		0,
-		"-0.0025*(  (9/7))"
-	};
-	recoil_auto_primary_prone_10outof10[]=
-	{
-		0,
-		"0.004*( (10/7))",
-		"0.035*.25*( (10/7))",
-		0.035,
-		"0.006*( (10/7))",
-		"0.035*( (10/7))",
-		0.0099999998,
-		"0.006*( (10/7))",
-		0,
-		0.012,
-		0,
-		"-0.0125*( (10/7))",
-		0.0099999998,
-		0,
-		"-0.0025*( (10/7))"
-	};
-	recoil_auto_machinegun_1outof10[]=
-	{
-		0,
-		"0.006*.5*(  (1/7))",
-		"0.0005*2*(  (1/7))",
-		0.029999999,
-		"0.009*.5*(  (1/7))",
-		"0.001*2*(  (1/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (1/7))"
-	};
-	recoil_auto_machinegun_2outof10[]=
-	{
-		0,
-		"0.006*.5*(  (2/7))",
-		"0.0005*2*(  (2/7))",
-		0.029999999,
-		"0.009*.5*(  (2/7))",
-		"0.001*2*(  (2/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (2/7))"
-	};
-	recoil_auto_machinegun_3outof10[]=
-	{
-		0,
-		"0.006*.5*(  (3/7))",
-		"0.0005*2*(  (3/7))",
-		0.029999999,
-		"0.009*.5*(  (3/7))",
-		"0.001*2*(  (3/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (3/7))"
-	};
-	recoil_auto_machinegun_4outof10[]=
-	{
-		0,
-		"0.006*.5*(  (4/7))",
-		"0.0005*2*(  (4/7))",
-		0.029999999,
-		"0.009*.5*(  (4/7))",
-		"0.001*2*(  (4/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (4/7))"
-	};
-	recoil_auto_machinegun_5outof10[]=
-	{
-		0,
-		"0.006*.5*(  (5/7))",
-		"0.0005*2*(  (5/7))",
-		0.029999999,
-		"0.009*.5*(  (5/7))",
-		"0.001*2*(  (5/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (5/7))"
-	};
-	recoil_auto_machinegun_6outof10[]=
-	{
-		0,
-		"0.006*.5*(  (6/7))",
-		"0.0005*2*(  (6/7))",
-		0.029999999,
-		"0.009*.5*(  (6/7))",
-		"0.001*2*(  (6/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (6/7))"
-	};
-	recoil_auto_machinegun_7outof10[]=
-	{
-		0,
-		"0.006*.5*(  (7/7))",
-		"0.0005*2*(  (7/7))",
-		0.029999999,
-		"0.009*.5*(  (7/7))",
-		"0.001*2*(  (7/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (7/7))"
-	};
-	recoil_auto_machinegun_8outof10[]=
-	{
-		0,
-		"0.006*.5*(  (8/7))",
-		"0.0005*2*(  (8/7))",
-		0.029999999,
-		"0.009*.5*(  (8/7))",
-		"0.001*2*(  (8/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (8/7))"
-	};
-	recoil_auto_machinegun_9outof10[]=
-	{
-		0,
-		"0.006*.5*(  (9/7))",
-		"0.0005*2*(  (9/7))",
-		0.029999999,
-		"0.009*.5*(  (9/7))",
-		"0.001*2*(  (9/7))",
-		0.039999999,
-		0,
-		"0.01*2*(  (9/7))"
-	};
-	recoil_auto_machinegun_10outof10[]=
-	{
-		0,
-		"0.006*.5*( (10/7))",
-		"0.0005*2*( (10/7))",
-		0.029999999,
-		"0.009*.5*( (10/7))",
-		"0.001*2*( (10/7))",
-		0.039999999,
-		0,
-		"0.01*2*( (10/7))"
-	};
-	recoil_auto_machinegun_prone_1outof10[]=
-	{
-		0,
-		"0.004*.5*(  (1/7))",
-		"0.0035*.25*(  (1/7))",
-		0.029999999,
-		"0.006*.5*(  (1/7))",
-		"0.007*(  (1/7))",
-		0.0099999998,
-		"0.006*.5*(  (1/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (1/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (1/7))"
-	};
-	recoil_auto_machinegun_prone_2outof10[]=
-	{
-		0,
-		"0.004*.5*(  (2/7))",
-		"0.0035*.25*(  (2/7))",
-		0.029999999,
-		"0.006*.5*(  (2/7))",
-		"0.007*(  (2/7))",
-		0.0099999998,
-		"0.006*.5*(  (2/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (2/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (2/7))"
-	};
-	recoil_auto_machinegun_prone_3outof10[]=
-	{
-		0,
-		"0.004*.5*(  (3/7))",
-		"0.0035*.25*(  (3/7))",
-		0.029999999,
-		"0.006*.5*(  (3/7))",
-		"0.007*(  (3/7))",
-		0.0099999998,
-		"0.006*.5*(  (3/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (3/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (3/7))"
-	};
-	recoil_auto_machinegun_prone_4outof10[]=
-	{
-		0,
-		"0.004*.5*(  (4/7))",
-		"0.0035*.25*(  (4/7))",
-		0.029999999,
-		"0.006*.5*(  (4/7))",
-		"0.007*(  (4/7))",
-		0.0099999998,
-		"0.006*.5*(  (4/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (4/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (4/7))"
-	};
-	recoil_auto_machinegun_prone_5outof10[]=
-	{
-		0,
-		"0.004*.5*(  (5/7))",
-		"0.0035*.25*(  (5/7))",
-		0.029999999,
-		"0.006*.5*(  (5/7))",
-		"0.007*(  (5/7))",
-		0.0099999998,
-		"0.006*.5*(  (5/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (5/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (5/7))"
-	};
-	recoil_auto_machinegun_prone_6outof10[]=
-	{
-		0,
-		"0.004*.5*(  (6/7))",
-		"0.0035*.25*(  (6/7))",
-		0.029999999,
-		"0.006*.5*(  (6/7))",
-		"0.007*(  (6/7))",
-		0.0099999998,
-		"0.006*.5*(  (6/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (6/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (6/7))"
-	};
-	recoil_auto_machinegun_prone_7outof10[]=
-	{
-		0,
-		"0.004*.5*(  (7/7))",
-		"0.0035*.25*(  (7/7))",
-		0.029999999,
-		"0.006*.5*(  (7/7))",
-		"0.007*(  (7/7))",
-		0.0099999998,
-		"0.006*.5*(  (7/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (7/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (7/7))"
-	};
-	recoil_auto_machinegun_prone_8outof10[]=
-	{
-		0,
-		"0.004*.5*(  (8/7))",
-		"0.0035*.25*(  (8/7))",
-		0.029999999,
-		"0.006*.5*(  (8/7))",
-		"0.007*(  (8/7))",
-		0.0099999998,
-		"0.006*.5*(  (8/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (8/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (8/7))"
-	};
-	recoil_auto_machinegun_prone_9outof10[]=
-	{
-		0,
-		"0.004*.5*(  (9/7))",
-		"0.0035*.25*(  (9/7))",
-		0.029999999,
-		"0.006*.5*(  (9/7))",
-		"0.007*(  (9/7))",
-		0.0099999998,
-		"0.006*.5*(  (9/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*(  (9/7))",
-		0.083999999,
-		0,
-		"-0.0025*(  (9/7))"
-	};
-	recoil_auto_machinegun_prone_10outof10[]=
-	{
-		0,
-		"0.004*.5*( (10/7))",
-		"0.0035*.25*( (10/7))",
-		0.029999999,
-		"0.006*.5*( (10/7))",
-		"0.007*( (10/7))",
-		0.0099999998,
-		"0.006*.5*( (10/7))",
-		0,
-		0.083999999,
-		0,
-		"-0.0025*( (10/7))",
-		0.083999999,
-		0,
-		"-0.0025*( (10/7))"
-	};
-	recoil_single_pistol_1outof3[]=
-	{
-		0.039999999,
-		"0.006*(  (3/7))",
-		"0.05*.5*(  (3/7))",
-		0.0099999998,
-		"0.009*(  (3/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (3/7))"
-	};
-	recoil_single_pistol_2outof3[]=
-	{
-		0.039999999,
-		"0.006*(  (5/7))",
-		"0.05*.5*(  (5/7))",
-		0.0099999998,
-		"0.009*(  (5/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (5/7))"
-	};
-	recoil_single_pistol_3outof3[]=
-	{
-		0.039999999,
-		"0.006*(  (7/7))",
-		"0.05*.5*(  (7/7))",
-		0.0099999998,
-		"0.009*(  (7/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.5*(  (7/7))"
-	};
-	recoil_single_pistol_prone_1outof3[]=
-	{
-		0.035,
-		"0.004*(  (4/7))",
-		"0.035*.5*(  (4/7))",
-		0.0099999998,
-		"0.006*(  (4/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (4/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (4/7))"
-	};
-	recoil_single_pistol_prone_2outof3[]=
-	{
-		0.035,
-		"0.004*(  (6/7))",
-		"0.035*.5*(  (6/7))",
-		0.0099999998,
-		"0.006*(  (6/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (6/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (6/7))"
-	};
-	recoil_single_pistol_prone_3outof3[]=
-	{
-		0.035,
-		"0.004*(  (8/7))",
-		"0.035*.5*(  (8/7))",
-		0.0099999998,
-		"0.006*(  (8/7))",
-		0,
-		0.045000002,
-		0,
-		"-0.025*.25*(  (8/7))",
-		0.0099999998,
-		0,
-		"-0.025*.25*(  (8/7))"
-	};
-	recoil_recoiless_weapon[]={0.5,0,0.039999999};
-	recoil_empty[]={0,0,0};
 };
 class Mode_SemiAuto;
 class Mode_Burst;
@@ -4011,87 +2900,154 @@ class Mode_Safe: Mode_SemiAuto
 {
 	magazines[]={};
 };
+class cfgAmmoTypes
+{
+	class AType_Arrow_Composite
+	{
+		name="Arrow_Composite";
+	};
+	class AType_Arrow_Crude
+	{
+		name="Arrow_Crude";
+	};
+	class AType_Arrow_Primitive
+	{
+		name="Arrow_Primitive";
+	};
+	class AType_Bullet_12GaugePellets
+	{
+		name="Bullet_12GaugePellets";
+	};
+	class AType_Bullet_12GaugeSlug
+	{
+		name="Bullet_12GaugeSlug";
+	};
+	class AType_Bullet_22
+	{
+		name="Bullet_22";
+	};
+	class AType_Bullet_357
+	{
+		name="Bullet_357";
+	};
+	class AType_Bullet_308Win
+	{
+		name="Bullet_308Win";
+	};
+	class AType_Bullet_308WinTracer
+	{
+		name="Bullet_308WinTracer";
+	};
+	class AType_Bullet_380
+	{
+		name="Bullet_380";
+	};
+	class AType_Bullet_45ACP
+	{
+		name="Bullet_45ACP";
+	};
+	class AType_Bullet_9x19
+	{
+		name="Bullet_9x19";
+	};
+	class AType_Bullet_9x39
+	{
+		name="Bullet_9x39";
+	};
+	class AType_Bullet_9x39AP
+	{
+		name="Bullet_9x39AP";
+	};
+	class AType_Bullet_545x39
+	{
+		name="Bullet_545x39";
+	};
+	class AType_Bullet_545x39Tracer
+	{
+		name="Bullet_545x39Tracer";
+	};
+	class AType_Bullet_556x45
+	{
+		name="Bullet_556x45";
+	};
+	class AType_Bullet_556x45Tracer
+	{
+		name="Bullet_556x45Tracer";
+	};
+	class AType_Bullet_762x39
+	{
+		name="Bullet_762x39";
+	};
+	class AType_Bullet_762x39Tracer
+	{
+		name="Bullet_762x39Tracer";
+	};
+	class AType_Bullet_762x54
+	{
+		name="Bullet_762x54";
+	};
+	class AType_Bullet_762x54Tracer
+	{
+		name="Bullet_762x54Tracer";
+	};
+};
+class OpticsInfoDefault;
+class OpticsInfoRifle: OpticsInfoDefault
+{
+	memoryPointCamera="eye";
+	opticsZoomMin=0.414215;
+	opticsZoomInit=0.57736999;
+	opticsZoomMax=0.70021999;
+	distanceZoomMin=25;
+	distanceZoomMax=25;
+	discreteDistance[]={50,100,200,300};
+	discreteDistanceInitIndex=1;
+};
+class OpticsInfoShotgun: OpticsInfoRifle
+{
+	memoryPointCamera="eye";
+	modelOptics="-";
+	distanceZoomMin=25;
+	distanceZoomMax=25;
+	discreteDistance[]={25};
+	discreteDistanceInitIndex=0;
+};
+class OpticsInfoPistol: OpticsInfoDefault
+{
+	memoryPointCamera="eye";
+	opticsZoomMin=0.414215;
+	opticsZoomInit=0.57736999;
+	opticsZoomMax=0.70021999;
+	distanceZoomMin=25;
+	distanceZoomMax=25;
+	discreteDistance[]={25};
+	discreteDistanceInitIndex=0;
+};
+class OpticsInfoArchery: OpticsInfoDefault
+{
+	memoryPointCamera="eye";
+	opticsZoomMin=0.414215;
+	opticsZoomInit=0.57736999;
+	opticsZoomMax=0.70021999;
+	modelOptics="-";
+	distanceZoomMin=10;
+	distanceZoomMax=10;
+	discreteDistance[]={10};
+	discreteDistanceInitIndex=0;
+};
+class OpticsInfoLauncher: OpticsInfoDefault
+{
+	memoryPointCamera="eye";
+	opticsZoomMin=0.25;
+	opticsZoomMax=1.1;
+	opticsZoomInit=0.5;
+	distanceZoomMin=100;
+	distanceZoomMax=100;
+	discreteDistance[]={100};
+	discreteDistanceInitIndex=0;
+};
 class cfgAmmo
 {
-	class cfgAmmoTypes
-	{
-		class AType_Arrow_Composite
-		{
-			name="Arrow_Composite";
-		};
-		class AType_Arrow_Crude
-		{
-			name="Arrow_Crude";
-		};
-		class AType_Arrow_Primitive
-		{
-			name="Arrow_Primitive";
-		};
-		class AType_Bullet_12GaugePellets
-		{
-			name="Bullet_12GaugePellets";
-		};
-		class AType_Bullet_12GaugeSlug
-		{
-			name="Bullet_12GaugeSlug";
-		};
-		class AType_Bullet_22
-		{
-			name="Bullet_22";
-		};
-		class AType_Bullet_357
-		{
-			name="Bullet_357";
-		};
-		class AType_Bullet_308Win
-		{
-			name="Bullet_308Win";
-		};
-		class AType_Bullet_380
-		{
-			name="Bullet_380";
-		};
-		class AType_Bullet_45ACP
-		{
-			name="Bullet_45ACP";
-		};
-		class AType_Bullet_9x19
-		{
-			name="Bullet_9x19";
-		};
-		class AType_Bullet_9x39
-		{
-			name="Bullet_9x39";
-		};
-		class AType_Bullet_545x39
-		{
-			name="Bullet_545x39";
-		};
-		class AType_Bullet_556x45
-		{
-			name="Bullet_556x45";
-		};
-		class AType_Bullet_556x45Tracer
-		{
-			name="Bullet_556x45Tracer";
-		};
-		class AType_Bullet_762x39
-		{
-			name="Bullet_762x39";
-		};
-		class AType_Bullet_762x39Tracer
-		{
-			name="Bullet_762x39Tracer";
-		};
-		class AType_Bullet_762x54
-		{
-			name="Bullet_762x54";
-		};
-		class AType_Bullet_762x54Tracer
-		{
-			name="Bullet_762x54Tracer";
-		};
-	};
 	class DefaultAmmo;
 	class Explosion_NonLethal: DefaultAmmo
 	{
@@ -4103,7 +3059,6 @@ class cfgAmmo
 		typicalSpeed=3;
 		initSpeed=3;
 		fuseDistance=1;
-		cost=40;
 		simulation="shotShell";
 		simulationStep=0.050000001;
 		soundSetExplosion[]=
@@ -4136,9 +3091,18 @@ class cfgAmmo
 		class DamageApplied
 		{
 			type="Projectile";
-			Health=5;
-			Blood=10;
-			Shock=10;
+			class Health
+			{
+				damage=5;
+			};
+			class Blood
+			{
+				damage=10;
+			};
+			class Shock
+			{
+				damage=10;
+			};
 		};
 	};
 };
@@ -4295,6 +3259,9 @@ class cfgWeapons
 			strength=100;
 			type="shot";
 		};
+		class OpticsInfo: OpticsInfoRifle
+		{
+		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -4309,8 +3276,29 @@ class cfgWeapons
 		{
 			ChanceToJam[]={0,0.001,0.0049999999,0.050000001,1};
 		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo="FirearmHit_Rifle";
+				range=1.2;
+			};
+			class Buttstock
+			{
+				ammo="FirearmHit_Rifle_Buttstock";
+				range=1.2;
+			};
+			class Bayonet
+			{
+				ammo="FirearmHit_Rifle_Bayonet";
+				range=1.8;
+			};
+		};
 	};
-	class BoltRifle_Base: Rifle_Base
+	class BoltActionRifle_Base: Rifle_Base
+	{
+	};
+	class BoltActionRifle_InnerMagazine_Base: BoltActionRifle_Base
 	{
 	};
 	class Shotgun_Base: Rifle_Base
@@ -4323,9 +3311,10 @@ class cfgWeapons
 		distanceZoomMin=50;
 		distanceZoomMax=50;
 		discreteDistance[]={50};
-		optics=1;
 		opticsFlare=0;
-		value=0;
+		class OpticsInfo: OpticsInfoShotgun
+		{
+		};
 	};
 	class Pistol_Base: PistolCore
 	{
@@ -4471,6 +3460,9 @@ class cfgWeapons
 			strength=100;
 			type="shot";
 		};
+		class OpticsInfo: OpticsInfoPistol
+		{
+		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -4483,7 +3475,15 @@ class cfgWeapons
 		};
 		class Reliability
 		{
-			ChanceToJam[]={0,0.0099999998,0.029999999,0.1,1};
+			ChanceToJam[]={0,0.0024999999,0.0099999998,0.050000001,1};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo="FirearmHit_Pistol";
+				range=1.2;
+			};
 		};
 	};
 	class Archery_Base: RifleCore
@@ -4495,7 +3495,6 @@ class cfgWeapons
 		animName="Bow";
 		targetCategory="loot";
 		autoReload=0;
-		tooltip="_text = _this call fnc_generateTooltip;_text";
 		cursor="aimBowGhost";
 		cursorAim="aimBow";
 		arrow1[]={};
@@ -4507,10 +3506,6 @@ class cfgWeapons
 		distanceZoomMax=10;
 		discreteDistance[]={10};
 		discreteDistanceInitIndex=1;
-		value=0;
-		dexterity=1.8;
-		optics=1;
-		opticsFlare=0;
 		soundBullet[]=
 		{
 			"arrow1",
@@ -4573,15 +3568,11 @@ class cfgWeapons
 			"prepSoundLoaded2",
 			0.5
 		};
-		baseAttachments[]={};
 		attachments[]={};
 		ejectType=1;
 		reloadAction="ReloadBow";
 		shotAction="ReloadBow";
 		magazineSlot="magazine";
-		fireLightDuration=0;
-		fireLightIntensity=0;
-		fireSmokeDuration=0;
 		canChamberByDestroyed=0;
 		hiddenSelections[]=
 		{
@@ -4604,6 +3595,9 @@ class cfgWeapons
 			strength=5;
 			type="shot";
 		};
+		class OpticsInfo: OpticsInfoArchery
+		{
+		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -4624,7 +3618,6 @@ class cfgWeapons
 		autoAimEnabled=0;
 		opticsDisablePeripherialVision=1;
 		magazines[]={};
-		value=10;
 		magazineReloadTime=12;
 		reloadTime=0;
 		initSpeed=30;
@@ -4639,7 +3632,6 @@ class cfgWeapons
 		recoil="";
 		aiRateOfFire=10;
 		aiRateOfFireDistance=500;
-		optics=1;
 		primary=0;
 		spawnDamageRange[]={0,0.60000002};
 		opticsZoomMin=0.25;
@@ -4653,5 +3645,8 @@ class cfgWeapons
 		midRangeProbab=0.57999998;
 		maxRange=500;
 		maxRangeProbab=0.039999999;
+		class OpticsInfo: OpticsInfoLauncher
+		{
+		};
 	};
 };

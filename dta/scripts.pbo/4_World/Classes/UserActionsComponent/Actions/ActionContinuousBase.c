@@ -2,7 +2,7 @@ class ActionContinuousBaseCB : ActionBaseCB
 {	
 	bool m_inLoop = false;
 	bool m_callLoopEnd = false;
-	
+		
 	bool CancelCondition()
 	{
 		/*if(m_Interrupted)
@@ -94,8 +94,16 @@ class ActionContinuousBaseCB : ActionBaseCB
 		}
 		else if (m_ActionData.m_State == UA_CANCEL )
 		{
+			ActionContinuousBase action = ActionContinuousBase.Cast(m_ActionData.m_Action);
+			if(action.HasAlternativeInterrupt())
+			{
+				SetCommand(DayZPlayerConstants.CMD_ACTIONINT_FINISH);
+			}
+			else
+			{
+				SetCommand(DayZPlayerConstants.CMD_ACTIONINT_END);
+			}
 			m_Canceled = true;
- 			SetCommand(DayZPlayerConstants.CMD_ACTIONINT_END);
 			return;
 			//Cancel();
 		}
@@ -120,13 +128,24 @@ class ActionContinuousBaseCB : ActionBaseCB
 
 class ActionContinuousBase : AnimatedActionBase
 {
+	PluginAdminLog 	m_AdminLog; 
+	
 	void ActionContinuousBase() 
 	{
 		m_CallbackClass = ActionContinuousBaseCB;
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_EAT;
+		
+		if( GetGame() && GetGame().IsServer() )
+		{
+			m_AdminLog = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+		}
 	}
 	
-	override void OnContinuousCancel(ActionData action_data)
+#ifdef OLD_ACTIONS	
+	override void OnContinuousCancel( ActionData action_data )
+#else
+	override void OnEndInput( ActionData action_data )
+#endif
 	{
 		ActionContinuousBaseCB callback;
 		if( Class.CastTo(callback, action_data.m_Callback) )
@@ -135,9 +154,19 @@ class ActionContinuousBase : AnimatedActionBase
 			{
 				callback.UserEndsAction();
 			}
-		}		
+		}
 	}
 	
+	bool HasAlternativeInterrupt()
+	{
+		return false;
+	}
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousDefaultActionInput;
+	}
+#endif
 	override int GetActionCategory()
 	{
 		return AC_CONTINUOUS;
@@ -176,6 +205,11 @@ class ActionContinuousBase : AnimatedActionBase
 		if(GetGame().IsServer())
 		{
 			OnFinishProgressServer(action_data);
+			
+			if ( m_AdminLog )
+			{
+				m_AdminLog.OnContinouousAction( action_data );
+			}
 		}
 		else
 		{

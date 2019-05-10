@@ -4,4 +4,11 @@ class TunaCan : Edible_Base
 	{
 		ReplaceEdibleWithNew("TunaCan_Opened");
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionOpen);
+	}
 }

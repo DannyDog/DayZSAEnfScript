@@ -8,9 +8,11 @@ class Torch : ItemBase
 	static float 			m_BurnTimePerFullLard;
 	static float 			m_MaxConsumableLardQuantity;
 	static float 			m_WaterEvaporationByFireIntensity = 0.001;
-	vector 					m_ParticleLocalPos = Vector(0, 0.67, 0);
+	static int 				m_StartFadeOutOfLightAtQuantity = 3;
+	vector 					m_ParticleLocalPos = Vector(0, 0.50, 0);
 	
 	string					m_DecraftResult = "WoodenStick";
+	TorchLight				m_Light;
 	
 	void Torch()
 	{
@@ -41,6 +43,11 @@ class Torch : ItemBase
 	{
 		if( !super.CanPutInCargo(parent) ) {return false;}
 		return CanBeTakenAsCargo();
+	}
+	
+	override bool CanReleaseAttachment (EntityAI attachment)
+	{
+		return !GetCompEM().IsWorking();
 	}
 	
 	override bool CanRemoveFromCargo(EntityAI parent)
@@ -283,7 +290,7 @@ class Torch : ItemBase
 	
 	bool CanTransformIntoStick()
 	{
-		if ( GetGame().IsServer()  &&  GetCompEM().GetEnergy() < GetCompEM().GetEnergyUsage()  &&  !GetRag() )
+		if ( GetGame().IsServer()  &&  !IsIgnited()  &&  !GetRag() )
 			return true;
 		else
 			return false;
@@ -340,7 +347,6 @@ class Torch : ItemBase
 	
 	override void OnWorkStart()
 	{
-		SetPilotLight(true);
 		LockRags(true);
 	}
 	
@@ -371,6 +377,47 @@ class Torch : ItemBase
 			{
 				rag.UnlockFromParent();
 			}
+		}
+	}
+	
+	void UpdateLight()
+	{
+		if (!m_Light)
+		{
+			m_Light = TorchLight.Cast( ScriptedLightBase.CreateLight( TorchLight, Vector(0,0,0), 1 ) );
+			m_Light.AttachOnObject(this, m_ParticleLocalPos + Vector (0,0.2,0));
+		}
+		
+		if (m_FireParticle)
+		{
+			Object direct_particle = m_FireParticle.GetDirectParticleEffect();
+			
+			if (direct_particle  &&  direct_particle != m_Light.GetAttachmentParent())
+			{
+				m_Light.AttachOnObject(direct_particle, Vector(0,0.2,0));
+			}	
+		}
+		
+		float update_interval = GetCompEM().GetUpdateInterval();
+		
+		if (GetQuantity() <= m_StartFadeOutOfLightAtQuantity)
+		{
+			float brightness_coef = GetQuantity() / m_StartFadeOutOfLightAtQuantity;
+			float radius_coef = GetQuantity() / m_StartFadeOutOfLightAtQuantity;
+			
+			if (radius_coef < m_StartFadeOutOfLightAtQuantity/10)
+				radius_coef = m_StartFadeOutOfLightAtQuantity/10;
+			
+			if (brightness_coef < m_StartFadeOutOfLightAtQuantity/10)
+				brightness_coef = m_StartFadeOutOfLightAtQuantity/10;
+			
+			m_Light.FadeBrightnessTo(m_Light.m_TorchBrightness * brightness_coef, update_interval);
+			m_Light.FadeRadiusTo(m_Light.m_TorchRadius * radius_coef, update_interval);
+		}
+		else
+		{
+			m_Light.FadeBrightnessTo(m_Light.m_TorchBrightness, update_interval);
+			m_Light.FadeRadiusTo(m_Light.m_TorchRadius, update_interval);
 		}
 	}
 	
@@ -407,24 +454,24 @@ class Torch : ItemBase
 		// Particle scaling by fuel
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
+			UpdateLight();
+			
 			if ( GetQuantity() < 40 )
 			{
-				if (m_FireParticle)
-					m_FireParticle.Stop();
+				if (!m_FireParticle)
+					m_FireParticle = Particle.PlayOnObject(ParticleList.TORCH_T1, this, m_ParticleLocalPos, Vector(0,0,0), true);
 				
-				m_FireParticle = Particle.Play(ParticleList.TORCH_T1, this, m_ParticleLocalPos);
 				float scale = GetQuantity() / 40;
 				
 				if (scale > 1)
 					scale = 1;
 				
-				if (scale < 0.5)
-					scale = 0.5;
+				if (scale < 0.25)
+					scale = 0.25;
 				
-				m_FireParticle.ScaleParticleParam(EmitorParam.SIZE, scale);
-				m_FireParticle.ScaleParticleParam(EmitorParam.BIRTH_RATE, scale);
-				m_FireParticle.ScaleParticleParam(EmitorParam.VELOCITY, scale);
-				m_FireParticle.ScaleParticleParam(EmitorParam.VELOCITY_RND, scale);
+				m_FireParticle.ScaleParticleParamFromOriginal(EmitorParam.SIZE, scale);
+				m_FireParticle.ScaleParticleParamFromOriginal(EmitorParam.VELOCITY, scale);
+				m_FireParticle.ScaleParticleParamFromOriginal(EmitorParam.VELOCITY_RND, scale);
 			}
 			else
 			{
@@ -435,7 +482,7 @@ class Torch : ItemBase
 					if (m_FireParticle)
 						m_FireParticle.Stop();
 					
-					m_FireParticle = Particle.Play(ParticleList.TORCH_T2, this, m_ParticleLocalPos);
+					m_FireParticle = Particle.PlayOnObject(ParticleList.TORCH_T2, this, m_ParticleLocalPos, Vector(0,0,0), true);
 				}
 			}
 		}
@@ -443,7 +490,8 @@ class Torch : ItemBase
 	
 	override void OnWorkStop()
 	{
-		SetPilotLight(false);
+		if (m_Light)
+			m_Light.FadeOut();
 		
 		if ( m_LoopSoundEntity && GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
 		{
@@ -489,6 +537,19 @@ class Torch : ItemBase
 			return 5; // ???
 		else
 			return 2; // ???
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionLightItemOnFire);
+	}
+	
+	override void OnAttachmentQuantityChanged(ItemBase item)
+	{
+		super.OnAttachmentQuantityChanged(item);
+		CalculateQuantity();
 	}
 };
 

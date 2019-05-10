@@ -30,75 +30,7 @@ class Input
 	proto native int		GetActionGroupsCount();
 	proto native int		GetActionGroupSize(int group_index);
 	proto int				GetActionGroupName(int group_index, out string name);
-	proto native void		GetActionGroupItems(int group_index, out TIntArray items);
 	proto int				GetActionDesc(int action_index, out string desc);
-	proto native void		GetActionKeys(int action_index, out TIntArray keys);
-	proto native void		GetActionDefaultKeys(int action_index, out TIntArray keys);
-	proto native void		SetActionKeys(int action_index, TIntArray keys);
-	proto int				GetActionKeyName(int key_index, out string name);
-	proto native int		GetActionsCount();
-	proto native int		IsKeyReserved(int dikCode);
-	proto void				SeparateComboAndKey(int dik, out int dikCombo, out int dikKey);
-	proto native int		IsActionGroupCollision(int actionIndexA, int actionIndexB);
-	int						CheckKeyCollision(int actionIndex, int key)
-	{
-		ref TIntArray keys = new TIntArray;
-		int basicKey = 0;
-		int sepraratedKey = 0;
-		SeparateComboAndKey(key, sepraratedKey, basicKey);
-	
-		bool is_combo;
-		if (sepraratedKey != 0)
-		{
-			is_combo = true;
-		}
-		else
-		{
-			is_combo = false;
-		}
-	
-		for (int ai = 0; ai < GetActionsCount(); ai++)
-		{
-			if (ai == actionIndex) continue;
-			if (IsActionGroupCollision(ai, actionIndex) == 0) continue;
-	
-			GetActionKeys(ai, keys);
-	
-			for (int ki = 0; ki < keys.Count(); ki++)
-			{
-				int otherKey = keys.Get(ki);
-				if (key == otherKey)
-				{
-					return ai;
-				}
-	
-				int otherBasicKey = 0;
-				int otherSepraratedKey = 0;
-				bool other_is_combo;
-	
-				SeparateComboAndKey(otherKey, otherSepraratedKey, otherBasicKey);
-	
-				if (otherSepraratedKey != 0)
-				{
-					other_is_combo = true;
-				}
-				else
-				{
-					other_is_combo = false;
-				}
-	
-				if (is_combo != other_is_combo)
-				{
-					if (otherBasicKey == sepraratedKey || otherSepraratedKey == basicKey)
-					{
-						return ai;
-					}
-				}
-			}
-		}
-	
-		return -1;
-	}
 
 	// getting action state
 	/**
@@ -106,51 +38,51 @@ class Input
 	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
 	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
 	@return actual action state as float, for regular two state buttons returns 0 or 1, for analog buttons/axes returns value in interval <0, 1> with consideration of defined deadzones
+	@see LocalValue()
 	*/
-	proto native float	GetAction_ID(int action, bool check_focus = true);
-	proto native float	GetAction(string action, bool check_focus = true);
+	proto native float	LocalValue_ID(int action, bool check_focus = true);
+	proto native float	LocalValue(string action, bool check_focus = true);
 		
 	/**  
 	\brief Returns true just in frame, when action was invoked (button was pressed)
 	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
 	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
 	@return true if action was invoked in that frame, false otherwise
+	@see LocalPress()
 	*/
-	proto native bool	GetActionDown_ID(int action, bool check_focus = true);
-	proto native bool	GetActionDown(string action, bool check_focus = true);
+	proto native bool	LocalPress_ID(int action, bool check_focus = true);
+	proto native bool	LocalPress(string action, bool check_focus = true);
 	
 	/**  
 	\brief Returns true just in frame, when release action happened (button was released)
 	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
 	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
 	@return true if action was released in that frame, false otherwise
-	@see GetActionDown()
+	@see LocalRelease()
 	*/
-	proto native bool	GetActionUp_ID(int action, bool check_focus = true);
-	proto native bool	GetActionUp(string action, bool check_focus = true);
+	proto native bool	LocalRelease_ID(int action, bool check_focus = true);
+	proto native bool	LocalRelease(string action, bool check_focus = true);
 
 	/**  
 	\brief Returns true just in frame, when hold action invoked (button is hold)
 	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
 	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
 	@return true if action was released in that frame, false otherwise
-	@see GetActionHold()
+	@see LocalHold()
 	*/
-	proto native bool	GetActionHold_ID(int action, bool check_focus = true);
-	proto native bool	GetActionHold(string action, bool check_focus = true);
+	proto native bool	LocalHold_ID(int action, bool check_focus = true);
+	proto native bool	LocalHold(string action, bool check_focus = true);
 
 	/**  
 	\brief Returns true just in frame, when double click action invoked (button double clicked)
 	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
 	@param check_focus if true and game is unfocused, returns 0; otherwise returns actual value
 	@return true if action was released in that frame, false otherwise
-	@see GetActionDbl()
+	@see LocalDbl()
 	*/
-	proto native bool	GetActionDbl_ID(int action, bool check_focus = true);
-	proto native bool	GetActionDbl(string action, bool check_focus = true);
+	proto native bool	LocalDbl_ID(int action, bool check_focus = true);
+	proto native bool	LocalDbl(string action, bool check_focus = true);
 
-	proto native void	BlockInput(int key);
-	
 	/**  
 	\brief Disable key until end of frame
 	@param key id of key, defined in \ref KeyCode
@@ -159,12 +91,6 @@ class Input
 	\endcode
 	*/
 	proto native void	DisableKey(int key);
-	
-	/**  
-	\brief Disable action until end of frame
-	@param action id of action, defined in \ref 4_World/Classes/UserActionsComponent/_constants.c
-	*/
-	proto native void	DisableAction(int action);
 	
 	//! gets currently selected profile
 	proto native int	GetCurrentProfile();
@@ -184,8 +110,6 @@ class Input
 	proto native int		IsDeviceXInput(int device_index);
 	proto native int		IsDeviceEnabled(int device_index);
 	proto native void		SetDeviceEnabled(int device_index, bool enabled);
-	proto native int		IsCustomSchemeEnabled();
-	proto native void		SetCustomSchemeEnabled(bool enabled);
 	
 	//! return true if was deflected button.
 	proto bool				GetGamepadThumbDirection(GamepadButton thumbButton, out float angle, out float value);
@@ -194,7 +118,7 @@ class Input
 	proto native void		ResetActiveGamepad();
 	proto native void		SelectActiveGamepad(int gamepad);
 	proto native void		GetGamepadList(out array<int> gamepads);
-	proto void				GetGamepadUser(int gamepad, out string uid);
+	proto void				GetGamepadUser(int gamepad, out BiosUser user);
 	/**  
 	\brief the on OnGamepadIdentification callback will return the first gamepad where the button was pressed
 	@param button the button that needs to be pressed for the identification
@@ -203,20 +127,47 @@ class Input
 	//! returns true if there is an active gamepad selected.
 	proto native bool		IsActiveGamepadSelected();
 	
+	/**
+	\note For PlayStation, Enter button in Asia territory is typically Circle button (B button), but in Europe and America it is Cross button (A button).
+	\return Button, which represent Enter/Accept button.
+	*/
+	proto native GamepadButton		GetEnterButton();
+	
 	//! callback that is fired when a new gamepad is connected
-	void OnGamepadConnected(int gamepad) {}
+	void OnGamepadConnected(int gamepad)
+	{
+		#ifdef PLATFORM_PS4
+		BiosUser user;
+		GetGamepadUser( gamepad, user );
+		if( user && user == GetGame().GetUserManager().GetSelectedUser() )
+		{
+			SelectActiveGamepad(gamepad);
+			g_Game.DeleteGamepadDisconnectMenu();
+		}
+		#endif
+	}
+	
 	//! callback that is fired when gamepad is disconnected
 	void OnGamepadDisconnected(int gamepad)
 	{
-		if( !IsActiveGamepadSelected() )
+		if( IsInactiveGamepadOrUserSelected(gamepad) )
 		{
-			DayZLoadState state = g_Game.GetLoadState();
-			if( state != DayZLoadState.MAIN_MENU_START && state != DayZLoadState.MAIN_MENU_USER_SELECT )
-			{
-				g_Game.CreateGamepadDisconnectMenu();
-			}
+			#ifdef PLATFORM_PS4
+			ResetActiveGamepad();
+			#endif
 			
-			IdentifyGamepad( GamepadButton.A );
+			if( !g_Game.IsLoading() )
+			{
+				DayZLoadState state = g_Game.GetLoadState();
+				if( state != DayZLoadState.MAIN_MENU_START && state != DayZLoadState.MAIN_MENU_USER_SELECT )
+				{
+					g_Game.CreateGamepadDisconnectMenu();
+				}
+				
+				#ifdef PLATFORM_XBOX
+				IdentifyGamepad( GetEnterButton() );
+				#endif
+			}
 		}
 	}
 
@@ -226,15 +177,44 @@ class Input
 		if( gamepad > -1 )
 		{
 			DayZLoadState state = g_Game.GetLoadState();
+			
+			g_Game.DeleteGamepadDisconnectMenu();
+			SelectActiveGamepad( gamepad );
+			g_Game.SelectUser( gamepad );
+			
 			if( state == DayZLoadState.MAIN_MENU_START || state == DayZLoadState.MAIN_MENU_USER_SELECT )
 			{
 				if( GetGame().GetMission() )
 					GetGame().GetMission().Reset();
 			}
-			g_Game.DeleteGamepadDisconnectMenu();
-			SelectActiveGamepad( gamepad );
-			g_Game.SelectUser( gamepad );
 		}
+	}
+	
+	int GetUserGamepad( BiosUser user )
+	{
+		array<int> gamepads = new array<int>;
+		GetGamepadList( gamepads );
+		for( int i = 0; i < gamepads.Count(); i++ )
+		{
+			BiosUser user2;
+			GetGamepadUser( gamepads[i], user2 );
+			if( user == user2 )
+				return gamepads[i];
+		}
+		return -1;
+	}
+	
+	bool IsInactiveGamepadOrUserSelected( int gamepad = -1 )
+	{
+		#ifdef PLATFORM_XBOX
+		return !IsActiveGamepadSelected();
+		#endif
+		#ifdef PLATFORM_PS4
+		BiosUser user;
+		GetGamepadUser( gamepad, user );
+		return (user == GetGame().GetUserManager().GetSelectedUser());
+		#endif
+		return false;
 	}
 };
 

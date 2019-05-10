@@ -97,7 +97,7 @@ FrameWidgetClass inventory_root {
          ignorepointer 0
          color 0 0 0 0.098
          position -0.1 0
-         size 750 1.2
+         size 750 1.19
          halign right_ref
          valign center_ref
          hexactpos 0
@@ -121,7 +121,7 @@ FrameWidgetClass inventory_root {
          vexactpos 1
          hexactsize 1
          vexactsize 0
-         priority 1
+         priority 2
          style blank
          {
           FrameWidgetClass CharacterPanel {
@@ -155,7 +155,7 @@ FrameWidgetClass inventory_root {
           ScrollWidgetClass HandsPanel {
            visible 1
            disabled 0
-           clipchildren 1
+           clipchildren 0
            inheritalpha 0
            ignorepointer 0
            keepsafezone 0
@@ -182,6 +182,80 @@ FrameWidgetClass inventory_root {
              hexactsize 0
              vexactsize 0
             }
+            PanelWidgetClass LBRB_Hands {
+             visible 0
+             clipchildren 0
+             color 0 0 0 0.7059
+             position 0 -50
+             size 150 40
+             halign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             priority 999
+             style NewStyle
+             {
+              ImageWidgetClass LBRB_Hands_LBArrow {
+               ignorepointer 1
+               size 29 29
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 1
+               vexactsize 1
+               image0 "set:dayz_gui image:arrow_left"
+               mode blend
+               "src alpha" 1
+              }
+              ImageWidgetClass LBRB_Hands_LBIcon {
+               ignorepointer 1
+               position 30 0
+               size 40 32
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 1
+               vexactsize 1
+               image0 "set:xbox_buttons image:LB"
+               mode blend
+               "src alpha" 1
+               "no wrap" 1
+               stretch 1
+              }
+              ImageWidgetClass LBRB_Hands_RBIcon {
+               ignorepointer 1
+               position 30 0
+               size 40 32
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 1
+               vexactsize 1
+               image0 "set:xbox_buttons image:RB"
+               mode blend
+               "src alpha" 1
+               "no wrap" 1
+               stretch 1
+              }
+              ImageWidgetClass LBRB_Hands_RBArrow {
+               ignorepointer 1
+               size 29 29
+               halign right_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 1
+               vexactsize 1
+               image0 "set:dayz_gui image:arrow_right"
+               mode blend
+               "src alpha" 1
+               "flip u" 0
+               "flip v" 0
+              }
+             }
+            }
            }
            {
             ScriptParamsClass {
@@ -189,6 +263,170 @@ FrameWidgetClass inventory_root {
              m_ResizeVertical 1
             }
            }
+          }
+         }
+        }
+        PanelWidgetClass CenterBackground {
+         visible 1
+         clipchildren 0
+         ignorepointer 0
+         color 0.1961 0 0 0
+         position 0 0
+         size 550 1.2
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 1
+         vexactsize 0
+         draggable 0
+         style rover_sim_colorable
+         "no focus" 0
+        }
+        PanelWidgetClass LBRB_Vicinity {
+         visible 1
+         clipchildren 0
+         color 0 0 0 0.7059
+         position 201.5 0
+         size 150 40
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         priority 999
+         style NewStyle
+         {
+          ImageWidgetClass LBRB_Vicinity_LBArrow {
+           ignorepointer 1
+           size 29 29
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:arrow_left"
+           mode blend
+           "src alpha" 1
+          }
+          ImageWidgetClass LBRB_Vicinity_LBIcon {
+           ignorepointer 1
+           position 30 0
+           size 40 32
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:LB"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass LBRB_Vicinity_RBIcon {
+           ignorepointer 1
+           position 30 0
+           size 40 32
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:RB"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass LBRB_Vicinity_RBArrow {
+           ignorepointer 1
+           size 29 29
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:arrow_right"
+           mode blend
+           "src alpha" 1
+           "flip u" 0
+           "flip v" 0
+          }
+         }
+        }
+        PanelWidgetClass LBRB_Equipment {
+         visible 1
+         clipchildren 0
+         color 0 0 0 0.7059
+         position 201.5 0
+         size 150 40
+         halign right_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         priority 999
+         style NewStyle
+         {
+          ImageWidgetClass LBRB_Equipment_LBArrow {
+           ignorepointer 1
+           size 29 29
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:arrow_left"
+           mode blend
+           "src alpha" 1
+          }
+          ImageWidgetClass LBRB_Equipment_LBIcon {
+           ignorepointer 1
+           position 30 0
+           size 40 32
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:LB"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass LBRB_Equipment_RBIcon {
+           ignorepointer 1
+           position 30 0
+           size 40 32
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:xbox_buttons image:RB"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 1
+          }
+          ImageWidgetClass LBRB_Equipment_RBArrow {
+           ignorepointer 1
+           size 29 29
+           halign right_ref
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:arrow_right"
+           mode blend
+           "src alpha" 1
+           "flip u" 0
+           "flip v" 0
           }
          }
         }
@@ -208,6 +446,7 @@ FrameWidgetClass inventory_root {
      vexactpos 0
      hexactsize 0
      vexactsize 0
+     priority 1
     }
     FrameWidgetClass QuickbarGrid {
      inheritalpha 0
@@ -224,11 +463,6 @@ FrameWidgetClass inventory_root {
      scriptclass "InventoryGrid"
      {
       ScriptParamsClass {
-       Gap 2
-       ItemSizeHeight 40
-       ItemsHorizontal 10
-       ItemsVertical 1
-       DebugOutput 0
       }
      }
     }
@@ -290,74 +524,6 @@ FrameWidgetClass inventory_root {
        hexactsize 0
        vexactsize 1
        text "#layout_console_inventory_toolbar_context"
-       font "gui/fonts/MetronLight"
-       "italic text" 0
-       "exact text" 1
-       "size to text h" 1
-       "size to text v" 0
-       "text halign" right
-       "text valign" center
-       wrap 1
-      }
-     }
-    }
-   }
-  }
-  PanelWidgetClass TopConsoleToolbar {
-   visible 1
-   clipchildren 1
-   color 1 1 1 0.7059
-   size 1 0.09
-   halign center_ref
-   hexactpos 0
-   vexactpos 0
-   hexactsize 0
-   vexactsize 0
-   priority 200
-   style ToolbarWidget
-   "no focus" 0
-   {
-    PanelWidgetClass GeneralToolbar {
-     clipchildren 0
-     position 0.05 0.1
-     size 0.9 35
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
-     hexactsize 0
-     vexactsize 1
-     {
-      RichTextWidgetClass GeneralToolbarTextLeft {
-       visible 1
-       clipchildren 0
-       position 20 0
-       size 0.48 1
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#layout_console_inventory_toolbar_text"
-       font "gui/fonts/MetronLight"
-       "italic text" 0
-       "exact text" 1
-       "size to text h" 1
-       "size to text v" 0
-       "text valign" center
-       wrap 1
-      }
-      RichTextWidgetClass GeneralToolbarTextRight {
-       visible 1
-       clipchildren 0
-       position 20 0
-       size 0.48 1
-       halign right_ref
-       valign center_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 0
-       vexactsize 0
-       text "#layout_console_inventory_toolbar_text"
        font "gui/fonts/MetronLight"
        "italic text" 0
        "exact text" 1

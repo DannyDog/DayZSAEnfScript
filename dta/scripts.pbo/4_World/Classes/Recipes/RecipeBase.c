@@ -129,6 +129,19 @@ class RecipeBase
 		array<string> ptr = m_Ingredients[index];
 		ptr.Insert(ingredient);
 	}
+	
+	void RemoveIngredient(int index, string ingredient)
+	{
+		array<string> ptr = m_Ingredients[index];
+		for(int i = 0; i < ptr.Count(); i++)
+		{
+			if(ptr[i] == ingredient)
+			{
+				ptr.Remove(i);
+				return;
+			}
+		}
+	}
 
 
 	void AddResult(string item)
@@ -136,30 +149,16 @@ class RecipeBase
 		m_ItemsToCreate[m_NumberOfResults] = item;
 		m_NumberOfResults++;
 	}
-	/*
-	void AddResultColored(string item)
-	{
-		class_name = 
-		color = 
-		m_ItemsToCreate[m_NumberOfResults] = item;
-		m_NumberOfResults++;
-	}
-	*/
+
 	string GetName()
 	{
 		return m_Name;
 	}
-/*
-	bool IsAction()
-	{
-		return m_IsActionType;
-	}
-*/
+
 	bool IsInstaRecipe()
 	{
 		return m_IsInstaRecipe;
 	}
-
 
 	//spawns results in the world
 	void SpawnItems(ItemBase ingredients[], PlayerBase player, array<ItemBase> spawned_objects/*out*/)

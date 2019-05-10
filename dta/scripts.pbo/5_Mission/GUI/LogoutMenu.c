@@ -5,6 +5,7 @@ class LogoutMenu extends UIScriptedMenu
 	private TextWidget m_Info;
 	private ButtonWidget m_bLogoutNow;
 	private ButtonWidget m_bCancel;
+	private ButtonWidget m_bCancelConsole;
 	private int m_iTime;
 
 	void LogoutMenu()
@@ -26,6 +27,18 @@ class LogoutMenu extends UIScriptedMenu
 		m_Info = TextWidget.Cast( layoutRoot.FindAnyWidget("txtInfo") );
 		m_bLogoutNow = ButtonWidget.Cast( layoutRoot.FindAnyWidget("bLogoutNow") );
 		m_bCancel = ButtonWidget.Cast( layoutRoot.FindAnyWidget("bCancel") );
+		
+#ifdef PLATFORM_CONSOLE
+		m_bCancel.Show( false );
+		m_bLogoutNow.Show( false );
+		
+		m_bCancel = ButtonWidget.Cast( layoutRoot.FindAnyWidget("bCancelConsole") );
+		m_bCancel.Show( true );
+#else
+		m_bCancel.Show( true );
+		m_bLogoutNow.Show( true );
+		layoutRoot.FindAnyWidget("bCancelConsole").Show( false );
+#endif
 		
 		UpdateInfo();
 		
@@ -69,7 +82,7 @@ class LogoutMenu extends UIScriptedMenu
 
 		return false;
 	}
-
+	
 	override bool OnKeyDown(Widget w, int x, int y, int key)
 	{
 		super.OnKeyDown( w, x, y, key);
@@ -91,7 +104,16 @@ class LogoutMenu extends UIScriptedMenu
 		
 		return true;
 	}
-	
+
+	override void Update( float timeslice )
+	{
+		if( GetGame().GetInput().LocalPress( "UAUIBack", false ) )
+		{
+			Cancel();
+			Hide();
+		}		
+	}
+		
 	void SetLogoutTime()
 	{
 		m_LogoutTimetext.SetText(" ");
@@ -102,7 +124,7 @@ class LogoutMenu extends UIScriptedMenu
 		m_iTime = time;
 		m_LogoutTimetext.SetText(m_iTime.ToString());
 	}
-	
+		
 	void UpdateTime()
 	{
 		

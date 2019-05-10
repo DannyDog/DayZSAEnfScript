@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{3A40B4F14DF4CA15}Gui/textures/tutorials/health.edds"
+ Author "inv1967"
+ ChangeDate -1950570911
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "health.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

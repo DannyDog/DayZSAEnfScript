@@ -1,26 +1,26 @@
 class AttachmentCategoriesSlotsContainer: Container
 {
 	ref SlotsContainer m_ItemsCont;
+	
 	void AttachmentCategoriesSlotsContainer( LayoutHolder parent, int index )
 	{
 		m_ItemsCont = new SlotsContainer(this);
 		m_Body.Insert( m_ItemsCont );
 		m_ItemsCont.GetMainWidget().SetUserID( index );
+		
 		for( int k = 0; k < ITEMS_IN_ROW; k++ )
 		{
-			WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetMainWidget().FindAnyWidget( "Icon" + k ),  m_Parent, "OnDropReceivedFromHeader" );
-			//WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetMainWidget().FindAnyWidget( "GhostSlot" + k ),  m_Parent, "OnDropReceivedFromHeader" );
-			WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetMainWidget().FindAnyWidget( "PanelWidget" + k ),  m_Parent, "OnDropReceivedFromHeader" );
+			//WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "OnDropReceivedFromHeader" );
+			//WidgetEventHandler.GetInstance().RegisterOnDropReceived(  m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "OnDropReceivedFromHeader" );
 			      
-			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetMainWidget().FindAnyWidget( "Icon" + k ),  m_Parent, "DraggingOverHeader" );
-			//WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetMainWidget().FindAnyWidget( "GhostSlot" + k ),  m_Parent, "DraggingOverHeader" );
-			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetMainWidget().FindAnyWidget( "PanelWidget" + k ),  m_Parent, "DraggingOverHeader" );
+			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "DraggingOverHeader" );
+			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "DraggingOverHeader" );
 			
-			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetMainWidget().FindAnyWidget( "PanelWidget" + k ),  m_Parent, "MouseClick" );
-			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetMainWidget().FindAnyWidget( "Icon" + k ),  m_Parent, "MouseClick" );
+			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "MouseClick" );
+			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "MouseClick" );
 			
-			m_ItemsCont.GetMainWidget().FindAnyWidget( "PanelWidget" + k ).SetUserID( k );
-			m_ItemsCont.GetMainWidget().FindAnyWidget( "Icon" + k ).SetUserID( k );
+			m_ItemsCont.GetSlotIcon( k ).GetMainWidget().SetUserID( k );
+			m_ItemsCont.GetSlotIcon( k ).GetPanelWidget().SetUserID( k );
 		}
 	}
   
@@ -53,8 +53,23 @@ class AttachmentCategoriesSlotsContainer: Container
 	
 	override EntityAI GetFocusedEntity()
 	{
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_ItemsCont.GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
-		return ipw.GetItem();
+		return m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetRender().GetItem();
+	}
+	
+	int GetParentID()
+	{
+		return m_ItemsCont.GetMainWidget().GetUserID();
+	}
+	
+	int GetFocusedID()
+	{
+		return m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetMainWidget().GetUserID();
+	}
+	
+	void ExpandCollapseContainer( bool expand )
+	{
+		m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetRadialIcon().Show( expand );
+		m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetRadialIconClosed().Show( !expand );
 	}
 	
 	override void MoveGridCursor( int direction )
@@ -94,7 +109,7 @@ class AttachmentCategoriesSlotsContainer: Container
 		if( direction == Direction.RIGHT )
 		{
 			m_FocusedColumn++;
-			if( m_FocusedColumn >= m_ItemsCont.GetColumnCount() )
+			if( m_FocusedColumn > m_ItemsCont.GetColumnCount() )
 			{
 				m_FocusedColumn = 0;
 			}
@@ -109,13 +124,13 @@ class AttachmentCategoriesSlotsContainer: Container
 			}
 		}
 
-		m_ItemsCont.GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).Show( true );
+		m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetCursorWidget().Show( true );
 		
 		EntityAI focused_item = GetFocusedEntity();
 		if( focused_item )
 		{
 			float x, y;
-			m_ItemsCont.GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).GetScreenPos( x, y );
+			m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetCursorWidget().GetScreenPos( x, y );
 			ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
 		}
 	}

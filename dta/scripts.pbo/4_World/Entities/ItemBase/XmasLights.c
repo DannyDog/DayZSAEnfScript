@@ -105,4 +105,12 @@ class XmasLights extends Inventory_Base
 	// Advanced placement
 	//---------------------------------------------------
 	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionPlugIn);
+		AddAction(ActionUnplugThisByCord);
+	}
+	
 }

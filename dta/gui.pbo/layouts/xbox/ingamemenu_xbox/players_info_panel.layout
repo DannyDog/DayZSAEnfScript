@@ -1,36 +1,57 @@
-PanelWidgetClass players_info_panel_root {
+GridSpacerWidgetClass players_info_panel_root {
  clipchildren 0
+ color 0 0 0 0.549
  position 0 0
  size 1 1
  hexactpos 0
  vexactpos 0
  hexactsize 0
  vexactsize 0
- style blank
+ style Colorable
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Columns 1
+ Rows 2
  {
   PanelWidgetClass players_info_panel_header {
    visible 1
-   color 0 0 0 0.9412
+   color 0 0 0 1
    position 0 0
-   size 1 42
+   size 1 40
    hexactpos 1
    vexactpos 1
    hexactsize 0
    vexactsize 1
    style rover_sim_colorable
    {
-    TextWidgetClass header_text {
+    TextWidgetClass header_text_left {
      clipchildren 0
-     position 10 0
-     size 0.98 30
+     position 15 0
+     size 300 22
      valign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
+     hexactsize 1
      vexactsize 1
+     text "#server_browser_column_players"
      font "gui/fonts/sdf_MetronLight24"
      "exact text" 0
-     "text halign" center
+     "text valign" center
+    }
+    TextWidgetClass header_text_right {
+     clipchildren 0
+     ignorepointer 1
+     position 15 0
+     size 300 22
+     halign right_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "#options_sound_voip #menu_enabled"
+     font "gui/fonts/sdf_MetronLight24"
+     "text halign" right
      "text valign" center
     }
    }
@@ -38,9 +59,9 @@ PanelWidgetClass players_info_panel_root {
   ScrollWidgetClass ScrollFrame {
    clipchildren 1
    ignorepointer 1
-   color 0.2353 0.2353 0.2353 0.549
+   color 0 0 0 0.1961
    position 0 42
-   size 1 0.92
+   size 1 1
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -51,6 +72,7 @@ PanelWidgetClass players_info_panel_root {
    {
     WrapSpacerWidgetClass Content {
      ignorepointer 1
+     color 0 0 0 0
      position 0 0
      size 1 0
      hexactpos 1
@@ -59,7 +81,7 @@ PanelWidgetClass players_info_panel_root {
      vexactsize 1
      priority 9
      scriptclass ""
-     style DayZDefaultPanel
+     style Colorable
      Padding 0
      Margin 0
      "Size To Content V" 1

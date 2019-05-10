@@ -389,9 +389,9 @@ class ActionTargets
 		float c1 = vector.Dot(w,v);
 		float c2 = vector.Dot(v,v);
 
-		if( c2 == 0 )
+		if( c1 <= 0 || c2 == 0 )
 			return vector.DistanceSq(pPoint, pL1);
-				
+
 		float b = c1 / c2;	
 		vector nearestPoint = pL1 + (v * b);
 		return vector.DistanceSq(pPoint, nearestPoint);		

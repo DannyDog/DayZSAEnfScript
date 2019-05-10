@@ -10,10 +10,6 @@ class ContainerWithCargo: ClosableContainer
 		this.Insert( m_CargoGrid );
 		
 		m_CargoGrid.GetRootWidget().SetSort( 1 );
-		
-		#ifdef PLATFORM_CONSOLE
-		m_RootWidget.FindAnyWidget( "CargoCount" ).Show( true );
-		#endif
 	}
 	
 	override bool IsEmpty()
@@ -75,6 +71,11 @@ class ContainerWithCargo: ClosableContainer
 		SetFocusedContainer( m_CargoGrid );
 	}
 	
+	override void SetLastActive()
+	{
+		m_CargoGrid.SetLastActive();
+	}
+	
 	override void SetNextActive()
 	{
 		Container.Cast( GetParent() ).SetNextActive();
@@ -82,9 +83,9 @@ class ContainerWithCargo: ClosableContainer
 		UnfocusAll();
 	}
 
-	override void SetPreviousActive()
+	override void SetPreviousActive( bool force = false )
 	{
-		Container.Cast( GetParent() ).SetPreviousActive();
+		Container.Cast( GetParent() ).SetPreviousActive( force );
 		m_ActiveIndex = 1;
 		UnfocusAll();
 	}
@@ -129,11 +130,9 @@ class ContainerWithCargo: ClosableContainer
 		m_Entity = entity;
 		SetOpenState( ItemManager.GetInstance().GetDefaultOpenState( m_Entity.GetType() ) );
 
-		Header h = Header.Cast( m_Body.Get( 0 ) );
-		h.SetName( m_Entity.GetDisplayName() );
-		h.SetItemPreview( m_Entity );
-
 		m_CargoGrid.SetEntity( entity );
+		m_CargoGrid.UpdateHeaderText();
+		m_ClosableHeader.SetItemPreview( entity );
 		
 		( Container.Cast( m_Parent ) ).Insert( this );
 		
@@ -153,6 +152,29 @@ class ContainerWithCargo: ClosableContainer
 	EntityAI GetEntity()
 	{
 		return m_Entity;
+	}
+	
+	override EntityAI GetFocusedContainerEntity()
+	{
+		return m_Entity;
+	}
+	
+	void EquipmentMoveUp()
+	{
+		PlayerContainer pc = PlayerContainer.Cast( m_Parent );
+		if( pc )
+		{
+			pc.MoveContainerUp( this );
+		}
+	}
+	
+	void EquipmentMoveDown()
+	{
+		PlayerContainer pc = PlayerContainer.Cast( m_Parent );
+		if( pc )
+		{
+			pc.MoveContainerDown( this );
+		}
 	}
 
 	EntityAI GetItemPreviewItem( Widget w )
@@ -204,19 +226,19 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		#ifdef PLATFORM_CONSOLE
-		if( m_Entity.GetInventory().CanAddEntityInCargo( item ) && item.GetInventory().CanRemoveEntity() )
+		if( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && item.GetInventory().CanRemoveEntity() )
 		#else
-		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, 0, x, y ) && item.GetInventory().CanRemoveEntity() )
+		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, 0, x, y, item.GetInventory().GetFlipCargo() ) && item.GetInventory().CanRemoveEntity() )
 		#endif
 		{
 			ItemManager.GetInstance().HideDropzones();
 			if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 			{
-				ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			}
 			else
 			{
-				ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 			}
 			color = ColorManager.GREEN_COLOR;
 		}
@@ -273,9 +295,9 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		#ifdef PLATFORM_CONSOLE
-		if( m_Entity.GetInventory().CanAddEntityInCargo( item ) )
+		if( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) )
 		#else
-		if( c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y ) )
+		if( c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		#endif
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -293,6 +315,7 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 	}
 	
 	void TakeIntoHands( notnull PlayerBase player, notnull EntityAI item )
@@ -350,17 +373,17 @@ class ContainerWithCargo: ClosableContainer
 			return;
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		if( item.GetInventory().CanRemoveEntity() && player.CanManipulateInventory() && ( m_Entity.GetInventory().CanAddEntityInCargo( item ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		if( item.GetInventory().CanRemoveEntity() && player.CanManipulateInventory() && ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 			ItemManager.GetInstance().HideDropzones();
 			if( m_Entity.GetHierarchyParent() == GetGame().GetPlayer() )
 			{
-				ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "RightPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			}
 			else
 			{
-				ItemManager.GetInstance().GetRootWidget().FindAnyWidget( "LeftPanel" ).FindAnyWidget( "DropzoneX" ).SetAlpha( 1 );
+				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 			}
 		}
 		else
@@ -381,7 +404,7 @@ class ContainerWithCargo: ClosableContainer
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( GetEntity() )
 		{
-			bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( item );
+			bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() );
 			bool in_cargo = !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item );
 			if( can_add && in_cargo )
 			{

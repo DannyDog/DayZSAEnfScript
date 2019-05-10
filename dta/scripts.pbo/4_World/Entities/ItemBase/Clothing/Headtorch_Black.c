@@ -1,7 +1,7 @@
 class Headtorch_Black : Headtorch_ColorBase 
 {
-	override ScriptedLightBase CreateHeadtorchLight()
+	override void OnLightCreated()
 	{
-		return ScriptedLightBase.CreateLight(HeadtorchRedLight, "0 0 0", 60);
+		m_Light.SetColorToRed();
 	}
 }

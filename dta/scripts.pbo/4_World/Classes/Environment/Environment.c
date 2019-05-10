@@ -33,7 +33,6 @@ class Environment
 	
 	//
 	protected float					m_WaterLevel;
-	protected bool 					m_IsInside;
 	protected bool 					m_IsUnderRoof;
 	protected bool 					m_IsInWater;
 	protected bool					m_IsTempSet;
@@ -64,7 +63,6 @@ class Environment
 		m_WaterLevel			= 0.0;
 		m_HeatComfort			= 0.0;
 		
-		m_IsInside				= false;
 		m_IsUnderRoof			= false;
 		m_IsInWater				= false;
 
@@ -155,10 +153,11 @@ class Environment
 			{
 				m_Time = 0;
 				m_WetDryTick++; // Sets whether it is time to add wetness to items and clothing
+				
+				//Print(IsInsideBuilding().ToString());
 
 				//! Updates data
 				CheckWaterContact(m_WaterLevel);
-				CheckInsideBuilding();
 				CollectAndSetPlayerData();
 				CollectAndSetEnvironmentData();
 				
@@ -229,7 +228,7 @@ class Environment
 	
 	protected bool IsInsideBuilding()
 	{
-		return m_IsInside;
+		return m_Player && m_Player.IsSoundInsideBuilding();
 	}
 	
 	protected bool IsRaining()
@@ -276,17 +275,6 @@ class Environment
 		m_Player.SetInWater(m_IsInWater);
 	}
 	
-	protected void CheckInsideBuilding()
-	{
-		if (m_Player.IsSoundInsideBuilding() > 0)
-		{
-			m_IsInside = true;
-			return;
-		}
-
-		m_IsInside = false;
-	}
-
 	// Calculates item heat isolation based on its wetness
 	float GetCurrentItemHeatIsolation(ItemBase pItem)
 	{
@@ -693,7 +681,7 @@ class Environment
 		{
 			DbgUI.BeginCleanupScope();
 			DbgUI.Begin("New HeatComfort debug", 300, 100);
-			DbgUI.Text("Heat comfort: " + m_HeatComfort.ToString());
+			DbgUI.Text("Heat comfort: " + m_Heat.ToString());
 			DbgUI.Text("HeatComfort raw (avg): " + heatComfortAvg.ToString());
 			DbgUI.Text("Heat raw (avg): " + heatAvg.ToString());
 			DbgUI.Text("TempToCoef: " + EnvTempToCoef(m_EnvironmentTemperature).ToString());
@@ -782,9 +770,12 @@ class Environment
 		{
 			//DbgUI.Text("Temperature: " + m_PlayerTemperature.ToString());
 			DbgUI.Text("Heat comfort: " + m_HeatComfort.ToString());
-			DbgUI.Text("Inside: " + m_IsInside.ToString() + " ("+m_Player.GetSurfaceType()+")");
+			DbgUI.Text("Inside: " + IsInsideBuilding().ToString() + " ("+m_Player.GetSurfaceType()+")");
 			DbgUI.Text("Under roof: " + m_IsUnderRoof.ToString());
-			DbgUI.Text("Water Level: " + m_WaterLevel);
+			if( IsWaterContact() && m_WaterLevel > WATER_LEVEL_NONE )
+			{
+				DbgUI.Text("Water Level: " + m_WaterLevel);
+			}
 			
 		}
 		DbgUI.End();

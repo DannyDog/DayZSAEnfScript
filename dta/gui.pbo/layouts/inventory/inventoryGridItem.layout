@@ -3,35 +3,32 @@ PanelWidgetClass GridCell {
  inheritalpha 0
  ignorepointer 0
  position 0 0
- size 80 80
+ size 1 1
  hexactpos 1
  vexactpos 1
- hexactsize 1
- vexactsize 1
- priority 100
+ hexactsize 0
+ vexactsize 0
  style blank
  {
   PanelWidgetClass GridItemBck {
    clipchildren 0
    position 0 0
-   size 80 80
+   size 1 1
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   priority 100
+   hexactsize 0
+   vexactsize 0
    {
     PanelWidgetClass GridItem {
      clipchildren 0
      inheritalpha 0
      color 0 0 0 1
      position 0 0
-     size 80 80
+     size 1 1
      hexactpos 1
      vexactpos 1
-     hexactsize 1
-     vexactsize 1
-     priority 100
+     hexactsize 0
+     vexactsize 0
      draggable 1
      style rover_sim_colorable
      {
@@ -46,10 +43,10 @@ PanelWidgetClass GridCell {
        vexactpos 1
        hexactsize 0
        vexactsize 0
-       priority 100
+       priority 151
        draggable 0
       }
-      PanelWidgetClass QuantityPanel {
+      FrameWidgetClass QuantityPanel {
        visible 0
        clipchildren 1
        inheritalpha 1
@@ -61,11 +58,10 @@ PanelWidgetClass GridCell {
        hexactsize 0
        vexactsize 0
        priority 606
-       draggable 1
-       style blank
+       draggable 0
        {
         ProgressBarWidgetClass QuantityBar {
-         visible 0
+         visible 1
          ignorepointer 1
          position 0 2
          size 0.9 3
@@ -76,7 +72,7 @@ PanelWidgetClass GridCell {
          hexactsize 0
          vexactsize 1
          style Quantity
-         current 0
+         current 70
          vertical 0
          flipped 0
         }
@@ -84,8 +80,8 @@ PanelWidgetClass GridCell {
          clipchildren 1
          inheritalpha 0
          ignorepointer 1
-         position 1 1.5
-         size 10 10
+         position 1 1
+         size 29 18
          halign right_ref
          valign bottom_ref
          hexactpos 1
@@ -93,12 +89,13 @@ PanelWidgetClass GridCell {
          hexactsize 1
          vexactsize 1
          priority 600
-         draggable 1
+         draggable 0
          style blank
          {
           ImageWidgetClass Background {
            visible 1
            ignorepointer 1
+           color 0 0 0 0.7843
            size 1 1
            halign center_ref
            valign center_ref
@@ -106,85 +103,34 @@ PanelWidgetClass GridCell {
            vexactpos 0
            hexactsize 0
            vexactsize 0
-           fixaspect inside
-           image0 "set:dayz_gui image:circle"
+           image0 ""
            mode blend
            "src alpha" 1
            "no wrap" 1
+           stretch 1
            filter 1
            nocache 0
           }
           TextWidgetClass Quantity {
            inheritalpha 0
            ignorepointer 1
-           color 0 0 0 1
-           size 1 0.7
+           size 1 1
            halign center_ref
            valign center_ref
            hexactpos 1
            vexactpos 1
            hexactsize 0
            vexactsize 0
-           fixaspect inside
            priority 500
            style Light
-           font "gui/fonts/sdf_MetronBook24"
+           text "99"
+           font "gui/fonts/sdf_MetronLight24"
            "exact text" 0
-           "size to text h" 0
-           "size to text v" 0
+           text_proportion 0.9
            "text halign" center
            "text valign" center
           }
          }
-        }
-       }
-      }
-      PanelWidgetClass ExpandIcons {
-       visible 0
-       ignorepointer 1
-       size 48 48
-       halign right_ref
-       valign bottom_ref
-       hexactpos 1
-       vexactpos 1
-       hexactsize 1
-       vexactsize 1
-       {
-        ImageWidgetClass ExpandIcon {
-         visible 0
-         ignorepointer 1
-         size 0.2 0.2
-         halign right_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         priority 201
-         image0 "set:dayz_gui image:Expand"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         filter 1
-         nocache 0
-        }
-        ImageWidgetClass CollapseIcon {
-         visible 0
-         ignorepointer 1
-         size 0.2 0.2
-         halign right_ref
-         valign bottom_ref
-         hexactpos 0
-         vexactpos 0
-         hexactsize 0
-         vexactsize 0
-         priority 201
-         image0 "set:dayz_gui image:Collapse"
-         mode blend
-         "src alpha" 1
-         "no wrap" 1
-         filter 1
-         nocache 0
         }
        }
       }
@@ -199,12 +145,11 @@ PanelWidgetClass GridCell {
    ignorepointer 0
    color 0.2235 0.2235 0.2235 0
    position 0 0
-   size 80 80
+   size 1 1
    hexactpos 1
    vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   priority 99
+   hexactsize 0
+   vexactsize 0
    style blank
    {
     ImageWidgetClass GhostIcon {

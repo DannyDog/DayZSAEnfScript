@@ -89,7 +89,7 @@ class Chat
 			if( g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ) )
 				return;
 		}
-		else
+		else if( channel != 0 ) // 0 should be local messages to self
 		{
 			Print("Chat: Unknown channel " + channel);
 			return;

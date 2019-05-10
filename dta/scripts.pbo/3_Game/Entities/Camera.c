@@ -62,7 +62,7 @@ class Camera extends Entity
 	\brief Orientation change by lookAt point
 	\param targetPos \p where to look at
 	*/
-	proto native void LookAt(vector targetPos);		
+	proto native void LookAt(vector targetPos);
 };
 
 //-----------------------------------------------------------------------------

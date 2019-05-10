@@ -8,6 +8,24 @@ FrameWidgetClass settings_menu_root {
  vexactsize 0
  priority 951
  {
+  TextWidgetClass SettingsTextWidget {
+   ignorepointer 1
+   position 0.05 80
+   size 0.3 50
+   halign right_ref
+   hexactpos 0
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   priority 1
+   style Normal
+   text "#STR_settings_menu_root_SettingsTextWidget0"
+   font "gui/fonts/sdf_MetronLight72"
+   "text color" 0.8157 0.1255 0.7843 1
+   "exact text" 0
+   "text halign" right
+   "text valign" center
+  }
   FrameWidgetClass Tabber {
    ignorepointer 1
    position 0 0
@@ -51,7 +69,7 @@ FrameWidgetClass settings_menu_root {
        "Size To Content V" 1
        {
         ImageWidgetClass Tabs_Background {
-         visible 1
+         visible 0
          ignorepointer 1
          color 1 1 1 0.5098
          position 0 0
@@ -68,6 +86,7 @@ FrameWidgetClass settings_menu_root {
         }
         GridSpacerWidgetClass Tab_Control_Container {
          ignorepointer 1
+         color 0 0 0 0.549
          position 0 0
          size 710 1
          hexactpos 1
@@ -75,6 +94,7 @@ FrameWidgetClass settings_menu_root {
          hexactsize 1
          vexactsize 0
          priority 1
+         style DayZDefaultPanel
          "no focus" 1
          Padding 0
          Margin 0
@@ -86,6 +106,7 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_0 {
            visible 1
            clipchildren 1
+           color 0 0 0 0.549
            size 160 1
            hexactpos 1
            vexactpos 1
@@ -93,7 +114,7 @@ FrameWidgetClass settings_menu_root {
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -114,7 +135,7 @@ FrameWidgetClass settings_menu_root {
              "text valign" center
             }
             ImageWidgetClass Tab_Control_0_Background {
-             visible 1
+             visible 0
              disabled 0
              inheritalpha 0
              ignorepointer 1
@@ -141,6 +162,7 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_1 {
            visible 1
            clipchildren 1
+           color 0 0 0 0
            position 0 0
            size 170 1
            hexactpos 1
@@ -149,7 +171,7 @@ FrameWidgetClass settings_menu_root {
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -197,6 +219,7 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_2 {
            visible 1
            clipchildren 1
+           color 0 0 0 0
            position 0 0
            size 160 1
            hexactpos 1
@@ -205,7 +228,7 @@ FrameWidgetClass settings_menu_root {
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -253,6 +276,7 @@ FrameWidgetClass settings_menu_root {
           PanelWidgetClass Tab_Control_3 {
            visible 1
            clipchildren 1
+           color 0 0 0 0
            position 0 0
            size 220 1
            hexactpos 1
@@ -261,7 +285,7 @@ FrameWidgetClass settings_menu_root {
            vexactsize 0
            priority 200
            userID 0
-           style blank
+           style DayZDefaultPanel
            "no focus" 1
            "next down" "XComboBoxWidget1"
            {
@@ -327,7 +351,7 @@ FrameWidgetClass settings_menu_root {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          valign center_ref
          hexactpos 1
          vexactpos 1
@@ -344,7 +368,7 @@ FrameWidgetClass settings_menu_root {
          clipchildren 1
          ignorepointer 1
          position -45 0
-         size 38 40
+         size 40 32
          halign right_ref
          valign center_ref
          hexactpos 1
@@ -403,46 +427,27 @@ FrameWidgetClass settings_menu_root {
     }
    }
   }
-  TextWidgetClass SettingsTextWidget {
-   ignorepointer 1
-   position 0.05 80
-   size 0.3 50
-   halign right_ref
-   hexactpos 0
-   vexactpos 1
-   hexactsize 0
-   vexactsize 1
-   priority 1
-   style Normal
-   text "#STR_settings_menu_root_SettingsTextWidget0"
-   font "gui/fonts/sdf_MetronLight72"
-   "text color" 0.8157 0.1255 0.7843 1
-   "exact text" 0
-   "text halign" right
-   "text valign" center
-  }
   WrapSpacerWidgetClass play_panel_root {
    visible 1
    ignorepointer 1
-   position 0.05 130
-   size 400 230
+   position 100 130
+   size 400 400
    halign right_ref
    valign bottom_ref
-   hexactpos 0
+   hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
    priority 1
-   Padding 10
+   Padding 0
    Margin 0
-   "Size To Content H" 1
    content_halign center
    content_valign bottom
    {
     WrapSpacerWidgetClass bottom {
-     color 0 0 0 0.7843
+     color 0 0 0 0.549
      position 0 0
-     size 1 84
+     size 1 90
      halign center_ref
      valign bottom_ref
      hexactpos 1
@@ -460,32 +465,41 @@ FrameWidgetClass settings_menu_root {
      "Size To Content H" 1
      "Size To Content V" 1
      {
-      ButtonWidgetClass apply {
-       disabled 1
-       ignorepointer 1
-       color 0.7843 0 0 1
-       position 0 0
-       size 1 84
+      ButtonWidgetClass back {
+       color 0.0392 0.0392 0.0392 1
+       position 0 88
+       size 1 90
        halign center_ref
        valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       style DayZDefaultButtonAll
+       style DayZDefaultButtonBottom
        "no focus" 0
-       "next up" "back"
-       "next down" "reset"
-       text "#STR_settings_menu_root_play_panel_root_bottom_apply0"
-       text_proportion 0.8
+       "next up" "reset"
+       "next down" "apply"
+       text "#STR_settings_menu_root_play_panel_root_top_back0"
+       text_proportion 0.6
        font "gui/fonts/sdf_MetronLight72"
        switch normal
       }
      }
     }
+    PanelWidgetClass separator_red {
+     ignorepointer 1
+     color 0.7843 0 0 1
+     position 10 10
+     size 1 2
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style rover_sim_colorable
+    }
     WrapSpacerWidgetClass top {
      ignorepointer 1
-     color 0 0 0 0.4314
+     color 0 0 0 0.549
      position 0 0
      size 1 48
      hexactpos 1
@@ -499,9 +513,20 @@ FrameWidgetClass settings_menu_root {
      "Size To Content V" 1
      content_valign bottom
      {
-      ButtonWidgetClass back {
-       color 0.0392 0.0392 0.0392 1
-       position 0 88
+      FrameWidgetClass separator_down {
+       ignorepointer 1
+       position 10 10
+       size 1 7
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+      }
+      ButtonWidgetClass apply {
+       disabled 0
+       ignorepointer 0
+       color 0 0 0 1
+       position 0 0
        size 1 38
        halign center_ref
        valign bottom_ref
@@ -509,19 +534,20 @@ FrameWidgetClass settings_menu_root {
        vexactpos 1
        hexactsize 0
        vexactsize 1
+       scaled 1
        style DayZDefaultButtonBottom
        "no focus" 0
        "next up" "reset"
-       "next down" "apply"
-       text "#STR_settings_menu_root_play_panel_root_top_back0"
-       text_proportion 0.6
+       "next down" "back"
+       text "#STR_settings_menu_root_play_panel_root_bottom_apply0"
+       text_proportion 0.55
        font "gui/fonts/sdf_MetronLight24"
        switch normal
       }
       ButtonWidgetClass reset {
-       disabled 1
-       ignorepointer 1
-       color 0.0392 0.0392 0.0392 1
+       disabled 0
+       ignorepointer 0
+       color 0 0 0 1
        position 0 130
        size 1 38
        halign center_ref
@@ -530,7 +556,7 @@ FrameWidgetClass settings_menu_root {
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       style DayZDefaultButtonTop
+       style DayZDefaultButtonBottom
        "no focus" 0
        "next left" ""
        "next right" ""
@@ -571,15 +597,24 @@ FrameWidgetClass settings_menu_root {
         }
        }
       }
+      FrameWidgetClass separator_top {
+       ignorepointer 1
+       position 0 0
+       size 1 5
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+      }
      }
     }
    }
   }
   GridSpacerWidgetClass settings_details {
-   visible 0
+   visible 1
    clipchildren 1
    ignorepointer 1
-   color 0 0 0 0.8627
+   color 0 0 0 0.549
    position 720 160
    size 600 200
    hexactpos 1
@@ -587,47 +622,79 @@ FrameWidgetClass settings_menu_root {
    hexactsize 1
    vexactsize 1
    priority 3
+   style DayZDefaultPanel
    "no focus" 1
-   Padding 8
-   Margin 16
+   Padding 0
+   Margin 0
    "Size To Content V" 1
    Columns 1
    Rows 2
    {
-    TextWidgetClass details_label {
-     clipchildren 0
+    PanelWidgetClass settings_details_header {
      ignorepointer 1
-     position 0 0
-     size 1 36
+     color 0 0 0 1
+     size 0.08 36
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 1
-     font "gui/fonts/sdf_MetronLight72"
-     text_proportion 0.9
+     style DayZDefaultPanel
+     {
+      TextWidgetClass details_label {
+       clipchildren 0
+       ignorepointer 1
+       size 0.95 0.5
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "This is Sparta"
+       font "gui/fonts/sdf_MetronLight72"
+       text_proportion 0.9
+      }
+     }
     }
-    RichTextWidgetClass details_content {
-     clipchildren 0
+    GridSpacerWidgetClass settings_details_body {
      ignorepointer 1
      position 0 0
-     size 1 1
-     hexactpos 1
-     vexactpos 1
+     size 0.9 0.571
+     hexactpos 0
+     vexactpos 0
      hexactsize 0
-     vexactsize 1
-     font "gui/fonts/sdf_MetronLight24"
-     "exact text" 1
-     "exact text size" 22
-     "size to text h" 0
-     "size to text v" 1
-     wrap 1
-     "condense whitespace" 1
+     vexactsize 0
+     Padding 0
+     Margin 15
+     "Size To Content V" 1
+     Columns 1
+     Rows 1
+     {
+      RichTextWidgetClass details_content {
+       clipchildren 0
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       text "this is details"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 0
+       "size to text v" 1
+       wrap 1
+       "condense whitespace" 1
+      }
+     }
     }
    }
   }
   ImageWidgetClass vignette {
    visible 1
-   ignorepointer 0
+   ignorepointer 1
    color 0 0 0 0.7843
    position 0 0
    size 1.6 0.9
@@ -647,6 +714,7 @@ FrameWidgetClass settings_menu_root {
   }
   WrapSpacerWidgetClass Licensing {
    clipchildren 0
+   ignorepointer 1
    position 0.05 0.062
    size 0.45 30
    valign bottom_ref
@@ -681,6 +749,7 @@ FrameWidgetClass settings_menu_root {
     TextWidgetClass copyright {
      visible 1
      clipchildren 0
+     ignorepointer 1
      position 80 40
      size 1 0.5
      valign bottom_ref

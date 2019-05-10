@@ -253,11 +253,15 @@ class PluginDayZCreatureAIDebug extends PluginBase
 			DayZCreatureAI creatureAI = m_DebugEntity;
 			if (enable)
 			{
+				#ifdef DEVELOPER
 				creatureAI.DebugRestoreAIControl();
+				#endif
 			}
 			else
 			{
+				#ifdef DEVELOPER
 				creatureAI.DebugDisableAIControl();		
+				#endif
 			}			
 		}
 	}

@@ -68,40 +68,6 @@ class DayZIntroSceneXbox: Managed
 		// Character
 		float character_distance = 2.1;
 		
-		// Date		
-		m_Date.Insert(2020);	// Year
-		m_Date.Insert(03);	// Month
-		m_Date.Insert(15);	// Day
-		m_Date.Insert(15);	// Hour
-		m_Date.Insert(00);	// Minite
-		
-		// Weather
-		float weather_overcast			= 0.45;
-		float weather_rain				= 0.0;
-		float weather_fog				= 0.0;
-		float weather_storm_density		= 0.0;
-		float weather_storm_threshold	= 0.0;
-		float weather_storm_time_out	= 0.0;
-		float weather_windspeed			= 0.3;
-		
-		// Weather Setup 
-		m_Weather = g_Game.GetWeather();
-		m_Weather.GetOvercast().SetLimits( weather_overcast, weather_overcast );
-		m_Weather.GetOvercast().SetForecastTimeLimits(weather_overcast, weather_overcast);
-		m_Weather.GetOvercast().Set( weather_overcast, 1.0, 1.0);		
-		m_Weather.GetOvercast().SetNextChange( 1 );
-		m_Weather.GetRain().SetLimits( weather_rain, weather_rain );
-		m_Weather.GetRain().Set( weather_rain, 0, 0);
-		m_Weather.GetFog().SetLimits( weather_fog, weather_fog );
-		m_Weather.GetFog().Set( weather_fog, 0, 0);
-		m_Weather.SetStorm(weather_storm_density, weather_storm_threshold, weather_storm_time_out);
-		m_Weather.SetWindSpeed(weather_windspeed);
-		m_Weather.SetWindMaximumSpeed(weather_windspeed);
-		m_Weather.SetWindFunctionParams(1, 1, 1);
-		
-		// Date Setup - Clouds HACK
-		g_Game.GetWorld().SetDate(2020, 10, 15, 9, 00);
-		
 		// Camera Setup
 		m_SceneCamera = CameraCreate(camera_position, camera_rotation_h, camera_rotation_v, camera_fov, camera_focus_distance, camera_focus_streght);
 		m_SceneCamera.SetActive(true);
@@ -118,7 +84,7 @@ class DayZIntroSceneXbox: Managed
 		Init();
 	
 		m_TimerParticle.Run(0.1, this, "SetupParticles", null, false);
-		m_TimerDate.Run(1.0, this, "SetupDate", null, true);
+		//m_TimerDate.Run(2.0, this, "SetupDate", null, false);
 		m_TimerUpdate.Run(0.5, this, "SetupCharacter", null, true);
 		
 		// Xbox check update
@@ -254,7 +220,8 @@ class DayZIntroSceneXbox: Managed
 	//==================================
 	void SetupDate()
 	{
-		g_Game.GetWorld().SetDate(m_Date.Get(0), m_Date.Get(1), m_Date.Get(2), m_Date.Get(3), m_Date.Get(4));
+		//g_Game.GetWorld().SetDate(m_Date.Get(0), m_Date.Get(1), m_Date.Get(2), m_Date.Get(3), m_Date.Get(4));
+		//g_Game.GetWorld().SetDate(2020, 10, 15, 18, 20);
 	}
 	
 	//==================================
@@ -432,6 +399,16 @@ class DayZIntroSceneXbox: Managed
 			m_SceneCharacter.SetDirection(m_CharacterDir);
 	
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(UpdateCharacterPos, 250);
+		}
+		else
+		{
+			// random character
+			UpdateSelectedUserName();
+
+			CreateRandomCharacter();
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(UpdateCharacterPos, 250);
+			g_Game.SetNewCharacter(true);
+			return;
 		}
 
 		UpdateSelectedUserName();

@@ -29,6 +29,9 @@ class Roadflare : ItemBase
 	static protected vector		m_FlameLocalPos = "0 0.285 0";
 	private int					m_BurningState = RoadflareBurningState.NOT_BURNING;
 	
+	// Light
+	RoadflareLight				m_Light;
+	
 	// Particles
 	protected Particle 			m_ParInitialFire;
 	protected Particle 			m_ParMainFire;
@@ -182,12 +185,13 @@ class Roadflare : ItemBase
 	// When the flare starts burning
 	override void OnWorkStart()
 	{
-		SwitchLight(true);
-		
 		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer())
 		{
 			PlaySoundSetLoop( m_BurningSound, BURNING_SOUND, 0.5, 0 );
 			PlaySoundSet( m_IgniteSound, IGNITE_SOUND, 0, 0 );
+			
+			m_Light = RoadflareLight.Cast(  ScriptedLightBase.CreateLight( RoadflareLight, Vector(0,0,0) )  );
+			m_Light.AttachOnMemoryPoint( this, m_Light.m_MemoryPoint );
 		}
 		
 		SetBurningState(RoadflareBurningState.INITIAL_BURN);
@@ -274,12 +278,12 @@ class Roadflare : ItemBase
 		
 		
 		if ( m_BurningSound )
-		{
 			StopSoundSet( m_BurningSound );
-		}
+		
+		if (m_Light)
+			m_Light.FadeOut();
 		
 		SetModelState( RoadflareModelStates.UNCAPPED_BURNED_OUT );
-		SwitchLight(false);
 	}
 	
 	// Updates all (in)active particles
@@ -300,8 +304,8 @@ class Roadflare : ItemBase
 				if (!m_ParInitialFire)
 				{
 					DestroyAllParticles();
-					m_ParInitialFire = Particle.Play( PARTICLE_INIT_FIRE, this, m_FlameLocalPos);
-					m_ParInitialFire.SetWiggle( 15, 0.3);
+					m_ParInitialFire = Particle.PlayOnObject( PARTICLE_INIT_FIRE, this, m_FlameLocalPos);
+					m_ParInitialFire.SetWiggle( 10, 0.3);
 				}
 				break;
 				
@@ -309,8 +313,8 @@ class Roadflare : ItemBase
 				
 				if (!m_ParMainFire)
 				{
-					m_ParMainFire = Particle.Play( PARTICLE_MAIN_FIRE, this, m_FlameLocalPos);
-					m_ParMainFire.SetWiggle( 10, 0.3);
+					m_ParMainFire = Particle.PlayOnObject( PARTICLE_MAIN_FIRE, this, m_FlameLocalPos);
+					m_ParMainFire.SetWiggle( 7, 0.3);
 				}
 				
 				DestroyParticle(m_ParInitialFire);
@@ -322,8 +326,8 @@ class Roadflare : ItemBase
 				if (!m_ParFinalFire)
 				{
 					DestroyAllParticles();
-					m_ParFinalFire = Particle.Play( PARTICLE_FINAL_FIRE, this, m_FlameLocalPos);
-					m_ParFinalFire.SetWiggle( 5, 0.3);
+					m_ParFinalFire = Particle.PlayOnObject( PARTICLE_FINAL_FIRE, this, m_FlameLocalPos);
+					m_ParFinalFire.SetWiggle( 4, 0.3);
 				}
 				break;
 				
@@ -332,8 +336,8 @@ class Roadflare : ItemBase
 				if (!m_ParJustSmoke)
 				{
 					DestroyAllParticles();
-					m_ParJustSmoke = Particle.Play( PARTICLE_FINAL_SMOKE, this, m_FlameLocalPos);
-					m_ParJustSmoke.SetWiggle( 3, 0.3);
+					m_ParJustSmoke = Particle.PlayOnObject( PARTICLE_FINAL_SMOKE, this, m_FlameLocalPos);
+					m_ParJustSmoke.SetWiggle( 2, 0.3);
 				}
 				break;
 		}
@@ -375,9 +379,12 @@ class Roadflare : ItemBase
 			HideSelection(STANDS_FOLDED);
 			ShowSelection(STANDS_UNFOLDED);
 			
-			vector ori_rotate = "180 32 0";
-			//vector ori_standing = ori_rotate + GetOrientation(); // TO DO: Use ori_standing when item drop starts working again.
-			SetOrientation(ori_rotate);
+			if (player)
+			{
+				vector ori_rotate = player.GetOrientation();
+				ori_rotate = ori_rotate + Vector(180, 32, 0);
+				SetOrientation(ori_rotate);
+			}
 		}
 	}
 	
@@ -415,5 +422,13 @@ class Roadflare : ItemBase
 		super.OnVariablesSynchronized();
 		
 		UpdateActiveParticles();
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionLightItemOnFire);
+		AddAction(ActionTurnOnWhileInHands);
 	}
 };

@@ -14,18 +14,27 @@ class CGame
 
 	private ref array<ref Param> m_ParamCache;
 	
+	//analytics	
+	ref AnalyticsManagerServer 	m_AnalyticsManagerServer;
+	ref AnalyticsManagerClient 	m_AnalyticsManagerClient;	
+	
 	void CGame()
 	{
 		m_ParamCache = new array<ref Param>;
 		m_ParamCache.Insert(NULL);
 		
+		//analytics
+		m_AnalyticsManagerServer = new AnalyticsManagerServer;
+		m_AnalyticsManagerClient = new AnalyticsManagerClient;
+		
 		// actual script version - increase by one when you make changes
-		StorageVersion(103);
+		StorageVersion(105);
 	}
 	
 	private void ~CGame();
 	
 	proto native WorkspaceWidget GetWorkspace();
+	proto native WorkspaceWidget GetLoadingWorkspace();
 	
 	//! 
 	/**
@@ -475,6 +484,8 @@ class CGame
 
 	proto native void		ConfigGetFullPath(string path, out TStringArray full_path);
 	proto native void		ConfigGetObjectFullPath(Object obj, out TStringArray full_path);
+	
+	proto native void		GetModInfos(notnull out array<ref ModInfo> modArray);
 
 /**
 \brief Converts array of strings into single string.
@@ -654,7 +665,7 @@ class CGame
 	proto void					FormatString( string format, string params[], out string output);
 	proto void					GetVersion( out string version );
 	proto native UIManager	GetUIManager();
-	proto native Man		GetPlayer();
+	proto native DayZPlayer		GetPlayer();
 	proto native void		GetPlayers( out array<Man> players );
 	
 	//! Returns the direction where the mouse points, from the camera view
@@ -744,6 +755,12 @@ class CGame
 	*/
 	proto native void		MutePlayer(string sourceVoice, string targetVoice, bool mute);
 	
+	/**
+	 \brief Mute all players for listenerId
+	@param listenerId uid of player
+	@param mute true, if player can not listen anybody. Otherwise false.
+	*/
+	proto native void		MuteAllPlayers(string listenerId, bool mute);
 	
 	/**
 	 \brief Enable/disable VoN for target player
@@ -1032,6 +1049,13 @@ class CGame
 	*/
 	proto native void 	OverrideInventoryLights(vector diffuse, vector ambient, vector ground, vector dir);
 
+	/*!
+	set night vission parameters (set to zero when to disable it) 
+	\param lightIntensityMul	multiplicator of lights intensity
+	\param noiseIntensity		intensity of noise PP
+	*/
+	proto native void 	NightVissionLightParams(float lightIntensityMul, float noiseIntensity);
+
 
 	proto native void OpenURL(string url);
 	
@@ -1052,7 +1076,7 @@ class CGame
 		after server restarts, all data related to this function are deleted
 		when server initialization is done.
 	*/
-	proto native EntityAI GetEntityByPersitentID( int low, int high );
+	proto native EntityAI GetEntityByPersitentID( int b1, int b2, int b3, int b4 );
 
 //-----------------------------------------------------------------------------
 
@@ -1225,4 +1249,15 @@ class CGame
 		
 		return false;
 	}
+	
+	//Analytics Manager
+	AnalyticsManagerServer GetAnalyticsServer()
+	{
+		return m_AnalyticsManagerServer;
+	}
+	
+	AnalyticsManagerClient GetAnalyticsClient()
+	{
+		return m_AnalyticsManagerClient;
+	}		
 };

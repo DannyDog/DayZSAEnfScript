@@ -15,17 +15,19 @@ class AreaDamageBase
 	vector					m_ExtentMin;
 	vector 					m_ExtentMax;
 	vector 					m_AreaPosition;
+	vector 					m_AreaOrientation;
 	
 	void AreaDamageBase(EntityAI parent)
 	{
 		m_ParentObject		= parent;
-		m_ExtentMin 		= Vector(0, 0, 0);
-		m_ExtentMax 		= Vector(0, 0, 0);
+		m_ExtentMin 		= vector.Zero;
+		m_ExtentMax 		= vector.Zero;
 		m_AreaPosition		= parent.GetPosition();
+		m_AreaOrientation	= parent.GetOrientation();
 		m_LoopInterval 		= 0.0;
 		m_DeferredInterval	= 0.0;
 		m_PlayerDamage		= 0.0;
-		m_PlayerDamage		= 0.0;
+		m_OthersDamage		= 0.0;
 		m_HitZones			= new TStringArray;
 		m_HitZones.Insert("Head");
 		m_HitZones.Insert("Lungs");
@@ -71,12 +73,14 @@ class AreaDamageBase
 		{ m_ParentObject = obj };
     void SetAreaPosition( vector position )
 		{ m_AreaPosition = position };	
-		
+    void SetAreaOrientation( vector orientation )
+		{ m_AreaOrientation = orientation };	
+	
 	void CreateDamageTrigger()
 	{
-		if(Class.CastTo(m_AreaDamageTrigger, g_Game.CreateObject( "AreaDamageTrigger", m_AreaPosition, false, false, false )))
+		if(Class.CastTo(m_AreaDamageTrigger, g_Game.CreateObject( "AreaDamageTrigger", m_AreaPosition )))
 		{
-			m_AreaDamageTrigger.SetOrientation( m_ParentObject.GetOrientation() );
+			m_AreaDamageTrigger.SetOrientation( m_AreaOrientation );
 			m_AreaDamageTrigger.SetExtents( m_ExtentMin, m_ExtentMax );
 			m_AreaDamageTrigger.SetAreaDamageType( m_AreaDamageType );
 			m_AreaDamageTrigger.SetHitZones( m_HitZones );
@@ -94,7 +98,7 @@ class AreaDamageBase
 		if ( GetGame() && m_AreaDamageTrigger ) // It's necesarry to check if the game exists. Otherwise a crash occurs while quitting.
 		{
 			GetGame().ObjectDelete( m_AreaDamageTrigger );
-			m_AreaDamageTrigger = NULL;
+			m_AreaDamageTrigger = null;
 		}
 	}
 

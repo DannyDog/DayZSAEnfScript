@@ -119,7 +119,6 @@ class QuickBarBase
 	void SetShotcutEnable(int index, bool value)
 	{
 		m_aQuickbarEnts[index].m_enabled = value;
-		Print("enable - "+ value);
 		if(_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
 	}

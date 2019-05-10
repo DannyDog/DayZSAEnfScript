@@ -350,6 +350,16 @@ class ScriptConsole extends UIScriptedMenu
 		return false;
 	}
 	
+	override void Update(float timeslice)
+	{
+		super.Update( timeslice );
+		
+		if( GetGame() && GetGame().GetInput() && GetGame().GetInput().LocalPress("UAUIBack", false) )
+		{
+			GetGame().GetUIManager().Back();
+		}
+	}
+	
 	override bool OnController(Widget w, int control, int value)
 	{
 		super.OnController(w, control, value);
@@ -772,14 +782,23 @@ class ScriptConsole extends UIScriptedMenu
 			
 			if ( m_SelectedObject != "" )
 			{
-				if ( button == 0 )
+				float distance = m_SpawnDistanceEditBox.GetText().ToFloat();
+				
+				if ( button == 0 )		//LMB
 				{
-					float distance = m_SpawnDistanceEditBox.GetText().ToFloat();
 					m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, 100, -1, distance );
 				}
-				else if ( button == 1 )
+				else if ( button == 1 )		//RMB
 				{
-					m_Developer.SpawnEntityInInventory(player, m_SelectedObject, 100, -1);
+					if ( GetGame().IsMultiplayer() )
+					{
+						m_Developer.SpawnEntityInInventory(player, m_SelectedObject, 100, -1);
+					}
+					else
+					{
+						EntityAI spawned_entity = m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, 100, -1, distance );
+						player.LocalTakeEntityToHands(spawned_entity);
+					}
 				}
 			}
 		}

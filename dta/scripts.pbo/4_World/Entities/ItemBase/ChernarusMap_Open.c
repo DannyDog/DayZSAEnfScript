@@ -1,23 +1,10 @@
-class ChernarusMap_Open extends ItemMap
+class ChernarusMap extends ItemMap
 {
-	protected bool m_ItemChanged;
-	
-	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
+	override void SetActions()
 	{
-		super.OnItemLocationChanged(old_owner,new_owner);
+		super.SetActions();
 		
-		PlayerBase player = PlayerBase.Cast(old_owner);
-		if (player && !m_ItemChanged && GetGame().IsServer())
-		{
-			MiscGameplayFunctions.TurnItemIntoItem(this, "ChernarusMap", player); //changes map on player death/drop
-			m_ItemChanged = true;
-		}
+		AddAction(ActionUnfoldMap);
 	}
-	
-	/*override void OnInventoryExit(Man player)
-	{
-		super.OnInventoryExit(player);
-		
-		MiscGameplayFunctions.TurnItemIntoItem(this, "ChernarusMap", player); //changes map on player death/drop
-	}*/
 }
+class ChernarusMap_Open extends ItemMap {}

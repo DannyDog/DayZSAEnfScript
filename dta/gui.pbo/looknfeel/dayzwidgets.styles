@@ -201,6 +201,48 @@
                 <Item Name="Top" Image="" />
             </State>
         </Style>
+        <Style Name="Loading" Font="gui/fonts/sdf_MetronLight24" ImageSet="dayz_gui" Color="4294967295">
+            <State Name="Disabled">
+                <Item Name="BarBottom" Image="" />
+                <Item Name="BarCenter" Image="quantity_empty" />
+                <Item Name="BarLeft" Image="" />
+                <Item Name="BarLeftBottom" Image="" />
+                <Item Name="BarLeftTop" Image="" />
+                <Item Name="BarRight" Image="" />
+                <Item Name="BarRightBottom" Image="" />
+                <Item Name="BarRightTop" Image="" />
+                <Item Name="BarTop" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="alpha_256" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="BarBottom" Image="" />
+                <Item Name="BarCenter" Image="red" />
+                <Item Name="BarLeft" Image="" />
+                <Item Name="BarLeftBottom" Image="" />
+                <Item Name="BarLeftTop" Image="" />
+                <Item Name="BarRight" Image="" />
+                <Item Name="BarRightBottom" Image="" />
+                <Item Name="BarRightTop" Image="" />
+                <Item Name="BarTop" Image="" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="alpha_32" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
     </Widget>
     <Widget Name="GenericListboxWidget">
         <Style Name="Default" Font="gui/fonts/MetronBook" ImageSet="ccgui_enforce" Color="4294967295">
@@ -1435,7 +1477,7 @@
                 <Item Name="Top" Image="editorQuadTop" />
             </State>
         </Style>
-        <Style Name="ServerBrowser" Font="gui/fonts/MetronBook22" ImageSet="dayz_gui" Color="4294967295">
+        <Style Name="ServerBrowser" Font="gui/fonts/sdf_MetronLight24" ImageSet="gui_back" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="Bottom" Image="" />
                 <Item Name="Center" Image="" />
@@ -1449,7 +1491,7 @@
             </State>
             <State Name="Focus">
                 <Item Name="Bottom" Image="" />
-                <Item Name="Center" Image="menuButtonCenter" />
+                <Item Name="Center" Image="" />
                 <Item Name="Left" Image="" />
                 <Item Name="LeftBottom" Image="" />
                 <Item Name="LeftTop" Image="" />
@@ -1460,7 +1502,7 @@
             </State>
             <State Name="Normal">
                 <Item Name="Bottom" Image="" />
-                <Item Name="Center" Image="area_7" />
+                <Item Name="Center" Image="" />
                 <Item Name="Left" Image="" />
                 <Item Name="LeftBottom" Image="" />
                 <Item Name="LeftTop" Image="" />
@@ -2215,15 +2257,15 @@
         </Style>
         <Style Name="DayZDefaultButtonSides" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
             <State Name="Disabled">
-                <Item Name="Bottom" Image="area_7" />
-                <Item Name="Center" Image="area_7" />
-                <Item Name="Left" Image="area_7" />
-                <Item Name="LeftBottom" Image="area_7" />
-                <Item Name="LeftTop" Image="area_7" />
-                <Item Name="Right" Image="area_7" />
-                <Item Name="RightBottom" Image="area_7" />
-                <Item Name="RightTop" Image="area_7" />
-                <Item Name="Top" Image="area_7" />
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
             </State>
             <State Name="Focus">
                 <Item Name="Bottom" Image="" />
@@ -2382,6 +2424,291 @@
                 <Item Name="RightBottom" Image="" />
                 <Item Name="RightTop" Image="" />
                 <Item Name="Top" Image="DayZDefaultPanelTop" />
+            </State>
+        </Style>
+        <Style Name="DayZInventoryButtonAll" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="InventoryButtonBottom" />
+                <Item Name="Center" Image="InventoryButtonCenter" />
+                <Item Name="Left" Image="InventoryButtonLeft" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="InventoryButtonRight" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="InventoryButtonTop" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
+        <Style Name="DayZInventoryButtonTop" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="InventoryButtonCenter" />
+                <Item Name="Left" Image="InventoryButtonLeft" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="InventoryButtonRight" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="InventoryButtonTop" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
+        <Style Name="DayZInventoryButtonBottom" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="InventoryButtonBottom" />
+                <Item Name="Center" Image="InventoryButtonCenter" />
+                <Item Name="Left" Image="InventoryButtonLeft" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="InventoryButtonRight" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
+        <Style Name="DayZInventoryButtonRight" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="UIPanelHorizontalBottom" />
+                <Item Name="Center" Image="UIPanelHorizontalCenter" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="UIPanelHorizontalRight" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="UIPanelHorizontalTop" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+        </Style>
+        <Style Name="DayZInventoryButtonLeft" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Focus">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Highlight">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="UIPanelHorizontalBottom" />
+                <Item Name="Center" Image="UIPanelHorizontalCenter" />
+                <Item Name="Left" Image="UIPanelHorizontalLeft" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="UIPanelHorizontalTop" />
+            </State>
+            <State Name="Pushed">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
             </State>
         </Style>
     </Widget>
@@ -2770,7 +3097,7 @@
                 <Item Name="Top" Image="Top1" />
             </State>
         </Style>
-        <Style Name="GUI_Black_simple" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="gui_back" Color="4294967295">
+        <Style Name="GUI_Black_simple" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="4294967295">
             <State Name="Disabled">
                 <Item Name="BarBottom" Image="" />
                 <Item Name="BarCenter" Image="" />
@@ -2812,24 +3139,24 @@
                 <Item Name="Top" Image="" />
             </State>
             <State Name="Normal">
-                <Item Name="BarBottom" Image="TopFill_simple" />
-                <Item Name="BarCenter" Image="CenterFill" />
-                <Item Name="BarLeft" Image="SideFill_simple" />
-                <Item Name="BarLeftBottom" Image="CornersFill" />
-                <Item Name="BarLeftTop" Image="CornersFill" />
-                <Item Name="BarRight" Image="SideFill_simple" />
-                <Item Name="BarRightBottom" Image="CornersFill" />
-                <Item Name="BarRightTop" Image="CornersFill" />
-                <Item Name="BarTop" Image="TopFill_simple" />
-                <Item Name="Bottom" Image="dashedBottom" />
-                <Item Name="Center" Image="dashedCenter" />
-                <Item Name="Left" Image="dashedLeft" />
-                <Item Name="LeftBottom" Image="dashedLeftBottom" />
-                <Item Name="LeftTop" Image="dashedLeftTop" />
-                <Item Name="Right" Image="dashedRight" />
-                <Item Name="RightBottom" Image="dashedRightBottom" />
-                <Item Name="RightTop" Image="dashedRightTop" />
-                <Item Name="Top" Image="dashedTop" />
+                <Item Name="BarBottom" Image="EditorPanelBottom" />
+                <Item Name="BarCenter" Image="ColorableBar" />
+                <Item Name="BarLeft" Image="EditorPanelLeft" />
+                <Item Name="BarLeftBottom" Image="EditorPanelLeftBottom" />
+                <Item Name="BarLeftTop" Image="EditorPanelLeftTop" />
+                <Item Name="BarRight" Image="EditorPanelRight" />
+                <Item Name="BarRightBottom" Image="EditorPanelRightBottom" />
+                <Item Name="BarRightTop" Image="EditorPanelRightTop" />
+                <Item Name="BarTop" Image="EditorPanelTop" />
+                <Item Name="Bottom" Image="menuButtonBottom" />
+                <Item Name="Center" Image="menuButtonCenter" />
+                <Item Name="Left" Image="menuButtonLeft" />
+                <Item Name="LeftBottom" Image="menuButtonLeftBottom" />
+                <Item Name="LeftTop" Image="menuButtonLeftTop" />
+                <Item Name="Right" Image="menuButtonRight" />
+                <Item Name="RightBottom" Image="menuButtonRightBottom" />
+                <Item Name="RightTop" Image="menuButtonRightTop" />
+                <Item Name="Top" Image="menuButtonTop" />
             </State>
         </Style>
         <Style Name="DayZDefault" Font="gui/fonts/sdf_MetronLight24" ImageSet="dayz_gui" Color="16">
@@ -3312,6 +3639,30 @@
                 <Item Name="RightBottom" Image="" />
                 <Item Name="RightTop" Image="" />
                 <Item Name="Top" Image="top" />
+            </State>
+        </Style>
+        <Style Name="NewStyle" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="20">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="UIPanelHorizontalLeft" />
+                <Item Name="Center" Image="UIPanelHorizontalCenter" />
+                <Item Name="Left" Image="UIPanelHorizontalLeft" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="UIPanelHorizontalRight" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="UIPanelHorizontalTop" />
             </State>
         </Style>
     </Widget>
@@ -3886,6 +4237,54 @@
                 <Item Name="RightBottom" Image="DayZDefaultPanelCorner" />
                 <Item Name="RightTop" Image="DayZDefaultPanelCorner" />
                 <Item Name="Top" Image="DayZDefaultPanelCorner" />
+            </State>
+        </Style>
+        <Style Name="outline" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="dayz_gui" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="editorQuadBottom" />
+                <Item Name="Center" Image="editorQuadCenter" />
+                <Item Name="Left" Image="editorQuadLeft" />
+                <Item Name="LeftBottom" Image="editorQuadBottomLeft" />
+                <Item Name="LeftTop" Image="editorQuadTopLeft" />
+                <Item Name="Right" Image="editorQuadRight" />
+                <Item Name="RightBottom" Image="editorQuadBottomRight" />
+                <Item Name="RightTop" Image="editorQuadTopRight" />
+                <Item Name="Top" Image="editorQuadTop" />
+            </State>
+        </Style>
+        <Style Name="Empty" Font="gui/fonts/AmorSerifPro-Bold" ImageSet="ccgui_enforce" Color="0">
+            <State Name="Disabled">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
+            </State>
+            <State Name="Normal">
+                <Item Name="Bottom" Image="" />
+                <Item Name="Center" Image="" />
+                <Item Name="Left" Image="" />
+                <Item Name="LeftBottom" Image="" />
+                <Item Name="LeftTop" Image="" />
+                <Item Name="Right" Image="" />
+                <Item Name="RightBottom" Image="" />
+                <Item Name="RightTop" Image="" />
+                <Item Name="Top" Image="" />
             </State>
         </Style>
     </Widget>

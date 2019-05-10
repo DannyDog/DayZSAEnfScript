@@ -87,7 +87,7 @@ class Object extends IEntity
 		
 		if (particle_ID > 0)
 		{
-			Particle.Play(particle_ID, GetPosition());
+			Particle.PlayInWorld(particle_ID, GetPosition());
 		}
 		
 		// Handle spawn of Effect, which allows more complex behavior
@@ -276,6 +276,8 @@ class Object extends IEntity
 	proto native vector GetMemoryPointPos(string memoryPointName);
 	proto native vector GetMemoryPointPosByIndex(int pointIndex);
 	proto native bool MemoryPointExists(string memoryPoint);
+	
+	proto native void CreateDynamicPhysics(PhxInteractionLayers layer);
 
 	//! Called when tree is chopped down.
 	void OnTreeCutDown( EntityAI cutting_tool )
@@ -444,6 +446,12 @@ class Object extends IEntity
 		return false;
 	}
 	
+	//! Returns if this entity is Fuel Station (extends Building)
+	bool IsFuelStation()
+	{
+		return false;
+	}
+	
 	//! Returns if this entity is transport
 	bool IsTransport()
 	{
@@ -461,10 +469,44 @@ class Object extends IEntity
 	{
 		return true;
 	}
+	
+	bool IsParticle()
+	{
+		return false;
+	}
+	
+	bool IsItemTent()
+	{
+		return false;
+	}
+	
+	bool IsScriptedLight()
+	{
+		return false;
+	}
+		
+	bool HasProxyParts()
+	{
+		return false;
+	}
 
 	//! Returns low and high bits of networkID.
 	//! This id is shared between client and server for whole server-client session.
 	proto void GetNetworkID( out int lowBits, out int highBits );
+	
+	string GetNetworkIDString()
+	{
+		int low, high;
+		GetNetworkID( low, high );
+		return high.ToString() + low.ToString();
+	}
+	
+	static string GetDebugName(Object o)
+	{
+		if (o)
+			return o.GetType() + ":" + o.GetNetworkIDString();
+		return "null";
+	}
 	
 	//! Remote procedure call shortcut, see CGame.RPC / CGame.RPCSingleParam
 	void RPC(int rpc_type, array<ref Param> params, bool guaranteed, PlayerIdentity recipient = NULL)
@@ -733,7 +775,6 @@ class Object extends IEntity
 	/**
   \brief Enable or disable object to receive damage
 	@param enable or disable
-	@warning works only in internal version
 	*/
 	proto native void SetAllowDamage(bool val);
 	
@@ -767,7 +808,11 @@ class Object extends IEntity
 		
 		return false;
 	}
-	
+#ifndef OLD_ACTIONS
+	void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
+	{
+	}
+	#else
 	void GetSingleUseActions(out TIntArray actions)
 	{	
 	}
@@ -779,6 +824,8 @@ class Object extends IEntity
 	void GetInteractActions(out TIntArray actions)
 	{
 	}
+#endif
+
 	
 	//! Plays the given sound once on this object's instance. Range is in meters. Created sound is only local, unless create_local is set to false. Returns the sound itself.
 	SoundOnVehicle PlaySound(string sound_name, float range, bool create_local = true)
@@ -843,6 +890,7 @@ class Object extends IEntity
 	
 	
 	void SpawnDamageDealtEffect() { }
+	void OnPlayerRecievedHit(){}
 	
 	bool HasNetworkID()
 	{

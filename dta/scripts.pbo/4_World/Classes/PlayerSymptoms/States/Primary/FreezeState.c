@@ -25,16 +25,22 @@ class FreezeSymptom extends SymptomBase
 		
 	}
 	
+	override bool CanActivate()
+	{
+		return true;
+	}
+	
 	//!gets called once on an Symptom which is being activated
 	override void OnGetActivatedServer(PlayerBase player)
 	{	
 		HumanMovementState hms = new HumanMovementState();
 		player.GetMovementState(hms);
-		PlaySound(EPlayerSoundEventID.FREEZING);
-		return;//crash fix
-		if( m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE && hms.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_IDLE )
+		ItemBase item = m_Player.GetItemInHands();
+		//PlaySound(EPlayerSoundEventID.FREEZING);
+		//return;//crash fix
+		if(!(item && item.IsHeavyBehaviour()) && m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE && hms.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_IDLE && !player.IsRestrained() )
 		{
-			PlayAnimationADD(1);
+			PlayAnimationADD(2);
 		}
 		else
 		{

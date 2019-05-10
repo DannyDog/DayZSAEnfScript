@@ -41,6 +41,12 @@ class PluginDayzPlayerDebugUIHandler extends ScriptedWidgetEventHandler
 		super.OnClick(w, x, y, button);
 		return m_pPluginPlayerDebug.OnClick(w, x, y, button);
 	}
+	
+	override bool OnChange(Widget w, int x, int y, bool finished)
+	{
+		super.OnChange(w, x, y, finished);
+		return m_pPluginPlayerDebug.OnChange(w, x, y, finished);
+	}
 
 
 	PluginDayzPlayerDebug		m_pPluginPlayerDebug;
@@ -118,7 +124,7 @@ class PluginDayzPlayerActionCallback extends HumanCommandActionCallback
 // *************************************************************************************
 class PluginDayzPlayerDebug extends PluginBase
 {
-	ref Timer						m_TickTimer;
+	ref Timer							m_TickTimer;
 	bool 								m_IsActive			= false;
 	bool								m_HasFocus			= false;
 	bool								m_HasServerWalk = false;
@@ -127,9 +133,11 @@ class PluginDayzPlayerDebug extends PluginBase
 	Widget								m_Card0;
 	Widget								m_Card1;
 	Widget								m_Card2;
+	Widget								m_Card3;
 	ButtonWidget						m_Card0Button;		
 	ButtonWidget						m_Card1Button;		
 	ButtonWidget						m_Card2Button;		
+	ButtonWidget						m_Card3Button;		
 
 
 	EditBoxWidget 						m_PlayerStatusV;
@@ -161,7 +169,6 @@ class PluginDayzPlayerDebug extends PluginBase
 	ButtonWidget						m_ActionTypeFLG;
 	ButtonWidget						m_ActionTypeFOG;
 
-
 	ref PluginDayzPlayerDebugUIHandler m_pUIHandler;
 
 	Entity 								m_pPlayerShadow;
@@ -170,10 +177,11 @@ class PluginDayzPlayerDebug extends PluginBase
 	bool								m_CH_ActionStart 	= false;
 	int 								m_CH_ActionCommand 	= -1000;
 	bool								m_CH_ActionCancel	= false;
-	
+		
 	
 	ref PluginDayzPlayerDebug_Weapons		m_Weapons;
 	ref PluginDayzPlayerDebug_Ctrl			m_Controls;
+	ref PluginDayzPlayerDebug_OtherCmds		m_OtherCmds;
 
 	//---------------------------------------------------
     // gui stuff
@@ -184,6 +192,7 @@ class PluginDayzPlayerDebug extends PluginBase
 		CreateModuleWidgets();
 		m_Weapons 	= new PluginDayzPlayerDebug_Weapons(m_Card1);
 		m_Controls	= new PluginDayzPlayerDebug_Ctrl(m_Card2);
+		m_OtherCmds	= new PluginDayzPlayerDebug_OtherCmds(m_Card3);
 		#endif
 	}
 	
@@ -197,6 +206,7 @@ class PluginDayzPlayerDebug extends PluginBase
 		#ifndef NO_GUI
 		m_Weapons = NULL;
 		m_Controls = NULL;
+		m_OtherCmds = NULL;
 		DestroyModuleWidgets();
 		#endif		
 	}
@@ -345,9 +355,11 @@ class PluginDayzPlayerDebug extends PluginBase
 		m_Card0	= m_MainWnd.FindAnyWidget("Card0");
 		m_Card1	= m_MainWnd.FindAnyWidget("Card1");
 		m_Card2	= m_MainWnd.FindAnyWidget("Card2");
+		m_Card3	= m_MainWnd.FindAnyWidget("Card3");
 		m_Card0Button	= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("Card0Button") );
 		m_Card1Button	= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("Card1Button") );
 		m_Card2Button	= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("Card2Button") );
+		m_Card3Button	= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("Card3Button") );
 
 
 		m_PlayerStatusV 	= EditBoxWidget.Cast( m_MainWnd.FindAnyWidget("PlayerStatusV") );
@@ -379,7 +391,6 @@ class PluginDayzPlayerDebug extends PluginBase
 		m_ActionTypeFLG			= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("ActionsGroupFLG") );
 		m_ActionTypeFOG			= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("ActionsGroupFOG") );
 
-
 		ActionsInit(0);
 
 		ShowCard(0);
@@ -403,6 +414,7 @@ class PluginDayzPlayerDebug extends PluginBase
 		m_Card0.Show(pCard == 0);
 		m_Card1.Show(pCard == 1);
 		m_Card2.Show(pCard == 2);
+		m_Card3.Show(pCard == 3);
 	}
 
 	
@@ -938,7 +950,6 @@ class PluginDayzPlayerDebug extends PluginBase
 		m_ActionsGlobalStatus.SetText(clbk.ToString());
 	}
 
-
         
     //! ---------------------------------------------------------
 
@@ -1000,6 +1011,10 @@ class PluginDayzPlayerDebug extends PluginBase
 		else if (w == m_Card2Button)
 		{
 			ShowCard(2);
+		}
+		else if (w == m_Card3Button)
+		{
+			ShowCard(3);
 		}
 		else if (w == m_ActionsStart)
 		{
@@ -1093,10 +1108,22 @@ class PluginDayzPlayerDebug extends PluginBase
 		{
 			return true;
 		}
+		else if (m_OtherCmds.OnClick(w,x,y,button))
+		{
+			return true;
+		}
 		else 
 		{
 			return m_Controls.OnClick(w,x,y,button);
 		}
+	}
+	
+	bool OnChange(Widget w, int x, int y, bool finished)
+	{
+		if( m_Controls.OnChange(w, x, y, finished) )
+			return true;
+		
+		return false;
 	}
 
 	//---------------------------------------------------
@@ -1144,6 +1171,11 @@ class PluginDayzPlayerDebug extends PluginBase
 		if (m_Controls)
 		{
 			m_Controls.CommandHandler();	
+		}
+		
+		if (m_OtherCmds)
+		{
+			m_OtherCmds.CommandHandler();	
 		}
 	}
 

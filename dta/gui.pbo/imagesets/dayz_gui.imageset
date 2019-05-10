@@ -452,8 +452,8 @@ ImageSetClass {
   }
   ImageSetDefClass mic {
    Name "mic"
-   Pos 797 826
-   Size 32 32
+   Pos 796 823
+   Size 36 36
    Flags 0
   }
   ImageSetDefClass left_mouse {
@@ -708,6 +708,24 @@ ImageSetClass {
    Size 1 1
    Flags 0
   }
+  ImageSetDefClass area_focus2 {
+   Name "area_focus2"
+   Pos 159 257
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass area_focus3 {
+   Name "area_focus3"
+   Pos 161 257
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass red {
+   Name "red"
+   Pos 151 260
+   Size 2 2
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass UI {
@@ -877,13 +895,13 @@ ImageSetClass {
     }
     ImageSetDefClass iconDrops {
      Name "iconDrops"
-     Pos 747 200
+     Pos 746 199
      Size 38 38
      Flags 3
     }
     ImageSetDefClass iconPill {
      Name "iconPill"
-     Pos 612 161
+     Pos 607 161
      Size 38 38
      Flags 3
     }
@@ -907,32 +925,32 @@ ImageSetClass {
     }
     ImageSetDefClass Presence4 {
      Name "Presence4"
-     Pos 525 376
-     Size 16 48
+     Pos 525 373
+     Size 16 53
      Flags 0
     }
     ImageSetDefClass Presence3 {
      Name "Presence3"
-     Pos 541 376
-     Size 16 48
+     Pos 541 373
+     Size 16 53
      Flags 0
     }
     ImageSetDefClass Presence2 {
      Name "Presence2"
-     Pos 557 376
-     Size 16 48
+     Pos 557 373
+     Size 16 53
      Flags 0
     }
     ImageSetDefClass Presence1 {
      Name "Presence1"
-     Pos 573 376
-     Size 16 48
+     Pos 573 373
+     Size 16 53
      Flags 0
     }
     ImageSetDefClass Presence0 {
      Name "Presence0"
-     Pos 589 376
-     Size 16 48
+     Pos 589 373
+     Size 16 53
      Flags 0
     }
     ImageSetDefClass progress_empty {
@@ -1027,7 +1045,7 @@ ImageSetClass {
     }
     ImageSetDefClass iconBacteria {
      Name "iconBacteria"
-     Pos 786 200
+     Pos 785 199
      Size 38 38
      Flags 3
     }
@@ -1173,6 +1191,24 @@ ImageSetClass {
      Name "credits"
      Pos 667 43
      Size 45 33
+     Flags 0
+    }
+    ImageSetDefClass inv_panel_bg {
+     Name "inv_panel_bg"
+     Pos 26 661
+     Size 41 152
+     Flags 0
+    }
+    ImageSetDefClass inv_panel_bg2 {
+     Name "inv_panel_bg2"
+     Pos 80 772
+     Size 152 42
+     Flags 3
+    }
+    ImageSetDefClass iconPoisoned {
+     Name "iconPoisoned"
+     Pos 612 200
+     Size 38 38
      Flags 0
     }
    }
@@ -1429,7 +1465,7 @@ ImageSetClass {
    Images {
     ImageSetDefClass radial_selector {
      Name "radial_selector"
-     Pos 524 435
+     Pos 520 438
      Size 100 32
      Flags 0
     }
@@ -1536,6 +1572,87 @@ ImageSetClass {
      Name "DefaultButtonHovered"
      Pos 75 279
      Size 1 1
+     Flags 0
+    }
+   }
+  }
+  ImageSetGroupClass UIPanelHorizontal {
+   Name "UIPanelHorizontal"
+   Images {
+    ImageSetDefClass UIPanelHorizontalLeft {
+     Name "UIPanelHorizontalLeft"
+     Pos 26 609
+     Size 5 48
+     Flags 0
+    }
+    ImageSetDefClass UIPanelHorizontalTop {
+     Name "UIPanelHorizontalTop"
+     Pos 31 609
+     Size 30 6
+     Flags 0
+    }
+    ImageSetDefClass UIPanelHorizontalCenter {
+     Name "UIPanelHorizontalCenter"
+     Pos 43 630
+     Size 5 6
+     Flags 0
+    }
+    ImageSetDefClass UIPanelHorizontalBottom {
+     Name "UIPanelHorizontalBottom"
+     Pos 31 651
+     Size 30 6
+     Flags 0
+    }
+    ImageSetDefClass UIPanelHorizontalRight {
+     Name "UIPanelHorizontalRight"
+     Pos 61 609
+     Size 5 48
+     Flags 0
+    }
+   }
+  }
+  ImageSetGroupClass InventoryButton {
+   Name "InventoryButton"
+   Images {
+    ImageSetDefClass InventoryButtonLeft {
+     Name "InventoryButtonLeft"
+     Pos 26 668
+     Size 7 138
+     Flags 0
+    }
+    ImageSetDefClass InventoryButtonTop {
+     Name "InventoryButtonTop"
+     Pos 26 661
+     Size 41 7
+     Flags 0
+    }
+    ImageSetDefClass InventoryButtonCenter {
+     Name "InventoryButtonCenter"
+     Pos 40 731
+     Size 13 13
+     Flags 0
+    }
+    ImageSetDefClass InventoryButtonBottom {
+     Name "InventoryButtonBottom"
+     Pos 26 806
+     Size 41 7
+     Flags 0
+    }
+    ImageSetDefClass InventoryButtonRight {
+     Name "InventoryButtonRight"
+     Pos 60 668
+     Size 7 138
+     Flags 0
+    }
+   }
+  }
+  ImageSetGroupClass Notifications {
+   Name "Notifications"
+   Images {
+    ImageSetDefClass notification_friend {
+     Name "notification_friend"
+     Pos 834 823
+     Size 36 36
      Flags 0
     }
    }

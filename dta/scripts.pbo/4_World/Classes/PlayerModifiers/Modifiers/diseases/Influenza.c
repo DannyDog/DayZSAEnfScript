@@ -2,7 +2,7 @@ class InfluenzaMdfr: ModifierBase
 {
 	const int INFLUENZA_AGENT_THRESHOLD_ACTIVATE = 300;
 	const int INFLUENZA_AGENT_THRESHOLD_DEACTIVATE = 200;
-
+	
 	override void Init()
 	{
 		m_TrackActivatedTime = false;

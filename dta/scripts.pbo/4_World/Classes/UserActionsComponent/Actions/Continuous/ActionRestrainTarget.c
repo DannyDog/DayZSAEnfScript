@@ -117,25 +117,17 @@ class ActionRestrainTarget: ActionContinuousBase
 		string new_item_name = MiscGameplayFunctions.ObtainRestrainItemTargetClassname(item_in_hands_source);
 		if (item_in_hands_target)
 		{
-			Print("Restraining player with item in hands");
-			source_player.LocalDestroyEntityInHands();
-			
-			vector m4[4];
-			Math3D.MatrixIdentity4(m4);
-			GameInventory.PrepareDropEntityPos(source_player, item_in_hands_target, m4);
-			InventoryLocation target_gnd = new InventoryLocation;
-			target_gnd.SetGround(null, m4);
-		
-			EntityAI hcuff_locked = GameInventory.LocationCreateEntity(target_gnd, new_item_name,ECE_IN_INVENTORY,RF_DEFAULT);
-			target_player.ServerSwapEntities(hcuff_locked, item_in_hands_target);
-			target_player.SetRestrained(true);
+			Print("Restraining player with item in hands, first drop & then restrain");
+
+			ChainedDropAndRestrainLambda lambda2 = new ChainedDropAndRestrainLambda(item_in_hands_target, item_in_hands_target.GetType(), target_player, false, source_player);
+			MiscGameplayFunctions.TurnItemInHandsIntoItemEx(target_player, lambda2);
 		}
 		else
 		{
 			Print("Restraining player with empty hands");
 			RestrainTargetPlayerLambda lambda = new RestrainTargetPlayerLambda(item_in_hands_source, new_item_name, target_player);
 			source_player.LocalReplaceItemInHandsWithNewElsewhere(lambda);
-		}		
+		}
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
@@ -144,9 +136,41 @@ class ActionRestrainTarget: ActionContinuousBase
 	{
 		super.OnFinishProgressClient( action_data );
 		
-		AnalyticsManager.OnActionRestrain();
+		GetGame().GetAnalyticsClient().OnActionRestrain();
 	}
 };
+
+class ChainedDropAndRestrainLambda : DestroyItemInCorpsesHandsAndCreateNewOnGndLambda
+{
+	PlayerBase m_SourcePlayer;
+
+	void ChainedDropAndRestrainLambda (EntityAI old_item, string new_item_type, PlayerBase player, bool destroy = false, PlayerBase src_player = null)
+	{
+		m_SourcePlayer = src_player;
+	}
+	
+	override void OnSuccess(EntityAI entity)
+	{
+		super.OnSuccess(new_item);
+		
+		// as soon as previous op is finish, start another one
+		EntityAI item_in_hands_source = m_SourcePlayer.GetHumanInventory().GetEntityInHands();
+		if (item_in_hands_source)
+		{
+			string new_item_name = MiscGameplayFunctions.ObtainRestrainItemTargetClassname(item_in_hands_source);
+			RestrainTargetPlayerLambda lambda = new RestrainTargetPlayerLambda(item_in_hands_source, new_item_name, m_Player);
+			if (m_SourcePlayer)
+				m_SourcePlayer.LocalReplaceItemInHandsWithNewElsewhere(lambda);
+			else
+				Error("ChainedDropAndRestrainLambda: missing source player!");
+		}
+		else
+		{
+			Error("ChainedDropAndRestrainLambda: missing source item in hands!");
+		}
+	}
+}
+
 
 class RestrainTargetPlayerLambda : ReplaceItemWithNewLambdaBase
 {

@@ -14,4 +14,12 @@ class SheepSteakMeat extends Edible_Base
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionForceFeed);
+		AddAction(ActionEatMeat);
+	}
 }

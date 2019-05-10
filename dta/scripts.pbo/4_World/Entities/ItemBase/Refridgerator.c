@@ -64,4 +64,17 @@ class Refridgerator extends ItemBase
 	{
 		return "placeRefridgerator_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionPlugIn);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionTurnOnWhileOnGround);
+		AddAction(ActionTurnOffWhileOnGround);
+		AddAction(ActionRepositionPluggedItem);
+		AddAction(ActionPlaceObject);
+	}
 }

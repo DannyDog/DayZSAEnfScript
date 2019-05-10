@@ -79,6 +79,7 @@ const int MENU_VIDEO								= 33;
 const int MENU_KEYBINDINGS							= 34;
 const int MENU_TUTORIAL								= 35;
 const int MENU_CREDITS								= 36;
+const int MENU_INVITE_TIMER							= 37;
 
 const int GUI_WINDOW_MISSION_LOADER = 1;
 
@@ -412,6 +413,7 @@ const int		UA_IN_START = 17;
 const int		UA_IN_END = 18;
 const int		UA_SPAWN_DUST_A = 19;
 const int		UA_SPAWN_DUST_B = 20;
+const int		UA_IN_CRAFTING = 21;
 	
 const int		UA_ERROR = 24;
 	
@@ -593,3 +595,12 @@ const int CARS_LEAK_TICK_MAX 	= 0.05;
 const int CARS_LEAK_THRESHOLD	= 0.5;
 
 /** @}*/
+
+const int HAIR_SELECTION_COUNT = 45;
+/**
+* \ input exclude types
+*/
+const int INPUT_EXCLUDE_ALL = 0;
+const int INPUT_EXCLUDE_INVENTORY = 1;
+const int INPUT_EXCLUDE_MOUSE_ALL = 2;
+const int INPUT_EXCLUDE_MOUSE_RADIAL = 3;

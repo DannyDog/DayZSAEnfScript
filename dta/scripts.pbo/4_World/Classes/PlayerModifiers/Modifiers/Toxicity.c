@@ -1,6 +1,6 @@
 class ToxicityMdfr: ModifierBase
 {
-	private const float	 	TOXICITY_CLEANUP_PER_SEC = 0.1;
+	private const float	 	TOXICITY_CLEANUP_PER_SEC = 1;
 	private const float 	VOMIT_THRESHOLD = 70;
 	
 	override void Init()
@@ -13,7 +13,7 @@ class ToxicityMdfr: ModifierBase
 
 	override bool ActivateCondition(PlayerBase player)
 	{
-		return false;
+		return true;
 	}
 
 	override bool DeactivateCondition(PlayerBase player)
@@ -24,7 +24,6 @@ class ToxicityMdfr: ModifierBase
 	override void OnTick(PlayerBase player, float deltaT)
 	{	
 		player.GetStatToxicity().Add( -TOXICITY_CLEANUP_PER_SEC * deltaT );
-		
 		if( player.GetStatToxicity().Get() > VOMIT_THRESHOLD )
 		{
 			SymptomBase symptom = player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);

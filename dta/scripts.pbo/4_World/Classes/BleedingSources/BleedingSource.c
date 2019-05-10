@@ -5,7 +5,7 @@ class BleedingSource
 	PlayerBase m_Player;
 	int m_Bit;
 	string m_Bone;
-	ref BleedingSourceEffect m_BleedingEffect;
+	ref EffectParticle m_BleedingEffect;
 	vector m_Orientation;
 	Shape m_DebugShape;
 	Shape m_DebugShape1;
@@ -14,9 +14,10 @@ class BleedingSource
 	float m_FlowModifier;
 	float m_ActiveTime;
 	float m_MaxTime;
+	string m_ParticleName;
 	bool m_DeleteRequested;
 	
-	void BleedingSource(PlayerBase player, int bit, string bone, vector orientation, vector offset,int max_time, float flow_modifier)
+	void BleedingSource(PlayerBase player, int bit, string bone, vector orientation, vector offset,int max_time, float flow_modifier, string particle_name)
 	{
 		//m_Position = position;
 		m_Player = player;
@@ -26,6 +27,7 @@ class BleedingSource
 		m_Offset = offset;
 		m_FlowModifier = flow_modifier;
 		m_MaxTime = max_time;
+		m_ParticleName = particle_name;
 		
 		//CreateBleedSymptom();
 		if(GetGame().IsClient() || !GetGame().IsMultiplayer())
@@ -68,19 +70,27 @@ class BleedingSource
 	void CreateParticle()
 	{
 		int boneIdx = m_Player.GetBoneIndexByName(m_Bone);
-		m_BleedingEffect = new BleedingSourceEffect();
-		SEffectManager.PlayInWorld( m_BleedingEffect, "0 0 0" );
-		m_BloodParticle = m_BleedingEffect.GetParticle();
-		m_BloodParticle.SetOrientation(m_Orientation);
-		vector pos;
-		pos += m_Offset;
-		m_BloodParticle.SetPosition(pos);
-		float time = Math.RandomFloat01() * 2;
-		//time = time;
-		m_BloodParticle.SetParameter(-1, EmitorParam.CURRENT_TIME, time);
-		//m_BloodParticle.SetParameter(1, EmitorParam.CURRENT_TIME, time);
-		
-		m_Player.AddChild(m_BloodParticle, boneIdx);
+		m_BleedingEffect = EffectParticle.Cast(m_ParticleName.ToType().Spawn());
+		if(m_BleedingEffect)
+		{
+			SEffectManager.PlayInWorld( m_BleedingEffect, "0 0 0" );
+			m_BloodParticle = m_BleedingEffect.GetParticle();
+			m_BloodParticle.SetOrientation(m_Orientation);
+			vector pos;
+			pos += m_Offset;
+			m_BloodParticle.SetPosition(pos);
+			float time = Math.RandomFloat01() * 2;
+			//time = time;
+			m_BloodParticle.SetParameter(-1, EmitorParam.CURRENT_TIME, time);
+			//m_BloodParticle.SetParameter(1, EmitorParam.CURRENT_TIME, time);
+			
+			m_Player.AddChild(m_BloodParticle, boneIdx);
+			return;
+		}
+		else
+		{
+			Error("bleeding source: failed to spawn the particle: "+m_ParticleName);
+		}
 	}
 	
 	void RemoveParticle()

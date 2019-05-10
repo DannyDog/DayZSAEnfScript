@@ -13,7 +13,16 @@ class Thermometer extends ItemBase
 			
 			value = Math.RandomFloatInclusive(PlayerConstants.NORMAL_TEMPERATURE_L, PlayerConstants.NORMAL_TEMPERATURE_H);
 		}
+		value = Math.Round(value * 10) / 10;
 		temp = value.ToString();
-		return "Thermometer displays "+temp+" °C";
+		return temp + "C";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionMeasureTemperatureTarget);
+		AddAction(ActionMeasureTemperatureSelf);
 	}
 }

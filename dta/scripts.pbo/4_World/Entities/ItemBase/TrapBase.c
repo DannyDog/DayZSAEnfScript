@@ -1,3 +1,8 @@
+enum SoundTypeTrap
+{
+	ACTIVATING			= 5,
+}
+
 class TrapBase extends ItemBase
 {
 	int   m_InitWaitTime; 			//After this time after deployment, the trap is activated
@@ -27,9 +32,7 @@ class TrapBase extends ItemBase
 	protected ref Timer m_Timer;
 	protected TrapTrigger m_TrapTrigger;
 
-	ref protected EffectSound 	m_DeployLoopSound;
-	
-	PluginAdminLog 				m_AdminLog;
+	ref protected EffectSound 	m_DeployLoopSound;	
 	
 	void TrapBase()
 	{
@@ -55,11 +58,20 @@ class TrapBase extends ItemBase
 		m_InfoDamage =				"#STR_TrapBase3";
 		m_InfoActivationTime = 		"#STR_TrapBase4" + m_InitWaitTime.ToString() + "#STR_TrapBase5";
 		
+		m_DeployLoopSound = new EffectSound;
+		
 		RegisterNetSyncVariableBool("m_IsActive");
 		RegisterNetSyncVariableBool("m_IsInProgress");
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
-		
-		m_AdminLog = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+		RegisterNetSyncVariableBool("m_IsDeploySound");		
+	}
+	
+	void ~TrapBase()
+	{
+		if ( m_DeployLoopSound )
+		{
+			SEffectManager.DestroySound( m_DeployLoopSound );
+		}
 	}
 	
 	//! this event is called all variables are synchronized on client
@@ -311,7 +323,7 @@ class TrapBase extends ItemBase
 	{
 		super.OnRPC(sender, rpc_type, ctx);
 		
-		if ( GetGame().IsClient() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			switch(rpc_type)
 			{
@@ -324,9 +336,30 @@ class TrapBase extends ItemBase
 						if (p_victim.param1)
 						{
 							SnapOnObject(p_victim.param1);
-					}
+						}
 					}
 					
+				break;
+				
+				case SoundTypeTrap.ACTIVATING:
+			
+					ref Param1<bool> p = new Param1<bool>(false);
+					
+					if (ctx.Read(p))
+					{
+						bool play = p.param1;
+					}
+					
+					if ( play )
+					{
+						PlayDeployLoopSound();
+					}
+					
+					if ( !play )
+					{
+						StopDeployLoopSound();
+					}
+			
 				break;
 			}
 		}
@@ -450,6 +483,8 @@ class TrapBase extends ItemBase
 
 	void StartActivate( PlayerBase player )
 	{
+		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		{
 			m_Timer = new Timer( CALL_CATEGORY_SYSTEM );
 			HideSelection("safety_pin");
 			
@@ -457,13 +492,6 @@ class TrapBase extends ItemBase
 			{
 				m_IsInProgress = true;
 				m_Timer.Run( m_InitWaitTime, this, "SetActive" );
-				
-				/*
-				if (player)
-				{
-					player.MessageStatus( m_InfoActivationTime );
-				}
-				*/
 			
 			Synch(NULL);
 			}
@@ -472,7 +500,8 @@ class TrapBase extends ItemBase
 				SetActive();
 			}
 		}
-
+	}
+	
 	void StartDeactivate( PlayerBase player )
 	{
 		if ( g_Game.IsServer() )
@@ -609,38 +638,31 @@ class TrapBase extends ItemBase
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================
-	
-	override void OnPlacementComplete( Man player )
-	{
-		super.OnPlacementComplete( player );
-				
-		if ( GetGame().IsServer() )
-		{
-			SetupTrapPlayer( PlayerBase.Cast( player ), false );
-			
-			if ( m_AdminLog )
-			{
-				m_AdminLog.OnPlacementComplete( player, this );
-			}
-		}	
-		
-		SetIsDeploySound( true );
-	}
 		
 	void PlayDeployLoopSound()
 	{		
-		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() || !GetGame().IsMultiplayer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{		
-			m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			if ( !m_DeployLoopSound.IsSoundPlaying() )
+			{
+				m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
+			}
 		}
 	}
 	
 	void StopDeployLoopSound()
 	{
-		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() || !GetGame().IsMultiplayer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{	
+			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-			delete m_DeployLoopSound;
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionActivateTrap);
 	}
 }

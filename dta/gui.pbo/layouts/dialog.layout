@@ -2,7 +2,7 @@ WindowWidgetClass DialogBox {
  visible 1
  clipchildren 1
  inheritalpha 0
- color 0.0824 0.0824 0.0824 0.7843
+ color 0.1176 0.1176 0.1176 0.9804
  position 0 0
  size 540 160.5
  halign center_ref
@@ -16,7 +16,7 @@ WindowWidgetClass DialogBox {
  style Colorable
  {
   PanelWidgetClass DialogBoxPanel {
-   color 0.0824 0.0824 0.0824 0.9216
+   color 0 0 0 1
    position 0 0
    size 1 1
    halign center_ref
@@ -196,7 +196,7 @@ WindowWidgetClass DialogBox {
     PanelWidgetClass SeparatorPanel {
      color 0.7569 0.0941 0.0941 0.7843
      position 0 60
-     size 0.85 2.5
+     size 0.85 2
      halign center_ref
      hexactpos 1
      vexactpos 1

@@ -111,7 +111,7 @@ class Trigger extends ScriptedEntity
 			AddInsider(obj);
 	}
 
-	private float GetRadius(vector min, vector max)
+	float GetRadius(vector min, vector max)
 	{
 		vector v;
 		for(int n = 0; n < 3; n++)

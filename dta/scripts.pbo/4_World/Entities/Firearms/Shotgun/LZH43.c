@@ -101,12 +101,12 @@ class Izh43Shotgun_Base : Rifle_Base
 
 	
 		// basic weapon states
-		L_L = new DoubleBarrelShotgunLoadedLoaded(this, NULL, RifleAnimState.DEFAULT);
-		L_E = new DoubleBarrelShotgunLoadedEmpty(this, NULL, RifleAnimState.DEFAULT);
-		F_L = new DoubleBarrelShotgunFireoutLoaded(this, NULL, RifleAnimState.DEFAULT);
-		F_F = new DoubleBarrelShotgunFireoutFireout(this, NULL, RifleAnimState.DEFAULT);
-		F_E = new DoubleBarrelShotgunFireoutEmpty(this, NULL, RifleAnimState.DEFAULT);
-		E_E = new DoubleBarrelShotgunEmptyEmpty(this, NULL, RifleAnimState.DEFAULT);
+		L_L = new DoubleBarrelShotgunLoadedLoaded(this, NULL, LZH43AnimState.DEFAULT);
+		L_E = new DoubleBarrelShotgunLoadedEmpty(this, NULL, LZH43AnimState.DEFAULT);
+		F_L = new DoubleBarrelShotgunFireoutLoaded(this, NULL, LZH43AnimState.DEFAULT);
+		F_F = new DoubleBarrelShotgunFireoutFireout(this, NULL, LZH43AnimState.DEFAULT);
+		F_E = new DoubleBarrelShotgunFireoutEmpty(this, NULL, LZH43AnimState.DEFAULT);
+		E_E = new DoubleBarrelShotgunEmptyEmpty(this, NULL, LZH43AnimState.DEFAULT);
 	
 		
 		WeaponStateBase		Mech = new WeaponCharging(this, NULL, WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_CLOSED);
@@ -255,7 +255,7 @@ class WeaponGuardLeftChamberLoaded extends WeaponGuardBase
 
 	override bool GuardCondition (WeaponEventBase e)
 	{
-		if (m_weapon.IsCartridgeInChamber(LZH43MuzzlesIndex.LEFT))
+		if (m_weapon.IsChamberEjectable(LZH43MuzzlesIndex.LEFT))
 		{
 			wpnDebugPrint("[wpnfsm] guard - left chamber loaded");
 			return true;
@@ -272,7 +272,7 @@ class WeaponGuardRightChamberLoaded extends WeaponGuardBase
 
 	override bool GuardCondition (WeaponEventBase e)
 	{
-		if (m_weapon.IsCartridgeInChamber(LZH43MuzzlesIndex.RIGHT))
+		if (m_weapon.IsChamberEjectable(LZH43MuzzlesIndex.RIGHT))
 		{
 			wpnDebugPrint("[wpnfsm] guard - right chamber loaded");
 			return true;

@@ -1,39 +1,45 @@
 class Header: LayoutHolder
 {
-	protected float			m_DefaultColor;
+	protected int			m_DefaultColor;
 	protected int			m_DefaultFontSize;
 	
 	protected EntityAI		m_Entity;
 	
+	protected Widget		m_CollapseButton;
 	protected TextWidget	m_HeaderText;
 	
 	void Header( LayoutHolder parent, string function_name )
 	{
-		#ifndef PLATFORM_CONSOLE
-		WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( GetMainWidget().FindAnyWidget( "collapse_button" ),  m_Parent, function_name );
-		WidgetEventHandler.GetInstance().RegisterOnDropReceived( GetMainWidget().FindAnyWidget( "collapse_button" ),  m_Parent, "OnDropReceivedFromHeader" );
+		m_CollapseButton	= GetMainWidget().FindAnyWidget( "collapse_button" );
+		
+		#ifdef PLATFORM_CONSOLE
+			m_CollapseButton.Show( false );
+		#else
+		WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_CollapseButton,  m_Parent, function_name );
+		WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_CollapseButton,  m_Parent, "OnDropReceivedFromHeader" );
 		#endif
 		WidgetEventHandler.GetInstance().RegisterOnDropReceived( GetMainWidget(),  m_Parent, "OnDropReceivedFromHeader" );
 		WidgetEventHandler.GetInstance().RegisterOnDraggingOver( GetMainWidget(),  this, "DraggingOverHeader" );
 		
 		m_HeaderText		= TextWidget.Cast( GetMainWidget().FindAnyWidget( "TextWidget0" ) );
 		
-		m_DefaultColor		= GetRootWidget().GetAlpha();
+		m_DefaultColor		= GetRootWidget().GetColor();
 	}
 	
 	void SetName( string name )
 	{
-		TextWidget text_widget = TextWidget.Cast( GetRootWidget().FindAnyWidget( "TextWidget0" ) );
 		name.ToUpper();
-		text_widget.SetText( name );
+		m_HeaderText.SetText( name );
 	}
 	
 	void SetItemPreview( EntityAI entity_ai )
 	{
+		#ifndef PLATFORM_CONSOLE
 		m_Entity = entity_ai;
 		ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( GetMainWidget().FindAnyWidget( "Render" ) );
 		item_preview.SetItem(entity_ai);
 		item_preview.SetView( entity_ai.GetViewIndex() );
+		#endif
 	}
 	
 	void DraggingOverHeader( Widget w, int x, int y, Widget receiver )
@@ -57,13 +63,11 @@ class Header: LayoutHolder
 		super.SetActive( active );
 		if( active )
 		{
-			GetMainWidget().SetAlpha( m_DefaultColor + 0.1 );
-			m_HeaderText.SetTextExactSize( m_DefaultFontSize * 1.1 );
+			GetMainWidget().SetColor( ARGBF( 1, 1, 0, 0 ) );
 		}
 		else
 		{
-			GetMainWidget().SetAlpha( m_DefaultColor );
-			m_HeaderText.SetTextExactSize( m_DefaultFontSize );
+			GetMainWidget().SetColor( m_DefaultColor );
 		}
 	}
 }

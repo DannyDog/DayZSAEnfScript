@@ -3,11 +3,13 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 	protected PlayerBase 				m_Player;
 	protected EntityAI 					m_EntityInHands;
 	protected ActionBase				m_Interact;
+	protected ActionBase				m_ContinuousInteract;
 	protected ActionBase				m_Single;
 	protected ActionBase				m_Continuous;
-	protected ActionManagerBase		 	m_AM;
+	protected ActionManagerClient	 	m_AM;
 
 	protected int						m_InteractActionsNum;
+	protected int						m_ContinuousInteractActionsNum;
 	protected bool 						m_HealthEnabled;
 	protected bool						m_QuantityEnabled;
 	
@@ -16,7 +18,6 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 
 	protected Widget					m_Root;
 	protected Widget 					m_ItemLeft;
-	ref AutoHeightSpacer				m_HealthQuantitySpacer;
 
 	//! widget width
 	protected float m_MaxWidthChild;
@@ -25,16 +26,17 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 	
 	void ItemActionsWidget()
 	{
-		m_Interact = null;
-		m_Single = null;
-		m_Continuous = null;
-		m_AM = null;
+		m_Interact				= null;
+		m_ContinuousInteract 	= null;
+		m_Single 				= null;
+		m_Continuous 			= null;
+		m_AM 					= null;
 
-		m_FadeTimer = new WidgetFadeTimer;
-		m_Faded = true;
+		m_FadeTimer 			= new WidgetFadeTimer;
+		m_Faded 				= true;
 		
-		m_HealthEnabled = true;
-		m_QuantityEnabled = true;
+		m_HealthEnabled 		= true;
+		m_QuantityEnabled 		= true;
 		
 		//KeysToUIElements.Init(); // Initialiaze of KeysToUIElements
 
@@ -49,6 +51,11 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 	void SetInteractXboxIcon( string imageset_name, string image_name )
 	{
 		SetXboxIcon( "ia_interact", imageset_name, image_name );
+	}
+
+	void SetContinuousInteractXboxIcon( string imageset_name, string image_name )
+	{
+		SetXboxIcon( "ia_continuous_interact", imageset_name, image_name );
 	}
 
 	void SetSingleXboxIcon( string imageset_name, string image_name )
@@ -80,18 +87,18 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		m_Root.Show(false);
 
 		m_ItemLeft = w.FindAnyWidget("ia_item_left");
-		m_ItemLeft.GetScript( m_HealthQuantitySpacer );
-		m_HealthQuantitySpacer.Update();
 		
 #ifdef PLATFORM_XBOX
 		SetSingleXboxIcon("xbox_buttons", "RT");
 		SetContinuousXboxIcon("xbox_buttons", "RT");
 		SetInteractXboxIcon("xbox_buttons", "X");
+		SetContinuousXboxIcon("xbox_buttons", "X");
 #endif
 #ifdef PLATFORM_PS4
 		SetSingleXboxIcon("playstation_buttons", "R2");
 		SetContinuousXboxIcon("playstation_buttons", "R2");
 		SetInteractXboxIcon("playstation_buttons", "square");
+		SetContinuousXboxIcon("playstation_buttons", "square");
 #endif
 	}
 
@@ -130,40 +137,13 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		SetItemDesc(m_EntityInHands, GetItemDesc(m_EntityInHands), "ia_item", "ia_item_desc");
 		SetInteractActionIcon("ia_interact", "ia_interact_icon_frame", "ia_interact_btn_inner_icon", "ia_interact_btn_text");
 		SetActionWidget(m_Interact, GetActionDesc(m_Interact), "ia_interact", "ia_interact_action_name");
+		#ifndef OLD_ACTIONS
+		SetInteractActionIcon("ia_continuous_interact", "ia_continuous_interact_icon_frame", "ia_continuous_interact_btn_inner_icon", "ia_continuous_interact_btn_text");
+		SetActionWidget(m_ContinuousInteract, GetActionDesc(m_ContinuousInteract), "ia_continuous_interact", "ia_continuous_interact_action_name");
+		#endif
 		SetActionWidget(m_Single, GetActionDesc(m_Single), "ia_single", "ia_single_action_name");
 		SetActionWidget(m_Continuous, GetActionDesc(m_Continuous), "ia_continuous", "ia_continuous_action_name");
 		SetMultipleInteractAction("ia_interact_mlt_wrapper");
-		
-		UpdateWidth();
-		m_HealthQuantitySpacer.Update();
-	}
-	
-	protected void UpdateWidth()
-	{
-		m_Root.GetSize(m_RootWidth, m_RootHeight);
-		Widget child = m_Root.GetChildren();
-		int index = 0;
-
-		if (m_MaxWidthChild > 100 && m_MaxWidthChild < m_RootWidth)
-		{
-			m_Root.SetSize(m_MaxWidthChild + 60, 0);
-			while (child)
-			{
-				child.SetSize(m_MaxWidthChild + 60, 40);
-				index++;
-				child = child.GetSibling();
-			}
-		}
-		else
-		{
-			m_Root.SetSize(300, 0);
-			while (child)
-			{
-				child.SetSize(250, 40);
-				index++;
-				child = child.GetSibling();
-			}
-		}
 	}
 		
 	protected void Update()
@@ -186,7 +166,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		GetEntityInHands();
 		GetActions();
 
-		if((m_EntityInHands || m_Interact || m_Single || m_Continuous) && GetGame().GetUIManager().GetMenu() == null)
+		if((m_EntityInHands || m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && GetGame().GetUIManager().GetMenu() == null)
 		{
 			BuildCursor();
 			m_Root.Show(true);
@@ -211,7 +191,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 	protected void GetActionManager()
 	{
 		if( m_Player && m_Player.IsPlayerSelected() )
-			Class.CastTo( m_AM, m_Player.GetActionManager() );
+			ActionManagerClient.CastTo( m_AM, m_Player.GetActionManager() );
 		else
 			m_AM = null;
 	}
@@ -219,13 +199,35 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
     protected void GetActions()
 	{
 		m_Interact = null;
+		m_ContinuousInteract = null;
 		m_Single = null;
 		m_Continuous = null;
 
 		if(!m_AM) return;
 		//if(!m_EntityInHands) return false;
 		if(m_Player.IsSprinting()) return;
+#ifndef OLD_ACTIONS			
+		array<ActionBase> possible_interact_actions = m_AM.GetPossibleActions(InteractActionInput);
+		int possible_interact_actions_index = m_AM.GetPossibleActionIndex(InteractActionInput);
+		array<ActionBase> possible_continuous_interact_actions = m_AM.GetPossibleActions(ContinuousInteractActionInput);
+		int possible_continuous_interact_actions_index = m_AM.GetPossibleActionIndex(ContinuousInteractActionInput);
 		
+		m_InteractActionsNum = possible_interact_actions.Count();
+		if ( m_InteractActionsNum > 0 )
+		{
+			m_Interact = possible_interact_actions[possible_interact_actions_index];
+		}
+		
+		m_ContinuousInteractActionsNum = possible_continuous_interact_actions.Count();
+		if ( m_ContinuousInteractActionsNum > 0 )
+		{
+			m_ContinuousInteract = possible_continuous_interact_actions[possible_continuous_interact_actions_index];
+		}
+		
+		
+		m_Single = m_AM.GetPossibleAction(DefaultActionInput);
+		m_Continuous = m_AM.GetPossibleAction(ContinuousDefaultActionInput);
+#else
 		TSelectableActionInfoArray selectableActions = m_AM.GetSelectableActions();
 		int selectedActionIndex = m_AM.GetSelectedActionIndex();
 		m_InteractActionsNum = selectableActions.Count();
@@ -236,6 +238,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 
 		m_Single = m_AM.GetSingleUseAction();
 		m_Continuous = m_AM.GetContinuousAction();
+#endif
 	}
 
 	protected void GetEntityInHands()
@@ -334,14 +337,18 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 			{
 				q_chamber = 1;
 			}
+			if (wpn.IsJammed())
+			{
+				q_chamber = -1;
+			}
 			
 			if (mag)
 			{
 				q_mag = mag.GetAmmoCount();
 			}
-			else if (wpn.GetChamberCartridgeCount(mi) > 1)
+			else if (wpn.GetInternalMagazineCartridgeCount(mi) > 0)
 			{
-				q_mag = wpn.GetChamberCartridgeCount(mi) - 1;
+				q_mag = wpn.GetInternalMagazineCartridgeCount(mi);
 			}
 		}
 	}
@@ -489,12 +496,22 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		
 		if(enabled)
 		{
+			string wpn_qty;
+
 			ProgressBarWidget progressBar;
 			TextWidget textWidget;
 			Class.CastTo(progressBar, widget.FindAnyWidget(quantityPBWidget));
 			Class.CastTo(textWidget, widget.FindAnyWidget(quantityTextWidget));
-
-			string wpn_qty = string.Format("%1 (+%2)", chamber, mag);
+			
+			if( chamber == -1 )
+			{
+				//! show 'X' when the chamber is jammed
+				wpn_qty = string.Format("X (+%1)", mag);
+			}
+			else
+			{
+				wpn_qty = string.Format("%1 (+%2)", chamber, mag);
+			}
 	
 			progressBar.Show(false);
 			textWidget.SetText(wpn_qty);
@@ -596,18 +613,20 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 			TextWidget actionName;
 			Class.CastTo(actionName, widget.FindAnyWidget(descWidget));
 			
-			int x, y;
-			actionName.GetTextSize(x, y);
-			if (x > m_MaxWidthChild);
-				m_MaxWidthChild = x;
-
-			if(action.IsInherited(ActionContinuousBase))
+			#ifndef OLD_ACTIONS
+			if(action.GetInput().GetInputType() == ActionInputType.AIT_CONTINUOUS)
+			#else
+			if(action.GetActionCategory() == AC_CONTINUOUS)
+			#endif
 			{
 				descText = descText + " " + "#action_target_cursor_hold";
 				actionName.SetText(descText);
 			}
 			else
+			{
 				actionName.SetText(descText);
+			}
+
 			widget.Show(true);
 		}
 		else

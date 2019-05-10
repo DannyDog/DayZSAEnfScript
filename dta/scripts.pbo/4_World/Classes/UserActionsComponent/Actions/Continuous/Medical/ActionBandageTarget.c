@@ -11,11 +11,6 @@ class ActionBandageTarget: ActionContinuousBase
 	void ActionBandageTarget()
 	{
 		m_CallbackClass = ActionBandageTargetCB;
-		m_MessageStartFail = "There's no bandage left.";
-		m_MessageStart = "Player started bandaging you.";
-		m_MessageSuccess = "Player finished bandaging you.";
-		m_MessageFail = "Player moved and bandaging was canceled.";
-		m_MessageCancel = "You stopped bandaging.";
 		m_SpecialtyWeight = UASoftSkillsWeight.PRECISE_LOW;
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_BANDAGETARGET;
 		m_FullBody = true;
@@ -52,9 +47,13 @@ class ActionBandageTarget: ActionContinuousBase
 			ntarget.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
 		}
 		
-		if (action_data.m_MainItem.GetQuantity() > 0)
+		if (action_data.m_MainItem.HasQuantity())
 		{
 			action_data.m_MainItem.AddQuantity(-1,true);
+		}
+		else
+		{
+			action_data.m_MainItem.Delete();
 		}
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
@@ -62,6 +61,6 @@ class ActionBandageTarget: ActionContinuousBase
 	
 	override void OnFinishProgressClient( ActionData action_data )
 	{
-		AnalyticsManager.OnActionBandageTarget();
+		GetGame().GetAnalyticsClient().OnActionBandageTarget();
 	}
 };

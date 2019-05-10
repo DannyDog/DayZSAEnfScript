@@ -1,6 +1,6 @@
 class BadgeFracture extends DisplayElementBadge 
 {
-	void BadgeFracture()
+	void BadgeFracture(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
 		m_Key 	= 	NTFKEY_FRACTURE;

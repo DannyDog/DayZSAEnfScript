@@ -2,7 +2,7 @@ FrameWidgetClass Icon {
  visible 1
  clipchildren 1
  ignorepointer 0
- size 43 43
+ size 34 34
  hexactpos 1
  vexactpos 1
  hexactsize 1
@@ -11,7 +11,7 @@ FrameWidgetClass Icon {
  {
   ItemPreviewWidgetClass Render {
    visible 0
-   clipchildren 0
+   clipchildren 1
    ignorepointer 1
    color 0.702 0.702 0.702 1
    size 1 1
@@ -28,7 +28,7 @@ FrameWidgetClass Icon {
   PanelWidgetClass Color {
    clipchildren 0
    ignorepointer 1
-   color 0.8824 0.8824 0.8824 0.098
+   color 0.8824 0.8824 0.8824 0.0392
    position 0 0
    size 1 1
    halign center_ref

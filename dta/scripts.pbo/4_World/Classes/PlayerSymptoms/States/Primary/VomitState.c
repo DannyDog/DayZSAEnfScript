@@ -22,6 +22,21 @@ class VomitSymptom extends SymptomBase
 
 	}
 	
+	override void OnAnimationStart()
+	{
+		m_Player.GetStatStomachVolume().Set(0);
+		m_Player.GetStatStomachWater().Set(0);
+		m_Player.GetStatStomachEnergy().Set(0);
+		m_Player.GetStatToxicity().Set(0);
+		
+		Print("------------ vomit start -------------");
+	}
+	
+	override void OnAnimationFinish()
+	{
+		
+	}
+	
 	override bool CanActivate()
 	{
 		return ( m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE || m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_ACTION );
@@ -30,12 +45,10 @@ class VomitSymptom extends SymptomBase
 	//!gets called once on an Symptom which is being activated
 	override void OnGetActivatedServer(PlayerBase player)
 	{
+		PlayAnimationFB(DayZPlayerConstants.CMD_ACTIONFB_VOMIT,DayZPlayerConstants.STANCEMASK_CROUCH, GetDuration() );
 		//timer.Run(10, this, "Destroy");
 		Debug.Log("OnGetActivated VomitSymptom called", "PlayerSymptom");
-		player.GetStatStomachVolume().Set(0);
-		player.GetStatStomachWater().Set(0);
-		player.GetStatStomachEnergy().Set(0);
-		PlayAnimationFB(DayZPlayerConstants.CMD_ACTIONFB_VOMIT,DayZPlayerConstants.STANCEMASK_CROUCH, GetDuration() );
+		
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated

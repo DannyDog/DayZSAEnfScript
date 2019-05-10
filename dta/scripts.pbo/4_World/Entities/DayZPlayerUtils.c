@@ -197,7 +197,7 @@ class DayZPlayerUtils
 			InventoryLocation inv_loc = new InventoryLocation;
 			if (player.GetInventory().FindFirstFreeLocationForNewEntity(magTypeName, FindInventoryLocationType.ANY, inv_loc))
 			{
-				EntityAI eai_inv = GetGame().SpawnEntity(magTypeName, inv_loc);
+				EntityAI eai_inv = GetGame().SpawnEntity(magTypeName, inv_loc, ECE_IN_INVENTORY, RF_DEFAULT);
 				if (eai_inv && eai_inv.IsInherited(Magazine))
 				{
 					Magazine mag_inv;
@@ -289,7 +289,7 @@ class DayZPlayerUtils
 			InventoryLocation inv_loc = new InventoryLocation;
 			if (player.GetInventory().FindFirstFreeLocationForNewEntity(magTypeName, FindInventoryLocationType.ANY, inv_loc))
 			{
-				EntityAI eai_inv = GetGame().SpawnEntity(magTypeName, inv_loc);
+				EntityAI eai_inv = GetGame().SpawnEntity(magTypeName, inv_loc, ECE_IN_INVENTORY, RF_DEFAULT);
 				if (eai_inv && eai_inv.IsInherited(Magazine))
 				{
 					Magazine mag_inv;

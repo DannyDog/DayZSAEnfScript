@@ -69,12 +69,14 @@ class ReplaceItemWithNewLambdaBase
 			Error("[inv] ReplaceItemWithNewLambdaBase Step B) failed to remove old_item rom current inventory location");
 			m_RemoveFromLocationPassed = false;
 		}
+		Print("[inv] ReplaceItemWithNewLambdaBase Step B) remove OK, loc=" + InventoryLocation.DumpToStringNullSafe(m_OldLocation));
 		m_RemoveFromLocationPassed = true;
 	}
 	protected void UndoRemoveOldItemFromLocation ()
 	{
 		if (!GameInventory.LocationAddEntity(m_OldLocation)) // B) undo
-			Error("[inv] ReplaceItemWithNewLambdaBase Step B) failed to undo");
+			Error("[inv] ReplaceItemWithNewLambdaBase Step B) failed to undo remove");
+		Print("[inv] ReplaceItemWithNewLambdaBase Step B) undo remove OK, loc=" + InventoryLocation.DumpToStringNullSafe(m_OldLocation));
 	}
 
 	/**@fn		RemoveNetworkObjectInfo
@@ -183,7 +185,7 @@ class ReplaceItemWithNewLambdaBase
 		Print("Error [inv] ReplaceItemWithNewLambdaBase OnAbort");
 	}
 
-	void Execute ()
+	void Execute (HumanInventoryWithFSM fsm_to_notify = null)
 	{
 		int t = GetGame().GetTime();
 		hndDebugPrint("[syncinv] t=" + t + " lambda.Execute start ");
@@ -197,8 +199,10 @@ class ReplaceItemWithNewLambdaBase
 			RemoveOldItemFromLocation();
 			if (!m_RemoveFromLocationPassed)
 			{
-				Error("[inv] ReplaceItemWithNewLambdaBase Step B) ABORT - failed while rm old item from loc=" + m_OldLocation.DumpToString());
+				Error("[inv] ReplaceItemWithNewLambdaBase Step B) ABORT - failed while rm old item from loc=" + InventoryLocation.DumpToStringNullSafe(m_OldLocation));
 
+				if (fsm_to_notify)
+					fsm_to_notify.ProcessHandAbortEvent(new HandEventHumanCommandActionAborted(fsm_to_notify.GetManOwner()));
 				OnAbort();
 				return;
 			}
@@ -211,13 +215,15 @@ class ReplaceItemWithNewLambdaBase
 			if (WantCreateNewEntity() && new_item == null)
 			{
 				//Error("[inv] ReplaceItemWithNewLambdaBase Step D) ABORT - wanted to create=" + m_NewItemType + " at loc=" + m_NewLocation.DumpToString() + ", but failed");
-				Print("Error [inv] ReplaceItemWithNewLambdaBase Step D) ABORT - wanted to create=" + m_NewItemType + " at loc=" + m_NewLocation.DumpToString() + ", but failed");
+				Print("Error [inv] ReplaceItemWithNewLambdaBase Step D) ABORT - wanted to create=" + m_NewItemType + " at loc=" + InventoryLocation.DumpToStringNullSafe(m_NewLocation) + ", but failed");
 				if (m_RemoveFromLocationPassed)
 					UndoRemoveOldItemFromLocation();
 				if (m_RemoveNetworkObjectInfoPassed)
 					UndoRemoveNetworkObjectInfo();
 
 				OnAbort();
+				if (fsm_to_notify)
+					fsm_to_notify.ProcessHandAbortEvent(new HandEventHumanCommandActionAborted(fsm_to_notify.GetManOwner()));
 				return;
 			}
 

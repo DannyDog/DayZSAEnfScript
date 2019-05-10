@@ -91,7 +91,8 @@ class ActionToggleTentOpen: ActionInteractBase
 			if ( tent.CanAffectPathgraph() )
 			{
 				//Start update
-				GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(GetGame().UpdatePathgraphRegionByObject, 100, false, tent);
+				tent.RegenerateNavmesh();
+
 			}
 		}
 	}

@@ -1,5 +1,7 @@
 class PortableGasLamp extends ItemBase
 {
+	PortableGasLampLight	m_Light;
+	
 	private const string GAS_LIGHT_MATERIAL_ON 		= "dz\\gear\\cooking\\data\\GasLightOn.rvmat";
 	private const string GAS_LIGHT_MATERIAL_OFF 	= "dz\\data\\data\\default.rvmat";
 
@@ -31,7 +33,11 @@ class PortableGasLamp extends ItemBase
 	
 	override void OnWorkStart()
 	{
-		SetPilotLight( true );
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() ) // client side
+		{
+			m_Light = PortableGasLampLight.Cast( ScriptedLightBase.CreateLight( PortableGasLampLight, "0 0 0") );
+			m_Light.AttachOnMemoryPoint(this, "light");
+		}
 		
 		//refresh visual
 		SetObjectMaterial( 0, GAS_LIGHT_MATERIAL_ON );
@@ -42,7 +48,8 @@ class PortableGasLamp extends ItemBase
 
 	override void OnWorkStop()
 	{
-		SetPilotLight( false );
+		if (m_Light)
+			m_Light.FadeOut();
 		
 		//refresh visual
 		SetObjectMaterial( 0, GAS_LIGHT_MATERIAL_OFF );
@@ -73,4 +80,14 @@ class PortableGasLamp extends ItemBase
 	{
 		PlaySoundSet( m_SoundTurnOff, SOUND_TURN_OFF, 0.1, 0.1 );
 	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+		AddAction(ActionTurnOnWhileOnGround);
+		AddAction(ActionTurnOffWhileOnGround);
+	}
 }

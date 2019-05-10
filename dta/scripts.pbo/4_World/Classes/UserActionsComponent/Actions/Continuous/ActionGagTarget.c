@@ -25,7 +25,7 @@ class ActionGagTarget: ActionContinuousBase
 		
 	override string GetText()
 	{
-		return "#gag_target";
+		return "#gag_person";
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )

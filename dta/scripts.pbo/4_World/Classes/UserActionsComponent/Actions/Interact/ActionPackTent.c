@@ -7,6 +7,12 @@ class ActionPackTent: ActionInteractBase
 		//m_Animation = "open";
 	}
 
+	override void CreateConditionComponents()  
+	{
+		m_ConditionItem = new CCINone;
+		m_ConditionTarget = new CCTParent(10);
+	}
+	
 	override int GetType()
 	{
 		return AT_PACK_TENT;
@@ -17,33 +23,58 @@ class ActionPackTent: ActionInteractBase
 		return "#pack_tent";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+
+	override bool IsUsingProxies()
+	{
+		return true;
+	}
+
+	override bool HasProgress()
+	{
+		return false;
+	}
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
 		Object targetObject = target.GetObject();
-		if ( player && targetObject )
+		Object targetParent = target.GetParent();
+		
+		if ( player && targetObject && targetParent )
 		{
 			float max_action_distance = 1; //m_MaximalActionDistance;
-			if ( targetObject.IsInherited(CarTent) ) 
+			if ( targetParent.IsInherited(CarTent) ) 
 			{
 				max_action_distance = 5.0;
 			}
-			else if ( targetObject.IsInherited(LargeTent) ) 
+			else if ( targetParent.IsInherited(LargeTent) ) 
 			{
 				max_action_distance = 4.0;
 			}
-			else if ( targetObject.IsInherited(MediumTent) )
+			else if ( targetParent.IsInherited(MediumTent) )
 			{
 				max_action_distance = 3.0;
 			}
-			float distance = Math.AbsInt(vector.Distance(targetObject.GetPosition(),player.GetPosition()));
+			float distance = Math.AbsInt(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
 			if (  distance <= max_action_distance )	
 			{
-				if ( targetObject.IsInherited(TentBase) ) 
+				TentBase tent = TentBase.Cast( targetParent );
+				if ( tent.CanBePacked() )
 				{
-					TentBase tent = TentBase.Cast( targetObject );
-					if ( tent.CanBePacked() )
-					{
-						return true;
+					array<string> selections = new array<string>;
+					targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
+					
+					for ( int s = 0; s < selections.Count(); s++ )
+					{					
+						if ( selections[s] == "pack" )
+						{
+							return true;
+						}
 					}
 				}
 			}
@@ -54,20 +85,19 @@ class ActionPackTent: ActionInteractBase
 	override void OnExecuteServer( ActionData action_data )
 	{
 		Object targetObject = action_data.m_Target.GetObject();
-		if ( targetObject != NULL && targetObject.IsInherited(TentBase) ) 
+		Object targetParent = action_data.m_Target.GetParent();
+		vector target_object_pos = targetObject.GetPosition();
+		
+		if ( targetParent && targetParent.IsInherited(TentBase) ) 
 		{
-			TentBase tent = TentBase.Cast( targetObject );
-			tent.Pack();
-		}
-	}
-	
-	override void OnExecuteClient( ActionData action_data )
-	{
-		Object targetObject = action_data.m_Target.GetObject();
-		if ( targetObject != NULL && targetObject.IsInherited(TentBase) ) 
-		{
-			TentBase tent = TentBase.Cast( targetObject );
-			tent.Pack();
+			array<string> selections = new array<string>;
+			targetObject.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
+			
+			TentBase tent = TentBase.Cast( targetParent );
+			tent.Pack( true );
+			tent.SetPosition( targetParent.CoordToParent( target_object_pos ) );
+			tent.SetOrientation( action_data.m_Player.GetOrientation() );
+			tent.PlaceOnSurface();
 		}
 	}
 };

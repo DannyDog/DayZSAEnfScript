@@ -22,6 +22,13 @@ class ActionRemovePlant: ActionInteractBase
 	{
 		return "#remove_plant";
 	}
+
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
 	
 	override void CreateConditionComponents()  
 	{	
@@ -53,8 +60,6 @@ class ActionRemovePlant: ActionInteractBase
 		{
 			PlantBase plant = PlantBase.Cast( targetObject );
 			plant.RemovePlant();
-			
-			GetGame().ObjectDelete( plant );
 		}
 	}
 };

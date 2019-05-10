@@ -1,6 +1,6 @@
 class BadgePoisoned extends DisplayElementBadge 
 {
-	void BadgePoisoned()
+	void BadgePoisoned(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
 		m_Key 	= 	NTFKEY_POISONED;

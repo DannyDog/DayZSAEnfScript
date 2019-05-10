@@ -5,9 +5,9 @@ class JumpEventsBase extends PlayerSoundEventBase
 		return true;
 	}
 	
-	override bool CanPlay()
+	override bool CanPlay(PlayerBase player)
 	{
-		if( !super.CanPlay() )
+		if( !super.CanPlay(player) )
 		{
 			return false;
 		}
