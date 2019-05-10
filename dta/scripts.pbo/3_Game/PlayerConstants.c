@@ -1,7 +1,39 @@
 class PlayerConstants 
 {
-	static const float WEAPON_RAISE_BLEND_DELAY = 0.16;
+	static const float WEAPON_RAISE_BLEND_DELAY = 0.17;
+	static const float MELEE2_MOVEMENT_BLEND_DELAY = 0.35;
 	static const float BAREFOOT_MOVEMENT_BLEED_MODIFIER = 0.1;
+	//----------------------------------------------------------
+	//						STAT LEVELS START
+	//----------------------------------------------------------
+	static const float SL_HEALTH_CRITICAL = 20;
+	static const float SL_HEALTH_LOW = 40;
+	static const float SL_HEALTH_NORMAL = 60;
+	static const float SL_HEALTH_HIGH = 80;	
+	
+	static const float SL_TOXICITY_CRITICAL = 20;
+	static const float SL_TOXICITY_LOW = 40;
+	static const float SL_TOXICITY_NORMAL = 60;
+	static const float SL_TOXICITY_HIGH = 80;
+
+	static const float SL_BLOOD_CRITICAL = 3000;
+	static const float SL_BLOOD_LOW = 3500;
+	static const float SL_BLOOD_NORMAL = 4000;
+	static const float SL_BLOOD_HIGH = 4500;
+	
+	static const float SL_ENERGY_CRITICAL = 0;
+	static const float SL_ENERGY_LOW = 200;
+	static const float SL_ENERGY_NORMAL = 400;
+	static const float SL_ENERGY_HIGH = 800;
+	
+	static const float SL_WATER_CRITICAL = 0;
+	static const float SL_WATER_LOW = 300;
+	static const float SL_WATER_NORMAL = 600;
+	static const float SL_WATER_HIGH = 1200;
+	//----------------------------------------------------------
+	//						STAT LEVELS END
+	//----------------------------------------------------------
+
 	//-------------------------------------------------------
 	static const float NORMAL_TEMPERATURE_L = 35.2;
 	static const float NORMAL_TEMPERATURE_H = 36.8;
@@ -11,13 +43,11 @@ class PlayerConstants
 	static const float STOMACH_ENERGY_TRANSFERED_PER_SEC 		= 3;	//amount of kcal transfered to energy per second(this should ideally be higher than what player burns under high metabolic load[sprint])
 	static const float STOMACH_WATER_TRANSFERED_PER_SEC 		= 6;	//amount of ml transfered to water per second(this should ideally be higher than what player burns under high metabolic load[sprint])
 	static const float STOMACH_SOLID_EMPTIED_PER_SEC 			= 7;	//amount of g/ml emptied from stomach per second
-	//static const float STOMACH_EMPTIED_LIQUID_PER_SEC	 		= Playerstatic constants.WATER_TRANSFERED_PER_SEC;
-	static const float LOW_WATER_THRESHOLD 						= 250;	//threshold from which water affects health
-	//static const float WATER_DECREMENT_PER_SEC 				= STOMACH_WATER_TRANSFERED_PER_SEC / 4; //used in poisoning for now
+
+	static const float LOW_WATER_THRESHOLD 						= PlayerConstants.SL_WATER_LOW;	//threshold from which water affects health
+
 	static const float LOW_ENERGY_THRESHOLD 					= 200;	//threshold from which energy affects health
-	//static const float ENERGY_DECREMENT_PER_SEC 				= 0.035; //not used?
-	//static const float DAMAGE_PER_SEC 						= 1;	//not used? (was how much HP is lowered while low on energy/water)
-	//static const float DAMAGE_BLOOD_PER_SEC 					= 10; 	//not used?
+
 	//--------------------------------------------------------
 	static const float METABOLIC_SPEED_ENERGY_BASAL		= 0.01;		//energy loss per second while idle
 	
@@ -32,22 +62,6 @@ class PlayerConstants
 	static const float METABOLIC_SPEED_WATER_SPRINT		= 0.8; 		//water loss per second
 	//--------------------------------------------------------
 	
-	/*
-	static const float	THRESHOLD_ENERGY_WARNING		= 800;		//LVL 3/4
-	static const float	THRESHOLD_ENERGY_CRITICAL		= 400;		//LVL 2/4
-	static const float	THRESHOLD_ENERGY_BLINKING		= 200;		//LVL 1/4
-	static const float	THRESHOLD_ENERGY_EXTRA			= 0;		//LVL 0/4
-
-	static const float	THRESHOLD_WATER_WARNING			= 1200;		//LVL 3/4
-	static const float	THRESHOLD_WATER_CRITICAL		= 600;		//LVL 2/4
-	static const float	THRESHOLD_WATER_BLINKING		= 300;		//LVL 1/4
-	static const float	THRESHOLD_WATER_EXTRA			= 0;		//LVL 0/4
-	
-	static const float	THRESHOLD_BLOOD_WARNING			= 4500;		//LVL 3/4
-	static const float	THRESHOLD_BLOOD_CRITICAL		= 4000;		//LVL 2/4
-	static const float	THRESHOLD_BLOOD_BLINKING		= 3500;		//LVL 1/4
-	static const float	THRESHOLD_BLOOD_EXTRA			= 3000;		//LVL 0/4
-	*/
 	static const float	THRESHOLD_HEAT_COMFORT_PLUS_WARNING		= 0.2;	//missing comment
 	static const float	THRESHOLD_HEAT_COMFORT_PLUS_CRITICAL 	= 0.5;	//missing comment
 	static const float	THRESHOLD_HEAT_COMFORT_PLUS_EMPTY		= 0.9;	//missing comment
@@ -56,29 +70,15 @@ class PlayerConstants
 	static const float	THRESHOLD_HEAT_COMFORT_MINUS_CRITICAL	= -0.5;	//missing comment
 	static const float	THRESHOLD_HEAT_COMFORT_MINUS_EMPTY		= -0.9;	//missing comment
 
-	/*
-	static const float	THRESHOLD_HEALTH_WARNING		= 80;		//LVL 3/4
-	static const float	THRESHOLD_HEALTH_CRITICAL		= 60;		//LVL 2/4
-	static const float	THRESHOLD_HEALTH_BLINKING		= 40;		//LVL 1/4
-	static const float	THRESHOLD_HEALTH_EXTRA			= 20;		//LVL 0/4
-	*/
 	//--------------------------------------------------------
 	static const int BLOOD_THRESHOLD_FATAL 					= 2500;	//fatal blood level
 	
-	static const float BLOOD_REGEN_RATE_PER_SEC				= 0.5; 	//base amount of blood regenerated per second
-	static const float DAMAGE_ZONE_BLOOD_REGEN_MODIFIER 	= 0.5;
-	
-	//static const int BLOOD_REGEN_THRESHOLD_ENERGY_LOW		= 200;
-	//static const int BLOOD_REGEN_THRESHOLD_ENERGY_MID		= 400;
-	//static const int BLOOD_REGEN_THRESHOLD_ENERGY_HIGH	= 2000;
+	static const float BLOOD_REGEN_RATE_PER_SEC				= 0.7; 	//base amount of blood regenerated per second
+	static const float DAMAGE_ZONE_BLOOD_REGEN_MODIFIER 	= 0.7;
 	
 	static const float BLOOD_REGEN_MODIFIER_ENERGY_LOW		= 0; 	//multiplier for blood regen rate 
 	static const float BLOOD_REGEN_MODIFIER_ENERGY_MID		= 0.5;
 	static const float BLOOD_REGEN_MODIFIER_ENERGY_HIGH		= 1;
-	
-	//static const int BLOOD_REGEN_THRESHOLD_WATER_LOW		= 300;
-	//static const int BLOOD_REGEN_THRESHOLD_WATER_MID		= 600;
-	//static const int BLOOD_REGEN_THRESHOLD_WATER_HIGH		= 2000;
 	
 	static const float BLOOD_REGEN_MODIFIER_WATER_LOW		= 0; 	//multiplier for blood regen rate (BLOOD_REGEN_MULTIPLIER_WATER_LOW ?)
 	static const float BLOOD_REGEN_MODIFIER_WATER_MID		= 0.5;
@@ -88,7 +88,7 @@ class PlayerConstants
 	static const float SALINE_LIQUID_AMOUNT					= 250;
 	
 	static const float HEMOLYTIC_BLOOD_DRAIN_PER_SEC		= 2;	//hemolytic reaction blood drain per second
-	static const float HEMOLYTIC_BLOODLOSS_AMOUNT			= 1000;
+	static const float HEMOLYTIC_BLOODLOSS_AMOUNT			= 250;
 	
 	static const float WATER_LOSS_THRESHOLD_HC_PLUS_LOW		= THRESHOLD_HEAT_COMFORT_PLUS_WARNING;
 	static const float WATER_LOSS_THRESHOLD_HC_PLUS_HIGH	= THRESHOLD_HEAT_COMFORT_MINUS_CRITICAL;
@@ -147,39 +147,18 @@ class PlayerConstants
 	static const float IMMUNITY_THRESHOLD_LEVEL_CRITICAL = 0.15;
 	//----------------------------------------------------------
 	static const float VITAMINS_LIFETIME_SECS				= 300;
-	
-	//----------------------------------------------------------
-	//						STAT LEVELS START
-	//----------------------------------------------------------
-	static const float SL_HEALTH_CRITICAL = 20;
-	static const float SL_HEALTH_LOW = 40;
-	static const float SL_HEALTH_NORMAL = 60;
-	static const float SL_HEALTH_HIGH = 80;	
-	
-	static const float SL_TOXICITY_CRITICAL = 20;
-	static const float SL_TOXICITY_LOW = 40;
-	static const float SL_TOXICITY_NORMAL = 60;
-	static const float SL_TOXICITY_HIGH = 80;
 
-	
-	static const float SL_BLOOD_CRITICAL = 3000;
-	static const float SL_BLOOD_LOW = 3500;
-	static const float SL_BLOOD_NORMAL = 4000;
-	static const float SL_BLOOD_HIGH = 4500;
-	
-	static const float SL_ENERGY_CRITICAL = 0;
-	static const float SL_ENERGY_LOW = 200;
-	static const float SL_ENERGY_NORMAL = 400;
-	static const float SL_ENERGY_HIGH = 800;
-	
-	static const float SL_WATER_CRITICAL = 0;
-	static const float SL_WATER_LOW = 300;
-	static const float SL_WATER_NORMAL = 600;
-	static const float SL_WATER_HIGH = 1200;
-	
-	
+	static const float CHANCE_TO_BLEED_SLIDING_LADDER_PER_SEC = 0.3; // probability of bleeding source occuring while sliding down ladder without gloves given as percentage per second(0.5 means 50% chance bleeding source will happen every second while sliding down) 
+	static const float GLOVES_DAMAGE_SLIDING_LADDER_PER_SEC = -3;// how much damage the gloves receive while sliding down the ladder
 	
 	//----------------------------------------------------------
-	//						STAT LEVELS END
+	//						BADGE THRESHOLDS
 	//----------------------------------------------------------
+	static const int BT_STOMACH_VOLUME_LVL3 = 1500;
+	static const int BT_STOMACH_VOLUME_LVL2 = 750;
+	static const int BT_STOMACH_VOLUME_LVL1 = 1;
+
+	//!
+	static const int LAST_UA_MSG_LIFETIME = 30;						//! last User Action message lifetime [s] (default: 30s)
+	
 }

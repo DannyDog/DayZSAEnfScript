@@ -8,4 +8,11 @@ class Firewood extends ItemBase
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+	}
 }

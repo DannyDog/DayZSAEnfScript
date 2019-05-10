@@ -4,10 +4,12 @@ class HandTakingAnimated_Hide extends HandStartAction
 class HandTakingAnimated_Show extends HandStartAction
 {
 	ref InventoryLocation m_Src;
+	ref InventoryLocation m_Dst;
 
 	void HandTakingAnimated_Show (Man player = NULL, HandStateBase parent = NULL, WeaponActions action = WeaponActions.NONE, int actionType = -1)
 	{
-		m_Src = NULL;
+		m_Src = null;
+		m_Dst = null;
 	}
 
 	override void OnEntry (HandEventBase e)
@@ -18,7 +20,8 @@ class HandTakingAnimated_Show extends HandStartAction
 		{
 			if (m_Src.IsValid())
 			{
-				HandActionTake.TakeToHands(e.m_Player, m_Src);
+				GameInventory.LocationSyncMoveEntity(m_Src, m_Dst);
+				e.m_Player.OnItemInHandsChanged();
 			}
 			else
 			{
@@ -31,13 +34,15 @@ class HandTakingAnimated_Show extends HandStartAction
 
 	override void OnAbort (HandEventBase e)
 	{
-		m_Src = NULL;
+		m_Src = null;
+		m_Dst = null;
 		super.OnAbort(e);
 	}
 
 	override void OnExit (HandEventBase e)
 	{
-		m_Src = NULL;
+		m_Src = null;
+		m_Dst = null;
 		super.OnExit(e);
 	}
 
@@ -47,12 +52,10 @@ class HandTakingAnimated_Show extends HandStartAction
 
 class HandAnimatedTakingFromAtt extends HandStateBase
 {
-	EntityAI m_Entity; /// entity to be taken
-
 	ref HandTakingAnimated_Hide m_Hide;
 	ref HandTakingAnimated_Show m_Show;
 	
-	ref InventoryLocation m_ilEntity;
+	ref InventoryLocation m_Dst;
 
 	void HandAnimatedTakingFromAtt (Man player = NULL, HandStateBase parent = NULL)
 	{
@@ -74,36 +77,30 @@ class HandAnimatedTakingFromAtt extends HandStateBase
 
 	override void OnEntry (HandEventBase e)
 	{
-		m_Entity = e.m_Entity;
-		InventoryLocation il = new InventoryLocation;
-		m_Entity.GetInventory().GetCurrentInventoryLocation(il);
-		m_Show.m_Src = il;
+		m_Dst = e.GetDst();
+		m_Show.m_Src = e.GetSrc();
+		m_Show.m_Dst = e.GetDst();
 
 		m_Hide.m_ActionType = e.GetAnimationID();
 		m_Show.m_ActionType = e.GetAnimationID();
-		
-		m_ilEntity = new InventoryLocation;
-		m_ilEntity.SetHands(e.m_Player, m_Entity);
-		
-		e.m_Player.GetHumanInventory().AddInventoryReservation(m_Entity, m_ilEntity, 3000);
+			
+		e.m_Player.GetHumanInventory().AddInventoryReservation(m_Dst.GetItem(), m_Dst, 3000);
 
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)
 	}
 
 	override void OnAbort (HandEventBase e)
 	{
-		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Entity, m_ilEntity);
-		m_Entity = null;
-		m_ilEntity = null;
+		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst.GetItem(), m_Dst);
+		m_Dst = null;
 
 		super.OnAbort(e);
 	}
 
 	override void OnExit (HandEventBase e)
 	{
-		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Entity, m_ilEntity);
-		m_Entity = null;
-		m_ilEntity = null;
+		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst.GetItem(), m_Dst);
+		m_Dst = null;
 
 		super.OnExit(e);
 	}

@@ -8,7 +8,6 @@ class MainMenuConsole extends UIScriptedMenu
 	protected TextWidget			m_PlayerName;
 	protected TextWidget			m_Version;
 	
-	
 	protected Widget				m_PlayVideo;
 	protected Widget				m_Tutorials;
 	protected Widget				m_Options;
@@ -16,6 +15,7 @@ class MainMenuConsole extends UIScriptedMenu
 	protected Widget				m_Play;	
 	
 	protected ref Widget			m_LastFocusedButton;
+	protected bool					m_IsShown;
 
 	override Widget Init()
 	{
@@ -44,53 +44,60 @@ class MainMenuConsole extends UIScriptedMenu
 		}
 		
 		#ifdef PLATFORM_PS4
+			string confirm = "cross";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				confirm = "cross";
+			}
+			else
+			{
+				confirm = "circle";
+			}
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "SelectIcon" );
 			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ChooseAccount" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
+			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
 			toolbar_y.Show( false );
-		
-			Widget w_play_video = layoutRoot.FindAnyWidget( "play_video" );
-			w_play_video.Show(false);
 		#endif
 		
 		Refresh();
-		
 		return layoutRoot;
 	}
 	
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
-		if( w == m_Play )
+		if( m_IsShown )
 		{
-			m_LastFocusedButton = m_Play;
-			OpenMenuServerBrowser();
-			return true;
+			if( w == m_Play )
+			{
+				m_LastFocusedButton = m_Play;
+				OpenMenuServerBrowser();
+				return true;
+			}
+			else if ( w == m_Options )
+			{
+				m_LastFocusedButton = m_Options;
+				OpenMenuOptions();					
+				return true;
+			}
+			else if ( w == m_PlayVideo )
+			{
+				m_LastFocusedButton = m_PlayVideo;
+				OpenMenuPlayVideo();
+				return true;
+			}
+			else if ( w == m_Tutorials )
+			{
+				m_LastFocusedButton = m_Tutorials;
+				OpenMenuTutorials();
+				return true;
+			}
+			else if ( w == m_Controls )
+			{
+				m_LastFocusedButton = m_Controls;
+				OpenMenuControls();
+				return true;
+			}
 		}
-		else if ( w == m_Options )
-		{
-			m_LastFocusedButton = m_Options;
-			OpenMenuOptions();					
-			return true;
-		}
-		else if ( w == m_PlayVideo )
-		{
-			m_LastFocusedButton = m_PlayVideo;
-			OpenMenuPlayVideo();
-			return true;
-		}
-		else if ( w == m_Tutorials )
-		{
-			m_LastFocusedButton = m_Tutorials;
-			OpenMenuTutorials();
-			return true;
-		}
-		else if ( w == m_Controls )
-		{
-			m_LastFocusedButton = m_Controls;
-			OpenMenuControls();
-			return true;
-		}
-		
 		return false;
 	}
 	
@@ -138,37 +145,42 @@ class MainMenuConsole extends UIScriptedMenu
 		{
 			m_ScenePC.GetIntroCamera().LookAt( m_ScenePC.GetIntroCharacter().GetPosition() + Vector( 0, 1, 0 ) );
 		}
+		m_IsShown = true;
 	}
 	
 	override void OnHide()
 	{
+		m_IsShown = false;
 		GetDayZGame().GetBacklit().MainMenu_OnHide();
 	}
 
 	override void Update(float timeslice)
 	{
 		super.Update( timeslice );
-		
-		#ifndef PLATFORM_CONSOLE
-		if ( GetGame().GetInput().LocalPress("UAUIBack", false) && g_Game.GetLoadState() != DayZGameState.CONNECTING && !GetGame().GetUIManager().IsDialogVisible() )
+		if( m_IsShown )
 		{
-			Exit();
-		}
-		#endif
-		#ifdef PLATFORM_XBOX
-		if ( GetGame().GetInput().LocalPress("UAUICtrlY",false) )
-		{
-			BiosUserManager user_manager = GetGame().GetUserManager();
-			if( user_manager )
+			
+			#ifndef PLATFORM_CONSOLE
+			if ( GetGame().GetInput().LocalPress("UAUIBack", false) && g_Game.GetLoadState() != DayZGameState.CONNECTING && !GetGame().GetUIManager().IsDialogVisible() )
 			{
-				g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
-				#ifndef PLATFORM_WINDOWS
-				user_manager.SelectUser( null );
-				#endif
-				GetGame().GetUIManager().Back();
+				Exit();
 			}
+			#endif
+			#ifdef PLATFORM_XBOX
+			if ( GetGame().GetInput().LocalPress("UAUICtrlY",false) )
+			{
+				BiosUserManager user_manager = GetGame().GetUserManager();
+				if( user_manager )
+				{
+					g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
+					#ifndef PLATFORM_WINDOWS
+					user_manager.SelectUser( null );
+					#endif
+					GetGame().GetUIManager().Back();
+				}
+			}
+			#endif
 		}
-		#endif
 	}
 	
 	void OpenMenuServerBrowser()

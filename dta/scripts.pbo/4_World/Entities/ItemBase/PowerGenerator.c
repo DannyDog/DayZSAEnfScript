@@ -322,4 +322,16 @@ class PowerGenerator extends ItemBase
 	{
 		return "placePowerGenerator_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionPlugIn);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPullOutPlug);
+		AddAction(ActionTurnOnPowerGenerator);
+		AddAction(ActionTurnOffPowerGenerator);
+		AddAction(ActionPlaceObject);
+	}
 }

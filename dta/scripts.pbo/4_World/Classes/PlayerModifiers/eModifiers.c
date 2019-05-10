@@ -36,5 +36,7 @@ enum eModifiers
 	MDF_IMMUNITYBOOST,
 	MDF_ANTIBIOTICS,
 	MDF_TOXICITY,
+	MDF_BREATH_VAPOUR,//must start at 1
+	// ---------------only count bellow
 	COUNT,
 }

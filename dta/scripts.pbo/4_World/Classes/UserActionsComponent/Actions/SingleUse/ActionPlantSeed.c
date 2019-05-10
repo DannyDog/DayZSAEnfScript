@@ -77,9 +77,6 @@ class ActionPlantSeed: ActionSingleUseBase
 			ItemBase seed_IB = ItemBase.Cast( action_data.m_MainItem );
 			
 			seed_IB.SplitIntoStackMax( garden_base, slot_ID, action_data.m_Player );
-			
-			
-			//action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx(garden_base, , slot_ID );
 		}
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

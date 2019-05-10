@@ -8,4 +8,14 @@ class VitaminBottle : Edible_Base
 		}
 		consumer.GetModifiersManager().ActivateModifier( eModifiers.MDF_IMMUNITYBOOST );
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionForceConsumeSingle);
+		AddAction(ActionConsumeSingle);
+		//AddAction(ActionForceFeed);
+		//AddAction(ActionEat);
+	}
 }

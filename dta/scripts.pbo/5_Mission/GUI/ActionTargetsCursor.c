@@ -57,11 +57,13 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	protected ref ATCCachedObject			m_CachedObject;
 
 	protected ActionBase					m_Interact;
+	protected ActionBase					m_ContinuousInteract;
 	protected ActionBase					m_Single;
 	protected ActionBase					m_Continuous;
 	protected ActionManagerClient 			m_AM;
 
 	protected int							m_InteractActionsNum;
+	protected int							m_ContinuousInteractActionsNum;
 	protected bool 							m_HealthEnabled;
 	protected bool							m_QuantityEnabled;	
 	protected bool							m_FixedOnPosition;
@@ -78,16 +80,17 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 	void ActionTargetsCursor()
 	{
-		m_Interact = null;
-		m_Single = null;
-		m_Continuous = null;
-		m_AM = null;
+		m_Interact 				= null;
+		m_ContinuousInteract	= null;
+		m_Single				= null;
+		m_Continuous			= null;
+		m_AM					= null;
 		
-		m_HealthEnabled = true;
-		m_QuantityEnabled = true;
+		m_HealthEnabled			= true;
+		m_QuantityEnabled		= true;
 		
-		m_CachedObject = new ATCCachedObject;
-		m_Hidden = false;
+		m_CachedObject 			= new ATCCachedObject;
+		m_Hidden 				= false;
 	}
 	
 	void ~ActionTargetsCursor() {}
@@ -106,6 +109,11 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	void SetInteractXboxIcon( string imageset_name, string image_name )
 	{
 		SetXboxIcon( "interact", imageset_name, image_name );
+	}
+
+	void SetContinuousInteractXboxIcon( string imageset_name, string image_name )
+	{
+		SetXboxIcon( "continuous_interact", imageset_name, image_name );
 	}
 	
 	void SetSingleXboxIcon( string imageset_name, string image_name )
@@ -138,12 +146,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		SetSingleXboxIcon("xbox_buttons", "RT");
 		SetContinuousXboxIcon("xbox_buttons", "RT");
 		SetInteractXboxIcon("xbox_buttons", "X");
+		SetContinuousInteractXboxIcon("xbox_buttons", "X");
 #endif
 
 #ifdef PLATFORM_PS4		
 		SetSingleXboxIcon("playstation_buttons", "R2");
 		SetContinuousXboxIcon("playstation_buttons", "R2");
 		SetInteractXboxIcon("playstation_buttons", "square");
+		SetContinuousInteractXboxIcon("playstation_buttons", "square");
 #endif
 	}
 
@@ -167,6 +177,10 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		SetInteractActionIcon("interact", "interact_icon_frame", "interact_btn_inner_icon", "interact_btn_text");
 		SetItemDesc(GetItemDesc(m_Interact), cargoCount, "item", "item_desc");
 		SetActionWidget(m_Interact, GetActionDesc(m_Interact), "interact", "interact_action_name");
+		#ifndef OLD_ACTIONS
+		SetInteractActionIcon("continuous_interact", "continuous_interact_icon_frame", "continuous_interact_btn_inner_icon", "continuous_interact_btn_text");
+		SetActionWidget(m_ContinuousInteract, GetActionDesc(m_ContinuousInteract), "continuous_interact", "continuous_interact_action_name");
+		#endif
 		SetActionWidget(m_Single, GetActionDesc(m_Single), "single", "single_action_name");
 		SetActionWidget(m_Continuous, GetActionDesc(m_Continuous), "continuous", "continuous_action_name");
 		SetMultipleInteractAction("interact_mlt_wrapper");
@@ -257,13 +271,13 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		GetActions();
 
 #ifdef PLATFORM_CONSOLE
-		if((m_Target && !m_Hidden) && (m_Interact || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
+		if((m_Target && !m_Hidden) && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
 #else
-		if((m_Target && !m_Hidden) || (m_Interact || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
+		if((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
 #endif
 		{
 			//! cursor with fixed position (environment interaction mainly)
-			if ( m_Target.GetObject() == null && (m_Interact || m_Single || m_Continuous))
+			if ( m_Target.GetObject() == null && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous))
 			{
 				//Print(">> fixed widget");
 				m_CachedObject.Invalidate();
@@ -601,6 +615,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
   	protected void GetActions()
 	{
 		m_Interact = null;
+		m_ContinuousInteract = null;
 		m_Single = null;
 		m_Continuous = null;
 
@@ -608,7 +623,28 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		if(!m_Target) return;
 		if(m_Player.IsSprinting()) return;
 		if(m_Player.IsInVehicle()) return; // TODO: TMP: Car AM rework needed
-
+#ifndef OLD_ACTIONS			
+		array<ActionBase> possible_interact_actions = m_AM.GetPossibleActions(InteractActionInput);
+		array<ActionBase> possible_continuous_interact_actions = m_AM.GetPossibleActions(ContinuousInteractActionInput);
+		int possible_interact_actions_index = m_AM.GetPossibleActionIndex(InteractActionInput);
+		int possible_continuous_interact_actions_index = m_AM.GetPossibleActionIndex(ContinuousInteractActionInput);
+		
+		m_InteractActionsNum = possible_interact_actions.Count();
+		if( m_InteractActionsNum > 0 )
+		{
+			m_Interact = possible_interact_actions[possible_interact_actions_index];
+		}
+		
+		m_ContinuousInteractActionsNum = possible_continuous_interact_actions.Count();
+		if( m_ContinuousInteractActionsNum > 0 )
+		{
+			m_ContinuousInteract = possible_continuous_interact_actions[possible_continuous_interact_actions_index];
+		}
+		
+		
+		m_Single = m_AM.GetPossibleAction(DefaultActionInput);
+		m_Continuous = m_AM.GetPossibleAction(ContinuousDefaultActionInput);
+#else
 		TSelectableActionInfoArray selectableActions = m_AM.GetSelectableActions();
 		int selectedActionIndex = m_AM.GetSelectedActionIndex();
 		m_InteractActionsNum = selectableActions.Count();
@@ -619,6 +655,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 				
 		m_Single = m_AM.GetSingleUseAction();
 		m_Continuous = m_AM.GetContinuousAction();
+#endif
 	}
 
 	protected void GetTarget()
@@ -765,10 +802,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	protected void SetItemDesc(string descText, int cargoCount, string itemWidget, string descWidget)
 	{
 		Widget widget;
-		
 		widget = m_Root.FindAnyWidget(itemWidget);
 		
-		if(descText.Length() == 0)
+		//! Last message from finished User Action on target (Thermometer, Blood Test Kit, etc. )
+		PlayerBase playerT = PlayerBase.Cast(m_Target.GetObject());
+		if (playerT)
+			string msg = playerT.GetLastUAMessage();
+				
+		if(descText.Length() == 0 && msg.Length() == 0)
 		{
 			widget.Show(false);
 			return;
@@ -777,22 +818,16 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		descText.ToUpper();
 		TextWidget itemName;
 		Class.CastTo(itemName, widget.FindAnyWidget(descWidget));
-
+	
 		//! when cargo in container
 		if (cargoCount > 0)
 		{
-			descText = string.Format("[+] %1 ", descText, cargoCount);
+			descText = string.Format("[+] %1  %2", descText, msg);
 			itemName.SetText(descText);		
 		}
 		else
+			descText = string.Format("%1  %2", descText, msg);
 			itemName.SetText(descText);
-		
-		/*
-		int x, y;
-		itemName.GetTextSize(x, y);
-		if (x > m_MaxWidthChild);
-			m_MaxWidthChild = x;
-		*/
 
 		widget.Show(true);
 	}
@@ -917,7 +952,11 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			{
 				TextWidget actionName;
 				Class.CastTo(actionName, widget.FindAnyWidget(descWidget));
+				#ifndef OLD_ACTIONS
+				if(action.GetInput().GetInputType() == ActionInputType.AIT_CONTINUOUS)
+				#else
 				if(action.GetActionCategory() == AC_CONTINUOUS)
+				#endif
 				{
 					descText = descText + " " + "#action_target_cursor_hold";
 					actionName.SetText(descText);

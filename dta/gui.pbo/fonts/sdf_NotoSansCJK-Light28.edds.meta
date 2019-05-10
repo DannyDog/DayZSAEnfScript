@@ -1,7 +1,7 @@
 MetaFileClass {
  Name "{A3A68EDD5D72DF22}Gui/fonts/sdf_NotoSansCJK-Light28.edds"
- Author "inv1562"
- ChangeDate 768812646
+ Author "1562"
+ ChangeDate -818649448
  Configurations {
   TGAResourceClass PC {
    SourceFile "sdf_NotoSansCJK-Light28.tga"

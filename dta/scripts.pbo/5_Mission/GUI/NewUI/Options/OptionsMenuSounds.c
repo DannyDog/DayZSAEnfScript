@@ -193,9 +193,16 @@ class OptionsMenuSounds extends ScriptedWidgetEventHandler
 	void FillTextMap()
 	{
 		m_TextMap = new map<int, ref Param2<string, string>>;
+		#ifdef PLATFORM_PS4
+		m_TextMap.Insert( AT_OPTIONS_MASTER_VOLUME, new Param2<string, string>( "#ps4_options_sound_master_volume", "#ps4_options_sound_master_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_EFFECTS_SLIDER, new Param2<string, string>( "#ps4_options_sound_effects_volume", "#ps4_options_sound_effects_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_VON_SLIDER, new Param2<string, string>( "#ps4_options_sound_VOIP_volume", "#ps4_options_sound_VOIP_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#ps4_options_sound_music_volume", "#ps4_options_sound_music_volume_desc" ) );
+		#else
 		m_TextMap.Insert( AT_OPTIONS_MASTER_VOLUME, new Param2<string, string>( "#options_sound_master_volume", "#options_sound_master_volume_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_EFFECTS_SLIDER, new Param2<string, string>( "#options_sound_effects_volume", "#options_sound_effects_volume_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_VON_SLIDER, new Param2<string, string>( "#options_sound_VOIP_volume", "#options_sound_VOIP_volume_desc" ) );
-		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#options_sound_music_volume", "#options_sound_music_volume_desc" ) );
+		m_TextMap.Insert( AT_OPTIONS_MUSIC_SLIDER, new Param2<string, string>( "#options_sound_music_volume", "#options_sound_music_volume_desc" ) ); 
+		#endif
 	}
 }

@@ -73,11 +73,6 @@ class Mp133Shotgun_Base : Rifle_Base
 		return new Mp133Recoil(this);
 	}
 	
-	override void GetContinuousActions( out TIntArray actions )
-	{
-		actions.Insert(AT_LOAD_MULTI_BULLET_TO_WEAPON);
-	}
-	
 	override void InitStateMachine ()
 	{
 		// setup abilities
@@ -110,8 +105,10 @@ class Mp133Shotgun_Base : Rifle_Base
 		
 		WeaponStateBase		Trigger_E = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY);
 		WeaponStateBase		Trigger_F = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY);
-		WeaponStateBase		Trigger_L = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL, WeaponActionFireTypes.FIRE_JAM);
+		WeaponStateBase		Trigger_L = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL);
 		WeaponStateBase		Trigger_J = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY);
+		
+		WeaponStateBase		Trigger_LJ = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM);
 		// extend Rifle_Base fsm
 		/*LoopedChambering lch = new LoopedChambering(this, NULL, WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_STARTLOOPABLE_CLOSED, WeaponActionChamberingTypes.CHAMBERING_ENDLOOPABLE);
 		LoopedChambering psh = new LoopedChambering(this, NULL, WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_STARTLOOPABLE_CLOSED_KEEP	, WeaponActionChamberingTypes.CHAMBERING_ENDLOOPABLE);
@@ -123,6 +120,7 @@ class Mp133Shotgun_Base : Rifle_Base
 		WeaponEventBase __lS_ = new WeaponEventContinuousLoadBulletStart;
 		WeaponEventBase __L__ = new WeaponEventLoad1Bullet;
 		WeaponEventBase __T__ = new WeaponEventTrigger;
+		WeaponEventBase __TJ_ = new WeaponEventTriggerToJam;
 		WeaponEventBase __U__ = new WeaponEventUnjam;
 		WeaponEventBase	__M__ = new WeaponEventMechanism;
 		WeaponEventBase _abt_ = new WeaponEventHumanCommandActionAborted;
@@ -187,14 +185,14 @@ class Mp133Shotgun_Base : Rifle_Base
 		m_fsm.AddTransition(new WeaponTransition(Trigger_E,	_abt_, E));
 		
 		m_fsm.AddTransition(new WeaponTransition(L,			__T__, Trigger_L)); // fire.cocked
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_fin_, J, NULL, new WeaponGuardJammed(this)));
 		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_fin_, F));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_rto_, J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_rto_, F, NULL, new WeaponGuardChamberFiredOut(this)));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_rto_, L));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_abt_, J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_abt_, F, NULL, new WeaponGuardChamberFiredOut(this)));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_abt_, L));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_rto_, F));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_L,	_abt_, F));
+		
+		m_fsm.AddTransition(new WeaponTransition(L,			__TJ_, Trigger_LJ)); // fire.cocked
+		m_fsm.AddTransition(new WeaponTransition(Trigger_LJ,	_fin_, J ));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_LJ,	_rto_, J ));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_LJ,	_abt_, J ));
 		
 		m_fsm.AddTransition(new WeaponTransition(F,			__T__, Trigger_F)); // fire.cocked
 		m_fsm.AddTransition(new WeaponTransition(Trigger_F,	_fin_, F));
@@ -219,6 +217,12 @@ class Mp133Shotgun_Base : Rifle_Base
 	override bool CanChamberBullet (int muzzleIndex, Magazine mag)
 	{
 		return CanChamberFromMag(muzzleIndex, mag) && !IsInternalMagazineFull(muzzleIndex) );
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(FirearmActionLoadMultiBullet);
 	}
 };
 

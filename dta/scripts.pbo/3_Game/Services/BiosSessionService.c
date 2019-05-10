@@ -1,7 +1,7 @@
 class BiosSessionService
 {
-	protected int		m_GetSessionAttempts;
-	string				m_CurrentHandle;
+	protected int				m_GetSessionAttempts;
+	string						m_CurrentHandle;
 	
 	//! Enter a gameplay session
 	/*!
@@ -50,13 +50,23 @@ class BiosSessionService
 			GetSessionAsync( m_CurrentHandle );
 		else
 		{
-			GetGame().GetUIManager().CloseAllSubmenus();
-			GetGame().GetMission().AbortMission();
-			
+			if( g_Game.GetGameState() != DayZGameState.IN_GAME )
+			{
+				if( GetGame().GetMission() )
+				{
+					GetGame().GetUIManager().CloseAllSubmenus();
+					GetGame().GetMission().AbortMission();
+				
+					g_Game.SetGameState( DayZGameState.MAIN_MENU );
+					g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
+					g_Game.GamepadCheck();
+				}
+				else
+				{
+					g_Game.MainMenuLaunch();
+				}
+			}
 			GetGame().GetUIManager().ShowDialog( "#str_xbox_join_fail_title", "#str_xbox_join_fail", 444, DBT_OK, DBB_NONE, DMT_INFO, GetGame().GetUIManager().GetMenu() );
-			g_Game.SetGameState( DayZGameState.MAIN_MENU );
-			g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
-			g_Game.GamepadCheck();
 		}
 	}
 	
@@ -108,6 +118,19 @@ class BiosSessionService
 	*/
 	proto native EBiosError ShowInviteToGameplaySessionAsync(string session_address, int session_port);
 
+	//! Send invite to list of users
+	/*! 
+		The async result is returned in the OnInviteToGameplaySession callback. 
+		The user must be inside the session. That means, OnEnterGameplaySession must be called with no errors.
+		
+		@param session_address server IP address.
+		@param session_port server port.
+		@param invitee_list list of users to invite
+
+		@return EBiosError indicating if the async operation is pending.
+	*/
+	proto native EBiosError InviteToGameplaySessionAsync(string session_address, int session_port, array<string> invitee_list);
+
 	//! Notifiy about interactive multiplayer state
 	proto native void SetMultiplayState(bool is_active);
 	
@@ -126,12 +149,6 @@ class BiosSessionService
 	*/
 	void OnClearActivity(EBiosError error)
 	{
-		string addr;
-		int port;
-		if( GetGame().GetHostAddress( addr, port ) )
-		{
-			LeaveGameplaySessionAsync( addr, port );
-		}
 	}
 	
 	//! Callback function
@@ -142,7 +159,26 @@ class BiosSessionService
 	void OnGetGameplaySession(string session_address, int session_port)
 	{	
 		m_GetSessionAttempts = 0;
-		g_Game.ConnectFromJoin( session_address, session_port );
+		if( g_Game.GetGameState() == DayZGameState.IN_GAME )
+		{
+			string addr;
+			int port;
+			bool found = GetGame().GetHostAddress( addr, port );
+			if( found && !( addr == session_address && port == session_port ) )
+			{
+				OnlineServices.SetInviteServerInfo( session_address, session_port );
+				g_Game.GetUIManager().EnterScriptedMenu( MENU_INVITE_TIMER, null );
+			}
+			else
+			{
+				NotificationSystem.AddNotification( NotificationType.INVITE_FAIL_SAME_SERVER, 6, "#ps4_already_in_session" );
+			}
+			
+		}
+		else
+		{
+			g_Game.ConnectFromJoin( session_address, session_port );
+		}
 	}
 	
 	//! //! Callback function, not implemented
@@ -158,7 +194,35 @@ class BiosSessionService
 	{
 		OnlineServices.ErrorCaught( error );
 		m_GetSessionAttempts++;
-		GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( TryGetSession, 100, false, "" );
+		
+		#ifdef PLATFORM_XBOX
+			GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( TryGetSession, 100, false, "" );
+		#else
+			#ifdef PLATFORM_PS4
+				if( g_Game.GetGameState() != DayZGameState.IN_GAME )
+				{
+					if( GetGame().GetMission() )
+					{
+						if( g_Game.GetGameState() != DayZGameState.MAIN_MENU )
+						{
+							GetGame().GetUIManager().CloseAllSubmenus();
+							GetGame().GetMission().AbortMission();
+							if (g_Game.GetGameState() == DayZGameState.JOIN)
+								NotificationSystem.AddNotification(NotificationType.JOIN_FAIL_GET_SESSION, 6);
+							g_Game.SetGameState( DayZGameState.MAIN_MENU );
+							g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
+							g_Game.GamepadCheck();
+							return;
+						}
+					}
+					else
+					{
+						g_Game.MainMenuLaunch();
+					}
+				}
+				NotificationSystem.AddNotification( NotificationType.JOIN_FAIL_GET_SESSION, 6 );
+			#endif
+		#endif
 	}
 	
 	//! Callback function
@@ -172,6 +236,9 @@ class BiosSessionService
 		if( !OnlineServices.ErrorCaught( error ) )
 		{
 			SetGameplayActivityAsync( session_address, session_port );
+			if( OnlineServices.GetPendingInviteList() )
+				InviteToGameplaySessionAsync( session_address, session_port, OnlineServices.GetPendingInviteList() );
+			OnlineServices.GetCurrentServerInfo(session_address, session_port);
 		}
 	}
 	
@@ -181,10 +248,6 @@ class BiosSessionService
 	*/
 	void OnLeaveGameplaySession(EBiosError error)
 	{
-		if( !OnlineServices.ErrorCaught( error ) )
-		{
-			ClearActivityAsync();
-		}
 	}
 	
 	//! Callback function
@@ -194,6 +257,15 @@ class BiosSessionService
 	void OnShowInviteToGameplaySession(EBiosError error)
 	{
 		OnlineServices.ErrorCaught( error );
+	}
+
+	//! Callback function
+	/*!
+		@param error indicating success or fail of the async operation.
+	*/
+	void OnInviteToGameplaySession(EBiosError error)
+	{
+
 	}
 	
 };

@@ -195,7 +195,9 @@ class ServerBrowserTabPc extends ServerBrowserTab
 	}
 	
 	override void OnLoadServersAsyncPC( ref GetServersResult result_list, EBiosError error, string response )
-	{		
+	{
+		//Print("m_NumServers: "+ result_list.m_NumServers +" m_Pages: "+ result_list.m_Pages + " m_Page: "+ result_list.m_Page +" error: "+ error +" response: "+ response);
+		
 		if( result_list )
 		{
 		//Print("("+ GetGame().GetTime() +") ____OnLoadServersAsyncPC: " + result_list.m_Results.Count());

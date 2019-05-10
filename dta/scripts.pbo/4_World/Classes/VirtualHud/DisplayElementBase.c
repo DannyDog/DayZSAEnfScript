@@ -1,6 +1,7 @@
 class DisplayElementBase extends MessageReceiverBase
 {
 	int		m_Value;
+	int		m_ValueLast = -99999;
 	int 	m_Key = 0;
 	int		m_Type = 0;
 	int 	m_Range = 0;
@@ -26,8 +27,16 @@ class DisplayElementBase extends MessageReceiverBase
 	{
 		return m_IsClientOnly;
 	}
-		
-	void UpdateHUD();
+	
+	bool IsValueChanged()
+	{
+		return !(m_Value == m_ValueLast);
+	}
+	
+	void UpdateHUD()
+	{
+		m_ValueLast = m_Value;
+	}
 	
 	int GetNumberOfBits()
 	{

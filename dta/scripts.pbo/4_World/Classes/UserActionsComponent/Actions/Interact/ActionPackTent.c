@@ -23,9 +23,21 @@ class ActionPackTent: ActionInteractBase
 		return "#pack_tent";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+
 	override bool IsUsingProxies()
 	{
 		return true;
+	}
+
+	override bool HasProgress()
+	{
+		return false;
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )

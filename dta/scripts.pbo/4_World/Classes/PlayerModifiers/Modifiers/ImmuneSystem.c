@@ -42,11 +42,11 @@ class ImmuneSystemMdfr: ModifierBase
 		{
 			if(player.HasDisease())
 			{
-				if( player.GetNotifiersManager() ) player.GetNotifiersManager().AttachByType(eNotifiers.NTF_SICK);
+				if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_SICK);
 			}
 			else
 			{
-				if( player.GetNotifiersManager() ) player.GetNotifiersManager().DetachByType(eNotifiers.NTF_SICK);
+				if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_SICK);
 			}
 		}	
 		m_HasDisease = player.HasDisease();

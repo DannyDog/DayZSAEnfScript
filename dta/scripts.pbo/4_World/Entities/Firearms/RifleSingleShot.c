@@ -88,12 +88,14 @@ class RifleSingleShot_Base extends Rifle_Base
 		WeaponStateBase Trigger_L = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL);
 		WeaponStateBase Trigger_F = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_COCKED);
 
+		WeaponStateBase Trigger_LJ = new WeaponFireToJam(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM);
 		
 		WeaponStateBase Unjam_J = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START);
 
 		// events
 		WeaponEventBase __M__ = new WeaponEventMechanism;
 		WeaponEventBase __T__ = new WeaponEventTrigger;
+		WeaponEventBase __TJ_ = new WeaponEventTriggerToJam;
 		WeaponEventBase __L__ = new WeaponEventLoad1Bullet;
 		WeaponEventBase __U__ = new WeaponEventUnjam;
 		WeaponEventBase _fin_ = new WeaponEventHumanCommandActionFinished;
@@ -140,10 +142,12 @@ class RifleSingleShot_Base extends Rifle_Base
 		m_fsm.AddTransition(new WeaponTransition(Trigger_F	, _abt_,	F));
 		
 		m_fsm.AddTransition(new WeaponTransition(L			, __T__,	Trigger_L)); // a) fire if not jammed
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _fin_,	F, NULL, new GuardNot(new WeaponGuardJammed(this))));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _abt_,	F, NULL, new GuardNot(new WeaponGuardJammed(this))));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _fin_,	J));
-		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _abt_,	J));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _fin_,	F));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_L	, _abt_,	F));
+		
+		m_fsm.AddTransition(new WeaponTransition(L			, __TJ_,	Trigger_LJ)); // a) fire if not jammed
+		m_fsm.AddTransition(new WeaponTransition(Trigger_LJ	, _fin_,	J));
+		m_fsm.AddTransition(new WeaponTransition(Trigger_LJ	, _abt_,	J));
 		
 		
 		

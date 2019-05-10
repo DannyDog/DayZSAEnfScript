@@ -437,17 +437,9 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 		{
 			return;
 		}
-		if( m_Entity.GetInventory().CanAddAttachment( iw.GetItem() ) || m_Entity.GetInventory().CanAddEntityToInventory( iw.GetItem() ) )
-		{
-			ItemManager.GetInstance().HideDropzones();
-			ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
-			ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
-		}
-		else
-		{
-			ItemManager.GetInstance().ShowSourceDropzone( iw.GetItem() );
-			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
-		}
+		
+		ItemManager.GetInstance().ShowSourceDropzone( iw.GetItem() );
+		ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
 	}
 	
 	override void CollapseButtonOnMouseButtonDown(Widget w)

@@ -22,6 +22,7 @@ class PlantBase extends ItemBase
 	
 	private bool 	m_IsInfested;
 	private float 	m_SprayQuantity;
+	bool 			m_MarkForDeletion = false;
 	
 	int 	m_DeleteDryPlantTime; 			// For how long in seconds can an unwatered plant exist before it disappears
 	int 	m_SpoiledRemoveTime;			// For how long in seconds a spoiled plant will exist
@@ -69,7 +70,10 @@ class PlantBase extends ItemBase
 
 	void ~PlantBase()
 	{
-		RemovePlant();
+		if (!m_MarkForDeletion)
+		{
+			RemovePlant();
+		}
 	}
 	
 	void Init( GardenBase garden_base, float fertility, float harvesting_efficiency, float water )
@@ -148,6 +152,7 @@ class PlantBase extends ItemBase
 		if (slot)
 		{
 			int slot_index = slot.GetSlotIndex();
+			slot.SetPlant(this); // hack
 			
 			ctx.Write( slot_index );
 			
@@ -763,7 +768,9 @@ class PlantBase extends ItemBase
 	
 	void RemoveSlot()
 	{
-		if ( m_GardenBase )
+		GardenBase garden = GardenBase.Cast( GetHierarchyParent() );
+		
+		if ( garden )
 		{
 			if (m_SpoiledRemoveTimer)
 			{
@@ -771,7 +778,7 @@ class PlantBase extends ItemBase
 				m_SpoiledRemoveTimer = NULL;
 			}
 			
-			m_GardenBase.RemoveSlotPlant( this );
+			garden.RemoveSlotPlant( this );
 		}
 	}
 	
@@ -840,5 +847,13 @@ class PlantBase extends ItemBase
 	bool HasCrops()
 	{
 		return m_HasCrops;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionHarvestCrops);
+		AddAction(ActionRemovePlant);
 	}
 }

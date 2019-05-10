@@ -156,6 +156,7 @@ FrameWidgetClass main_menu_root {
        switch normal
        {
         PanelWidgetClass play_video_panel {
+         visible 1
          ignorepointer 1
          color 0 0 0 0
          position 0 0

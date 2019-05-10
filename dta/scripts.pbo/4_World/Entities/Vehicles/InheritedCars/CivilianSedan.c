@@ -187,7 +187,7 @@ class CivilianSedan extends CarScript
 		m_enviroCoef = oldValue;
 		return oldValue;
 	}
-	
+
 	override string GetAnimSourceFromSelection( string selection )
 	{
 		switch( selection )
@@ -206,27 +206,6 @@ class CivilianSedan extends CarScript
 			return "DoorsTrunk";
 		}
 
-		return "";
-	}
-
-	override string GetDoorConditionPointFromSelection( string selection )
-	{
-		switch( selection )
-		{
-		case "seat_driver":
-			return "lf_door_con";
-		break;
-		case "seat_codriver":
-			return "rf_door_con";
-		break;
-		case "seat_cargo1":
-			return "lb_door_con";
-		break;
-		case "seat_cargo2":
-			return "rb_door_con";
-		break;
-		}
-		
 		return "";
 	}
 
@@ -327,6 +306,9 @@ class CivilianSedan extends CarScript
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
 		Fill( CarFluid.OIL, 4.0 );
-
+		
+		//hotfix 
+		GetController().ShiftUp();
+		GetController().ShiftDown();
 	};
 }

@@ -48,7 +48,7 @@ class ActionSplintSelf: ActionContinuousBase
 	{	
 		action_data.m_MainItem.TransferModifiers(action_data.m_Player);
 		action_data.m_Player.ApplySplint();
-		//action_data.m_Player.m_NotifiersManager.DetachByType(eNotifiers.NTF_FRACTURE);
+		//action_data.m_Player.m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FRACTURE);
 		action_data.m_MainItem.Delete();
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

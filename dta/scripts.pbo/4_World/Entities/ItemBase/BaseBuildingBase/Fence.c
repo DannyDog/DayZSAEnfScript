@@ -15,8 +15,9 @@ class Fence extends BaseBuildingBase
 
 	//gate openining
 	const float GATE_ROTATION_ANGLE_DEG 			= 100;
+	const float GATE_ROTATION_TIME_APPROX			= 2000;		//ms
 	
-	const float MIN_ACTION_DETECTION_ANGLE_RAD 		= 0.35;		//0.35 RAD = 20 DEG
+	const float MAX_ACTION_DETECTION_ANGLE_RAD 		= 1.5;		//1.5 RAD = ~85 DEG
 	
 	protected EffectSound m_SoundGate_Start;
 	protected EffectSound m_SoundGate_End;
@@ -31,7 +32,7 @@ class Fence extends BaseBuildingBase
 	override string GetConstructionKitType()
 	{
 		return "FenceKit";
-	}	
+	}
 	
 	//Gate
 	bool HasGate()
@@ -340,8 +341,11 @@ class Fence extends BaseBuildingBase
 			
 			SetOpenedState( true );
 			
+			//regenerate navmesh
+			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( UpdateNavmesh, GATE_ROTATION_TIME_APPROX, false );
+			
 			//synchronize
-			Synchronize();
+			SynchronizeBaseState();
 		}
 		
 		//client or single player
@@ -372,8 +376,11 @@ class Fence extends BaseBuildingBase
 			
 			SetOpenedState( false );
 			
+			//regenerate navmesh
+			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( UpdateNavmesh, GATE_ROTATION_TIME_APPROX, false );
+			
 			//synchronize
-			Synchronize();
+			SynchronizeBaseState();
 		}
 		
 		//client or single player
@@ -417,7 +424,8 @@ class Fence extends BaseBuildingBase
 		vector player_pos = player.GetPosition();
 		vector ref_dir = GetDirection();
 		
-		vector fence_player_dir = player_pos - fence_pos;
+		//vector fence_player_dir = player_pos - fence_pos;
+		vector fence_player_dir = player.GetDirection();
 		fence_player_dir.Normalize();
 		fence_player_dir[1] = 0; 	//ignore height
 		
@@ -426,9 +434,9 @@ class Fence extends BaseBuildingBase
 		
 		if ( ref_dir.Length() != 0 )
 		{
-			float dot = vector.Dot( fence_player_dir, ref_dir );
+			float angle = Math.Acos( fence_player_dir * ref_dir );
 			
-			if ( dot > 0 && Math.AbsFloat( dot ) > MIN_ACTION_DETECTION_ANGLE_RAD )
+			if ( angle >= MAX_ACTION_DETECTION_ANGLE_RAD )
 			{
 				return true;
 			}
@@ -439,27 +447,28 @@ class Fence extends BaseBuildingBase
 	
 	override bool IsFacingCamera( string selection )
 	{
-		vector fence_pos = GetPosition();
-		vector cam_dir = GetGame().GetCurrentCameraDirection();
 		vector ref_dir = GetDirection();
+		vector cam_dir = GetGame().GetCurrentCameraDirection();
 		
+		//ref_dir = GetGame().GetCurrentCameraPosition() - GetPosition();
 		ref_dir.Normalize();
 		ref_dir[1] = 0;		//ignore height
 		
-		cam_dir[1] = 0;			//ignore height
+		cam_dir.Normalize();
+		cam_dir[1] = 0;		//ignore height
 		
-		if ( ref_dir.Length() > 0.5 )		//if the distance (m) is too low, ignore this check
+		if ( ref_dir.Length() != 0 )
 		{
-			float dot = vector.Dot( cam_dir, ref_dir );
-		
-			if ( dot < 0 )	
+			float angle = Math.Acos( cam_dir * ref_dir );
+			
+			if ( angle >= MAX_ACTION_DETECTION_ANGLE_RAD )
 			{
 				return true;
 			}
 		}
 
 		return false;
-	}
+	}	
 	
 	//================================================================
 	// SOUNDS
@@ -477,5 +486,18 @@ class Fence extends BaseBuildingBase
 	protected void SoundGateCloseEnd()
 	{
 		PlaySoundSet( m_SoundGate_End, SOUND_GATE_CLOSE_END, 0.1, 0.1 );
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPlaceObject);
+		AddAction(ActionFoldBaseBuildingObject);
+		AddAction(ActionDialCombinationLockOnTarget);
+		AddAction(ActionNextCombinationLockDialOnTarget);
+		AddAction(ActionOpenFence);
+		AddAction(ActionCloseFence);
 	}
 }

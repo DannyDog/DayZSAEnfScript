@@ -1,3 +1,5 @@
+typedef Magazine Magazine_Base;
+
 class Magazine : InventoryItemSuper
 {
 	ref array<string>	m_CompatiableAmmo;
@@ -188,6 +190,8 @@ class Magazine : InventoryItemSuper
 			ServerAcquireCartridge(damage, cartrige_name);
 			new_pile.ServerStoreCartridge(damage, cartrige_name);
 		}
+		new_pile.SetSynchDirty();
+		SetSynchDirty();
 	}
 	
 	void ApplyManipulationDamage()
@@ -295,5 +299,12 @@ class Magazine : InventoryItemSuper
 			return player.GetWeaponManager().CanDetachMagazine(wpn,this);
 		}
 		return false;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionLoadMagazine);
+		AddAction(ActionEmptyMagazine);
 	}
 };

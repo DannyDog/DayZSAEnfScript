@@ -16,9 +16,8 @@ class Container extends LayoutHolder
 	void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver );
 	void DraggingOver( Widget w, int x, int y, Widget receiver );
 	void DraggingOverHeader( Widget w, int x, int y, Widget receiver );
-	void RefreshQuantity( EntityAI item_to_refresh );
-	void RefreshItemPosition( EntityAI item_to_refresh );
 	void UpdateSpacer();
+	Header GetHeader();
 	
 	void Container( LayoutHolder parent )
 	{
@@ -35,6 +34,8 @@ class Container extends LayoutHolder
 	{
 		m_FocusedContainer = cont;
 	}
+	
+	
 	
 	float GetFocusedContainerHeight( bool contents = false )
 	{

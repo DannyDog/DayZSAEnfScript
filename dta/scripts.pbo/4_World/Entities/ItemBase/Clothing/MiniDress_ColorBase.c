@@ -1,4 +1,11 @@
-class MiniDress_ColorBase extends Clothing {};
+class MiniDress_ColorBase extends Clothing
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};
 class MiniDress_Pink extends MiniDress_ColorBase {};
 class MiniDress_PinkChecker extends MiniDress_ColorBase {};
 class MiniDress_RedChecker extends MiniDress_ColorBase {};

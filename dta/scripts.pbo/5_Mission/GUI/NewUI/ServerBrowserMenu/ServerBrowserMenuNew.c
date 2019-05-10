@@ -37,15 +37,15 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 	
 	override Widget Init()
 	{
-		#ifdef PLATFORM_CONSOLE
-			layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/server_browser/xbox/server_browser.layout" );
-			m_OfficialTab	= new ServerBrowserTabConsole( layoutRoot.FindAnyWidget( "Tab_0" ), this, TabType.OFFICIAL );
-		#else
-			layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/server_browser/pc/server_browser.layout" );
-			m_OfficialTab	= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_0" ), this, TabType.OFFICIAL );
-			m_CommunityTab	= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_1" ), this, TabType.COMMUNITY );
-			m_LANTab		= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_2" ), this, TabType.LAN );
-		#endif
+#ifdef PLATFORM_CONSOLE
+		layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/server_browser/xbox/server_browser.layout" );
+		m_OfficialTab	= new ServerBrowserTabConsole( layoutRoot.FindAnyWidget( "Tab_0" ), this, TabType.OFFICIAL );
+#else
+		layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/server_browser/pc/server_browser.layout" );
+		m_OfficialTab	= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_0" ), this, TabType.OFFICIAL );
+		m_CommunityTab	= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_1" ), this, TabType.COMMUNITY );
+		m_LANTab		= new ServerBrowserTabPc( layoutRoot.FindAnyWidget( "Tab_2" ), this, TabType.LAN );
+#endif
 			
 		layoutRoot.FindAnyWidget( "Tabber" ).GetScript( m_Tabber );
 		
@@ -55,47 +55,59 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 		m_PlayerName			= TextWidget.Cast( layoutRoot.FindAnyWidget( "character_name_text" ) );
 		m_Version				= TextWidget.Cast( layoutRoot.FindAnyWidget( "version" ) );
 		
-		#ifndef PLATFORM_CONSOLE
+#ifndef PLATFORM_CONSOLE
 		// TODO: Temporary Hide for 1.0
 		layoutRoot.FindAnyWidget( "customize_character" ).Show( false );
 		layoutRoot.FindAnyWidget( "character" ).Show( false );
-		#endif
+#endif
 		
 		Refresh();
 		
 		string version;
 		GetGame().GetVersion( version );
-		#ifdef PLATFORM_CONSOLE
-			version = "#main_menu_version" + " " + version + " (" + g_Game.GetDatabaseID() + ")";
-		#else
-			version = "#main_menu_version" + " " + version;
-		#endif
+		
+#ifdef PLATFORM_CONSOLE
+		version = "#main_menu_version" + " " + version + " (" + g_Game.GetDatabaseID() + ")";
+#else
+		version = "#main_menu_version" + " " + version;
+#endif
 		m_Version.SetText( version );
 		
 		OnlineServices.m_ServersAsyncInvoker.Insert( OnLoadServersAsync );
 		m_Tabber.m_OnTabSwitch.Insert( OnTabSwitch );
-		
-		LoadData();
-		
+				
 		m_OfficialTab.RefreshList();
 		//m_OfficialTab.LoadFakeData( 100 );
 		
-		#ifdef PLATFORM_PS4
-			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "ConnectIcon" );
-			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
-			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "RefreshIcon" );
-			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ResetIcon" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
-			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
-			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
-		#endif
+#ifdef PLATFORM_PS4
+		string confirm = "cross";
+		string back = "circle";
+		if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+		{
+			confirm = "cross";
+			back = "circle";
+		}
+		else
+		{
+			confirm = "circle";
+			back = "cross";
+		}
+		ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "ConnectIcon" );
+		ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
+		ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "RefreshIcon" );
+		ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ResetIcon" );
+		toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
+		toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
+		toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
+		toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
+#endif
 		
-		#ifdef PLATFORM_CONSOLE
-			//Sort init
-			TextWidget sort_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "SortText" ) );
-			sort_text.SetText( "#str_serverbrowserroot_toolbar_bg_consoletoolbar_sort_sorttext0" );
-		#endif
+#ifdef PLATFORM_CONSOLE
+		//Sort init
+		TextWidget sort_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "SortText" ) );
+		sort_text.SetText( "#str_serverbrowserroot_toolbar_bg_consoletoolbar_sort_sorttext0" );
+		LoadFavoriteServers();
+#endif
 		
 		PPEffects.SetBlurMenu( 0.5 );
 		return layoutRoot;
@@ -103,7 +115,9 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 	
 	void ~ServerBrowserMenuNew()
 	{
-		SaveData();
+#ifdef PLATFORM_CONSOLE
+		SaveFavoriteServersConsoles();
+#endif
 		OnlineServices.m_ServersAsyncInvoker.Remove( OnLoadServersAsync );
 		m_Tabber.m_OnTabSwitch.Remove( OnTabSwitch );
 		PPEffects.SetBlurMenu( 0.0 );
@@ -165,46 +179,41 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 		return m_IsRefreshing;
 	}
 
-	bool IsFavorited( string uid )
+	bool IsFavorited( string server_id )
 	{
-		int index = m_Favorites.Find( uid );		
+		int index = m_Favorites.Find( server_id );		
 		return ( index >= 0 );
 	}
 	
-	void SetFavorite( string uid, bool favorite )
+	void SetFavoriteConsoles( string server_id, bool favorite )
 	{
 		if( m_Favorites )
 		{
-			if( favorite && m_Favorites.Find( uid ) < 0 )
+			if( favorite && m_Favorites.Find( server_id ) < 0 )
 			{
 				if( m_Favorites.Count() < MAX_FAVORITES )
-					m_Favorites.Insert( uid );
+				{
+					m_Favorites.Insert( server_id );
+				}
 				else
 				{
 					m_OfficialTab.Unfavorite( m_Favorites.Get( 0 ) );
-					#ifndef PLATFORM_CONSOLE
-					m_CommunityTab.Unfavorite( m_Favorites.Get( 0 ) );
-					m_LANTab.Unfavorite( m_Favorites.Get( 0 ) );
-					#endif
 					m_Favorites.Remove( 0 );
-					m_Favorites.Insert( uid );
+					m_Favorites.Insert( server_id );
 				}
 			}
-			else if ( m_Favorites.Find( uid ) >= 0 )
+			else if ( m_Favorites.Find( server_id ) >= 0 )
 			{
-				m_Favorites.RemoveItem( uid );
-				m_OfficialTab.Unfavorite( uid );
-				#ifndef PLATFORM_CONSOLE
-				m_CommunityTab.Unfavorite( uid );
-				m_LANTab.Unfavorite( uid );
-				#endif
+				m_Favorites.RemoveItem( server_id );
+				m_OfficialTab.Unfavorite( server_id );
 			}
+			
+			SaveFavoriteServersConsoles();
 		}
 	}
 	
 	void Back()
 	{
-		SaveData();
 		GetGame().GetUIManager().Back();
 	}
 	
@@ -312,7 +321,7 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 	
 	override void Update( float timeslice )
 	{
-		if( !GetGame().GetUIManager().IsDialogVisible() /*&& !GetDayZGame().IsConnecting()*/ )
+		if( !GetGame().GetUIManager().IsDialogVisible() && !GetDayZGame().IsConnecting() )
 		{
 			if( GetGame().GetInput().LocalPress("UAUITabLeft",false) )
 			{
@@ -379,16 +388,19 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 		return false;
 	}
 	
-	void LoadData()
+	void LoadFavoriteServers()
 	{
 		m_Favorites = new TStringArray;
 		GetGame().GetProfileStringList( "SB_Favorites", m_Favorites );
 	}
 	
-	void SaveData()
+	void SaveFavoriteServersConsoles()
 	{
-		GetGame().SetProfileStringList( "SB_Favorites", m_Favorites );
-		GetGame().SaveProfile();
+		if ( m_Favorites )
+		{
+			GetGame().SetProfileStringList( "SB_Favorites", m_Favorites );
+			GetGame().SaveProfile();
+		}
 	}
 	
 	void SelectServer( ServerBrowserEntry server )
@@ -404,7 +416,9 @@ class ServerBrowserMenuNew extends UIScriptedMenu
 	void Connect( ServerBrowserEntry server )
 	{
 		SelectServer( server );
-		SaveData();
+#ifdef PLATFORM_CONSOLE
+		SaveFavoriteServersConsoles();
+#endif
 		Play();
 		
 		//server.

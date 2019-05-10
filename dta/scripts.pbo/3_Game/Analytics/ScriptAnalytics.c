@@ -72,6 +72,51 @@ class StatsEventSpawnedData
 	int			m_DaytimeHour;	//!< current time in hour (hour in 24h)
 };
 
+class StatsEventData
+{
+	void StatsEventData(string eventName)
+	{
+		m_eventName = eventName;
+		m_valuesBool = new map<string, int>();
+		m_valuesInt = new map<string, int>();
+		m_valuesFloat = new map<string, float>();
+		m_valuesString = new map<string, string>();
+		m_valuesVector = new map<string, vector>();
+	}
+	
+	void AddBool(string key, bool value)
+	{
+		m_valuesBool.Insert(key, (int)value);
+	}
+	
+	void AddInt(string key, int value)
+	{
+		m_valuesInt.Insert(key, value);
+	}
+	
+	void AddFloat(string key, float value)
+	{
+		m_valuesFloat.Insert(key, value);
+	}
+	
+	void AddString(string key, string value)
+	{
+		m_valuesString.Insert(key, value);
+	}
+	
+	void AddVector(string key, vector value)
+	{
+		m_valuesVector.Insert(key, value);
+	}
+	
+	private string m_eventName;
+	private autoptr map<string, int> m_valuesBool;//TODO: use bool instead of int (problem with engine type binding)
+	private autoptr map<string, int> m_valuesInt;
+	private autoptr map<string, float> m_valuesFloat;
+	private autoptr map<string, string> m_valuesString;
+	private autoptr map<string, vector> m_valuesVector;
+}
+
 
 class ScriptAnalytics
 {
@@ -90,6 +135,8 @@ class ScriptAnalytics
 	//! send event about spawning to statistic DB
 	static proto native void SendPlayerSpawned(StatsEventSpawnedData data);
 	
+	//! universal analytics event
+	static proto native void SendEvent(StatsEventData data);
 	
 	
 	//------------------------------------------------------------
@@ -97,7 +144,7 @@ class ScriptAnalytics
 	// send stats data with log
 	static void PlayerDeath(StatsEventDeathData data)
 	{
-		if (true)
+		if (false)
 		{
 			Print("StatsEventDeathData | CharacterId: '" + data.m_CharacterId + "'; CharacterLifetime: " + data.m_CharacterLifetime + "; Cause: '" + data.m_Cause + "'; WeaponName: '" + data.m_WeaponName + "'; Distance: " + data.m_Distance + "; position: " + data.m_Position);
 		}
@@ -108,7 +155,7 @@ class ScriptAnalytics
 	// send stats data with log
 	static void PlayerScoredKill(StatsEventScoredKillData data)
 	{
-		if (true)
+		if (false)
 		{
 			Print("StatsEventScoredKillData | CharacterId: '" + data.m_CharacterId + "'; WeaponName: '" + data.m_WeaponName + "'; KillDistance: " + data.m_KillDistance + "; PositionKiller: " + data.m_PositionKiller + "; PositionVictim: " + data.m_PositionVictim);
 		}
@@ -119,7 +166,7 @@ class ScriptAnalytics
 	// send stats data with log
 	static void PlayerDisconnected(StatsEventDisconnectedData data)
 	{
-		if (true)
+		if (false)
 		{
 			Print("StatsEventDisconnectedData | CharacterId: " + data.m_CharacterId + "; Reason: " + data.m_Reason);
 		}
@@ -130,7 +177,7 @@ class ScriptAnalytics
 	// send stats data with log
 	static void PlayerMeasures(StatsEventMeasuresData data)
 	{
-		if (true)
+		if (false)
 		{
 			Print("StatsEventMeasuresData 1 | CharacterId: '" + data.m_CharacterId + "'; TimeInterval: " + data.m_TimeInterval + "; DaytimeHour: " + data.m_DaytimeHour + "; PositionStart: " + data.m_PositionStart + "; PositionEnd: " + data.m_PositionEnd + "; DistanceOnFoot: " + data.m_DistanceOnFoot);
 			Print("StatsEventMeasuresData 2 | DistanceVehicle: " + data.m_DistanceVehicle + "; TimeVONIn: " + data.m_TimeVONIn + "; TimeVONOut: " + data.m_TimeVONOut + "; CntLootAny: " + data.m_CntLootAny + "; CntLootFood: " + data.m_CntLootFood + "; CntLootCloth: " + data.m_CntLootCloth +  "; CntLootFirearm: " + data.m_CntLootFirearm + "; CntLootAmmo: " + data.m_CntLootAmmo + "; CntKillInfected: " + data.m_CntKillInfected + "; CntConsumedFood: " + data.m_CntConsumedFood + "; CntConsumedWater: " + data.m_CntConsumedWater + "; HealthRestored: " + data.m_HealthRestored + "; CntFiredAmmo : " + data.m_CntFiredAmmo + "; CntCraftedItem: " + data.m_CntCraftedItem);
@@ -143,7 +190,7 @@ class ScriptAnalytics
 	// send stats data with log
 	static void PlayerSpawned(StatsEventSpawnedData data)
 	{
-		if (true)
+		if (false)
 		{
 			Print("StatsEventSpawnedData | CharacterId: '" + data.m_CharacterId + "'; Lifetime: " + data.m_Lifetime + "; Position: " + data.m_Position + "; Population: " + data.m_Population + "; DaytimeHour: " + data.m_DaytimeHour);
 		}

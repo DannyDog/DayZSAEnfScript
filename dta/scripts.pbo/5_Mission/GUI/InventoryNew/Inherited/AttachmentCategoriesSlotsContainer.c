@@ -10,8 +10,8 @@ class AttachmentCategoriesSlotsContainer: Container
 		
 		for( int k = 0; k < ITEMS_IN_ROW; k++ )
 		{
-			WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "OnDropReceivedFromHeader" );
-			WidgetEventHandler.GetInstance().RegisterOnDropReceived(  m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "OnDropReceivedFromHeader" );
+			//WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "OnDropReceivedFromHeader" );
+			//WidgetEventHandler.GetInstance().RegisterOnDropReceived(  m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "OnDropReceivedFromHeader" );
 			      
 			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "DraggingOverHeader" );
 			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "DraggingOverHeader" );

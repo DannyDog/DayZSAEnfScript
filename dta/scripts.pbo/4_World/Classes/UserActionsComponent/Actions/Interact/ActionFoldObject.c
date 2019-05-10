@@ -22,6 +22,18 @@ class ActionFoldObject: ActionInteractBase
 		return "#fold";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+	
+	override bool HasProgress()
+	{
+		return false;
+	}
+
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		Object targetObject = target.GetObject();

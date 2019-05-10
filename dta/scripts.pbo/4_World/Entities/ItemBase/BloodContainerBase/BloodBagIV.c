@@ -1,6 +1,10 @@
 class BloodBagIV extends BloodContainerBase
 {
-	void BloodBagIV()
+	override void SetActions()
 	{
+		super.SetActions();
+		
+		AddAction(ActionGiveBloodTarget);
+		AddAction(ActionGiveBloodSelf);
 	}
 }

@@ -133,7 +133,6 @@ class InventoryQuickbar extends InventoryGridController
 			{
 				name = w.GetName();
 				name.Replace( "PanelWidget", "Cursor" );
-				w.FindAnyWidget( name ).SetColor( color );
 				if( w.FindAnyWidget( name ) )
 				{
 					w.FindAnyWidget( name ).SetColor( color );

@@ -268,12 +268,12 @@ class OffroadHatchback extends CarScript
 		case "seat_driver":
 		case "seatback_driver":
 		case "seat_cargo1":
-			return "lf_door_con";
+			return "seat_con_1_1";
 		break;
 		case "seat_codriver":
 		case "seatback_codriver":
 		case "seat_cargo2":
-			return "rf_door_con";
+			return "seat_con_2_1";
 		break;
 		}
 		
@@ -402,6 +402,17 @@ class OffroadHatchback extends CarScript
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
 		Fill( CarFluid.OIL, 4.0 );
+		
+		//hotfix 
+		GetController().ShiftUp();
+		GetController().ShiftDown();
 
-	};
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionAnimateSeats);
+	}
 }

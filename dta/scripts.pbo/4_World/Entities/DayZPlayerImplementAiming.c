@@ -30,6 +30,7 @@ class DayZPlayerImplementAiming
 	protected float m_SwayWeight;
 	protected float m_MaxVelocity;
 	protected ref KuruShake m_KuruShake;
+	protected vector m_SwayModifier = "1 1 1";//"max_speed_noise radius_noise overall_speed"
 
 	protected static float	m_AimXClampRanges[] = { -180, -20, 90, 	0, -50, 90,  180, -20, 90 };
 
@@ -52,6 +53,15 @@ class DayZPlayerImplementAiming
 	{
 		if(!m_KuruShake)
 			m_KuruShake = new KuruShake(m_PlayerPb, amount);
+	}
+	
+	void OnRaiseBegin(DayZPlayerImplement player)
+	{
+		Weapon_Base weapon = Weapon_Base.Cast(player.GetHumanInventory().GetEntityInHands());
+		if(weapon)
+		{
+			m_SwayModifier = weapon.GetPropertyModifierObject().m_SwayModifiers;
+		}
 	}
 	
 	float GetSwayWeight()
@@ -90,19 +100,19 @@ class DayZPlayerImplementAiming
 		float kuru_offset_y;
 	
 		float player_stamina = m_PlayerPb.GetStaminaHandler().GetStaminaNormalized();
-		float speed = ((1.0 - player_stamina) * 4.0) + 1.0;
+		float speed = ((1.0 - player_stamina) * 4.0) + 1.0 * m_SwayModifier[2];
 		if( m_PlayerPb.IsHoldingBreath() )
 		{
 			speed *= 0.1;
 		}
 		m_TotalTime += pDt * speed;
-		m_SwayWeight = CalculateAimingNoiseWeight(	stance_index, player_stamina, m_PlayerPb.m_CameraSwayModifier );
+		m_SwayWeight = CalculateWeight(	stance_index, player_stamina, m_PlayerPb.m_CameraSwayModifier );
 		
 
 		
 		//! get sway
 		ApplyBreathingPattern(breathing_offset_x, breathing_offset_y, 3.0, m_TotalTime, m_SwayWeight);
-		ApplyHorizontalNoise(noise_offset_x, noise_offset_y, 0.2, 0.5, 3.0, speed, 3 * m_SwayWeight, pDt);
+		ApplyHorizontalNoise(noise_offset_x, noise_offset_y, 0.2, 0.5, 3.0 * m_SwayModifier[0], speed, 3 * m_SwayModifier[1], m_SwayWeight, pDt);
 		
 		int shake_level = m_PlayerPb.GetShakeLevel();
 		if(shake_level != 0)
@@ -113,7 +123,7 @@ class DayZPlayerImplementAiming
 		//! get recoil
 		if( m_CurrentRecoil )
 		{
-			m_CurrentRecoil.Update(recoil_offset_mouse_x, recoil_offset_mouse_y, recoil_offset_hands_x, recoil_offset_hands_y, pDt);
+			m_CurrentRecoil.Update(pModel, recoil_offset_mouse_x, recoil_offset_mouse_y, recoil_offset_hands_x, recoil_offset_hands_y, pDt);
 		}
 		
 		if( m_KuruShake )
@@ -147,6 +157,8 @@ class DayZPlayerImplementAiming
 		//! mouse offset
 		pModel.m_fAimXMouseShift = recoil_offset_mouse_x -kuru_offset_x / 10;
 		pModel.m_fAimYMouseShift = recoil_offset_mouse_y + kuru_offset_y / 10;
+		//Debug.ClearCanvas();
+		//Debug.CanvasDrawPoint(pModel.m_fAimXHandsOffset * 100 + 250 ,pModel.m_fAimYHandsOffset * 100 + 300, ARGBF( 1, 0, 1, 1 ));
 		
 		return true;
 	}
@@ -157,13 +169,13 @@ class DayZPlayerImplementAiming
 		y_axis = (Math.Sin(pTotalTime * 0.8 + 0.6 ) * pAmplitude) * weight;
 	}
 
-	protected void ApplyHorizontalNoise(out float x_axis, out float y_axis, float smooth_time,float max_velocity_low, float max_velocity_high, float velocity_modifier,  float weight, float pDt)
+	protected void ApplyHorizontalNoise(out float x_axis, out float y_axis, float smooth_time,float max_velocity_low, float max_velocity_high, float velocity_modifier,  float max_distance, float weight, float pDt)
 	{
 		if( Math.AbsFloat(m_HorizontalTargetValue - m_HorizontalNoise) < 0.01)
 		{
 			//acquire new target
 			m_MaxVelocity = Math.RandomFloatInclusive(max_velocity_low, max_velocity_high);
-			m_HorizontalTargetValue = Math.RandomFloat01() * 2;
+			m_HorizontalTargetValue = (Math.RandomFloat01() - 0.5) * 2 * max_distance;
 			m_HorizontalNoiseVelocity[0] = 0;
 		}
 		/*
@@ -171,7 +183,7 @@ class DayZPlayerImplementAiming
 		PrintString("target="+ m_HorizontalTargetValue.ToString());
 		*/
 		m_HorizontalNoise = Math.SmoothCD( m_HorizontalNoise, m_HorizontalTargetValue, m_HorizontalNoiseVelocity, smooth_time, m_MaxVelocity * velocity_modifier, pDt);
-		x_axis = (m_HorizontalNoise - 1) * weight;
+		x_axis = m_HorizontalNoise * weight;
 	}
 	
 	protected void ApplyShakes(out float x_axis, out float y_axis, int level)
@@ -189,7 +201,7 @@ class DayZPlayerImplementAiming
 		}
 	}
 
-	protected float CalculateAimingNoiseWeight(int stance_index, float current_stamina, float camera_sway_modifier)
+	protected float CalculateWeight(int stance_index, float current_stamina, float camera_sway_modifier)
 	{
 		float stance_modifier;
 		switch( stance_index )

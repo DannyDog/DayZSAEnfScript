@@ -4,4 +4,13 @@ class Screwdriver extends Inventory_Base
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionBurnSewTarget);
+		AddAction(ActionUnrestrainTarget);
+		AddAction(ActionBurnSewSelf);
+	}
 }

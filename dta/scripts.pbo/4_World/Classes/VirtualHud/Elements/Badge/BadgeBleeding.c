@@ -1,7 +1,5 @@
 class BadgeBleeding extends DisplayElementBadge 
 {
-	int m_BleedingSourceCountCurr;//current number of bleeding sources
-	
 	void BadgeBleeding(PlayerBase player)
 	{
 		NUM_OF_BITS = 1;
@@ -13,7 +11,5 @@ class BadgeBleeding extends DisplayElementBadge
 	override void UpdateHUD()
 	{
 		super.UpdateHUD();
-		//m_Player GetBleedingSourceCount()
-		//m_ModulePlayerStatus.SetBadge(m_Key, true);
 	}
 }

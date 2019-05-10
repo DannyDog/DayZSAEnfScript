@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{5B7F9513017B8F1C}Gui/textures/radial_selector_mask.tga"
+ Author "1251"
+ ChangeDate 743630473
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "radial_selector_mask.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

@@ -32,12 +32,12 @@ class AntibioticsMdfr: ModifierBase
 	
 	override void OnActivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().AttachByType(eNotifiers.NTF_PILLS);
+		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DetachByType(eNotifiers.NTF_PILLS);
+		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)

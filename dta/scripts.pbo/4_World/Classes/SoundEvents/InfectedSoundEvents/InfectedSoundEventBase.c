@@ -50,7 +50,7 @@ class InfectedSoundEventBase extends SoundEventBase
 		}
 	}
 	
-	override void Play()
+	override bool Play()
 	{
 		string soundset_name;
 			
@@ -59,6 +59,8 @@ class InfectedSoundEventBase extends SoundEventBase
 		if ( m_SoundSetCallback )
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLaterByName(this, "PosUpdate", 0, true);
+			return true;
 		}
+		return false;
 	}
 }

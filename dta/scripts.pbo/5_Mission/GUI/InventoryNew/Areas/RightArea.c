@@ -113,11 +113,6 @@ class RightArea: Container
 		m_PlayerContainer.ExpandCollapseContainer();
 	}
 	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		m_PlayerContainer.RefreshItemPosition( item_to_refresh );
-	}
-	
 	override void SetActive( bool active )
 	{
 		m_PlayerContainer.SetActive( active );
@@ -173,11 +168,6 @@ class RightArea: Container
 		#endif
 			
 	}
-	
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_PlayerContainer.RefreshQuantity( item_to_refresh );
-	}
 
 	override void SetParentWidget()
 	{
@@ -194,12 +184,5 @@ class RightArea: Container
 	{
 		super.UpdateInterval();
 		m_PlayerContainer.UpdateInterval();
-		float x, y;
-		float x2, y2;
-		m_ContentParent.GetScreenSize( x, y );
-		m_MainWidget.GetScreenSize( x2, y2 );
-
-		if( y2 != y && y2 < 99999 )
-			m_PlayerContainer.Refresh();
 	}
 }

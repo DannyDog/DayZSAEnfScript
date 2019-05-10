@@ -8,6 +8,7 @@ enum EMeleeHitType
 	KICK,
 
 	WPN_HIT,
+	WPN_HIT_BUTTSTOCK,
 	WPN_STAB,
 }
 
@@ -18,7 +19,7 @@ class DayZPlayerImplementMeleeCombat
 	protected const float				TARGETING_ANGLE_SPRINT	= 15.0;
 	protected const float				TARGETING_MIN_HEIGHT	= -2.0;
 	protected const float				TARGETING_MAX_HEIGHT	= 2.0;
-	protected const float				TARGETING_RAY_RADIUS	= 0.22;
+	protected const float				TARGETING_RAY_RADIUS	= 0.3;
 	protected const float				TARGETING_RAY_DIST		= 5.0;
 
 	protected const float 				RANGE_EXTENDER_NORMAL	= 0.65;
@@ -29,6 +30,7 @@ class DayZPlayerImplementMeleeCombat
 	
 	//! targets - types
 	protected Object					m_TargetObject;
+	protected EMeleeTargetType			m_TargetType;
 	protected ref array<Object> 		m_AllTargetObjects;
 	protected ref array<typename>		m_TargetableObjects;
 	protected ref array<typename>		m_NonAlignableObjects;
@@ -67,18 +69,19 @@ class DayZPlayerImplementMeleeCombat
 		m_HitPositionWS = "-1 -1 -1";
 		
 		m_TargetObject      = null;
+		m_TargetType		= EMeleeTargetType.ALIGNABLE;
 		m_AllTargetObjects 	= new array<Object>;
 
 		m_TargetableObjects = new array<typename>;
 		m_TargetableObjects.Insert(DayZPlayer);
 		m_TargetableObjects.Insert(DayZInfected);
 		m_TargetableObjects.Insert(DayZAnimal);
-		//m_TargetableObjects.Insert(Building);
-		//m_TargetableObjects.Insert(Transport);
 
 		m_NonAlignableObjects = new array<typename>;		
-		//m_NonAlignableObjects.Insert(Building);
-		//m_NonAlignableObjects.Insert(Transport);
+		m_NonAlignableObjects.Insert(Building);
+		m_NonAlignableObjects.Insert(Car);
+		m_NonAlignableObjects.Insert(CarWheel);
+		m_NonAlignableObjects.Insert(CarDoor);
 	}
 
 	void ~DayZPlayerImplementMeleeCombat() {}
@@ -92,23 +95,34 @@ class DayZPlayerImplementMeleeCombat
 		return m_HitType;
 	}
 
-	void SetTargetObject(Object target)
-		{ m_TargetObject = target; }
-	
-	void SetHitZoneIdx(int hitZone)
-		{ m_HitZoneIdx = hitZone; }
-	
-	EntityAI GetTargetObject()
+	void SetHitZoneIdx(int pHitZone)
 	{
-		EntityAI target;
-		Class.CastTo(target, m_TargetObject);
+		m_HitZoneIdx = pHitZone;
+	}
+	
+	EntityAI GetTargetEntity()
+	{
+		return EntityAI.Cast(m_TargetObject);
+	}
 
-		return target;
+	void SetTargetObject(Object pTarget)
+	{
+		m_TargetObject = pTarget;
 	}
 	
 	int GetHitZoneIdx()
 	{
 		return m_HitZoneIdx;
+	}
+	
+	vector GetHitPos()
+	{
+		return m_HitPositionWS;
+	}
+
+	void SetHitPos(vector pHitPos)
+	{
+		m_HitPositionWS = pHitPos;
 	}
 	
 	int GetWeaponMode()
@@ -120,17 +134,17 @@ class DayZPlayerImplementMeleeCombat
 	{
 		m_Weapon = weapon;
 		m_HitType = hitMask;
-		m_SprintAttack = (hitMask & EMeleeHitType.SPRINT) == EMeleeHitType.SPRINT;
+		m_TargetType = EMeleeTargetType.ALIGNABLE;
+		m_SprintAttack = hitMask == EMeleeHitType.SPRINT;
 		m_WeaponMode = SelectWeaponMode(weapon);
 		m_WeaponRange = GetWeaponRange(weapon, m_WeaponMode);
 		m_AllTargetObjects.Clear();
-		m_HitPositionWS = "0.5 0.5 0.5";
 
 		if( !GetGame().IsMultiplayer() || !GetGame().IsServer() )
 		{
 			if( !ScriptInputUserData.CanStoreInputUserData() )
 			{
-				Error("DayZPlayerImplementMeleeCombat - ScriptInputUserData already posted");
+				//Error("DayZPlayerImplementMeleeCombat - ScriptInputUserData already posted");
 				return;
 			}
 
@@ -138,7 +152,7 @@ class DayZPlayerImplementMeleeCombat
 			TargetSelection();
 
 			//! skips Hit zone selection when called in hit part of anim (WasHit event)
-			if( !wasHitEvent )
+			if( !wasHitEvent || m_TargetType != EMeleeTargetType.NONALIGNABLE )
 			{
 				HitZoneSelection();
 			}
@@ -149,6 +163,7 @@ class DayZPlayerImplementMeleeCombat
 				ScriptInputUserData ctx = new ScriptInputUserData;
 				ctx.Write(INPUT_UDT_MELEE_TARGET);
 				ctx.Write(m_TargetObject);
+				ctx.Write(m_HitPositionWS);
 				ctx.Write(m_HitZoneIdx);
 				ctx.Send();
 			}
@@ -168,11 +183,14 @@ class DayZPlayerImplementMeleeCombat
 			{
 				switch(m_HitType)
 				{
-					case EMeleeHitType.WPN_STAB:
-						return weapon.GetMeleeMode();
-					break;
 					case EMeleeHitType.WPN_HIT:
-						return weapon.GetMeleeHeavyMode();
+						return 0;
+					break;
+					case EMeleeHitType.WPN_HIT_BUTTSTOCK:
+						return 1;
+					break;
+					case EMeleeHitType.WPN_STAB:
+						return 2;
 					break;
 				}
 			}
@@ -262,16 +280,20 @@ class DayZPlayerImplementMeleeCombat
 			if( hitObjects.Count() )
 			{
 				cursorTarget = hitObjects.Get(0);
-				//! just for buidling and transports (big objects)
+				//! just for building and transports (big objects)
 				if( cursorTarget.IsAnyInherited(m_NonAlignableObjects) )
 				{
 					//! if no object in cone, set this object from raycast for these special cases
 					if (m_TargetObject == null)
+					{
 						m_TargetObject = cursorTarget;
+					}
 				}
 
 				if ( cursorTarget == m_TargetObject )
+				{
 					m_HitZoneName = cursorTarget.GetDamageZoneNameByComponentIndex(m_HitZoneIdx);
+				}
 			}
 		}
 		else
@@ -294,6 +316,9 @@ class DayZPlayerImplementMeleeCombat
 		{
 			MiscGameplayFunctions.GetHeadBonePos(player, start);
 			end = start + MiscGameplayFunctions.GetHeadingVector(player) * vector.Distance(player.GetPosition(), object.GetPosition());
+			
+			if( end == start )
+				return true; //! not possible to trace when this happens (zero length raycast)
 
 			return DayZPhysics.RayCastBullet( start, end, collisionLayerMask, null, hitObject, hitPosObstructed, hitNormal, hitFraction);
 		}

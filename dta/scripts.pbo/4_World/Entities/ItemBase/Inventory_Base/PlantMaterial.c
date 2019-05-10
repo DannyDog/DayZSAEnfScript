@@ -77,4 +77,11 @@ class PlantMaterial extends Inventory_Base
 		}
 		return false;
 	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionFertilizeSlot);
+	}
 }

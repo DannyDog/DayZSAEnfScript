@@ -379,6 +379,10 @@ typedef Param1<int> LogoutEventParams;
 typedef Param3<int, int, bool> WindowsResizeEventParams;
 //! Enabled
 typedef Param1<bool> VONStateEventParams;
+//! player name, player id
+typedef Param2<string, string> VONStartSpeakingEventParams;
+//! player name, player id
+typedef Param2<string, string> VONStopSpeakingEventParams;
 //! Camera
 typedef Param1<FreeDebugCamera> SetFreeCameraEventParams;
 //! Duration
@@ -445,6 +449,10 @@ enum EventType
 	ScriptLogEventTypeID,
 	//! params: \ref VONStateEventParams
 	VONStateEventTypeID,
+	//! params: \ref VONStartSpeakingEventParams
+	VONStartSpeakingEventTypeID,
+	//! params: \ref VONStopSpeakingEventParams
+	VONStopSpeakingEventTypeID,
 	//! params: \ref SetFreeCameraEventParams
 	SetFreeCameraEventTypeID,
 	//! params: \ref MPConnectionLostEventParams
@@ -523,7 +531,7 @@ class Hud: Managed
 	ref Timer m_Timer;
 	void Init( Widget hud_panel_widget ) {}
 	void DisplayNotifier( int key, int tendency, int status ) {}
-	void DisplayBadge( int key, bool show ) {}
+	void DisplayBadge( int key, int value ) {}
 	void SetStamina( int value, int range ) {}
 	void DisplayStance( int stance ) {}
 	void DisplayPresence() {}
@@ -538,11 +546,9 @@ class Hud: Managed
 	void SetWalkieTalkieText( string text ) { }
 	void RefreshQuickbar( bool itemChanged = false ) {}
 	void Show(bool show) {}
-	void RefreshQuantity( EntityAI item_to_refresh ) {}
 	void UpdateBloodName() {}
-	void RefreshItemPosition( EntityAI item_to_refresh ) {}
+	void SetTemperature( string temp );
 	void Update( float timeslice ){}
-	void InitInventory();
 	bool IsXboxDebugCursorEnabled();
 	void ShowVehicleInfo();
 	void HideVehicleInfo();
@@ -649,6 +655,7 @@ class MenuData: Managed
 {
 	proto native int	GetCharactersCount();
 	proto native int 	GetLastPlayedCharacter();
+	//! Return Character person or null if character initialization failed (inventory load, or corrupted data)
 	proto native Man 	CreateCharacterPerson(int index);
 	
 	proto void 			GetLastServerAddress(int index, out string address);
@@ -892,6 +899,11 @@ proto native Hive GetHive();
 //	EUAINPUT_DEVICE_CONTROLLER
 //	EUAINPUT_DEVICE_IR
 
+// -------------------------------------------------------------------------
+class UAIDWrapper
+{
+	proto native UAInput InputP();			// get input pointer
+};
 
 // -------------------------------------------------------------------------
 class UAInput
@@ -924,6 +936,7 @@ class UAInput
 	proto native bool LocalPress();
 	proto native bool LocalRelease();
 	proto native bool LocalHold();
+	proto native bool LocalHoldBegin();
 	proto native bool LocalDoubleClick();
 	proto native bool LocalClick();
 
@@ -936,6 +949,7 @@ class UAInput
 	proto native bool IsPressLimit();		// if limited to PRESS
 	proto native bool IsReleaseLimit();		// if limited to RELEASE
 	proto native bool IsHoldLimit();		// if limited to HOLD
+	proto native bool IsClickLimit();		// if limited to SINGLE CLICK
 	proto native bool IsDoubleClickLimit();	// if limited to DOUBLE CLICK
 
 	proto native bool HasSorting( int iIndex );		// has sorting group index?
@@ -954,6 +968,10 @@ class UAInput
 	proto native void Backlit_Override( int eType, int iColor ); // enable/ disable backlit of associated controls (EUABACKLIT_*)
 	proto native bool Backlit_Enabled(); // check whether associated controls are backlit
 
+	proto native UAIDWrapper GetPersistentWrapper(); // create persistent object for input access
+
+	private void UAInput();
+	private void ~UAInput();
 };
 
 // -------------------------------------------------------------------------
@@ -1096,10 +1114,13 @@ const int ECE_CENTER						= 8;	// use center from shape (model) for placement
 
 const int ECE_UPDATEPATHGRAPH				= 32;	// update navmesh when object placed upon it
 
-const int ECE_EQUIP							= 256;	// equip with configured attachments/ cargo
 const int ECE_ROTATIONFLAGS					= 512;	// enable rotation flags for object placement
 const int ECE_CREATEPHYSICS					= 1024;	// create collision envelope and related physics data (if object has them)
 const int ECE_AIRBORNE						= 4096;	// create flying unit in the air
+
+const int ECE_EQUIP_ATTACHMENTS				= 8192;		// equip with configured attachments
+const int ECE_EQUIP_CARGO					= 16384;	// equip with configured cargo
+const int ECE_EQUIP							= 24576;	// equip with configured attachments + cargo
 
 const int ECE_NOSURFACEALIGN				= 262144;	// do not align object on surface/ terrain
 const int ECE_KEEPHEIGHT					= 524288;	// keep height when creating object (do not use trace or placement on surface)

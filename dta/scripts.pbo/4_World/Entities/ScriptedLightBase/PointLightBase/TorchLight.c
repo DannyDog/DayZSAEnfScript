@@ -5,7 +5,7 @@ class TorchLight extends PointLightBase
 	
 	void TorchLight()
 	{
-		SetVisibleDuringDaylight(true);
+		SetVisibleDuringDaylight(false);
 		SetRadiusTo( m_TorchRadius );
 		SetBrightnessTo(m_TorchBrightness);
 		SetCastShadow(true);

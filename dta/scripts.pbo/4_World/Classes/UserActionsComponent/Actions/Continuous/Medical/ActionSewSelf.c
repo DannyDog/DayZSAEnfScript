@@ -51,14 +51,16 @@ class ActionSewSelf: ActionContinuousBase
 
 	override void OnFinishProgressServer( ActionData action_data )
 	{
-		const float ITEM_DAMAGE = 10;
-		float delta = action_data.m_Player.GetSoftSkillsManager().SubtractSpecialtyBonus( ITEM_DAMAGE, this.GetSpecialtyWeight() );
-
 		if (action_data.m_Player.GetBleedingManagerServer() )
 		{
 			action_data.m_Player.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();	
 		}
-		action_data.m_MainItem.AddHealth("GlobalHealth","Health",-delta);
+		
+		if (action_data.m_MainItem.GetQuantity() > 0)
+		{
+			action_data.m_MainItem.AddQuantity(-1,true);
+		}
+
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
 };

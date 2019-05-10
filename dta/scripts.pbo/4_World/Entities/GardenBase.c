@@ -1,4 +1,4 @@
-class GardenBase extends Building
+class GardenBase extends BuildingSuper
 {
 	// Paths to slot textures. Slots can have multiple states, so multiple textures must be generated
 	static const string SLOT_TEXTURE_DIGGED_WET_LIME		= "dz\\gear\\cultivation\\data\\soil_digged_wet_lime_CO.paa";
@@ -58,6 +58,11 @@ class GardenBase extends Building
 		}
 		
 		InitializeSlots();
+	}
+	
+	override bool HasProxyParts()
+	{
+		return true;
 	}
 	
 	void SetBaseFertility(float value)
@@ -122,7 +127,6 @@ class GardenBase extends Building
 		{
 			Slot slot = m_Slots.Get( i );
 
-			Print(slot);
 			if ( !slot.OnStoreLoadCustom( ctx, version ) )
 				return false;
 
@@ -324,20 +328,14 @@ class GardenBase extends Building
 		ItemBase seed = slot.GetSeed();
 		GetGame().ObjectDelete(seed);
 
-		PlantBase plant = PlantBase.Cast( GetGame().CreateObject( slot.m_PlantType, GetPosition() ) );
+		PlantBase plant = PlantBase.Cast( GetInventory().CreateAttachmentEx( slot.m_PlantType, slot.GetSlotId()) );
 		
 		int slot_index = slot.GetSlotIndex();
-		vector pos = GetSlotPosition(slot_index);
-		plant.SetPosition(pos);
 		slot.SetPlant(plant);
 		slot.m_State = Slot.STATE_PLANTED;
 		plant.Init( this, slot.GetFertility(), slot.m_HarvestingEfficiency, slot.GetWater() );
 		ShowSelection(SLOT_SELECTION_COVERED_PREFIX + (slot_index + 1).ToStringLen(2));
-		
-		GetGame().RemoteObjectTreeDelete( plant );
-		GetInventory().TakeEntityAsAttachmentEx( InventoryMode.LOCAL, plant, slot.GetSlotId() );
-		GetGame().RemoteObjectTreeCreate( plant );
-		
+				
 		plant.LockToParent();
 	}
 		
@@ -521,10 +519,12 @@ class GardenBase extends Building
 		if ( m_Slots != NULL )
 		{	
 			Slot slot = m_Slots.Get( index );
+			PlantBase plant = slot.GetPlant();
 			
-			if ( slot.GetPlant() )
+			if ( plant )
 			{
-				GetGame().ObjectDelete( slot.GetPlant() );
+				plant.m_MarkForDeletion = true;
+				GetGame().ObjectDelete( plant );
 			}
 			
 			slot.Init( GetBaseFertility() );
@@ -612,7 +612,9 @@ class GardenBase extends Building
 		{
 			for ( int i = 0; i < m_Slots.Count(); i++ )
 			{
-				if ( m_Slots.Get(i).GetPlant() == plant )
+				PlantBase found_plant = m_Slots.Get(i).GetPlant();
+				
+				if ( found_plant == plant )
 				{
 					return i;
 				}

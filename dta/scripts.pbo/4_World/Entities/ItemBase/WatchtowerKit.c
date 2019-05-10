@@ -34,6 +34,11 @@ class WatchtowerKit extends ItemBase
 		UpdatePhysics();
 	}
 	
+	override bool HasProxyParts()
+	{
+		return true;
+	}
+	
 	//Update visuals and physics
 	void UpdateVisuals()
 	{
@@ -129,5 +134,13 @@ class WatchtowerKit extends ItemBase
 			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
 	}
 }

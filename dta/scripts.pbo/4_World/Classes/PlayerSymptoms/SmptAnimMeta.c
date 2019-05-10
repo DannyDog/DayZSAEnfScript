@@ -41,7 +41,7 @@ class SmptAnimMetaBase
 		
 		if( type == eAnimFinishType.FAILURE)//   <--------------- FAILED
 		{
-			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+			if( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer())
 			{
 				if( Symptom ) 
 				{

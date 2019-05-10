@@ -1,4 +1,1 @@
-class TruckBattery : VehicleBattery
-{
-	
-}
+class TruckBattery : VehicleBattery {}

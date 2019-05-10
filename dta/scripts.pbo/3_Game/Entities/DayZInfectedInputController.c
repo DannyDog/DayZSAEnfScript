@@ -1,5 +1,6 @@
 class DayZInfectedInputController
 {
+	proto native void OverrideMovementSpeed(bool pState, float pValue);
 	proto native float GetMovementSpeed();
 	proto native int GetAlertLevel();
 	proto native bool IsVault();

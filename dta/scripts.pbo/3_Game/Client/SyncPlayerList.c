@@ -1,67 +1,78 @@
 class SyncPlayerList
 {
 	ref array<ref SyncPlayer> m_PlayerList;
-	
+
 	void CreatePlayerList()
 	{
-		if ( GetGame().IsServer() )
+		if (GetGame().IsServer())
 		{
 			m_PlayerList = new array<ref SyncPlayer>;
-			
+
 			array<Man> players = new array<Man>;
 			GetGame().GetWorld().GetPlayerList(players);
-			
-			for ( int i = 0; i < players.Count(); ++i ) 
+
+			for (int i = 0; i < players.Count(); ++i)
 			{
 				Man player = players[i];
 				PlayerIdentity p_identity = player.GetIdentity();
-				
-				if( p_identity )
+
+				if (p_identity)
 				{
 					ref SyncPlayer sync_player = new SyncPlayer;
 					sync_player.m_UID = p_identity.GetPlainId();
 					sync_player.m_PlayerName = p_identity.GetName();
-					m_PlayerList.Insert( sync_player );
+					m_PlayerList.Insert(sync_player);
 				}
 				else
 				{
-					DebugPrint.LogErrorAndTrace( "No Identity in Server Player List" );
+					DebugPrint.LogErrorAndTrace("No Identity in Server Player List");
 				}
 			}
 		}
 	}
-	
-	static SyncPlayerList Compare( SyncPlayerList a, SyncPlayerList b )
+
+	static SyncPlayerList Compare(SyncPlayerList a, SyncPlayerList b)
 	{
 		ref SyncPlayerList new_list = new SyncPlayerList;
 		new_list.m_PlayerList = new array<ref SyncPlayer>;
-		
-		if( !a && b )
-			return b;
-		else if( !b )
-			return new_list;
-		
-		array<ref SyncPlayer> array_a = a.m_PlayerList;
-		array<ref SyncPlayer> array_b = b.m_PlayerList;
-		
-		foreach( SyncPlayer player : array_b )
+
+		if (!a && b && b.m_PlayerList)
 		{
-			bool found = false;
-			foreach( SyncPlayer player2 : array_a )
+			foreach(ref SyncPlayer player3 : b.m_PlayerList)
 			{
-				if( player.m_UID == player2.m_UID )
-				{
-					found = true;
-					break;
-				}
-			}
-			
-			if( !found )
-			{
-				new_list.m_PlayerList.Insert( player );
+				new_list.m_PlayerList.Insert(player3);
 			}
 		}
-		
+		else if (a && a.m_PlayerList && !b)
+		{
+			foreach(ref SyncPlayer player4 : a.m_PlayerList)
+			{
+				new_list.m_PlayerList.Insert(player4);
+			}
+		}
+		else if (a && a.m_PlayerList && b && b.m_PlayerList)
+		{
+			ref array<ref SyncPlayer> array_a = a.m_PlayerList;
+			ref array<ref SyncPlayer> array_b = b.m_PlayerList;
+
+			foreach(ref SyncPlayer player : array_b)
+			{
+				bool found = false;
+				foreach(ref SyncPlayer player2 : array_a)
+				{
+					if (player.m_UID == player2.m_UID)
+					{
+						found = true;
+						break;
+					}
+				}
+
+				if (!found)
+				{
+					new_list.m_PlayerList.Insert(player);
+				}
+			}
+		}
 		return new_list;
 	}
 }

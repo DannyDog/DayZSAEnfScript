@@ -11,7 +11,7 @@ WrapSpacerWidgetClass subgroup {
  "Size To Content V" 1
  {
   PanelWidgetClass subgroup_header {
-   visible 1
+   visible 0
    ignorepointer 1
    color 0 0 0 0.9608
    position 0 0

@@ -1,6 +1,10 @@
 class Syringe extends BloodContainerBase
 {
-	void Syringe()
+	override void SetActions()
 	{
+		super.SetActions();
+		
+		AddAction(ActionCollectSampleTarget);
+		AddAction(ActionCollectSampleSelf);
 	}
 }

@@ -1,95 +1,9 @@
-class NotificationMessage
-{
-	protected const float FADE_TIMEOUT = 5;
-	protected const float FADE_OUT_DURATION = 1;
-	protected const float FADE_IN_DURATION = 0.5;
-
-	protected Widget				m_NotificationWidget;
-
-	protected TextWidget			m_NotificationLabel;
-	protected TextWidget			m_NotificationText;
-
-	protected ref WidgetFadeTimer	m_FadeTimer;
-	protected ref Timer				m_TimeoutTimer;
-
-	void NotificationMessage( Widget root_widget )
-	{
-		m_NotificationWidget	= GetGame().GetWorkspace().CreateWidgets( "gui/layouts/notification_info.layout", (Widget)root_widget.FindAnyWidget( "NotificationFrameWidget" ) );
-		m_NotificationLabel		= TextWidget.Cast( root_widget.FindAnyWidget( "NoticiationLabellTextWidget" ) );
-		m_NotificationText		= TextWidget.Cast( root_widget.FindAnyWidget( "NotificationMultilineTextWidget" ) );
-		m_NotificationWidget.Show(false);
-
-		m_FadeTimer				= new WidgetFadeTimer;
-		m_TimeoutTimer			= new Timer(CALL_CATEGORY_GUI);
-	}
-
-	void ~NotificationMessage()
-	{
-		/*if (m_NotificationWidget) 
-		{
-			m_NotificationWidget.Destroy();
-			m_NotificationWidget = NULL;
-		}*/
-	}
-
-	void Show( string label, string text, int priority )
-	{
-		// disabled for now
-		// waiting for new message scheduler at application side
-		//   (ask [rennerale] for details if really needed)
-
-		bool do_show = false;
-		/*
-		switch( priority )
-		{
-		case EVENT_PRIORITY_ERROR:
-			m_NotificationLabel.SetColor( COLOR_RED );
-			m_NotificationText.SetColor( COLOR_RED );
-			break;
-		case EVENT_PRIORITY_WARNING:
-			m_NotificationLabel.SetColor( COLOR_YELLOW );
-			m_NotificationText.SetColor( COLOR_YELLOW );
-			break;
-		case EVENT_PRIORITY_INFO:
-			m_NotificationLabel.SetColor( COLOR_GREEN );
-			m_NotificationText.SetColor( COLOR_GREEN );
-			break;
-		 default:
-			do_show = false;
-			// log about bad data here ...
-			break;
-		}
-		*/
-		if ( do_show )
-		{
-			if ( label != "" )
-			{
-				m_NotificationLabel.SetText( label );
-			}
-			if ( text != "" )	
-			{
-				m_NotificationText.SetText(text);
-			}
-			m_FadeTimer.FadeIn( m_NotificationWidget, FADE_IN_DURATION);
-			m_TimeoutTimer.Run(FADE_TIMEOUT, m_FadeTimer, "FadeOut", new Param2<Widget, float>(m_NotificationWidget, FADE_OUT_DURATION));
-		}
-	}
-	
-	void Hide()
-	{
-		m_NotificationWidget.Show(false);
-		m_TimeoutTimer.Stop();
-		m_FadeTimer.Stop();
-	}
-}
-
-class MissionBase extends Mission
+class MissionBase extends MissionBaseWorld
 {
 	PluginDeveloper 		m_ModuleDeveloper;
 	PluginKeyBinding		m_ModuleKeyBinding
 	PluginAdditionalInfo	m_ModuleServerInfo;
 	
-	ref NotificationMessage m_NotificationWidget;
 	ref WidgetEventHandler 	m_WidgetEventHandler;
 	ref WorldData			m_WorldData;
 	
@@ -100,8 +14,6 @@ class MissionBase extends Mission
 		SetDispatcher(new DispatcherCaller);
 		
 		PluginManagerInit();
-
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.CheckNotification, 15000, true);
 
 		m_WidgetEventHandler = new WidgetEventHandler;
 		
@@ -116,12 +28,20 @@ class MissionBase extends Mission
 		{
 			m_WorldData = new WorldData;
 		}
+		else
+		{
+			GetDayZGame().GetAnalyticsClient().RegisterEvents();
+		}
 	}
 
 	void ~MissionBase()
 	{
-		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.CheckNotification);
 		PluginManagerDelete();
+		
+		if ( GetGame().IsClient() )
+		{
+			GetDayZGame().GetAnalyticsClient().UnregisterEvents();	
+		}
 	}
 	
 	override WorldData GetWorldData()
@@ -222,7 +142,7 @@ class MissionBase extends Mission
 			menu = new ServerBrowserMenuNew;
 			break;
 		case MENU_LOGIN_QUEUE:
-			menu = new LoginQueueMenu;
+			menu = new LoginQueueBase;
 			break;
 		case MENU_CAMERA_TOOLS:
 			menu = new CameraToolsMenu;
@@ -238,6 +158,9 @@ class MissionBase extends Mission
 			break;
 		case MENU_CREDITS:
 			menu = new CreditsMenu;
+			break;
+		case MENU_INVITE_TIMER:
+			menu = new InviteMenu;
 			break;
 		}
 
@@ -460,33 +383,6 @@ class MissionBase extends Mission
 			}
 		}
 	}
-	
-	void CheckNotification()
-	{
-		// disabled for now
-		// waiting for new message scheduler at application side
-		//   (ask [rennerale] for details if really needed)
-		/*
-		if ( GetGame().CheckHiveEvents() )
-		{
-			string notification_message;
-			int notification_value;
-			int notification_priority
-			GetGame().GetLastHiveEvent( notification_message, notification_value, notification_priority );
-			notification_message = String( notification_message + " " + notification_value.ToString() + " " + notification_priority.ToString() );
-			ShowNotification( "NOTIFICATION", notification_message, notification_priority );  //uncomment to test notification widget
-		}
-		*/
-	}
-
-	void ShowNotification( string label, string text, int priority)
-	{
-		if ( m_NotificationWidget )
-		{
-			m_NotificationWidget.Show( label, text, priority );
-		}
-	}
-	
 		
 	void UpdateDummyScheduler()
 	{

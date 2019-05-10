@@ -24,6 +24,18 @@ class ActionSwitchLights: ActionInteractBase
 		return "#switch_lights";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ToggleLightsActionInput;
+	}
+#endif
+	
+	override bool HasTarget()
+	{
+		return false;
+	}
+
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
 		HumanCommandVehicle vehCommand = player.GetCommand_Vehicle();

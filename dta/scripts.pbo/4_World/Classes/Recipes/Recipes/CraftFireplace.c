@@ -40,6 +40,8 @@ class CraftFireplace extends RecipeBase
 		m_IngredientUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		//ingredient 2
+		InsertIngredient(1,"WoodenStick");//you can insert multiple ingredients this way
+		InsertIngredient(1,"Firewood");//you can insert multiple ingredients this way
 		InsertIngredient(1,"Rag");//you can insert multiple ingredients this way
 		InsertIngredient(1,"BandageDressing");//you can insert multiple ingredients this way
 		InsertIngredient(1,"Paper");//you can insert multiple ingredients this way
@@ -74,10 +76,7 @@ class CraftFireplace extends RecipeBase
 		
 		if ( ingredient1.Type() == ingredient2.Type() )
 		{
-			if ( ingredient1.GetQuantity() <= 0 )
-			{
-				return false;
-			}
+			return false;
 		}
 		
 		return true;
@@ -89,48 +88,58 @@ class CraftFireplace extends RecipeBase
 		ItemBase ingredient1 = ingredients[0];
 		ItemBase ingredient2 = ingredients[1];
 		
-		//Ingredient 1 == Ingredient 2
-		if ( ingredient1.Type() == ingredient2.Type() )
+		//clear inventory reservation
+		if ( !GetGame().IsMultiplayer() )
 		{
-			string ingredient_classname = ingredient1.GetType();
-			ItemBase attachment = ItemBase.Cast( result.GetInventory().CreateAttachment( ingredient_classname ) );
-			attachment.SetQuantity( 2 );
-
-			//set quantity to both ingredients
-			ingredient1.AddQuantity( -1 );
-			ingredient2.AddQuantity( -1 );
+			InventoryLocation loc = new InventoryLocation;
+			ingredient1.GetInventory().GetCurrentInventoryLocation( loc );
+			player.GetInventory().ClearInventoryReservation( ingredient1, loc );
+			ingredient2.GetInventory().GetCurrentInventoryLocation( loc );
+			player.GetInventory().ClearInventoryReservation( ingredient2, loc );			
+		}
+		
+		//Ingredient 1
+		if ( ingredient1.GetQuantity() <= 0 )
+		{
+			if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
+			{
+				player.ServerTakeEntityToTargetAttachment( result, ingredient1 ); // multiplayer server side
+			}
+			else
+			{
+				player.LocalTakeEntityToTargetAttachment( result, ingredient1 ); // single player or multiplayer client side
+			}
 		}
 		else
 		{
-			//Ingredient 1
-			if ( ingredient1.GetQuantity() <= 0 )
-			{
-				player.ServerTakeEntityToTargetAttachment( result, ingredient1 );	//TODO add client sync
-			}
-			else
-			{
-				string ingredient1_classname = ingredient1.GetType();
-				ItemBase attachment1 = ItemBase.Cast( result.GetInventory().CreateAttachment( ingredient1_classname ) );
-				attachment1.SetQuantity( 1 );
-				
-				//set quantity to ingredient
-				ingredient1.AddQuantity( -1 );
-			}
+			string ingredient1_classname = ingredient1.GetType();
+			ItemBase attachment1 = ItemBase.Cast( result.GetInventory().CreateAttachment( ingredient1_classname ) );
+			attachment1.SetQuantity( 1 );
 			
-			//Ingredient 2
-			if ( ingredient2.GetQuantity() == 0 )
+			//set quantity to ingredient
+			ingredient1.AddQuantity( -1 );
+		}
+		
+		//Ingredient 2
+		if ( ingredient2.GetQuantity() <= 0 )
+		{
+			if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			{
-				player.ServerTakeEntityToTargetAttachment( result, ingredient2 );	//TODO add client sync
+				player.ServerTakeEntityToTargetAttachment( result, ingredient2 ); // multiplayer server side
 			}
 			else
 			{
-				string ingredient2_classname = ingredient2.GetType();
-				ItemBase attachment2 = ItemBase.Cast( result.GetInventory().CreateAttachment( ingredient2_classname ) );
-				attachment2.SetQuantity( 1 );
-				
-				//set quantity to ingredient
-				ingredient2.AddQuantity( -1 );
-			}			
+				player.LocalTakeEntityToTargetAttachment( result, ingredient2 ); // single player or multiplayer client side
+			}
+		}
+		else
+		{
+			string ingredient2_classname = ingredient2.GetType();
+			ItemBase attachment2 = ItemBase.Cast( result.GetInventory().CreateAttachment( ingredient2_classname ) );
+			attachment2.SetQuantity( 1 );
+			
+			//set quantity to ingredient
+			ingredient2.AddQuantity( -1 );
 		}
 	}
-};
+}

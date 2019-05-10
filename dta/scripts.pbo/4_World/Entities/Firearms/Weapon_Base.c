@@ -21,7 +21,10 @@ class Weapon_Base extends Weapon
 	protected ref WeaponFSM m_fsm;	/// weapon state machine
 	protected bool m_isJammed = false;
 	protected bool m_LiftWeapon = false;
+	protected bool m_BayonetAttached;
+	protected bool m_ButtstockAttached;
 	protected int m_weaponAnimState = -1; /// animation state the weapon is in, -1 == uninitialized
+	protected int m_weaponHideBarrelIdx = -1; //index in simpleHiddenSelections cfg array
 	protected float m_DmgPerShot;
 	protected float m_WeaponLength;
 	ref array<float> m_DOFProperties = new array<float>;
@@ -32,7 +35,16 @@ class Weapon_Base extends Weapon
 
 	void Weapon_Base ()
 	{
-		m_DmgPerShot = ConfigGetFloat("damagePerShot");
+		m_DmgPerShot 		= ConfigGetFloat("damagePerShot");
+		m_BayonetAttached 	= false;
+		m_ButtstockAttached = false;
+		
+		if ( ConfigIsExisting("simpleHiddenSelections") )
+		{
+			TStringArray selectionNames = new TStringArray;
+			ConfigGetTextArray("simpleHiddenSelections",selectionNames);
+			m_weaponHideBarrelIdx = selectionNames.Find("hide_barrel");
+		}
 		
 		InitWeaponLength();
 		InitDOFProperties(m_DOFProperties);
@@ -171,23 +183,24 @@ class Weapon_Base extends Weapon
 			if (suppressor)
 				suppressor.AddHealth("","Health",-m_DmgPerShot); //damages suppressor; TODO add suppressor damage coeficient/parameter (?) to suppressors/weapons (?)
 		}
-		JamCheck(muzzleType);
+		//JamCheck(muzzleType);
 		
 		#ifdef DEVELOPER
 		MiscGameplayFunctions.UnlimitedAmmoDebugCheck(this);
 		#endif
 	}
 	
-	void JamCheck (int muzzleIndex )
+	bool JamCheck (int muzzleIndex )
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		if ( player )
 		{
 			float rnd = player.GetRandomGeneratorSyncManager().GetRandom01(RandomGeneratorSyncUsage.RGSJam);
-			//Print("Random Jam - " + rnd);
+			Print("Random Jam - " + rnd);
 			if (rnd < GetSyncChanceToJam())
-				m_isJammed = true;
+				return true;
 		}
+		return false;
 	}
 	
 	bool IsJammed () { return m_isJammed; }
@@ -220,6 +233,23 @@ class Weapon_Base extends Weapon
 	{
 		if ( !super.OnStoreLoad(ctx, version) )
 			return false;
+		
+		if (version >= 105)
+		{
+			int mode_count = 0;
+			if (!ctx.Read(mode_count))
+				Error("Weapon.OnStoreLoad " + this + " cannot read mode count!");
+
+			for (int m = 0; m < mode_count; ++m)
+			{
+				int mode = 0;
+				if (!ctx.Read(mode))
+					Error("Weapon.OnStoreLoad " + this + " cannot read mode[" + m + "]");
+				
+				wpnDebugPrint("[wpnfsm] OnStoreLoad - loaded muzzle[" + m + "].mode = " + mode);
+				SetCurrentMode(m, mode);
+			}
+		}
 
 		if (m_fsm)
 		{
@@ -295,6 +325,13 @@ class Weapon_Base extends Weapon
 	override void OnStoreSave (ParamsWriteContext ctx)
 	{
 		super.OnStoreSave(ctx);
+		
+		// fire mode added in version 105
+		int mode_count = GetMuzzleCount();
+		ctx.Write(mode_count);
+		for (int m = 0; m < mode_count; ++m)
+			ctx.Write(GetCurrentMode(m));
+
 		if (m_fsm)
 			m_fsm.OnStoreSave(ctx);
 		else
@@ -377,7 +414,7 @@ class Weapon_Base extends Weapon
 	{
 		if (m_PropertyModifierObject)
 		{
-			delete m_PropertyModifierObject;
+			m_PropertyModifierObject = null;
 			return true;
 		}
 		return false;
@@ -401,14 +438,16 @@ class Weapon_Base extends Weapon
 	{
 		super.EEItemAttached(item, slot_name);
 
-		if ( GetPropertyModifierObject() ) 	GetPropertyModifierObject().UpdateModifiers();
+		if ( GetPropertyModifierObject() ) 	
+			GetPropertyModifierObject().UpdateModifiers();
 	}
 
 	override void EEItemDetached (EntityAI item, string slot_name)
 	{
 		super.EEItemDetached(item, slot_name);
 
-		if ( GetPropertyModifierObject() ) 	GetPropertyModifierObject().UpdateModifiers();
+		if ( GetPropertyModifierObject() ) 	
+			GetPropertyModifierObject().UpdateModifiers();
 	}
 	
 	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
@@ -421,6 +460,7 @@ class Weapon_Base extends Weapon
 		{ 
 			player.SetReturnToOptics(false);
 		}
+		HideWeaponBarrel(false);
 	}
 	
 	override bool CanReleaseAttachment(EntityAI attachment)
@@ -465,6 +505,7 @@ class Weapon_Base extends Weapon
 		}
 	}
 
+	
 	RecoilBase SpawnRecoilObject ()
 	{
 		return new DefaultRecoil(this);
@@ -691,6 +732,48 @@ class Weapon_Base extends Weapon
 		src.OnStoreSave(ctx.GetWriteContext());
 		OnStoreLoad(ctx.GetReadContext(), dummy_version);
 		return true;
+	}
+	
+	//! attachment helpers (firearm melee)
+	override void SetBayonetAttached(bool pState)
+	{
+		m_BayonetAttached = pState;
+	}
+	
+	override bool HasBayonetAttached()
+	{
+		return m_BayonetAttached;
+	}
+	
+	override void SetButtstockAttached(bool pState)
+	{
+		m_ButtstockAttached = pState;
+	}
+
+	override bool HasButtstockAttached()
+	{
+		return m_ButtstockAttached;
+	}
+	
+	void HideWeaponBarrel(bool state)
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )//hidden for client only
+		{
+			ItemOptics optics = GetAttachedOptics();
+			if ( optics && !optics.AllowsDOF() && m_weaponHideBarrelIdx != -1 )
+			{
+				SetSimpleHiddenSelectionState(m_weaponHideBarrelIdx,!state);
+			}
+		}
+	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(FirearmActionAttachMagazine);
+		AddAction(FirearmActionLoadBullet);
+		AddAction(ActionTurnOnWeaponFlashlight);
+		AddAction(ActionTurnOffWeaponFlashlight);
 	}
 };
 

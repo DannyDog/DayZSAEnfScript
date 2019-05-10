@@ -173,6 +173,7 @@ class AnimatedActionBase : ActionBase
 	{
 	}
 	
+	//TODO MW - add comment 
 	void OnAnimationEvent( ActionData action_data )
 	{
 		if(!action_data.m_WasExecuted)
@@ -200,6 +201,7 @@ class AnimatedActionBase : ActionBase
 		return true;
 	}
 	
+	//TODO MW - add comment 
 	protected int GetActionCommand( PlayerBase player )
 	{
 		if ( HasProneException() )
@@ -223,6 +225,7 @@ class AnimatedActionBase : ActionBase
 		return false;
 	}
 	
+	//TODO MW - add comment 
 	protected void CreateAndSetupActionCallback( ActionData action_data )
 	{
 		//Print("ActionBase.c | CreateAndSetupActionCallback | DBG ACTION CALLBACK CREATION CALLED");
@@ -444,11 +447,11 @@ class AnimatedActionBase : ActionBase
 			{
 				if ( IsEat() )
 				{
-					AnalyticsManager.OnActionEat();
+					GetGame().GetAnalyticsClient().OnActionEat();
 				}
 				else if ( IsDrink() )
 				{
-					AnalyticsManager.OnActionDrink();
+					GetGame().GetAnalyticsClient().OnActionDrink();
 				}
 				
 				action_data.m_WasActionStarted = false;

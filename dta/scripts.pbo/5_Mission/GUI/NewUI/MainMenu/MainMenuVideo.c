@@ -1,5 +1,7 @@
 class MainMenuVideo extends UIScriptedMenu
 {
+	protected string 				m_BackButtonTextID;
+	
 	protected TextWidget			m_PlayPauseText;
 	protected VideoWidget			m_Video;
 	protected ref Timer				m_VideoPlayTimer;
@@ -15,7 +17,11 @@ class MainMenuVideo extends UIScriptedMenu
 		m_VideoPlayTimer		= new Timer();
 		m_VideoFadeTimer		= new WidgetFadeTimer();
 		
-		m_Video.LoadVideo( "G:\\video\\DayZ_xbox_onboarding_MASTER.mp4", 0 );
+		#ifdef PLATFORM_PS4
+			m_Video.LoadVideo( "/app0/video/DayZ_onboarding_MASTER.mp4", 0 );
+		#else
+			m_Video.LoadVideo( "G:\\video\\DayZ_onboarding_MASTER.mp4", 0 );
+		#endif
 		m_Video.Play( VideoCommand.REWIND );
 		m_Video.Play( VideoCommand.PLAY );
 		m_VideoFadeTimer.FadeIn( m_Video, 1.5 );
@@ -83,6 +89,26 @@ class MainMenuVideo extends UIScriptedMenu
 		{
 			m_Video.Play( VideoCommand.KILL );
 		}
+	}
+	
+	/// Initial texts load for the footer buttons
+	protected void LoadFooterButtonTexts()
+	{
+		TextWidget uiBackText 	= TextWidget.Cast(layoutRoot.FindAnyWidget( "BackText" ));		
+		
+		if (uiBackText)
+		{
+			uiBackText.SetText(m_BackButtonTextID);
+		}
+	}
+	/// Set correct bottom button texts based on platform (ps4 vs xbox texts)
+	protected void LoadTextStrings()
+	{
+		#ifdef PLATFORM_PS4
+			m_BackButtonTextID = "ps4_ingame_menu_back";
+		#else 
+			m_BackButtonTextID = "STR_rootFrame_toolbar_bg_ConsoleToolbar_Back_BackText0";	
+		#endif
 	}
 	
 }

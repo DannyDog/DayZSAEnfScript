@@ -36,6 +36,8 @@ class Weapon extends InventoryItemSuper
 	proto native void SetNextMuzzleMode (int muzzleIndex);
 	proto native int GetCurrentModeBurstSize (int muzzleIndex);
 	proto native bool GetCurrentModeAutoFire (int muzzleIndex);
+	proto native int GetCurrentMode (int muzzleIndex);
+	proto native void SetCurrentMode (int muzzleIndex, int mode);
 
 	/**@fn		CanFire
 	 * @brief 	query whether the weapon can be fired or not

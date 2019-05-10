@@ -9,6 +9,7 @@ class ElementStance extends DisplayElementBase
 	
 	override void UpdateHUD()
 	{
+		super.UpdateHUD();
 		m_ModulePlayerStatus.SetStance( m_Value );
 	}
 }

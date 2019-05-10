@@ -1,18 +1,35 @@
 class AdvancedCommunication extends EntityAI
 {
+#ifdef OLD_ACTIONS
 	ref TIntArray m_SingleUseActions;
 	ref TIntArray m_ContinuousActions;
 	ref TIntArray m_InteractActions;
+#else
+	static ref map<typename, ref TInputActionMap> m_AdvComTypeActionsMap = new map<typename, ref TInputActionMap>;
+	TInputActionMap m_InputActionMap;
+	bool	m_ActionsInitialize;
+#endif
 	
 	void AdvancedCommunication()
 	{
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
+		{
+#ifdef OLD_ACTIONS
 		//user actions
 		m_SingleUseActions = new TIntArray;
 		m_ContinuousActions = new TIntArray;
 		m_InteractActions = new TIntArray;
-		SetUserActions();		
+		SetUserActions();
+#else
+			if(GetGame().GetPlayer())
+			{
+				m_ActionsInitialize = false;
+			}
+#endif
+		}	
 	}
-			
+		
+#ifdef OLD_ACTIONS	
 	//User actions
 	void SetUserActions()
 	{
@@ -53,7 +70,7 @@ class AdvancedCommunication extends EntityAI
 			}
 		}
 	}
-
+#endif
 	//HUD
 	/*
 	protected Hud GetHud( PlayerBase player )
@@ -92,6 +109,85 @@ class AdvancedCommunication extends EntityAI
 	{
 		GetCompEM().SwitchOff();
 	}
+	
+#ifndef OLD_ACTIONS	
+	void InitializeActions()
+	{
+		m_InputActionMap = m_AdvComTypeActionsMap.Get( this.Type() );
+		if(!m_InputActionMap)
+		{
+			TInputActionMap iam = new TInputActionMap;
+			m_InputActionMap = iam;
+			SetActions();
+			m_AdvComTypeActionsMap.Insert(this.Type(), m_InputActionMap);
+		}
+	}
+	
+	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
+	{
+		if(!m_ActionsInitialize)
+		{
+			m_ActionsInitialize = true;
+			InitializeActions();
+		}
+		
+		actions = m_InputActionMap.Get(action_input_type);
+	}
+	
+	void SetActions()
+	{
+		AddAction(ActionTurnOnTransmitterOnGround);
+		AddAction(ActionTurnOffTransmitterOnGround);
+		AddAction(ActionDetachPowerSourceFromPanel);
+	}
+	
+	void AddAction(typename actionName)
+	{
+		ActionBase action = ActionManagerBase.GetAction(actionName);
+
+		if(!action)
+		{
+			Debug.LogError("Action " + actionName + " dosn't exist!");
+			return;
+		}		
+		
+		typename ai = action.GetInputType();
+		if(!ai)
+		{
+			m_ActionsInitialize = false;
+			return;
+		}
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(!action_array)
+		{
+			action_array = new array<ActionBase_Basic>;
+			m_InputActionMap.Insert(ai, action_array);
+		}
+		
+		Print("+ " + this + " add action: " + action + " input " + ai);
+
+		action_array.Insert(action);
+	}
+	
+	void RemoveAction(typename actionName)
+	{
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		ActionBase action = player.GetActionManager().GetAction(actionName);
+		typename ai = action.GetInputType();
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(action_array)
+		{
+			action_array.RemoveItem(action);
+		}
+	}
+#else
+	void SetActions() {}	
+	void AddAction(typename actionName) {}
+	void RemoveAction(typename actionName) {}
+	
+#endif	
 }
 
 class PASReceiver extends AdvancedCommunication

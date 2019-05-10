@@ -18,7 +18,7 @@ class ActionPourLiquidCB : ActionContinuousBaseCB
 				{
 					Bottle_Base vessel_in_hands = Bottle_Base.Cast( m_ActionData.m_Target.GetObject() );
 					Param1<bool> play = new Param1<bool>( true );
-					GetGame().RPCSingleParam( vessel_in_hands, SoundType.POURING, play, true );
+					GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.POURING, play, true );
 				}
 
 			break;
@@ -33,7 +33,7 @@ class ActionPourLiquidCB : ActionContinuousBaseCB
 		{
 			Bottle_Base target_vessel = Bottle_Base.Cast( m_ActionData.m_Target.GetObject());
 			Param1<bool> play = new Param1<bool>( false );
-			GetGame().RPCSingleParam( target_vessel, SoundType.POURING, play, true );
+			GetGame().RPCSingleParam( target_vessel, SoundTypeBottle.POURING, play, true );
 		}
 	}
 };

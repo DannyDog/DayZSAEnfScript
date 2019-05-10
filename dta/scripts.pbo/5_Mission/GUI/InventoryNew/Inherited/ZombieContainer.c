@@ -95,30 +95,35 @@ class ZombieContainer: CollapsibleContainer
 		int m_sizeX, m_sizeY;
 
 		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-		m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );	
-		icon_x = x_content / 10;
-		icon_y = x_content / 10;
-		w.SetFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( icon_x, icon_y );
-		w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-		
-		if( !ipw.GetItem() )
+		if( i_item )
 		{
-			return;
+			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
+	
+			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );	
+			icon_x = x_content / 10;
+			icon_y = x_content / 10;
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			
+			if( i_item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
+			}
+			else
+			{
+				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
+			}
+			
+			name.Replace( "Render", "Col" );
+			w.FindAnyWidget( name ).Show( true );
+			name.Replace( "Col", "RadialIcon" );
+			w.GetParent().FindAnyWidget( name ).Show( false );
+			ItemManager.GetInstance().SetDraggedItem( i_item );
 		}
-		
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( true );
-		name.Replace( "Col", "RadialIcon" );
-		w.GetParent().FindAnyWidget( name ).Show( false );
 	}
 	
 	void OnIconDrop( Widget w )
 	{
 		ItemManager.GetInstance().HideDropzones();
-		
 		ItemManager.GetInstance().SetIsDragging( false );
 		w.ClearFlags( WidgetFlags.EXACTSIZE );
 		w.SetSize( 1, 1 );
@@ -158,7 +163,7 @@ class ZombieContainer: CollapsibleContainer
 		if( !item.GetInventory().CanRemoveEntity() )
 			return;
 		
-		if (m_ZombieEntity.GetInventory().CanAddEntityInCargo( item ))
+		if (m_ZombieEntity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ))
 			GetGame().GetPlayer().PredictiveTakeEntityToTargetCargo( m_ZombieEntity, item );
 		else if( m_ZombieEntity.GetInventory().CanAddEntityToInventory( item ) )
 		{

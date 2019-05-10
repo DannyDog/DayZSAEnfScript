@@ -54,7 +54,7 @@ int SlotToAnimType (notnull Man player, notnull InventoryLocation src)
 				return WeaponHideShowTypes.HIDESHOW_SLOT_INVENTORY;
 			
 			default:
-				Print("[hndfsm] SlotToAnimType -  not animated slot in src_loc=" + src.DumpToString());
+				Print("[hndfsm] SlotToAnimType -  not animated slot in src_loc=" + InventoryLocation.DumpToStringNullSafe(src));
 		};
 		//
 		//if (InventorySlots.GetSlotIdFromString("Pistol"))
@@ -130,24 +130,12 @@ class HandSelectAnimationOfTakeToHandsEvent extends HandGuardBase
 
 	override bool GuardCondition (HandEventBase e)
 	{
-		EntityAI eai = e.m_Entity;
-		if (eai != NULL)
+		int animType = -1;
+		if (SelectAnimationOfTakeToHands(e.m_Player, e.GetSrc(), e.GetDst(), animType))
 		{
-			InventoryLocation src = new InventoryLocation;
-			if (eai.GetInventory().GetCurrentInventoryLocation(src))
-			{
-				InventoryLocation dst = new InventoryLocation;
-				dst.SetHands(e.m_Player, src.GetItem());
-				int animType = -1;
-				if (SelectAnimationOfTakeToHands(e.m_Player, src, dst, animType))
-				{
-					e.m_AnimationID = animType;
-					return true;
-				}
-				return false;
-			}
+			e.m_AnimationID = animType;
+			return true;
 		}
-		hndDebugPrint("[hndfsm] HandGuardHasAnimatedAtachmentInEvent guard - no entity in event");
 		return false;
 	}
 };
@@ -186,14 +174,13 @@ class HandSelectAnimationOfMoveFromHandsEvent extends HandGuardBase
 class HandSelectAnimationOfForceSwapInHandsEvent extends HandGuardBase
 {
 	protected Man m_Player;
-	ref HandGuardHasRoomForItem m_HasRoomGuard = new HandGuardHasRoomForItem;
 
 	void HandSelectAnimationOfForceSwapInHandsEvent (Man p = NULL) { m_Player = p; }
 
 	bool ProcessSwapEvent (notnull HandEventBase e, notnull InventoryLocation old_dst, out int animType1, out int animType2)
 	{
 		EntityAI old_e = e.m_Player.GetHumanInventory().GetEntityInHands();
-		EntityAI new_e = e.m_Entity;
+		EntityAI new_e = e.GetSrcEntity();
 
 		if (!old_e)
 		{
@@ -238,11 +225,23 @@ class HandSelectAnimationOfForceSwapInHandsEvent extends HandGuardBase
 		HandEventForceSwap es = HandEventForceSwap.Cast(e);
 		if (es)
 		{
-			if (m_HasRoomGuard.GuardCondition(e))
+			hndDebugPrint("[hndfsm] HandGuardHasRoomForItem FSwap e=" + e.DumpToString());
+			
+			bool allow = false;
+			if (GameInventory.CanSwapEntities(es.GetSrc().GetItem(), es.m_Src2.GetItem()))
+				allow = true; // allow if ordinary swap
+			else if (es.m_Dst2)
+			{
+				if (!GameInventory.LocationTestAddEntity(es.m_Dst2, false, true, true, true, true))
+					Error("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + InventoryLocation.DumpToStringNullSafe(e.GetDst()));
+				allow = true;
+			}
+			
+			if (allow)
 			{
 				int animType1 = -1;
 				int animType2 = -1;
-				if (ProcessSwapEvent(e, es.GetDst(), animType1, animType2))
+				if (ProcessSwapEvent(e, es.m_Dst2, animType1, animType2))
 				{
 					e.m_AnimationID = animType1;
 					es.m_Animation2ID = animType2;
@@ -267,7 +266,7 @@ class HandSelectAnimationOfSwapInHandsEvent extends HandSelectAnimationOfForceSw
 		{
 			int animType1 = -1;
 			int animType2 = -1;
-			if (ProcessSwapEvent(e, es.GetDst(), animType1, animType2))
+			if (ProcessSwapEvent(e, es.m_Dst2, animType1, animType2))
 			{
 				e.m_AnimationID = animType1;
 				es.m_Animation2ID = animType2;

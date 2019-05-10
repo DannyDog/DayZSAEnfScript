@@ -92,4 +92,21 @@ class Pot extends Bottle_Base
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionWorldLiquidActionSwitch);
+		AddAction(ActionFillGeneratorTank);
+		AddAction(ActionExtinguishFireplaceByLiquid);
+		AddAction(ActionFillBottleBase);
+		AddAction(ActionWaterGardenSlot);
+		AddAction(ActionWaterPlant);
+		AddAction(ActionForceDrink);
+		AddAction(ActionPourLiquid);
+		AddAction(ActionDrainLiquid);
+		AddAction(ActionEmptyCookingPot);
+		AddAction(ActionDrinkCookingPot);
+	}
 }

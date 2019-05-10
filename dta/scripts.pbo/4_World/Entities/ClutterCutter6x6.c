@@ -1,4 +1,4 @@
-class ClutterCutter6x6 : Building
+class ClutterCutter6x6 : BuildingSuper
 {
 	void ClutterCutter6x6()
 	{

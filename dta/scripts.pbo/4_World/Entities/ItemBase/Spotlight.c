@@ -360,4 +360,18 @@ class Spotlight extends ItemBase
 			m_DeployLoopSound.SoundStop();
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionPlugIn);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionTurnOnSpotlight);
+		AddAction(ActionTurnOffSpotlight);
+		AddAction(ActionRepositionPluggedItem);
+		AddAction(ActionDeployObject);
+	}
 }

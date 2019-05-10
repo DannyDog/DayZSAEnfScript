@@ -41,8 +41,6 @@ class UIManager
 	proto native bool IsCursorVisible();
 	proto native bool IsDialogQueued();
 	proto native bool ShowQueuedDialog();
-	proto native bool GetLoginQueueDialog();
-	proto native void SetLoginQueueDialog(bool state);
 	proto native int  GetLoginQueuePosition();
 	proto native bool ScreenFadeVisible();
 	proto native void ScreenFadeIn(float duration, string text, int backgroundColor, int textColor);

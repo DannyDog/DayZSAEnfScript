@@ -41,6 +41,11 @@ class TentBase extends ItemBase
 		}
 	}
 	
+	override bool HasProxyParts()
+	{
+		return true;
+	}
+	
 	override void OnStoreSave( ParamsWriteContext ctx )
 	{   
 		super.OnStoreSave( ctx );
@@ -57,7 +62,7 @@ class TentBase extends ItemBase
 		
 		if ( GetState() == PITCHED )
 		{
-			Pitch( false );
+			Pitch( true );
 						
 			if ( GetGame().IsServer() )
 			{
@@ -72,7 +77,7 @@ class TentBase extends ItemBase
 		}
 		else
 		{
-			Pack( false );
+			Pack( true );
 		}
 		return true;
 	}
@@ -624,7 +629,7 @@ class TentBase extends ItemBase
 		
 		if ( GetGame().IsServer() )
 		{
-			Pitch( false );
+			Pitch( true );
 			
 			SetIsDeploySound( true );
 		}
@@ -648,5 +653,15 @@ class TentBase extends ItemBase
 			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionToggleTentOpen);
+		AddAction(ActionPackTent);
+		AddAction(ActionDeployObject);
 	}
 };

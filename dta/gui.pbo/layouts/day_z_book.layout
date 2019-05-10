@@ -69,6 +69,7 @@ FrameWidgetClass ContainerWidget {
          hexactsize 0
          vexactsize 0
          "exact text" 1
+         wrap 1
         }
         TextWidgetClass Page {
          color 0.2235 0.2235 0.2235 1

@@ -17,4 +17,12 @@ class Entity extends ObjectTyped
 	
 	//! Turns on/off invisibility
 	proto native void SetInvisible(bool invisible);
+
+	/**
+	\brief Client event on transformation update from network
+	@param pos, world space position
+	@param ypr, world space orientation in radians in form of Yaw/Pitch/Roll
+	\note object up vector is always y-axis
+	*/
+	void OnNetworkTransformUpdate(out vector pos, out vector ypr);
 };

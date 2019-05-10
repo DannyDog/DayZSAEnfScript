@@ -410,6 +410,7 @@ FrameWidgetClass FrameWidget {
        vexactpos 1
        hexactsize 0
        vexactsize 1
+       userID 114
        style Empty
        "no focus" 0
        "next left" ""

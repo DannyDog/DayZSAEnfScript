@@ -43,6 +43,13 @@ class SeedPackBase extends Inventory_Base
 			}
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionEmptySeedsPack);
+	}
 }
 
 class EmptySeedsPackLambda : ReplaceItemWithNewLambdaBase

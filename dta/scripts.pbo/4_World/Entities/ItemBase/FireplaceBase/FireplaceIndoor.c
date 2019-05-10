@@ -438,4 +438,12 @@ class FireplaceIndoor extends FireplaceBase
 		
 		return true;	
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTakeFireplaceIndoor);
+		//AddAction(ActionLightItemOnFire);
+	}
 }

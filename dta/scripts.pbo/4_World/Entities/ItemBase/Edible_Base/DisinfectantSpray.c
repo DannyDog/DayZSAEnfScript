@@ -63,4 +63,16 @@ class DisinfectantSpray extends Edible_Base
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionDisinfectTarget);
+		AddAction(ActionDisinfectSelf);
+		AddAction(ActionDisinfectPlant);
+		AddAction(ActionForceDrinkDisinfectant);
+		AddAction(ActionDrinkDisinfectant);
+		
+	}
 }

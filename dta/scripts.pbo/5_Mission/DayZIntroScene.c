@@ -122,8 +122,11 @@ class DayZIntroScene : Managed
 	//==============================================
 	void ResetIntroCamera()
 	{
-		GetIntroCamera().LookAt( GetIntroCharacter().GetPosition() + Vector( 0, 1, 0 ) );
-		//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater( SceneCharacterSetPos, 250 );
+		if ( GetIntroCharacter().GetCharacterObj() )
+		{
+			GetIntroCamera().LookAt( GetIntroCharacter().GetPosition() + Vector( 0, 1, 0 ) );
+			//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater( SceneCharacterSetPos, 250 );			
+		}
 	}
 	
 	protected void GetSelectedUserName()

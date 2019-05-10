@@ -19,13 +19,13 @@ FrameWidgetClass FrameWidget {
    {
     ImageWidgetClass Background {
      color 0 0 0 0.9882
-     position 0 0
+     position 0 -0.0007
      size 1 1
      hexactpos 0
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     imageTexture "{68AE58E5E99FB598}Enfusion/Gui/textures/left_pane_full_ca.edds"
+     imageTexture "{68AE58E5E99FB598}Gui/textures/left_pane_full_ca.edds"
      mode blend
      "src alpha" 1
      stretch 1
@@ -77,13 +77,32 @@ FrameWidgetClass FrameWidget {
        vexactsize 0
        text "Ctrl"
       }
+      ButtonWidgetClass Card3Button {
+       position 0.04232 0.06754
+       size 0.34606 0.024
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Other Cmds"
+      }
+      ButtonWidgetClass Card4Button {
+       visible 0
+       position 0.31847 0.06751
+       size 0.37035 0.024
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Unconscious"
+      }
      }
     }
     FrameWidgetClass Card0 {
      visible 0
      clipchildren 0
      color 0.1098 0.1098 1 1
-     position 0.02 0.06731
+     position 0.02 0.0929
      size 0.96 0.92269
      halign left
      valign top
@@ -423,11 +442,11 @@ FrameWidgetClass FrameWidget {
      }
     }
     FrameWidgetClass Card1 {
-     visible 1
+     visible 0
      clipchildren 0
      color 0.1098 0.1098 1 1
-     position 0.02 0.06717
-     size 0.96 0.92283
+     position 0.02 0.09288
+     size 0.96 0.89642
      halign left
      valign top
      hexactpos 0
@@ -437,8 +456,8 @@ FrameWidgetClass FrameWidget {
      priority 50
      {
       PanelWidgetClass Weapons {
-       position 0.01654 0.00472
-       size 0.9767 0.73466
+       position 0.01062 0.00161
+       size 0.9767 0.81594
        hexactpos 0
        vexactpos 0
        hexactsize 0
@@ -447,111 +466,111 @@ FrameWidgetClass FrameWidget {
        {
         TextListboxWidgetClass WeapActionSelector {
          position 0.011 0.00662
-         size 0.977 0.63366
+         size 0.977 464
          hexactpos 0
          vexactpos 0
          hexactsize 0
-         vexactsize 0
+         vexactsize 1
          style Default
          font "gui/fonts/etelkatextpro14"
         }
         ButtonWidgetClass WeapActionStart {
          color 0.5765 0.5765 0.5765 1
-         position 0.02804 0.65194
+         position 4.35675 477.11603
          size 0.55248 0.02709
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Start"
         }
         TextWidgetClass WeapActionRunning {
-         position 0.02766 0.68554
+         position 4.35675 506.263
          size 0.94581 0.03012
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Actions"
         }
         TextWidgetClass WeapActionEvents {
-         position 0.02968 0.72007
+         position 4.35675 534.409
          size 0.94581 0.03012
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Actions"
         }
         EditBoxWidgetClass WeapInitStateI {
-         position 0.035 0.765
+         position 6.9996 565.26801
          size 0.208 0.03
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "0"
         }
         ButtonWidgetClass WeapInitStateB {
          color 0.5765 0.5765 0.5765 1
-         position 0.25306 0.76598
+         position 83.5788 565.26801
          size 0.71585 0.02816
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Set Init State"
         }
         ButtonWidgetClass WeapChange {
          color 0.5765 0.5765 0.5765 1
-         position 0.02306 0.81857
+         position 6.64325 656.64294
          size 0.94585 0.02816
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Weapon Change (Show)"
         }
         TextWidgetClass TextWidget0 {
-         position 0.02294 0.85044
+         position 8.2865 684.78802
          size 0.94575 0.02136
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "weapon change takes selected item from Developer Console"
          font "gui/fonts/Metron12"
         }
         EditBoxWidgetClass WeaponChangeSlotH {
-         position 0.3186 0.92293
+         position 130.44398 730.93506
          size 0.208 0.03
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "0"
         }
         EditBoxWidgetClass WeaponChangeSlotS {
-         position 0.31734 0.96167
+         position 129.44398 757.15094
          size 0.208 0.03
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "0"
         }
         ButtonWidgetClass WeapHide {
          color 0.5765 0.5765 0.5765 1
-         position 0.02306 0.88115
+         position 8.2865 707.005
          size 0.94585 0.02816
-         hexactpos 0
-         vexactpos 0
+         hexactpos 1
+         vexactpos 1
          hexactsize 0
          vexactsize 0
          text "Weapon Hide (change to empty hands)"
         }
         TextWidgetClass TextWidget1 {
-         position 18.0655 677.12897
+         position 8.20592 733
          size 114.737 21.1424
          hexactpos 1
          vexactpos 1
@@ -560,13 +579,49 @@ FrameWidgetClass FrameWidget {
          text "Hide Slot:"
         }
         TextWidgetClass TextWidget2 {
-         position 18.0655 703.17297
+         position 8.20592 757.401
          size 114.737 21.1424
          hexactpos 1
          vexactpos 1
          hexactsize 1
          vexactsize 1
          text "Show Slot:"
+        }
+        TextWidgetClass TextWidget3 {
+         position 6.56267 594.96503
+         size 114.737 21.1424
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Progress start:"
+        }
+        TextWidgetClass TextWidget4 {
+         position 6.56267 624.54401
+         size 114.737 21.1424
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "Progress end:"
+        }
+        EditBoxWidgetClass WeapActionProgressEnd {
+         position 131.888 622.78302
+         size 0.208 0.03
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "1"
+        }
+        EditBoxWidgetClass WeapActionProgressStart {
+         position 131.888 594.84698
+         size 0.208 0.03
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "0"
         }
        }
       }
@@ -576,7 +631,7 @@ FrameWidgetClass FrameWidget {
      visible 0
      clipchildren 0
      color 0.1098 0.1098 1 1
-     position 0.02 0.06717
+     position 0.02 0.0929
      size 0.96 0.92283
      halign left
      valign top
@@ -596,8 +651,9 @@ FrameWidgetClass FrameWidget {
        style editor_quad_dark
        {
         XComboBoxWidgetClass StanceV {
-         position 0.247 0.005
+         position 0.00942 0.00658
          size 0.75 0.034
+         halign right_ref
          hexactpos 0
          vexactpos 0
          hexactsize 0
@@ -612,6 +668,188 @@ FrameWidgetClass FrameWidget {
          hexactsize 0
          vexactsize 0
          text "Stance:"
+        }
+        TextWidgetClass MovSpeedT {
+         position 0.011 0.05394
+         size 0.27409 0.02498
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Mov speed:"
+        }
+        EditBoxWidgetClass MovSpeedEB {
+         position 0.00942 0.04822
+         size 0.6875 0.034
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        EditBoxWidgetClass MovDirEB {
+         position 0.00942 0.08767
+         size 0.6875 0.034
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        TextWidgetClass MovDirT {
+         position 0.011 0.0912
+         size 0.27409 0.02498
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Mov dir:"
+        }
+        CheckBoxWidgetClass OverrideMovCheckBox {
+         position 0.00942 0.12712
+         size 0.75808 0.03619
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Override movement"
+        }
+       }
+      }
+     }
+    }
+    FrameWidgetClass Card3 {
+     visible 1
+     clipchildren 0
+     color 0.1098 0.1098 1 1
+     position 0.02 0.0929
+     size 0.96 0.92283
+     halign left
+     valign top
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     priority 50
+     {
+      PanelWidgetClass Controls0 {
+       position 0.01654 0.00472
+       size 0.9767 0.73466
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       style editor_quad_dark
+       {
+        XComboBoxWidgetClass DeathTypeCB {
+         position 0.31164 0.0525
+         size 0.67123 0.03472
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Hit;Fast;Swim;Fall;UnconsciousOnLand;UnconsciousInWater"
+        }
+        TextWidgetClass DeathTypeT {
+         position 0.00629 0.05469
+         size 0.29959 0.02642
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Death type:"
+        }
+        TextWidgetClass DeathDirectionT {
+         position 0.011 0.01181
+         size 0.38488 0.02623
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Death & Hit dir:"
+        }
+        EditBoxWidgetClass DeathDirectionEdit {
+         position 144.86301 5.23686
+         size 0.55911 0.03608
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        ButtonWidgetClass DeathStartButton {
+         position 171.939 70.8009
+         size 0.48062 0.03542
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "Start death"
+        }
+        ButtonWidgetClass UnconStartButton {
+         position 5.0445 195.972
+         size 0.48062 0.03542
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "Start Uncon"
+        }
+        ButtonWidgetClass UnconEndButton {
+         position 173.54399 195.97101
+         size 0.48062 0.03542
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "Uncon Wakeup"
+        }
+        TextWidgetClass HitTypeT {
+         position 0.011 0.14236
+         size 0.29959 0.02642
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Hit type:"
+        }
+        XComboBoxWidgetClass HitTypeCB {
+         position 0.31635 0.14017
+         size 0.67123 0.03472
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Additive;Fullbody"
+        }
+        ButtonWidgetClass HitStartButton {
+         position 173.54399 134.991
+         size 0.48062 0.03542
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "Start hit"
+        }
+        TextWidgetClass UnconTypeT {
+         position 0.011 0.22784
+         size 0.29959 0.02642
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Uncon type:"
+        }
+        XComboBoxWidgetClass UnconTypeCB {
+         position 0.31635 0.22564
+         size 0.67123 0.03472
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Fast;Slow"
         }
        }
       }

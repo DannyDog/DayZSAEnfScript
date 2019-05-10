@@ -28,6 +28,7 @@ class DayZInfectedCommandMove
 {
 	proto native void SetStanceVariation(int pStanceVariation);
 	proto native void SetIdleState(int pIdleState);
+	proto native void StartTurn(float pDirection, int pSpeedType);
 	proto native bool IsTurning();
 }
 
@@ -69,4 +70,37 @@ class DayZInfected extends DayZCreatureAI
 	}
 	
 	//-------------------------------------------------------------
+	
+	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
+	{
+		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos);
+		
+		if( !IsAlive() )
+		{
+			if ( !m_DeathSyncSent ) //to be sent only once on hit/death
+			{
+				Man killer = source.GetHierarchyRootPlayer();
+				
+				if ( !m_KillerData ) //only one player is considered killer in the event of crossfire
+				{
+					m_KillerData = new KillerData;
+					m_KillerData.m_Killer = killer;
+					m_KillerData.m_MurderWeapon = source;
+				}
+				
+				if ( killer && killer.IsPlayer() )
+				{
+					// was infected killed by headshot?
+					if ( dmgZone == "Head" ) //no "Brain" damage zone defined (nor can it be caught like on player, due to missing command handler), "Head" is sufficient
+					{
+						m_KilledByHeadshot = true;
+						if (m_KillerData.m_Killer == killer)
+							m_KillerData.m_KillerHiTheBrain = true;
+					}
+				}
+				SyncEvents.SendEntityKilled(this, m_KillerData.m_Killer, m_KillerData.m_MurderWeapon, m_KillerData.m_KillerHiTheBrain);
+				m_DeathSyncSent = true;
+			}
+		}
+	}
 }

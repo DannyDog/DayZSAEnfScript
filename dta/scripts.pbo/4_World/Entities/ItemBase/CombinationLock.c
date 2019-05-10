@@ -1,10 +1,10 @@
 class CombinationLock extends ItemBase
 {
-	static const int COMBINATION_LENGTH = 3;			//how many digits will the combination contain
-	int m_Combination 					= 111;			//actual combination that is dialed on lock
-	int m_CombinationLocked 			= 999;			//combination that was dialed on lock before the shuffle
+	int m_LockDigits;					//how many digits will the combination contain
+	int m_Combination;					//actual combination that is dialed on lock
+	int m_CombinationLocked;			//combination that was dialed on lock before the shuffle
 	
-	bool m_IsLockAttached;								//for storing to db
+	bool m_IsLockAttached;				//for storing to db
 	
 	//client only
 	int m_CombinationClient;
@@ -21,14 +21,24 @@ class CombinationLock extends ItemBase
 		
 	void CombinationLock()
 	{
-		int combination_length = Math.Pow( 10, COMBINATION_LENGTH );
+		SetBaseLockValues();
 		
 		//synchronized variables
+		int combination_length = Math.Pow( 10, m_LockDigits );
+		
 		RegisterNetSyncVariableInt( "m_Combination", 		0, combination_length - 1 );
 		RegisterNetSyncVariableInt( "m_CombinationLocked", 	0, combination_length - 1 );
-		RegisterNetSyncVariableBool( "m_IsLockAttached" );
+		RegisterNetSyncVariableBool( "m_IsLockAttached" );	
 	}
 	
+	protected void SetBaseLockValues()
+	{
+		//set lock init values
+		m_LockDigits 			= 3;
+		m_Combination		 	= 111;
+		m_CombinationLocked 	= 999;		
+	}
+
 	override void EEInit()
 	{
 		super.EEInit();
@@ -36,7 +46,7 @@ class CombinationLock extends ItemBase
 		//set visual on init
 		UpdateVisuals();
 	}	
-	
+
 	void SetLockAttachedState( bool state )
 	{
 		m_IsLockAttached = state;
@@ -104,21 +114,29 @@ class CombinationLock extends ItemBase
 	protected void ShowItem()
 	{
 		SetAnimationPhase( "Combination_Lock_Item", 0 );
+		SetAnimationPhase( "Lock_Item_1", 			0 );
+		SetAnimationPhase( "Lock_Item_2", 			0 );
 	}
 	
 	protected void HideItem()
 	{
 		SetAnimationPhase( "Combination_Lock_Item", 1 );
+		SetAnimationPhase( "Lock_Item_1", 			1 );
+		SetAnimationPhase( "Lock_Item_2", 			1 );
 	}
 	
 	protected void ShowAttached()
 	{
 		SetAnimationPhase( "Combination_Lock_Attached", 0 );
+		SetAnimationPhase( "Lock_Attached_1", 			0 );
+		SetAnimationPhase( "Lock_Attached_2", 			0 );
 	}
 	
 	protected void HideAttached()
 	{
 		SetAnimationPhase( "Combination_Lock_Attached", 1 );
+		SetAnimationPhase( "Lock_Attached_1", 			1 );
+		SetAnimationPhase( "Lock_Attached_2", 			1 );
 	}	
 	// ---
 	
@@ -242,7 +260,7 @@ class CombinationLock extends ItemBase
 		string dialed_text;
 		
 		//insert zeros to dials with 0 value
-		int length_diff = COMBINATION_LENGTH - combination_text.Length();
+		int length_diff = m_LockDigits - combination_text.Length();
 		for ( int i = 0; i < length_diff; ++i )
 		{
 			combination_text = "0" + combination_text;
@@ -272,13 +290,13 @@ class CombinationLock extends ItemBase
 	
 	void SetNextDial( out int dial_index )
 	{
-		if ( COMBINATION_LENGTH > 1 )
+		if ( m_LockDigits > 1 )
 		{
-			if ( dial_index <= COMBINATION_LENGTH - 2 )
+			if ( dial_index <= m_LockDigits - 2 )
 			{
 				dial_index++;
 			}
-			else if ( dial_index >= COMBINATION_LENGTH >  - 1 )
+			else if ( dial_index >= m_LockDigits >  - 1 )
 			{
 				dial_index = 0;
 			}
@@ -328,7 +346,7 @@ class CombinationLock extends ItemBase
 		string shuffled_text;
 		
 		//insert zeros to dials with 0 value
-		int length_diff = COMBINATION_LENGTH - combination_text.Length();
+		int length_diff = m_LockDigits - combination_text.Length();
 		for ( int i = 0; i < length_diff; ++i )
 		{
 			combination_text = "0" + combination_text;
@@ -381,4 +399,13 @@ class CombinationLock extends ItemBase
 	{
 		PlaySoundSet( m_Sound, SOUND_LOCK_CHANGE_DIAL, 0, 0 );
 	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionAttachToConstruction);		
+		AddAction(ActionNextCombinationLockDial);
+		AddAction(ActionDialCombinationLock);
+	}
 }

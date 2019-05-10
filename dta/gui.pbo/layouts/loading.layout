@@ -12,7 +12,7 @@ FrameWidgetClass LoadingFrame {
   PanelWidgetClass PanelWidget1 {
    clipchildren 0
    color 0 0 0 1
-   position -0.0008 0
+   position 0 0
    size 1 1
    halign center_ref
    valign center_ref
@@ -23,6 +23,7 @@ FrameWidgetClass LoadingFrame {
    style rover_sim_colorable
    {
     TextWidgetClass TextWidget {
+     visible 0
      position 0 0.05
      size 0.7438 0.06
      halign center_ref
@@ -33,8 +34,8 @@ FrameWidgetClass LoadingFrame {
      "text valign" center
     }
     ImageWidgetClass ImageBackground {
-     visible 0
-     position -0.0008 -0.001
+     visible 1
+     position 0 0
      size 0.16 0.09
      halign center_ref
      valign center_ref
@@ -42,17 +43,21 @@ FrameWidgetClass LoadingFrame {
      vexactpos 0
      hexactsize 0
      vexactsize 0
-     fixaspect inside
+     fixaspect outside
      image0 ""
-     imageTexture "{0655A1BF79F5B291}Gui/textures/loading_screens/loading_screen_1_co.edds"
+     imageTexture "{0DBE2630AF5047FD}Gui/textures/loading_screens/loading_screen_3_co.edds"
+     mode blend
+     "src alpha" 0
      stretch 1
+     Mask "{F2CEA7E35B785FB7}Gui/textures/loading_screens/loading_screen_3_mask.edds"
+     "Transition width" 1
+     Progress 0
     }
     TextWidgetClass ErrorText {
      position 0 0.0655
-     size 0.7438 50
+     size 0.7438 0.03
      halign center_ref
      valign bottom_ref
-     vexactsize 1
      "exact text" 1
      "text halign" center
      "text valign" center
@@ -60,12 +65,10 @@ FrameWidgetClass LoadingFrame {
     ImageWidgetClass ImageLogoMid {
      visible 1
      inheritalpha 1
-     position 0 0
+     position 100 78
      size 444 208
-     halign center_ref
-     valign center_ref
-     hexactpos 0
-     vexactpos 0
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect outside
@@ -80,11 +83,10 @@ FrameWidgetClass LoadingFrame {
     ImageWidgetClass ImageLogoCorner {
      visible 1
      inheritalpha 1
-     position 0.05 0.05
+     position 100 78
      size 444 208
-     valign bottom_ref
-     hexactpos 0
-     vexactpos 0
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      fixaspect outside
@@ -97,14 +99,15 @@ FrameWidgetClass LoadingFrame {
      nocache 0
     }
     ImageWidgetClass ImageLoadingIcon {
+     visible 0
      inheritalpha 0
      ignorepointer 0
      keepsafezone 0
-     position 0.055 0.07
+     position 80 80
      size 64 64
      halign right_ref
-     hexactpos 0
-     vexactpos 0
+     hexactpos 1
+     vexactpos 1
      hexactsize 1
      vexactsize 1
      scaled 1
@@ -131,6 +134,32 @@ FrameWidgetClass LoadingFrame {
      text "100%"
      font "gui/fonts/sdf_MetronLight24"
      "text halign" center
+    }
+    PanelWidgetClass BottomPanel {
+     ignorepointer 1
+     color 0 0 0 0.549
+     size 1 0.1
+     halign center_ref
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style rover_sim_colorable
+     {
+      ProgressBarWidgetClass LoadingBar {
+       ignorepointer 1
+       position 0 25
+       size 600 3
+       halign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       style Loading
+       current 45
+      }
+     }
     }
    }
   }

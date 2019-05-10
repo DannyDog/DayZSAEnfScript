@@ -1,0 +1,117 @@
+GridSpacerWidgetClass NotificationElementRoot {
+ inheritalpha 0
+ color 0.3137 0.3137 0.3137 0.4706
+ position 0 0
+ size 1 32
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ style DayZDefaultPanel
+ Padding 0
+ Margin 3
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Columns 1
+ Rows 2
+ {
+  GridSpacerWidgetClass TopSpacer {
+   inheritalpha 0
+   ignorepointer 1
+   color 1 1 1 0.9961
+   position 0 0
+   size 1 32
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style Empty
+   Padding 10
+   Margin 0
+   "Size To Content H" 1
+   "Size To Content V" 1
+   Columns 2
+   Rows 1
+   {
+    ImageWidgetClass Image {
+     inheritalpha 1
+     ignorepointer 1
+     size 1 0.1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     fixaspect fixwidth
+     mode blend
+     "src alpha" 1
+     "no wrap" 1
+     stretch 1
+    }
+    RichTextWidgetClass Title {
+     inheritalpha 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "exact text size" 22
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
+    }
+   }
+  }
+  GridSpacerWidgetClass BottomSpacer {
+   visible 0
+   ignorepointer 1
+   color 1 1 1 0.9961
+   position 0 0
+   size 1 30
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style Empty
+   Padding 10
+   Margin 0
+   "Size To Content H" 1
+   "Size To Content V" 1
+   content_valign center
+   Columns 2
+   Rows 1
+   {
+    FrameWidgetClass Spacer {
+     inheritalpha 1
+     ignorepointer 1
+     position 0 0
+     size 1 0.1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     fixaspect fixwidth
+    }
+    RichTextWidgetClass Detail {
+     inheritalpha 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "exact text size" 18
+     "size to text v" 1
+     "text valign" center
+     wrap 1
+    }
+   }
+  }
+ }
+}

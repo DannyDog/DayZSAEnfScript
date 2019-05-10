@@ -306,4 +306,12 @@ class FishingRod_Base : ItemBase
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionToggleFishing);
+		AddAction(ActionFishing);
+	}
 }

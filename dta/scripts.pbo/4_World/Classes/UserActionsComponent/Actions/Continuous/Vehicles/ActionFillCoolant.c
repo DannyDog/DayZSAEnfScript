@@ -62,19 +62,21 @@ class ActionFillCoolant: ActionContinuousBase
 		if( car.GetFluidFraction( CarFluid.COOLANT ) >= 0.95 )
 			return false;
 
-		float distance = Math.AbsFloat(vector.Distance(car.GetPosition(), player.GetPosition()));
+		array<string> selections = new array<string>;
+		target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
 
 		CarScript carS = CarScript.Cast(car);
-		if( distance <= carS.GetActionDistanceCoolant() )
+		
+		if( carS )
 		{
-			array<string> selections = new array<string>;
-			target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
-
 			for (int s = 0; s < selections.Count(); s++)
 			{
 				if ( selections[s] == carS.GetActionCompNameCoolant() )
 				{
-					return true;
+					float dist = vector.Distance( carS.GetCoolantPtcPosWS(), player.GetPosition() );
+
+					if ( dist < carS.GetActionDistanceCoolant() )
+						return true;
 				}
 			}
 		}

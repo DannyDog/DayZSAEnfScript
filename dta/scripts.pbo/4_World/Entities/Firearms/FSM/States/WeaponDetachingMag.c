@@ -10,7 +10,7 @@ class WeaponDetachingMag_Store extends WeaponStateBase
 
 	override void OnEntry (WeaponEventBase e)
 	{
-		wpnDebugPrint("[wpnfsm]  WeaponDetachingMag_Store, Detaching mag=" + m_magazine.ToString() +  "to loc=" + m_dst.DumpToString());
+		wpnDebugPrint("[wpnfsm]  WeaponDetachingMag_Store, Detaching mag=" + m_magazine.ToString() +  "to loc=" + InventoryLocation.DumpToStringNullSafe(m_dst));
 		super.OnEntry(e);
 
 		if (m_magazine && m_dst)

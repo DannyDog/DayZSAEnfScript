@@ -1,1 +1,8 @@
-class BDUJacket extends Clothing {};
+class BDUJacket extends Clothing
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};

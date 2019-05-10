@@ -4,4 +4,10 @@ class PipeWrench extends Inventory_Base
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionDismantlePart);
+	}
 }

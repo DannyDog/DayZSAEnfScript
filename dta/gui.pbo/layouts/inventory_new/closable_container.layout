@@ -18,7 +18,6 @@ WrapSpacerWidgetClass container_root {
  {
   WrapSpacerWidgetClass body {
    ignorepointer 1
-   color 0 0 0 0.7059
    position 0 0
    size 1 0
    hexactpos 1
@@ -26,8 +25,7 @@ WrapSpacerWidgetClass container_root {
    hexactsize 0
    vexactsize 1
    priority 1
-   style Empty
-   Padding 0
+   style Colorable
    Margin 0
    "Size To Content V" 1
   }

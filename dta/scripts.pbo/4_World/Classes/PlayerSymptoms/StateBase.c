@@ -154,7 +154,8 @@ class SymptomBase
 			OnGetActivatedServer(m_Player);
 			if( GetGame().IsMultiplayer() )
 			{
-				SyncToClientActivated( GetType(), GetUID() );
+				if( IsSyncToClient() ) 
+					SyncToClientActivated( GetType(), GetUID() );
 				GetManager().SendServerDebugToClient();
 			}
 		}
@@ -171,7 +172,10 @@ class SymptomBase
 		if( GetGame().IsServer() ) 
 		{
 			OnGetDeactivatedServer(m_Player);
-			if( GetGame().IsMultiplayer() ) SyncToClientDeactivated( GetType(), GetUID() );
+			if( GetGame().IsMultiplayer() && IsSyncToClient() )
+			{
+				SyncToClientDeactivated( GetType(), GetUID() );
+			}
 		}
 		if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
@@ -210,19 +214,19 @@ class SymptomBase
 		CheckDestroy();
 	}
 	
-	void PlayAnimationFB(int animation, int stance_mask, float running_time = -1, bool destroy_on_finish = true)
+	void PlayAnimationFB(int animation, int stance_mask, float running_time = -1)
 	{
 		DayZPlayerSyncJunctures.SendPlayerSymptomFB(m_Player, animation, GetType() , stance_mask, running_time );
 		m_AnimPlayRequested = true;
 	}
 	
-	void PlayAnimationADD(int type, bool destroy_on_finish = true)
+	void PlayAnimationADD(int type)
 	{
 		DayZPlayerSyncJunctures.SendPlayerSymptomADD(m_Player, type, GetType());
 		m_AnimPlayRequested = true;
 	}
 		
-	void PlaySound(EPlayerSoundEventID id, bool destroy_on_finish = true)
+	void PlaySound(EPlayerSoundEventID id)
 	{
 		GetPlayer().RequestSoundEvent(id);
 		m_PlayedSound = true;
@@ -230,7 +234,7 @@ class SymptomBase
 
 	void SyncToClientActivated( int SYMPTOM_id, int uid )
 	{
-		if( !GetPlayer() || !GetGame().IsServer() || !IsSyncToClient() ) return;
+		if( !GetPlayer() ) return;
 		
 		CachedObjectsParams.PARAM2_INT_INT.param1 = SYMPTOM_id;
 		CachedObjectsParams.PARAM2_INT_INT.param2 = uid;
@@ -239,7 +243,7 @@ class SymptomBase
 	
 	void SyncToClientDeactivated( int SYMPTOM_id, int uid )
 	{
-		if( !GetPlayer() || !GetGame().IsServer() || !IsSyncToClient() ) return;
+		if( !GetPlayer() ) return;
 		CachedObjectsParams.PARAM2_INT_INT.param1 = SYMPTOM_id;
 		CachedObjectsParams.PARAM2_INT_INT.param2 = uid;
 		GetGame().RPCSingleParam(GetPlayer(), ERPCs.RPC_PLAYER_SYMPTOM_OFF, CachedObjectsParams.PARAM2_INT_INT,true,GetPlayer().GetIdentity() );

@@ -226,9 +226,9 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		#ifdef PLATFORM_CONSOLE
-		if( m_Entity.GetInventory().CanAddEntityInCargo( item ) && item.GetInventory().CanRemoveEntity() )
+		if( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && item.GetInventory().CanRemoveEntity() )
 		#else
-		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, 0, x, y ) && item.GetInventory().CanRemoveEntity() )
+		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, 0, x, y, item.GetInventory().GetFlipCargo() ) && item.GetInventory().CanRemoveEntity() )
 		#endif
 		{
 			ItemManager.GetInstance().HideDropzones();
@@ -295,9 +295,9 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		#ifdef PLATFORM_CONSOLE
-		if( m_Entity.GetInventory().CanAddEntityInCargo( item ) )
+		if( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) )
 		#else
-		if( c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y ) )
+		if( c_x > x && c_y > y && m_Entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		#endif
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -315,6 +315,7 @@ class ContainerWithCargo: ClosableContainer
 		}
 		
 		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 	}
 	
 	void TakeIntoHands( notnull PlayerBase player, notnull EntityAI item )
@@ -372,7 +373,7 @@ class ContainerWithCargo: ClosableContainer
 			return;
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		if( item.GetInventory().CanRemoveEntity() && player.CanManipulateInventory() && ( m_Entity.GetInventory().CanAddEntityInCargo( item ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		if( item.GetInventory().CanRemoveEntity() && player.CanManipulateInventory() && ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && (!player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 			ItemManager.GetInstance().HideDropzones();
@@ -403,7 +404,7 @@ class ContainerWithCargo: ClosableContainer
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( GetEntity() )
 		{
-			bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( item );
+			bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() );
 			bool in_cargo = !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item );
 			if( can_add && in_cargo )
 			{

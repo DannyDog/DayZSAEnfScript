@@ -1,0 +1,1 @@
+class NioshFaceMask: Clothing {};

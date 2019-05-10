@@ -1,4 +1,11 @@
-class TShirt_ColorBase extends Clothing {};
+class TShirt_ColorBase extends Clothing 
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};
 class TShirt_Beige extends TShirt_ColorBase {};
 class TShirt_Black extends TShirt_ColorBase {};
 class TShirt_Blue extends TShirt_ColorBase {};

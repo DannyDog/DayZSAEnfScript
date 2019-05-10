@@ -40,6 +40,83 @@ class CargoContainer extends Container
 		m_FocusedItemPosition	= -1;
 	}
 	
+	void ~CargoContainer()
+	{
+		if( m_Entity )
+		{
+			m_Entity.GetOnItemAddedIntoCargo().Remove( AddedToCargo );
+			m_Entity.GetOnItemRemovedFromCargo().Remove( RemovedFromCargo );
+			m_Entity.GetOnItemMovedInCargo().Remove( MovedInCargo );
+		}
+	}
+	
+	void AddedToCargo( EntityAI item )
+	{
+		InventoryLocation il = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation( il );
+		int x = il.GetCol();
+		#ifdef PLATFORM_CONSOLE
+		int y = il.GetRow() - 1;
+		#else
+		int y = il.GetRow();
+		#endif
+		
+		ref Icon icon = new Icon( this );
+		m_Icons.Insert( icon );
+		InitIcon( icon, item, x, y );
+		m_ShowedItemPositions.Insert( item, new Param3<ref Icon, int, int>( icon, x, y ) );
+		UpdateHeaderText();
+		
+		#ifdef PLATFORM_CONSOLE
+		UpdateRowVisibility( m_ShowedItemPositions.Count() );
+		UpdateSelection();
+		#endif
+	}
+	
+	void RemovedFromCargo( EntityAI item )
+	{
+		Icon ic			= m_ShowedItemPositions.Get( item ).param1;
+		m_Icons.RemoveItem( ic );
+		m_ShowedItemPositions.Remove( item );
+		UpdateHeaderText();
+		#ifdef PLATFORM_CONSOLE
+		UpdateRowVisibility( m_ShowedItemPositions.Count() );
+		UpdateSelection();
+		#endif
+	}
+	
+	void MovedInCargo( EntityAI item )
+	{
+		InventoryLocation il = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation( il );
+		Print( "Removing from cargo" );
+		int x = il.GetCol();
+		#ifdef PLATFORM_CONSOLE
+		int y = il.GetRow() - 1;
+		#else
+		int y = il.GetRow();
+		#endif
+		
+		if( m_ShowedItemPositions.Contains( item ) )
+		{
+			ref Param3<ref Icon, int, int> data = m_ShowedItemPositions.Get( item );
+			if( data.param1 )
+			{
+				if( data.param2 != x || data.param3 != y )
+				{
+					data.param2 = x;
+					data.param3 = y;
+					#ifdef PLATFORM_CONSOLE
+						data.param1.SetCargoPos( data.param3 );
+					#endif
+					data.param1.SetPosX( data.param2 );
+					data.param1.SetPosY( data.param3 );
+				}
+				data.param1.UpdateInterval();
+			}
+		}
+	}
+	
 	override void SetLayoutName()
 	{
 		#ifdef PLATFORM_CONSOLE
@@ -72,13 +149,36 @@ class CargoContainer extends Container
 		if( item )
 		{
 			m_Entity		= item;
-			
-			InitGridHeight();
-			
 			m_Cargo			= item.GetInventory().GetCargo();
+			
+			m_Entity.GetOnItemAddedIntoCargo().Insert( AddedToCargo );
+			m_Entity.GetOnItemRemovedFromCargo().Insert( RemovedFromCargo );
+			m_Entity.GetOnItemMovedInCargo().Insert( MovedInCargo );
+			UpdateHeaderText();
+
+			InitGridHeight();
 			m_MainWidget	= m_ItemsContainer;
 			
-			UpdateHeaderText();
+			if( m_Cargo )
+			{
+				int i;
+				int prev_count = m_ShowedItemPositions.Count();
+				
+				//START - Add new item Icons
+				for( i = 0; i < m_Cargo.GetItemCount(); i++ )
+				{
+					EntityAI cargo_item = m_Cargo.GetItem( i );
+					if( cargo_item )
+					{
+						AddedToCargo( cargo_item );
+					}
+				}
+				
+				#ifdef PLATFORM_CONSOLE
+				UpdateRowVisibility( m_ShowedItemPositions.Count() );
+				UpdateSelection();
+				#endif
+			}
 		}
 	}
 	
@@ -93,24 +193,18 @@ class CargoContainer extends Container
 			name = name + " (" + GetCargoCapacity().ToString() + "/" + GetMaxCargoCapacity() + ")";
 			if( m_IsAttachment && m_CargoHeader )
 			{
-				header = m_CargoHeader;
+				TextWidget.Cast( m_CargoHeader.FindAnyWidget( "TextWidget0" ) ).SetText( name );
+				float x, y;
+				m_CargoHeader.FindAnyWidget( "TextWidget0" ).Update();
+				m_CargoHeader.FindAnyWidget( "TextWidget0" ).GetScreenSize( x, y );
+				m_CargoHeader.FindAnyWidget( "grid_container_header" ).SetSize( 1, y + InventoryMenu.GetHeightMultiplied( 10 ) );
+				m_CargoHeader.Update();
+				return;
 			}
-			else if( GetParent().GetRootWidget().FindAnyWidget( "hands_item_header" ) )
-			{
-				header = GetParent().GetRootWidget().FindAnyWidget( "hands_item_header" );
-			}
-			else
-			{
-				header = GetParent().GetRootWidget().FindAnyWidget( "closable_header_root" );
-			}
-			
-			if( header )
-				TextWidget.Cast( header.FindAnyWidget( "TextWidget0" ) ).SetText( name );
 		}
-		else
-		{
-			TextWidget.Cast( header.FindAnyWidget( "TextWidget0" ) ).SetText( name );
-		}
+		
+		if( Container.Cast( GetParent() ) && Container.Cast( GetParent() ).GetHeader() )
+			Container.Cast( GetParent() ).GetHeader().SetName( name );
 	}
 	
 	void InitGridHeight()
@@ -251,9 +345,10 @@ class CargoContainer extends Container
 			if( m_FocusedItemPosition >= m_Icons.Count() )
 				m_FocusedItemPosition = m_Icons.Count() - 1;
 			Icon icon = GetIcon( m_FocusedItemPosition );
-			if( icon )
+			if( icon && !icon.IsActive() )
 			{
 				icon.SetActive( true );
+				Inventory.GetInstance().UpdateConsoleToolbar();
 			}
 		}
 	}
@@ -293,89 +388,12 @@ class CargoContainer extends Container
 	
 	override void UpdateInterval()
 	{
-		if( m_Cargo )
+		foreach( Param3<ref Icon, int, int> data : m_ShowedItemPositions )
 		{
-			int i;
-			array<EntityAI> cargo_items = new array<EntityAI>;
-			int prev_count = m_ShowedItemPositions.Count();
-			
-			//START - Add new item Icons
-			for( i = 0; i < m_Cargo.GetItemCount(); i++ )
+			if( data.param1 )
 			{
-				int x, y;
-				m_Cargo.GetItemRowCol( i, y, x );
-				EntityAI item = m_Cargo.GetItem( i );
-				InventoryLocation il = new InventoryLocation;
-				item.GetInventory().GetCurrentInventoryLocation( il );
-				
-				if( m_ShowedItemPositions.Contains( item ) )
-				{
-					ref Param3<ref Icon, int, int> data = m_ShowedItemPositions.Get( item );
-					if( data.param1 )
-					{
-						if( data.param2 != x || data.param3 != y )
-						{
-							data.param2 = x;
-							data.param3 = y;
-							#ifdef PLATFORM_CONSOLE
-								data.param1.SetCargoPos( data.param3 );
-							#endif
-							data.param1.SetPos( data.param2, data.param3 );
-						}
-						data.param1.UpdateInterval();
-						cargo_items.Insert( item );
-					}
-				}
-				else
-				{
-					ref Icon icon = new Icon( this );
-					m_Icons.Insert( icon );
-					InitIcon( icon, item, x, y );
-					m_ShowedItemPositions.Insert( item, new Param3<ref Icon, int, int>( icon, x, y ) );
-					cargo_items.Insert( item );
-					UpdateHeaderText();
-					#ifdef PLATFORM_CONSOLE
-						UpdateSelection();
-					#endif
-				}
-				
+				data.param1.UpdateInterval();
 			}
-			
-			i = 0;
-			while( i < m_ShowedItemPositions.Count() )
-			{
-				EntityAI item2	= m_ShowedItemPositions.GetKey( i );
-				Icon ic			= m_ShowedItemPositions.GetElement( i ).param1;
-				if( !item2 )
-				{
-					m_ShowedItemPositions.RemoveElement( i );
-					if( ic )
-						delete ic;
-				}
-				else 
-				{
-					if( cargo_items.Find( item2 ) == -1 )
-					{
-						m_Icons.RemoveItem( m_ShowedItemPositions.GetElement( i ).param1 );
-						m_ShowedItemPositions.Remove( item2 );
-						if( ic )
-							delete ic;
-						UpdateHeaderText();
-						#ifdef PLATFORM_CONSOLE
-							UpdateSelection();
-						#endif
-					}
-					i++;
-				}
-			}
-			
-			#ifdef PLATFORM_CONSOLE
-			if( prev_count != m_ShowedItemPositions.Count() )
-			{
-				UpdateRowVisibility( m_ShowedItemPositions.Count() );
-				UpdateSelection();
-			}
-			#endif
 		}
 	}
 
@@ -387,14 +405,22 @@ class CargoContainer extends Container
 				pos_y = pos_y * 5 + pos_x;
 			#endif
 			icon.SetCargoPos( pos_y );
-			icon.SetPos( 0, pos_y );
+			icon.SetPosY( pos_y );
+			icon.SetPos();
 		#else
 			int size_x, size_y;
 			GetGame().GetInventoryItemSize( InventoryItem.Cast( item ), size_x, size_y );
-			icon.SetSize( size_x, size_y );
-			icon.SetPos( pos_x, pos_y );
+			if( item.GetInventory().GetFlipCargo() )
+			{
+				icon.SetSize( size_y, size_x );
+			}
+			else
+			{
+				icon.SetSize( size_x, size_y );
+			}
 			icon.SetPosX( pos_x );
 			icon.SetPosY( pos_y );
+			icon.SetPos();
 		#endif
 		icon.Init( item );
 		return icon;
@@ -625,7 +651,7 @@ class CargoContainer extends Container
 			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
 			if( selected_item && m_Entity )
 			{
-				bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( selected_item );
+				bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo());
 				bool in_cargo = !player.GetInventory().HasEntityInInventory( selected_item ) || !m_Entity.GetInventory().HasEntityInCargo( selected_item );
 				if( can_add && in_cargo )
 				{
@@ -700,7 +726,7 @@ class CargoContainer extends Container
 		{
 			Container cnt;
 			Icon icon = GetIcon( m_FocusedItemPosition );
-			if( icon != null )
+			if( icon )
 			{
 				icon.SetActive( false );
 				ItemManager.GetInstance().HideTooltip( );
@@ -719,9 +745,10 @@ class CargoContainer extends Container
 			if( direction == Direction.UP )
 			{
 				m_FocusedItemPosition -= ROWS_NUMBER_XBOX;
+				focused_row = m_FocusedItemPosition / ROWS_NUMBER_XBOX;
 				if( m_FocusedItemPosition < 0 )
 				{
-					m_FocusedItemPosition = m_Icons.Count() - 1;
+					m_FocusedItemPosition = 0;
 					cnt = Container.Cast( GetParent() );
 					if( cnt )
 					{
@@ -733,22 +760,20 @@ class CargoContainer extends Container
 			else if( direction == Direction.DOWN )
 			{
 				m_FocusedItemPosition += ROWS_NUMBER_XBOX;
-				if( m_FocusedItemPosition > m_Icons.Count() - 1 )
+				focused_row = m_FocusedItemPosition / ROWS_NUMBER_XBOX;
+				if( m_FocusedItemPosition > m_Icons.Count() - 1 && focused_row > max_rows - 1 )
 				{
-					if( focused_row < max_rows - 1 )
+					cnt = Container.Cast( GetParent() );
+					if( cnt )
 					{
-						m_FocusedItemPosition = m_Icons.Count() - 1;
+						cnt.SetNextActive();
 					}
-					else
-					{
-						cnt = Container.Cast( GetParent() );
-						if( cnt )
-						{
-							cnt.SetNextActive();
-						}
-						m_FocusedItemPosition = 0;
-						return;
-					}
+					m_FocusedItemPosition = 0;
+					return;
+				}
+				else if( m_FocusedItemPosition > m_Icons.Count() - 1 )
+				{
+					m_FocusedItemPosition = m_Icons.Count() - 1;
 				}
 			}
 			else if( direction == Direction.RIGHT )

@@ -28,7 +28,7 @@ class CholeraMdfr: ModifierBase
 	override protected void OnActivate(PlayerBase player)
 	{
 		m_IsVomiting = false;
-		//if( player.m_NotifiersManager ) player.m_NotifiersManager.AttachByType(eNotifiers.NTF_SICK);
+		//if( player.m_NotifiersManager ) player.m_NotifiersManager.ActivateByType(eNotifiers.NTF_SICK);
 		player.IncreaseDiseaseCount();
 	}
 

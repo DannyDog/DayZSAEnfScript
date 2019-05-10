@@ -162,6 +162,84 @@ class DayZPlayerTypeAttachmentSoundLookupTableImpl extends DayZPlayerTypeAttachm
 }
 
 
+class DayZPlayerTypeVoiceSoundLookupTableImpl extends DayZPlayerTypeVoiceSoundLookupTable
+{
+	void DayZPlayerTypeVoiceSoundLookupTableImpl()
+	{
+		m_pSoundTableInstances = new map<int, ref PlayerVoiceLookupTable>;
+		m_pSoundTables = new map<int, PlayerVoiceLookupTable>();
+		
+		string cfgPath = "CfgVehicles SurvivorBase AnimEvents SoundVoice ";
+		int childCount = GetGame().ConfigGetChildrenCount(cfgPath);
+		Print("childCount:" + childCount);
+		for(int i = 0; i < childCount; i++)
+		{
+			string defName;
+			GetGame().ConfigGetChildName(cfgPath, i, defName);
+			string defPath = cfgPath + defName + " ";
+			
+			int id = GetGame().ConfigGetInt(defPath + "id");
+			
+			string tableName;
+			GetGame().ConfigGetText(defPath + "soundLookupTable", tableName);
+			
+			PlayerVoiceLookupTable table = m_pSoundTableInstances.Get(tableName.Hash());
+			if(table == NULL)
+			{
+				table = new PlayerVoiceLookupTable();
+				table.LoadTable(tableName);
+				m_pSoundTableInstances.Insert(tableName.Hash(), table);
+				
+				string noiseName;
+				if(GetGame().ConfigGetText(defPath + "noise", noiseName))
+				{
+					NoiseParams np = new NoiseParams;
+					np.Load(noiseName);
+					table.SetNoiseParam(np);
+				}
+			}
+
+			m_pSoundTables.Insert(id, table);
+		}
+	}
+	
+	override SoundObjectBuilder GetSoundBuilder(int eventId, int parameterHash)
+	{
+		PlayerVoiceLookupTable table = m_pSoundTables.Get(eventId);
+		if(table == NULL)
+			return NULL;
+		
+		SoundObjectBuilder soundBuilder = table.GetSoundBuilder(parameterHash);
+		if(soundBuilder == NULL)
+			return NULL;
+		
+		return soundBuilder;
+	}
+	
+	override NoiseParams GetNoiseParams(int eventId)
+	{
+		PlayerVoiceLookupTable table = m_pSoundTables.Get(eventId);
+		if(table == NULL)
+			return NULL;
+		
+		return table.GetNoiseParam();
+	}
+	
+	static DayZPlayerTypeVoiceSoundLookupTableImpl GetInstance()
+	{
+		if(m_instance == NULL)
+			m_instance = new DayZPlayerTypeVoiceSoundLookupTableImpl();
+
+		return m_instance;
+	}
+	
+	private static ref DayZPlayerTypeVoiceSoundLookupTableImpl m_instance;
+	private autoptr map<int, ref PlayerVoiceLookupTable> m_pSoundTableInstances;
+	private autoptr map<int, PlayerVoiceLookupTable> m_pSoundTables;
+}
+
+
+
 class DayZPlayerTypeSoundTableImpl extends DayZPlayerTypeAnimTable
 {
 	void DayZPlayerTypeSoundTableImpl()
@@ -208,11 +286,12 @@ class DayZPlayerTypeSoundTableImpl extends DayZPlayerTypeAnimTable
 	private ref array<ref AnimSoundEvent> m_animSoundEvents;
 }
 
+/*
 class DayZPlayerTypeSoundVoiceTableImpl extends DayZPlayerTypeAnimTable
 {
 	void DayZPlayerTypeSoundVoiceTableImpl()
 	{
-		m_animSoundEvents = new array<ref AnimSoundEvent>;
+		m_animSoundEvents = new map<int, ref AnimSoundEvent>;
 		
 		string soundsCfgPath = "CfgVehicles SurvivorBase AnimEvents SoundVoice ";
 
@@ -224,27 +303,19 @@ class DayZPlayerTypeSoundVoiceTableImpl extends DayZPlayerTypeAnimTable
 			string soundPath = soundsCfgPath + soundName + " ";
 			AnimSoundEvent soundEvent = new AnimSoundEvent(soundPath);
 			if(soundEvent.IsValid())
-				m_animSoundEvents.Insert(soundEvent);
+				m_animSoundEvents.Insert(soundEvent.m_iID, soundEvent);
 		}
 	}
 	
 	override AnimSoundEvent GetSoundEvent(int event_id)
 	{
-		for(int i = 0; i < m_animSoundEvents.Count(); i++)
-		{
-			AnimSoundEvent soundEvent = m_animSoundEvents.Get(i);
-			if(soundEvent.m_iID == event_id)
-			{
-				return soundEvent;
-			}
-		}
-
-		return NULL;
+		AnimSoundEvent soundEvent = m_animSoundEvents.Get(event_id);
+		return soundEvent;
 	}
 	
-	ref array<ref AnimSoundEvent> m_animSoundEvents;
+	ref map<int, ref AnimSoundEvent> m_animSoundEvents;
 }
-
+*/
 
 void DayZPlayerTypeRegisterSounds(DayZPlayerType pType)
 {
@@ -259,7 +330,9 @@ void DayZPlayerTypeRegisterSounds(DayZPlayerType pType)
 		pType.RegisterSoundEvent("SoundAttachment", 0.2);
 	
 	
-
+	DayZPlayerTypeVoiceSoundLookupTableImpl voiceTable2 = DayZPlayerTypeVoiceSoundLookupTableImpl.GetInstance();
+	pType.RegisterVoiceSoundLookupTable(voiceTable2);
+	
 	if(GetGame().IsClient() || !GetGame().IsMultiplayer())//sounds are unnecessary on server
 	{
 		pType.RegisterParticleEvent("Particle", -1);
@@ -270,11 +343,13 @@ void DayZPlayerTypeRegisterSounds(DayZPlayerType pType)
 		DayZPlayerTypeAttachmentSoundLookupTableImpl attachTable = DayZPlayerTypeAttachmentSoundLookupTableImpl.GetInstance();
 		pType.RegisterAttachmentSoundLookupTable(attachTable);
 		
+
+		
 		DayZPlayerTypeSoundTableImpl soundTable = DayZPlayerTypeSoundTableImpl.GetInstance();
 		pType.RegisterSoundTable(soundTable);
 		
-		DayZPlayerTypeSoundVoiceTableImpl voiceTable = new DayZPlayerTypeSoundVoiceTableImpl();
-		pType.RegisterSoundVoiceTable(voiceTable);
+		//DayZPlayerTypeSoundVoiceTableImpl voiceTable = new DayZPlayerTypeSoundVoiceTableImpl();
+		//pType.RegisterSoundVoiceTable(voiceTable);
 	}
 	GetGame().ProfilerStop("DayZPlayerTypeRegisterSounds");
 }

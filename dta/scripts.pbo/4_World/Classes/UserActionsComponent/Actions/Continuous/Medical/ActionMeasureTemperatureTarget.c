@@ -38,6 +38,17 @@ class ActionMeasureTemperatureTarget : ActionContinuousBase
 	{
 		return "#measure_persons_temperature";
 	}
+	
+	override void OnFinishProgressClient( ActionData action_data )
+	{
+		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
+		Thermometer thermometer = Thermometer.Cast(action_data.m_MainItem);
+
+		if(thermometer)
+		{
+			ntarget.SetLastUAMessage(thermometer.GetTemperatureMessage(ntarget));
+		}
+	}
 
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
@@ -46,8 +57,9 @@ class ActionMeasureTemperatureTarget : ActionContinuousBase
 		
 		if(thermometer)
 		{
-			SendMessageToClient(action_data.m_Player, thermometer.GetTemperatureMessage(ntarget));
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(thermometer.GetTemperatureMessage(ntarget));
+			rpc.Send(ntarget, ERPCs.RPC_SYNC_THERMOMETER, true, ntarget.GetIdentity() );
 		}
-		
 	}
 };

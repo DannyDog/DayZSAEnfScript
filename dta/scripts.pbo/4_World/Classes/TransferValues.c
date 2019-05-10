@@ -42,11 +42,13 @@ class TransferValues extends Managed
 		#ifdef DEVELOPER
 		if ( DiagMenu.GetBool(DiagMenuIDs.DM_TRANSFER_VALUES_SHOW) )
 		{
-			ShowDebugValues(true);
+			if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+				ShowDebugValues(true);
 		}
 		else
 		{
-			ShowDebugValues(false);
+			if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+				ShowDebugValues(false);
 		}
 		#endif
 		
@@ -155,8 +157,7 @@ class TransferValues extends Managed
 	
 	void ShowDebugValues(bool show)
 	{
-		if( GetGame().IsMultiplayer() && GetGame().IsServer() ) return;
-		
+		#ifdef DEVELOPER
 		if( show )
 		{
 			
@@ -175,6 +176,7 @@ class TransferValues extends Managed
 			DbgUI.End();
 	        DbgUI.EndCleanupScope();   
 		}
-		
+		#endif
 	}
+	
 }

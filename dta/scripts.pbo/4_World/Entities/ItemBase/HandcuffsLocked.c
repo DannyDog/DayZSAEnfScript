@@ -41,6 +41,13 @@ class RestrainingToolLocked extends ItemBase
 			}
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionUnrestrainSelf);
+	}
 }
 
 class HandcuffsLocked extends RestrainingToolLocked

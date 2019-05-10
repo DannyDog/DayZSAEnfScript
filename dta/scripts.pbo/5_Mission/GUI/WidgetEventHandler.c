@@ -417,7 +417,7 @@ class WidgetEventHandler: ScriptedWidgetEventHandler
 			m_OnMouseWheel.Remove( w );
 		}
 
-		Param param2 = new Param3<int, int, int>( x, y, wheel );
+		Param param2 = new Param4<Widget, int, int, int>( w, x, y, wheel );
 		GetGame().GameScript.CallFunctionParams( param.param1, param.param2, NULL, param2 );
 
 		return true;

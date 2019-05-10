@@ -39,6 +39,9 @@ class MainMenu extends UIScriptedMenu
 	protected ref WidgetFadeTimer	m_LastPlayedTooltipTimer;
 	protected ref Widget			m_LastFocusedButton;
 
+	protected ref ModsMenuSimple	m_ModsSimple;
+	protected ref ModsMenuDetailed	m_ModsDetailed;
+
 	override Widget Init()
 	{
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/main_menu.layout" );
@@ -115,32 +118,12 @@ class MainMenu extends UIScriptedMenu
 	
 	void LoadMods()
 	{
-		/*
-		ref array<ModInfo> modArray = new array<ModInfo>;
+		ref array<ref ModInfo> modArray = new array<ref ModInfo>;
 		
 		GetGame().GetModInfos( modArray );
-		int count				= Math.Min( modArray.Count(), 4 );
 		
-		if( count > 0 )
-		{
-			layoutRoot.FindAnyWidget( "Mods" ).Show( true );
-			for( int i = 0; i < count; i++ )
-			{
-				ModInfo mod			= modArray.Get( i );
-				ImageWidget image	= ImageWidget.Cast( layoutRoot.FindAnyWidget( "Mod" + i ) );
-				string logo			= mod.GetLogo();
-				if( logo != "" )
-				{
-					image.LoadImageFile( 0, logo );
-				}
-				
-				image.Show( true );	
-			}
-			
-			if( modArray.Count() > 4 )
-				layoutRoot.FindAnyWidget( "ModMore" ).Show( true );
-		}
-		*/
+		//m_ModsSimple = new ModsMenuSimple(modArray, layoutRoot.FindAnyWidget("ModsSimple"));
+		//m_ModsDetailed = new ModsMenuDetailed(modArray, layoutRoot.FindAnyWidget("ModsDetailed"));
 	}
 	
 	override bool OnMouseButtonDown( Widget w, int x, int y, int button )
@@ -363,7 +346,6 @@ class MainMenu extends UIScriptedMenu
 	override void OnShow()
 	{
 		SetFocus( null );
-		LoadMods();
 		return;
 		/*
 		GetDayZGame().GetBacklit().MainMenu_OnShow();
@@ -493,10 +475,11 @@ class MainMenu extends UIScriptedMenu
 				else
 					m_ScenePC.GetIntroCharacter().SetCharacterGender(ECharGender.Female);
 			}
+			
+			//update character stats
+			m_Stats.UpdateStats();
 		}
 	}
-	
-	
 	
 	void OpenStats()
 	{

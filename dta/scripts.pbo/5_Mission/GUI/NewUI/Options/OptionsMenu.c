@@ -71,12 +71,24 @@ class OptionsMenu extends UIScriptedMenu
 		m_Tabber.m_OnTabSwitch.Insert( OnTabSwitch );
 		
 		#ifdef PLATFORM_PS4
+			string confirm = "cross";
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				confirm = "cross";
+				back = "circle";
+			}
+			else
+			{
+				confirm = "circle";
+				back = "cross";
+			}
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "ToggleIcon" );
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
 			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "ApplyIcon" );
 			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ResetIcon" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif

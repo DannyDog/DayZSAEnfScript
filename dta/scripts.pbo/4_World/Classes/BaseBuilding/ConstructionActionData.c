@@ -162,14 +162,14 @@ class ConstructionActionData
 		string combination_text = m_CombinationLock.m_Combination.ToString();
 		
 		//insert zeros to dials with 0 value
-		int length_diff = m_CombinationLock.COMBINATION_LENGTH - combination_text.Length();
+		int length_diff = m_CombinationLock.m_LockDigits - combination_text.Length();
 		for ( int i = 0; i < length_diff; ++i )
 		{
 			combination_text = "0" + combination_text;
 		}
 		
 		//assemble the whole combination with selected part
-		for ( int j = 0; j < m_CombinationLock.COMBINATION_LENGTH; ++j )
+		for ( int j = 0; j < m_CombinationLock.m_LockDigits; ++j )
 		{
 			if ( j == m_DialIndex )
 			{

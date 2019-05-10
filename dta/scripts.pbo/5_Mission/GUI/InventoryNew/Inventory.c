@@ -101,6 +101,9 @@ class Inventory: LayoutHolder
 	protected bool							m_ControllerRightStickTimerEnd = true;
 	protected ref Timer						m_ControllerRightStickTimer;
 	
+	protected bool							m_HoldingQB;
+	protected InventoryItem					m_QBHoveredItems;
+	
 	void Inventory( LayoutHolder parent )
 	{
 		m_Instance = this;
@@ -159,6 +162,11 @@ class Inventory: LayoutHolder
 			m_BottomConsoleToolbar			= RichTextWidget.Cast( GetRootWidget().FindAnyWidget( "ContextToolbarText" ) );
 			UpdateConsoleToolbar();
 		#endif
+	}
+	
+	static Inventory GetInstance()
+	{
+		return m_Instance;
 	}
 	
 	void Serialize()
@@ -336,7 +344,7 @@ class Inventory: LayoutHolder
 		
 		if ( control == 4 && value == 1 )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -350,7 +358,7 @@ class Inventory: LayoutHolder
 		}
 		else if ( control == 3 && value == 1 )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -364,7 +372,7 @@ class Inventory: LayoutHolder
 		}
 		else if ( control == 5 && value == 1 )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -378,7 +386,7 @@ class Inventory: LayoutHolder
 		}
 		else if ( control == 6 && value == 1 )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -393,19 +401,6 @@ class Inventory: LayoutHolder
 		
 		UpdateConsoleToolbar();
 		return false;
-	}
-	
-	void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_RightArea.RefreshQuantity( item_to_refresh );
-		m_HandsArea.RefreshQuantity( item_to_refresh );
-		m_LeftArea.RefreshQuantity( item_to_refresh );
-	}
-	
-	void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		m_LeftArea.RefreshItemPosition( item_to_refresh );
-		m_RightArea.RefreshItemPosition( item_to_refresh );
 	}
 
 	void DraggingOverHandsPanel( Widget w, int x, int y, Widget receiver )
@@ -496,7 +491,7 @@ class Inventory: LayoutHolder
 					}
 					else if( player.CanReceiveItemIntoCargo( item ) )
 					{
-						player.PredictiveTakeEntityToCargo( item );
+						player.PredictiveTakeEntityToTargetCargo( player, item );
 					}
 				}
 			}
@@ -571,6 +566,15 @@ class Inventory: LayoutHolder
 	override void UpdateInterval()
 	{
 		PlayerBase player;
+		if( GetGame().GetInput().LocalPress( "UAUIRotateInventory", false ) )
+		{
+			InventoryItem item = InventoryItem.Cast( ItemManager.GetInstance().GetDraggedItem() );
+			if( item )
+			{
+				item.GetInventory().FlipCargo();
+				item.GetOnItemFlipped().Invoke(item.GetInventory().GetFlipCargo());
+			}
+		}
 		
 		if( GetGame().GetInput().LocalPress( "UAUIExpandCollapseContainer", false ) )
 		{
@@ -608,7 +612,7 @@ class Inventory: LayoutHolder
 			ItemManager.GetInstance().HideTooltip();
 		}
 		
-		if( GetGame().GetInput().LocalRelease( "UAUISelectItem", false ) )
+		if( GetGame().GetInput().LocalRelease( "UAUISelect", false ) )
 		{
 			if( m_RightArea.IsActive() )
 			{
@@ -715,7 +719,7 @@ class Inventory: LayoutHolder
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -748,7 +752,7 @@ class Inventory: LayoutHolder
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -782,7 +786,7 @@ class Inventory: LayoutHolder
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -834,7 +838,7 @@ class Inventory: LayoutHolder
 
 		if( GetGame().GetInput().LocalPress( "UAUITabRight", false ) )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelectItem", false ) )
+			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
@@ -946,9 +950,18 @@ class Inventory: LayoutHolder
 		
 		for( int i = 0; i < 10; i++ )
 		{
-			if( GetGame().GetInput().LocalPress( "UAItemInventory" + i, false ) )
+			if( !m_HoldingQB && GetGame().GetInput().LocalPress( "UAItem" + i, false ) )
 			{
-				AddQuickbarItem( InventoryItem.Cast( ItemManager.GetInstance().GetHoveredItem() ), i );
+				m_QBHoveredItems = InventoryItem.Cast( ItemManager.GetInstance().GetHoveredItem() );
+				m_HoldingQB = true;
+			}
+			
+			if( m_HoldingQB && GetGame().GetInput().LocalHold( "UAItem" + i, false ) )
+			{
+				
+				AddQuickbarItem( m_QBHoveredItems, i );
+				m_QBHoveredItems = null;
+				m_HoldingQB = false;
 			}
 		}
 
@@ -1156,21 +1169,36 @@ class Inventory: LayoutHolder
 	static const string quickslot = "<image set=\"xbox_buttons\" name=\"LS\" /> " + "#dayz_context_menu_quickslot" + "    ";
 	#else
 	#ifdef PLATFORM_PS4
-	static const string to_hands_swap = "<image set=\"playstation_buttons\" name=\"cross\" /> To hands/swap    ";
-	static const string drop = "<image set=\"playstation_buttons\" name=\"square\" />(hold) Drop    ";
-	static const string equip = "<image set=\"playstation_buttons\" name=\"triangle\" /> Equip    ";
-	static const string split = "<image set=\"playstation_buttons\" name=\"triangle\" /> Split    ";
-	static const string to_inventory = "<image set=\"playstation_buttons\" name=\"square\" /> To inventory    ";
-	static const string open_close_container = "<image set=\"playstation_buttons\" name=\"R3\" /> Open/Close container    ";
-	static const string combine = "<image set=\"playstation_buttons\" name=\"circle\" /> Combine";
-	static const string micromanagment = "<image set=\"playstation_buttons\" name=\"cross\" /> (hold) Micromanagment    ";
-	static const string quickslot = "<image set=\"playstation_buttons\" name=\"L3\" /> (hold) Quickslot    ";
+	static const string drop = "<image set=\"playstation_buttons\" name=\"square\" /> " + "#ps4_dayz_context_menu_drop" + "    ";
+	static const string equip = "<image set=\"playstation_buttons\" name=\"triangle\" /> " + "#ps4_dayz_context_menu_equip" + "    ";
+	static const string split = "<image set=\"playstation_buttons\" name=\"triangle\" /> " + "#ps4_dayz_context_menu_split" + "    ";
+	static const string to_inventory = "<image set=\"playstation_buttons\" name=\"square\" /> " + "#ps4_dayz_context_menu_to_inventory" + "    ";
+	static const string open_close_container = "<image set=\"playstation_buttons\" name=\"R3\" /> " + "#ps4_dayz_context_menu_open_close" + "    ";
+	static const string quickslot = "<image set=\"playstation_buttons\" name=\"L3\" /> " + "#ps4_dayz_context_menu_quickslot" + "    ";
 	#endif
 	#endif
 	
 	#ifdef PLATFORM_CONSOLE
 	string ConsoleToolbarTypeToString( int console_toolbar_type )
 	{
+		#ifdef PLATFORM_PS4
+		string confirm = "cross";
+		string back = "circle";
+		if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+		{
+			confirm = "cross";
+			back = "circle";
+		}
+		else
+		{
+			confirm = "circle";
+			back = "cross";
+		}
+		
+		string to_hands_swap = "<image set=\"playstation_buttons\" name=\"" + confirm + "\" /> " + "#ps4_dayz_context_menu_to_hands_swap" + "    ";
+		string combine = "<image set=\"playstation_buttons\" name=\"" + back + "\" /> " + "#ps4_dayz_context_menu_combine";
+		string micromanagment = "<image set=\"playstation_buttons\" name=\"" + confirm + "\" /> " + "#ps4_dayz_context_menu_micro" + "    ";
+		#endif
 		switch ( console_toolbar_type )
 		{
 			case ConsoleToolbarType.PLAYER_EQUIPMENT_SLOTS_ITEM:
@@ -1281,6 +1309,18 @@ class Inventory: LayoutHolder
 	{
 		#ifdef PLATFORM_CONSOLE
 		string context_text;
+		#ifdef PLATFORM_PS4
+		string back = "circle";
+		if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+		{
+			back = "circle";
+		}
+		else
+		{
+			back = "cross";
+		}
+		string combine = "<image set=\"playstation_buttons\" name=\"" + back + "\" /> " + "#ps4_dayz_context_menu_combine";
+		#endif
 		
 		if ( m_LeftArea.IsActive() )
 		{
@@ -1646,7 +1686,7 @@ class Inventory: LayoutHolder
 				}
 			}
 		}
-		else if ( m_HandsArea.IsActive() )
+		else if ( m_HandsArea && m_HandsArea.IsActive() )
 		{
 			if( m_HandsArea.IsItemWithQuantityActive() )
 			{

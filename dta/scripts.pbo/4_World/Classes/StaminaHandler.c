@@ -19,8 +19,7 @@ class StaminaConsumer
 	void SetState(bool state) { m_State = state; }
 	
 	float GetThreshold() { return m_Threshold; }
-	void SetThreshold(float threshold) { m_Threshold = threshold; }
-	
+	void SetThreshold(float threshold) { m_Threshold = threshold; }	
 }
 
 class StaminaConsumers
@@ -47,17 +46,19 @@ class StaminaConsumers
 		if ( m_StaminaConsumers && m_StaminaConsumers.Contains(consumer) )
 		{
 			StaminaConsumer sc = m_StaminaConsumers.Get(consumer);
-			if( isDepleted )
+			
+			if( isDepleted && curStamina < sc.GetThreshold() )
 			{
 				sc.SetState(false);
 				return false;
 			}
-			
-			if( curStamina <= sc.GetThreshold() && sc.GetState() )
+
+			if( (curStamina >= sc.GetThreshold() && sc.GetState()) || (!isDepleted && sc.GetState()) )
 			{
+				sc.SetState(true);
 				return true;
 			}
-	
+
 			if( curStamina > sc.GetThreshold() )
 			{
 				sc.SetState(true);

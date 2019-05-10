@@ -110,7 +110,7 @@ class QuantityConversions
 			{
 				return QUANTITY_COUNT;
 			}
-			else if ( item.IsInherited( ItemBook) )
+			else if ( item.IsInherited( ItemBook ) )
 			{
 				return QUANTITY_HIDDEN;
 			}
@@ -118,7 +118,7 @@ class QuantityConversions
 			bool bar = item.ConfigGetBool("quantityBar");
 			if ( max > 0 )
 			{
-				if ( max == 1 || bar )
+				if ( bar )
 				{
 					return QUANTITY_PROGRESS;
 				}

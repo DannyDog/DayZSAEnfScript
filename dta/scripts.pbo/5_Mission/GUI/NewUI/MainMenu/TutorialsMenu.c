@@ -1,7 +1,10 @@
 class TutorialsMenu extends UIScriptedMenu
 {
+	
+	protected string 		m_BackButtonTextID;
+	
 	protected ImageWidget 	m_ControlsLayoutImage;
-	protected const int 		TABS_COUNT = 4;
+	protected const int 	TABS_COUNT = 4;
 	protected ImageWidget 	m_tab_images[TABS_COUNT];
 	protected TabberUI		m_TabScript;
 	
@@ -20,8 +23,17 @@ class TutorialsMenu extends UIScriptedMenu
 		m_tab_images[3] = ImageWidget.Cast( layoutRoot.FindAnyWidget("MenusTabBackdropImageWidget") );
 		
 		#ifdef PLATFORM_PS4
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				back = "circle";
+			}
+			else
+			{
+				back = "cross";
+			}
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 		#endif
 		
 		PPEffects.SetBlurMenu( 0.6 );
@@ -287,5 +299,25 @@ class TutorialsMenu extends UIScriptedMenu
 		{
 			Back();
 		}
+	}
+	
+		/// Initial texts load for the footer buttons
+	protected void LoadFooterButtonTexts()
+	{
+		TextWidget uiBackText 	= TextWidget.Cast(layoutRoot.FindAnyWidget( "BackText" ));		
+		
+		if (uiBackText)
+		{
+			uiBackText.SetText(m_BackButtonTextID);
+		}
+	}
+	/// Set correct bottom button texts based on platform (ps4 vs xbox texts)
+	protected void LoadTextStrings()
+	{
+		#ifdef PLATFORM_PS4
+			m_BackButtonTextID = "ps4_ingame_menu_back";
+		#else 
+			m_BackButtonTextID = "STR_rootFrame_toolbar_bg_ConsoleToolbar_Back_BackText0";	
+		#endif
 	}
 }

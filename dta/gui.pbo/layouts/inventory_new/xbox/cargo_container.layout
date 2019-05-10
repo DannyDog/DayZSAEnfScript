@@ -3,7 +3,6 @@ FrameWidgetClass grid_container_root {
  ignorepointer 1
  size 1 0
  halign center_ref
- valign center_ref
  hexactpos 1
  vexactpos 1
  hexactsize 0
@@ -13,8 +12,8 @@ FrameWidgetClass grid_container_root {
  {
   GridSpacerWidgetClass header_grid_container {
    ignorepointer 1
-   position 0 0
    size 1 0
+   halign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -26,7 +25,7 @@ FrameWidgetClass grid_container_root {
    Columns 1
    Rows 2
    {
-    PanelWidgetClass grid_container_header_spacer {
+    WrapSpacerWidgetClass grid_container_header_spacer {
      visible 0
      ignorepointer 1
      size 1 52
@@ -35,6 +34,11 @@ FrameWidgetClass grid_container_root {
      vexactpos 1
      hexactsize 0
      vexactsize 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     content_halign center
+     content_valign center
      {
       ImageWidgetClass grid_container_header {
        visible 1
@@ -57,18 +61,19 @@ FrameWidgetClass grid_container_root {
        {
         RichTextWidgetClass TextWidget0 {
          ignorepointer 1
-         size 0.9 0.9
+         size 0.9 48
          halign center_ref
          valign center_ref
          hexactpos 1
          vexactpos 1
          hexactsize 0
-         vexactsize 0
+         vexactsize 1
          style DayZNormal
          text "CLOSABLE CONTAINER"
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 20
+         "size to text v" 1
          "text halign" center
          "text valign" center
          wrap 1
@@ -225,7 +230,7 @@ FrameWidgetClass grid_container_root {
  {
   ScriptParamsClass {
    m_ChildName "header_grid_container"
-   m_ResizeHorizontal 0
+   m_ResizeHorizontal 1
    m_ResizeVertical 1
   }
  }

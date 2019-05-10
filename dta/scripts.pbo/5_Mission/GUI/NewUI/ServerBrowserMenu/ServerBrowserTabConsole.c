@@ -70,11 +70,15 @@ class ServerBrowserTabConsole extends ServerBrowserTab
 	
 	override void OnLoadServersAsyncConsole( GetServersResult result_list, EBiosError error, string response )
 	{
-		Print("m_NumServers: "+ result_list.m_NumServers +" m_Pages: "+ result_list.m_Pages + " m_Page: "+ result_list.m_Page);
-	
+		//Print("m_NumServers: "+ result_list.m_NumServers +" m_Pages: "+ result_list.m_Pages + " m_Page: "+ result_list.m_Page);
 		//string smg = "m_NumServers: "+ result_list.m_NumServers +" m_Pages: "+ result_list.m_Pages + " m_Page: "+ result_list.m_Page +" response: "+ response +" error: "+ error;
-		
 		//m_LoadingText.SetText( smg );
+		
+		if ( error != EBiosError.OK || !result_list )
+		{
+			m_LoadingText.SetText( "Error code: " + error );
+			return;
+		}
 		
 		if( result_list.m_Page == 1 )
 		{
@@ -157,7 +161,7 @@ class ServerBrowserTabConsole extends ServerBrowserTab
 					index++;					
 					m_EntriesSorted[m_SortType].Insert( result );
 					
-					if ( m_EntryWidgets.Count() == 1 )
+					if ( m_EntryWidgets.Count() > 0 )
 					{
 						SetFocusServers();
 					}
@@ -229,6 +233,8 @@ class ServerBrowserTabConsole extends ServerBrowserTab
 		m_ServerListScroller.VScrollToPos01( 0 );
 		
 		m_LoadingText.SetText( "#dayz_game_loading" );
+		
+		SetFocusFilters();
 		//UpdateStatusBar();
 	}
 	
@@ -318,7 +324,8 @@ class ServerBrowserTabConsole extends ServerBrowserTab
 		SetEnableFilters( true );
 		SetEnableServers( false );
 		
-		m_WidgetNavFilters.Show( true );
+		// if loaded servers is 0, then hide Top navigation menu <Left / Right>
+		m_WidgetNavFilters.Show( (m_EntryWidgets.Count() > 0) );
 		m_WidgetNavServers.Show( false );
 		
 		m_Filters.Focus();

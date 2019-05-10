@@ -1,0 +1,70 @@
+GridSpacerWidgetClass Mod {
+ visible 1
+ color 0.3922 0.3922 0.3922 0.6275
+ position 0 0
+ size 1 56
+ hexactpos 1
+ vexactpos 1
+ hexactsize 0
+ vexactsize 1
+ Padding 0
+ Margin 0
+ "Size To Content H" 1
+ "Size To Content V" 1
+ Columns 2
+ Rows 2
+ {
+  ImageWidgetClass Icon {
+   position 0 0
+   size 56 56
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   mode blend
+   "src alpha" 1
+   "no wrap" 1
+   stretch 1
+  }
+  TextWidgetClass Name {
+   ignorepointer 1
+   position 0 0
+   size 1 1
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   font "gui/fonts/sdf_MetronBook24"
+   "exact text" 1
+   "exact text size" 24
+   "text halign" center
+   "text valign" center
+  }
+  FrameWidgetClass Spacer {
+   visible 0
+   ignorepointer 1
+   position 0 0
+   size 80 56
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+  }
+  RichTextWidgetClass Description {
+   visible 0
+   ignorepointer 1
+   position 0 0
+   size 1 0
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 0
+   text "dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda dasda "
+   font "gui/fonts/sdf_MetronBook24"
+   "exact text" 1
+   "exact text size" 20
+   "size to text v" 1
+   wrap 1
+  }
+ }
+}

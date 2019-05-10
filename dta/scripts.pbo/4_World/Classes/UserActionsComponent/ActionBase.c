@@ -1,3 +1,13 @@
+enum ActionConditionMask
+{
+	ACM_NO_EXEPTION		= 0,
+	ACM_IN_VEHICLE		= 1,
+	ACM_ON_LADDER		= 2,
+	ACM_SWIMMING		= 4,
+	ACM_RESTRAIN		= 8,
+	ACM_RAISED			= 16,
+	ACM_ON_BACK			= 32
+}
 class ActionReciveData
 {
 	ref ActionTarget					m_Target;
@@ -10,7 +20,7 @@ class ActionData
 		m_State = UA_NONE;
 	}
 	
-	ActionBase							m_Action;
+	ref ActionBase						m_Action;
 	ItemBase							m_MainItem;
 	ActionBaseCB 						m_Callback;
 	ref CABase							m_ActionComponent;
@@ -24,7 +34,7 @@ class ActionData
 	bool								m_WasActionStarted;
 }
 
-class ActionBase
+class ActionBase : ActionBase_Basic
 {	
 	//STATIC DATA
 	// Configurable action parameters
@@ -44,6 +54,11 @@ class ActionBase
 	protected ref TStringArray		m_Sounds;			//User action sound is picked from this array randomly
 	ref CCIBase 					m_ConditionItem;	//Condition Component
 	ref CCTBase						m_ConditionTarget; 	//Condition Component
+#ifndef OLD_ACTIONS
+	protected ActionInput			m_Input;
+	protected int 					m_ActionID;
+	int 							m_ConditionMask;
+#endif
 
 	//RUNTIME DATA
 	protected ref Param1<string> 	m_MessageParam; //used for passing messages from server to client
@@ -75,8 +90,47 @@ class ActionBase
 		m_MessageParam = new Param1<string>("");
 		m_MessagesParam = new Param2<int,int>(0,0);
 		m_Sounds = new TStringArray;
+#ifndef OLD_ACTIONS
+		m_Input = null;
+		m_ActionID = 0;
+		InitConditionMask();
+#endif
 	}
-	
+#ifndef OLD_ACTIONS	
+	void InitConditionMask()
+	{
+		m_ConditionMask = ActionConditionMask.ACM_NO_EXEPTION;
+		if (CanBeUsedInVehicle())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_IN_VEHICLE;
+		}
+		
+		if (CanBeUsedOnLadder())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_ON_LADDER;
+		}
+		
+		if (CanBeUsedSwimming())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_SWIMMING;
+		}
+		
+		if (CanBeUsedInRestrain())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_RESTRAIN;
+		}
+		
+		if (CanBeUsedRaised())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_RAISED;
+		}
+		
+		if (CanBeUsedOnBack())
+		{
+			m_ConditionMask |= ActionConditionMask.ACM_ON_BACK;
+		}
+	}
+#endif
 	bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL )
 	{
 		action_data = CreateActionData();
@@ -104,6 +158,17 @@ class ActionBase
 		
 		return true;
 	}
+#ifndef OLD_ACTIONS
+	typename GetInputType()
+	{
+		return DefaultActionInput;
+	}
+	
+	void SetInput( ActionInput  ai)
+	{
+		m_Input = ai;
+	}
+#endif
 	
 	ActionData CreateActionData()
 	{
@@ -219,7 +284,22 @@ class ActionBase
 	{
 		return false;
 	}
+#ifndef OLD_ACTIONS	
+	bool CanBeUsedSwimming()
+	{
+		return false;
+	}
 	
+	bool CanBeUsedOnLadder()
+	{
+		return false;
+	}
+	
+	bool CanBeUsedRaised()
+	{
+		return false;
+	}
+#endif
 	protected bool ActionConditionContinue( ActionData action_data ) //condition for action
 	{
 		return ActionCondition(action_data.m_Player,action_data.m_Target,action_data.m_MainItem);
@@ -413,30 +493,66 @@ class ActionBase
 		if( action_data.m_Player )
 			action_data.m_Player.GetActionManager().OnActionEnd();
 	}
-	
+#ifdef OLD_ACTIONS	
 	void OnContinuousCancel(ActionData action_data)
 	{}
+#endif
 	
 	void Interrupt(ActionData action_data)
 	{}
-
-	bool Can( PlayerBase player, ActionTarget target, ItemBase item )
+#ifndef OLD_ACTIONS
+	void OnEndInput(ActionData action_data)
+	{}
+	
+	void OnEndRequest(ActionData action_data)
+	{}
+	
+	
+	static int ComputeConditionMask( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if(  !CanBeUsedOnBack() && player.GetCommand_Move() && player.GetCommand_Move().IsOnBack())
+		int mask = 0;
+		if ( player.GetCommand_Vehicle() )
 		{
-			return false;
+			mask |= ActionConditionMask.ACM_IN_VEHICLE;
 		}
+		
+		if ( player.GetCommand_Ladder() )
+		{
+			mask |= ActionConditionMask.ACM_ON_LADDER;
+		}
+		
+		if ( player.IsRestrained() )
+		{
+			mask |= ActionConditionMask.ACM_RESTRAIN;
+		}
+		
+		if ( player.GetCommand_Swim() )
+		{
+			mask |= ActionConditionMask.ACM_SWIMMING;
+		}
+		
+		if ( player.IsRaised() )
+		{
+			mask |= ActionConditionMask.ACM_RAISED;
+		}
+		
+		if ( player.GetCommand_Move() && player.GetCommand_Move().IsOnBack() )
+		{
+			mask |= ActionConditionMask.ACM_ON_BACK;
+		}
+		
+		return mask;
+	}
+
+	bool Can( PlayerBase player, ActionTarget target, ItemBase item, int condition_mask )
+	{
+		if ( (condition_mask & m_ConditionMask) != condition_mask )
+			return false;
 		
 		if ( !IsFullBody(player) && !player.IsPlayerInStance(GetStanceMask(player)) )
 		{
 			return false;
 		}
-		
-		if ( player.IsRestrained() && !CanBeUsedInRestrain() )
-			return false;
-		
-		if ( !CanBeUsedInVehicle() && player.GetCommand_Vehicle() )
-			return false;
 		
 		if ( HasTarget() )
 		{
@@ -451,16 +567,107 @@ class ActionBase
 			}
 		}
 		
-		if ( m_ConditionItem && m_ConditionItem.Can(player, item) && m_ConditionTarget && m_ConditionTarget.Can(player, target) && ActionCondition(player, target, item) )
+		if ( m_ConditionItem && !m_ConditionItem.Can(player, item))
+		{
+			return false;
+		}
+		
+		if ( m_ConditionTarget && !m_ConditionTarget.Can(player, target))
+		{
+			return false;
+		}
+		
+		if ( ActionCondition(player, target, item) )
 		{
 			return true;
 		}
 		return false;
 	}
 	
+	bool Can( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		int condition_mask = ComputeConditionMask( player, target, item );
+		
+		return Can( player, target, item, condition_mask);
+	}
+#else
+	bool Can( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		if(  !CanBeUsedOnBack() && player.GetCommand_Move() && player.GetCommand_Move().IsOnBack())
+		{
+			return false;
+		}
+		
+		if ( !IsFullBody(player) && !player.IsPlayerInStance(GetStanceMask(player)) )
+		{
+			return false;
+		}
+		
+		if ( player.IsRestrained() && !CanBeUsedInRestrain() )
+		{
+			return false;
+		}
+		
+		if ( !CanBeUsedInVehicle() && player.GetCommand_Vehicle() )
+		{
+			return false;
+		}
+		
+		if ( HasTarget() )
+		{
+			EntityAI entity = EntityAI.Cast(target.GetObject());
+			if ( entity && !target.GetObject().IsMan() )
+			{
+				Man man = entity.GetHierarchyRootPlayer();
+				if( man && man != player )
+				{
+					return false;
+				}
+			}
+		}
+		
+		if ( m_ConditionItem && !m_ConditionItem.Can(player, item))
+		{
+			return false;
+		}
+		
+		if ( m_ConditionTarget && !m_ConditionTarget.Can(player, target))
+		{
+			return false;
+		}
+		
+		if ( ActionCondition(player, target, item) )
+		{
+			return true;
+		}
+		return false;
+	}	
+#endif
+	
 	protected bool CanContinue( ActionData action_data )
 	{
-		if ( action_data.m_Player.IsPlayerInStance(action_data.m_PossibleStanceMask) && m_ConditionItem && m_ConditionItem.CanContinue(action_data.m_Player,action_data.m_MainItem) && m_ConditionTarget && m_ConditionTarget.CanContinue(action_data.m_Player,action_data.m_Target) && ActionConditionContinue(action_data) )
+		if ( !action_data.m_Player.IsPlayerInStance(action_data.m_PossibleStanceMask) )
+		{
+			return false;
+		}
+		if ( !m_ConditionItem )
+		{
+			return false;
+		}
+
+		if ( !m_ConditionItem.CanContinue(action_data.m_Player,action_data.m_MainItem) )
+		{
+			return false;
+		}
+		if ( !m_ConditionTarget )
+		{
+			return false;
+		}
+		if ( !m_ConditionTarget.CanContinue(action_data.m_Player,action_data.m_Target) )
+		{
+			return false;
+		}
+		if ( ActionConditionContinue(action_data) )
 		{
 			return true;
 		}
@@ -720,39 +927,23 @@ class ActionBase
 	// ------------------------------------------------------
 	protected bool IsDamageDestroyed(ActionTarget target)
 	{
-		Object obj;
-		if(Class.CastTo(obj, target.GetObject()) )
-		{
-			if( obj.IsDamageDestroyed() )
-				return true;
-		}
-
-		return false;
+		return target.GetObject() && target.GetObject().IsDamageDestroyed();
 	}
 
 	protected bool IsBuilding(ActionTarget target)
 	{
-		Object obj;
-		
-		if( Class.CastTo(obj, target.GetObject()) )
-			return obj.IsBuilding();
-
-		return false;
+		return target.GetObject() && target.GetObject().IsBuilding();
 	}
 	
 	protected bool IsTransport(ActionTarget target)
 	{
-		Object obj;
-		if( Class.CastTo(obj, target.GetObject()) )
-			return obj.IsTransport();
-
-		return false;		
+		return target.GetObject() && target.GetObject().IsTransport();
 	}
 
 	protected bool IsInReach(PlayerBase player, ActionTarget target, float maxDistance = 1.0 )
 	{
-		Object obj;
-		if( Class.CastTo(obj, target.GetObject()) )
+		Object obj = target.GetObject();
+		if( obj )
 		{
 			string compName;
 			float distanceRoot, distanceHead;
@@ -765,9 +956,9 @@ class ActionBase
 			// get position of Head bone
 			MiscGameplayFunctions.GetHeadBonePos(player, playerHeadPos);
 
-			compName = target.GetObject().GetActionComponentName(target.GetComponentIndex());
-			modelPos = target.GetObject().GetSelectionPositionMS(compName);
-			worldPos = target.GetObject().ModelToWorld(modelPos);
+			compName = obj.GetActionComponentName(target.GetComponentIndex());
+			modelPos = obj.GetSelectionPositionMS(compName);
+			worldPos = obj.ModelToWorld(modelPos);
 
 			distanceRoot = Math.AbsFloat(vector.DistanceSq(worldPos, playerRootPos));
 			distanceHead = Math.AbsFloat(vector.DistanceSq(worldPos, playerHeadPos));
@@ -855,4 +1046,25 @@ class ActionBase
 	{
 		return -1;
 	}
+#ifndef OLD_ACTIONS
+	ActionInput GetInput()
+	{
+		return m_Input;
+	}
+	
+	protected string GetInputName()
+	{
+		return "none";
+	}
+	
+	void SetID(int actionId)
+	{
+		m_ActionID = actionId;
+	}
+	
+	int GetID()
+	{
+		return m_ActionID;
+	}
+#endif
 };

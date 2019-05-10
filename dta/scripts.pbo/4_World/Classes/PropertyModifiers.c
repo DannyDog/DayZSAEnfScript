@@ -1,14 +1,13 @@
 class PropertyModifiers
 {
 	vector m_RecoilModifiers;
+	vector m_SwayModifiers;
+	vector m_SightMisalignment;
+	
 	float m_BarrelLength;
 	//ref Timer test_timer;
 	ItemBase m_OwnerItem;
-	
-	vector GetRecoilModifiers()
-	{
-		return m_RecoilModifiers;
-	}
+	float m_Weapon
 	
 	void PropertyModifiers(ItemBase owner)
 	{
@@ -26,13 +25,6 @@ class PropertyModifiers
 		return CalculateBarrelLength(m_OwnerItem) * 1000;
 	}
 	
-	/*
-	void Refresh()
-	{
-		float delka = CalculateBarrelLength(m_OwnerItem);
-		//int i = 1 + 1;
-	}
-*/
 	float CalculateBarrelLength(ItemBase owner)
 	{
 		vector usti_hlavne_position = owner.GetSelectionPositionLS( "usti hlavne" );//usti hlavne
@@ -45,34 +37,38 @@ class PropertyModifiers
 
 	void UpdateModifiers()
 	{
-		GetModifierRaw(m_OwnerItem, "recoilModifier", m_RecoilModifiers);
+		m_RecoilModifiers = GetModifierRaw(m_OwnerItem, "recoilModifier");
+		m_SwayModifiers = GetModifierRaw(m_OwnerItem, "swayModifier");
+		m_SightMisalignment = GetModifierRaw(m_OwnerItem, "sightMisalignmentModifier");
 		
 		for (int i = 0; i < m_OwnerItem.GetInventory().AttachmentCount(); i++)
 		{
 			ItemBase attachment = ItemBase.Cast(m_OwnerItem.GetInventory().GetAttachmentFromIndex(i));
-			vector temp_value;
-			if( PropertyModifiers.GetModifierRaw(attachment, "recoilModifier", temp_value ) )
-			{
-				m_RecoilModifiers[0] = m_RecoilModifiers[0] * temp_value[0];
-				m_RecoilModifiers[1] = m_RecoilModifiers[1] * temp_value[1];
-				m_RecoilModifiers[2] = m_RecoilModifiers[2] * temp_value[2];
-			}
+			
+			vector temp_value = PropertyModifiers.GetModifierRaw(attachment, "recoilModifier");
+			m_RecoilModifiers[0] = m_RecoilModifiers[0] * temp_value[0];
+			m_RecoilModifiers[1] = m_RecoilModifiers[1] * temp_value[1];
+			m_RecoilModifiers[2] = m_RecoilModifiers[2] * temp_value[2];
+			
+			temp_value = PropertyModifiers.GetModifierRaw(attachment, "swayModifier");
+			m_SwayModifiers[0] = m_SwayModifiers[0] * temp_value[0];
+			m_SwayModifiers[1] = m_SwayModifiers[1] * temp_value[1];
+			m_SwayModifiers[2] = m_SwayModifiers[2] * temp_value[2];
+			
+			temp_value = PropertyModifiers.GetModifierRaw(attachment, "sightMisalignmentModifier");
+			m_SightMisalignment[0] = m_SightMisalignment[0] * temp_value[0];
+			m_SightMisalignment[1] = m_SightMisalignment[1] * temp_value[1];
+			m_SightMisalignment[2] = m_SightMisalignment[2] * temp_value[2];
 		}
 	}
 
-	static bool GetModifierRaw(ItemBase item, string modifier_name, out vector value)
+	static vector GetModifierRaw(ItemBase item, string modifier_name, vector value = "1 1 1")
 	{
 		if( item.ConfigIsExisting(modifier_name) )
 		{
 			value = item.ConfigGetVector(modifier_name);
-			return true;
 		}
-		else
-		{
-			value = "1 1 1";
-			Debug.LogError("Config value'"+ modifier_name+"'not specified for item: " +item.GetType() );
-			return false;
-		}
+		return value;
 	}
 	
 }

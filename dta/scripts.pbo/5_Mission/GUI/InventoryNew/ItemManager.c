@@ -321,6 +321,11 @@ class ItemManager
 	void SetIsDragging( bool is_dragging )
 	{
 		m_IsDragging = is_dragging;
+		if( !is_dragging )
+		{
+			SetDraggedItem( null );
+			SetDraggedIcon( null );
+		}
 	}
 
 	bool IsDragging()
@@ -533,7 +538,7 @@ class ItemManager
 				flags = flags | InventoryCombinationFlags.ADD_AS_ATTACHMENT;
 			}
 		}
-		if( entity1.GetInventory().CanAddEntityInCargo( entity2 ) ) flags = flags | InventoryCombinationFlags.ADD_AS_CARGO;
+		if( entity1.GetInventory().CanAddEntityInCargo( entity2, entity2.GetInventory().GetFlipCargo() ) ) flags = flags | InventoryCombinationFlags.ADD_AS_CARGO;
 
 		if( entity1 == m_player.GetHumanInventory().GetEntityInHands() || entity2 == m_player.GetHumanInventory().GetEntityInHands())
 		{

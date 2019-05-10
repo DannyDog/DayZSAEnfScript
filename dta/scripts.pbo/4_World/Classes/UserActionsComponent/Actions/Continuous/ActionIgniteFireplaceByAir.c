@@ -28,6 +28,13 @@ class ActionIgniteFireplaceByAir: ActionIgniteFireplace
 	{
 		return "#blow_air_into_fireplace";
 	}
+
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
 		
 	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
 	{

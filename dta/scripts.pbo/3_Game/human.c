@@ -56,6 +56,9 @@ class HumanInputController
 	//! returns 0,1,2 = none,left,right
 	proto native int 			IsMeleeLREvade();
 
+	//! return weapon melee attack modifier
+	proto native bool			IsMeleeWeaponAttack();
+
 	//--------------------------------------------------------------
 
 	//! returns true if weapon click perfomed recently (before raise specifically)
@@ -69,6 +72,9 @@ class HumanInputController
 
 	//! resets ADS mode to default
 	proto native void			ResetADS();
+
+	//! returns true if Walk set to toggle
+	proto native bool			IsWalkToggled();
 
 	//--------------------------------------------------------------
 	
@@ -412,7 +418,7 @@ class HumanCommandMelee
 class HumanCommandMelee2
 {
 	//! marks command to continue to combo 
-	proto native void 		ContinueCombo(bool pHeavyHit);
+	proto native void 		ContinueCombo(bool pHeavyHit, float pComboValue);
 
 	//! returns true if hit is in range, where person can continue to combo
 	proto native bool		IsInComboRange();
@@ -597,6 +603,7 @@ enum WeaponActions
 	FIRE 				= 5,
 	HIDE 				= 6,
 	SHOW 				= 7,
+	RELOAD_CLIP			= 8,
 };
 //! action types
 /// reload action types
@@ -628,6 +635,12 @@ enum WeaponActionReloadTypes
 	RELOADSRIFLE_MAGAZINE_NOBULLET 		= 22,
 	RELOADSRIFLE_NOMAGAZINE_NOBULLET 	= 23,
 };
+
+enum WeaponActionReloadClipTypes
+{
+	RELOADRIFLE_CLIP_NOBULLET			= 0,
+	RELOADRIFLE_CLIP_BULLET				= 1,
+}
 
 enum WeaponActionMechanismTypes
 {
@@ -764,6 +777,9 @@ class HumanCommandWeapons
 	//! returns -1 when no action is running or appropriate action type
     proto native 	int 		GetRunningActionType();
 
+	//! sets start and end animation position - f.e. for reload clip action
+	proto native 	void		SetActionProgressParams(float pStart, float pEnd);
+
 	//! start reload,mechanism,chambering,unjam ... 
 	proto native 	bool		StartAction(WeaponActions pAction, int pActionType);
 
@@ -773,6 +789,9 @@ class HumanCommandWeapons
 	//! return -1 when there is no event, otherwise it returns pId of event from animation 
 	proto native 	int 		IsEvent();
 	
+	//! returns true when clip visual change is needed for reload clip action
+	proto native 	bool 		IsInWeaponReloadBulletSwitchState();
+
 	//! sets head tilt to optics
 	proto native	void		SetADS(bool pState);
 
@@ -883,11 +902,23 @@ class HumanMovementState
 	}
 	
 	//! 
+	bool		IsRaisedInProne()
+	{
+		return m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE;
+	}
+	
+	//! 
 	bool		IsInProne()
 	{
 		return m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE;
 	}
-	
+
+	//! 
+	bool		IsInRaisedProne()
+	{
+		return m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE;
+	}	
+		
 	//! 
 	bool		IsLeaning()
 	{
@@ -906,6 +937,11 @@ class Human extends Man
 	//! gets human transform in World Space
 	proto native	void 		GetTransformWS(out vector pTm[4]);
 
+
+	//---------------------------------------------------------
+	// link/unlink to/from local space
+	proto native	void		LinkToLocalSpaceOf(notnull IEntity child, vector pLocalSpaceMatrix[4]);
+	proto native	void		UnlinkFromLocalSpace();
 
 	//---------------------------------------------------------
 	// bone transforms 
@@ -975,7 +1011,7 @@ class Human extends Man
 	proto native 	HumanCommandMelee			GetCommand_Melee();
 
 	//! starts command - melee
-	proto native 	HumanCommandMelee2			StartCommand_Melee2(EntityAI pTarget, bool pHeavyHit);
+	proto native 	HumanCommandMelee2			StartCommand_Melee2(EntityAI pTarget, bool pHeavyHit, float pComboValue);
 
 	proto native 	HumanCommandMelee2			GetCommand_Melee2();
 
@@ -1024,7 +1060,7 @@ class Human extends Man
 
 
 	//! starts command - unconscious
-	proto native 	HumanCommandUnconscious 	StartCommand_Unconscious();
+	proto native 	HumanCommandUnconscious 	StartCommand_Unconscious(float pType);
 
 	proto native 	HumanCommandUnconscious		GetCommand_Unconscious();
 

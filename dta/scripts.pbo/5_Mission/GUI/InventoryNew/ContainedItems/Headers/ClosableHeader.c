@@ -39,10 +39,28 @@ class ClosableHeader: Header
 		if( GetParent() && GetParent().GetParent() && GetParent().GetParent().GetParent() )
 			m_IsInLocalEquipment	= GetParent().GetParent().GetParent().IsInherited( RightArea );
 	}
+	
+	void ~ClosableHeader()
+	{
+		if( InventoryItem.Cast( m_Entity ) )
+			InventoryItem.Cast( m_Entity ).GetOnItemFlipped().Remove( UpdateFlip );
+	}
 
 	override void SetLayoutName()
 	{
 		m_LayoutName = WidgetLayoutName.ClosableHeader;
+	}
+	
+	override void SetName( string name )
+	{
+		name.ToUpper();
+		
+		m_HeaderText.SetText( name );
+		m_HeaderText.Update();
+		
+		float x, y;
+		m_HeaderText.GetScreenSize( x, y );
+		GetMainWidget().FindAnyWidget( "PanelWidget" ).SetSize( 1, y + InventoryMenu.GetHeightMultiplied( 10 ) );
 	}
 	
 	void OnDragHeader( Widget w, int x, int y )
@@ -69,10 +87,37 @@ class ClosableHeader: Header
 				item_preview_drag.Show( true );
 			
 			int ww, hh;
-			
 			GetGame().GetInventoryItemSize( InventoryItem.Cast( m_Entity ), ww, hh );
 			if( item_preview_drag )
-			item_preview_drag.SetSize( ww * m_SquareSize, hh * m_SquareSize );
+			{
+				InventoryItem.Cast( m_Entity ).GetOnItemFlipped().Insert( UpdateFlip );
+				if( InventoryItem.Cast( m_Entity ).GetInventory().GetFlipCargo() )
+				{
+					item_preview_drag.SetSize( hh * m_SquareSize, ww * m_SquareSize );
+				}
+				else
+				{
+					item_preview_drag.SetSize( ww * m_SquareSize, hh * m_SquareSize );
+				}
+			}
+		}
+	}
+	
+	void UpdateFlip( bool flipped )
+	{
+		ItemPreviewWidget item_preview_drag = ItemPreviewWidget.Cast( GetMainWidget().FindAnyWidget( "Drag_Render" ) );
+		if( InventoryItem.Cast( m_Entity ) && item_preview_drag )
+		{
+			int ww, hh;
+			GetGame().GetInventoryItemSize( InventoryItem.Cast( m_Entity ), ww, hh );
+			if( flipped )
+			{
+				item_preview_drag.SetSize( hh * m_SquareSize, ww * m_SquareSize );
+			}
+			else
+			{
+				item_preview_drag.SetSize( ww * m_SquareSize, hh * m_SquareSize );
+			}
 		}
 	}
 	
@@ -88,9 +133,11 @@ class ClosableHeader: Header
 			
 			parent.ShowContent( true );
 			
-			ItemManager.GetInstance().SetIsDragging( false );
 			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().SetIsDragging( false );
 		}
+		if( InventoryItem.Cast( m_Entity ) )
+			InventoryItem.Cast( m_Entity ).GetOnItemFlipped().Remove( UpdateFlip );
 	}
 	
 	bool MouseEnter(Widget w, int x, int y)
@@ -99,6 +146,7 @@ class ClosableHeader: Header
 		{
 			m_MovePanel.Show( true );
 		}
+		ItemManager.GetInstance().PrepareTooltip( m_Entity, x, y );
 		return true;
 	}
 
@@ -111,6 +159,7 @@ class ClosableHeader: Header
 				m_MovePanel.Show( false );
 			}
 		}
+		ItemManager.GetInstance().HideTooltip();
 		return true;
 	}
 	

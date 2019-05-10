@@ -134,19 +134,40 @@ class Input
 	proto native GamepadButton		GetEnterButton();
 	
 	//! callback that is fired when a new gamepad is connected
-	void OnGamepadConnected(int gamepad) {}
+	void OnGamepadConnected(int gamepad)
+	{
+		#ifdef PLATFORM_PS4
+		BiosUser user;
+		GetGamepadUser( gamepad, user );
+		if( user && user == GetGame().GetUserManager().GetSelectedUser() )
+		{
+			SelectActiveGamepad(gamepad);
+			g_Game.DeleteGamepadDisconnectMenu();
+		}
+		#endif
+	}
+	
 	//! callback that is fired when gamepad is disconnected
 	void OnGamepadDisconnected(int gamepad)
 	{
-		if( !IsActiveGamepadSelected() )
+		if( IsInactiveGamepadOrUserSelected(gamepad) )
 		{
-			DayZLoadState state = g_Game.GetLoadState();
-			if( state != DayZLoadState.MAIN_MENU_START && state != DayZLoadState.MAIN_MENU_USER_SELECT )
-			{
-				g_Game.CreateGamepadDisconnectMenu();
-			}
+			#ifdef PLATFORM_PS4
+			ResetActiveGamepad();
+			#endif
 			
-			IdentifyGamepad( GamepadButton.A );
+			if( !g_Game.IsLoading() )
+			{
+				DayZLoadState state = g_Game.GetLoadState();
+				if( state != DayZLoadState.MAIN_MENU_START && state != DayZLoadState.MAIN_MENU_USER_SELECT )
+				{
+					g_Game.CreateGamepadDisconnectMenu();
+				}
+				
+				#ifdef PLATFORM_XBOX
+				IdentifyGamepad( GetEnterButton() );
+				#endif
+			}
 		}
 	}
 
@@ -156,15 +177,44 @@ class Input
 		if( gamepad > -1 )
 		{
 			DayZLoadState state = g_Game.GetLoadState();
+			
+			g_Game.DeleteGamepadDisconnectMenu();
+			SelectActiveGamepad( gamepad );
+			g_Game.SelectUser( gamepad );
+			
 			if( state == DayZLoadState.MAIN_MENU_START || state == DayZLoadState.MAIN_MENU_USER_SELECT )
 			{
 				if( GetGame().GetMission() )
 					GetGame().GetMission().Reset();
 			}
-			g_Game.DeleteGamepadDisconnectMenu();
-			SelectActiveGamepad( gamepad );
-			g_Game.SelectUser( gamepad );
 		}
+	}
+	
+	int GetUserGamepad( BiosUser user )
+	{
+		array<int> gamepads = new array<int>;
+		GetGamepadList( gamepads );
+		for( int i = 0; i < gamepads.Count(); i++ )
+		{
+			BiosUser user2;
+			GetGamepadUser( gamepads[i], user2 );
+			if( user == user2 )
+				return gamepads[i];
+		}
+		return -1;
+	}
+	
+	bool IsInactiveGamepadOrUserSelected( int gamepad = -1 )
+	{
+		#ifdef PLATFORM_XBOX
+		return !IsActiveGamepadSelected();
+		#endif
+		#ifdef PLATFORM_PS4
+		BiosUser user;
+		GetGamepadUser( gamepad, user );
+		return (user == GetGame().GetUserManager().GetSelectedUser());
+		#endif
+		return false;
 	}
 };
 

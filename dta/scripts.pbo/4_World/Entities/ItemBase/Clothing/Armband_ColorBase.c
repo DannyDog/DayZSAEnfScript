@@ -19,6 +19,12 @@ class Armband_ColorBase extends Clothing
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
 };
 
 class Armband_Dyed extends Armband_ColorBase {};

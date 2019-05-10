@@ -439,13 +439,20 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	bool ToggleFavorite()
 	{
 		m_IsFavorited = !m_IsFavorited;
-		m_Root.FindAnyWidget( "unfavorite_image" ).Show( !m_IsFavorited );
-		m_Root.FindAnyWidget( "favorite_image" ).Show( m_IsFavorited );
 		
+#ifdef PLATFORM_CONSOLE
+		//Save Data Console
+		m_Tab.GetRootMenu().SetFavoriteConsoles(m_ServerData.m_Id, m_IsFavorited);
+#else
+		//Save Data PC
 		GetServersResultRow data = m_ServerData;
 		TStringArray server_id = new TStringArray;
 		data.m_Id.Split(":", server_id);
 		OnlineServices.SetServerFavorited(server_id[0], data.m_HostPort, data.m_SteamQueryPort, m_IsFavorited);
+#endif	
+		
+		m_Root.FindAnyWidget( "unfavorite_image" ).Show( !m_IsFavorited );
+		m_Root.FindAnyWidget( "favorite_image" ).Show( m_IsFavorited );
 		
 		return m_IsFavorited;
 	}

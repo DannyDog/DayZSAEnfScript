@@ -11,7 +11,7 @@ FrameWidgetClass Icon {
  {
   ItemPreviewWidgetClass Render {
    visible 0
-   clipchildren 0
+   clipchildren 1
    ignorepointer 1
    color 0.702 0.702 0.702 1
    size 1 1

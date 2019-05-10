@@ -50,4 +50,13 @@ class Compass : ItemCompass
 
         UpdateVisualState();
     }
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionOpen);
+		AddAction(ActionClose);
+		AddAction(ActionViewCompass);
+	}
 }

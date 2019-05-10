@@ -1,6 +1,13 @@
 // load 1 bullet
 class WeaponChambering_Start extends WeaponStartAction
-{ };
+{ 
+	override void OnEntry (WeaponEventBase e)
+	{
+		super.OnEntry(e);
+
+		m_weapon.SelectionBulletHide();
+	}
+};
 
 class WeaponChambering_Base extends WeaponStateBase
 {

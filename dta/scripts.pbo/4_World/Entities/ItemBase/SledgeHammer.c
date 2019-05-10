@@ -4,4 +4,13 @@ class SledgeHammer extends Inventory_Base
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionMineRock);
+		AddAction(ActionDestroyPart);
+	}
 }

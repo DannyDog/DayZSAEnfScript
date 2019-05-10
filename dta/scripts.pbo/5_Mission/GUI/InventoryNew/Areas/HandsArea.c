@@ -153,11 +153,6 @@ class HandsArea: LayoutHolder
 			m_ShouldChangeSize = false;
 	}
 
-	void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_HandsContainer.RefreshQuantity( item_to_refresh );
-	}
-
 	override void SetLayoutName()
 	{
 		m_LayoutName = WidgetLayoutName.HandsArea;
@@ -176,7 +171,6 @@ class HandsArea: LayoutHolder
 
 	override void Refresh()
 	{
-		m_HandsContainer.Refresh();
 		m_ShouldChangeSize = true;
 	}
 	

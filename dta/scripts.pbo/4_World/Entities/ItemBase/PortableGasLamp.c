@@ -80,4 +80,14 @@ class PortableGasLamp extends ItemBase
 	{
 		PlaySoundSet( m_SoundTurnOff, SOUND_TURN_OFF, 0.1, 0.1 );
 	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+		AddAction(ActionTurnOnWhileOnGround);
+		AddAction(ActionTurnOffWhileOnGround);
+	}
 }

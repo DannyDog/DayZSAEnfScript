@@ -112,18 +112,29 @@ class Headtorch_ColorBase extends Clothing
 	
 	override void OnWasAttached( EntityAI parent, int slot_id )
 	{
-		if ( m_Light  &&  parent.IsInherited(PlayerBase) )
+		PlayerBase player = PlayerBase.Cast(parent);
+
+		if ( player )
 		{
-			AttachLightOnHead( PlayerBase.Cast(parent) );
+			if ( m_Light )
+			{
+				AttachLightOnHead( player );
+			}
+			//player.m_PlayerLightManager.AddLightSource(this);
 		}
 	}
 	
 	override void OnWasDetached( EntityAI parent, int slot_id )
 	{
-		if ( m_Light  &&  parent.IsInherited(PlayerBase) )
+		PlayerBase player = PlayerBase.Cast(parent);
+		if ( player )
 		{
-			m_Light.DetachFromParent();
-			m_Light.AttachOnMemoryPoint(this, m_OffHeadLightPoint, m_OffHeadLightTarget);
+			if ( m_Light )
+			{
+				m_Light.DetachFromParent();
+				m_Light.AttachOnMemoryPoint(this, m_OffHeadLightPoint, m_OffHeadLightTarget);
+			}
+			//player.m_PlayerLightManager.RemoveLightSource(this);
 		}
 	}
 	
@@ -139,5 +150,14 @@ class Headtorch_ColorBase extends Clothing
 		
 		SetObjectMaterial(GLASS_ID, LIGHT_OFF_GLASS);
 		SetObjectMaterial(REFLECTOR_ID, LIGHT_OFF_REFLECTOR);
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+		AddAction(ActionTurnOnHeadtorch);
+		AddAction(ActionTurnOffHeadtorch);
 	}
 };

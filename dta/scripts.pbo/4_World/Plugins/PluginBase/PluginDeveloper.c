@@ -205,7 +205,8 @@ class PluginDeveloper extends PluginBase
 
 	void SetupSpawnedEntity (EntityAI entity, float health, float quantity, bool special = false)
 	{
-		entity.OnDebugSpawn();
+		if(special)
+			entity.OnDebugSpawn();
 		if ( entity.IsInherited( PlayerBase ) ) 
 		{
 			PlayerBase plr = PlayerBase.Cast( entity );

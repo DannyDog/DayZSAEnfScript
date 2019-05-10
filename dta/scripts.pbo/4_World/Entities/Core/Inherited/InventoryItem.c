@@ -78,6 +78,7 @@ class CarWheel extends InventoryItemSuper
 	}
 */
 
+/*
 	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
 	{
 		Print("CarWheel>>> EEHitBy");
@@ -87,6 +88,7 @@ class CarWheel extends InventoryItemSuper
 		Print( component );
 		Print( damageResult.GetDamage(dmgZone, "Health") );
 	}
+*/
 	
 	override void EEKilled(Object killer)
 	{
@@ -97,10 +99,14 @@ class CarWheel extends InventoryItemSuper
 				newWheel = "HatchbackWheel_Ruined";
 			break;
 			
+			case "Hatchback_02_Wheel":
+				newWheel = "Hatchback_02_Wheel_Ruined";
+			break;
+
 			case "V3SWheel":
 				newWheel = "V3SWheel_Ruined";
 			break;
-			
+
 			case "V3SWheelDouble":
 				newWheel = "V3SWheelDouble_Ruined";
 			break;
@@ -118,6 +124,17 @@ class CarWheel extends InventoryItemSuper
 		}
 	}
 
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionDetach);
+		AddAction(ActionAttachOnSelection);
+	}
 };
 
 class ReplaceWheelLambda : TurnItemIntoItemLambda
@@ -139,7 +156,14 @@ class ReplaceWheelLambda : TurnItemIntoItemLambda
 	}
 }
 
+class Hatchback_02_Wheel extends CarWheel {};
+class Hatchback_02_Wheel_Ruined extends ItemBase {};
+
 class HatchbackWheel extends CarWheel {};
+class HatchbackWheel_Ruined extends ItemBase {};
+
+class CivSedanWheel extends CarWheel {};
+class CivSedanWheel_Ruined extends ItemBase {};
 
 class CarDoor extends InventoryItemSuper
 {
@@ -162,6 +186,11 @@ class CarDoor extends InventoryItemSuper
 		return false;
 	}
 
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
+	}
+
 
 /*
 	override void OnWasAttached( EntityAI parent, int slot_name )
@@ -181,7 +210,49 @@ class CarDoor extends InventoryItemSuper
 		
 	}
 */
+	override void SetActions()
+	{
+		//super.SetActions();
+		AddAction(ActionOpenCarDoors);
+		AddAction(ActionCloseCarDoors);
+		AddAction(ActionAttachOnSelection);
+		AddAction(ActionDetach);
+	}
+	
 };
+
+class Hatchback_02_Door_1_1 extends CarDoor {};
+
+class Hatchback_02_Door_1_2 extends CarDoor {};
+
+class Hatchback_02_Door_2_1 extends CarDoor {};
+
+class Hatchback_02_Door_2_2 extends CarDoor {};
+
+class Hatchback_02_Hood extends CarDoor {};
+
+class Hatchback_02_Trunk extends CarDoor {};
+
+
+class HatchbackDoors_Driver extends CarDoor {};
+
+class HatchbackDoors_CoDriver extends CarDoor {};
+
+class HatchbackHood extends CarDoor {};
+
+class HatchbackTrunk extends CarDoor {};
+
+class CivSedanDoors_Driver extends CarDoor {};
+
+class CivSedanDoors_CoDriver extends CarDoor {};
+
+class CivSedanDoors_BackLeft extends CarDoor {};
+
+class CivSedanDoors_BackRight extends CarDoor {};
+
+class CivSedanHood extends CarDoor {};
+
+class CivSedanTrunk extends CarDoor {};
 
 class CarRadiator extends InventoryItemSuper
 {
@@ -228,6 +299,86 @@ class CarRadiator extends InventoryItemSuper
 		}
 	}
 
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttachOnSelection);
+		AddAction(ActionDetach);
+	}
+};
+
+class TruckRadiator extends CarRadiator {};
+
+class TruckExhaust extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+	}
+};
+
+class EngineBelt extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+	}
+};
+
+class BrakeFluid extends ItemBase {};
+
+class EngineOil extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionFillOil);
+	}
+};
+
+class TireRepairKit extends ItemBase {};
+
+class HeadlightH7 extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+	}
+};
+
+class HeadlightH7_Box extends ItemBase {};
+
+class WindscreenBox extends ItemBase {};
+
+class GlowPlug extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+	}
+};
+
+class SparkPlug extends ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+		AddAction(ActionAttachOnSelection);
+		AddAction(ActionInsertSparkplug);
+		AddAction(ActionDetach);
+	}
 };
 
 
@@ -264,16 +415,44 @@ class Clothing extends ItemBase
 	{
 		return ConfigGetFloat("visibilityModifier");
 	}
+	
+	void UpdateNVGStatus(PlayerBase player, bool attaching = false)
+	{
+		NVGoggles NVGAttachment;
+		NVGAttachment = NVGoggles.Cast(FindAttachmentBySlotName("NVG"));
+		
+		if ( player )
+		{
+			if ( NVGAttachment )
+			{
+				NVGAttachment.LoweredCheck();
+				
+				if ( attaching && NVGAttachment.IsWorking() && NVGAttachment.m_Strap && NVGAttachment.m_IsLowered && !player.IsNVGWorking() )
+				{
+					player.SetNVGWorking(true);
+				}
+				else if ( player.IsNVGWorking() )
+				{
+					player.SetNVGWorking(false);
+				}
+			}
+			else if ( player.IsNVGWorking() )
+			{
+				player.SetNVGWorking(false);
+			}
+		}
+	}
 };
 
 typedef Clothing ClothingBase;
 
 //-----------------------------------------------------------------------------
-class ItemBook extends InventoryItemSuper
+class Box_Base extends InventoryItemSuper
 {
-	override event bool OnUseFromInventory(Man owner)
+	override void SetActions()
 	{
-		return false;
+		super.SetActions();
+		AddAction(ActionUnpackBox);
 	}
 };
 
@@ -321,6 +500,13 @@ class ItemMap extends InventoryItemSuper
 	//! displays open/closed selections; 1 == opened
 	void SetMapStateOpen(bool state, PlayerBase player)
 	{
+		if (player)
+		{
+			player.SetMapOpen(state);
+			if (state)
+				player.OnItemInHandsChanged();
+		}
+		
 		if (state)
 		{
 			ShowSelection("map_opened");
@@ -331,9 +517,6 @@ class ItemMap extends InventoryItemSuper
 			ShowSelection("map_closed");
 			HideSelection("map_opened");
 		}
-		
-		if (player)
-			player.SetMapOpen(state);
 	}
 	
 	bool GetMapStateAnimation()

@@ -26,11 +26,20 @@ class TitleScreenMenu extends UIScriptedMenu
 			GetGame().GetPlayerName(gamertag);
 			
 			#ifdef PLATFORM_XBOX
-					m_TextPress.SetText("#dayz_game_press" + " " + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
+				m_TextPress.SetText("#dayz_game_press" + " " + "<image set=\"xbox_buttons\" name=\"A\" />" + "" + "#dayz_game_to_start");
 			#endif
 					
 			#ifdef PLATFORM_PS4
-					m_TextPress.SetText("#dayz_game_press" + " " + "<image set=\"playstation_buttons\" name=\"cross\" />" + "" + "#dayz_game_to_start");
+				string confirm = "cross";
+				if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+				{
+					confirm = "cross";
+				}
+				else
+				{
+					confirm = "circle";
+				}
+				m_TextPress.SetText("#ps4_dayz_game_press" + "" + "<image set=\"playstation_buttons\" name=\"" + confirm + "\" />" + "" + "#ps4_dayz_game_to_start");
 			#endif
 		}
 		return layoutRoot;
@@ -64,9 +73,6 @@ class TitleScreenMenu extends UIScriptedMenu
 			#ifdef PLATFORM_XBOX
 				g_Game.GamepadCheck();
 			#endif
-			#ifdef PLATFORM_PS4
-				EnterScriptedMenu(MENU_MAIN);
-			#endif			
 		}
 	}
 }

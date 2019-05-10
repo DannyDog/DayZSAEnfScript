@@ -50,6 +50,8 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 	{
 		GardenBase target_GB;
 		Class.CastTo(target_GB,  action_data.m_Target.GetObject() );
+		m_ItemQuantity = action_data.m_MainItem.GetQuantity();
+		m_ItemMaxQuantity = action_data.m_MainItem.GetQuantityMax();
 		
 		if ( !action_data.m_Player )
 		{
@@ -67,16 +69,15 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			
 			if ( slot  &&  m_SpentQuantity < m_ItemQuantity )
 			{
-				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
-				
 				if ( GetGame().IsServer() )
 				{
+					m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
 					float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
 					slot.GiveWater( water );
 					action_data.m_MainItem.AddQuantity(- m_SpentQuantity);
+					m_SpentQuantity = 0;
 				}
 				
-				m_SpentQuantity = 0;
 				return UA_PROCESSING;
 			}
 			else
@@ -90,7 +91,7 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 	
 	override float GetProgress()
 	{	
-		//float progress = (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
-		return (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
+		float progress = m_ItemQuantity / m_ItemMaxQuantity;
+		return progress;
 	}
 };

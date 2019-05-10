@@ -1,7 +1,7 @@
 class ItemOptics extends InventoryItemSuper
 {
 	bool 				m_data_set;
-	bool 				m_allowsDOF;
+	bool 				m_allowsDOF; //true if optics DOES NOT have magnification (FOV >= DZPLAYER_CAMERA_FOV_IRONSIGHTS)
 	bool 				m_reddot_displayed
 	bool 				m_isNVOptic = false;
 	int 				m_reddot_index;
@@ -190,7 +190,6 @@ class ItemOptics extends InventoryItemSuper
 	
 	bool IsWorking()
 	{
-		ComponentEnergyManager eem = GetCompEM();
 		if (GetCompEM() && GetCompEM().CanWork())
 			return true;
 		return false;
@@ -294,7 +293,6 @@ class ItemOptics extends InventoryItemSuper
 		m_allowsDOF = InitDOFAvailability();
 		InitOpticsPP(m_mask_array, m_lens_array, m_blur_float);
 		
-		//NV prototype
 		m_isNVOptic = ConfigGetBool("NVOptic");
 	}
 	
@@ -329,7 +327,12 @@ class ItemOptics extends InventoryItemSuper
 	//! Initializes DOF properties for optic's alternate ironsights (ACOG etc.)
 	bool InitOpticsDOFProperties (out array<float> temp_array)
 	{
-		if (GetGame().ConfigIsExisting("cfgVehicles " + GetType() + " OpticsInfoWeaponOverride PPDOFProperties"))
+		if (GetGame().ConfigIsExisting("cfgVehicles " + GetType() + " OpticsInfo PPDOFProperties"))
+		{
+			GetGame().ConfigGetFloatArray("cfgVehicles " + GetType() + " OpticsInfo PPDOFProperties", temp_array);
+			return true;
+		}
+		else if (GetGame().ConfigIsExisting("cfgVehicles " + GetType() + " OpticsInfoWeaponOverride PPDOFProperties"))
 		{
 			GetGame().ConfigGetFloatArray("cfgVehicles " + GetType() + " OpticsInfoWeaponOverride PPDOFProperties", temp_array);
 			return true;
@@ -362,6 +365,13 @@ class ItemOptics extends InventoryItemSuper
 	float GetOpticsPPBlur()
 	{
 		return m_blur_float;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionViewOptics);
 	}
 };	
 

@@ -71,6 +71,9 @@ class MissionMainMenu extends MissionBase
 		}
 		g_Game.GetUIManager().ShowUICursor(true);
 		g_Game.SetMissionState( DayZGame.MISSION_STATE_MAINMENU );
+		
+		//Print("*** MissionMainMenu.OnMissionStart()");
+		g_Game.LoadingHide(true);
 	}
 	
 	override void OnMissionFinish()

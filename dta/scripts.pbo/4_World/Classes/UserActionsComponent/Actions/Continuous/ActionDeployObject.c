@@ -145,12 +145,19 @@ class ActionDeployObject: ActionContinuousBase
 			if (!GetGame().IsMultiplayer() || GetGame().IsClient() )
 			{
 
+				Hologram hologram = player.GetHologramLocal();
+				if(hologram)
+				{
+					poActionData.m_Position = player.GetHologramLocal().GetProjectionPosition();
+					poActionData.m_Orientation = player.GetHologramLocal().GetProjectionOrientation();
 			
-				poActionData.m_Position = player.GetHologramLocal().GetProjectionPosition();
-				poActionData.m_Orientation = player.GetHologramLocal().GetProjectionOrientation();
-			
-				poActionData.m_Player.SetLocalProjectionPosition( poActionData.m_Position );
-				poActionData.m_Player.SetLocalProjectionOrientation( poActionData.m_Orientation );
+					poActionData.m_Player.SetLocalProjectionPosition( poActionData.m_Position );
+					poActionData.m_Player.SetLocalProjectionOrientation( poActionData.m_Orientation );
+				}
+				else
+				{
+					return false;
+				}
 			}
 			
 			return true;
@@ -158,7 +165,7 @@ class ActionDeployObject: ActionContinuousBase
 		return false;
 	}
 	
-	override bool Can( PlayerBase player, ActionTarget target, ItemBase item )
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
 		//Client
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )

@@ -63,7 +63,7 @@ class SKS_Base extends Rifle_Base
 	ref WeaponStateBase C0;
 	ref	WeaponStateBase C1;
 	ref	WeaponStateBase L0;
-	ref	WeaponStateBase J1;
+	ref	WeaponStateBase JF;
 	
 	override RecoilBase SpawnRecoilObject()
 	{
@@ -77,6 +77,8 @@ class SKS_Base extends Rifle_Base
 		m_abilities.Insert(new AbilityRecord(WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_STARTLOOPABLE_OPENED));
 		m_abilities.Insert(new AbilityRecord(WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_ENDLOOPABLE));
 		
+		m_abilities.Insert(new AbilityRecord(WeaponActions.RELOAD_CLIP, 0));
+	
 		m_abilities.Insert(new AbilityRecord(WeaponActions.MECHANISM, GetWeaponSpecificCommand(WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_CLOSED)));
 		m_abilities.Insert(new AbilityRecord(WeaponActions.MECHANISM, GetWeaponSpecificCommand(WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_OPENED)));//????
 		
@@ -97,7 +99,7 @@ class SKS_Base extends Rifle_Base
 		C0 = new SKS_CLO_BU0(this, NULL, SKSAnimState.DEFAULT);
 		C1 = new SKS_CLO_BU1(this, NULL, SKSAnimState.DEFAULT);
 		L0 = new SKS_OPN_BU0(this, NULL, SKSAnimState.OPENED);
-		J1 = new SKS_JAM_BU1(this, NULL, SKSAnimState.JAMMED);
+		JF = new SKS_JAM_BU1(this, NULL, SKSAnimState.JAMMED);
 
 		// unstable (intermediate) states
 		WeaponChargingInnerMag Mech_C0 = new WeaponChargingInnerMag(this, NULL, WeaponActions.MECHANISM, GetWeaponSpecificCommand(WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_CLOSED));
@@ -106,13 +108,15 @@ class SKS_Base extends Rifle_Base
 		
 		//Fire
 		WeaponStateBase Trigger_C0 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY)); // cock without clip
-		WeaponFireAndChamberFromInnerMagazine Trigger_C1 = new WeaponFireAndChamberFromInnerMagazine(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL), GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM));
-		WeaponStateBase Trigger_C1L = new WeaponFireLast(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_LAST), GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM));
+		WeaponFireAndChamberFromInnerMagazine Trigger_C1 = new WeaponFireAndChamberFromInnerMagazine(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL) );
+		WeaponStateBase Trigger_C1L = new WeaponFireLast(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_LAST));
 		WeaponStateBase Trigger_L0 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
-		WeaponStateBase Trigger_J1 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
+		WeaponStateBase Trigger_JF = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
+		
+		WeaponStateBase Trigger_C1J = new WeaponFireToJam(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM); 
 	
 		//Unjam
-		WeaponStateBase Unjam_J1 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, GetWeaponSpecificCommand(WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START));
+		WeaponStateBase Unjam_JF = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, GetWeaponSpecificCommand(WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START));
 
 		//Chambering
 		LoopedChambering 	Chamber_C0 = new LoopedChambering(this, NULL, WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_STARTLOOPABLE_CLOSED, WeaponActionChamberingTypes.CHAMBERING_ENDLOOPABLE);
@@ -124,6 +128,7 @@ class SKS_Base extends Rifle_Base
 		// events
 		WeaponEventBase __M__ = new WeaponEventMechanism;
 		WeaponEventBase __T__ = new WeaponEventTrigger;
+		WeaponEventBase __TJ_ = new WeaponEventTriggerToJam;
 		WeaponEventBase __U__ = new WeaponEventUnjam;
 		WeaponEventBase __L__ = new WeaponEventLoad1Bullet;
 		WeaponEventBase _fin_ = new WeaponEventHumanCommandActionFinished;
@@ -156,30 +161,29 @@ class SKS_Base extends Rifle_Base
 		
 		
 		m_fsm.AddTransition(new WeaponTransition( C1,			__T__,	Trigger_C1, NULL, new WeaponGuardHasAmmoInnerMagazine(this)));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_fin_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_rto_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_abt_,	J1, NULL, new WeaponGuardJammed(this)));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_fin_,	C1));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_rto_,	C1));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1,	_abt_,	C1));
 		
 		m_fsm.AddTransition(new WeaponTransition( C1,			__T__,	Trigger_C1L));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_fin_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_rto_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_abt_,	J1, NULL, new WeaponGuardJammed(this)));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_fin_,	L0));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_rto_,	L0));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_C1L,	_abt_,	L0));
+		
+		m_fsm.AddTransition(new WeaponTransition( C1,				__TJ_,	Trigger_C1J));
+		m_fsm.AddTransition(new WeaponTransition( Trigger_C1J,	_fin_,	JF ));
+		m_fsm.AddTransition(new WeaponTransition( Trigger_C1J,	_rto_,	JF ));
+		m_fsm.AddTransition(new WeaponTransition( Trigger_C1J,	_abt_,	JF ));
 	
 		m_fsm.AddTransition(new WeaponTransition( L0,			__T__,	Trigger_L0));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_L0,	_fin_,	L0));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_L0,	_dto_,	L0));
 		m_fsm.AddTransition(new WeaponTransition( Trigger_L0,	_abt_,	L0));
 		
-		m_fsm.AddTransition(new WeaponTransition( J1,			__T__,	Trigger_J1)); // opened fire.uncocked w mag
-		m_fsm.AddTransition(new WeaponTransition( Trigger_J1,	_fin_,	J1));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_J1,	_dto_,	J1));
-		m_fsm.AddTransition(new WeaponTransition( Trigger_J1,	_abt_,	J1));
+		m_fsm.AddTransition(new WeaponTransition( JF,			__T__,	Trigger_JF)); // opened fire.uncocked w mag
+		m_fsm.AddTransition(new WeaponTransition( Trigger_JF,	_fin_,	JF));
+		m_fsm.AddTransition(new WeaponTransition( Trigger_JF,	_dto_,	JF));
+		m_fsm.AddTransition(new WeaponTransition( Trigger_JF,	_abt_,	JF));
 
 
 		// load cartridge
@@ -199,13 +203,13 @@ class SKS_Base extends Rifle_Base
 
 		
 		// unjam
-		m_fsm.AddTransition(new WeaponTransition( J1,		__U__,	Unjam_J1)); // unjam nomag
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_fin_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_fin_,	C0, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_fin_,	C1));
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_abt_,	J1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_abt_,	C0, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition( Unjam_J1,	_abt_,	C1));
+		m_fsm.AddTransition(new WeaponTransition( JF,		__U__,	Unjam_JF)); // unjam nomag
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_fin_,	JF, NULL, new WeaponGuardJammed(this)));
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_fin_,	C0, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_fin_,	C1));
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_abt_,	JF, NULL, new WeaponGuardJammed(this)));
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_abt_,	C0, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition( Unjam_JF,	_abt_,	C1));
 
 		m_fsm.SetInitialState(C0);
 
@@ -221,5 +225,11 @@ class SKS_Base extends Rifle_Base
 		if (optic && PUScopeOptic.Cast(optic))
 			return true;
 		return super.CanEnterIronsights();
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(FirearmActionLoadMultiBullet);
 	}
 };

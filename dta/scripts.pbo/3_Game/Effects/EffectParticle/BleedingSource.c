@@ -6,3 +6,12 @@ class BleedingSourceEffect : EffectParticle
 //		SetSoundName("Action_Vomitting_0");
 	}
 }
+
+class BleedingSourceEffectLight : EffectParticle
+{
+	void BleedingSourceEffectLight()
+	{
+		SetParticleID(ParticleList.BLEEDING_SOURCE_LIGHT);
+//		SetSoundName("Action_Vomitting_0");
+	}
+}

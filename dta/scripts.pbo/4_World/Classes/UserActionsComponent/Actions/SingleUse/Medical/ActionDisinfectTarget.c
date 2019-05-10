@@ -14,11 +14,11 @@ class ActionDisinfectTargetCB : ActionSingleUseBaseCB
 		}
 		return DefaultCancelCondition(); 
 	}*/
-	override void InitActionComponent()
+	/*override void InitActionComponent()
 	{
 		super.InitActionComponent();
 		EnableCancelCondition(true);
-	}
+	}*/
 };
 
 

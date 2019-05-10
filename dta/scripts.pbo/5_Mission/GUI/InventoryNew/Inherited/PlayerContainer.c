@@ -134,6 +134,115 @@ class PlayerContainer: CollapsibleContainer
 		RecomputeOpenedContainers();
 	}
 	
+	void ~PlayerContainer()
+	{
+		if( m_Player )
+		{
+			m_Player.GetOnItemAttached().Remove(ItemAttached);
+			m_Player.GetOnItemDetached().Remove(ItemDetached);
+		}
+	}
+	
+	void ItemAttached(EntityAI item, string slot_name)
+	{
+		int slot = InventorySlots.GetSlotIdFromString( slot_name );
+		SlotsIcon icon = m_InventorySlots.Get( slot );
+		if( icon )
+		{
+			icon.Init( item );
+
+			if( m_ShowedItems.Contains( item ) == false )
+			{
+				string name;
+				int sort_index = Inventory.GetPlayerAttachmentIndex( slot );
+				int current_sort = 9999;
+				if( GetFocusedContainer() )
+					current_sort = GetFocusedContainer().GetRootWidget().GetSort();
+				
+				if( item.GetSlotsCountCorrect() > 0 )
+				{
+					ContainerWithCargoAndAttachments iwca = new ContainerWithCargoAndAttachments( this, sort_index );
+					iwca.SetEntity( item );
+					icon.GetPanelWidget().SetUserID( item.GetID() );
+					WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "ToggleWidget" );
+
+					icon.GetRadialIconPanel().Show( true );
+					if( sort_index <= current_sort )
+						m_ActiveIndex++;
+					m_ShowedItems.Insert( item, iwca );
+					Refresh();
+				}
+				else if( item.GetInventory().GetCargo() )
+				{
+					ContainerWithCargo iwc = new ContainerWithCargo( this, sort_index );
+					iwc.SetEntity( item );
+					iwc.UpdateInterval();
+					icon.GetPanelWidget().SetUserID( item.GetID() );
+					WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "ToggleWidget" );
+					m_ShowedItems.Insert( item, iwc );
+					icon.GetRadialIconPanel().Show(true);
+					if( sort_index <= current_sort )
+						m_ActiveIndex++;
+					
+					Refresh();
+				}
+			}
+			
+			ClosableContainer conta = ClosableContainer.Cast( m_ShowedItems.Get( item ) );
+			string config = "CfgVehicles " + item.GetType() + " GUIInventoryAttachmentsProps";
+			if( conta && conta.IsInherited( ClosableContainer ) )
+			{
+				bool show_radial_icon = ( item.GetInventory().GetCargo() || item.GetSlotsCountCorrect() > 0 ) && !GetGame().ConfigIsExisting( config );
+				icon.GetRadialIconPanel().Show( show_radial_icon );
+				Widget ric = icon.GetRadialIcon();
+				ric.Show( !conta.IsOpened() );
+				icon.GetRadialIconClosed().Show( conta.IsOpened() );
+			}
+			
+			bool changed_size;
+			if( m_ShouldChangeSize )
+				m_ContentResize.ResizeParentToChild( changed_size );
+			if( changed_size )
+			{
+				CheckScrollbarVisibility();
+				m_ShouldChangeSize = false;
+			}
+		}
+	}
+	
+	void ItemDetached(EntityAI item, string slot_name)
+	{
+		int slot = InventorySlots.GetSlotIdFromString( slot_name );
+		SlotsIcon icon = m_InventorySlots.Get( slot );
+		
+		if( icon )
+		{
+			Container con = m_ShowedItems.Get( item );
+			if( con )
+			{
+				( Container.Cast( con.m_Parent ) ).Remove( con );
+				RecomputeOpenedContainers();
+				GetMainWidget().Update();
+				Refresh();
+				m_ShowedItems.Remove( item );
+			}
+			
+			icon.Clear();
+			Inventory in = Inventory.Cast( GetRoot() );
+			if( in )
+				in.UpdateConsoleToolbar();
+			
+			bool changed_size;
+			if( m_ShouldChangeSize )
+				m_ContentResize.ResizeParentToChild( changed_size );
+			if( changed_size )
+			{
+				CheckScrollbarVisibility();
+				m_ShouldChangeSize = false;
+			}
+		}
+	}
+	
 	void AddSlotsContainer( int row_count )
 	{
 		ref SlotsContainer s_cont = new SlotsContainer( m_PlayerAttachmentsContainer );
@@ -149,7 +258,7 @@ class PlayerContainer: CollapsibleContainer
 	
 	void MouseClick( Widget w, int x, int y, int button )
 	{
-		bool inventory_locked = GetGame().GetPlayer().GetInventory().IsInventoryLocked();
+		bool inventory_locked = m_Player.GetInventory().IsInventoryLocked();
 		ItemManager.GetInstance().SetWidgetDraggable( w, !inventory_locked );
 		
 		string name = w.GetName();
@@ -349,6 +458,7 @@ class PlayerContainer: CollapsibleContainer
 				first.SetActive( true );
 				active = first;
 				SetFocusedContainer( first );
+				active.SetLastActive();
 				m_ScrollWidget.VScrollToPos01( 1 );
 			}
 			if( m_ActiveIndex == 1 )
@@ -491,7 +601,7 @@ class PlayerContainer: CollapsibleContainer
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 			
-			if( w == null || player.GetInventory().IsInventoryLocked() )
+			if( w == null || m_Player.GetInventory().IsInventoryLocked() )
 			{
 				return;
 			}
@@ -545,15 +655,6 @@ class PlayerContainer: CollapsibleContainer
 			{
 				menu.RefreshQuickbar();
 			}
-		}
-	}
-	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		for ( int i = 0; i < m_ShowedItems.Count(); i++ )
-		{
-			Container container = m_ShowedItems.GetElement( i );
-			container.RefreshItemPosition( item_to_refresh );
 		}
 	}
 	
@@ -727,7 +828,7 @@ class PlayerContainer: CollapsibleContainer
 				EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
 				if( selected_item && selected_item.GetInventory().CanRemoveEntity() )
 				{
-					if( GetGame().GetPlayer().GetInventory().CanRemoveAttachment( selected_item ) )
+					if( m_Player.GetInventory().CanRemoveAttachment( selected_item ) )
 					{
 						GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, selected_item );
 						ItemManager.GetInstance().SetSelectedItem( null, null, null );
@@ -919,7 +1020,42 @@ class PlayerContainer: CollapsibleContainer
 
 	void SetPlayer( PlayerBase player )
 	{
+		if( m_Player )
+		{
+			m_Player.GetOnItemAttached().Remove(ItemAttached);
+			m_Player.GetOnItemDetached().Remove(ItemDetached);
+		}
 		m_Player = player;
+		if( m_Player )
+		{
+			m_Player.GetOnItemAttached().Insert(ItemAttached);
+			m_Player.GetOnItemDetached().Insert(ItemDetached);
+		}
+		
+		//START - InitGhostSlots
+		string config_path_ghosts_slots = "CfgVehicles SurvivorBase InventoryEquipment playerSlots";
+		ref array<string> player_ghosts_slots = new array<string>;
+		GetGame().ConfigGetTextArray( config_path_ghosts_slots, player_ghosts_slots );
+
+		for ( int i = 0; i < player_ghosts_slots.Count(); i++ )
+		{
+			string slot_name = player_ghosts_slots.Get ( i );
+
+			int column = i % ITEMS_IN_ROW;
+			int row = i / ITEMS_IN_ROW;
+	
+			SlotsIcon icon = GetSlotsIcon( row, column );
+			
+			icon.GetMainWidget().Show( true );
+			icon.Clear();
+			
+			GetGame().ConfigGetText( "CfgSlots" + " " + slot_name + " name", slot_name );
+			EntityAI item = m_Player.GetInventory().FindAttachment( InventorySlots.GetSlotIdFromString( slot_name ) );
+			if( item )
+			{
+				ItemAttached( item, slot_name );
+			}
+		}
 	}
 
 	void OnIconDrag( Widget w )
@@ -935,34 +1071,45 @@ class PlayerContainer: CollapsibleContainer
 		int m_sizeX, m_sizeY;
 
 		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-		m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-		icon_x = x_content / 10;
-		icon_y = x_content / 10;
-		w.SetFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( icon_x, icon_y );
-		w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-
-		if( !ipw.GetItem() )
+		if( i_item )
 		{
-			return;
+			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
+
+			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
+			icon_x = x_content / 10;
+			icon_y = x_content / 10;
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			if( i_item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
+			}
+			else
+			{
+				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
+			}
+	
+			if( !ipw.GetItem() )
+			{
+				return;
+			}
+			name.Replace( "Render", "Col" );
+			w.FindAnyWidget( name ).Show( true );
+			name.Replace( "Col", "RadialIcon" );
+			w.GetParent().GetParent().FindAnyWidget( name ).Show( false );
+			name.Replace( "RadialIcon", "AmmoIcon" );
+			w.GetParent().FindAnyWidget( name ).Show( false );
+			name.Replace( "AmmoIcon", "Selected" );
+			w.GetParent().FindAnyWidget( name ).Show( true );
+			
+			ItemManager.GetInstance().SetDraggedItem( i_item );
 		}
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( true );
-		name.Replace( "Col", "RadialIcon" );
-		w.GetParent().GetParent().FindAnyWidget( name ).Show( false );
-		name.Replace( "RadialIcon", "AmmoIcon" );
-		w.GetParent().FindAnyWidget( name ).Show( false );
-		name.Replace( "AmmoIcon", "Selected" );
-		w.GetParent().FindAnyWidget( name ).Show( true );
 	}
 
 	void OnIconDrop( Widget w )
 	{
 		ItemManager.GetInstance().HideDropzones();
-
 		ItemManager.GetInstance().SetIsDragging( false );
+		
 		w.ClearFlags( WidgetFlags.EXACTSIZE );
 		w.SetSize( 1, 1 );
 		string name = w.GetName();
@@ -1083,7 +1230,7 @@ class PlayerContainer: CollapsibleContainer
 				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 				return;
 			}
-			else if( receiver_item.GetInventory().CanAddAttachment(item) || receiver_item.GetInventory().CanAddEntityInCargo( item ) && !receiver_item.GetInventory().HasEntityInCargo( item ))
+			else if( receiver_item.GetInventory().CanAddAttachment(item) || receiver_item.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && !receiver_item.GetInventory().HasEntityInCargo( item ))
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -1130,6 +1277,9 @@ class PlayerContainer: CollapsibleContainer
 
 	void OnDropReceivedFromGhostArea( Widget w, int x, int y, Widget receiver )
 	{
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
+		
 		string name = receiver.GetName();
 		name.Replace("PanelWidget", "Render");
 		ItemPreviewWidget receiver_iw = ItemPreviewWidget.Cast( receiver.FindAnyWidget(name) );
@@ -1176,7 +1326,7 @@ class PlayerContainer: CollapsibleContainer
 				}
 				return;
 			}
-			else if( receiver_item.GetInventory().CanAddEntityInCargo( item ) && !receiver_item.GetInventory().HasEntityInCargo( item ) )
+			else if( receiver_item.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && !receiver_item.GetInventory().HasEntityInCargo( item ) )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToTargetInventory( receiver_item, FindInventoryLocationType.ANY_CARGO, item );
 
@@ -1219,8 +1369,8 @@ class PlayerContainer: CollapsibleContainer
 		
 		if( item1 && item2 )
 		{
-			Container cont1	= m_ShowedItemsIDs.Get( item1.GetID() );
-			Container cont2	= m_ShowedItemsIDs.Get( item2.GetID() );
+			Container cont1	= m_ShowedItems.Get( item1 );
+			Container cont2	= m_ShowedItems.Get( item2 );
 			if( cont1 && cont2 )
 			{
 				int sort1		= cont1.GetRootWidget().GetSort();
@@ -1234,131 +1384,31 @@ class PlayerContainer: CollapsibleContainer
 
 	override void UpdateInterval()
 	{
-		if( !m_Player || !m_Parent.m_Parent.GetMainWidget().IsVisible() )
-		{
-			return;
-		}
-		
-		int attachments_count = m_Player.GetInventory().AttachmentCount();
-		ref map<EntityAI, ref Container> new_showed_items = new ref map<EntityAI, ref Container>;
-		ref array<EntityAI> showed_player_ghost_entities = new ref array<EntityAI>;
-		ref map<int, ref Container> showed_items_IDs = new ref map<int, ref Container>;
-		for ( int i = 0; i < attachments_count; i++ )
-		{
-			EntityAI entity = m_Player.GetInventory().GetAttachmentFromIndex( i );
-			if ( entity )
-			{
-				InventoryLocation loc = new InventoryLocation;
-				entity.GetInventory().GetCurrentInventoryLocation( loc );
-				int slot_id = loc.GetSlot();
-				
-				SlotsIcon icon = m_InventorySlots.Get( slot_id );
-				if( icon )
-				{
-					icon.Init( entity );
-					showed_player_ghost_entities.Insert( entity );
-	
-					if( m_ShowedItems.Contains( entity ) == false )
-					{
-						string name;
-						int sort_index = Inventory.GetPlayerAttachmentIndex( slot_id );
-						if( entity.GetSlotsCountCorrect() > 0 )
-						{
-							ContainerWithCargoAndAttachments iwca = new ContainerWithCargoAndAttachments( this, sort_index );
-							iwca.SetEntity( entity );
-							new_showed_items.Insert( entity, iwca );
-							showed_items_IDs.Insert( entity.GetID(), iwca );
-							icon.GetPanelWidget().SetUserID( entity.GetID() );
-							WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "ToggleWidget" );
-	
-							icon.GetRadialIconPanel().Show( true );
-							
-							Refresh();
-						}
-						else if( entity.GetInventory().GetCargo() )
-						{
-							ContainerWithCargo iwc = new ContainerWithCargo( this, sort_index );
-							iwc.SetEntity( entity );
-							new_showed_items.Insert( entity, iwc );
-							showed_items_IDs.Insert( entity.GetID(), iwc );
-							iwc.UpdateInterval();
-							icon.GetPanelWidget().SetUserID( entity.GetID() );
-							WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "ToggleWidget" );
-	
-							icon.GetRadialIconPanel().Show(true);
-							
-							Refresh();
-						}
-					}
-					else
-					{
-						new_showed_items.Insert( entity, m_ShowedItems.Get( entity ) );
-						showed_items_IDs.Insert( entity.GetID(), m_ShowedItemsIDs.Get( entity.GetID() ) );
-					}
-					
-					ClosableContainer conta = ClosableContainer.Cast( m_ShowedItemsIDs.Get( entity.GetID() ) );
-					string config = "CfgVehicles " + entity.GetType() + " GUIInventoryAttachmentsProps";
-					if( conta && conta.IsInherited( ClosableContainer ) )
-					{
-						bool show_radial_icon = ( entity.GetInventory().GetCargo() || entity.GetSlotsCountCorrect() > 0 ) && !GetGame().ConfigIsExisting( config );
-						icon.GetRadialIconPanel().Show( show_radial_icon );
-						Widget ric = icon.GetRadialIcon();
-						ric.Show( !conta.IsOpened() );
-						icon.GetRadialIconClosed().Show( conta.IsOpened() );
-					}
-				}
-			}
-		}
-
-		for( i = 0; i < m_ShowedItems.Count(); i++ )
-		{
-			EntityAI ent = m_ShowedItems.GetKey( i );
-			m_ShowedItems.GetElement( i ).UpdateInterval();
-			if( !new_showed_items.Contains( ent ) )
-			{
-				Container con = m_ShowedItems.GetElement( i );
-				( Container.Cast( con.m_Parent ) ).Remove( con );
-				RecomputeOpenedContainers();
-				GetMainWidget().Update();
-				Refresh();
-			}
-		}
-
+		int i;
 		for( i = 0; i < m_InventorySlots.Count(); i++ )
 		{
-			SlotsIcon icon2 = m_InventorySlots.GetElement( i );
-			if( icon2 )
+			SlotsIcon icon = m_InventorySlots.GetElement( i );
+			if( icon )
 			{
-				if( icon2.GetEntity() && showed_player_ghost_entities.Find( icon2.GetEntity() ) == INDEX_NOT_FOUND )
-				{
-					icon2.Clear();
-					Inventory in = Inventory.Cast( GetRoot() );
-					if( in )
-						in.UpdateConsoleToolbar();
-				}
-				else
-				{
-					icon2.UpdateInterval();
-				}
+				icon.UpdateInterval();
 			}
 		}
-
-		bool changed_size;
-		if( m_ShouldChangeSize )
-			m_ContentResize.ResizeParentToChild( changed_size );
-		if( changed_size )
+		for( i = 0; i < m_ShowedItems.Count(); i++ )
 		{
-			CheckScrollbarVisibility();
-			m_ShouldChangeSize = false;
+			Container cont = m_ShowedItems.GetElement( i );
+			if( cont )
+			{
+				cont.UpdateInterval();
+			}
 		}
-		
-		m_ShowedItems = new_showed_items;
-		m_ShowedItemsIDs = showed_items_IDs;
 	}
 
-	void ToggleContainer( Widget w , int number )
+	void ToggleContainer( Widget w, EntityAI item )
 	{
-		ClosableContainer c = ClosableContainer.Cast( m_ShowedItemsIDs.Get( number ) );
+		InventoryLocation il = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation( il );
+		SlotsIcon icon = m_InventorySlots.Get( il.GetSlot() );
+		ClosableContainer c = ClosableContainer.Cast( m_ShowedItems.Get( item ) );
 		if( c == null )
 		{
 			return;
@@ -1371,6 +1421,13 @@ class PlayerContainer: CollapsibleContainer
 		else
 		{
 			c.Open();
+		}
+		
+		if( icon )
+		{
+			Widget ric = icon.GetRadialIcon();
+			ric.Show( !c.IsOpened() );
+			icon.GetRadialIconClosed().Show( c.IsOpened() );
 		}
 		
 		Refresh();
@@ -1387,16 +1444,8 @@ class PlayerContainer: CollapsibleContainer
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
 		if( ipw.GetItem() )
 		{
-			ToggleContainer( w, w.GetUserID() );
+			ToggleContainer( w, ipw.GetItem() );
 			RecomputeOpenedContainers();
-		}
-	}
-
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		for ( int i = 0; i < m_ShowedItems.Count(); i++)
-		{
-			m_ShowedItems.GetElement( i ).RefreshQuantity( item_to_refresh );
 		}
 	}
 

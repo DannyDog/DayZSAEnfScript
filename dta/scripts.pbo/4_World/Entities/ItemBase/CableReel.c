@@ -146,4 +146,18 @@ class CableReel extends ItemBase
 	{
 		return "placeCableReel_SoundSet";
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionPlugIn);
+		AddAction(ActionPlugTargetIntoThis);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPullOutPlug);
+		AddAction(ActionUnplugThisByCord);
+		AddAction(ActionRepositionPluggedItem);
+		AddAction(ActionPlaceObject);
+	}
 }

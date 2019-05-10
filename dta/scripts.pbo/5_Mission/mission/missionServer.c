@@ -165,6 +165,7 @@ class MissionServer extends MissionBase
 			}
 			identity = newParams.param1;
 			InvokeOnConnect(player,identity );
+			ControlPersonalLight(player);
 			break;
 			
 		case ClientReadyEventTypeID:
@@ -181,6 +182,9 @@ class MissionServer extends MissionBase
 			
 			OnClientReadyEvent(identity, player);
 			InvokeOnConnect(player, identity);
+			// Send list of players at all clients
+			SyncEvents.SendPlayerList();
+			ControlPersonalLight(player);
 			break;
 					
 		case ClientRespawnEventTypeID:
@@ -256,9 +260,6 @@ class MissionServer extends MissionBase
 	{
 		Debug.Log("InvokeOnConnect:"+this.ToString(),"Connect");
 		if( player ) player.OnConnect();
-		
-		// Send list of players at all clients
-		SyncEvents.SendPlayerList();
 	}
 
 	void InvokeOnDisconnect( PlayerBase player )
@@ -286,7 +287,22 @@ class MissionServer extends MissionBase
 			queueTime = 5;
 		}
 	}
-
+	
+	// Enables/Disables personal light on the given player.
+	void ControlPersonalLight(PlayerBase player)
+	{
+		if ( player )
+		{
+			bool is_personal_light = ! GetGame().ServerConfigGetInt( "disablePersonalLight" );
+			Param1<bool> personal_light_toggle = new Param1<bool>(is_personal_light);
+			GetGame().RPCSingleParam(player, ERPCs.RPC_TOGGLE_PERSONAL_LIGHT, personal_light_toggle, true, player.GetIdentity());
+		}
+		else
+		{
+			Error("Error! Player was not initialized at the right time. Thus cannot send RPC command to enable or disable personal light!");
+		}
+	}
+	
 	//saves them for the whole mission
 	void ProcessLoginData(ParamsReadContext ctx, out int top, out int bottom, out int shoes, out int skin)
 	{
@@ -373,7 +389,6 @@ class MissionServer extends MissionBase
 		if (CreateCharacter(identity, pos, ctx, characterName))
 		{
 			EquipCharacter();
-			GetGame().RPCSingleParam(m_player, ERPCs.RPC_CHARACTER_EQUIPPED, NULL, true, m_player.GetIdentity());
 		}
 		
 		return m_player;

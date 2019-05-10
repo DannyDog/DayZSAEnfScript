@@ -47,15 +47,6 @@ class InventoryMenu extends UIScriptedMenu
 			else
 				m_WidthType = ScreenWidthType.NARROW;
 		}
-		/*
-		for( int i = 0; i < 100; i++ )
-		{
-			int x = ( 10 * i + 11 );
-			if( ( x + 9 ) % 8 == 0 )
-			{
-				Print( "Grid = " + i + ", slot = " + ( x / 8 ) + ", total = " + x );
-			}
-		}*/
 	}
 	
 	static ScreenWidthType GetWidthType()
@@ -73,19 +64,15 @@ class InventoryMenu extends UIScriptedMenu
 		return m_Height;
 	}
 	
+	static float GetHeightMultiplied( float value )
+	{
+		float height = m_Height;
+		return height / 1080 * value;
+	}
+	
 	void RefreshQuickbar()
 	{
 		m_Inventory.RefreshQuickbar();
-	}
-	
-	void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		m_Inventory.RefreshQuantity( item_to_refresh );
-	}
-	
-	void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		m_Inventory.RefreshItemPosition( item_to_refresh );
 	}
 	
 	override ContextMenu GetContextMenu()

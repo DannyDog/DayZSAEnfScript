@@ -20,7 +20,7 @@ class Flashlight extends ItemBase
 		
 		SetObjectMaterial(GLASS_ID, LIGHT_ON_GLASS);
 		SetObjectMaterial(REFLECTOR_ID, LIGHT_ON_REFLECTOR);
-	}
+		}
 	
 	override void OnWork( float consumed_energy )
 	{
@@ -56,5 +56,29 @@ class Flashlight extends ItemBase
 		
 		SetObjectMaterial(GLASS_ID, LIGHT_OFF_GLASS);
 		SetObjectMaterial(REFLECTOR_ID, LIGHT_OFF_REFLECTOR);
+		}
+	
+	// Inventory manipulation
+	override void OnInventoryExit(Man player)
+	{
+		super.OnInventoryExit(player);
+		
+		if ( GetGame().IsServer()  &&  GetCompEM().IsWorking() )
+		{
+			if (player)
+			{
+				vector ori_rotate = player.GetOrientation();
+				ori_rotate = ori_rotate + Vector(270,0,0);
+				SetOrientation(ori_rotate);
+			}
+		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
 	}
 }

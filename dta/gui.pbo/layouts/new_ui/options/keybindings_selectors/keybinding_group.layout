@@ -53,7 +53,7 @@ WrapSpacerWidgetClass group_root {
        vexactpos 1
        hexactsize 1
        vexactsize 1
-       text "#profile"
+       text "#keybinding_profile"
        font "gui/fonts/sdf_MetronBook24"
        "text halign" center
        "text valign" center

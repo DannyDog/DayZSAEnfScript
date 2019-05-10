@@ -248,6 +248,41 @@ class ImageWidget extends Widget
 	Pointer to array of at least 8 floats (4 corners * 2 floats for u/v)
 	*/
 	proto native void SetUV(float uv[4][2]);
+	
+	/*!
+	Loads texture as mask used for alpha masking.
+	\param resource Resource name of the texture to load
+	\return True if texture was successfully loaded, false otherwise
+	*/
+	proto native bool LoadMaskTexture(string resource);
+	
+	/*!
+	Progress determines which alpha values are opaque using the mask. For progress x, 
+	pixels with alpha in mask < x will be opaque and alpha in mask > x will be transparent.
+	For smooth transition see GetMaskTransitionWidth.
+	\return Progress from 0 to 1 representing alpha range which is visible in the mask
+	*/
+	proto native float GetMaskProgress();
+	
+	/*!
+	See GetMaskProgress for explanation.
+	\param value Expected in range [0; 1]
+	*/
+	proto native void SetMaskProgress(float value);
+	
+	/*!
+	Transition width 0.1 and progress 0.2 mean that values in mask lower than progress will be opaque.
+	Values higher than (progress + width) will be transparent and values between progress and (progress + width)
+	will be smoothly transitioned.
+	\return Width of the alpha mask transition representing softness of the transition.
+	*/
+	proto native float GetMaskTransitionWidth();
+
+	/*!
+	See GetMaskTransitionWidth for transition width explanation.
+	\param value Expected in range [0; 1]
+	*/
+	proto native void SetMaskTransitionWidth(float value);
 };
 
 class MultilineEditBoxWidget extends TextWidget

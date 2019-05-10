@@ -452,8 +452,8 @@ ImageSetClass {
   }
   ImageSetDefClass mic {
    Name "mic"
-   Pos 797 826
-   Size 32 32
+   Pos 796 823
+   Size 36 36
    Flags 0
   }
   ImageSetDefClass left_mouse {
@@ -708,6 +708,24 @@ ImageSetClass {
    Size 1 1
    Flags 0
   }
+  ImageSetDefClass area_focus2 {
+   Name "area_focus2"
+   Pos 159 257
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass area_focus3 {
+   Name "area_focus3"
+   Pos 161 257
+   Size 1 1
+   Flags 0
+  }
+  ImageSetDefClass red {
+   Name "red"
+   Pos 151 260
+   Size 2 2
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass UI {
@@ -883,7 +901,7 @@ ImageSetClass {
     }
     ImageSetDefClass iconPill {
      Name "iconPill"
-     Pos 612 161
+     Pos 607 161
      Size 38 38
      Flags 3
     }
@@ -1186,6 +1204,12 @@ ImageSetClass {
      Pos 80 772
      Size 152 42
      Flags 3
+    }
+    ImageSetDefClass iconPoisoned {
+     Name "iconPoisoned"
+     Pos 612 200
+     Size 38 38
+     Flags 0
     }
    }
   }
@@ -1618,6 +1642,17 @@ ImageSetClass {
      Name "InventoryButtonRight"
      Pos 60 668
      Size 7 138
+     Flags 0
+    }
+   }
+  }
+  ImageSetGroupClass Notifications {
+   Name "Notifications"
+   Images {
+    ImageSetDefClass notification_friend {
+     Name "notification_friend"
+     Pos 834 823
+     Size 36 36
      Flags 0
     }
    }

@@ -400,6 +400,16 @@ class DayZIntroSceneXbox: Managed
 	
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(UpdateCharacterPos, 250);
 		}
+		else
+		{
+			// random character
+			UpdateSelectedUserName();
+
+			CreateRandomCharacter();
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(UpdateCharacterPos, 250);
+			g_Game.SetNewCharacter(true);
+			return;
+		}
 
 		UpdateSelectedUserName();
 

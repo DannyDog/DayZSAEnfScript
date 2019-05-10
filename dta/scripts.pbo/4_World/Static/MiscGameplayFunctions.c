@@ -502,7 +502,7 @@ class MiscGameplayFunctions
 		return dir.Normalized();
 	}
 
-	static float GetHeadingAngle(notnull PlayerBase player)
+	static float GetHeadingAngle(notnull DayZPlayerImplement player)
 	{
 		HumanInputController hic = player.GetInputController();
 		float headingAngle = hic.GetHeadingAngle();
@@ -630,6 +630,6 @@ class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda
 	protected override void RemoveOldItemFromLocation ()
 	{
 		super.RemoveOldItemFromLocation();
-		m_Player.GetHumanInventory().OnEntityInHandsDestroyed(m_OldItem);
+		m_Player.GetHumanInventory().OnEntityInHandsDestroyed(m_OldLocation);
 	}
 }

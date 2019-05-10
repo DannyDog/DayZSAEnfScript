@@ -9,7 +9,8 @@ class OnlineServices
 	static ref BiosClientServices											m_ClientServices;
 	static ref TrialService													m_TrialService				= new TrialService;
 	
-	
+	protected static string													m_InviteServerIP;
+	protected static int													m_InviteServerPort;
 	protected static string													m_CurrentServerIP;
 	protected static int													m_CurrentServerPort;
 	protected static ref GetServersResultRow								m_CurrentServerInfo;
@@ -18,6 +19,10 @@ class OnlineServices
 	protected static ref map<string, ref BiosFriendInfo>					m_FriendsList;
 	protected static ref map<string, bool>									m_MuteList;
 	protected static ref map<string, ref BiosPrivacyPermissionResultArray>	m_PermissionsList;
+	
+	protected static bool													m_FirstFriendsLoad			= true;
+	protected static bool													m_MultiplayState			= false;
+	protected static ref array<string>										m_PendingInvites;
 	
 	static void Init()
 	{
@@ -195,6 +200,18 @@ class OnlineServices
 		m_CurrentServerPort	= 0;
 	}
 	
+	static void SetInviteServerInfo( string ip, int port )
+	{
+		m_InviteServerIP = ip;
+		m_InviteServerPort = port;
+	}
+	
+	static void GetInviteServerInfo( out string ip, out int port )
+	{
+		ip = m_InviteServerIP;
+		port = m_InviteServerPort;
+	}
+	
 	static void OnLoadServersAsync( ref GetServersResult result_list, EBiosError error, string response )
 	{
 		if( !ErrorCaught( error ) )
@@ -279,6 +296,22 @@ class OnlineServices
 					friends_simple.Insert( friend_list.Get( i ).m_Uid );
 				}
 			}
+			
+			if( !m_FirstFriendsLoad )
+			{
+				if( ClientData.m_LastNewPlayers && ClientData.m_LastNewPlayers.m_PlayerList.Count() > 0 )
+				{
+					foreach( SyncPlayer player : ClientData.m_LastNewPlayers.m_PlayerList )
+					{
+						if( m_FriendsList.Contains( player.m_UID ) )
+						{
+							NotificationSystem.AddNotification( NotificationType.FRIEND_CONNECTED, 6, player.m_PlayerName + " " + "#ps4_invite_has_joined_your_session" );
+						}
+					}
+					ClientData.m_LastNewPlayers.m_PlayerList.Clear();
+				}
+			}
+			m_FirstFriendsLoad = false;
 		}
 	}
 	
@@ -447,10 +480,7 @@ class OnlineServices
 	{
 		if( g_Game.GetGameState() == DayZGameState.IN_GAME )
 		{
-			if( ErrorCaught( err ) )
-			{
-				GetGame().GetWorld().SetVoiceOn( false );
-			}
+			GetGame().GetWorld().DisableTransmitVoN( ErrorCaught( err ) );
 		}
 	}
 	
@@ -482,6 +512,21 @@ class OnlineServices
 		}
 	}
 	
+	static bool GetMultiplayState()
+	{
+		return m_MultiplayState;
+	}
+	
+	static void SetMultiplayState( bool state )
+	{
+		m_MultiplayState = state;
+		bool is_multiplay;
+		if( ClientData.GetSimplePlayerList() )
+			is_multiplay = state && ( ClientData.GetSimplePlayerList().Count() > 1 );
+		
+		m_ClientServices.GetSessionService().SetMultiplayState(is_multiplay);
+	}
+	
 	static void EnterGameplaySession()
 	{
 		string addr;
@@ -492,6 +537,7 @@ class OnlineServices
 			if( m_ClientServices )
 			{
 				m_ClientServices.GetSessionService().EnterGameplaySessionAsync( addr, port );
+				SetMultiplayState(true);
 			}
 		}
 	}
@@ -501,7 +547,13 @@ class OnlineServices
 		GetClientServices();
 		if( m_ClientServices )
 		{
-			m_ClientServices.GetSessionService().ClearActivityAsync();
+			if( m_CurrentServerInfo )
+				m_ClientServices.GetSessionService().LeaveGameplaySessionAsync(m_CurrentServerInfo.m_HostIp, m_CurrentServerInfo.m_HostPort);
+			else if( m_CurrentServerIP != "" )
+				m_ClientServices.GetSessionService().LeaveGameplaySessionAsync(m_CurrentServerIP, m_CurrentServerPort);
+			SetMultiplayState(false);
+			m_FirstFriendsLoad = true;
+			m_FriendsList.Clear();
 		}
 	}
 	
@@ -516,8 +568,52 @@ class OnlineServices
 			{
 				m_ClientServices.GetSessionService().SetGameplayActivityAsync( addr, port );
 			}
-			SetGameplayActivity();
 		}
+	}
+	
+	static void SetPendingInviteList( array<string> invitees )
+	{
+		string addr;
+		int port;
+		if( GetGame().GetHostAddress( addr, port ) )
+		{
+			GetClientServices();
+			if( m_ClientServices )
+			{
+				m_PendingInvites = invitees;
+				m_ClientServices.GetSessionService().InviteToGameplaySessionAsync( addr, port, GetPendingInviteList() );
+			}
+		}
+		else
+		{
+			m_PendingInvites = invitees;
+		}
+	}
+	
+	static array<string> GetPendingInviteList()
+	{
+		array<string> already_on_server = ClientData.GetSimplePlayerList();
+		if( already_on_server && m_PendingInvites )
+		{
+			array<string> new_to_server = new array<string>;
+			foreach( string invitee : m_PendingInvites )
+			{
+				if( already_on_server.Find( invitee ) == -1 )
+				{
+					new_to_server.Insert( invitee );
+				}
+			}
+			return new_to_server;
+		}
+		else
+		{
+			return m_PendingInvites;
+		}
+	}
+	
+	static void ClearPendingInviteList( array<string> invitees )
+	{
+		delete m_PendingInvites;
 	}
 	
 	static int m_AutoConnectTries = 0;

@@ -37,40 +37,41 @@ class ActionViewBinoculars : ActionViewOptics
 		player.SetHandheldOpticsInUse(true);
 		optic.EnterOptics();
 		optic.HideSelection("hide");
+		if ( NVGoggles.Cast(optic) && optic.ConfigIsExisting("simpleHiddenSelections") ) //HACK
+		{
+			optic.SetSimpleHiddenSelectionState(0,false);
+		}
+		
 		if ( optic.HasEnergyManager() )
 		{
+			PoweredOptic_Base rf = PoweredOptic_Base.Cast(optic);
+			if (!rf)
+				return;
+			
+			rf.SetPlayer( player );
 			if ( GetGame().IsServer() )
-			{
-				Rangefinder rf = Rangefinder.Cast(optic);				
 				rf.GetCompEM().SwitchOn();
-				rf.SetPlayer( player );
-			}
-			else
-			{
-				Rangefinder rf_client = Rangefinder.Cast(optic);		
-				rf_client.SetPlayer(player);
-			}
 		}
 	}
 	
 	override void ExitOptics(ItemOptics optic, PlayerBase player)
 	{
 		optic.ShowSelection("hide");
+		if ( NVGoggles.Cast(optic) && optic.ConfigIsExisting("simpleHiddenSelections") ) //HACK
+		{
+			optic.SetSimpleHiddenSelectionState(0,true);
+		}
 		optic.ExitOptics();
 		player.SetHandheldOpticsInUse(false);
 		if ( optic.HasEnergyManager() )
 		{
+			PoweredOptic_Base rf = PoweredOptic_Base.Cast(optic);
+			if (!rf)
+				return;
+			
+			rf.SetPlayer( null );
 			if ( GetGame().IsServer() )
-			{
-				Rangefinder rf = Rangefinder.Cast(optic);
 				rf.GetCompEM().SwitchOff();
-				rf.SetPlayer( null );
-			}
-			else
-			{
-				Rangefinder rf_client = Rangefinder.Cast(optic);		
-				rf_client.SetPlayer(NULL);
-			}
 		}
 	}
 }

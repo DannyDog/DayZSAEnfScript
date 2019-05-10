@@ -8,10 +8,27 @@ enum SurfaceAnimationBone
 
 class EntityAI extends Entity
 {
-	ref array<EntityAI> m_AttachmentsWithCargo;
-	ref array<EntityAI> m_AttachmentsWithAttachments;
-	ref InventoryLocation m_OldLocation;
-	private bool m_IsDead;
+	bool 					m_DeathSyncSent;
+	bool 					m_KilledByHeadshot;
+	ref KillerData 			m_KillerData;
+	
+	ref array<EntityAI> 	m_AttachmentsWithCargo;
+	ref array<EntityAI> 	m_AttachmentsWithAttachments;
+	ref InventoryLocation 	m_OldLocation;
+	
+	//Please call the relevant Item***_InitCallbacks() before attempting to add anything to these callbacks.
+	//Called on item attached to this item
+	protected ref ScriptInvoker		m_OnItemAttached;
+	//Called on item detached from this item
+	protected ref ScriptInvoker		m_OnItemDetached;
+	//Called when an item is added to the cargo of this item
+	protected ref ScriptInvoker		m_OnItemAddedIntoCargo;
+	//Called when an item is removed from the cargo of this item
+	protected ref ScriptInvoker		m_OnItemRemovedFromCargo;
+	//Called when an item is moved around in the cargo of this item
+	protected ref ScriptInvoker		m_OnItemMovedInCargo;
+	//Called when an item is moved around in the cargo of this item
+	protected ref ScriptInvoker		m_OnItemFlipped;
 	
 	void EntityAI ()
 	{
@@ -365,17 +382,19 @@ class EntityAI extends Entity
 				Error("EntityAI::EEItemLocationChanged - attached, but new_owner is null");
 		}
 	}
+	
+	void EEInventoryIn (Man newParentMan, EntityAI diz, EntityAI newParent)
+	{
+	}
+	void EEInventoryOut (Man oldParentMan, EntityAI diz, EntityAI newParent)
+	{
+		if (GetInventory())
+			GetInventory().ResetFlipCargo();
+	}
 
 	void EEAmmoChanged()
 	{
-		Mission mission;
-		Hud hud;
-		mission = GetGame().GetMission();
-		if ( mission )
-		{
-			hud = mission.GetHud();
-			if(hud) hud.RefreshQuantity( this );
-		}
+		
 	}
 
 	void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
@@ -384,35 +403,13 @@ class EntityAI extends Entity
 
 	void EEKilled(Object killer)
 	{
-		
+		//analytics
+		GetGame().GetAnalyticsServer().OnEntityKilled( killer, this );
 	}
 	
 	void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
 	{
-		Print("EEHitByRemote: damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
-		
-		if ( source ) 
-		{
-			Man killer = source.GetHierarchyRootPlayer();
-			
-			if ( !m_IsDead && GetHealth() <= 0 )
-			{
-				m_IsDead = true;
-			
-				if( killer && killer.IsPlayer() )
-				{
-					bool is_headshot = false;
-				
-					// was player killed by headshot?
-					if (dmgZone == "Brain")
-					{
-						is_headshot = true;
-					}
-					
-					SyncEvents.SendEntityKilled(this, killer, source, is_headshot);
-				}
-			}
-		}
+		//Print("EEHitByRemote: damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
 	}
 	
 	// called only on the client who caused the hit
@@ -452,6 +449,8 @@ class EntityAI extends Entity
 			m_AttachmentsWithAttachments.Insert( item );
 		}
 		
+		if( m_OnItemAttached )
+			m_OnItemAttached.Invoke( item, slot_name, this );
 		//SwitchItemSelectionTexture(item, slot_name);
 	}
 	
@@ -490,31 +489,72 @@ class EntityAI extends Entity
 			m_AttachmentsWithAttachments.RemoveItem( item );
 		}
 		
+		if( m_OnItemDetached )
+			m_OnItemDetached.Invoke( item, slot_name, this );
 		//SwitchItemSelectionTexture(item, slot_name);
 	}
 
 	void EECargoIn(EntityAI item)
 	{
-		Mission mission;
-		Hud hud;
-		mission = GetGame().GetMission();
-		if ( mission )
-		{
-			hud = mission.GetHud();
-			if(hud) hud.RefreshItemPosition( item );
-		}
-		
+		if( m_OnItemAddedIntoCargo )
+			m_OnItemAddedIntoCargo.Invoke( item, this );
 		item.OnMovedInsideCargo(this);
 	}
 
 	void EECargoOut(EntityAI item)
 	{
+		if( m_OnItemRemovedFromCargo )
+			m_OnItemRemovedFromCargo.Invoke( item, this );
 		item.OnRemovedFromCargo(this);
 	}
 
 	void EECargoMove(EntityAI item)
 	{
+		if( m_OnItemMovedInCargo )
+			m_OnItemMovedInCargo.Invoke( item, this );
 		item.OnMovedWithinCargo(this);
+	}
+	
+	ScriptInvoker GetOnItemAttached()
+	{
+		if( !m_OnItemAttached )
+			m_OnItemAttached = new ScriptInvoker;
+		return m_OnItemAttached;
+	}
+	
+	ScriptInvoker GetOnItemDetached()
+	{
+		if( !m_OnItemDetached )
+			m_OnItemDetached = new ScriptInvoker;
+		return m_OnItemDetached;
+	}
+	
+	ScriptInvoker GetOnItemAddedIntoCargo()
+	{
+		if( !m_OnItemAddedIntoCargo )
+			m_OnItemAddedIntoCargo = new ScriptInvoker;
+		return m_OnItemAddedIntoCargo;
+	}
+	
+	ScriptInvoker GetOnItemRemovedFromCargo()
+	{
+		if( !m_OnItemRemovedFromCargo )
+			m_OnItemRemovedFromCargo = new ScriptInvoker;
+		return m_OnItemRemovedFromCargo;
+	}
+	
+	ScriptInvoker GetOnItemMovedInCargo()
+	{
+		if( !m_OnItemMovedInCargo )
+			m_OnItemMovedInCargo = new ScriptInvoker;
+		return m_OnItemMovedInCargo;
+	}
+	
+	ScriptInvoker GetOnItemFlipped()
+	{
+		if( !m_OnItemFlipped )
+			m_OnItemFlipped = new ScriptInvoker;
+		return m_OnItemFlipped;
 	}
 	
 	//! Called when this item enters cargo of some container
@@ -545,11 +585,13 @@ class EntityAI extends Entity
 		// Restore connections between devices which were connected before server restart
 		if ( HasEnergyManager()  &&  GetCompEM().GetRestorePlugState() )
 		{
-			int low = GetCompEM().GetEnergySourceStorageIDLow();
-			int high = GetCompEM().GetEnergySourceStorageIDHigh();
-			
+			int b1 = GetCompEM().GetEnergySourceStorageIDb1();
+			int b2 = GetCompEM().GetEnergySourceStorageIDb2();
+			int b3 = GetCompEM().GetEnergySourceStorageIDb3();
+			int b4 = GetCompEM().GetEnergySourceStorageIDb4();
+
 			// get pointer to EntityAI based on this ID
-			EntityAI potential_energy_source = GetGame().GetEntityByPersitentID(low, high); // This function is available only in this event!
+			EntityAI potential_energy_source = GetGame().GetEntityByPersitentID(b1, b2, b3, b4); // This function is available only in this event!
 			
 			// IMPORTANT!
 			// Object IDs acquired here become INVALID when electric devices are transfered to another server while in plugged state (like Flashlight plugged into its attachment 9V battery)
@@ -855,6 +897,23 @@ class EntityAI extends Entity
 		return null;
 	}
 
+	/**@fn		IsLockedInSlot
+	 * @return	true if entity is locked in attachment slot
+	 **/	
+	bool IsLockedInSlot()
+	{
+		EntityAI parent = GetHierarchyParent();
+		if ( parent )
+		{
+			InventoryLocation inventory_location = new InventoryLocation;
+			GetInventory().GetCurrentInventoryLocation( inventory_location );
+			
+			return parent.GetInventory().GetSlotLock( inventory_location.GetSlot() );
+		}
+		
+		return false;
+	}
+	
 	/**
 	\brief Put item anywhere into this entity (as attachment or into cargo, recursively)
 	*/
@@ -1115,6 +1174,9 @@ class EntityAI extends Entity
 	proto native void RegisterNetSyncVariableFloat(string variableName, float minValue = 0, float maxValue = 0, int precision = 1);
 
 	proto native void SwitchLight(bool isOn);
+
+	//! Simple hidden selection state; 0 == hidden
+	proto native void SetSimpleHiddenSelectionState(int index, bool state);
 	
 	//! Change texture in hiddenSelections
 	proto native void SetObjectTexture(int index, string texture_name);
@@ -1125,7 +1187,7 @@ class EntityAI extends Entity
 	proto native void SetPilotLight(bool isOn);
 
 	/**
-	\brief Engine calls this function to collect data from entity to store to game database (on server side).
+	\brief Engine calls this function to collect data from entity to store for persistence (on server side).
 	@code
 	void OnStoreSave(ParamsWriteContext ctx)
 	{
@@ -1133,10 +1195,11 @@ class EntityAI extends Entity
 		super.OnStoreSave(ctx);
 
 		// write any data (using params) you want to store
-		Param4<bool, int, float, string> p1 = new Param4<bool, int, float, string>(true, 56, 6.28, "Pepe");
-		Param4<float, string, float, string> p2 = new Param4<float, string, float, string>(9.56, "ahoj", 6.28, "svet");
-		p1.Write(ctx);
-		p2.Write(ctx);
+		int   a = 5;
+		float b = 6.0;
+
+		ctx.Write(a);
+		ctx.Write(b);
 	}
 	@endcode
 	*/
@@ -1160,56 +1223,42 @@ class EntityAI extends Entity
 			// ENERGY SOURCE
 			// Save energy source IDs
 			EntityAI energy_source = GetCompEM().GetEnergySource();
-			int ID_low = 0;
-			int ID_high = 0;
-			
+			int b1 = 0;
+			int b2 = 0;
+			int b3 = 0;
+			int b4 = 0;
+
 			if (energy_source)
 			{
-				energy_source.GetPersistentID(ID_low, ID_high);
+				energy_source.GetPersistentID(b1, b2, b3, b4);
 			}
-			
-			// Save energy source ID low
-			ctx.Write( ID_low );
-			
-			// Save energy source ID high
-			ctx.Write( ID_high );
+
+			ctx.Write( b1 ); // Save energy source block 1
+			ctx.Write( b2 ); // Save energy source block 2
+			ctx.Write( b3 ); // Save energy source block 3
+			ctx.Write( b4 ); // Save energy source block 4
 		}
 	}
 	
 	/**
-	\brief Called when data is loaded from game database (on server side).
+	\brief Called when data is loaded from persistence (on server side).
 	@code
 	void OnStoreLoad(ParamsReadContext ctx, int version)
 	{
 		// dont forget to propagate this call trough class hierarchy!
-		super.OnStoreLoad(ctx, version);
+		if ( !super.OnStoreLoad(ctx, version) )
+			return false;
 
 		// read data loaded from game database (format and order of reading must be the same as writing!)
-		Param4<bool, int, float, string> p1 = new Param4<bool, int, float, string>(false, 0, 0, "");
-		Param4<float, string, float, string> p2 = new Param4<float, string, float, string>(0, "", 0, "");
-		if (p1.Read(ctx))
-		{
-		  Print(p1.param1);
-		  Print(p1.param2);
-		  Print(p1.param3);
-		  Print(p1.param4);
-		}
-		else
-		{
-			Print("no data");
-		}
+		int a;
+		if ( !ctx.Read(a) )
+			return false;
 
-		if (p2.Read(ctx))
-		{
-		  Print(p2.param1);
-		  Print(p2.param2);
-		  Print(p2.param3);
-		  Print(p2.param4);
-		}
-		else
-		{
-			Print("no data");
-		}
+		float b;
+		if ( !ctx.Read(b) )
+			return false;
+
+		return true;
 	}
 	@endcode
 	*/
@@ -1244,23 +1293,38 @@ class EntityAI extends Entity
 				return false;
 			
 			// ENERGY SOURCE
-			// Load energy source ID low
-			int i_energy_source_ID_low = 0; // Even 0 can be valid ID!
-			if ( !ctx.Read( i_energy_source_ID_low ) )
-				return false;
-			
-			// Load energy source ID high
-			int i_energy_source_ID_high = 0; // Even 0 can be valid ID!
-			if ( !ctx.Read( i_energy_source_ID_high ) )
-				return false;
-			
-			if ( b_is_plugged )
+			if ( version <= 103 )
 			{
-				// Because function GetEntityByPersitentID() cannot be called here, ID values must be stored and used later.
-				GetCompEM().StoreEnergySourceIDs( i_energy_source_ID_low, i_energy_source_ID_high );
-				GetCompEM().RestorePlugState(true);
+				// Load energy source ID low
+				int i_energy_source_ID_low = 0; // Even 0 can be valid ID!
+				if ( !ctx.Read( i_energy_source_ID_low ) )
+					return false;
+				
+				// Load energy source ID high
+				int i_energy_source_ID_high = 0; // Even 0 can be valid ID!
+				if ( !ctx.Read( i_energy_source_ID_high ) )
+					return false;
 			}
-			
+			else
+			{
+				int b1 = 0;
+				int b2 = 0;
+				int b3 = 0;
+				int b4 = 0;
+
+				if ( !ctx.Read(b1) ) return false;
+				if ( !ctx.Read(b2) ) return false;
+				if ( !ctx.Read(b3) ) return false;
+				if ( !ctx.Read(b4) ) return false;
+
+				if ( b_is_plugged )
+				{
+					// Because function GetEntityByPersitentID() cannot be called here, ID values must be stored and used later.
+					GetCompEM().StoreEnergySourceIDs( b1, b2, b3, b4 );
+					GetCompEM().RestorePlugState(true);
+				}
+			}
+
 			if (b_is_on)
 			{
 				GetCompEM().SwitchOn();
@@ -1390,9 +1454,9 @@ class EntityAI extends Entity
 		}
 	}
 
-	//! Returns low and high bits of persistence id of this entity.
+	//! Returns blocks of bits of persistence id of this entity.
 	//! This id stays the same even after server restart.
-	proto void GetPersistentID( out int low, out int high );
+	proto void GetPersistentID( out int b1, out int b2, out int b3, out int b4 );
 
 	//! Get remaining economy lifetime (seconds)
 	proto native float GetLifetime();
@@ -1456,10 +1520,10 @@ class EntityAI extends Entity
 	//! Energy manager event: Object's initialization. Energy Manager is fully initialized by this point.
 	void OnInitEnergy() {}
 
-	//! Energy manager event: Called when energy was consumed on this device
+	//! Energy manager event: Called when energy was consumed on this device. ALWAYS CALL super.OnEnergyConsumed() !!!
 	void OnEnergyConsumed() {}
 
-	//! Energy manager event: Called when energy was added on this device
+	//! Energy manager event: Called when energy was added on this device. ALWAYS CALL super.OnEnergyAdded() !!!
 	void OnEnergyAdded() {}
 	
 	override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
@@ -1594,6 +1658,12 @@ class EntityAI extends Entity
 		return vector.Zero;
 	}
 	
+	//! value is related to EMeleeTargetType
+	int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.ALIGNABLE;
+	}
+	
 	//! returns sound type of attachment (used for clothing and weapons on DayZPlayerImplement, paired with Anim*Type enum from DayZAnimEvents)
 	string GetAttachmentSoundType()
 	{
@@ -1622,4 +1692,10 @@ class EntityAI extends Entity
 	string ChangeIntoOnDetach() {}
 	
 	void OnDebugSpawn() {};
+
+	void SetBayonetAttached(bool pState) {};
+	bool HasBayonetAttached() {};
+	
+	void SetButtstockAttached(bool pState) {};
+	bool HasButtstockAttached() {};
 };

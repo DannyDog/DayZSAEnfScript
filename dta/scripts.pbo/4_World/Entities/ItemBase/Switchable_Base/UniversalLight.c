@@ -33,6 +33,9 @@ class UniversalLight extends Switchable_Base
 			mp5_railhndgrd = parent.FindAttachmentBySlotName("weaponHandguardMP5").IsKindOf("MP5_RailHndgrd");
 		}
 
+		if ( Mich2001Helmet.Cast(parent) ) //attachment on helmet
+			return true;
+		
 		if ( m4_rishndgrd || ak_railhndgrd || mp5_railhndgrd || parent.IsKindOf("UMP45_Base") )
 		{
 			return true;
@@ -86,5 +89,28 @@ class UniversalLight extends Switchable_Base
 			SetObjectMaterial(GLASS_ID, LIGHT_OFF_GLASS);
 			SetObjectMaterial(REFLECTOR_ID, LIGHT_OFF_REFLECTOR);
 		}
+	}
+	
+	// Inventory manipulation
+	override void OnInventoryExit(Man player)
+	{
+		super.OnInventoryExit(player);
+		
+		if ( GetGame().IsServer()  &&  GetCompEM().IsWorking() )
+		{
+			if (player)
+			{
+				vector ori_rotate = player.GetOrientation();
+				ori_rotate = ori_rotate + Vector(270,0,0);
+				SetOrientation(ori_rotate);
+			}
+		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
 	}
 }

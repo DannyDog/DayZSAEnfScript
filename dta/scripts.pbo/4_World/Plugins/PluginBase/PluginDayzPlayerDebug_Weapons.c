@@ -64,12 +64,16 @@ class PluginDayzPlayerDebug_Weapons
 	ButtonWidget						m_WeaponHide;
 	EditBoxWidget 						m_WeaponSlotH;
 	EditBoxWidget 						m_WeaponSlotS;
+	EditBoxWidget 						m_WeaponActionProgressStart;
+	EditBoxWidget 						m_WeaponActionProgressEnd;
 
 	// command handler properties
 	int 								m_CH_WeapAction			= -1;
 	int 								m_CH_WeapActionType		= -1;
 	int 								m_CH_LastWeapAction		= -1;
 	int 								m_CH_LastWeapActionType	= -1;
+	float								m_CH_WeapActionProgressStart = 0;
+	float								m_CH_WeapActionProgressEnd = 1;
 
 	string 								m_CH_WeaponChangeI;
 	int 								m_CH_WeaponChangeSlotH = -1;
@@ -87,6 +91,8 @@ class PluginDayzPlayerDebug_Weapons
 		PluginDayzPlayerDebug_AbilityConfig("Rifle - Reload NoMag NoBullet", WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADRIFLE_NOMAGAZINE_NOBULLET),
 		PluginDayzPlayerDebug_AbilityConfig("Rifle - Reload Mag NoBullet lock", WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADRIFLE_MAGAZINE_NOBULLET_OPEN),
 		PluginDayzPlayerDebug_AbilityConfig("Rifle - Reload NoMag NoBullet lock", WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADRIFLE_NOMAGAZINE_NOBULLET_OPEN),
+		PluginDayzPlayerDebug_AbilityConfig("Rifle - Reload Clip NoBullet", WeaponActions.RELOAD_CLIP, WeaponActionReloadClipTypes.RELOADRIFLE_CLIP_NOBULLET),
+		PluginDayzPlayerDebug_AbilityConfig("Rifle - Reload Clip Bullet", WeaponActions.RELOAD_CLIP, WeaponActionReloadClipTypes.RELOADRIFLE_CLIP_BULLET),
 
 		PluginDayzPlayerDebug_AbilityConfig("Pistol Closed - Reload Mag Bullet", WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_BULLET_CLOSED),
 		PluginDayzPlayerDebug_AbilityConfig("Pistol Closed - Reload NoMag Bullet", WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_BULLET_CLOSED),
@@ -209,6 +215,8 @@ class PluginDayzPlayerDebug_Weapons
 		m_WeaponHide 	= ButtonWidget.Cast( m_MainWnd.FindAnyWidget("WeapHide") );
 		m_WeaponSlotH 	= EditBoxWidget.Cast( m_MainWnd.FindAnyWidget("WeaponChangeSlotH") );
 		m_WeaponSlotS 	= EditBoxWidget.Cast( m_MainWnd.FindAnyWidget("WeaponChangeSlotS") );
+		m_WeaponActionProgressStart		= EditBoxWidget.Cast( m_MainWnd.FindAnyWidget("WeapActionProgressStart") );
+		m_WeaponActionProgressEnd		= EditBoxWidget.Cast( m_MainWnd.FindAnyWidget("WeapActionProgressEnd") );
 
 
 		m_WidgetActionEvents.SetText("Events:"); 
@@ -332,6 +340,8 @@ class PluginDayzPlayerDebug_Weapons
 		{
 			m_CH_WeapAction		= userData.GetAction();
 			m_CH_WeapActionType	= userData.GetActionType();
+			m_CH_WeapActionProgressStart = m_WeaponActionProgressStart.GetText().ToFloat();
+			m_CH_WeapActionProgressEnd = m_WeaponActionProgressEnd.GetText().ToFloat();
 
 			Print("DayzPlayerImplement_Weapons::WeaponsStartAction");
 		}
@@ -442,6 +452,7 @@ class PluginDayzPlayerDebug_Weapons
 			if (player != NULL)
 			{
 				HumanCommandWeapons 	hcw = player.GetCommandModifier_Weapons();
+				hcw.SetActionProgressParams(m_CH_WeapActionProgressStart, m_CH_WeapActionProgressEnd);
 				hcw.StartAction(m_CH_WeapAction, m_CH_WeapActionType);
 
 				Print("DayzPlayerImplement_Weapons::WeaponsStartAction2");

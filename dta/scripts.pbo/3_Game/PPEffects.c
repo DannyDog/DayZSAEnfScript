@@ -2,10 +2,6 @@ class PPEffects
 {
 	// COLORIZE IDs
 	static const int COLORIZE_NV = 100;
-
-	// FILGRAIN IDs
-	static const int FILMGRAIN_NV = 100;
-	static const int FILMGRAIN_NIGHT = 200;
 	
 	//-------------------------------------------------------
 	// BLUR START
@@ -25,7 +21,6 @@ class PPEffects
 	static ref map<int, ref array<float>> m_ColorValues;
 	static ref array<float> m_ColorEffect;
 	static ref map<int, ref array<float>> m_ColorizeEffects;
-	static ref map<int, ref array<float>> m_FilmgrainEffects;
 	
 	static float m_UnconsciousVignetteColor[4];
 	static float m_UnconsciousVignetteIntesity;
@@ -66,18 +61,12 @@ class PPEffects
 		
 		// ------------------------NV-related stuff below------------------------
 		ref array<float> colorizeDefault = {0.0, 0.0, 0.0};
-		ref array<float> filmgrainDefault = {0.0, 0.0};
 		m_ColorizeEffects = new map<int, ref array<float>>;
-		m_FilmgrainEffects = new map<int, ref array<float>>;
 		
 		// colorize: r, g, b
 		// colorize effects registration
 		m_ColorizeEffects.Set(PPEffects.COLORIZE_NV, colorizeDefault);
-
-		// filmgrain: grainsize, intensityx0 (normal intensity driven by lighting config for now!)
-		// filmgrain effects registration
-		m_FilmgrainEffects.Set(PPEffects.FILMGRAIN_NV, filmgrainDefault);
-		m_FilmgrainEffects.Set(PPEffects.FILMGRAIN_NIGHT, filmgrainDefault);
+		SetNVParams(1, 0, 2.35, 2.75); //default values
 		// ------------------------End of NV-related stuff------------------------
 	}
 	
@@ -264,13 +253,24 @@ class PPEffects
 	*/
 	static void SetLensEffect(float lens, float chromAbb, float centerX, float centerY)
 	{
+		PerformSetLensEffect(lens, chromAbb, centerX, centerY);
+		/*Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
+                matHDR.SetParam("LensDistort", lens);
+                matHDR.SetParam("MaxChromAbberation", chromAbb);
+                matHDR.SetParam("LensCenterX", centerX);
+                matHDR.SetParam("LensCenterY", centerY);*/
+	}
+
+	//!added for convenience
+	static void PerformSetLensEffect(float lens, float chromAbb, float centerX, float centerY)
+	{
 		Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
                 matHDR.SetParam("LensDistort", lens);
                 matHDR.SetParam("MaxChromAbberation", chromAbb);
                 matHDR.SetParam("LensCenterX", centerX);
                 matHDR.SetParam("LensCenterY", centerY);
 	}
-
+	
 	/*!
 	set vignette
 	\param intensity <0, 1>, intensity of effect, 0 = disable
@@ -468,62 +468,32 @@ class PPEffects
         matHDR.SetParam("ColorizationColor", color);
 	}
 
-	// appropriate parts of the code will call these functions
-	static void SetFilmgrainNV(float grainsize, float intensityx0)
-	{
-		ref array<float> filmgrainArray = {grainsize, intensityx0};
-		m_FilmgrainEffects.Set(PPEffects.FILMGRAIN_NV, filmgrainArray);
-		UpdateFilmgrain();
-	}
-	
-	static void UpdateFilmgrain()
-	{
-		bool foundActiveEffect = false, lowestKey = 1000000;
-		ref array<float> chosenArray;
-		// search for active effect with highest priority (lower value of key better)
-		for (int i = 0; i < m_FilmgrainEffects.Count(); i++)
-		{
-			int currentKey = m_FilmgrainEffects.GetKey(i);
-			ref array<float> filmgrainValues = m_FilmgrainEffects.Get(currentKey);
-			// check for non-zero active effect
-			for (int j = 0; j < filmgrainValues.Count(); j++)
-			{
-				if ((filmgrainValues[j]) != 0)
-				{
-					if (currentKey < lowestKey)
-					{
-						chosenArray = filmgrainValues;
-						lowestKey = currentKey;
-						foundActiveEffect = true;
-						break;
-					}
-				}
-			}
-		}
-		if (foundActiveEffect)
-		{
-			// active effect found
-			Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/filmgrain");
-			matHDR.SetParam("GrainSize",   chosenArray[0]);
-			matHDR.SetParam("IntensityX0", chosenArray[1]);
-		} else {
-			// no active event found, reset filmgrain effect to default (for night-time)
-			ResetFilmgrain();
-		}
-	}
-	static void ResetFilmgrain()
-	{
-		Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/filmgrain");
-		matHDR.SetParam("GrainSize",   1.75);
-		matHDR.SetParam("IntensityX0", 0.0013);
-	}
-	
 	// EV check for NV optics
-	static void SetNVValueEV(float value)
+	static void SetEVValuePP(float value)
 	{
 		g_Game.SetEVValue(value);
 	}
 	
+	// light multiplier and noise intensity (using filmgrainNV.emat!) for nvg
+	// added other parameters for filmgrainNV.emat, sharpness and grain size
+	static void SetNVParams(float light_mult, float noise_intensity, float sharpness, float grain_size)
+	{
+		Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/filmgrainNV");
+		
+		g_Game.NightVissionLightParams(light_mult, noise_intensity);
+		matHDR.SetParam("Sharpness", sharpness);
+		matHDR.SetParam("GrainSize", grain_size);
+	}
+	
+	// bloom PP, experimental stuff
+	static void SetBloom(float thres, float steep, float inten)
+    {
+		Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
+		matHDR.SetParam("BloomThreshold", thres);
+		matHDR.SetParam("BloomSteepness", steep);
+		matHDR.SetParam("BloomIntensity", inten);
+    }
+
 	static void ResetAll()
 	{
 		ResetBlurEffects();
@@ -535,6 +505,5 @@ class PPEffects
 		SetBloodSaturation(1);
 		RemoveUnconsciousnessVignette();
 		ResetColorize();
-		ResetFilmgrain();
 	}	
 };

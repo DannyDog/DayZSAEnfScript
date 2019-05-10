@@ -184,6 +184,20 @@ class ZombieBase extends DayZInfected
 
 	//-------------------------------------------------------------
 	//!
+	//! CommandHandlerDebug
+	//! 
+
+	void  CommandHandlerDebug(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		if( GetPluginManager() )
+		{
+			PluginDayZInfectedDebug infectedDebug = PluginDayZInfectedDebug.Cast(GetPluginManager().GetPluginByType(PluginDayZInfectedDebug));
+			if( infectedDebug )
+				infectedDebug.CommandHandler(this);
+		}	
+	}
+	//-------------------------------------------------------------
+	//!
 	//! HandleMove
 	//!
 	
@@ -577,13 +591,7 @@ class ZombieBase extends DayZInfected
 		int pitch = GetAttackPitch(m_ActualTarget);
 
 		if( !CanAttackToPosition(targetPos) )
-		{
-			//! in case of navmesh raycast fail try to check also the height diff (player on higher obstacle)
-			if ( diffY < 0.5 )
-			{
-				return false;
-			}
-		}
+			return false;
 
 		m_ActualAttackType = GetDayZInfectedType().ChooseAttack(DayZInfectedAttackGroupType.FIGHT, targetDist, pitch);
 		if( m_ActualAttackType )

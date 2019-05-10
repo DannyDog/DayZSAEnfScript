@@ -1,154 +1,176 @@
-WindowWidgetClass TextInputDialogRoot {
+ImageWidgetClass TextInputDialogRoot {
  clipchildren 0
- color 0.1176 0.1176 0.1176 0.9804
  position 0 0
- size 540 223.5
+ size 1.6 0.9
  halign center_ref
  valign center_ref
  hexactpos 1
  vexactpos 1
- hexactsize 1
- vexactsize 1
+ hexactsize 0
+ vexactsize 0
+ fixaspect outside
  priority 999
- style Colorable
- "title visible" 0
+ imageTexture "{0DBE2630AF5047FD}Gui/textures/loading_screens/loading_screen_3_co.edds"
+ mode blend
+ "src alpha" 1
+ "no wrap" 0
+ stretch 1
+ "flip u" 0
+ filter 1
  {
-  ButtonWidgetClass ButtonOk {
-   visible 1
-   color 1 0 0 1
-   position 14 14
-   size 130 40
-   halign right_ref
-   valign bottom_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   userID 1
-   style EmptyHighlight
-   text "#menu_ok"
-   text_proportion 0.5
-   font "gui/fonts/sdf_MetronBook24"
-   "disabled text color" 0.3412 0.3412 0.3412 1
-  }
-  ButtonWidgetClass ButtonCancel {
-   visible 1
-   color 1 0 0 1
-   position 14 14
-   size 130 40
-   valign bottom_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   userID 2
-   style EmptyHighlight
-   text "#menu_cancel"
-   text_proportion 0.5
-   font "gui/fonts/sdf_MetronBook24"
-   "disabled text color" 0.3412 0.3412 0.3412 1
-  }
-  TextWidgetClass WindowLabel {
-   disabled 0
-   position 0 20
-   size 512 30
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Bold
-   text "#STR_TextInputDialogRoot_WindowLabel0"
-   font "gui/fonts/sdf_MetronBook72"
-   "exact text" 0
-   "text halign" center
-   "text valign" center
-  }
-  EditBoxWidgetClass PrimaryEditBox {
-   position 134 108.5
-   size 392 20
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Default
-   "exact text" 0
-   font "gui/fonts/sdf_MetronLight24"
-  }
-  MultilineTextWidgetClass MessageText {
+  WindowWidgetClass TextInputDialogWindow {
    clipchildren 0
-   color 1 1 1 1
-   position 0 72.5
-   size 512 30
+   color 0.1176 0.1176 0.1176 0.9804
+   position 0 0
+   size 540 223.5
    halign center_ref
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
-   text "#STR_TextInputDialogRoot_MessageText0"
-   font "gui/fonts/sdf_MetronLight24"
-   "exact text" 0
-   "exact text size" 22
-   "size to text h" 1
-   "size to text v" 1
-   "text halign" center
-   wrap 1
-  }
-  TextWidgetClass PrimaryLabel {
-   position 14 108.5
-   size 110 20
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   text "#STR_TextInputDialogRoot_PrimaryLabel0"
-   font "gui/fonts/sdf_MetronLight24"
-   "exact text" 0
-   "exact text size" 18
-   "size to text h" 1
-   "size to text v" 1
-   "text valign" center
-  }
-  TextWidgetClass SecondaryLabel {
-   visible 1
-   position 14 138
-   size 110 20
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   text "#STR_TextInputDialogRoot_SecondaryLabel0"
-   font "gui/fonts/sdf_MetronLight24"
-   "exact text" 0
-   "exact text size" 18
-   "size to text h" 1
-   "size to text v" 1
-   "text valign" center
-  }
-  EditBoxWidgetClass SecondaryEditBox {
-   visible 1
-   position 134 138
-   size 392 20
-   hexactpos 1
-   vexactpos 1
-   hexactsize 1
-   vexactsize 1
-   style Default
-   "exact text" 0
-   font "gui/fonts/sdf_MetronLight24"
-  }
-  PanelWidgetClass SeparatorPanel {
-   color 0.7569 0.0941 0.0941 0.7843
-   position 0 60
-   size 0.85 3
-   halign center_ref
-   hexactpos 1
-   vexactpos 1
-   hexactsize 0
-   vexactsize 1
-   scaled 1
-   priority 10
-   style rover_sim_colorable
+   priority 999
+   style Colorable
+   "title visible" 0
+   {
+    ButtonWidgetClass ButtonOk {
+     visible 1
+     color 1 0 0 1
+     position 14 14
+     size 130 40
+     halign right_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     userID 1
+     style EmptyHighlight
+     text "#menu_ok"
+     text_proportion 0.5
+     font "gui/fonts/sdf_MetronBook24"
+     "disabled text color" 0.3412 0.3412 0.3412 1
+    }
+    ButtonWidgetClass ButtonCancel {
+     visible 1
+     color 1 0 0 1
+     position 14 14
+     size 130 40
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     userID 2
+     style EmptyHighlight
+     text "#menu_cancel"
+     text_proportion 0.5
+     font "gui/fonts/sdf_MetronBook24"
+     "disabled text color" 0.3412 0.3412 0.3412 1
+    }
+    TextWidgetClass WindowLabel {
+     disabled 0
+     position 0 20
+     size 512 30
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Bold
+     text "#STR_TextInputDialogRoot_WindowLabel0"
+     font "gui/fonts/sdf_MetronBook72"
+     "exact text" 0
+     "text halign" center
+     "text valign" center
+    }
+    EditBoxWidgetClass PrimaryEditBox {
+     position 134 108.5
+     size 392 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Default
+     "exact text" 0
+     font "gui/fonts/sdf_MetronLight24"
+    }
+    MultilineTextWidgetClass MessageText {
+     clipchildren 0
+     color 1 1 1 1
+     position 0 72.5
+     size 512 30
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "#STR_TextInputDialogRoot_MessageText0"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 0
+     "exact text size" 22
+     "size to text h" 1
+     "size to text v" 1
+     "text halign" center
+     wrap 1
+    }
+    TextWidgetClass PrimaryLabel {
+     position 14 108.5
+     size 110 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "#STR_TextInputDialogRoot_PrimaryLabel0"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 0
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    TextWidgetClass SecondaryLabel {
+     visible 1
+     position 14 138
+     size 110 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "#STR_TextInputDialogRoot_SecondaryLabel0"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 0
+     "exact text size" 18
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
+    EditBoxWidgetClass SecondaryEditBox {
+     visible 1
+     position 134 138
+     size 392 20
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Default
+     "exact text" 0
+     font "gui/fonts/sdf_MetronLight24"
+    }
+    PanelWidgetClass SeparatorPanel {
+     color 0.7569 0.0941 0.0941 0.7843
+     position 0 60
+     size 0.85 3
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scaled 1
+     priority 10
+     style rover_sim_colorable
+    }
+   }
   }
  }
 }

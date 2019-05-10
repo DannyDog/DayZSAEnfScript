@@ -1,6 +1,15 @@
 class InGameMenuXbox extends UIScriptedMenu
 {
 //#ifdef PLATFORM_CONSOLE
+	
+	// Widgets texts id
+	protected  string 						m_MuteButtonTextID;
+	protected  string 						m_UnmuteButtonTextID;
+	protected  string 						m_BackButtonTextID;
+	protected  string 						m_SelectButtonTextID;
+	protected  string 						m_OpenGameCardButtonTextID;
+	
+	
 	protected ref PlayerListScriptedWidget	m_ServerInfoPanel;
 	
 	protected Widget						m_OnlineMenu;
@@ -85,7 +94,7 @@ class InGameMenuXbox extends UIScriptedMenu
 		#endif
 		m_Version.SetText( version );
 		
-		if( GetGame().IsMultiplayer() )
+		if ( GetGame().IsMultiplayer() )
 		{
 			m_OnlineButton.Show( true );
 			
@@ -110,8 +119,6 @@ class InGameMenuXbox extends UIScriptedMenu
 			m_ServerInfoPanel.Reload( ClientData.m_PlayerList );
 			m_ServerInfoPanel.ReloadLocal( OnlineServices.GetMuteList() );
 			
-			TextWidget mute_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "Mute" ).FindAnyWidget( "MuteText" ) );
-			
 			string uid = m_ServerInfoPanel.FindPlayerByWidget( GetFocus() );
 			if( uid != "" )
 			{
@@ -122,19 +129,11 @@ class InGameMenuXbox extends UIScriptedMenu
 				}
 				else
 				{
-					layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+					layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 					#ifndef PLATFORM_PS4
 					layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
 					#endif
-					if( OnlineServices.IsPlayerMuted( uid ) )
-					{
-						mute_text.SetText( "#xbox_ingame_menu_unmute" );
-					}
-					else
-					{
-						mute_text.SetText( "#xbox_ingame_menu_mute" );
-					}
-					mute_text.Update();
+					SetMuteButtonText(OnlineServices.IsPlayerMuted( uid ));
 				}
 				
 				if( m_ServerInfoPanel.IsGloballyMuted( uid ) )
@@ -186,16 +185,31 @@ class InGameMenuXbox extends UIScriptedMenu
 		PPEffects.SetBlurMenu( 0.6 );
 			
 		#ifdef PLATFORM_PS4
+			string confirm = "cross";
+			string back = "circle";
+			if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+			{
+				confirm = "cross";
+				back = "circle";
+			}
+			else
+			{
+				confirm = "circle";
+				back = "cross";
+			}
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "SelectIcon" );
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
 			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "MuteIcon" );
 			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "GamercardIcon" );
-			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:circle" );
+			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
+			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif
 	
+		LoadTextStrings();
+		LoadFooterButtonTexts();
+		
 		return layoutRoot;
 	}
 	
@@ -262,7 +276,14 @@ class InGameMenuXbox extends UIScriptedMenu
 		
 		if ( w == m_RestartDeadButton )
 		{
-			GameRetry();
+			if ( !GetGame().IsMultiplayer() )
+			{
+				GetGame().GetUIManager().ShowDialog("#main_menu_restart", "Are you sure you want to restart?", IDC_INT_RETRY, DBT_YESNO, DBB_YES, DMT_QUESTION, this);
+			}
+			else
+			{
+				GetGame().GetUIManager().ShowDialog("#main_menu_respawn", "#main_menu_respawn_question", IDC_INT_RETRY, DBT_YESNO, DBB_YES, DMT_QUESTION, this);
+			}
 			return true;
 		}
 
@@ -358,7 +379,6 @@ class InGameMenuXbox extends UIScriptedMenu
 		string uid;
 		if( GetGame().IsMultiplayer() && layoutRoot.FindAnyWidget( "OnlineInfo" ).IsVisible() )
 		{
-			TextWidget mute_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "Mute" ).FindAnyWidget( "MuteText" ) );
 			if( GetGame().GetInput().LocalPress( "UAUIUp", false ) )
 			{
 				if( m_ServerInfoPanel )
@@ -374,18 +394,11 @@ class InGameMenuXbox extends UIScriptedMenu
 						}
 						else
 						{
-							layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+							layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 							#ifndef PLATFORM_PS4
 							layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
 							#endif
-							if( OnlineServices.IsPlayerMuted( uid ) )
-							{
-								mute_text.SetText( "#xbox_ingame_menu_unmute" );
-							}
-							else
-							{
-								mute_text.SetText( "#xbox_ingame_menu_mute" );
-							}
+							SetMuteButtonText(OnlineServices.IsPlayerMuted( uid ));
 						}
 						
 						if( m_ServerInfoPanel.IsGloballyMuted( uid ) )
@@ -410,18 +423,11 @@ class InGameMenuXbox extends UIScriptedMenu
 						}
 						else
 						{
-							layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+							layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 							#ifndef PLATFORM_PS4
 							layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
-							#endif
-							if( OnlineServices.IsPlayerMuted( uid ) )
-							{
-								mute_text.SetText( "#xbox_ingame_menu_unmute" );
-							}
-							else
-							{
-								mute_text.SetText( "#xbox_ingame_menu_mute" );
-							}
+							#endif							
+							SetMuteButtonText(OnlineServices.IsPlayerMuted( uid ));
 						}
 						
 						if( m_ServerInfoPanel.IsGloballyMuted( uid ) )
@@ -441,7 +447,7 @@ class InGameMenuXbox extends UIScriptedMenu
 					uid = m_ServerInfoPanel.FindPlayerByWidget( GetFocus() );
 					if( uid == "" )
 						return;
-					if( !IsLocalPlayer( uid ) && !m_ServerInfoPanel.IsGloballyMuted( uid ) )
+					if( !IsLocalPlayer( uid ) && !m_ServerInfoPanel.IsGloballyMuted( uid ) && !GetGame().GetWorld().IsDisabledReceivingVoN() )
 					{
 						muted = OnlineServices.IsPlayerMuted( uid );
 						if ( uid != "" && ScriptInputUserData.CanStoreInputUserData() )
@@ -453,14 +459,7 @@ class InGameMenuXbox extends UIScriptedMenu
 							ctx.Send();
 							OnlineServices.MutePlayer( uid, !muted );
 							m_ServerInfoPanel.MutePlayer( uid, !muted );
-							if( !muted )
-							{
-								mute_text.SetText( "#xbox_ingame_menu_unmute" );
-							}
-							else
-							{
-								mute_text.SetText( "#xbox_ingame_menu_mute" );
-							}
+							SetMuteButtonText(!muted);
 						}
 					}
 				}
@@ -529,7 +528,7 @@ class InGameMenuXbox extends UIScriptedMenu
 	
 	void SelectServer()
 	{
-		layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+		layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 		
 		if( m_ServerInfoPanel )
 		{
@@ -546,7 +545,7 @@ class InGameMenuXbox extends UIScriptedMenu
 				#ifndef PLATFORM_PS4
 				layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
 				#endif
-				layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+				layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 			}
 		}
 	}
@@ -559,7 +558,6 @@ class InGameMenuXbox extends UIScriptedMenu
 	void SyncEvent_OnRecievedPlayerList( SyncPlayerList player_list )
 	{
 		m_ServerInfoPanel.Reload( player_list );
-		TextWidget mute_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "Mute" ).FindAnyWidget( "MuteText" ) );
 		string uid = m_ServerInfoPanel.FindPlayerByWidget( GetFocus() );
 		if( uid != "" )
 		{
@@ -570,18 +568,11 @@ class InGameMenuXbox extends UIScriptedMenu
 			}
 			else
 			{
-				layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+				layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 				#ifndef PLATFORM_PS4
 				layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
 				#endif
-				if( OnlineServices.IsPlayerMuted( uid ) )
-				{
-					mute_text.SetText( "#xbox_ingame_menu_unmute" );
-				}
-				else
-				{
-					mute_text.SetText( "#xbox_ingame_menu_mute" );
-				}
+				SetMuteButtonText( OnlineServices.IsPlayerMuted( uid ) );
 			}
 			
 			if( m_ServerInfoPanel.IsGloballyMuted( uid ) )
@@ -595,7 +586,6 @@ class InGameMenuXbox extends UIScriptedMenu
 	{
 		m_ServerInfoPanel.Reload( result_list );
 		
-		TextWidget mute_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "Mute" ).FindAnyWidget( "MuteText" ) );
 		string uid = m_ServerInfoPanel.FindPlayerByWidget( GetFocus() );
 		if( uid != "" )
 		{
@@ -606,24 +596,61 @@ class InGameMenuXbox extends UIScriptedMenu
 			}
 			else
 			{
-				layoutRoot.FindAnyWidget( "Mute" ).Show( true );
+				layoutRoot.FindAnyWidget( "Mute" ).Show( !GetGame().GetWorld().IsDisabledReceivingVoN() );
 				#ifndef PLATFORM_PS4
 				layoutRoot.FindAnyWidget( "Gamercard" ).Show( true );
 				#endif
-				if( OnlineServices.IsPlayerMuted( uid ) )
-				{
-					mute_text.SetText( "#xbox_ingame_menu_unmute" );
-				}
-				else
-				{
-					mute_text.SetText( "#xbox_ingame_menu_mute" );
-				}
+				
+				SetMuteButtonText(OnlineServices.IsPlayerMuted( uid ));
 			}
 			
 			if( m_ServerInfoPanel.IsGloballyMuted( uid ) )
 			{
 				layoutRoot.FindAnyWidget( "Mute" ).Show( false );
 			}
+		}
+	}
+	
+	override void OnShow()
+	{
+		Man player = GetGame().GetPlayer();
+		bool player_is_alive = false;
+
+		if (player)
+		{
+			int life_state = player.GetPlayerState();
+
+			if (life_state == EPlayerStates.ALIVE)
+			{
+				player_is_alive = true;
+			}
+		}
+		
+		if ( player_is_alive )
+		{
+			m_RestartButton.Show( player.IsUnconscious() );
+		}
+		else
+		{
+			m_RestartButton.Show( false );
+		}
+		m_ContinueButton.Show( player_is_alive );
+		m_RestartDeadButton.Show( !player_is_alive );
+		
+		if( player_is_alive )
+		{
+			if( player.IsUnconscious() )
+			{
+				SetFocus( m_RestartButton );
+			}
+			else
+			{
+				SetFocus( m_ContinueButton );
+			}
+		}
+		else
+		{
+			SetFocus( m_RestartDeadButton );
 		}
 	}
 	
@@ -782,6 +809,62 @@ class InGameMenuXbox extends UIScriptedMenu
 		if( text2 )
 		{
 			text2.SetColor( color );
+		}
+	}
+	
+	/// Set mute text button text (mute / unmute)
+	protected void SetMuteButtonText( bool isMuted )
+	{
+		TextWidget mute_text = TextWidget.Cast( layoutRoot.FindAnyWidget( "Mute" ).FindAnyWidget( "MuteText" ) );
+		
+		if( isMuted )
+		{
+			mute_text.SetText( m_UnmuteButtonTextID );
+		}
+		else
+		{
+			mute_text.SetText( m_MuteButtonTextID );
+		}
+		
+		mute_text.Update();
+	}
+	
+	/// Set correct bottom button texts based on platform (ps4 vs xbox texts)
+	protected void LoadTextStrings()
+	{
+		#ifdef PLATFORM_PS4
+		m_MuteButtonTextID			= "#ps4_ingame_menu_mute";
+		m_UnmuteButtonTextID		= "#ps4_ingame_menu_unmute";
+		m_BackButtonTextID			= "#ps4_ingame_menu_back";
+		m_SelectButtonTextID		= "#ps4_ingame_menu_select";
+		m_OpenGameCardButtonTextID	= "#ps4_ingame_menu_opencard";	
+		#else
+		m_MuteButtonTextID			= "#xbox_ingame_menu_mute";
+		m_UnmuteButtonTextID		= "#xbox_ingame_menu_unmute";
+		m_BackButtonTextID			= "#STR_rootFrame_toolbar_bg_ConsoleToolbar_Back_BackText0";
+		m_SelectButtonTextID		= "#layout_xbox_ingame_menu_select";
+		m_OpenGameCardButtonTextID	= "#layout_xbox_ingame_menu_gamecard";		
+		#endif	
+	}
+	
+	/// Initial texts load for the footer buttons
+	protected void LoadFooterButtonTexts()
+	{
+		TextWidget uiGamecardText 	= TextWidget.Cast(layoutRoot.FindAnyWidget( "GamercardText" ));			
+		TextWidget uiBackText 		= TextWidget.Cast(layoutRoot.FindAnyWidget( "BackText" ));			
+		TextWidget uiSelectText 	= TextWidget.Cast(layoutRoot.FindAnyWidget( "SelectText" ));	
+		
+		if (uiGamecardText)
+		{
+			uiGamecardText.SetText(m_OpenGameCardButtonTextID);
+		}
+		if (uiBackText)
+		{
+			uiBackText.SetText(m_BackButtonTextID);
+		}
+		if (uiSelectText)
+		{
+			uiSelectText.SetText(m_SelectButtonTextID);
 		}
 	}
 //#endif

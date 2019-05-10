@@ -54,6 +54,13 @@ class ActionDropItem: ActionSingleUseBase
 		return "#drop_item";
 	}
 	
+#ifndef OLD_ACTIONS
+	override typename GetInputType()
+	{
+		return DropActionInput;
+	}
+#endif
+	
 	override bool HasProneException()
 	{
 		return true;

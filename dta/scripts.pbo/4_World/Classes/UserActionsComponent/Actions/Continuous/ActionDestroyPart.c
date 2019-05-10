@@ -48,42 +48,13 @@ class ActionDestroyPart: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if ( player && !player.IsLeaning() )
-		{
-			Object targetObject = target.GetObject();
-			if ( targetObject && targetObject.CanUseConstruction() )
-			{
-				string part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
-				
-				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
-				Construction construction = base_building.GetConstruction();		
-				ConstructionPart construction_part = construction.GetConstructionPartToDestroy( part_name );
-				
-				if ( construction_part )
-				{
-					//camera and position checks
-					if ( base_building.IsFacingPlayer( player, part_name ) && !player.GetInputController().CameraIsFreeLook() )
-					{
-						//Camera check (client-only)
-						if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
-						{
-							if ( !base_building.IsFacingCamera( part_name ) )
-							{
-								return false;
-							}
-						}
-
-						ConstructionActionData construction_action_data = player.GetConstructionActionData();
-						construction_action_data.SetTargetPart( construction_part );
-						
-						return true;				
-					}
-				}
-			}
-		}
-		
-		return false;
+		return DestroyCondition( player, target, item, true );
 	}
+	
+	override bool ActionConditionContinue( ActionData action_data )
+	{	
+		return DestroyCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
+	}	
 	
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
@@ -103,4 +74,46 @@ class ActionDestroyPart: ActionContinuousBase
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
+	
+	protected bool DestroyCondition( PlayerBase player, ActionTarget target, ItemBase item, bool camera_check )
+	{	
+		if ( player && !player.IsLeaning() )
+		{
+			Object target_object = target.GetObject();
+			if ( target_object && target_object.CanUseConstruction() )
+			{
+				string part_name = target_object.GetActionComponentName( target.GetComponentIndex() );
+				
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( target_object );
+				Construction construction = base_building.GetConstruction();		
+				ConstructionPart construction_part = construction.GetConstructionPartToDestroy( part_name );
+				
+				if ( construction_part )
+				{
+					//camera and position checks
+					if ( base_building.IsFacingPlayer( player, part_name ) && !player.GetInputController().CameraIsFreeLook() )
+					{
+						//Camera check (client-only)
+						if ( camera_check )
+						{
+							if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
+							{
+								if ( !base_building.IsFacingCamera( part_name ) )
+								{
+									return false;
+								}
+							}
+						}
+
+						ConstructionActionData construction_action_data = player.GetConstructionActionData();
+						construction_action_data.SetTargetPart( construction_part );
+						
+						return true;				
+					}
+				}
+			}
+		}
+		
+		return false;
+	}	
 }

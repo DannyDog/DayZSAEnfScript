@@ -1,0 +1,44 @@
+FrameWidgetClass rootFrame {
+ clipchildren 0
+ position 0 0
+ size 1 1
+ hexactpos 0
+ vexactpos 0
+ hexactsize 1
+ vexactsize 1
+ {
+  FrameWidgetClass TagFrame {
+   ignorepointer 1
+   color 0 1 0 0.7843
+   position 0 0
+   size 300 20
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   {
+    TextWidgetClass TagText {
+     ignorepointer 1
+     color 0 1 0 0.7843
+     position 0 0
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     text "this is a player"
+     font "gui/fonts/sdf_MetronBook24"
+     "text color" 0 1 0 0.3922
+     "size to text h" 0
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
+    }
+   }
+  }
+ }
+}

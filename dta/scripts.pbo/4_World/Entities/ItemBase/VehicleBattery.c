@@ -63,4 +63,15 @@ class VehicleBattery : ItemBase
 			}
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttach);
+		AddAction(ActionAttachOnSelection);
+		AddAction(ActionDetach);
+		AddAction(ActionAttachPowerSourceToPanel);
+		AddAction(ActionPlugTargetIntoThis);
+	}
 }

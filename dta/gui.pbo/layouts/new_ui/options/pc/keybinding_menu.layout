@@ -20,7 +20,7 @@ FrameWidgetClass keybindings_root {
    scriptclass "TabberUI"
    {
     WrapSpacerWidgetClass TabControls {
-     visible 1
+     visible 0
      clipchildren 0
      ignorepointer 1
      position 80 80
@@ -172,11 +172,11 @@ FrameWidgetClass keybindings_root {
   WrapSpacerWidgetClass play_panel_root {
    visible 1
    ignorepointer 1
-   position 0.05 130
-   size 400 230
+   position 100 130
+   size 400 400
    halign right_ref
    valign bottom_ref
-   hexactpos 0
+   hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
@@ -212,8 +212,8 @@ FrameWidgetClass keybindings_root {
        disabled 0
        ignorepointer 0
        color 0 0 0 1
-       position 0 0
-       size 1 84
+       position 0 88
+       size 1 90
        halign center_ref
        valign bottom_ref
        hexactpos 1
@@ -225,7 +225,7 @@ FrameWidgetClass keybindings_root {
        "next up" "back"
        "next down" "reset"
        text "#layout_pc_keybinding_play_pannel_back"
-       text_proportion 0.8
+       text_proportion 0.6
        font "gui/fonts/sdf_MetronLight72"
        switch normal
       }
@@ -283,7 +283,7 @@ FrameWidgetClass keybindings_root {
        "next up" "reset"
        "next down" "apply"
        text "#layout_pc_keybinding_apply"
-       text_proportion 0.6
+       text_proportion 0.55
        font "gui/fonts/sdf_MetronLight24"
        switch normal
       }

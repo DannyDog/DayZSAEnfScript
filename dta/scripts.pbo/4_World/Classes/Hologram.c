@@ -169,7 +169,7 @@ class Hologram
 	}
 		
 	// update loop for visuals and collisions of the hologram
-	void UpdateHologram()
+	void UpdateHologram( float timeslice )
 	{		
 		if ( !m_Parent )
 		{
@@ -197,11 +197,11 @@ class Hologram
 
 		// update hologram position	
 		SetProjectionPosition( GetProjectionEntityPosition( m_Player ) );
-		SetProjectionOrientation( AlignProjectionOnTerrain() );		
+		SetProjectionOrientation( AlignProjectionOnTerrain( timeslice ) );		
 		m_Projection.OnHologramBeingPlaced( m_Player );
 	}
 	
-	vector AlignProjectionOnTerrain()
+	vector AlignProjectionOnTerrain( float timeslice )
 	{
 		vector y_p_r;
 		
@@ -253,10 +253,10 @@ class Hologram
 			}
 		}	
 		
-		return SmoothProjectionMovement( y_p_r );
+		return SmoothProjectionMovement( y_p_r, timeslice );
 	}
 	
-	vector SmoothProjectionMovement( vector y_p_r )
+	vector SmoothProjectionMovement( vector y_p_r, float timeslice )
 	{	
 		if ( m_y_p_r_previous )
 		{					
@@ -273,9 +273,9 @@ class Hologram
 				}
 			}
 			
-			y_p_r[0] = Math.Lerp( m_y_p_r_previous[0], y_p_r[0], 0.25);
-			y_p_r[1] = Math.Lerp( m_y_p_r_previous[1], y_p_r[1], 0.25);
-			y_p_r[2] = Math.Lerp( m_y_p_r_previous[2], y_p_r[2], 0.25);
+			y_p_r[0] = Math.Lerp( m_y_p_r_previous[0], y_p_r[0], 15 * timeslice );
+			y_p_r[1] = Math.Lerp( m_y_p_r_previous[1], y_p_r[1], 15 * timeslice );
+			y_p_r[2] = Math.Lerp( m_y_p_r_previous[2], y_p_r[2], 15 * timeslice );
 		}
 		
 		m_y_p_r_previous = y_p_r;

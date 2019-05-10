@@ -16,6 +16,7 @@ class PlayerSoundEventBase extends SoundEventBase
 	float 		m_DummyStartTime;
 	bool		m_IsDummyType;
 	float 		m_PlayTime;
+	ref HumanMovementState m_Hms = new HumanMovementState();
 	EPlayerSoundEventType m_HasPriorityOverTypes;
 	
 	bool IsDummy()
@@ -74,7 +75,8 @@ class PlayerSoundEventBase extends SoundEventBase
 
 	bool CanPlay(PlayerBase player)
 	{
-		if( player.IsHoldingBreath() ) 
+		player.GetMovementState(m_Hms);
+		if( player.IsHoldingBreath() || (player.IsSwimming() && m_Hms.m_iMovement != 0) ) 
 		{
 			return false;
 		}
@@ -101,9 +103,10 @@ class PlayerSoundEventBase extends SoundEventBase
 
 	}
 
-	override void Play()
+	override bool Play()
 	{
-		super.Play();
+		if(!super.Play())
+			return false;
 	
 		if( !IsDummy() )
 		{
@@ -114,11 +117,17 @@ class PlayerSoundEventBase extends SoundEventBase
 				AbstractWaveEvents events = AbstractWaveEvents.Cast(m_SoundSetCallback.GetUserData());
 				events.Event_OnSoundWaveEnded.Insert( OnEnd );
 				events.Event_OnSoundWaveStopped.Insert( OnInterupt );
+				return true;
 			}
+			else 
+				return false;
 		}
 		else
 		{
 			m_DummyStartTime = GetGame().GetTime();
+			return true;
 		}
+		return false;
+		
 	}
 }

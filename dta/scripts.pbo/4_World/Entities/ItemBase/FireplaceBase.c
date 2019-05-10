@@ -79,11 +79,14 @@ class FireplaceBase extends ItemBase
 	
 	//Particles - default for FireplaceBase
 	protected int PARTICLE_FIRE_START 			= ParticleList.CAMP_FIRE_START;
+	protected int PARTICLE_OVEN_FIRE_START 		= ParticleList.CAMP_STOVE_FIRE_START;
 	protected int PARTICLE_SMALL_FIRE 			= ParticleList.CAMP_SMALL_FIRE;
 	protected int PARTICLE_NORMAL_FIRE			= ParticleList.CAMP_NORMAL_FIRE;
+	protected int PARTICLE_OVEN_FIRE 			= ParticleList.CAMP_STOVE_FIRE;
 	protected int PARTICLE_SMALL_SMOKE 			= ParticleList.CAMP_SMALL_SMOKE;
 	protected int PARTICLE_NORMAL_SMOKE			= ParticleList.CAMP_NORMAL_SMOKE;
 	protected int PARTICLE_FIRE_END 			= ParticleList.CAMP_FIRE_END;
+	protected int PARTICLE_OVEN_FIRE_END 		= ParticleList.CAMP_STOVE_FIRE_END;
 	protected int PARTICLE_STEAM_END			= ParticleList.CAMP_STEAM_2END;
 	protected int PARTICLE_STEAM_EXTINGUISHING	= ParticleList.CAMP_STEAM_EXTINGUISH_START;
 	//
@@ -168,7 +171,10 @@ class FireplaceBase extends ItemBase
 	const string OBJECT_CLUTTER_CUTTER 	= "ClutterCutterFireplace";
 	
 	//area damage
-	private ref AreaDamageBase 		m_AreaDamage;
+	protected ref AreaDamageBase 		m_AreaDamage;
+	
+	//quantity
+	protected float m_TotalEnergy;
 	
 	//================================================================
 	// INIT / STORE LOAD-SAVE
@@ -180,18 +186,21 @@ class FireplaceBase extends ItemBase
 		if ( !m_FireConsumableTypes )
 		{
 			m_FireConsumableTypes = new ref map<typename, ref FireConsumableType>;
-			m_FireConsumableTypes.Insert( ATTACHMENT_RAGS, 			new FireConsumableType( ATTACHMENT_RAGS, 		14, 	true ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_BANDAGE, 		new FireConsumableType( ATTACHMENT_BANDAGE, 	14, 	true ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_BOOK, 			new FireConsumableType( ATTACHMENT_BOOK, 		36, 	true ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_BARK_OAK, 		new FireConsumableType( ATTACHMENT_BARK_OAK, 	20, 	true ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_BARK_BIRCH, 	new FireConsumableType( ATTACHMENT_BARK_BIRCH, 	14, 	true ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_PAPER, 		new FireConsumableType( ATTACHMENT_PAPER, 		10, 	true ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_RAGS, 			new FireConsumableType( ATTACHMENT_RAGS, 		14, 	true,	"Rags" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_BANDAGE, 		new FireConsumableType( ATTACHMENT_BANDAGE, 	14, 	true,	"MedicalBandage" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_BOOK, 			new FireConsumableType( ATTACHMENT_BOOK, 		36, 	true,	"Book" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_BARK_OAK, 		new FireConsumableType( ATTACHMENT_BARK_OAK, 	20, 	true,	"OakBark" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_BARK_BIRCH, 	new FireConsumableType( ATTACHMENT_BARK_BIRCH, 	14, 	true,	"BirchBark" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_PAPER, 		new FireConsumableType( ATTACHMENT_PAPER, 		10, 	true,	"Paper" ) );
 			
 			//define fuel types
-			m_FireConsumableTypes.Insert( ATTACHMENT_STICKS, 		new FireConsumableType( ATTACHMENT_STICKS, 		40, 	false ) );
-			m_FireConsumableTypes.Insert( ATTACHMENT_FIREWOOD, 		new FireConsumableType( ATTACHMENT_FIREWOOD, 	100, 	false ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_STICKS, 		new FireConsumableType( ATTACHMENT_STICKS, 		40, 	false,	"WoodenStick" ) );
+			m_FireConsumableTypes.Insert( ATTACHMENT_FIREWOOD, 		new FireConsumableType( ATTACHMENT_FIREWOOD, 	100, 	false,	"Firewood" ) );
 		}
 
+		//calculate total energy
+		CalcAndSetTotalEnergy();
+		
 		//define fuel / kindling items (fire consumables)
 		m_FireConsumables = new ref map<ItemBase, ref FireConsumable>;
 		
@@ -204,8 +213,8 @@ class FireplaceBase extends ItemBase
 		RegisterNetSyncVariableBool( "m_HasAshes" );
 		RegisterNetSyncVariableBool( "m_IsOven" );
 		RegisterNetSyncVariableInt( "m_FireState", FireplaceFireState.NO_FIRE, FireplaceFireState.COUNT );
-		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
-		RegisterNetSyncVariableBool("m_IsPlaceSound");
+		RegisterNetSyncVariableBool( "m_IsSoundSynchRemote" );
+		RegisterNetSyncVariableBool( "m_IsPlaceSound" );
 	}
 	
 	override void EEInit()
@@ -299,7 +308,7 @@ class FireplaceBase extends ItemBase
 		{
 			if ( GetGame() && GetGame().IsServer() ) 
 			{
-				StartFire();			//will be auto-synchronized when starting fire
+				StartFire( true );			//will be auto-synchronized when starting fire
 			}
 		}		
 	}		
@@ -313,10 +322,10 @@ class FireplaceBase extends ItemBase
 		{
 			SetSynchDirty();
 			
-			if ( GetGame().IsMultiplayer() )
+			if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 			{
 				//Refresh visuals (on server)
-				RefreshFireplaceVisuals();
+				GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Call( RefreshFireplaceVisuals );
 			}
 		}
 	}
@@ -326,9 +335,14 @@ class FireplaceBase extends ItemBase
 		super.OnVariablesSynchronized();
 
 		//Refresh client particles and audio
+		if ( HasAshes() )
+		{
+			SetBurntFirewood();		//set burnt wood visual
+		}
+		
 		RefreshFireplaceVisuals();
 		RefreshFireParticlesAndSounds( false );
-				
+		
 		if ( IsPlaceSound() )
 		{
 			PlayPlaceSound();
@@ -440,23 +454,21 @@ class FireplaceBase extends ItemBase
 		//Firewood state
 		if ( IsItemTypeAttached( ATTACHMENT_FIREWOOD ) )
 		{
-			if ( IsBurning() ) 
+			if ( IsInAnimPhase( ANIMATION_BURNT_WOOD ) )
 			{
-				SetAnimationPhase( ANIMATION_BURNT_WOOD, 0 );
 				SetAnimationPhase( ANIMATION_WOOD, 1 );
 			}
 			else
 			{
 				SetAnimationPhase( ANIMATION_WOOD, 0 );
-				SetAnimationPhase( ANIMATION_BURNT_WOOD, 1 );
 			}
 		}
 		else
 		{
 			SetAnimationPhase( ANIMATION_WOOD, 1 );
 			SetAnimationPhase( ANIMATION_BURNT_WOOD, 1 );		
-		}
-	
+		}	
+			
 		//Kindling state
 		if ( GetKindlingCount() == 0 )
 		{
@@ -528,6 +540,15 @@ class FireplaceBase extends ItemBase
 		
 		//refresh physics (with delay)
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Call( RefreshFireplacePhysics );
+	}
+	
+	protected void SetBurntFirewood()
+	{
+		if ( IsInAnimPhase( ANIMATION_WOOD ) )
+		{
+			SetAnimationPhase( ANIMATION_WOOD, 1 );
+			SetAnimationPhase( ANIMATION_BURNT_WOOD, 0 );				
+		}	
 	}
 
 	//Refresh fireplace object physics
@@ -794,10 +815,17 @@ class FireplaceBase extends ItemBase
 		return false;
 	}
 	
-	//small fire
+	//start fire
 	protected void ParticleFireStartStart()
 	{
-		PlayParticle( m_ParticleFireStart, PARTICLE_FIRE_START, GetFireEffectPosition() );
+		if ( IsOven() )
+		{
+			PlayParticle( m_ParticleFireStart, PARTICLE_OVEN_FIRE_START, GetFireEffectPosition() );
+		}
+		else
+		{
+			PlayParticle( m_ParticleFireStart, PARTICLE_FIRE_START, GetFireEffectPosition() );
+		}
 	}
 	
 	protected void ParticleFireStartStop()
@@ -808,7 +836,14 @@ class FireplaceBase extends ItemBase
 	//small fire
 	protected void ParticleSmallFireStart()
 	{
-		PlayParticle( m_ParticleSmallFire, PARTICLE_SMALL_FIRE, GetFireEffectPosition() );
+		if ( IsOven() )
+		{
+			PlayParticle( m_ParticleSmallFire, PARTICLE_OVEN_FIRE, GetFireEffectPosition() );
+		}
+		else
+		{
+			PlayParticle( m_ParticleSmallFire, PARTICLE_SMALL_FIRE, GetFireEffectPosition() );	
+		}
 	}
 	
 	protected void ParticleSmallFireStop()
@@ -819,7 +854,14 @@ class FireplaceBase extends ItemBase
 	//normal fire
 	protected void ParticleNormalFireStart()
 	{
-		PlayParticle( m_ParticleNormalFire, PARTICLE_NORMAL_FIRE, GetFireEffectPosition() );
+		if ( IsOven() )
+		{
+			PlayParticle( m_ParticleNormalFire, PARTICLE_OVEN_FIRE, GetFireEffectPosition() );
+		}
+		else
+		{
+			PlayParticle( m_ParticleNormalFire, PARTICLE_NORMAL_FIRE, GetFireEffectPosition() );
+		}
 	}
 	
 	protected void ParticleNormalFireStop()
@@ -834,7 +876,7 @@ class FireplaceBase extends ItemBase
 		
 		//calculate air resistance
 		float actual_height;
-		if ( !IsEnoughRoomForSmokeAbove( actual_height ) )
+		if ( !HasEnoughRoomForSmokeAbove( actual_height ) )
 		{
 			float air_resistance = GetAirResistanceForSmokeParticles( actual_height );
 			
@@ -860,7 +902,7 @@ class FireplaceBase extends ItemBase
 		
 		//calculate air resistance
 		float actual_height;
-		if ( !IsEnoughRoomForSmokeAbove( actual_height ) )
+		if ( !HasEnoughRoomForSmokeAbove( actual_height ) )
 		{		
 			float air_resistance = GetAirResistanceForSmokeParticles( actual_height );
 			
@@ -882,7 +924,14 @@ class FireplaceBase extends ItemBase
 	//fire end
 	protected void ParticleFireEndStart()
 	{
-		PlayParticle( m_ParticleFireEnd, PARTICLE_FIRE_END, GetFireEffectPosition() );
+		if ( IsOven() )
+		{
+			PlayParticle( m_ParticleFireEnd, PARTICLE_OVEN_FIRE_END, GetFireEffectPosition() );
+		}
+		else
+		{
+			PlayParticle( m_ParticleFireEnd, PARTICLE_FIRE_END, GetFireEffectPosition() );
+		}
 	}
 	
 	protected void ParticleFireEndStop()
@@ -964,13 +1013,15 @@ class FireplaceBase extends ItemBase
 	// FUEL / KINDLING
 	//================================================================
 	//Add to fire consumables
-	protected void AddToFireConsumables ( ItemBase item )
+	protected void AddToFireConsumables( ItemBase item )
 	{
 		float energy = GetFireConsumableTypeEnergy ( item );
 		m_FireConsumables.Insert( item, new FireConsumable ( item, energy ) );
+		
+		CalcAndSetQuantity();
 	}
 
-	protected float GetFireConsumableTypeEnergy ( ItemBase item )
+	protected float GetFireConsumableTypeEnergy( ItemBase item )
 	{
 		//Kindling
 		ref FireConsumableType fire_consumable_type = m_FireConsumableTypes.Get( item.Type() );
@@ -983,13 +1034,15 @@ class FireplaceBase extends ItemBase
 	}
 
 	//Remove from fire consumables
-	protected void RemoveFromFireConsumables ( FireConsumable fire_consumable )
+	protected void RemoveFromFireConsumables( FireConsumable fire_consumable )
 	{
 		if ( fire_consumable )
 		{
 			m_FireConsumables.Remove( fire_consumable.GetItem() );
-			delete fire_consumable;		
+			delete fire_consumable;
 		}
+		
+		CalcAndSetQuantity();
 	}
 	
 	protected FireConsumable GetFireConsumableByItem( ItemBase item )
@@ -1107,6 +1160,7 @@ class FireplaceBase extends ItemBase
 					//
 					
 					item.AddQuantity( -1 );
+					SetItemToConsume();			//set item after each quantity decrease
 				}
 			}
 		}
@@ -1114,6 +1168,8 @@ class FireplaceBase extends ItemBase
 		//debug
 		//m_debug_fire_consume_time += TIMER_HEATING_UPDATE_INTERVAL;
 		//
+		
+		CalcAndSetQuantity();
 	}
 
 	//GetKindlingCount
@@ -1277,6 +1333,11 @@ class FireplaceBase extends ItemBase
 		{
 			m_HasAshes = has_ashes;
 			
+			if ( m_HasAshes )
+			{
+				SetBurntFirewood();		//set burnt wood visual
+			}
+			
 			//synchronize
 			Synchronize();
 		}
@@ -1352,7 +1413,7 @@ class FireplaceBase extends ItemBase
 	// 1. start heating
 	// 2. heating
 	// 3. stop heating
-	void StartFire()
+	void StartFire( bool force_start = false )
 	{
 		//Print("Starting fire...");
 		
@@ -1364,7 +1425,7 @@ class FireplaceBase extends ItemBase
 		}
 		
 		//start fire
-		if ( !IsBurning() )	
+		if ( !IsBurning() || force_start )	
 		{
 			//set fuel to consume
 			SetItemToConsume();
@@ -1880,18 +1941,18 @@ class FireplaceBase extends ItemBase
 	// SUPPORT
 	//================================================================
 	//Check if object is under a roof (height check)
-	void LineHit( float height, out bool hit, out float actual_height )
+	static void LineHit( EntityAI entity, float height, out bool hit, out float actual_height )
 	{
 		float start_pos_offset = 1.8;
-		vector from = GetPosition();
-		vector to = GetPosition();
+		vector from = entity.GetPosition();
+		vector to = entity.GetPosition();
 		from[1] = from[1] + start_pos_offset;		//add fireplace height into calculation
 		to[1] = to[1] + height;
 		vector contactPos;
 		vector contactDir;
 		int contactComponent;
 		
-		hit = DayZPhysics.RaycastRV( from, to, contactPos, contactDir, contactComponent, NULL, NULL, this );
+		hit = DayZPhysics.RaycastRV( from, to, contactPos, contactDir, contactComponent, NULL, NULL, entity );
 		actual_height = vector.Distance( from, contactPos ) + start_pos_offset;
 		
 		//debug
@@ -1937,7 +1998,7 @@ class FireplaceBase extends ItemBase
 	}
 
 	//Check if the weather is too windy
-	bool IsWindy()
+	static bool IsWindy()
 	{
 		//check wind
 		float wind_speed = GetGame().GetWeather().GetWindSpeed();
@@ -1952,14 +2013,19 @@ class FireplaceBase extends ItemBase
 	}
 
 	//Check if the fireplace is too wet to be ignited
-	bool IsWet()
+	static bool IsEntityWet( notnull EntityAI entity_ai )
 	{
-		if ( GetWet() >= PARAM_MAX_WET_TO_IGNITE )
+		if ( entity_ai.GetWet() >= FireplaceBase.PARAM_MAX_WET_TO_IGNITE )
 		{
 			return true;
 		}
 		
 		return false;
+	}
+	
+	bool IsWet()
+	{
+		return FireplaceBase.IsEntityWet( this );
 	}
 
 	//Check if there is any roof above fireplace
@@ -1968,30 +2034,35 @@ class FireplaceBase extends ItemBase
 		//check rain
 		float actual_height;
 		bool hit;
-		LineHit( 20, hit, actual_height );
+		FireplaceBase.LineHit( this, 20, hit, actual_height );
 		
 		return hit;
 	}
 
 	//Check if there is enough room for smoke above fireplace
-	bool IsEnoughRoomForSmokeAbove( out float actual_height )
+	bool HasEnoughRoomForSmokeAbove( out float actual_height )
 	{
 		//check rain
 		bool hit;
-		LineHit( 6, hit, actual_height );
+		FireplaceBase.LineHit( this, 6, hit, actual_height );
 		
 		return !hit;
 	}	
 	
 	//Check if there is enough room for fire above fireplace
-	bool IsEnoughRoomForFireAbove()
+	static bool HasEntityEnoughRoomForFireAbove( notnull EntityAI entity_ai )
 	{
 		//check rain
 		float actual_height;
 		bool hit;
-		LineHit( 1.8, hit, actual_height );
+		FireplaceBase.LineHit( entity_ai, 1.8, hit, actual_height );
 		
 		return !hit;
+	}
+	
+	bool HasEnoughRoomForFireAbove()
+	{
+		return FireplaceBase.HasEntityEnoughRoomForFireAbove( this );
 	}
 	
 	float GetAirResistanceForSmokeParticles( float actual_height )
@@ -2006,27 +2077,32 @@ class FireplaceBase extends ItemBase
 	}
 
 	//Check if it's raining and there is only sky above fireplace
-	bool IsRainingAbove()
+	static bool IsRainingAboveEntity( notnull EntityAI entity_ai )
 	{
 		//check rain
 		bool hit;
 		float actual_height;
-		LineHit( 100, hit, actual_height );
+		FireplaceBase.LineHit( entity_ai, 100, hit, actual_height );
 		
-		if ( GetGame() && GetGame().GetWeather().GetRain().GetActual() >= PARAM_IGNITE_RAIN_THRESHOLD && !hit )
+		if ( GetGame() && GetGame().GetWeather().GetRain().GetActual() >= FireplaceBase.PARAM_IGNITE_RAIN_THRESHOLD && !hit )
 		{
 			return true;
 		}
 		
 		return false;
 	}
+	
+	bool IsRainingAbove()
+	{
+		return FireplaceBase.IsRainingAboveEntity( this );
+	}
 
 	//Check there is water surface bellow fireplace
-	bool IsWaterSurface()
+	static bool IsEntityOnWaterSurface( notnull EntityAI entity_ai )
 	{
 		//check surface
 		string surface_type;
-		vector fireplace_pos = GetPosition();
+		vector fireplace_pos = entity_ai.GetPosition();
 		
 		GetGame().SurfaceGetType ( fireplace_pos[0], fireplace_pos[2], surface_type ); 
 		if ( surface_type == "FreshWater" || surface_type == "sea" || GetGame().SurfaceIsSea( fireplace_pos[0], fireplace_pos[2] ) )
@@ -2035,6 +2111,11 @@ class FireplaceBase extends ItemBase
 		}
 		
 		return false;
+	}
+	
+	bool IsOnWaterSurface()
+	{
+		return FireplaceBase.IsEntityOnWaterSurface( this );
 	}
 
 	//Checks if has not additional items in it
@@ -2155,4 +2236,85 @@ class FireplaceBase extends ItemBase
 	{
 		return "placeFireplace_SoundSet";
 	}
+	
+	//================================================================
+	// QUANITTY
+	//================================================================
+	// calculates and sets total energy based on possible (fuel/kinidling) item attachments
+	protected void CalcAndSetTotalEnergy()
+	{
+		if ( GetGame() && GetGame().IsServer() )
+		{
+			m_TotalEnergy = 0;
+			
+			for ( int i = 0; i < m_FireConsumableTypes.Count(); ++i )
+			{
+				typename key = m_FireConsumableTypes.GetKey( i );
+				FireConsumableType fire_consumable_type = m_FireConsumableTypes.Get( key );
+				string qt_config_path = "CfgVehicles" + " " + fire_consumable_type.GetItemType().ToString() + " " + "varQuantityMax";
+				string sm_config_path = "CfgSlots" + " " + "Slot_" + fire_consumable_type.GetAttSlot() + " " + "stackMax";
+				if ( GetGame().ConfigIsExisting( qt_config_path ) )
+				{
+					float quantity_max = GetGame().ConfigGetFloat( qt_config_path );
+				}
+				
+				if ( GetGame().ConfigIsExisting( sm_config_path ) )
+				{
+					float stack_max = GetGame().ConfigGetFloat( sm_config_path );
+				}			
+				
+				//debug
+				//Print( fire_consumable_type.GetItemType().ToString() + " quantity_max = " + quantity_max.ToString() + " [" + (quantity_max*fire_consumable_type.GetEnergy()).ToString()  + "] | stack_max = " + stack_max.ToString() + " [" + (stack_max*fire_consumable_type.GetEnergy()).ToString() + "]" );
+				
+				if ( stack_max > 0 )
+				{
+					m_TotalEnergy += stack_max * fire_consumable_type.GetEnergy();
+				}
+				else
+				{
+					m_TotalEnergy += quantity_max * fire_consumable_type.GetEnergy();
+				}
+			}
+			
+			//debug
+			//Print( "Total energy = " + m_TotalEnergy.ToString() );
+		}
+	}
+	
+	// calculates and sets current quantity based on actual (fuel/kinidling) item attachments
+	protected void CalcAndSetQuantity()
+	{
+		if ( GetGame() && GetGame().IsServer() )
+		{
+			float remaining_energy;
+			
+			for ( int i = 0; i < m_FireConsumables.Count(); ++i )
+			{
+				ItemBase key = m_FireConsumables.GetKey( i );
+				FireConsumable fire_consumable = m_FireConsumables.Get( key );
+				
+				float quantity = fire_consumable.GetItem().GetQuantity();
+				
+				if ( quantity > 0 )
+				{
+					remaining_energy += ( ( quantity - 1 ) * fire_consumable.GetEnergy() ) + fire_consumable.GetRemainingEnergy();
+					//Print( fire_consumable.GetItem().GetType() + " remaining energy = " + ( ( ( quantity - 1 ) * fire_consumable.GetEnergy() ) + fire_consumable.GetRemainingEnergy() ).ToString() );
+				}
+				else
+				{
+					remaining_energy += fire_consumable.GetRemainingEnergy();
+					//Print( fire_consumable.GetItem().GetType() + " remaining energy = " + ( fire_consumable.GetRemainingEnergy().ToString() ) );
+				}
+			}
+			
+			SetQuantity( remaining_energy / m_TotalEnergy * GetQuantityMax() );
+		}
+	}
+	
+	override void OnAttachmentQuantityChanged( ItemBase item )
+	{
+		super.OnAttachmentQuantityChanged( item );
+		
+		CalcAndSetQuantity();
+	}	
 }

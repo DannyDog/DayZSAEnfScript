@@ -21,5 +21,8 @@ class Winchester70Recoil: RecoilBase
 		m_MouseOffsetRangeMax = 100;//in degrees max
 		m_MouseOffsetDistance = 1.6;//how far should the mouse travel
 		m_MouseOffsetRelativeTime = 0.0625;//[0..1] a time it takes to move the mouse the required distance relative to the reload time of the weapon(firing mode)
+	
+		m_CamOffsetDistance = 0.02;
+		m_CamOffsetRelativeTime = 0.125;
 	}
 }

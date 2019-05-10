@@ -81,7 +81,12 @@ class ServerBrowserTab extends ScriptedWidgetEventHandler
 		if(m_Root)
 			delete m_Root;
 	}
-		
+
+	ServerBrowserMenuNew GetRootMenu()
+	{
+		return m_Menu;
+	}
+	
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
 		
@@ -501,9 +506,9 @@ class ServerBrowserTab extends ScriptedWidgetEventHandler
 		return -1;
 	}
 	
-	void SetFavorite( string uid, bool favorite )
+	void SetFavoriteConsoles( string uid, bool favorite )
 	{
-		m_Menu.SetFavorite( uid, favorite );
+		m_Menu.SetFavoriteConsoles( uid, favorite );
 	}
 	
 	void Unfavorite( string uid )

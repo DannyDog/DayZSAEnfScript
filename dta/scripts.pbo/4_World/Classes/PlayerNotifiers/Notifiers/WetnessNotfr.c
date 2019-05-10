@@ -16,7 +16,7 @@ class WetnessNotfr: NotifierBase
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(true);
+			dis_elm.SetLevel(eBadgeLevel.FIRST);
 		}
 		
 	}
@@ -27,7 +27,7 @@ class WetnessNotfr: NotifierBase
 		
 		if( dis_elm )
 		{
-			dis_elm.SetStatus(false);
+			dis_elm.SetLevel(eBadgeLevel.NONE);
 		}
 	}
 };

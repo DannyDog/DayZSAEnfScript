@@ -25,7 +25,6 @@ class WeaponManager
 	protected float m_NewJamChance;
 	protected bool m_WaitToSyncJamChance;
 	
-	
 	void WeaponManager(PlayerBase player)
 	{
 		m_player = player;
@@ -53,9 +52,8 @@ class WeaponManager
 		if( m_player.GetHumanInventory().GetEntityInHands() != wpn )
 			return false;
 		
-		if( m_player.IsLiftWeapon() || !m_player.IsRaised() || wpn.IsDamageDestroyed() || m_player.GetDayZPlayerInventory().IsProcessing()) 
-			return false;		
-		//IsFullRaised
+		if( m_player.IsLiftWeapon() || !m_player.IsRaised() || wpn.IsDamageDestroyed() || m_player.GetDayZPlayerInventory().IsProcessing() || !m_player.IsWeaponRaiseCompleted() || m_player.IsFighting() ) 
+			return false;
 		
 		return true;
 		
@@ -323,6 +321,25 @@ class WeaponManager
 	bool SetNextMuzzleMode ()
 	{
 		return StartAction(AT_WPN_SET_NEXT_MUZZLE_MODE, NULL, NULL, NULL);
+	}
+	
+	void Fire(Weapon_Base wpn)
+	{
+		int mi = wpn.GetCurrentMuzzle();
+		if( wpn.IsChamberFiredOut(mi) || wpn.IsJammed() || wpn.IsChamberEmpty(mi) )
+		{
+			wpn.ProcessWeaponEvent(new WeaponEventTrigger(m_player));
+			return;
+		}
+		
+		if(wpn.JamCheck(0))
+		{
+			wpn.ProcessWeaponEvent(new WeaponEventTriggerToJam(m_player));
+		}
+		else
+		{
+			wpn.ProcessWeaponEvent(new WeaponEventTrigger(m_player));
+		}
 	}
 //-------------------------------------------------------------------------------------	
 // Synchronize - initialize from client side

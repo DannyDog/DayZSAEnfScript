@@ -1,8 +1,15 @@
+enum RadialMenuControlType
+{
+	MOUSE,
+	CONTROLLER	
+}
+
 class RadialMenu : ScriptedWidgetEventHandler
 {
 	protected Widget					m_Parent;
 	protected Widget 					m_ItemCardsContainer;
 	protected Widget					m_RadialSelector;
+	protected ImageWidget				m_RadialSelectorImage;
 	protected Widget 					m_SelectedObject;
 	protected ref map<Widget, float> 	m_RadialItemCards;
 	
@@ -11,25 +18,22 @@ class RadialMenu : ScriptedWidgetEventHandler
 	
 	//widget
 	static const string 				RADIAL_SELECTOR	 			= "RadialSelector";
+	static const string 				RADIAL_SELECTOR_IMAGE		= "SelectorImage";
 	static const string 				RADIAL_DELIMITER_CONTAINER 	= "RadialDelimiterContainer";
 	static const string 				RADIAL_ITEM_CARD_CONTAINER 	= "RadialItemCardContainer";
 
 	//controls
-	#ifdef PLATFORM_CONSOLE
-	protected bool 						m_UsingMouse;
-	#else
-	protected bool 						m_UsingMouse = true;
-	#endif
+	protected RadialMenuControlType 	m_ControlType;
 	
-	protected int 						m_ControllerAngle;
-	protected int 						m_ControllerTilt;
-	protected bool						m_IsViewInverted;
+	protected float 					m_ControllerAngle;
+	protected float 					m_ControllerTilt;
 
 	//controller
 	protected int 						m_ControllerTimout;
 	protected bool						m_IsControllerTimoutEnabled 		= true;			//enables/disables controller deselect timeout reset
 	protected const float				CONTROLLER_DESELECT_TIMEOUT 		= 1000;			//timeout [ms] after which selection is automatically deselect when controller is not active
-	protected const int 				CONTROLLER_TILT_TRESHOLD			= 8;			//tilt value (0-10) for controller sticks after which the selection will be executed 
+	protected const float 				CONTROLLER_TILT_TRESHOLD_SELECT		= 0.8;			//tilt value (0.0-1.0) for controller sticks after which the selection will be selected
+	protected const float 				CONTROLLER_TILT_TRESHOLD_EXECUTE	= 1.0;			//tilt value (0.0-1.0) for controller sticks after which the selection will be executed 
 	
 	//mouse
 	protected const float 				MOUSE_SAFE_ZONE_RADIUS = 50;		//Radius [px] of safe zone where every previous selection is deselected
@@ -72,11 +76,16 @@ class RadialMenu : ScriptedWidgetEventHandler
 	void RadialMenu()
 	{
 		m_Instance = this;
-
-		GameOptions options = new GameOptions;
-		SwitchOptionsAccess invert = SwitchOptionsAccess.Cast( options.GetOptionByType( AT_CONFIG_CONTROLLER_REVERSED_LOOK ) );
-		m_IsViewInverted = invert.GetIndex();
 		
+		//set default control type
+		#ifdef PLATFORM_CONSOLE
+				m_ControlType = RadialMenuControlType.CONTROLLER;
+		#endif				
+		#ifdef PLATFORM_WINDOWS
+				m_ControlType = RadialMenuControlType.MOUSE;
+		#endif				
+			
+		//radial cards
 		m_RadialItemCards = new ref map<Widget, float>;
 		m_UpdateTimer = new ref Timer();
 		m_UpdateTimer.Run( 0.01, this, "Update", NULL, true );
@@ -96,33 +105,43 @@ class RadialMenu : ScriptedWidgetEventHandler
 	{
 		m_ItemCardsContainer = w.FindAnyWidget( RADIAL_ITEM_CARD_CONTAINER );
 		m_RadialSelector = w.FindAnyWidget( RADIAL_SELECTOR );
+		m_RadialSelectorImage = ImageWidget.Cast( m_RadialSelector.FindAnyWidget( RADIAL_SELECTOR_IMAGE ) );
 		
 		//parent
 		m_Parent = w;
 		m_Parent.SetHandler( this );
-		SetFocus( m_Parent );			//set focus to widget
 	}
 
 	//controls
-	protected void SetMouseControls( bool state )
+	void SetControlType( RadialMenuControlType type )
 	{
-		if ( m_UsingMouse != state )
+		if ( m_ControlType != type )
 		{
-			m_UsingMouse = state;
-			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControlsChanged", NULL, state );
+			m_ControlType = type;
+			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControlsChanged", NULL, type );
 		}
 	}
 	
 	bool IsUsingMouse()
 	{
-		return m_UsingMouse;
+		if ( m_ControlType == RadialMenuControlType.MOUSE )
+		{
+			return true;
+		}
+		
+		return false;
 	}
-	
+
 	bool IsUsingController()
 	{
-		return !m_UsingMouse;
-	}
-	
+		if ( m_ControlType == RadialMenuControlType.CONTROLLER )
+		{
+			return true;
+		}
+		
+		return false;
+	}	
+			
 	//============================================
 	// Setup
 	//============================================	
@@ -131,21 +150,42 @@ class RadialMenu : ScriptedWidgetEventHandler
 		m_RegisteredClass = class_name;
 	}	
 
-	//Set PARAMs
-	void AdjustRadialMenu( float radius_offset, float execute_dist_offset, float offset_top, float item_card_radius_offset, bool is_contr_timeout_enabled )
+	//Set radial menu parameters
+	//Radius offset [% of the main container size]
+	void SetRadiusOffset( float radius_offset )
 	{
-		m_RadiusOffset 				= radius_offset;
-		m_ExecuteDistanceOffset		= execute_dist_offset; 
-		m_OffsetFromTop				= offset_top;
-		m_ItemCardRadiusOffset 		= item_card_radius_offset;
-		m_IsControllerTimoutEnabled = is_contr_timeout_enabled;
+		m_RadiusOffset = radius_offset;
+	}
+	
+	//Distance offset [% of the main container size] after which the selection will be automatically executed
+	void SetExecuteDistOffset( float execute_dist_offset )
+	{
+		m_ExecuteDistanceOffset	= execute_dist_offset;
+	}
+	
+	//First item in the menu won't be directly on top but offset by a rad angle value (clock-wise)
+	void SetOffsetFromTop( float offset_from_top )
+	{
+		m_OffsetFromTop	= offset_from_top;
+	}
+	
+	//Radius [% of the main container size] for item cards	
+	void SetItemCardRadiusOffset( float item_card_radius_offset )
+	{
+		m_ItemCardRadiusOffset = item_card_radius_offset;
+	}
+	
+	//Enable/Disable controller timeout
+	void ActivateControllerTimeout( bool state )
+	{
+		m_IsControllerTimoutEnabled = state;
 	}
 	
 	void SetWidgetProperties( string delimiter_layout )
 	{
 		m_DelimiterLayout = delimiter_layout;
 	}
-		
+	
 	//============================================
 	// Visual
 	//============================================	
@@ -240,11 +280,19 @@ class RadialMenu : ScriptedWidgetEventHandler
 	{
 		if ( m_RadialSelector && selected_item )
 		{
-			int angle_deg = GetAngleInDegrees( m_RadialItemCards.Get( selected_item ) );
-			m_RadialSelector.SetRotation( 0, 0, angle_deg + 90 );			//rotate widget according to its desired rotation
-			
-			m_RadialSelector.Show( true );
-		}		
+			int item_count = m_RadialItemCards.Count();
+			if ( item_count > 1 )
+			{
+				int angle_deg = GetAngleInDegrees( m_RadialItemCards.Get( selected_item ) );
+				m_RadialSelector.SetRotation( 0, 0, angle_deg + 90 );			//rotate widget according to its desired rotation
+				
+				//set radial selector size
+				float progress = ( 1 / item_count ) * 2;
+				m_RadialSelectorImage.SetMaskProgress( progress );
+				
+				m_RadialSelector.Show( true );
+			}
+		}
 	}
 	
 	protected void HideRadialSelector()
@@ -327,10 +375,10 @@ class RadialMenu : ScriptedWidgetEventHandler
 		for ( int i = 0; i < m_RadialItemCards.Count(); ++i )
 		{
 			Widget w = m_RadialItemCards.GetKey( i );
-			int w_angle = GetAngleInDegrees( m_RadialItemCards.Get( w ) );
-			int offset = GetAngleInDegrees( m_AngleRadOffset ) / 2;
-			int min_angle = w_angle - offset;
-			int max_angle = w_angle + offset;
+			float w_angle = GetAngleInDegrees( m_RadialItemCards.Get( w ) );
+			float offset = GetAngleInDegrees( m_AngleRadOffset ) / 2;
+			float min_angle = w_angle - offset;
+			float max_angle = w_angle + offset;
 			
 			if ( min_angle < 0 ) min_angle += 360;	//clamp 0-360
 			if ( max_angle > 360 ) max_angle -= 360;
@@ -401,15 +449,17 @@ class RadialMenu : ScriptedWidgetEventHandler
 	//return angle 0-360 deg
 	protected float GetAngleInDegrees( float rad_angle )
 	{
-		int rad_deg = rad_angle * Math.RAD2DEG;
+		float rad_deg = rad_angle * Math.RAD2DEG;
+		
+		int angle_mp = rad_deg / 360;
 		
 		if ( rad_deg < 0 )
 		{
-			rad_deg = ( rad_deg % 360 );
+			rad_deg = rad_deg - ( 360 * angle_mp );
 			rad_deg += 360;
 		}
 		
-		return rad_deg;	
+		return rad_deg;
 	}
 
 	//============================================
@@ -431,9 +481,8 @@ class RadialMenu : ScriptedWidgetEventHandler
 		if ( this )
 		{
 			//mouse controls
-			if ( m_UsingMouse )
+			if ( IsUsingMouse() )
 			{
-				
 				float mouse_angle = GetMousePointerAngle();
 				float mouse_distance = GetMouseDistance();
 				
@@ -468,8 +517,10 @@ class RadialMenu : ScriptedWidgetEventHandler
 				}
 			}
 			//controller controls
-			else
+			else if ( IsUsingController() )
 			{
+				UpdataControllerInput();
+				
 				//Controller tilt
 				if ( m_ControllerAngle > -1 && m_ControllerTilt > -1 )
 				{
@@ -480,14 +531,17 @@ class RadialMenu : ScriptedWidgetEventHandler
 					{
 						if ( w_selected != m_SelectedObject )
 						{
-							//Deselect
-							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerDeselect", NULL, m_SelectedObject );
+							if ( m_ControllerTilt >= CONTROLLER_TILT_TRESHOLD_SELECT )
+							{
+								//Deselect
+								GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerDeselect", NULL, m_SelectedObject );
 							
-							//Select new object
-							m_SelectedObject = w_selected;
-							GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerSelect", NULL, m_SelectedObject );
-							//show selector
-							ShowRadialSelector( m_SelectedObject );							
+								//Select new object
+								m_SelectedObject = w_selected;
+								GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerSelect", NULL, m_SelectedObject );
+								//show selector
+								ShowRadialSelector( m_SelectedObject );
+							}	
 						}
 					}
 					else
@@ -499,7 +553,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 					}
 					
 					//Execute
-					if ( m_ControllerTilt >= CONTROLLER_TILT_TRESHOLD )
+					if ( m_ControllerTilt >= CONTROLLER_TILT_TRESHOLD_EXECUTE )
 					{
 						//Execute
 						GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerExecute", NULL, m_SelectedObject );
@@ -530,62 +584,44 @@ class RadialMenu : ScriptedWidgetEventHandler
 		}
 	}
 	
-	int NormalizeInvertAngle( int angle )
+	float NormalizeInvertAngle( float angle )
 	{
-		if( m_IsViewInverted )
-		{
-			return angle;
-		}
-		else
-		{
-			int ret = ( 360 - angle ) % 360;
-			return ret;
-		}
+		float new_angle = 360 - angle;
+		int angle_mp = new_angle / 360;
+			
+		new_angle = new_angle - ( 360 * angle_mp );
+			
+		return new_angle;
 	}
 	
 	//============================================
-	// Handler Events
+	// Controls
 	//============================================
-	override bool OnController( Widget w, int control, int value )
+	void UpdataControllerInput()
 	{
-		super.OnController( w, control, value );
-
-		//switch controls
-		SetMouseControls( false );
+		Input input = GetGame().GetInput();
 		
-		//Right stick
-		if ( control == ControlID.CID_RADIALMENU )
-		{
-			m_ControllerAngle 	= value >> 4; 	// <0,360>
-			m_ControllerTilt	= value & 0xF; 	// <0,10>
+		//Controller radial
+		float angle;
+		float tilt;
+		input.GetGamepadThumbDirection( GamepadButton.THUMB_RIGHT, angle, tilt );
+		angle = NormalizeInvertAngle( angle * Math.RAD2DEG );
 			
-			m_ControllerTimout	= 0;			//reset controller timeout
-			
-			m_ControllerAngle	= NormalizeInvertAngle( m_ControllerAngle );
-			
-			return true;
-		}
+		m_ControllerAngle = angle;
+		m_ControllerTilt = tilt;
+		m_ControllerTimout	= 0;			//reset controller timeout
 		
 		//Controller buttons
 		//Select (A,cross)
-		if ( GetGame().GetInput().LocalPress( "UAUISelect", false ) )
+		if ( input.LocalPress( "UAUISelect", false ) )
 		{
 			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressSelect", NULL, m_SelectedObject );
 		}
 		
 		//Back (B,circle)
-		if ( GetGame().GetInput().LocalPress( "UAUIBack", false ) )
+		if ( input.LocalPress( "UAUIBack", false ) )
 		{
 			GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerPressBack", NULL, m_SelectedObject );
 		}
-		
-		return false;
-	}
-		
-	override bool OnMouseEnter( Widget w, int x, int y )
-	{
-		SetMouseControls( true );
-
-		return false;
 	}
 }

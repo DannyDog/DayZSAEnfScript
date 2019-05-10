@@ -16,3 +16,7 @@ class WaterproofBag_ColorBase extends Container_Base
 		return false;
 	}
 }
+
+class WaterproofBag_Yellow: WaterproofBag_ColorBase {};
+class WaterproofBag_Green: WaterproofBag_ColorBase {};
+class WaterproofBag_Orange: WaterproofBag_ColorBase {};

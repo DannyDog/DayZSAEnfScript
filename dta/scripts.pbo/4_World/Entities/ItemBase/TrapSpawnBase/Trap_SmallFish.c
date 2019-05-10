@@ -78,6 +78,25 @@ class Trap_SmallFish extends TrapSpawnBase
 			return false;
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionWorldLiquidActionSwitch);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
+		AddAction(ActionFillGeneratorTank);
+		AddAction(ActionExtinguishFireplaceByLiquid);
+		AddAction(ActionFillBottleBase);
+		AddAction(ActionWaterGardenSlot);
+		AddAction(ActionWaterPlant);
+		AddAction(ActionForceDrink);
+		AddAction(ActionPourLiquid);
+		AddAction(ActionDrainLiquid);
+		AddAction(ActionEmptyBottleBase);
+		AddAction(ActionDrink);
+	}
 }
 
 class SmallFishTrap extends Trap_SmallFish 

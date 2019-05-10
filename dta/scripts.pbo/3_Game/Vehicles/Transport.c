@@ -21,7 +21,7 @@ class Transport extends EntityAI
 		g_Game.ConfigGetIntArray("cfgVehicles " +GetType() + " SingleUseActions", m_SingleUseActions);
 		g_Game.ConfigGetIntArray("cfgVehicles " +GetType() + " InteractActions", m_InteractActions);
 	}
-
+#ifdef OLD_ACTIONS
 	override void GetSingleUseActions(out TIntArray actions)
 	{	
 		for ( int i = 0; i < m_SingleUseActions.Count(); i++ )
@@ -44,6 +44,11 @@ class Transport extends EntityAI
 		{
 			actions.Insert(m_InteractActions.Get(i));
 		}
+	}
+#endif
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
 	}
 
 

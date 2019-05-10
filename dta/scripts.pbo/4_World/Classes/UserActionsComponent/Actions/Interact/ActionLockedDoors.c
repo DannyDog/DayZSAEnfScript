@@ -35,12 +35,14 @@ class ActionLockedDoors: ActionInteractBase
 		{
 			int doorIndex = building.GetDoorIndex(target.GetComponentIndex());
 			if ( doorIndex != -1 )
+			{
 				return building.IsDoorLocked(doorIndex);
-		}		
+			}
+		}
 		return false;
 	}
 
-	override void OnExecuteServer( ActionData action_data )
+	void OnExecute( ActionData action_data )
 	{
 		Building building;
 		if( Class.CastTo(building, action_data.m_Target.GetObject()) )
@@ -48,8 +50,18 @@ class ActionLockedDoors: ActionInteractBase
 			int doorIndex = building.GetDoorIndex(action_data.m_Target.GetComponentIndex());
 			if( doorIndex != -1 )
 			{
-				building.PlayDoorSound(doorIndex);
+				building.OpenDoor(doorIndex);
 			}
 		}
+	}
+
+	override void OnExecuteClient( ActionData action_data )
+	{
+		OnExecute(action_data);
+	}
+	
+	override void OnExecuteServer( ActionData action_data )
+	{
+		OnExecute(action_data);
 	}
 };

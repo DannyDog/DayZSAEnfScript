@@ -13,6 +13,15 @@ class NoteMenu extends UIScriptedMenu
 
 	void ~NoteMenu()
 	{
+		MissionGameplay mission = MissionGameplay.Cast( GetGame().GetMission() );
+		if( mission )
+		{
+			IngameHud hud = IngameHud.Cast( mission.GetHud() );
+			if ( hud )
+			{
+				hud.ToggleHud( hud.GetHudState() );
+			}
+		}
 	}
 
 	void InitRead(array<ref WritePaperParams> AdvancedText)//TODO add more parameters

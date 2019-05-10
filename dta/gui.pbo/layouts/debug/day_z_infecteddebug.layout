@@ -1,0 +1,470 @@
+FrameWidgetClass rootFrame {
+ ignorepointer 1
+ position 0 0
+ size 1 1
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ priority 995
+ {
+  FrameWidgetClass InfectedDebugMainWnd {
+   ignorepointer 0
+   size 0.25 1
+   halign right_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ImageWidgetClass ImageWidget0 {
+     ignorepointer 0
+     color 0 0 0 0.9882
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     imageTexture "{68AE58E5E99FB598}Gui/textures/left_pane_full_ca.edds"
+     mode blend
+     "src alpha" 1
+     stretch 1
+     {
+      TextWidgetClass TextWidget0 {
+       ignorepointer 0
+       position 0.008 0.002
+       size 0.984 0.018
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Infected Status"
+       font "gui/fonts/etelkatextpro"
+      }
+      TextWidgetClass StatusText {
+       ignorepointer 0
+       position 0.008 0.02
+       size 0.984 0.018
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "status"
+       font "gui/fonts/etelkatextpro"
+      }
+      ButtonWidgetClass SpawnEntityButton {
+       position 0.04 0.045
+       size 0.92 0.025
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Spawn and control new Infected"
+      }
+      ButtonWidgetClass CardMovementButton {
+       position 0.04 0.075
+       size 0.44 0.03
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Movement"
+      }
+      ButtonWidgetClass CardFightButton {
+       position 0.52 0.075
+       size 0.44 0.03
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       text "Fight"
+      }
+      FrameWidgetClass CardMovementFrame {
+       visible 1
+       clipchildren 0
+       ignorepointer 0
+       position 0.02 0.11
+       size 0.96 0.89
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       priority 50
+       {
+        TextWidgetClass TextWidget1 {
+         ignorepointer 0
+         position 0.02 0.01
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Stance variation"
+        }
+        TextWidgetClass TextWidget2 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.045
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Mind state"
+        }
+        TextWidgetClass TextWidget3 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.08
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Mov speed"
+        }
+        TextWidgetClass TextWidget4 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.125
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Turns"
+        }
+        XComboBoxWidgetClass StanceCB {
+         position 0.02 0.01
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "0;1;2;3;"
+        }
+        XComboBoxWidgetClass MindStateCB {
+         position 0.02 0.045
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Normal;Alerted;Agravated"
+        }
+        EditBoxWidgetClass MovementSpeedEB {
+         ignorepointer 0
+         position 0.02 0.08
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        TextWidgetClass TextWidget5 {
+         ignorepointer 0
+         position 0.03 0.16
+         size 0.49 0.02
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Turn type"
+        }
+        TextWidgetClass TextWidget6 {
+         visible 1
+         ignorepointer 0
+         position 0.03 0.185
+         size 0.49 0.02
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Turn direction"
+        }
+        XComboBoxWidgetClass TurnTypeCB {
+         position 0.03 0.16
+         size 0.44 0.02
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Slow;Fast;"
+        }
+        EditBoxWidgetClass TurnDirectionEB {
+         position 0.03 0.185
+         size 0.44 0.02
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        ButtonWidgetClass StartTurnButton {
+         position 0.02 0.125
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Do Turn"
+        }
+        TextWidgetClass TextWidget7 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.22
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Vaulting"
+        }
+        XComboBoxWidgetClass VaultingCB {
+         position 0.02 0.22
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "50cm;110cm;160cm;210cm"
+        }
+        ButtonWidgetClass StartVaultButton {
+         position 0.02 0.255
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Do Vault"
+        }
+        ButtonWidgetClass KnucleOutButton {
+         ignorepointer 0
+         position 0.02 0.255
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Knucle out"
+        }
+        TextWidgetClass TextWidget8 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.3
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Crawling"
+        }
+        XComboBoxWidgetClass CrawlingTypeCB {
+         position 0.02 0.3
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "LB;LF;RB;RF;"
+        }
+        ButtonWidgetClass StartCrawlingButton {
+         ignorepointer 0
+         position 0.02 0.335
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Start crawling"
+        }
+       }
+      }
+      FrameWidgetClass CardFightFrame {
+       visible 0
+       clipchildren 0
+       ignorepointer 0
+       position 0.02 0.11
+       size 0.96 0.89
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       priority 50
+       {
+        TextWidgetClass TextWidget9 {
+         ignorepointer 0
+         position 0.02 0.01
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Hit & Death dir"
+        }
+        EditBoxWidgetClass HitDirEB {
+         position 0.02 0.01
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "0"
+        }
+        TextWidgetClass TextWidget10 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.045
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Hit type"
+        }
+        XComboBoxWidgetClass HitTypeCB {
+         position 0.02 0.045
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Light;Heavy"
+        }
+        TextWidgetClass TextWidget11 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.08
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Hit bodypart"
+        }
+        XComboBoxWidgetClass HitBodyPartCB {
+         position 0.02 0.08
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Belly;Body;Head"
+        }
+        ButtonWidgetClass StartHitButton {
+         position 0.02 0.115
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Do Hit"
+        }
+        TextWidgetClass TextWidget12 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.16
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Death type"
+        }
+        XComboBoxWidgetClass DeathTypeCB {
+         position 0.02 0.16
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Generic;Fast"
+        }
+        ButtonWidgetClass StartDeathButton {
+         ignorepointer 0
+         position 0.02 0.195
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Start Death"
+        }
+        TextWidgetClass TextWidget13 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.24
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Attack type"
+        }
+        TextWidgetClass TextWidget14 {
+         visible 1
+         ignorepointer 0
+         position 0.02 0.275
+         size 0.5 0.03
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Attack dir"
+        }
+        XComboBoxWidgetClass AttackTypeCB {
+         position 0.02 0.24
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+        }
+        XComboBoxWidgetClass AttackDirCB {
+         position 0.02 0.275
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         items "Up;Center;Down"
+        }
+        ButtonWidgetClass StartAttackButton {
+         ignorepointer 0
+         position 0.02 0.31
+         size 0.45 0.03
+         halign right_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         text "Do Attack"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

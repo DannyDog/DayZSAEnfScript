@@ -152,21 +152,6 @@ class V3S_Chassis extends CarScript
 		return "";
 	}
 
-	override string GetDoorConditionPointFromSelection( string selection )
-	{
-		switch( selection )
-		{
-		case "seat_driver":
-			return "lf_door_con";
-		break;
-		case "seat_codriver":
-			return "rf_door_con";
-		break;
-		}
-		
-		return "";
-	}
-
 	override bool CanReachDoorsFromSeat( string pDoorsSelection, int pCurrentSeat )
 	{
 		switch( pCurrentSeat )

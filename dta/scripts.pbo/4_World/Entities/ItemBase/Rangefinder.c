@@ -1,23 +1,12 @@
-class Rangefinder extends ItemOptics
+class Rangefinder extends PoweredOptic_Base
 {
 	static const float RANGEFINDER_MAX_DISTANCE = 913.4856; //TODO adjust maximal distance to match real life rangefinder
 	
 	protected ref Timer 				m_Timer;
-	protected PlayerBase 				m_Player;
 	protected TextWidget				m_RangeText;
 	
 	void Rangefinder()
 	{
-	}
-	
-	void SetPlayer( PlayerBase player )
-	{
-		m_Player = player;
-	}
-	
-	PlayerBase GetPlayer()
-	{
-		return m_Player;
 	}
 	
 	// How frequently the measurement should be taken
@@ -112,5 +101,12 @@ class Rangefinder extends ItemOptics
 				m_RangeText.SetText( "- - -" );
 			}
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionViewBinoculars);
 	}
 }

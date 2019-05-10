@@ -216,7 +216,7 @@ class SwapOldAndNewMagazine extends WeaponStateBase
 			InventoryLocation oldDst = new InventoryLocation;
 			if (e.m_player.GetInventory().FindFreeLocationForEx(m_oldMagazine, FindInventoryLocationType.ANY, m_oldSrc, oldDst)) // @NOTE: excluding m_oldSrc from candidates
 			{
-				wpnDebugPrint("[wpnfsm] SwapOldAndNewMagazine, selected oldDst=" + oldDst.DumpToString());
+				wpnDebugPrint("[wpnfsm] SwapOldAndNewMagazine, selected oldDst=" + InventoryLocation.DumpToStringNullSafe(oldDst));
 				if (GameInventory.LocationSyncMoveEntity(lhand_old, oldDst))
 				{
 					wpnDebugPrint("[wpnfsm] SwapOldAndNewMagazine, ok - old magazine stored in inventory (LH->inv)");

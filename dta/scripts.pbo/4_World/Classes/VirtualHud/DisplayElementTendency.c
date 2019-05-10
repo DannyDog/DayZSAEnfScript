@@ -17,6 +17,7 @@ class DisplayElementTendency extends DisplayElementBase
 	
 	override void UpdateHUD()
 	{
+		super.UpdateHUD();
 		int seriousness = m_Value >> SERIOUSNESS_BIT_OFFSET;
 		int tendency = TENDENCY_MASK & m_Value;
 		//PrintString(tendency.ToString());

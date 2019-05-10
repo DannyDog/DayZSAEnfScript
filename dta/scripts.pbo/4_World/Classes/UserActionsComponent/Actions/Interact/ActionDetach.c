@@ -30,6 +30,18 @@ class ActionDetach: ActionInteractBase
 	{
 		return "#take_to_hands";
 	}
+	
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+	
+	override bool HasProgress()
+	{
+		return false;
+	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
@@ -77,5 +89,32 @@ class ActionDetach: ActionInteractBase
 
 		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
 		action_data.m_Player.PredictiveTakeEntityToHands(ntarget);
+	}
+	
+	override void CreateAndSetupActionCallback( ActionData action_data )
+	{
+		EntityAI target = EntityAI.Cast(action_data.m_Target.GetObject());
+		ActionBaseCB callback;
+		if (!target)
+			return;
+		
+		if (target.IsHeavyBehaviour())
+		{
+			Class.CastTo(callback, action_data.m_Player.StartCommand_Action(DayZPlayerConstants.CMD_ACTIONFB_PICKUP_HEAVY,GetCallbackClassTypename(),DayZPlayerConstants.STANCEMASK_ERECT));
+		}
+		else
+		{
+			if( action_data.m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT) )
+			{
+				Class.CastTo(callback, action_data.m_Player.AddCommandModifier_Action(DayZPlayerConstants.CMD_ACTIONMOD_PICKUP_HANDS,GetCallbackClassTypename()));
+			}
+			else
+			{
+				Class.CastTo(callback, action_data.m_Player.StartCommand_Action(DayZPlayerConstants.CMD_ACTIONFB_PICKUP_HANDS,GetCallbackClassTypename(),DayZPlayerConstants.STANCEMASK_PRONE));
+			}
+		}
+		callback.SetActionData(action_data); 
+		callback.InitActionComponent();
+		action_data.m_Callback = callback;
 	}
 };

@@ -8,4 +8,14 @@ class FirefighterAxe extends ToolBase
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionMineTree);
+		AddAction(ActionMineBush);
+		AddAction(ActionDestroyPart);
+		AddAction(ActionSawPlanks);
+		AddAction(ActionUnrestrainTarget);
+	}
 }

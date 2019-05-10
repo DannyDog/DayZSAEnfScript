@@ -93,11 +93,11 @@ class HandAnimatedMovingToAtt extends HandStateBase
 
 	override void OnEntry (HandEventBase e)
 	{
-		m_Entity = e.m_Entity;
+		m_Entity = e.GetSrcEntity();
 		HandEventMoveTo ev_move = HandEventMoveTo.Cast(e);
 		if (ev_move)
 		{
-			m_Show.m_Dst = ev_move.m_Dst;
+			m_Show.m_Dst = ev_move.GetDst();
 			m_Hide.m_ActionType = ev_move.GetAnimationID();
 			m_Show.m_ActionType = ev_move.GetAnimationID();
 			

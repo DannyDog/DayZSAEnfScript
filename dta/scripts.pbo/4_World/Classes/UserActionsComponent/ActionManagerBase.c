@@ -30,27 +30,38 @@ class TSelectableActionInfoArray extends array<ref TSelectableActionInfo>
 
 class ActionManagerBase
 {
+
+
+	//ref ActionConstructor						m_ActionConstructor;
+	PlayerBase									m_Player;
+	ref HumanCommandActionCallback				m_Command;
+	
+	protected ActionTarget						m_TestedActionTarget;
+	protected ItemBase							m_TestedActionItem;
+		
+	protected ActionBase						m_PrimaryAction;
+	protected ActionTarget						m_PrimaryActionTarget;
+	protected ItemBase							m_PrimaryActionItem;
+	protected ActionBase						m_SecondaryAction;
+	protected ActionTarget						m_SecondaryActionTarget;
+	protected ItemBase							m_SecondaryActionItem;
+	bool										m_PrimaryActionEnabled;
+	bool										m_SecondaryActionEnabled;
+	bool										m_TertiaryActionEnabled;
+	ref TSelectableActionInfoArray				m_SelectableActions;
+	int                             			m_SelectedActionIndex;
+	bool                            			m_SelectableActionsHasChanged;
+	bool										m_Interrupted;
+#ifndef OLD_ACTIONS	
+	static ref array<ref ActionBase>			m_ActionsArray;
+	static ref map<typename, ActionBase>		m_ActionNameActionMap;
+	protected bool								m_ActionWantEndRequest;
+	protected bool								m_ActionInputWantEnd;
+#else
+	ref map<int, ActionBase>					m_ActionsMap;
 	ref array<ref ActionBase>		m_Actions;
-	ref map<int, ActionBase>		m_ActionsMap;		
-	ref TIntArray					m_DefaultSingleUseActions;
-	ref TIntArray					m_DefaultContinuousActions;
-	ref TIntArray					m_DefaultInteractActions;
-	ref ActionConstructor			m_ActionConstructor;
-	PlayerBase						m_Player;
-	ref HumanCommandActionCallback	m_Command;
-	protected ActionBase			m_PrimaryAction;
-	protected ActionTarget			m_PrimaryActionTarget;
-	protected ItemBase				m_PrimaryActionItem;
-	protected ActionBase			m_SecondaryAction;
-	protected ActionTarget			m_SecondaryActionTarget;
-	protected ItemBase				m_SecondaryActionItem;
-	bool							m_PrimaryActionEnabled;
-	bool							m_SecondaryActionEnabled;
-	bool							m_TertiaryActionEnabled;
-	ref TSelectableActionInfoArray	m_SelectableActions;
-	int                             m_SelectedActionIndex;
-	bool                            m_SelectableActionsHasChanged;
-	bool							m_Interrupted;
+
+#endif
 		
 //Pending actions waiting for acknowledgment
 	protected int 					m_PendingActionAcknowledgmentID;
@@ -62,20 +73,6 @@ class ActionManagerBase
 		m_Player = player;
 		if ( m_Player )
 		{
-			m_Actions = new array<ref ActionBase>;
-			m_DefaultSingleUseActions = new TIntArray;
-			m_DefaultContinuousActions = new TIntArray;
-			m_DefaultInteractActions = new TIntArray;
-			m_ActionsMap = new map<int, ActionBase>;
-			m_ActionConstructor = new ActionConstructor;	
-
-			m_ActionConstructor.ConstructActions(m_Actions,m_DefaultSingleUseActions,m_DefaultContinuousActions,m_DefaultInteractActions);
-			for (int i = 0; i < m_Actions.Count(); i++)
-			{	
-				m_Actions.Get(i).CreateConditionComponents();
-				m_ActionsMap.Set(m_Actions.Get(i).GetType(), m_Actions.Get(i));
-			}
-			
 			m_SelectableActions = new TSelectableActionInfoArray;
 			m_SelectedActionIndex = 0;
 			m_SelectableActionsHasChanged = false;
@@ -84,6 +81,30 @@ class ActionManagerBase
 			
 			m_CurrentActionData = NULL;
 			m_Interrupted = false;
+			
+			
+			
+#ifdef OLD_ACTIONS
+			m_ActionsMap = new map<int, ActionBase>;
+			m_Actions = new array<ref ActionBase>;
+
+			ActionConstructor ac = new ActionConstructor;
+			ac.ConstructActions(m_Actions);
+
+			for (int i = 0; i < m_Actions.Count(); i++)
+			{	
+				m_Actions.Get(i).CreateConditionComponents();
+				m_ActionsMap.Set(m_Actions.Get(i).GetType(), m_Actions.Get(i));
+			}
+#else
+			ActionConstructor ac = new ActionConstructor;
+			if ( !m_ActionsArray )
+			{
+				ac.ConstructActions( m_ActionsArray, m_ActionNameActionMap );
+			}
+			m_ActionWantEndRequest = false;
+			m_ActionInputWantEnd = false;
+#endif
 		}
 	}
 	
@@ -143,26 +164,27 @@ class ActionManagerBase
 	void StartDeliveredAction()
 	{
 	}
-		
-	TIntArray GetDefaultSingleUseActions()
+	
+	#ifndef OLD_ACTIONS
+	static ActionBase GetAction(typename actionName)
 	{
-		return m_DefaultSingleUseActions;
+		if (m_ActionNameActionMap)
+			return m_ActionNameActionMap.Get(actionName);
+		return null;
 	}
 	
-	TIntArray GetDefaultContinuousActions()
+	static ActionBase GetAction(int actionID)
 	{
-		return m_DefaultContinuousActions;
+		return m_ActionsArray.Get(actionID);
+	}
+	#else
+	
+	ActionBase GetAction(int actionID)
+	{
+		return m_ActionsMap.Get(actionID);
 	}
 	
-	TIntArray GetDefaultInteractActions()
-	{
-		return m_DefaultInteractActions;
-	}
-	
-	ActionBase GetAction(int type)
-	{		
-		return m_ActionsMap.Get(type);
-	}
+	#endif
 	
 	ActionBase GetContinuousAction()
 	{
@@ -194,6 +216,7 @@ class ActionManagerBase
 	
 	void SelectNextAction()
 	{
+#ifdef OLD_ACTIONS
 		if( m_SelectableActions.Count() == 0 )
 		{
 			return;
@@ -204,10 +227,12 @@ class ActionManagerBase
 		{
 			m_SelectedActionIndex = 0;
 		}
+#endif
 	}
 	
 	void SelectPrevAction()
 	{
+#ifdef OLD_ACTIONS
 		if( m_SelectableActions.Count() == 0 )
 		{
 			return;
@@ -218,6 +243,7 @@ class ActionManagerBase
 		{
 			m_SelectedActionIndex = m_SelectableActions.Count() - 1;
 		}
+#endif
 	}
 	
 	bool IsSelectableActionsChanged()
@@ -235,6 +261,12 @@ class ActionManagerBase
 		
 		return false;
 	}	
+	//------------------------------------------------------
+	protected void SetActionContext( ActionTarget target, ItemBase item )
+	{
+		m_TestedActionTarget = target;
+		m_TestedActionItem = item;
+	}
 	
 	//------------------------------------------------------	
 	protected void SetContinuousAction( ActionBase action, ActionTarget target, ItemBase item )

@@ -1,3 +1,8 @@
+enum SoundTypeTrap
+{
+	ACTIVATING			= 5,
+}
+
 class TrapBase extends ItemBase
 {
 	int   m_InitWaitTime; 			//After this time after deployment, the trap is activated
@@ -318,7 +323,7 @@ class TrapBase extends ItemBase
 	{
 		super.OnRPC(sender, rpc_type, ctx);
 		
-		if ( GetGame().IsClient() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			switch(rpc_type)
 			{
@@ -331,9 +336,30 @@ class TrapBase extends ItemBase
 						if (p_victim.param1)
 						{
 							SnapOnObject(p_victim.param1);
-					}
+						}
 					}
 					
+				break;
+				
+				case SoundTypeTrap.ACTIVATING:
+			
+					ref Param1<bool> p = new Param1<bool>(false);
+					
+					if (ctx.Read(p))
+					{
+						bool play = p.param1;
+					}
+					
+					if ( play )
+					{
+						PlayDeployLoopSound();
+					}
+					
+					if ( !play )
+					{
+						StopDeployLoopSound();
+					}
+			
 				break;
 			}
 		}
@@ -457,6 +483,8 @@ class TrapBase extends ItemBase
 
 	void StartActivate( PlayerBase player )
 	{
+		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		{
 			m_Timer = new Timer( CALL_CATEGORY_SYSTEM );
 			HideSelection("safety_pin");
 			
@@ -464,13 +492,6 @@ class TrapBase extends ItemBase
 			{
 				m_IsInProgress = true;
 				m_Timer.Run( m_InitWaitTime, this, "SetActive" );
-				
-				/*
-				if (player)
-				{
-					player.MessageStatus( m_InfoActivationTime );
-				}
-				*/
 			
 			Synch(NULL);
 			}
@@ -479,7 +500,8 @@ class TrapBase extends ItemBase
 				SetActive();
 			}
 		}
-
+	}
+	
 	void StartDeactivate( PlayerBase player )
 	{
 		if ( g_Game.IsServer() )
@@ -616,18 +638,6 @@ class TrapBase extends ItemBase
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================
-	
-	override void OnPlacementComplete( Man player )
-	{
-		super.OnPlacementComplete( player );
-				
-		if ( GetGame().IsServer() )
-		{
-			SetupTrapPlayer( PlayerBase.Cast( player ), false );
-						
-			SetIsDeploySound( true );
-		}	
-	}
 		
 	void PlayDeployLoopSound()
 	{		
@@ -647,5 +657,12 @@ class TrapBase extends ItemBase
 			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionActivateTrap);
 	}
 }

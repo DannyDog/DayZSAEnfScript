@@ -359,6 +359,7 @@ class Attachments
 			float x, y;
 			m_Ics.Get( m_FocusedRow ).GetSlotIcon( m_FocusedColumn ).GetCursorWidget().GetScreenPos( x, y );
 			ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
+			Inventory.GetInstance().UpdateConsoleToolbar();
 		}
 	}
 

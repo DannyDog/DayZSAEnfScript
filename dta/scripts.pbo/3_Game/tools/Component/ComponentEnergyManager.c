@@ -32,11 +32,14 @@ class ComponentEnergyManager : Component
 	protected 		bool			m_HasElectricityIcon; // Electricity icon over the item in inventory
 	protected 		bool			m_AutoSwitchOffWhenInCargo;
 	protected 		bool			m_IsPlugged; // Synchronized variable
+	protected 		bool			m_ConvertEnergyToQuantity;
 	
 	protected 		int				m_MySocketID = -1;
 	protected 		int				m_PlugType;
-	protected 		int				m_EnergySourceStorageIDLow;  // Storage persistence ID
-	protected 		int				m_EnergySourceStorageIDHigh; // Storage persistence ID
+	protected 		int				m_EnergySourceStorageIDb1; // Storage persistence ID
+	protected 		int				m_EnergySourceStorageIDb2; // Storage persistence ID
+	protected 		int				m_EnergySourceStorageIDb3; // Storage persistence ID
+	protected 		int				m_EnergySourceStorageIDb4; // Storage persistence ID
 	protected 		int				m_AttachmentActionType;
 	protected 		int				m_EnergySourceNetworkIDLow = -1;  // Network ID
 	protected 		int				m_EnergySourceNetworkIDHigh = -1; // Network ID
@@ -147,28 +150,42 @@ class ComponentEnergyManager : Component
 	// Prepare everything
 	override void Event_OnAwake()
 	{
-		string param_access_energy_sys = "CfgVehicles " + m_ThisEntityAI.GetType() + " EnergyManager ";
+		string cfg_item = "CfgVehicles " + m_ThisEntityAI.GetType();
+		string cfg_energy_manager = cfg_item + " EnergyManager ";
 		
 		// Read all config parameters
-		m_EnergyUsage					= GetGame().ConfigGetFloat (param_access_energy_sys + "energyUsagePerSecond");
-		bool switch_on					= GetGame().ConfigGetFloat (param_access_energy_sys + "switchOnAtSpawn");
-		m_AutoSwitchOff					= GetGame().ConfigGetFloat (param_access_energy_sys + "autoSwitchOff");
-		m_HasElectricityIcon			= GetGame().ConfigGetFloat (param_access_energy_sys + "hasIcon");
-		m_AutoSwitchOffWhenInCargo 		= GetGame().ConfigGetFloat (param_access_energy_sys + "autoSwitchOffWhenInCargo");
+		m_EnergyUsage					= GetGame().ConfigGetFloat (cfg_energy_manager + "energyUsagePerSecond");
+		bool switch_on					= GetGame().ConfigGetFloat (cfg_energy_manager + "switchOnAtSpawn");
+		m_AutoSwitchOff					= GetGame().ConfigGetFloat (cfg_energy_manager + "autoSwitchOff");
+		m_HasElectricityIcon			= GetGame().ConfigGetFloat (cfg_energy_manager + "hasIcon");
+		m_AutoSwitchOffWhenInCargo 		= GetGame().ConfigGetFloat (cfg_energy_manager + "autoSwitchOffWhenInCargo");
 		
-		m_Energy						= GetGame().ConfigGetFloat (param_access_energy_sys + "energyAtSpawn");
-		m_EnergyStorageMax				= GetGame().ConfigGetFloat (param_access_energy_sys + "energyStorageMax");
-		m_ReduceMaxEnergyByDamageCoef	= GetGame().ConfigGetFloat (param_access_energy_sys + "reduceMaxEnergyByDamageCoef");
-		m_SocketsCount					= GetGame().ConfigGetFloat (param_access_energy_sys + "powerSocketsCount");
+		m_Energy						= GetGame().ConfigGetFloat (cfg_energy_manager + "energyAtSpawn");
+		m_EnergyStorageMax				= GetGame().ConfigGetFloat (cfg_energy_manager + "energyStorageMax");
+		m_ReduceMaxEnergyByDamageCoef	= GetGame().ConfigGetFloat (cfg_energy_manager + "reduceMaxEnergyByDamageCoef");
+		m_SocketsCount					= GetGame().ConfigGetFloat (cfg_energy_manager + "powerSocketsCount");
 		
-		m_IsPassiveDevice				= GetGame().ConfigGetFloat (param_access_energy_sys + "isPassiveDevice");
-		m_CordLength 					= GetGame().ConfigGetFloat (param_access_energy_sys + "cordLength");
-		m_PlugType 						= GetGame().ConfigGetFloat (param_access_energy_sys + "plugType");
+		m_IsPassiveDevice				= GetGame().ConfigGetFloat (cfg_energy_manager + "isPassiveDevice");
+		m_CordLength 					= GetGame().ConfigGetFloat (cfg_energy_manager + "cordLength");
+		m_PlugType 						= GetGame().ConfigGetFloat (cfg_energy_manager + "plugType");
 		
-		m_AttachmentActionType			= GetGame().ConfigGetFloat (param_access_energy_sys + "attachmentAction");
-		m_WetnessExposure				= GetGame().ConfigGetFloat (param_access_energy_sys + "wetnessExposure");
+		m_AttachmentActionType			= GetGame().ConfigGetFloat (cfg_energy_manager + "attachmentAction");
+		m_WetnessExposure				= GetGame().ConfigGetFloat (cfg_energy_manager + "wetnessExposure");
 		
-		float update_interval			= GetGame().ConfigGetFloat (param_access_energy_sys + "updateInterval");
+		float update_interval			= GetGame().ConfigGetFloat (cfg_energy_manager + "updateInterval");
+		
+		m_ConvertEnergyToQuantity		= GetGame().ConfigGetFloat (cfg_energy_manager + "convertEnergyToQuantity");
+		
+		
+		// Check if energy->quantity converion is configured properly
+		float cfg_max_quantity = GetGame().ConfigGetFloat (cfg_item + " varQuantityMax");
+		
+		if (m_ConvertEnergyToQuantity  &&  cfg_max_quantity <= 0)
+		{
+			string error = "Error! Item " + m_ThisEntityAI.GetType() + " has invalid configuration of the energy->quantity conversion feature. To fix this, add 'varQuantityMax' parameter with value higher than 0 to the item's config. Then make sure to re-build the PBO containing this item!";
+			Error(error);
+			m_ConvertEnergyToQuantity = false;
+		}
 		
 		// Set update interval
 		if ( update_interval <= 0 )
@@ -177,7 +194,7 @@ class ComponentEnergyManager : Component
 		SetUpdateInterval( update_interval );
 		
 		// If energyAtSpawn is present, then use its value for energyStorageMax if that cfg param is not present (for convenience's sake)
-		string cfg_check_energy_limit = param_access_energy_sys + "energyStorageMax";
+		string cfg_check_energy_limit = cfg_energy_manager + "energyStorageMax";
 		
 		if ( !GetGame().ConfigIsExisting (cfg_check_energy_limit)  &&  m_Energy > 0 )
 		{
@@ -185,7 +202,7 @@ class ComponentEnergyManager : Component
 		}
 		
 		// Fill m_CompatiblePlugTypes
-		string cfg_check_plug_types = param_access_energy_sys + "compatiblePlugTypes";
+		string cfg_check_plug_types = cfg_energy_manager + "compatiblePlugTypes";
 		
 		if ( GetGame().ConfigIsExisting (cfg_check_plug_types) )
 		{
@@ -231,7 +248,7 @@ class ComponentEnergyManager : Component
 		
 		m_Sockets[MAX_SOCKETS_COUNT]; // Handles selections for plugs in the sockets. Feel free to change the limit if needed.
 		
-		GetGame().ConfigGetText(param_access_energy_sys + "cordTextureFile", m_CordTextureFile); 
+		GetGame().ConfigGetText(cfg_energy_manager + "cordTextureFile", m_CordTextureFile); 
 		
 		if ( switch_on )
 		{
@@ -446,7 +463,6 @@ class ComponentEnergyManager : Component
 			
 			if (old_energy - GetEnergyUsage() <= 0)
 			{
-				Print("UpdateCanWork - SetEnergy");
 				UpdateCanWork();
 			}
 		}
@@ -533,10 +549,12 @@ class ComponentEnergyManager : Component
 	}
 
 	// Stores IDs of the energy source.
-	void StoreEnergySourceIDs(int ID_low, int ID_high)
+	void StoreEnergySourceIDs(int b1, int b2, int b3, int b4)
 	{
-		m_EnergySourceStorageIDLow = ID_low;
-		m_EnergySourceStorageIDHigh = ID_high;
+		m_EnergySourceStorageIDb1 = b1;
+		m_EnergySourceStorageIDb2 = b2;
+		m_EnergySourceStorageIDb3 = b3;
+		m_EnergySourceStorageIDb4 = b4;
 	}
 	
 	//! Energy manager: Changes the maximum amount of energy this device can store (when pristine).
@@ -629,6 +647,8 @@ class ComponentEnergyManager : Component
 	{
 		m_UpdateInterval = value;
 	}
+	
+	
 	
 	
 	
@@ -872,6 +892,12 @@ class ComponentEnergyManager : Component
 	{
 		return m_HasElectricityIcon;
 	}
+	
+	//! Energy manager: Returns true if this item automatically converts its energy to quantity
+	bool HasConversionOfEnergyToQuantity()
+	{
+		return m_ConvertEnergyToQuantity;
+	}
 
 	/**
 	\brief Energy manager: Returns true if this device's virtual power cord can reach its energy source at the given position, depending on its cordLength config parameter. Otherwise returns false.
@@ -977,16 +1003,28 @@ class ComponentEnergyManager : Component
 		return m_AttachmentActionType;
 	}
 
-	// Returns persistent ID (low) of the energy source
-	int GetEnergySourceStorageIDLow()
+	// Returns persistent ID (block 1) of the energy source
+	int GetEnergySourceStorageIDb1()
 	{
-		return m_EnergySourceStorageIDLow;
+		return m_EnergySourceStorageIDb1;
 	}
 
-	// Returns persistent ID (high) of the energy source
-	int GetEnergySourceStorageIDHigh()
+	// Returns persistent ID (block 2) of the energy source
+	int GetEnergySourceStorageIDb2()
 	{
-		return m_EnergySourceStorageIDHigh;
+		return m_EnergySourceStorageIDb2;
+	}
+	
+	// Returns persistent ID (block 3) of the energy source
+	int GetEnergySourceStorageIDb3()
+	{
+		return m_EnergySourceStorageIDb3;
+	}
+	
+	// Returns persistent ID (block 4) of the energy source
+	int GetEnergySourceStorageIDb4()
+	{
+		return m_EnergySourceStorageIDb4;
 	}
 	
 	// Returns network ID (low) of the energy source
@@ -1073,6 +1111,7 @@ class ComponentEnergyManager : Component
 			float clamped_energy = Math.Clamp( energy_to_clamp, 0, GetEnergyMax() );
 			SetEnergy(clamped_energy);
 			StartUpdates();
+			
 			
 			if (energy_was_added)
 				OnEnergyAdded();

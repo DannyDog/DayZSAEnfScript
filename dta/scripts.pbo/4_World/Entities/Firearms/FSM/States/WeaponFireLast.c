@@ -8,13 +8,13 @@ class WeaponFireLast extends WeaponStateBase
 	ref WeaponFire m_fire;
 	ref WeaponEjectCasing_W4T m_eject;
 
-	void WeaponFireLast (Weapon_Base w = NULL, WeaponStateBase parent = NULL, WeaponActions action = WeaponActions.NONE, int actionType = -1, int alternativeType = -1)
+	void WeaponFireLast (Weapon_Base w = NULL, WeaponStateBase parent = NULL, WeaponActions action = WeaponActions.NONE, int actionType = -1)
 	{
 		m_action = action;
 		m_actionType = actionType;
 
 		// setup nested state machine
-		m_fire = new WeaponFire(m_weapon, this, m_action, m_actionType,alternativeType);
+		m_fire = new WeaponFire(m_weapon, this, m_action, m_actionType);
 		m_eject = new WeaponEjectCasing_W4T(m_weapon, this);
 
 		// events

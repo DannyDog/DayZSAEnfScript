@@ -8,4 +8,14 @@ class TetracyclineAntibiotics : Edible_Base
 		}
 		consumer.GetModifiersManager().ActivateModifier( eModifiers.MDF_ANTIBIOTICS );
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionForceConsumeSingle);
+		AddAction(ActionConsumeSingle);
+		//AddAction(ActionForceFeed);
+		//AddAction(ActionEat);
+	}
 }

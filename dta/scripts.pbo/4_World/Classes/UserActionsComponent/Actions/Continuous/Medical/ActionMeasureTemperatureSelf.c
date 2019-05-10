@@ -57,7 +57,9 @@ class ActionMeasureTemperatureSelf: ActionContinuousBase
 		
 		if(thermometer)
 		{
-			SendMessageToClient(action_data.m_Player, thermometer.GetTemperatureMessage(action_data.m_Player));
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(thermometer.GetTemperatureMessage(action_data.m_Player));
+			rpc.Send(action_data.m_Player, ERPCs.RPC_SYNC_THERMOMETER, true, action_data.m_Player.GetIdentity() );
 		}
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

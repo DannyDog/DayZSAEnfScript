@@ -32,23 +32,6 @@ class VicinityContainer: CollapsibleContainer
 		return m_VicinityIconsContainer;
 	}
 	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		for ( int i = 0; i < m_ShowedItems.Count(); i++ )
-		{
-			Container container = m_ShowedItems.GetElement( i );
-			container.RefreshItemPosition( item_to_refresh );
-		}
-	}
-	
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		for ( int i = 0; i < m_ShowedItems.Count(); i++)
-		{
-			m_ShowedItems.GetElement( i ).RefreshQuantity( item_to_refresh );
-		}
-	}
-	
 	bool IsContainerWithCargoActive()
 	{
 		return ( ContainerWithCargo.Cast( GetFocusedContainer() ) != null );
@@ -284,6 +267,7 @@ class VicinityContainer: CollapsibleContainer
 			player.PredictiveDropEntity( item );
 		}
 		
+		ItemManager.GetInstance().HideDropzones();
 		ItemManager.GetInstance().SetIsDragging( false );
 		ItemManager.GetInstance().PrepareTooltip( item );
 
@@ -321,6 +305,9 @@ class VicinityContainer: CollapsibleContainer
 	{
 		if( !w )
 			return;
+		
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 		
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( "Render" ) );
 		
@@ -387,94 +374,24 @@ class VicinityContainer: CollapsibleContainer
 		
 		EntityAI eai;
 		vector pos = player.GetPosition();
-		ref array<EntityAI> objects = new array<EntityAI>;
-		ref array<Object> objects_in_radius = new array<Object>;
-		ref array<Object> objects_in_radius_up = new array<Object>;
-		ref array<Object> objects_in_cone = new array<Object>;
-		ref array<CargoBase> proxyCargos = new array<CargoBase>;
+		ref array<ref EntityAI> objects;
 		
-		GetGame().GetObjectsAtPosition3D( pos, GameInventory.c_MaxItemDistanceRadius, objects_in_radius, proxyCargos );
-		objects_in_radius.RemoveItem( player );
+		VicinityItemManager.Update();
+		objects = VicinityItemManager.GetVicinityItems();
 		
-		objects_in_cone = ActionTargets.GetVicinityObjects();
-		
-		for ( int i = 0; i < objects_in_radius.Count(); i++ )
-		{
-			eai = EntityAI.Cast( objects_in_radius.Get( i ) );
-			if( eai )
-			{
-				float distance = vector.Distance( pos, eai.GetPosition() );
-				if ( eai != player && !eai.IsInherited( Particle ) )
-				{				
-					if ( eai.IsInherited( PlayerBase ) || eai.IsInherited( ZombieBase ) )
-					{
-						if ( distance <= DISTANCE_TO_ENTITIES )
-						{
-							objects.Insert( eai );
-						}
-					}
-					else
-					{
-						if ( distance <= DISTANCE_TO_THE_REST )
-						{
-							objects.Insert( eai );
-						}
-					}
-				}
-			}
-		}
-		
-		//Create another check sphere 0.5m above the first one
-		pos[1] = pos[1] + 0.5;
-		GetGame().GetObjectsAtPosition3D( pos, GameInventory.c_MaxItemDistanceRadius, objects_in_radius_up, proxyCargos );
-		objects_in_radius_up.RemoveItem( player );
-		
-		for ( int j = 0; j < objects_in_radius_up.Count(); j++ )
-		{
-			eai = EntityAI.Cast( objects_in_radius_up.Get( j ) );
-			if( eai )
-			{
-				float distance_up = vector.Distance( pos, eai.GetPosition() );
-				if ( !eai.IsInherited( Particle ) )
-				{				
-					if ( !eai.IsInherited( PlayerBase ) || !eai.IsInherited( ZombieBase ) )
-					{
-						if ( distance_up <= DISTANCE_TO_THE_REST )
-						{
-							if ( eai && objects.Find( eai ) == INDEX_NOT_FOUND )
-							{
-								objects.Insert( eai );
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		for ( int k = 0; k < objects_in_cone.Count(); k++ )
-		{
-			eai = EntityAI.Cast( objects_in_cone.Get( k ) );
-			if( eai )
-			{
-				if( objects.Find( eai ) == INDEX_NOT_FOUND && GameInventory.CheckManipulatedObjectsDistances( eai, player, GameInventory.c_MaxItemDistanceRadius ) )
-					objects.Insert( eai );
-			}
-		}
-
 		//GetItemsShowableInInventory
 		array<EntityAI> showable_items = new array<EntityAI>;
 		int m_OldShowedItemIconsCount = m_ShowedItemIcons.Count();
 		m_ShowedItemIcons.Clear();
 		
-		for( i = 0; i < objects.Count(); i++ )
+		GameInventory game_inventory = player.GetInventory();
+		for( int i = 0; i < objects.Count(); i++ )
 		{
-			eai = objects.Get( i );
-			bool showable_item = eai.IsInventoryVisible();
-			
-			if ( player.GetInventory().IsPlaceholderEntity( eai ) )
+			eai = objects.Get( i );			
+			if ( game_inventory.IsPlaceholderEntity( eai ) )
 				continue; // noproxy: ignore body placeholder
 
-			if( showable_item )
+			if( eai.IsInventoryVisible() )
 			{
 				showable_items.Insert( eai );
 
@@ -492,7 +409,7 @@ class VicinityContainer: CollapsibleContainer
 			EntityAI entity = showable_items.Get( i );
 			if( entity )
 			{
-				if( !m_ShowedItems.Contains( entity ) && entity.GetInventory() )
+				if( game_inventory && !m_ShowedItems.Contains( entity ) )
 				{
 					string config = "CfgVehicles " + entity.GetType() + " GUIInventoryAttachmentsProps";
 

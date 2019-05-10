@@ -100,7 +100,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		ref array<string> opt2			= { "#options_video_fullscreen", "#options_video_windowed" };
 		ref array<string> opt3			= { "#options_video_low", "#options_video_medium", "#options_video_high" };
 		ref array<string> opt4			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
-		ref array<string> opt41			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high" };
+		ref array<string> opt41			= { "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
 		ref array<string> opt5			= { "#options_video_poor", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme", "#options_video_custom" };
 		ref array<string> opt6			= { "#options_controls_disabled", "#options_video_low", "#options_video_medium", "#options_video_high", "#options_video_extreme" };
 		ref array<string> opt7			= { "#options_controls_disabled", "#options_video_low", "#options_video_medium", "#options_video_high" };

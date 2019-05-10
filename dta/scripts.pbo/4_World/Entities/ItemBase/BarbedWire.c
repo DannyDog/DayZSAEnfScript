@@ -77,20 +77,12 @@ class BarbedWire extends ItemBase
 		if ( GetGame().IsServer() )
 		{
 			SetSynchDirty();
-			
-			if ( GetGame().IsMultiplayer() )
-			{
-				RefreshParent();
-			}
 		}
 	}
 	
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-
-		//update parent (client)
-		RefreshParent();
 
 		//mounting sounds
 		if ( IsMounted() != m_IsMountedClient )
@@ -134,18 +126,6 @@ class BarbedWire extends ItemBase
 		{	
 			m_DeployLoopSound.SetSoundFadeOut(0.5);
 			m_DeployLoopSound.SoundStop();
-		}
-	}
-	
-	void RefreshParent()
-	{
-		EntityAI parent = GetHierarchyParent();
-		
-		//Base building objects
-		BaseBuildingBase base_building = BaseBuildingBase.Cast( parent );
-		if ( base_building )
-		{
-			base_building.Refresh();
 		}
 	}
 	
@@ -401,5 +381,17 @@ class BarbedWire extends ItemBase
 	override string GetLoopDeploySoundset()
 	{
 		return "barbedwire_deploy_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionPlugIn);
+		AddAction(ActionPlugIntoFence);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPlaceObject);
+		AddAction(ActionRestrainTarget);
+		AddAction(ActionRestrainSelf);
 	}	
 }

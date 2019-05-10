@@ -34,7 +34,7 @@ class HandsContainer: Container
 		m_ScrollWidget						= ScrollWidget.Cast( m_RootWidget.GetParent().GetParent() );
 	}
 	
-	HandsHeader GetHeader()
+	override Header GetHeader()
 	{
 		return m_CollapsibleHeader;
 	}
@@ -783,32 +783,34 @@ class HandsContainer: Container
 		int m_sizeX, m_sizeY;
 
 		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-		GetMainWidget().GetScreenSize( x_content, y_content );
-		icon_x = x_content / 10;
-		icon_y = x_content / 10;
-		w.SetFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( icon_x, icon_y );
-		w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-
-		if( !ipw.GetItem() )
+		if( i_item )
 		{
-			return false;
+			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
+			GetMainWidget().GetScreenSize( x_content, y_content );
+			icon_x = x_content / 10;
+			icon_y = x_content / 10;
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			if( i_item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
+			}
+			else
+			{
+				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
+			}
+			
+			name.Replace( "Render", "Col" );
+			w.FindAnyWidget( name ).Show( true );
+			name.Replace( "Col", "Selected" );
+			w.FindAnyWidget( name ).Show( true );
+			ItemManager.GetInstance().SetDraggedItem( i_item );
 		}
-
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( true );
-		name.Replace( "Col", "Selected" );
-		w.FindAnyWidget( name ).Show( true );
-		ItemManager.GetInstance().SetDraggedItem( ipw.GetItem() );
 
 		return false;
 	}
 
 	bool OnIconDrop( Widget w, int x, int y, Widget reciever )
 	{
-		ItemManager.GetInstance().SetIsDragging( false );
 		w.ClearFlags( WidgetFlags.EXACTSIZE );
 		w.SetSize( 1, 1 );
 		string name = w.GetName();
@@ -817,7 +819,8 @@ class HandsContainer: Container
 		name.Replace( "Col", "Selected" );
 		w.FindAnyWidget( name ).Show( false );
 		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
-		ItemManager.GetInstance().SetDraggedItem( null );
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 
 		return false;
 	}
@@ -825,12 +828,6 @@ class HandsContainer: Container
 	override void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver )
 	{
 		TakeAsAttachment( w, receiver );
-	}
-
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		HandsPreview preview = HandsPreview.Cast( m_Body.Get( 0 ) );
-		preview.RefreshQuantity( item_to_refresh );
 	}
 
 	int GetCombinationFlags( EntityAI entity1, EntityAI entity2 )
@@ -904,7 +901,7 @@ class HandsContainer: Container
 				flags = flags | InventoryCombinationFlags.ADD_AS_ATTACHMENT;
 			}
 		}
-		if ( entity1.GetInventory().CanAddEntityInCargo( entity2 ) ) flags = flags | InventoryCombinationFlags.ADD_AS_CARGO;
+		if ( entity1.GetInventory().CanAddEntityInCargo( entity2, entity2.GetInventory().GetFlipCargo() ) ) flags = flags | InventoryCombinationFlags.ADD_AS_CARGO;
 
 		if( entity1 == m_player.GetHumanInventory().GetEntityInHands() || entity2 == m_player.GetHumanInventory().GetEntityInHands() )
 		{
@@ -1148,7 +1145,7 @@ class HandsContainer: Container
 		else
 			return;
 		
-		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y ) )
+		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		{
 			TakeIntoCargo( player, target_entity, item, idx, x, y );
 
@@ -1156,11 +1153,14 @@ class HandsContainer: Container
 			
 			if( icon )
 			{
-				w.FindAnyWidget("Selected").SetColor( ColorManager.BASE_COLOR );
+				if( w )
+					w.FindAnyWidget("Selected").SetColor( ColorManager.BASE_COLOR );
 				icon.Refresh();
 				Refresh();
 			}
 		}
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 	}
 	
 	bool DraggingOverGrid( Widget w,  int x, int y, Widget reciever, CargoContainer cargo )
@@ -1186,7 +1186,7 @@ class HandsContainer: Container
 			c_y = item_in_hands.GetInventory().GetCargo().GetWidth();
 		}
 		
-		if( c_x > x && c_y > y && item_in_hands.GetInventory().CanAddEntityInCargoEx( item, 0, x, y ) )
+		if( c_x > x && c_y > y && item_in_hands.GetInventory().CanAddEntityInCargoEx( item, 0, x, y, item.GetInventory().GetFlipCargo() ) )
 		{
 			ItemManager.GetInstance().HideDropzones();
 			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
@@ -1297,7 +1297,7 @@ class HandsContainer: Container
 				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
 			}
 		}
-		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			TakeIntoCargo( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
 		}
@@ -1307,6 +1307,7 @@ class HandsContainer: Container
 		}
 		
 		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
 	}
 
 	void ShowAtt( EntityAI entity )

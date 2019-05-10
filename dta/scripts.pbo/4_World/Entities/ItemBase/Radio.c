@@ -42,4 +42,13 @@ class Radio extends ItemRadio
 		//tune previous station
 		TunePrev();
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnTransmitter);
+		AddAction(ActionTurnOffTransmitter);
+		AddAction(ActionTuneRadioStation);
+	}
 }

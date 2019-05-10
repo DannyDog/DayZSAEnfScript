@@ -174,7 +174,26 @@ class CivilianVan extends CarScript
 
 		return "";
 	}
+	
+	override string GetDoorConditionPointFromSelection( string selection )
+	{
+			switch( selection )
+		{
+			case "seat_driver":
+				return "seat_con_1_1";
+			break;
+			case "seat_codriver":
+				return "seat_con_2_1";
+			break;
+			case "seat_cargo1":
+			case "seat_cargo2":
+			case "seat_cargo3":
+				return "seat_con_1_2";
+			break;
+		}
 
+		return "";
+	};
 
 	override bool IsVitalTruckBattery()
 	{

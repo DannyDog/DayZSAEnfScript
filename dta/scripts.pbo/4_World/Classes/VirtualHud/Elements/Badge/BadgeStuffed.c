@@ -9,6 +9,7 @@ class BadgeStuffed extends DisplayElementBadge
 	
 	override void UpdateHUD()
 	{
+		/*
 		if(m_Value == 1) 
 		{
 			m_ModulePlayerStatus.SetBadge(m_Key, true);
@@ -17,5 +18,8 @@ class BadgeStuffed extends DisplayElementBadge
 		{
 			m_ModulePlayerStatus.SetBadge(m_Key, false);
 		}
+		*/
+		super.UpdateHUD();
+		m_ModulePlayerStatus.SetBadge(m_Key, m_Value);
 	}
 }

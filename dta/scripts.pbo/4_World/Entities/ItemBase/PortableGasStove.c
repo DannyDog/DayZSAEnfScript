@@ -229,4 +229,14 @@ class PortableGasStove extends ItemBase
 	{
 		return GetCompEM().IsWorking();
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+
+		AddAction(ActionLightItemOnFire);
+		AddAction(ActionTurnOnWhileOnGround);
+		AddAction(ActionTurnOffWhileOnGround);
+	}
 }

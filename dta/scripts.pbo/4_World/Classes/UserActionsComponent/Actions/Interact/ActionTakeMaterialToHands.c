@@ -41,6 +41,18 @@ class ActionTakeMaterialToHands: ActionInteractBase
 		return "";
 	}
 
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+	
+	override bool HasProgress()
+	{
+		return false;
+	}
+
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		EntityAI target_entity = EntityAI.Cast( target.GetObject() );

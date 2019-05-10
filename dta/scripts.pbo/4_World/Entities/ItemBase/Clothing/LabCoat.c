@@ -1,1 +1,8 @@
-class LabCoat extends Clothing {};
+class LabCoat extends Clothing
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};

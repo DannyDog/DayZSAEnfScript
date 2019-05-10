@@ -99,6 +99,7 @@ class ModifiersManager
 		AddModifier(new ImmunityBoost);
 		AddModifier(new AntibioticsMdfr);
 		AddModifier(new ToxicityMdfr);
+		AddModifier(new BreathVapourMdfr);
 	}
 
 	void SetModifiers(bool enable)

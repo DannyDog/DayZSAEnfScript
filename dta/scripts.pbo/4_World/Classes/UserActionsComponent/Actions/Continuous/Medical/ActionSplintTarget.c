@@ -43,7 +43,7 @@ class ActionSplintTarget: ActionContinuousBase
 		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
 		action_data.m_MainItem.TransferModifiers(ntarget);
 		ntarget.ApplySplint();
-		//ntarget.m_NotifiersManager.DetachByType(eNotifiers.NTF_FRACTURE);
+		//ntarget.m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FRACTURE);
 		action_data.m_MainItem.Delete();
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

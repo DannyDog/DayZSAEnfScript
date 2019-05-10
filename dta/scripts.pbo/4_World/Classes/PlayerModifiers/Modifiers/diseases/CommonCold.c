@@ -24,7 +24,7 @@ class CommonColdMdfr: ModifierBase
 
 	override protected void OnActivate(PlayerBase player)
 	{
-		//if( player.m_NotifiersManager ) player.m_NotifiersManager.AttachByType(eNotifiers.NTF_SICK);
+		//if( player.m_NotifiersManager ) player.m_NotifiersManager.ActivateByType(eNotifiers.NTF_SICK);
 		player.IncreaseDiseaseCount();
 	}
 	

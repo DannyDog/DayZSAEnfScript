@@ -152,8 +152,8 @@ class CZ527_Base : BoltActionRifle_Base
 		WeaponStateBase Mech_CF1 = new WeaponCharging(this, NULL, WeaponActions.MECHANISM, GetWeaponSpecificCommand(WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_CLOSED));
 	
 		WeaponStateBase Trigger_C00 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY)); // cock without clip
-		WeaponStateBase Trigger_C10 = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL), GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM)); // cock with clip
-		WeaponStateBase Trigger_C11 = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL), GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM));
+		WeaponStateBase Trigger_C10 = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL)); // cock with clip
+		WeaponStateBase Trigger_C11 = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL));
 		WeaponStateBase Trigger_C01 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
 		WeaponStateBase Trigger_CF0 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
 		WeaponStateBase Trigger_CF1 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
@@ -161,8 +161,8 @@ class CZ527_Base : BoltActionRifle_Base
 		WeaponStateBase Trigger_JF1 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_DRY));
 	
 		//Fire and jammed
-		//WeaponStateBase Trigger_C10J = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM)); // cock with clip
-		//WeaponStateBase Trigger_C11J = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM));
+		WeaponStateBase Trigger_C10J = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM)); // cock with clip
+		WeaponStateBase Trigger_C11J = new WeaponFire(this, NULL, WeaponActions.FIRE, GetWeaponSpecificCommand(WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM));
 		// Unjam
 		WeaponStateBase Unjam_JF0 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, GetWeaponSpecificCommand(WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START));
 		WeaponStateBase Unjam_JF1 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, GetWeaponSpecificCommand(WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START));
@@ -193,6 +193,7 @@ class CZ527_Base : BoltActionRifle_Base
 		// events
 		WeaponEventBase __M__ = new WeaponEventMechanism;
 		WeaponEventBase __T__ = new WeaponEventTrigger;
+		WeaponEventBase __TJ_ = new WeaponEventTriggerToJam;
 		WeaponEventBase __U__ = new WeaponEventUnjam;
 		WeaponEventBase __L__ = new WeaponEventLoad1Bullet;
 		WeaponEventBase __A__ = new WeaponEventAttachMagazine;
@@ -271,31 +272,29 @@ class CZ527_Base : BoltActionRifle_Base
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_JF1, _dto_,    JF1));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_JF1, _abt_,    JF1));
 		
-		/*m_fsm.AddTransition(new WeaponTransition(   C10, __T__,    Trigger_C10J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _fin_,    J10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _rto_,    J10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _abt_,    J10));*/
+
 		
 		m_fsm.AddTransition(new WeaponTransition(   C10, __T__,    Trigger_C10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _fin_,    JF0, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _rto_,    JF0, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _abt_,    JF0, NULL, new WeaponGuardJammed(this)));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _fin_,    C00));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _rto_,    C00));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10, _abt_,    C00));
 		
-		/*m_fsm.AddTransition(new WeaponTransition(   C11, __T__,    Trigger_C11J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11J, _fin_,    J11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11J, _rto_,    J11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _abt_,    J11));*/
-		
 		m_fsm.AddTransition(new WeaponTransition(   C11, __T__,    Trigger_C11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _fin_,    JF1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _rto_,    JF1, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _abt_,    JF1, NULL, new WeaponGuardJammed(this)));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _fin_,    CF1));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _rto_,    CF1));
 		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11, _abt_,    CF1));
+		
+		
+		
+		m_fsm.AddTransition(new WeaponTransition(   C11, __TJ_,    Trigger_C11J ));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11J, _fin_,    JF1));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11J, _rto_,    JF1));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C11J, _abt_,    JF1));
+		
+		m_fsm.AddTransition(new WeaponTransition(   C10, __TJ_,    Trigger_C10J ));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _fin_,    JF0));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _rto_,    JF0));
+		m_fsm.AddTransition(new WeaponTransition(   Trigger_C10J, _abt_,    JF0));
 		
 
 		// load cartridge

@@ -2,13 +2,33 @@
 
 class ParticleTest extends ItemBase
 {
-	protected const int	PARTICLE_PATH = ParticleList.SMOKE_GENERIC_WRECK;
+	protected int	PARTICLE_PATH;
 	protected Particle 	m_Particle;
 	
 	// Constructor
 	void ParticleTest()
 	{
-		m_Particle = Particle.PlayOnObject( PARTICLE_PATH, this, GetPosition());
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() ) // Client side
+		{
+			string path = ParticleList.GetPathToParticles();
+			
+			
+			
+			
+			
+			// Enter particle ID to play when ParticleTest spawns
+			PARTICLE_PATH = ParticleList.DEBUG_DOT; 
+			
+			// Alternatively, uncomment the second line and enter particle filename without *.ptc suffix instead. Example: "menu_engine_fire" 
+			string particle_filename = "menu_engine_fire";
+			//PARTICLE_PATH = ParticleList.GetParticleID( path + particle_filename );
+			
+			
+			
+			
+			
+			m_Particle = Particle.PlayOnObject( PARTICLE_PATH, this, GetPosition());
+		}
 	}
 
 	// Destructor

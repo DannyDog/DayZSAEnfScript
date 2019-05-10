@@ -446,6 +446,12 @@ class Object extends IEntity
 		return false;
 	}
 	
+	//! Returns if this entity is Fuel Station (extends Building)
+	bool IsFuelStation()
+	{
+		return false;
+	}
+	
 	//! Returns if this entity is transport
 	bool IsTransport()
 	{
@@ -463,6 +469,26 @@ class Object extends IEntity
 	{
 		return true;
 	}
+	
+	bool IsParticle()
+	{
+		return false;
+	}
+	
+	bool IsItemTent()
+	{
+		return false;
+	}
+	
+	bool IsScriptedLight()
+	{
+		return false;
+	}
+		
+	bool HasProxyParts()
+	{
+		return false;
+	}
 
 	//! Returns low and high bits of networkID.
 	//! This id is shared between client and server for whole server-client session.
@@ -475,9 +501,11 @@ class Object extends IEntity
 		return high.ToString() + low.ToString();
 	}
 	
-	string GetDebugName()
+	static string GetDebugName(Object o)
 	{
-		return GetType() + ":" + GetNetworkIDString();
+		if (o)
+			return o.GetType() + ":" + o.GetNetworkIDString();
+		return "null";
 	}
 	
 	//! Remote procedure call shortcut, see CGame.RPC / CGame.RPCSingleParam
@@ -780,7 +808,11 @@ class Object extends IEntity
 		
 		return false;
 	}
-	
+#ifndef OLD_ACTIONS
+	void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
+	{
+	}
+	#else
 	void GetSingleUseActions(out TIntArray actions)
 	{	
 	}
@@ -792,6 +824,8 @@ class Object extends IEntity
 	void GetInteractActions(out TIntArray actions)
 	{
 	}
+#endif
+
 	
 	//! Plays the given sound once on this object's instance. Range is in meters. Created sound is only local, unless create_local is set to false. Returns the sound itself.
 	SoundOnVehicle PlaySound(string sound_name, float range, bool create_local = true)
@@ -856,6 +890,7 @@ class Object extends IEntity
 	
 	
 	void SpawnDamageDealtEffect() { }
+	void OnPlayerRecievedHit(){}
 	
 	bool HasNetworkID()
 	{

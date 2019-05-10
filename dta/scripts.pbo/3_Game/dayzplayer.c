@@ -108,6 +108,19 @@ class DayZPlayerTypeStepSoundLookupTable
 }
 
 // *************************************************************************************
+// ! DayZPlayerTypeVoiceSoundLookupTable - virtual 
+// *************************************************************************************
+class DayZPlayerTypeVoiceSoundLookupTable
+{
+	SoundObjectBuilder GetSoundBuilder(int eventId, int parameterHash)
+	{
+		return null;
+	}
+	
+	NoiseParams GetNoiseParams(int eventId);
+}
+
+// *************************************************************************************
 // ! DayZPlayerTypeAttachmentSoundLookupTable - virtual 
 // *************************************************************************************
 class DayZPlayerTypeAttachmentSoundLookupTable
@@ -256,7 +269,7 @@ class DayZPlayerType
 		return m_pStepSoundLookupTable;
 	}
 	
-	void 				 RegisterAttachmentSoundLookupTable(DayZPlayerTypeAttachmentSoundLookupTable pASLUT)
+	void RegisterAttachmentSoundLookupTable(DayZPlayerTypeAttachmentSoundLookupTable pASLUT)
 	{
 		m_pAttachmentSoundLookupTable = pASLUT;
 	}
@@ -264,6 +277,16 @@ class DayZPlayerType
 	DayZPlayerTypeAttachmentSoundLookupTable	GetAttachmentSoundLookupTable()
 	{
 		return m_pAttachmentSoundLookupTable;
+	}
+	
+	void RegisterVoiceSoundLookupTable(DayZPlayerTypeVoiceSoundLookupTable pASLUT)
+	{
+		m_pVoiceSoundLookupTable = pASLUT;
+	}
+	
+	DayZPlayerTypeVoiceSoundLookupTable	GetVoiceSoundLookupTable()
+	{
+		return m_pVoiceSoundLookupTable;
 	}
 	
 	void RegisterSoundTable(DayZPlayerTypeAnimTable pST)
@@ -276,6 +299,7 @@ class DayZPlayerType
 		return m_pSoundTable;
 	}
 	
+	/*
 	void RegisterSoundVoiceTable(DayZPlayerTypeAnimTable pVST)
 	{
 		m_pSoundVoiceTable = pVST;
@@ -285,6 +309,7 @@ class DayZPlayerType
 	{
 		return m_pSoundVoiceTable;
 	}
+	*/
 	
 	array<ref VegetationSound> GetVegetationSounds()
 	{
@@ -474,8 +499,9 @@ class DayZPlayerType
 	//!< it's downcasted to StepSoundLookupTable
 	ref DayZPlayerTypeStepSoundLookupTable m_pStepSoundLookupTable;
 	ref DayZPlayerTypeAttachmentSoundLookupTable m_pAttachmentSoundLookupTable;
+	ref DayZPlayerTypeVoiceSoundLookupTable m_pVoiceSoundLookupTable;
 	ref DayZPlayerTypeAnimTable m_pSoundTable;
-	ref DayZPlayerTypeAnimTable m_pSoundVoiceTable;
+	//ref DayZPlayerTypeAnimTable m_pSoundVoiceTable;
 	ref NoiseParams m_pNoiseStepStand;
 	ref NoiseParams m_pNoiseStepCrouch;
 	ref NoiseParams m_pNoiseStepProne;
@@ -931,15 +957,16 @@ class SDayZPlayerAimingModel
 	float	m_fCurrentAimX;			//[in]		- horizontal aim angle - in degrees
 	float	m_fCurrentAimY;			//[in]		- vertical aim angle - in degrees
 
-	float	m_fAimXCamOffset;		//!< [out] 	- camera offset modifier
-	float	m_fAimYCamOffset;		//!< [out] 	- camera offset modifier
-	float	m_fAimXHandsOffset;		//!< [out] 	- hands offset modifier
-	float	m_fAimYHandsOffset;		//!< [out] 	- hands offset modifier
+	float	m_fAimXCamOffset;		//[out] 	- camera (angle) offset modifier
+	float	m_fAimYCamOffset;		//[out] 	- camera (angle) offset modifier
+	float	m_fAimXHandsOffset;		//[out] 	- hands offset modifier
+	float	m_fAimYHandsOffset;		//[out] 	- hands offset modifier
 	float	m_fAimXMouseShift;		//[out]		- shift like mouse does
 	float	m_fAimYMouseShift;		//[out]		- shift like mouse does
 	float	m_fAimSensitivity;		//[out]		- aim sensitivity
-	float 	m_fCamPosOffsetX;		//[out]		- currently not supported
-	float 	m_fCamPosOffsetY;		//[out]		- currently not supported
+	float 	m_fCamPosOffsetX;		//[out]		- camera (position) offset modifier
+	float 	m_fCamPosOffsetY;		//[out]		- camera (position) offset modifier
+	float 	m_fCamPosOffsetZ;		//[out]		- camera (position) offset modifier
 
 	//! cannot be created from script
 	protected void SDayZPlayerAimingModel()

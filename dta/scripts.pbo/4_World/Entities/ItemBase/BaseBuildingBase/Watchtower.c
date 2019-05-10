@@ -321,5 +321,14 @@ class Watchtower extends BaseBuildingBase
 		}
 
 		return false;
-	}		
+	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPlaceObject);
+		AddAction(ActionFoldBaseBuildingObject);
+	}	
 }

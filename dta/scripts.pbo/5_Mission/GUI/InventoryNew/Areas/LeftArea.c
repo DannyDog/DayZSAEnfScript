@@ -37,18 +37,6 @@ class LeftArea: Container
 		#endif
 	}
 	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		Container active_container = Container.Cast( m_Body.Get( m_ActiveIndex ) );
-		active_container.RefreshItemPosition( item_to_refresh );
-	}
-	
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		Container active_container = Container.Cast( m_Body.Get( m_ActiveIndex ) );
-		active_container.RefreshQuantity( item_to_refresh );
-	}
-	
 	override void MoveGridCursor( int direction )
 	{
 		Container active_container = Container.Cast( m_Body.Get( m_ActiveIndex ) );

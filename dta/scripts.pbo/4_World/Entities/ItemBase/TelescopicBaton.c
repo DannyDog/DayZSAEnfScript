@@ -84,4 +84,11 @@ class TelescopicBaton : ItemBase
 
         UpdateVisualState();
     }
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionOpen);
+		AddAction(ActionClose);
+	}
 }

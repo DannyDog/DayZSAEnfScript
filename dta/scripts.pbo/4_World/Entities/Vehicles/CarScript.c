@@ -10,6 +10,11 @@ enum CarDoorState
 */
 class CarScript extends Car
 {
+#ifndef OLD_ACTIONS
+	static ref map<typename, ref TInputActionMap> m_CarTypeActionsMap = new map<typename, ref TInputActionMap>;
+	TInputActionMap m_InputActionMap;
+	bool	m_ActionsInitialize;
+#endif
 	protected float m_Time;
 
 	//! keeps ammount of each fluid
@@ -42,6 +47,8 @@ class CarScript extends Car
 	protected vector m_exhaustPtcDir;
 	protected vector m_enginePtcPos;
 	protected vector m_coolantPtcPos;
+	
+	protected vector m_fuelPos;
 	
 	//!Sounds
 	protected bool m_PlayCrashSoundLight;
@@ -107,9 +114,28 @@ class CarScript extends Car
 		if 	( MemoryPointExists("ptcCoolantPos") )
 			m_coolantPtcPos = GetMemoryPointPos("ptcCoolantPos");
 		else
-			m_coolantPtcPos = "0 0 0";	
+			m_coolantPtcPos = "0 0 0";
+
+		if 	( MemoryPointExists("refill") )
+			m_fuelPos = GetMemoryPointPos("refill");
+		else
+			m_fuelPos = "0 0 0";
+		
+#ifndef OLD_ACTIONS
+		m_ActionsInitialize = false;
+#endif
 	}
 
+	vector GetCoolantPtcPosWS()
+	{
+		return ModelToWorld( m_coolantPtcPos );
+	}
+
+	vector GetRefillPointPosWS()
+	{	
+		return ModelToWorld( m_fuelPos );
+	}
+	
 /*
 	//here we should handle the damage dealt in OnContact event, but maybe we will react even in that event 
 	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
@@ -165,6 +191,7 @@ class CarScript extends Car
 	
 	override void EEItemAttached ( EntityAI item, string slot_name ) 
 	{
+		super.EEItemAttached( item, slot_name );
 		if ( GetGame().IsServer() )
 		{
 			if ( slot_name == "Reflector_1_1" )
@@ -184,6 +211,8 @@ class CarScript extends Car
 			
 			if ( slot_name == "GlowPlug" )
 				m_PlugHealth = item.GetHealth01();
+			
+			Synchronize();
 		}
 	}
 
@@ -240,6 +269,8 @@ class CarScript extends Car
 				LeakAll( CarFluid.COOLANT );
 				SetHealth( "Radiator", "Health", 0);
 			}
+
+			Synchronize();
 		}
 	}
 	
@@ -827,6 +858,22 @@ class CarScript extends Car
 
 	string GetDoorConditionPointFromSelection( string selection )
 	{
+		switch( selection )
+		{
+			case "seat_driver":
+				return "seat_con_1_1";
+			break;
+			case "seat_codriver":
+				return "seat_con_2_1";
+			break;
+			case "seat_cargo1":
+				return "seat_con_1_2";
+			break;
+			case "seat_cargo2":
+				return "seat_con_2_2";
+			break;
+		}
+		
 		return "";
 	}
 	
@@ -908,7 +955,7 @@ class CarScript extends Car
 
 	float GetActionDistanceCoolant()
 	{
-		return 3.0;
+		return 2.0;
 	}
 
 	string GetActionCompNameFuel()
@@ -918,6 +965,106 @@ class CarScript extends Car
 
 	float GetActionDistanceFuel()
 	{
-		return 3.0;
+		return 1.5;
 	}
+	
+	string GetActionCompNameOil()
+	{
+		return "carradiator";
+	}
+
+	float GetActionDistanceOil()
+	{
+		return 2.0;
+	}
+	
+	string GetActionCompNameBrakes()
+	{
+		return "carradiator";
+	}
+
+	float GetActionDistanceBrakes()
+	{
+		return 2.0;
+	}
+	
+#ifndef OLD_ACTIONS	
+	void InitializeActions()
+	{
+		m_InputActionMap = m_CarTypeActionsMap.Get( this.Type() );
+		if(!m_InputActionMap)
+		{
+			TInputActionMap iam = new TInputActionMap;
+			m_InputActionMap = iam;
+			SetActions();
+			m_CarTypeActionsMap.Insert(this.Type(), m_InputActionMap);
+		}
+	}
+	
+	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
+	{
+		if(!m_ActionsInitialize)
+		{
+			m_ActionsInitialize = true;
+			InitializeActions();
+		}
+		
+		actions = m_InputActionMap.Get(action_input_type);
+	}
+	
+	void SetActions()
+	{
+		AddAction(ActionAnimateCarSelection);
+		AddAction(ActionGetInTransport);
+		AddAction(ActionGetOutTransport);
+		AddAction(ActionSwitchLights);
+	}
+	
+	void AddAction(typename actionName)
+	{
+		ActionBase action = ActionManagerBase.GetAction(actionName);
+
+		if(!action)
+		{
+			Debug.LogError("Action " + actionName + " dosn't exist!");
+			return;
+		}		
+		
+		typename ai = action.GetInputType();
+		if(!ai)
+		{
+			m_ActionsInitialize = false;
+			return;
+		}
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(!action_array)
+		{
+			action_array = new array<ActionBase_Basic>;
+			m_InputActionMap.Insert(ai, action_array);
+		}
+		
+		Print("+ " + this + " add action: " + action + " input " + ai);
+
+		action_array.Insert(action);
+	}
+	
+	void RemoveAction(typename actionName)
+	{
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		ActionBase action = player.GetActionManager().GetAction(actionName);
+		typename ai = action.GetInputType();
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(action_array)
+		{
+			action_array.RemoveItem(action);
+		}
+	}
+#else
+	void SetActions() {}	
+	void AddAction(typename actionName) {}
+	void RemoveAction(typename actionName) {}
+	
+#endif	
 };

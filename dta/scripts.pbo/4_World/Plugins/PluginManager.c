@@ -73,6 +73,7 @@ class PluginManager
 		
 		RegisterPluginDebug( "PluginItemDiagnostic",			true, 	true );
 		RegisterPluginDebug( "PluginDayzPlayerDebug",			true, 	true );
+		RegisterPluginDebug( "PluginDayZInfectedDebug",			true, 	true );
 		RegisterPluginDebug( "PluginDiagMenu",					true, 	true );
 		RegisterPluginDebug( "PluginDayZCreatureAIDebug",		true, 	true );
 		RegisterPluginDebug( "PluginDoorRuler",					true, 	false );

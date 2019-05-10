@@ -305,7 +305,7 @@ class Roadflare : ItemBase
 				{
 					DestroyAllParticles();
 					m_ParInitialFire = Particle.PlayOnObject( PARTICLE_INIT_FIRE, this, m_FlameLocalPos);
-					m_ParInitialFire.SetWiggle( 15, 0.3);
+					m_ParInitialFire.SetWiggle( 10, 0.3);
 				}
 				break;
 				
@@ -314,7 +314,7 @@ class Roadflare : ItemBase
 				if (!m_ParMainFire)
 				{
 					m_ParMainFire = Particle.PlayOnObject( PARTICLE_MAIN_FIRE, this, m_FlameLocalPos);
-					m_ParMainFire.SetWiggle( 10, 0.3);
+					m_ParMainFire.SetWiggle( 7, 0.3);
 				}
 				
 				DestroyParticle(m_ParInitialFire);
@@ -327,7 +327,7 @@ class Roadflare : ItemBase
 				{
 					DestroyAllParticles();
 					m_ParFinalFire = Particle.PlayOnObject( PARTICLE_FINAL_FIRE, this, m_FlameLocalPos);
-					m_ParFinalFire.SetWiggle( 5, 0.3);
+					m_ParFinalFire.SetWiggle( 4, 0.3);
 				}
 				break;
 				
@@ -337,7 +337,7 @@ class Roadflare : ItemBase
 				{
 					DestroyAllParticles();
 					m_ParJustSmoke = Particle.PlayOnObject( PARTICLE_FINAL_SMOKE, this, m_FlameLocalPos);
-					m_ParJustSmoke.SetWiggle( 3, 0.3);
+					m_ParJustSmoke.SetWiggle( 2, 0.3);
 				}
 				break;
 		}
@@ -379,9 +379,12 @@ class Roadflare : ItemBase
 			HideSelection(STANDS_FOLDED);
 			ShowSelection(STANDS_UNFOLDED);
 			
-			vector ori_rotate = "180 32 0";
-			//vector ori_standing = ori_rotate + GetOrientation(); // TO DO: Use ori_standing when item drop starts working again.
-			SetOrientation(ori_rotate);
+			if (player)
+			{
+				vector ori_rotate = player.GetOrientation();
+				ori_rotate = ori_rotate + Vector(180, 32, 0);
+				SetOrientation(ori_rotate);
+			}
 		}
 	}
 	
@@ -419,5 +422,13 @@ class Roadflare : ItemBase
 		super.OnVariablesSynchronized();
 		
 		UpdateActiveParticles();
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionLightItemOnFire);
+		AddAction(ActionTurnOnWhileInHands);
 	}
 };

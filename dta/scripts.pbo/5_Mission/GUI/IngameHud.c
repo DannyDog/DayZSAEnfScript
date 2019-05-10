@@ -9,11 +9,15 @@ class IngameHud extends Hud
 
 	protected ref map<ImageWidget, int>			m_TendencyStatusCritical;	//array of icons that are blinking due to critical tendency status
 	protected const float						TENDENCY_BLINK_TIME = 0.25;
+	protected float								m_BlinkTime;
 	
 	protected ref map<int,string>				m_BadgesWidgetNames;
-	protected ref map<int,bool>					m_BadgesWidgetDisplay;
+	protected ref map<int,int>					m_BadgesWidgetDisplay;
 	protected ref map<int,ImageWidget>			m_BadgesWidgets;  // [key] ImageWidget
 	protected bool								m_AnyBadgeVisible;
+	protected bool								m_IsTemperatureVisible;
+	protected float								m_TemperatureTimer;
+	protected float								m_TemperatureShowTime = 30;
 	
 	protected ref map<int,string>				m_VehicleGearTable;
 
@@ -141,7 +145,7 @@ class IngameHud extends Hud
 		
 		m_BadgesWidgets					= new map<int, ImageWidget>; // [key] widgetName
 		m_BadgesWidgetNames				= new map<int, string>;
-		m_BadgesWidgetDisplay			= new map<int, bool>;
+		m_BadgesWidgetDisplay			= new map<int, int>;
 
 		m_VehicleGearTable				= new map<int, string>;
 		m_VehicleGearTable.Set( -1, "" );
@@ -280,7 +284,7 @@ class IngameHud extends Hud
 			m_BadgesWidgetNames.Set( NTFKEY_STUFFED, "Stomach" );
 			m_BadgesWidgetNames.Set( NTFKEY_SICK, "Sick" );
 			m_BadgesWidgetNames.Set( NTFKEY_WETNESS, "Wetness" );
-			m_BadgesWidgetNames.Set( NTFKEY_FEVERISH, "Skull" );
+			m_BadgesWidgetNames.Set( NTFKEY_POISONED, "Poisoned" );
 			m_BadgesWidgetNames.Set( NTFKEY_BLEEDISH, "Bleeding" );
 			m_BadgesWidgetNames.Set( NTFKEY_LIVES, "Shock" );
 			m_BadgesWidgetNames.Set( NTFKEY_PILLS, "Pills" );
@@ -384,44 +388,6 @@ class IngameHud extends Hud
 	{
 		m_CursorWidget.Show( true );
 	}
-
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		InventoryMenu inventory;
-		MissionGameplay mission;
-
-		UIManager manager = GetGame().GetUIManager();
-		Class.CastTo(inventory, manager.FindMenu( MENU_INVENTORY ));
-		Class.CastTo(mission, GetGame().GetMission());
-		if(	mission )
-		{
-			inventory = mission.GetInventory();
-		}
-		
-		if( inventory )
-		{
-			inventory.RefreshQuantity( item_to_refresh );
-		}
-	}
-	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		InventoryMenu inventory;
-		MissionGameplay mission;
-
-		UIManager manager = GetGame().GetUIManager();
-		Class.CastTo(inventory, manager.FindMenu( MENU_INVENTORY ));
-		Class.CastTo(mission, GetGame().GetMission());
-		if(	mission )
-		{
-			inventory = mission.GetInventory();
-		}
-		
-		if( inventory )
-		{
-			inventory.RefreshItemPosition( item_to_refresh );
-		}
-	}
 	
 	override void HideCursor()
 	{
@@ -456,7 +422,6 @@ class IngameHud extends Hud
 	override void DisplayNotifier( int key, int tendency, int status )
 	{
 		ImageWidget w;
-		Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( "Icon" + m_StatesWidgetNames.Get( key ) ) ) );
 		if( key == NTFKEY_FEVERISH )
 		{
 			DisplayTendencyTemp( key, tendency, status );
@@ -465,6 +430,7 @@ class IngameHud extends Hud
 		{
 			DisplayTendencyNormal( key, tendency, status );
 		}
+		
 		// tendency arrows
 		string arrow_name = "ArrowUp";
 		if ( tendency < 0 )
@@ -528,15 +494,30 @@ class IngameHud extends Hud
 	
 	void DisplayTendencyTemp( int key, int tendency, int status )
 	{
-		ImageWidget w;
-		Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( "Icon" + m_StatesWidgetNames.Get( key ) ) ) );
+		ImageWidget w = ImageWidget.Cast( m_Notifiers.FindAnyWidget( String( "Icon" + m_StatesWidgetNames.Get( key ) ) ) );
+		TextWidget temp_top = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueTop" ) );
+		TextWidget temp_bot = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueBottom" ) );
+		//string temp = player..ToString() + "°C";
 		float alpha = w.GetAlpha();
+		
+		if ( tendency < 0 )
+		{
+			temp_top.Show( true );
+			temp_bot.Show( false );
+		}
+		else
+		{
+			temp_top.Show( false );
+			temp_bot.Show( true );
+		}
+		
 		switch( status )
 		{
 			case 2:
 				w.SetColor( ARGB( alpha * 255, 220, 220, 0 ) );		//WARNING_PLUS
 				m_TendencyStatusCritical.Remove( w );
 				w.SetImage( 1 );
+				
 				break;
 			case 3:
 				w.SetColor( ARGB( alpha * 255, 220, 0, 0 ) );		//CRITICAL_PLUS
@@ -575,11 +556,12 @@ class IngameHud extends Hud
 		}
 	}
 	
-	override void DisplayBadge( int key, bool show )
+	override void DisplayBadge( int key, int value )
 	{
-		m_BadgesWidgetDisplay.Set( key, show );
+		TextWidget bleed_count = TextWidget.Cast( m_Badges.FindAnyWidget( "BleedingCount" ) );
+		
+		m_BadgesWidgetDisplay.Set( key, value );
 		m_AnyBadgeVisible = false;
-		int x = 0;
 		for ( int i = 0; i < m_BadgesWidgetDisplay.Count(); i++ )
 		{
 			int badge_key = m_BadgesWidgetDisplay.GetKey( i );
@@ -588,20 +570,47 @@ class IngameHud extends Hud
 			Class.CastTo(badge_widget,  m_Badges.FindAnyWidget( badge_name ) );
 			if ( badge_widget )
 			{
-				if ( m_BadgesWidgetDisplay.Get( badge_key ) )
+				if ( m_BadgesWidgetDisplay.Get( badge_key ) > 0 )
 				{
-					badge_widget.SetPos ( x * 0.2, 0.0, true);
 					badge_widget.Show( true );
-					x = x + 1;
 					m_AnyBadgeVisible = true;
+					if( badge_key == NTFKEY_BLEEDISH )
+					{
+						bleed_count.Show( true );
+						bleed_count.SetText( value.ToString() );
+					}
 				}
 				else
 				{
+					if( badge_key == NTFKEY_BLEEDISH )
+					{
+						bleed_count.Show( false );
+					}
 					badge_widget.Show( false );
 				}
 			}
 		}
 		m_BadgeNotifierDivider.Show( m_HudState && m_AnyBadgeVisible );
+	}
+	
+	override void SetTemperature( string temp )
+	{
+		m_IsTemperatureVisible = true;
+		TextWidget temp_top = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueTop" ) );
+		TextWidget temp_bot = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueBottom" ) );
+		temp_top.SetText( temp );
+		temp_bot.SetText( temp );
+		m_TemperatureTimer = 0;
+	}
+	
+	void HideTemperature()
+	{
+		m_IsTemperatureVisible = false;
+		TextWidget temp_top = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueTop" ) );
+		TextWidget temp_bot = TextWidget.Cast( m_Notifiers.FindAnyWidget( "TemperatureValueBottom" ) );
+		temp_top.SetText( "" );
+		temp_bot.SetText( "" );
+		m_TemperatureTimer = 0;
 	}
 	
 	// state 0 = empty
@@ -765,18 +774,6 @@ class IngameHud extends Hud
 	void ZeroingKeyPress()
 	{
 		m_ZeroingKeyPressed = true;
-	}
-	
-	override void InitInventory()
-	{
-		UIManager manager = GetGame().GetUIManager();
-		InventoryMenu inventory = InventoryMenu.Cast(manager.FindMenu( MENU_INVENTORY ));
-		MissionGameplay mission = MissionGameplay.Cast(GetGame().GetMission());
-
-		if(	mission )
-		{
-			mission.InitInventory();
-		}
 	}
 	
 	override void DisplayStance( int stance )
@@ -1234,9 +1231,91 @@ class IngameHud extends Hud
 			}
 		}
 	}
-
-	protected int m_LastTime;
-	protected float m_BlinkTime;
+	
+	void RefreshPlayerTags()
+	{
+		if( GetGame().GetPlayer() )
+		{
+			bool found = false;
+			vector head_pos = GetGame().GetCurrentCameraPosition();
+			float distance;
+			foreach( Man player : ClientData.m_PlayerBaseList )
+			{
+				vector target_player = player.GetPosition();
+				distance = vector.Distance( head_pos, target_player );
+				
+				target_player[1] = target_player[1] + 1.2;
+				
+				if( distance <= 25 && player != GetGame().GetPlayer() )
+				{
+					vector screen_pos = GetGame().GetScreenPosRelative( target_player );
+					vector end_pos = head_pos + GetGame().GetCurrentCameraDirection() * 25;
+					RaycastRVParams params = new RaycastRVParams( head_pos, end_pos, GetGame().GetPlayer(), 0 );
+					params.sorted = true;
+					
+					array<ref RaycastRVResult> results = new array<ref RaycastRVResult>;
+					DayZPhysics.RaycastRVProxy( params, results );
+					if( results.Count() > 0 )
+					{
+						if( results.Get( 0 ).obj == player )
+						{
+							m_CurrentTaggedPlayer = PlayerBase.Cast( player );
+							found = true;
+						}
+					}
+				}
+			}
+			if( !found )
+			{
+				m_CurrentTaggedPlayer = null;
+			}
+		}
+	}
+	
+	int			m_PlayerSpineIndex;
+	PlayerBase	m_CurrentTaggedPlayer;
+	Widget		m_PlayerTag;
+	TextWidget	m_PlayerTagText;
+	
+	void ShowPlayerTag( float timeslice )
+	{
+		if( m_CurrentTaggedPlayer && m_CurrentTaggedPlayer.GetIdentity() )
+		{
+			if( !m_PlayerTag )
+			{
+				m_PlayerTag = GetGame().GetWorkspace().CreateWidgets("gui/layouts/new_ui/hud/hud_player_tag.layout");
+				m_PlayerTagText = TextWidget.Cast( m_PlayerTag.FindAnyWidget( "TagText" ) );
+				//m_PlayerTagText.SetText( m_CurrentTaggedPlayer.GetIdentity().GetName() );
+			}
+			m_PlayerSpineIndex = m_CurrentTaggedPlayer.GetBoneIndex( "Spine2" );
+			vector player_pos = m_CurrentTaggedPlayer.GetBonePositionWS( m_PlayerSpineIndex );
+			vector screen_pos = GetGame().GetScreenPosRelative( player_pos );
+			
+			if( screen_pos[2] > 0 )
+			{
+				if( screen_pos[0] > 0 && screen_pos[0] < 1 )
+				{
+					if( screen_pos[1] > 0 && screen_pos[1] < 1 )
+					{
+						m_PlayerTagText.SetAlpha( Math.Clamp( m_PlayerTagText.GetAlpha() + timeslice * 10, 0, 1 ) );
+						m_PlayerTag.SetPos( screen_pos[0], screen_pos[1] );
+						m_PlayerTagText.SetText( m_CurrentTaggedPlayer.GetIdentity().GetName() );
+						m_PlayerTagText.SetSize( 1, 1 - screen_pos[2] / 25  );
+						return;
+					}
+				}
+			}
+		}
+		
+		if( m_PlayerTag )
+		{
+			float new_alpha = Math.Clamp( m_PlayerTagText.GetAlpha() - timeslice * 10, 0, 1 );
+			m_PlayerTagText.SetAlpha( Math.Clamp( m_PlayerTagText.GetAlpha() - timeslice * 10, 0, 1 ) );
+			if( new_alpha == 0 )
+				m_CurrentTaggedPlayer = null;
+		}
+	}
+	
 	override void Update( float timeslice )
 	{
 		super.Update( timeslice );
@@ -1277,15 +1356,23 @@ class IngameHud extends Hud
 		}
 		else
 		{
-			int current_time = GetGame().GetTime();
-			float delta_time = ( current_time - m_LastTime ) / 1000;		//in seconds
-			m_BlinkTime += delta_time;
+			m_BlinkTime += timeslice;
 		}
 		
-		//update time
-		m_LastTime = GetGame().GetTime();
-		//
+		if( m_IsTemperatureVisible )
+		{
+			m_TemperatureTimer += timeslice;
+			if( m_TemperatureTimer > m_TemperatureShowTime )
+			{
+				HideTemperature();
+			}
+		}
 		
 		RefreshVehicleHud( timeslice );
+		
+		#ifdef PLATFORM_PS4
+		RefreshPlayerTags();
+		ShowPlayerTag(timeslice);
+		#endif
 	}
 }

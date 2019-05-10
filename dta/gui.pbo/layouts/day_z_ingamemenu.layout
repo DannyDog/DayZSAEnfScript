@@ -1,4 +1,5 @@
 FrameWidgetClass FrameWidget {
+ ignorepointer 1
  size 1 1
  halign center_ref
  valign center_ref
@@ -6,6 +7,7 @@ FrameWidgetClass FrameWidget {
  {
   WrapSpacerWidgetClass Licensing {
    clipchildren 0
+   ignorepointer 1
    position 0.05 0.062
    size 0.45 30
    valign bottom_ref
@@ -40,6 +42,7 @@ FrameWidgetClass FrameWidget {
     TextWidgetClass copyright {
      visible 1
      clipchildren 0
+     ignorepointer 1
      position 80 40
      size 1 0.5
      valign bottom_ref
@@ -57,7 +60,7 @@ FrameWidgetClass FrameWidget {
   }
   ImageWidgetClass vignette {
    visible 1
-   ignorepointer 0
+   ignorepointer 1
    color 0 0 0 0.7843
    position 0 0
    size 1.6 0.9
@@ -78,11 +81,11 @@ FrameWidgetClass FrameWidget {
   WrapSpacerWidgetClass play_panel_root {
    visible 1
    ignorepointer 1
-   position 0.05 130
+   position 100 130
    size 400 400
    halign right_ref
    valign bottom_ref
-   hexactpos 0
+   hexactpos 1
    vexactpos 1
    hexactsize 1
    vexactsize 1
@@ -95,6 +98,7 @@ FrameWidgetClass FrameWidget {
    {
     WrapSpacerWidgetClass bottom {
      visible 1
+     ignorepointer 1
      color 0 0 0 0.549
      position 0 0
      size 1 84
@@ -116,27 +120,80 @@ FrameWidgetClass FrameWidget {
      "Size To Content V" 1
      {
       ButtonWidgetClass continuebtn {
-       visible 1
-       color 0 0 0 1
+       ignorepointer 0
+       color 0 0 0 0
        position 0 0
-       size 1 84
-       halign center_ref
-       valign bottom_ref
+       size 1 90
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       userID 114
-       style DayZDefaultButtonAll
-       "no focus" 0
-       "next left" ""
-       "next right" ""
-       "next up" "tutorials"
-       "next down" "play_video"
-       text "#main_menu_continue"
-       text_proportion 0.6
-       font "gui/fonts/sdf_MetronLight72"
-       switch normal
+       {
+        PanelWidgetClass continuebtn_panel {
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+        }
+        TextWidgetClass continuebtn_label {
+         ignorepointer 1
+         size 1 0.6
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "#main_menu_continue"
+         font "gui/fonts/sdf_MetronLight72"
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
+      ButtonWidgetClass restartdeadbtn {
+       visible 1
+       ignorepointer 0
+       color 0 0 0 0
+       position 0 0
+       size 1 90
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        PanelWidgetClass restartdeadbtn_panel {
+         visible 1
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+        }
+        TextWidgetClass restartdeadbtn_label {
+         ignorepointer 1
+         size 1 0.6
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "#main_menu_respawn"
+         font "gui/fonts/sdf_MetronLight72"
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
      }
     }
@@ -176,73 +233,118 @@ FrameWidgetClass FrameWidget {
        vexactsize 1
       }
       ButtonWidgetClass exitbtn {
-       visible 1
-       color 0 0 0 1
+       ignorepointer 0
+       color 0 0 0 0
        position 0 0
        size 1 38
-       halign center_ref
-       valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       userID 106
-       style DayZDefaultButtonTop
-       "no focus" 1
-       "next left" ""
-       "next right" ""
-       "next up" "continuebtn"
-       "next down" "restartbtn"
-       text "#main_menu_exit"
-       text_proportion 0.55
-       font "gui/fonts/sdf_MetronLight24"
-       switch normal
+       {
+        PanelWidgetClass exitbtn_panel {
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+        }
+        TextWidgetClass exitbtn_label {
+         clipchildren 0
+         ignorepointer 1
+         size 1 0.55
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "#main_menu_exit"
+         font "gui/fonts/sdf_MetronLight72"
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass restartbtn {
-       visible 1
-       color 0 0 0 1
+       ignorepointer 0
+       color 0 0 0 0
        position 0 0
        size 1 38
-       halign center_ref
-       valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       userID 105
-       style DayZDefaultButtonSides
-       "no focus" 1
-       "next left" ""
-       "next right" ""
-       "next up" "exitbtn"
-       "next down" "optionsbtn"
-       text "#main_menu_restart"
-       text_proportion 0.55
-       font "gui/fonts/sdf_MetronLight24"
-       switch normal
+       {
+        PanelWidgetClass restartbtn_panel {
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+        }
+        TextWidgetClass restartbtn_label {
+         clipchildren 0
+         ignorepointer 1
+         size 1 0.55
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "#main_menu_restart"
+         font "gui/fonts/sdf_MetronLight72"
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       ButtonWidgetClass optionsbtn {
-       visible 1
-       color 0 0 0 1
+       ignorepointer 0
+       color 0 0 0 0
        position 0 0
        size 1 38
-       halign center_ref
-       valign bottom_ref
        hexactpos 1
        vexactpos 1
        hexactsize 0
        vexactsize 1
-       userID 102
-       style DayZDefaultButtonSides
-       "no focus" 1
-       "next left" ""
-       "next right" ""
-       "next up" "restartbtn"
-       "next down" "invitebtn"
-       text "#layout_xbox_ingame_menu_options"
-       text_proportion 0.55
-       font "gui/fonts/sdf_MetronLight24"
-       switch normal
+       {
+        PanelWidgetClass optionsbtn_panel {
+         ignorepointer 1
+         color 0 0 0 0
+         position 0 0
+         size 1 1
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         style DayZDefaultPanel
+        }
+        TextWidgetClass optionsbtn_label {
+         clipchildren 0
+         ignorepointer 1
+         size 1 0.55
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         text "#layout_xbox_ingame_menu_options"
+         font "gui/fonts/sdf_MetronLight72"
+         "text halign" center
+         "text valign" center
+        }
+       }
       }
       FrameWidgetClass separator_down {
        ignorepointer 1

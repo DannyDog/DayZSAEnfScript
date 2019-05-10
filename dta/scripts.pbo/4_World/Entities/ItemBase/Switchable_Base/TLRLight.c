@@ -68,4 +68,27 @@ class TLRLight extends Switchable_Base
 			SetObjectMaterial(REFLECTOR_ID, LIGHT_OFF_REFLECTOR);
 		}
 	}
+	
+	// Inventory manipulation
+	override void OnInventoryExit(Man player)
+	{
+		super.OnInventoryExit(player);
+		
+		if ( GetGame().IsServer()  &&  GetCompEM().IsWorking() )
+		{
+			if (player)
+			{
+				vector ori_rotate = player.GetOrientation();
+				ori_rotate = ori_rotate + Vector(270,0,0);
+				SetOrientation(ori_rotate);
+			}
+		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionTurnOnWhileInHands);
+		AddAction(ActionTurnOffWhileInHands);
+	}
 }

@@ -63,4 +63,12 @@ class Guts extends Edible_Base
 		}
 		return false;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionForceFeed);
+		AddAction(ActionEat);
+	}
 }

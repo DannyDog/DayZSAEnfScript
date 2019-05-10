@@ -76,18 +76,6 @@ class IconsContainer: Container
 		return m_EntitiesMap.Contains( entity.GetID() );
 	}
 	
-	void RecomputeItemPositions()
-	{
-		for( int i = 0; i < m_EntitiesMap.Count(); i++ )
-		{
-			Icon icon = m_EntitiesMap.GetElement( i );
-			icon.SetSort( i );
-			icon.SetPos( (i % 5)*2, (i / 5)*2 );
-			icon.SetPosX( (i % 5) * 2 );
-			icon.SetPosY( (i / 5) * 2 );
-		}
-	}
-	
 	void UpdateItemsTemperature()
 	{
 		if( !ItemManager.GetInstance().IsDragging() )
@@ -97,32 +85,6 @@ class IconsContainer: Container
 				Icon icon = m_EntitiesMap.GetElement(i);
 				icon.SetTemperature();
 			}			
-		}
-	}
-	
-	override void RefreshQuantity( EntityAI item_to_refresh )
-	{
-		Icon icon = GetIcon( item_to_refresh.GetID() );
-		if( icon )
-		{
-			icon.SetQuantity();
-		}
-	}
-	
-	override void RefreshItemPosition( EntityAI item_to_refresh )
-	{
-		InventoryLocation src = new InventoryLocation;
-		int row, column;
-		if( item_to_refresh.GetInventory().GetCurrentInventoryLocation(src) )
-		{
-			row = src.GetRow();
-			column = src.GetCol();
-		}
-		
-		Icon icon = GetIcon( item_to_refresh.GetID() );
-		if( icon )
-		{
-			icon.RefreshPos( row, column );
 		}
 	}
 

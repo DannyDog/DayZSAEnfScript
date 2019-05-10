@@ -53,8 +53,8 @@ class Pistol_CLO_CHG_BU1_MA0 extends WeaponStableState
 };
 class Pistol_CLO_JAM_BU1_MA0 extends WeaponStateJammed
 {
-	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnstate] { CJ10 closed jammed bullet nomag"); super.OnEntry(e); }
-	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnstate] } CJ10 closed jammed bullet nomag"); }
+	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnstate] { CJF0 closed jammed bullet nomag"); super.OnEntry(e); }
+	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnstate] } CJF0 closed jammed bullet nomag"); }
 	override int GetCurrentStateID () { return PistolStableStateID.CLO_JAM_BU1_MA0; }
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
@@ -91,8 +91,8 @@ class Pistol_CLO_DIS_BU0_MA1 extends WeaponStableState
 };
 class Pistol_CLO_JAM_BU1_MA1 extends WeaponStateJammed
 {
-	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnstate] { CJ11 closed jammed bullet mag"); super.OnEntry(e); }
-	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnstate] } CJ11 closed jammed bullet mag"); }
+	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnstate] { CJF1 closed jammed bullet mag"); super.OnEntry(e); }
+	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnstate] } CJF1 closed jammed bullet mag"); }
 	override int GetCurrentStateID () { return PistolStableStateID.CLO_JAM_BU1_MA1; }
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return true; }
@@ -129,12 +129,12 @@ class Pistol_Base extends Weapon_Base
 	ref WeaponStateBase CD00;
 	ref WeaponStateBase CC00;
 	ref WeaponStateBase CC10;
-	ref WeaponStateBase CJ10;
+	ref WeaponStateBase CJF0;
 	ref WeaponStateBase OD00;
 	ref WeaponStateBase CD01;
 	ref WeaponStateBase CC01;
 	ref WeaponStateBase CC11;
-	ref WeaponStateBase CJ11;
+	ref WeaponStateBase CJF1;
 	ref WeaponStateBase OD01;
 	
 	override bool CanChamberBullet (int muzzleIndex, Magazine mag)
@@ -181,12 +181,12 @@ class Pistol_Base extends Weapon_Base
 		CD00 = new Pistol_CLO_DIS_BU0_MA0(this, NULL, PistolAnimState.DEFAULT);
 		CC00 = new Pistol_CLO_CHG_BU0_MA0(this, NULL, PistolAnimState.CLOSED_CHARGED);
 		CC10 = new Pistol_CLO_CHG_BU1_MA0(this, NULL, PistolAnimState.CLOSED_CHARGED);
-		CJ10 = new Pistol_CLO_JAM_BU1_MA0(this, NULL, PistolAnimState.JAMMED);
+		CJF0 = new Pistol_CLO_JAM_BU1_MA0(this, NULL, PistolAnimState.JAMMED);
 		OD00 = new Pistol_OPE_DIS_BU0_MA0(this, NULL, PistolAnimState.OPENED_DISCHARGED);
 		CD01 = new Pistol_CLO_DIS_BU0_MA1(this, NULL, PistolAnimState.DEFAULT);
 		CC01 = new Pistol_CLO_CHG_BU0_MA1(this, NULL, PistolAnimState.CLOSED_CHARGED);
 		CC11 = new Pistol_CLO_CHG_BU1_MA1(this, NULL, PistolAnimState.CLOSED_CHARGED);
-		CJ11 = new Pistol_CLO_JAM_BU1_MA1(this, NULL, PistolAnimState.JAMMED);
+		CJF1 = new Pistol_CLO_JAM_BU1_MA1(this, NULL, PistolAnimState.JAMMED);
 		OD01 = new Pistol_OPE_DIS_BU0_MA1(this, NULL, PistolAnimState.OPENED_DISCHARGED);
 
 		// unstable (intermediate) states
@@ -206,15 +206,18 @@ class Pistol_Base extends Weapon_Base
 		WeaponDryFire Trigger_CD01 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_COCKED);
 		WeaponDryFire Trigger_OD01 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_UNCOCKED);
 		WeaponDryFire Trigger_CC01 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_COCKED); // cock with clip
-		WeaponDryFire Trigger_CJ10 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_UNCOCKED);
-		WeaponDryFire Trigger_CJ11 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_UNCOCKED);
+		WeaponDryFire Trigger_CJF0 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_UNCOCKED);
+		WeaponDryFire Trigger_CJF1 = new WeaponDryFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_UNCOCKED);
 		
-		WeaponFireAndChamberNext Trigger_CC11 = new WeaponFireAndChamberNext(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL, WeaponActionFireTypes.FIRE_JAM);
-		WeaponStateBase Trigger_CC10 = new WeaponFireLast(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL, WeaponActionFireTypes.FIRE_JAM); // fire last no mag
-		WeaponStateBase Trigger_CC11L = new WeaponFireLast(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_LAST, WeaponActionFireTypes.FIRE_JAM); // fire last with mag
+		WeaponFireAndChamberNext Trigger_CC11 = new WeaponFireAndChamberNext(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL);
+		WeaponStateBase Trigger_CC10 = new WeaponFireLast(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_NORMAL); // fire last no mag
+		WeaponStateBase Trigger_CC11L = new WeaponFireLast(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_LAST); // fire last with mag
+		
+		WeaponStateBase Trigger_CC10J = new WeaponFireToJam(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM); 
+		WeaponStateBase Trigger_CC11J = new WeaponFireToJam(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM);
 
-		WeaponStateBase Unjam_CJ10 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START);
-		WeaponStateBase Unjam_CJ11 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START);
+		WeaponStateBase Unjam_CJF0 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START);
+		WeaponStateBase Unjam_CJF1 = new WeaponUnjamming(this, NULL, WeaponActions.UNJAMMING, WeaponActionUnjammingTypes.UNJAMMING_START);
 
 		WeaponRechamber Chamber_CC10 = new WeaponRechamber(this, NULL, WeaponActions.MECHANISM, WeaponActionMechanismTypes.MECHANISM_CLOSED, WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_ONEBULLET_CLOSED);
 
@@ -226,7 +229,7 @@ class Pistol_Base extends Weapon_Base
 		WeaponChambering Chamber_OD01 = new WeaponChambering(this, NULL, WeaponActions.CHAMBERING, WeaponActionChamberingTypes.CHAMBERING_ONEBULLET_OPENED);
 
 		WeaponAttachMagazine Attach_CC10 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_BULLET_CLOSED);
-		WeaponAttachMagazine Attach_CJ10 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_BULLET_CLOSED);
+		WeaponAttachMagazine Attach_CJF0 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_BULLET_CLOSED);
 		WeaponAttachMagazine Attach_CD00 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_NOBULLET_CLOSED_UNCOCKED);
 		WeaponAttachMagazine Attach_CC00 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_NOBULLET_CLOSED_COCKED);
 		WeaponAttachMagazine Attach_OD00 = new WeaponAttachMagazine(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_NOMAGAZINE_NOBULLET_OPENED);
@@ -234,14 +237,14 @@ class Pistol_Base extends Weapon_Base
 		WeaponReplacingMagAndChamberNext Reload_CD01 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_NOBULLET_CLOSED_UNCOCKED);
 		WeaponReplacingMagAndChamberNext Reload_CC01 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_NOBULLET_CLOSED_COCKED);
 		WeaponReplacingMagAndChamberNext Reload_CC11 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_BULLET_CLOSED);
-		WeaponReplacingMagAndChamberNext Reload_CJ11 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_BULLET_CLOSED);
+		WeaponReplacingMagAndChamberNext Reload_CJF1 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_BULLET_CLOSED);
 		WeaponReplacingMagAndChamberNext Reload_OD01 = new WeaponReplacingMagAndChamberNext(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOADPISTOL_MAGAZINE_NOBULLET_OPENED);
 
 		WeaponDetachingMag Detach_CC11 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
 		WeaponDetachingMag Detach_CC01 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
 		WeaponDetachingMag Detach_CD01 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
 		WeaponDetachingMag Detach_OD01 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
-		WeaponDetachingMag Detach_CJ11 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
+		WeaponDetachingMag Detach_CJF1 = new WeaponDetachingMag(this, NULL, WeaponActions.RELOAD, WeaponActionReloadTypes.RELOAD_MAGAZINE_DETACH);
 		
 		//WeaponStateBase Trigger_CC10J = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM); // cock with clip
 		//WeaponStateBase Trigger_CC11J = new WeaponFire(this, NULL, WeaponActions.FIRE, WeaponActionFireTypes.FIRE_JAM);
@@ -249,6 +252,7 @@ class Pistol_Base extends Weapon_Base
 		// events
 		WeaponEventBase __M__ = new WeaponEventMechanism;
 		WeaponEventBase __T__ = new WeaponEventTrigger;
+		WeaponEventBase __TJ_ = new WeaponEventTriggerToJam;
 		WeaponEventBase __U__ = new WeaponEventUnjam;
 		WeaponEventBase __L__ = new WeaponEventLoad1Bullet;
 		WeaponEventBase __A__ = new WeaponEventAttachMagazine;
@@ -262,194 +266,182 @@ class Pistol_Base extends Weapon_Base
 		m_fsm = new WeaponFSM();
 
 		// charging
-		m_fsm.AddTransition(new WeaponTransition(  CD00, __M__, Mech_CD00)); // charge from closed
-		m_fsm.AddTransition(new WeaponTransition(Mech_CD00, _fin_,   CC00));
-			Mech_CD00.AddTransition(new WeaponTransition(  Mech_CD00.m_start, _abt_,   CD00));
-			Mech_CD00.AddTransition(new WeaponTransition(   Mech_CD00.m_onCK, _abt_,   CC00));
-		m_fsm.AddTransition(new WeaponTransition(  OD00, __M__, Mech_OD00)); // charge from opened
-		m_fsm.AddTransition(new WeaponTransition(Mech_OD00, _fin_,   CC00));
-			Mech_OD00.AddTransition(new WeaponTransition(  Mech_OD00.m_start, _abt_,   OD00));
-			Mech_OD00.AddTransition(new WeaponTransition(   Mech_OD00.m_onCK, _abt_,   CC00));
-		m_fsm.AddTransition(new WeaponTransition(  OD01, __M__, Mech_OD01)); // charge from opened with mag
-		m_fsm.AddTransition(new WeaponTransition(Mech_OD01, _fin_ , CC01, NULL, new WeaponGuardChamberEmpty(this) ));
-		m_fsm.AddTransition(new WeaponTransition(Mech_OD01, _fin_,   CC11));
-			Mech_OD01.AddTransition(new WeaponTransition(  Mech_OD01.m_start, _abt_,   OD01));
-			Mech_OD01.AddTransition(new WeaponTransition(   Mech_OD01.m_onCK, _abt_,   CC01));
-			Mech_OD01.AddTransition(new WeaponTransition(Mech_OD01.m_chamber, _abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  CD01, __M__, Mech_CD01)); // charge from closed=1 with mag
-		m_fsm.AddTransition(new WeaponTransition(Mech_CD01, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(Mech_CD01, _fin_,   CC11));
-			Mech_CD01.AddTransition(new WeaponTransition(  Mech_CD01.m_start, _abt_,   CD01));
-			Mech_CD01.AddTransition(new WeaponTransition(   Mech_CD01.m_onCK, _abt_,   CC01));
-			Mech_CD01.AddTransition(new WeaponTransition(Mech_CD01.m_chamber, _abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  CC01, __M__, Mech_CC01)); // charge from closed/charged with mag
-		m_fsm.AddTransition(new WeaponTransition(Mech_CC01, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(Mech_CC01, _fin_,   CC11));
-			Mech_CC01.AddTransition(new WeaponTransition(  Mech_CC01.m_start, _abt_,   CC01));
-			Mech_CC01.AddTransition(new WeaponTransition(   Mech_CC01.m_onCK, _abt_,   CC01));
-			Mech_CC01.AddTransition(new WeaponTransition(Mech_CC01.m_chamber, _abt_,   CC11));
+		m_fsm.AddTransition(new WeaponTransition( CD00,			__M__,	Mech_CD00)); // charge from closed
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CD00,	_fin_,	CC00));
+			Mech_CD00.AddTransition(new WeaponTransition( Mech_CD00.m_start,	_abt_,	CD00));
+			Mech_CD00.AddTransition(new WeaponTransition( Mech_CD00.m_onCK,		_abt_,	CC00));
+		m_fsm.AddTransition(new WeaponTransition( OD00,			__M__,	Mech_OD00)); // charge from opened
+		m_fsm.AddTransition(new WeaponTransition(  Mech_OD00,	_fin_,	CC00));
+			Mech_OD00.AddTransition(new WeaponTransition( Mech_OD00.m_start,	_abt_,	OD00));
+			Mech_OD00.AddTransition(new WeaponTransition( Mech_OD00.m_onCK,		_abt_,	CC00));
+		m_fsm.AddTransition(new WeaponTransition( OD01,			__M__,	Mech_OD01)); // charge from opened with mag
+		m_fsm.AddTransition(new WeaponTransition(  Mech_OD01,	_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this) ));
+		m_fsm.AddTransition(new WeaponTransition(  Mech_OD01,	_fin_,	CC11));
+			Mech_OD01.AddTransition(new WeaponTransition( Mech_OD01.m_start,	_abt_,	OD01));
+			Mech_OD01.AddTransition(new WeaponTransition( Mech_OD01.m_onCK,		_abt_,	CC01));
+			Mech_OD01.AddTransition(new WeaponTransition( Mech_OD01.m_chamber,	_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( CD01,			__M__,	Mech_CD01)); // charge from closed=1 with mag
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CD01,	_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CD01,	_fin_,	CC11));
+			Mech_CD01.AddTransition(new WeaponTransition( Mech_CD01.m_start,	_abt_,	CD01));
+			Mech_CD01.AddTransition(new WeaponTransition( Mech_CD01.m_onCK,		_abt_,	CC01));
+			Mech_CD01.AddTransition(new WeaponTransition( Mech_CD01.m_chamber,	_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( CC01, 		__M__,	Mech_CC01)); // charge from closed/charged with mag
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CC01,	_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CC01,	_fin_,	CC11));
+			Mech_CC01.AddTransition(new WeaponTransition( Mech_CC01.m_start,	_abt_,	CC01));
+			Mech_CC01.AddTransition(new WeaponTransition( Mech_CC01.m_onCK,		_abt_,	CC01));
+			Mech_CC01.AddTransition(new WeaponTransition( Mech_CC01.m_chamber,	_abt_,	CC11));
 		
 		// eject good cartridge
-		m_fsm.AddTransition(new WeaponTransition(  CC10, __M__,    Mech_CC10)); // eject chamber nomag
-		m_fsm.AddTransition(new WeaponTransition(   Mech_CC10, _fin_,   CC00));
-			Mech_CC10.AddTransition(new WeaponTransition(  Mech_CC10.m_start, _abt_,   CC10));
-			Mech_CC10.AddTransition(new WeaponTransition(  Mech_CC10.m_onBE, _abt_,   CC00));
-			Mech_CC10.AddTransition(new WeaponTransition(  Mech_CC10.m_hideB, _abt_,   CC00));
-			Mech_CC10.AddTransition(new WeaponTransition(  Mech_CC10.m_onCK, _abt_,   CC00));
-		m_fsm.AddTransition(new WeaponTransition(  CC11, __M__,    Mech_CC11 )); // eject with mag with ammo
-		m_fsm.AddTransition(new WeaponTransition(   Mech_CC11, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Mech_CC11, _fin_,   CC11));
-			Mech_CC11.AddTransition(new WeaponTransition(  Mech_CC11.m_start, _abt_,   CC11));
-			Mech_CC11.AddTransition(new WeaponTransition(  Mech_CC11.m_onBE, _abt_,   CC01));
-			Mech_CC11.AddTransition(new WeaponTransition(  Mech_CC11.m_hideB, _abt_,   CC01));
-			Mech_CC11.AddTransition(new WeaponTransition(  Mech_CC11.m_onCK, _abt_,   CC01));
-			Mech_CC11.AddTransition(new WeaponTransition(  Mech_CC11.m_chamber, _abt_,   CC11));
+		m_fsm.AddTransition(new WeaponTransition( CC10,			__M__,	Mech_CC10)); // eject chamber nomag
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CC10,	_fin_,	CC00));
+			Mech_CC10.AddTransition(new WeaponTransition( Mech_CC10.m_start,	_abt_,	CC10));
+			Mech_CC10.AddTransition(new WeaponTransition( Mech_CC10.m_onBE,		_abt_,	CC00));
+			Mech_CC10.AddTransition(new WeaponTransition( Mech_CC10.m_hideB,	_abt_,	CC00));
+			Mech_CC10.AddTransition(new WeaponTransition( Mech_CC10.m_onCK,		_abt_,	CC00));
+		m_fsm.AddTransition(new WeaponTransition( CC11,			__M__,	Mech_CC11 )); // eject with mag with ammo
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CC11,	_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(  Mech_CC11,	_fin_,	CC11));
+			Mech_CC11.AddTransition(new WeaponTransition( Mech_CC11.m_start,	_abt_,	CC11));
+			Mech_CC11.AddTransition(new WeaponTransition( Mech_CC11.m_onBE,		_abt_,	CC01));
+			Mech_CC11.AddTransition(new WeaponTransition( Mech_CC11.m_hideB,	_abt_,	CC01));
+			Mech_CC11.AddTransition(new WeaponTransition( Mech_CC11.m_onCK,		_abt_,	CC01));
+			Mech_CC11.AddTransition(new WeaponTransition( Mech_CC11.m_chamber,	_abt_,	CC11));
 
 		// Trigger_CC11e
-		m_fsm.AddTransition(new WeaponTransition(  CC00, __T__,    Trigger_CC00)); // fire.cocked
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC00, _fin_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC00, _dto_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC00, _abt_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(  CD00, __T__,    Trigger_CD00)); // fire.uncocked
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD00, _fin_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD00, _dto_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD00, _abt_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(  OD00, __T__,    Trigger_OD00)); // opened fire.uncocked
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD00, _fin_,   OD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD00, _dto_,   OD00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD00, _abt_,   OD00));
-		m_fsm.AddTransition(new WeaponTransition(  CD01, __T__,    Trigger_CD01)); // fire.uncocked w mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD01, _fin_,   CD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD01, _dto_,   CD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CD01, _abt_,   CD01));
-		m_fsm.AddTransition(new WeaponTransition(  OD01, __T__,    Trigger_OD01)); // opened fire.uncocked w mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD01, _fin_,   OD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD01, _dto_,   OD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_OD01, _abt_,   OD01));
+		m_fsm.AddTransition(new WeaponTransition( CC00,				__T__,	Trigger_CC00)); // fire.cocked
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC00,	_fin_,	CD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC00, 	_dto_,	CD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC00, 	_abt_,	CD00));
+		m_fsm.AddTransition(new WeaponTransition( CD00,				__T__,	Trigger_CD00)); // fire.uncocked
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD00,	_fin_,  CD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD00,	_dto_,  CD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD00,	_abt_,  CD00));
+		m_fsm.AddTransition(new WeaponTransition( OD00,				__T__,	Trigger_OD00)); // opened fire.uncocked
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD00,	_fin_,  OD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD00,	_dto_,  OD00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD00,	_abt_,  OD00));
+		m_fsm.AddTransition(new WeaponTransition( CD01,				__T__,	Trigger_CD01)); // fire.uncocked w mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD01,	_fin_,	CD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD01,	_dto_,  CD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CD01,	_abt_,  CD01));
+		m_fsm.AddTransition(new WeaponTransition( OD01,				__T__,	Trigger_OD01)); // opened fire.uncocked w mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD01,	_fin_,	OD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD01,	_dto_,	OD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_OD01,	_abt_,	OD01));
 		
-		m_fsm.AddTransition(new WeaponTransition(  CJ10, __T__,    Trigger_CJ10)); // opened fire.uncocked w mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ10, _fin_,   CJ10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ10, _dto_,   CJ10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ10, _abt_,   CJ10));
+		m_fsm.AddTransition(new WeaponTransition( CJF0,				__T__,	Trigger_CJF0)); // opened fire.uncocked w mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF0,	_fin_,	CJF0));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF0,	_dto_,	CJF0));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF0,	_abt_,	CJF0));
 		
-		m_fsm.AddTransition(new WeaponTransition(  CJ11, __T__,    Trigger_CJ11)); // opened fire.uncocked w mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ11, _fin_,   CJ11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ11, _dto_,   CJ11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CJ11, _abt_,   CJ11));
-		
-		/*m_fsm.AddTransition(new WeaponTransition(   CC10, __T__,    Trigger_CC10J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10J, _fin_,    CJ10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10J, _rto_,    CJ10));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10J, _abt_,    CJ10));
-		
-		m_fsm.AddTransition(new WeaponTransition(   CC10, __T__,    Trigger_CC00, NULL, new WeaponGuardIsDestroyed(this)));*/
-		
-		m_fsm.AddTransition(new WeaponTransition(  CC10, __T__,    Trigger_CC10)); // or fire.last (if not jammed)
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _fin_,   CJ10, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _rto_,   CJ10, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _abt_,   CJ10, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _fin_,   CC00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _rto_,   CC00));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC10, _abt_,   CC00));
+		m_fsm.AddTransition(new WeaponTransition( CJF1,				__T__,	Trigger_CJF1)); // opened fire.uncocked w mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF1,	_fin_,	CJF1));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF1,	_dto_,	CJF1));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CJF1,	_abt_,	CJF1));
 		
 		
-		/*m_fsm.AddTransition(new WeaponTransition(   CC11, __T__,    Trigger_CC11J, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11J, _fin_,    CJ11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11J, _rto_,    CJ11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11J, _abt_,    CJ11));*/
+		m_fsm.AddTransition(new WeaponTransition( CC10,				__T__,	Trigger_CC10)); // or fire.last (if not jammed)
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10,	_fin_,	CC00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10,	_rto_,	CC00));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10,	_abt_,	CC00));
 		
-		//m_fsm.AddTransition(new WeaponTransition(   CC11, __T__,    Trigger_CC00, NULL, new WeaponGuardIsDestroyed(this)));
+		m_fsm.AddTransition(new WeaponTransition( CC10,				__TJ_,	Trigger_CC10J)); // or fire.last (if not jammed)
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10J,	_fin_,	CJF0 ));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10J,	_rto_,	CJF0 ));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC10J,	_abt_,	CJF0 ));
 		
-		//m_fsm.AddTransition(new WeaponTransition(  CC11, __T__,   CJ11, NULL, new WeaponGuardJammed(this))); // switch to jam
-		m_fsm.AddTransition(new WeaponTransition(  CC11, __T__,    Trigger_CC11, NULL, new WeaponGuardHasAmmo(this))); // fire.normal + chamber next
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _fin_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _rto_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _abt_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _fin_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _rto_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11, _abt_,   CC11));
+		
+		m_fsm.AddTransition(new WeaponTransition( CC11, 			__T__,	Trigger_CC11, NULL, new WeaponGuardHasAmmo(this))); // fire.normal + chamber next
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11,	_fin_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11,	_rto_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11,	_abt_,	CC11));
 			//Trigger_CC11.AddTransition(new WeaponTransition( Trigger_CC11.m_fire, _abt_,   CC01));
 			//Trigger_CC11.AddTransition(new WeaponTransition( Trigger_CC11.m_chamberNext, _abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  CC11, __T__,    Trigger_CC11L, NULL, new GuardNot(new WeaponGuardHasAmmo(this)))); // fire.last with mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _fin_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _rto_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _abt_,   CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _fin_,   OD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _rto_,   OD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC11L, _abt_,   OD01));
-		m_fsm.AddTransition(new WeaponTransition(  CC01, __T__,    Trigger_CC01)); // fire.cocked with mag
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC01, _fin_,   CD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC01, _dto_,   CD01));
-		m_fsm.AddTransition(new WeaponTransition(   Trigger_CC01, _abt_,   CD01));
+		m_fsm.AddTransition(new WeaponTransition( CC11,				__T__,	Trigger_CC11L, NULL, new GuardNot(new WeaponGuardHasAmmo(this)))); // fire.last with mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11L,	_fin_,	OD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11L,	_rto_,	OD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11L,	_abt_,	OD01));
+		
+		m_fsm.AddTransition(new WeaponTransition( CC11,				__TJ_,	Trigger_CC11J )); // fire.last with mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11J,	_fin_,	CJF1 ));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11J,	_rto_,	CJF1 ));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC11J,	_abt_,	CJF1 ));
+		
+		m_fsm.AddTransition(new WeaponTransition( CC01,				__T__,	Trigger_CC01)); // fire.cocked with mag
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC01,	_fin_,	CD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC01,	_dto_,	CD01));
+		m_fsm.AddTransition(new WeaponTransition(  Trigger_CC01,	_abt_,	CD01));
 
 		// load cartridge
-		m_fsm.AddTransition(new WeaponTransition(  CD00, __L__, Chamber_CD00)); // chamber from closed=1
-		m_fsm.AddTransition(new WeaponTransition(Chamber_CD00, _fin_,   CC10));
-			Chamber_CD00.AddTransition(new WeaponTransition(Chamber_CD00.m_start,	_abt_,   CD00));
-			Chamber_CD00.AddTransition(new WeaponTransition(Chamber_CD00.m_chamber,	_abt_,   CD00));
-			Chamber_CD00.AddTransition(new WeaponTransition(Chamber_CD00.m_w4t,		_abt_,   CC10));
-		m_fsm.AddTransition(new WeaponTransition(  OD00, __L__, Chamber_OD00)); // chamber from opened
-		m_fsm.AddTransition(new WeaponTransition(Chamber_OD00, _fin_,   CC10));
-			Chamber_OD00.AddTransition(new WeaponTransition(Chamber_OD00.m_start,	_abt_,   OD00));
-			Chamber_OD00.AddTransition(new WeaponTransition(Chamber_OD00.m_chamber,	_abt_,   OD00));
-			Chamber_OD00.AddTransition(new WeaponTransition(Chamber_OD00.m_w4t,		_abt_,   CC10));
-		m_fsm.AddTransition(new WeaponTransition(  CC00, __L__, Chamber_CC00)); // chamber from closed charged
-		m_fsm.AddTransition(new WeaponTransition(Chamber_CC00, _fin_,   CC10));
-			Chamber_CC00.AddTransition(new WeaponTransition(Chamber_CC00.m_start,	_abt_,   CC00));
-			Chamber_CC00.AddTransition(new WeaponTransition(Chamber_CC00.m_chamber,	_abt_,   CC00));
-			Chamber_CC00.AddTransition(new WeaponTransition(Chamber_CC00.m_w4t,		_abt_,   CC10));
+		m_fsm.AddTransition(new WeaponTransition( CD00,				__L__,	Chamber_CD00)); // chamber from closed=1
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_CD00,	_fin_,	CC10));
+			Chamber_CD00.AddTransition(new WeaponTransition( Chamber_CD00.m_start,		_abt_,	CD00));
+			Chamber_CD00.AddTransition(new WeaponTransition( Chamber_CD00.m_chamber,	_abt_,	CD00));
+			Chamber_CD00.AddTransition(new WeaponTransition( Chamber_CD00.m_w4t,		_abt_,	CC10));
+		m_fsm.AddTransition(new WeaponTransition( OD00,				__L__,	Chamber_OD00)); // chamber from opened
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_OD00,	_fin_,	CC10));
+			Chamber_OD00.AddTransition(new WeaponTransition( Chamber_OD00.m_start,		_abt_,	OD00));
+			Chamber_OD00.AddTransition(new WeaponTransition( Chamber_OD00.m_chamber,	_abt_,	OD00));
+			Chamber_OD00.AddTransition(new WeaponTransition( Chamber_OD00.m_w4t,		_abt_,	CC10));
+		m_fsm.AddTransition(new WeaponTransition( CC00,				__L__,	Chamber_CC00)); // chamber from closed charged
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_CC00,	_fin_,	CC10));
+			Chamber_CC00.AddTransition(new WeaponTransition( Chamber_CC00.m_start,		_abt_,	CC00));
+			Chamber_CC00.AddTransition(new WeaponTransition( Chamber_CC00.m_chamber,	_abt_,	CC00));
+			Chamber_CC00.AddTransition(new WeaponTransition( Chamber_CC00.m_w4t,		_abt_,	CC10));
 		// rechamber
-		m_fsm.AddTransition(new WeaponTransition(  CC10, __L__,    Chamber_CC10)); // re-chamber from closed charged
-		m_fsm.AddTransition(new WeaponTransition(   Chamber_CC10, _fin_,   CC10));
-			Chamber_CC10.AddTransition(new WeaponTransition(Chamber_CC10.m_eje,		_abt_,   CC00));
-			Chamber_CC10.AddTransition(new WeaponTransition(Chamber_CC10.m_loa,		_abt_,   CC10));
+		m_fsm.AddTransition(new WeaponTransition( CC10,				__L__,	Chamber_CC10)); // re-chamber from closed charged
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_CC10,	_fin_,	CC10));
+			Chamber_CC10.AddTransition(new WeaponTransition( Chamber_CC10.m_eje,		_abt_,	CC00));
+			Chamber_CC10.AddTransition(new WeaponTransition( Chamber_CC10.m_loa,		_abt_,	CC10));
 		// @todo: rechamber with mag
 		// load cartridge with mag
-		m_fsm.AddTransition(new WeaponTransition(  CD01, __L__, Chamber_CD01, NULL, new WeaponGuardHasMag(this))); // chamber from closed=1 with mag
-		m_fsm.AddTransition(new WeaponTransition(Chamber_CD01, _fin_,   CC11));
-			Chamber_CD01.AddTransition(new WeaponTransition(Chamber_CD01.m_start,	_abt_,   CD01));
-			Chamber_CD01.AddTransition(new WeaponTransition(Chamber_CD01.m_chamber,	_abt_,   CD01));
-			Chamber_CD01.AddTransition(new WeaponTransition(Chamber_CD01.m_w4t,		_abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  CC01, __L__, Chamber_CC01, NULL, new WeaponGuardHasMag(this))); // chamber from closed=1 with mag
-		m_fsm.AddTransition(new WeaponTransition(Chamber_CC01, _fin_,   CC11));
-			Chamber_CC01.AddTransition(new WeaponTransition(Chamber_CC01.m_start,	_abt_,   CC01));
-			Chamber_CC01.AddTransition(new WeaponTransition(Chamber_CC01.m_chamber,	_abt_,   CC01));
-			Chamber_CC01.AddTransition(new WeaponTransition(Chamber_CC01.m_w4t,		_abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  OD01, __L__, Chamber_OD01, NULL, new WeaponGuardHasMag(this))); // chamber from opened with mag
-		m_fsm.AddTransition(new WeaponTransition(Chamber_OD01, _fin_,   CC11));
-			Chamber_OD01.AddTransition(new WeaponTransition(Chamber_OD01.m_start,	_abt_,   OD01));
-			Chamber_OD01.AddTransition(new WeaponTransition(Chamber_OD01.m_chamber,	_abt_,   OD01));
-			Chamber_OD01.AddTransition(new WeaponTransition(Chamber_OD01.m_w4t,		_abt_,   CC11));
+		m_fsm.AddTransition(new WeaponTransition( CD01,				__L__,	Chamber_CD01, NULL, new WeaponGuardHasMag(this))); // chamber from closed=1 with mag
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_CD01,	_fin_,	CC11));
+			Chamber_CD01.AddTransition(new WeaponTransition( Chamber_CD01.m_start,		_abt_,	CD01));
+			Chamber_CD01.AddTransition(new WeaponTransition( Chamber_CD01.m_chamber,	_abt_,	CD01));
+			Chamber_CD01.AddTransition(new WeaponTransition( Chamber_CD01.m_w4t,		_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( CC01,				__L__,	Chamber_CC01, NULL, new WeaponGuardHasMag(this))); // chamber from closed=1 with mag
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_CC01, 	_fin_,	CC11));
+			Chamber_CC01.AddTransition(new WeaponTransition( Chamber_CC01.m_start,		_abt_,	CC01));
+			Chamber_CC01.AddTransition(new WeaponTransition( Chamber_CC01.m_chamber,	_abt_,	CC01));
+			Chamber_CC01.AddTransition(new WeaponTransition( Chamber_CC01.m_w4t,		_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( OD01,				__L__,	Chamber_OD01, NULL, new WeaponGuardHasMag(this))); // chamber from opened with mag
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_OD01,	_fin_,	CC11));
+			Chamber_OD01.AddTransition(new WeaponTransition( Chamber_OD01.m_start,		_abt_,	OD01));
+			Chamber_OD01.AddTransition(new WeaponTransition( Chamber_OD01.m_chamber,	_abt_,	OD01));
+			Chamber_OD01.AddTransition(new WeaponTransition( Chamber_OD01.m_w4t,		_abt_,	CC11));
 
-		m_fsm.AddTransition(new WeaponTransition(  CJ10, __A__, Attach_CJ10, NULL, new WeaponGuardCanAttachMag(this))); // attach from JAM/b1/m0
-		m_fsm.AddTransition(new WeaponTransition(Attach_CJ10, _fin_,   CJ11));
-			Attach_CJ10.AddTransition(new WeaponTransition(Attach_CJ10.m_start,   _abt_,   CJ10));
-			Attach_CJ10.AddTransition(new WeaponTransition(Attach_CJ10.m_getNew,  _abt_,   CJ10));
-			Attach_CJ10.AddTransition(new WeaponTransition(Attach_CJ10.m_attach,  _abt_,   CJ11));
+		m_fsm.AddTransition(new WeaponTransition( CJF0,				__A__,	Attach_CJF0, NULL, new WeaponGuardCanAttachMag(this))); // attach from JAM/b1/m0
+		m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,		_fin_,	CJF1));
+			Attach_CJF0.AddTransition(new WeaponTransition( Attach_CJF0.m_start,		_abt_,	CJF0));
+			Attach_CJF0.AddTransition(new WeaponTransition( Attach_CJF0.m_getNew,		_abt_,	CJF0));
+			Attach_CJF0.AddTransition(new WeaponTransition( Attach_CJF0.m_attach,		_abt_,	CJF1));
 
 // zdokumentovano az sem
 		// attach mag with no ammo
-		m_fsm.AddTransition(new WeaponTransition(  CD00, __A__, Attach_CD00, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b0/m0
-		m_fsm.AddTransition(new WeaponTransition(Attach_CD00, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(Attach_CD00, _fin_,   CC11));
-			Attach_CD00.AddTransition(new WeaponTransition(Attach_CD00.m_start,   _abt_,   CD00));
-			Attach_CD00.AddTransition(new WeaponTransition(Attach_CD00.m_getNew,  _abt_,   CD00));
-			Attach_CD00.AddTransition(new WeaponTransition(Attach_CD00.m_attach,  _abt_,   CD01));
-			Attach_CD00.AddTransition(new WeaponTransition(Attach_CD00.m_onCK, 	  _abt_,   CC01));
-			Attach_CD00.AddTransition(new WeaponTransition(Attach_CD00.m_chamber, _abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  CC10, __A__, Attach_CC10, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b1/m0
-		m_fsm.AddTransition(new WeaponTransition(Attach_CC10, _fin_,   CC11));
-			Attach_CC10.AddTransition(new WeaponTransition(Attach_CC10.m_start,   _abt_,   CC10));
-			Attach_CC10.AddTransition(new WeaponTransition(Attach_CC10.m_getNew,  _abt_,   CC10));
-			Attach_CC10.AddTransition(new WeaponTransition(Attach_CC10.m_attach,  _abt_,   CC11));
-		m_fsm.AddTransition(new WeaponTransition(  OD00, __A__, Attach_OD00, NULL, new WeaponGuardCanAttachMag(this))); // attach from OPE/b0/m0
-		m_fsm.AddTransition(new WeaponTransition(Attach_OD00, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(Attach_OD00, _fin_,   CC11));
-			Attach_OD00.AddTransition(new WeaponTransition(Attach_OD00.m_start,   _abt_,   OD00));
-			Attach_OD00.AddTransition(new WeaponTransition(Attach_OD00.m_getNew,  _abt_,   OD00));
-			Attach_OD00.AddTransition(new WeaponTransition(Attach_OD00.m_attach,  _abt_,   OD01));
-			Attach_OD00.AddTransition(new WeaponTransition(Attach_OD00.m_onCK, 	  _abt_,   CC01));
-			Attach_OD00.AddTransition(new WeaponTransition(Attach_OD00.m_chamber, _abt_,   CC11));
+		m_fsm.AddTransition(new WeaponTransition( CD00,				__A__,	Attach_CD00, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b0/m0
+		m_fsm.AddTransition(new WeaponTransition(  Attach_CD00,		_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(  Attach_CD00,		_fin_,	CC11));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_start,		_abt_,	CD00));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_getNew,		_abt_,	CD00));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_attach,		_abt_,	CD01));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_onCK,			_abt_,	CC01));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_chamber,		_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( CC10,				__A__,	Attach_CC10, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b1/m0
+		m_fsm.AddTransition(new WeaponTransition(  Attach_CC10,		_fin_,	CC11));
+			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_start,		_abt_,	CC10));
+			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_getNew,		_abt_,	CC10));
+			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_attach,		_abt_,	CC11));
+		m_fsm.AddTransition(new WeaponTransition( OD00,				__A__,	Attach_OD00, NULL, new WeaponGuardCanAttachMag(this))); // attach from OPE/b0/m0
+		m_fsm.AddTransition(new WeaponTransition(  Attach_OD00,		_fin_,	CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(  Attach_OD00,		_fin_,	CC11));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_start,		_abt_,	OD00));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_getNew,		_abt_,	OD00));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_attach,		_abt_,	OD01));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_onCK,			_abt_,	CC01));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_chamber,		_abt_,	CC11));
 
 		m_fsm.AddTransition(new WeaponTransition(  CC00, __A__, Attach_CC00, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b0/m0 charged
 		m_fsm.AddTransition(new WeaponTransition(Attach_CC00, _fin_,   CC01, NULL, new WeaponGuardChamberEmpty(this)));
@@ -503,13 +495,13 @@ class Pistol_Base extends Weapon_Base
 			Reload_OD01.AddTransition(new WeaponTransition(Reload_OD01.m_onCK,      _abt_,   CC01));
 			Reload_OD01.AddTransition(new WeaponTransition(Reload_OD01.m_chamber,   _abt_,   CC11));
 
-		m_fsm.AddTransition(new WeaponTransition(  CJ11, __S__, Reload_CJ11)); // swap in JAM/b1/m1
-		m_fsm.AddTransition(new WeaponTransition(Reload_CJ11, _fin_,   CJ11));
-			Reload_CJ11.AddTransition(new WeaponTransition(Reload_CJ11.m_start ,    _abt_,   CJ11));
-			Reload_CJ11.AddTransition(new WeaponTransition(Reload_CJ11.m_detach,    _abt_,   CJ10));
-			Reload_CJ11.AddTransition(new WeaponTransition(Reload_CJ11.m_hideOld,   _abt_,   CJ10));
-			Reload_CJ11.AddTransition(new WeaponTransition(Reload_CJ11.m_swapMags,  _abt_,   CJ10));
-			Reload_CJ11.AddTransition(new WeaponTransition(Reload_CJ11.m_attach,    _abt_,   CJ11));
+		m_fsm.AddTransition(new WeaponTransition(  CJF1, __S__, Reload_CJF1)); // swap in JAM/b1/m1
+		m_fsm.AddTransition(new WeaponTransition(Reload_CJF1, _fin_,   CJF1));
+			Reload_CJF1.AddTransition(new WeaponTransition(Reload_CJF1.m_start ,    _abt_,   CJF1));
+			Reload_CJF1.AddTransition(new WeaponTransition(Reload_CJF1.m_detach,    _abt_,   CJF0));
+			Reload_CJF1.AddTransition(new WeaponTransition(Reload_CJF1.m_hideOld,   _abt_,   CJF0));
+			Reload_CJF1.AddTransition(new WeaponTransition(Reload_CJF1.m_swapMags,  _abt_,   CJF0));
+			Reload_CJF1.AddTransition(new WeaponTransition(Reload_CJF1.m_attach,    _abt_,   CJF1));
 
 
 		// detach magazine
@@ -533,23 +525,23 @@ class Pistol_Base extends Weapon_Base
 			Detach_CD01.AddTransition(new WeaponTransition(Detach_CD01.m_start,  _abt_,   CD01));
 			Detach_CD01.AddTransition(new WeaponTransition(Detach_CD01.m_store,  _abt_,   CD00));
 			Detach_CD01.AddTransition(new WeaponTransition(Detach_CD01.m_hideM,  _abt_,   CD00));
-		m_fsm.AddTransition(new WeaponTransition(  CJ11, __D__, Detach_CJ11, NULL, new WeaponGuardCanDetachMag(this))); // detach from CLO/b1/m1 jammed
-		m_fsm.AddTransition(new WeaponTransition(Detach_CJ11, _fin_,   CJ10));
-			Detach_CJ11.AddTransition(new WeaponTransition(Detach_CJ11.m_start,  _abt_,   CJ11));
-			Detach_CJ11.AddTransition(new WeaponTransition(Detach_CJ11.m_store,  _abt_,   CJ10));
-			Detach_CJ11.AddTransition(new WeaponTransition(Detach_CJ11.m_hideM,  _abt_,   CJ10));
+		m_fsm.AddTransition(new WeaponTransition(  CJF1, __D__, Detach_CJF1, NULL, new WeaponGuardCanDetachMag(this))); // detach from CLO/b1/m1 jammed
+		m_fsm.AddTransition(new WeaponTransition(Detach_CJF1, _fin_,   CJF0));
+			Detach_CJF1.AddTransition(new WeaponTransition(Detach_CJF1.m_start,  _abt_,   CJF1));
+			Detach_CJF1.AddTransition(new WeaponTransition(Detach_CJF1.m_store,  _abt_,   CJF0));
+			Detach_CJF1.AddTransition(new WeaponTransition(Detach_CJF1.m_hideM,  _abt_,   CJF0));
 
 
 		// unjam
-		m_fsm.AddTransition(new WeaponTransition(   CJ10, __U__, Unjam_CJ10)); // unjam nomag
-		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJ10, _fin_,    CJ10, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJ10, _fin_,    CC00, NULL, new GuardNot(new WeaponGuardJammed(this))));
-		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJ10, _abt_,    CJ10));
-		m_fsm.AddTransition(new WeaponTransition(   CJ11, __U__,    Unjam_CJ11)); // unjam with mag with ammo
-		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJ11, _fin_,    CJ11, NULL, new WeaponGuardJammed(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJ11, _fin_,    CC01, NULL, new WeaponGuardChamberEmpty(this)));
-		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJ11, _fin_,    CC11));
-		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJ11, _abt_,    CJ11));
+		m_fsm.AddTransition(new WeaponTransition(   CJF0, __U__, Unjam_CJF0)); // unjam nomag
+		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJF0, _fin_,    CJF0, NULL, new WeaponGuardJammed(this)));
+		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJF0, _fin_,    CC00, NULL, new GuardNot(new WeaponGuardJammed(this))));
+		m_fsm.AddTransition(new WeaponTransition(	Unjam_CJF0, _abt_,    CJF0));
+		m_fsm.AddTransition(new WeaponTransition(   CJF1, __U__,    Unjam_CJF1)); // unjam with mag with ammo
+		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJF1, _fin_,    CJF1, NULL, new WeaponGuardJammed(this)));
+		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJF1, _fin_,    CC01, NULL, new WeaponGuardChamberEmpty(this)));
+		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJF1, _fin_,    CC11));
+		m_fsm.AddTransition(new WeaponTransition(   Unjam_CJF1, _abt_,    CJF1));
 		
 
 		m_fsm.SetInitialState(CD00);

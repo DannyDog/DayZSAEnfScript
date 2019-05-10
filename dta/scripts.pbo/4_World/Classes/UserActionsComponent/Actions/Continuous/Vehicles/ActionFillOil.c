@@ -45,26 +45,35 @@ class ActionFillOil: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		//ItemBase tgt_item = ItemBase.Cast( item.GetObject() );
-		//EntityAI tgt_parent = EntityAI.Cast( target.GetParent() );
-		EntityAI tgt_entity = EntityAI.Cast( target.GetObject() );
+		if( !target || !IsTransport(target) )
+			return false;
 
 		if( item.GetQuantity() <= 0 )
 			return false;
 
-		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
+		Car car = Car.Cast( target.GetObject() );
+		if( !car )
+			return false;
+		
+		if( car.GetFluidFraction( CarFluid.OIL ) >= 0.98 )
 			return false;
 
-		Car car = Car.Cast(tgt_entity);
-		if( car )
+		float distance = Math.AbsFloat(vector.Distance(car.GetPosition(), player.GetPosition()));
+
+		CarScript carS = CarScript.Cast(car);
+		if( distance <= carS.GetActionDistanceFuel() )
 		{
-			if( car.GetFluidFraction( CarFluid.OIL ) >= 0.988 )
-				return false;
+			array<string> selections = new array<string>;
+			target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
 
-			if( car.IsActionComponentPartOfSelection(target.GetComponentIndex(), "engine") )
-				return true;		
+			for (int s = 0; s < selections.Count(); s++)
+			{
+				if ( selections[s] == carS.GetActionCompNameOil() )
+				{
+					return true;
+				}
+			}
 		}
-
 		return false;
 	}
 

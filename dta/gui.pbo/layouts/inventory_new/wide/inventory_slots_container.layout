@@ -375,7 +375,6 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 1 0.8824 1 1
          position 0 0
          size 1 1
          hexactpos 1

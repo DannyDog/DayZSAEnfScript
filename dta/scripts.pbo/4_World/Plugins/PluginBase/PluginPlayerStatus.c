@@ -60,7 +60,7 @@ class PluginPlayerStatus extends PluginBase
 		}
 	}
 
-	void SetBadge( int key, bool show )
+	void SetBadge( int key, int value )
 	{
 		if ( key )
 		{
@@ -70,7 +70,7 @@ class PluginPlayerStatus extends PluginBase
 				Hud hud = mission.GetHud();
 				if ( hud )
 				{
-					hud.DisplayBadge( key, show );
+					hud.DisplayBadge( key, value );
 				}
 			}
 		}

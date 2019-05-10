@@ -15,11 +15,6 @@ class ActionBuildPart: ActionContinuousBase
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
 		
-		m_MessageStartFail = "I cannot build a construction part.";
-		m_MessageStart = "I have build a construction part.";
-		m_MessageSuccess = "I have build a construction part.";
-		m_MessageFail = "I have failed to build a construction part.";
-		
 		m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_HIGH;
 	}
 	
@@ -53,42 +48,14 @@ class ActionBuildPart: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if ( player && !player.IsLeaning() )
-		{
-			Object targetObject = target.GetObject();
-			if ( targetObject && targetObject.CanUseConstruction() )
-			{
-				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
-				Construction construction = base_building.GetConstruction();
-				ConstructionActionData construction_action_data = player.GetConstructionActionData();
-				construction_action_data.SetTarget( targetObject );
-				
-				string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
-				
-				if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
-				{
-					construction_action_data.RefreshPartsToBuild( main_part_name, item );
-				}
-				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
-	
-				//Debug
-				/*
-				if ( constrution_part )
-				{
-					construction.IsColliding( constrution_part.GetPartName() );
-				}
-				*/
-	
-				if ( constrution_part && !base_building.IsFacingPlayer( player, constrution_part.GetMainPartName() ) )
-				{
-					return true;
-				}
-			}
-		}
-		
-		return false;
+		return BuildCondition( player, target, item, true );
 	}
 		
+	override bool ActionConditionContinue( ActionData action_data )
+	{	
+		return BuildCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
+	}
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
@@ -104,7 +71,7 @@ class ActionBuildPart: ActionContinuousBase
 			//add damage to tool
 			action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
 		}
-
+		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
 	
@@ -121,7 +88,7 @@ class ActionBuildPart: ActionContinuousBase
 		return false;
 	}
 	
-	void SetBuildingAnimation( ItemBase item )
+	protected void SetBuildingAnimation( ItemBase item )
 	{
 		switch( item.Type() )
 		{
@@ -137,4 +104,55 @@ class ActionBuildPart: ActionContinuousBase
 				break;
 		}
 	}
+	
+	protected bool BuildCondition( PlayerBase player, ActionTarget target, ItemBase item, bool camera_check )
+	{	
+		if ( player && !player.IsLeaning() )
+		{
+			Object targetObject = target.GetObject();
+			if ( targetObject && targetObject.CanUseConstruction() )
+			{
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
+				ConstructionActionData construction_action_data = player.GetConstructionActionData();
+				construction_action_data.SetTarget( targetObject );
+				
+				string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
+				
+				if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
+				{
+					construction_action_data.RefreshPartsToBuild( main_part_name, item );
+				}
+				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
+	
+				//Debug
+				/*
+				if ( constrution_part )
+				{
+					Construction construction = base_building.GetConstruction();	
+					construction.IsColliding( constrution_part.GetPartName() );
+				}
+				*/
+
+				if ( constrution_part )
+				{
+					//camera and position checks
+					if ( !base_building.IsFacingPlayer( player, constrution_part.GetMainPartName() ) && !player.GetInputController().CameraIsFreeLook() )
+					{
+						//Camera check (client-only)
+						if ( camera_check )
+						{
+							if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
+							{
+								return !base_building.IsFacingCamera( constrution_part.GetMainPartName() );
+							}
+						}
+						
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}	
 }

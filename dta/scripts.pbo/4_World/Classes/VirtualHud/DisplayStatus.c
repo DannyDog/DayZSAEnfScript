@@ -191,7 +191,8 @@ class VirtualHud
 	{
 		for(int i = 0; i < NUMBER_OF_ELEMENTS;i++)
 		{
-			if( GetElement(i) && GetElement(i).IsClientOnly() ) GetElement(i).UpdateHUD();
+			DisplayElementBase element = GetElement(i);
+			if( element && element.IsClientOnly() && element.IsValueChanged() ) element.UpdateHUD();
 		}
 	}
 	/*
@@ -208,9 +209,10 @@ class VirtualHud
 		//Log("UpdateStatus called for entity: "+ToString(m_Player));
 		for(int i = 0; i < NUMBER_OF_ELEMENTS;i++)
 		{
-			if(  GetElement(i) && !GetElement(i).IsClientOnly() ) 
+			DisplayElementBase element = GetElement(i);
+			if(  element && !element.IsClientOnly() && element.IsValueChanged() ) 
 			{
-				GetElement(i).UpdateHUD();
+				element.UpdateHUD();
 			}
 		}
 	}

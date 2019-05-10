@@ -1,17 +1,3 @@
-class AmanitaMushroom : Edible_Base
+class AmanitaMushroom : MushroomBase
 {
-	override bool CanBeCookedOnStick()
-	{
-		return true;
-	}
-
-	override bool CanBeCooked()
-	{
-		return true;
-	}	
-	
-	override bool IsMushroom()
-	{
-		return true;
-	}
 }

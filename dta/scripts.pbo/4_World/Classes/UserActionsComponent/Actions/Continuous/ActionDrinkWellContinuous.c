@@ -7,18 +7,10 @@ class ActionDrinkWellContinuousCB : ActionContinuousBaseCB
 };
 
 class ActionDrinkWellContinuous: ActionContinuousBase
-{
-	private const float WATER_DRANK_PER_SEC = 35;
-	
+{	
 	void ActionDrinkWellContinuous()
 	{
 		m_CallbackClass = ActionDrinkWellContinuousCB;
-		m_MessageStartFail = "...";
-		m_MessageStart = "I started drinking from pond.";
-		m_MessageSuccess = "I finished drinking.";
-		m_MessageFail = "I moved and stoped drinking.";
-		m_MessageCancel = "I moved and stoped drinking.";	
-		
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DRINKWELL;
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
@@ -33,6 +25,13 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	{
 		return "#drink";
 	}
+
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
 	
 	override void CreateConditionComponents()  
 	{
@@ -42,31 +41,53 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if ( !player.HasBloodyHands() )
+		if( player.GetItemInHands())
 		{
-			if( player.GetItemInHands())
-			{
-				return false;			
-			}
-
-			if( target.GetObject() && target.GetObject().IsWell() )
-			{
-				return true;
-			}	
+			return false;			
 		}
+
+		if( target.GetObject() && target.GetObject().IsWell() )
+		{
+			return true;
+		}	
 			
 		return false;
 	}
+
+	override void OnStartClient(ActionData action_data)
+	{
+		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+	}
 	
+	override void OnStartServer(ActionData action_data)
+	{
+		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+	}
+
+	override void OnEndClient(ActionData action_data)
+	{
+		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+	}
+
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
-		float amount = nacdata.param1 * WATER_DRANK_PER_SEC;
+		float amount = nacdata.param1 * UAQuantityConsumed.DRINK;
 		action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_WELL);
+		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+	}
+
+	override void OnEndAnimationLoopServer( ActionData action_data )
+	{
+		if(action_data.m_Player.HasBloodyHands())
+		{
+			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
+		}
 	}
 
 	override void OnEndServer( ActionData action_data )
 	{
 		OnFinishProgressServer(action_data);
+		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
 	}
 };

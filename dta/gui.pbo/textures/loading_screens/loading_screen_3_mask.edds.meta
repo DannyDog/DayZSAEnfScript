@@ -1,0 +1,16 @@
+MetaFileClass {
+ Name "{F2CEA7E35B785FB7}Gui/textures/loading_screens/loading_screen_3_mask.tga"
+ Author "3672"
+ ChangeDate 1544267401
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "loading_screen_3_mask.tga"
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

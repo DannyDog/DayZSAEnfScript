@@ -19,6 +19,13 @@ class ActionTakeMaterialToHandsSwitch: ActionSingleUseBase
 	{
 		return "#switch_to_next_material";
 	}
+
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return InteractActionInput;
+	}
+#endif
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{

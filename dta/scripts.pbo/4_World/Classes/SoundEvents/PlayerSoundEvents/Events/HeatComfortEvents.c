@@ -7,11 +7,6 @@ class HeatComfortEventsBase extends PlayerSoundEventBase
 		m_Type = EPlayerSoundEventType.GENERAL;
 	}
 	
-	override bool CanPlay(PlayerBase player)
-	{
-		return true;
-	}
-	
 	override bool HasPriorityOverCurrent(PlayerBase player, EPlayerSoundEventID other_state_id,EPlayerSoundEventType type_other )
 	{
 		return true;

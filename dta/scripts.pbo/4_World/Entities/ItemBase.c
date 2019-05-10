@@ -6,6 +6,12 @@ class DummyItem extends ItemBase {};
 
 class ItemBase extends InventoryItem
 {
+#ifndef OLD_ACTIONS
+	static ref map<typename, ref TInputActionMap> m_ItemTypeActionsMap = new map<typename, ref TInputActionMap>;
+	TInputActionMap m_InputActionMap;
+	bool	m_ActionsInitialize;
+#endif
+	
 	static int		m_DebugActionsMask;
 	bool	m_RecipesInitialized;
 	// ============================================
@@ -65,8 +71,7 @@ class ItemBase extends InventoryItem
 	float 								m_OverheatingDecayInterval = 1; // Timer's interval for decrementing overheat effect's lifespan
 	ref array <ref OverheatingParticle> m_OverheatingParticles;
 	
-	// inventory location management
-	//ref InventoryLocation m_OldLocation;
+	ref TStringArray m_HeadHidingSelections;
 	
 	// Admin Log
 	PluginAdminLog			m_AdminLog;
@@ -95,16 +100,21 @@ class ItemBase extends InventoryItem
 		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
 			PreLoadSoundAttachmentType();
-			/*
-			if( !m_RecipesInitializedItem.Contains(Type()))
-				InitializeRecipes();
-			*/
+#ifndef OLD_ACTIONS
+			m_ActionsInitialize = false;
+#endif
 		}
 		m_OldLocation = null;
 		
 		if ( GetGame().IsServer() )
 		{
 			m_AdminLog = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+		}
+		
+		if ( ConfigIsExisting("headSelectionsToHide") )
+		{
+			m_HeadHidingSelections = new TStringArray;
+			ConfigGetTextArray("headSelectionsToHide",m_HeadHidingSelections);
 		}
 	}
 	
@@ -142,7 +152,88 @@ class ItemBase extends InventoryItem
 		RegisterNetSyncVariableBool("m_IsBeingPlaced");
 		RegisterNetSyncVariableBool("m_IsTakeable");
 	}
+#ifndef OLD_ACTIONS	
+	void InitializeActions()
+	{
+		m_InputActionMap = m_ItemTypeActionsMap.Get( this.Type() );
+		if(!m_InputActionMap)
+		{
+			TInputActionMap iam = new TInputActionMap;
+			m_InputActionMap = iam;
+			SetActions();
+			m_ItemTypeActionsMap.Insert( this.Type(), m_InputActionMap);
+		}
+	}
 	
+	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
+	{
+		if(!m_ActionsInitialize)
+		{
+			m_ActionsInitialize = true;
+			InitializeActions();
+		}
+		
+		actions = m_InputActionMap.Get(action_input_type);
+	}
+	
+	void SetActions()
+	{
+		AddAction(ActionTakeItem);
+		AddAction(ActionTakeItemToHands);
+		AddAction(ActionWorldCraft);
+		AddAction(ActionWorldCraftSwitch);
+		AddAction(ActionDropItem);
+		//AddAction();
+		//AddAction();
+	}
+	
+	void AddAction(typename actionName)
+	{
+		ActionBase action = ActionManagerBase.GetAction(actionName);
+
+		if(!action)
+		{
+			Debug.LogError("Action " + actionName + " dosn't exist!");
+			return;
+		}		
+		
+		typename ai = action.GetInputType();
+		if(!ai)
+		{
+			m_ActionsInitialize = false;
+			return;
+		}
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(!action_array)
+		{
+			action_array = new array<ActionBase_Basic>;
+			m_InputActionMap.Insert(ai, action_array);
+		}
+		
+		Debug.Log("+ " + this + " add action: " + action + " input " + ai);
+
+		action_array.Insert(action);
+	}
+	
+	void RemoveAction(typename actionName)
+	{
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		ActionBase action = player.GetActionManager().GetAction(actionName);
+		typename ai = action.GetInputType();
+		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		
+		if(action_array)
+		{
+			action_array.RemoveItem(action);
+		}
+	}
+#else
+	void SetActions() {}	
+	void AddAction(typename actionName) {}
+	void RemoveAction(typename actionName) {}
+	
+#endif	
 	// Loads muzzle flash particle configuration from config and saves it to a map for faster access
 	void LoadParticleConfigOnFire(int id)
 	{
@@ -483,7 +574,7 @@ class ItemBase extends InventoryItem
 		g_Game.ConfigGetIntArray(path + " SingleUseActions", m_SingleUseActions);
 		g_Game.ConfigGetIntArray(path + " InteractActions", m_InteractActions);
 	}
-	
+	#ifdef OLD_ACTIONS
 	override void GetSingleUseActions(out TIntArray actions)
 	{	
 		if ( m_SingleUseActions )
@@ -516,7 +607,7 @@ class ItemBase extends InventoryItem
 			}
 		}
 	}
-	
+	#endif
 	// -------------------------------------------------------------------------
 	static int GetDebugActionsMask()
 	{
@@ -688,23 +779,23 @@ class ItemBase extends InventoryItem
 		super.EECargoIn(item);
 	}
 	
-	override void EEItemLocationChanged (notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
+	override void EEItemLocationChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
 	{
 		super.EEItemLocationChanged(oldLoc,newLoc);
 		if(newLoc.GetType() == InventoryLocationType.HANDS)
 		{
-			m_OldLocation = new InventoryLocation;
+			if (!m_OldLocation)
+				m_OldLocation = new InventoryLocation;
 			//Print("is valid? "+m_OldLocation.IsValid());
 			m_OldLocation.Copy(oldLoc);
 		}
-		//out of hands, maybe save hand inventory location here?
-		/*else
+		else if (m_OldLocation)
 		{
-			m_OldLocation = null;
-		}*/
+			m_OldLocation.Reset();
+		}
 	}
 	
-	override void OnItemAttachmentSlotChanged (notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
+	override void OnItemAttachmentSlotChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
 	{
 		
 	}
@@ -1125,7 +1216,7 @@ class ItemBase extends InventoryItem
 			else
 				split_quantity_new = quantity;
 			
-			new_item = ItemBase.Cast( destination_entity.GetInventory().CreateEntityInCargoEx( this.GetType(), idx, row, col ) );
+			new_item = ItemBase.Cast( destination_entity.GetInventory().CreateEntityInCargoEx( this.GetType(), idx, row, col, false ) );
 			if( new_item )
 			{			
 				MiscGameplayFunctions.TransferItemProperties(this,new_item);
@@ -1211,6 +1302,23 @@ class ItemBase extends InventoryItem
 				new_item.SetQuantity( split_quantity_new );
 			}
 		}	
+	}
+	
+	//! Called on server side when this item's quantity is changed. Call super.OnQuantityChanged(); first when overriding this event.
+	void OnQuantityChanged()
+	{
+		ItemBase parent = ItemBase.Cast( GetHierarchyParent() );
+		
+		if (parent)
+		{
+			parent.OnAttachmentQuantityChanged(this);
+		}
+	}
+	
+	//! Called on server side when some attachment's quantity is changed. Call super.OnAttachmentQuantityChanged(item); first when overriding this event.
+	void OnAttachmentQuantityChanged( ItemBase item )
+	{
+		// insert code here
 	}
 	
 	override void OnRightClick()
@@ -1790,23 +1898,12 @@ class ItemBase extends InventoryItem
 		{
 			ReadVarsFromCTX(ctx);
 		}
-/*
+		/*
 		if( varFlags & ItemVariableFlags.STRING )
 		{
 			OnSyncStrings(ctx);
 		}
 		*/
-		// ------- quantity refresh --------
-		Mission mission;
-		Hud hud;
-		mission = GetGame().GetMission();
-		if ( mission )
-		{
-			hud = mission.GetHud();
-			if(hud) hud.RefreshQuantity( this );
-		}
-		//----------------------------------
-		
 	}	
 		
 	void SerializeNumericalVars(array<float> floats_out)
@@ -2044,23 +2141,7 @@ class ItemBase extends InventoryItem
 		}
 		*/
 		super.OnVariablesSynchronized();
-		RefreshHud();
 	}
-	
-	void RefreshHud()
-	{
-		// ------- quantity refresh --------
-		Mission mission;
-		Hud hud;
-		mission = GetGame().GetMission();
-		if ( mission )
-		{
-			hud = mission.GetHud();
-			if(hud) hud.RefreshQuantity( this );
-		}
-		//----------------------------------
-	}
-
 	
 	//bool Consume(float amount, PlayerBase consumer);
 
@@ -2114,6 +2195,7 @@ class ItemBase extends InventoryItem
 		
 		m_VarQuantity = Math.Clamp(value, min, max);
 		SetVariableMask(VARIABLE_QUANTITY);
+		OnQuantityChanged();
 		return false;
 	}
 
@@ -2342,6 +2424,34 @@ class ItemBase extends InventoryItem
 			energy = this.GetCompEM().GetEnergy();
 		}
 		return energy;
+	}
+	
+	
+	override void OnEnergyConsumed()
+	{
+		super.OnEnergyConsumed();
+		
+		ConvertEnergyToQuantity();
+	}
+
+	override void OnEnergyAdded() 
+	{
+		super.OnEnergyAdded();
+		
+		ConvertEnergyToQuantity();
+	}
+	
+	// Converts energy (from Energy Manager) to quantity, if enabled.
+	void ConvertEnergyToQuantity()
+	{
+		if ( GetGame().IsServer()  &&  HasEnergyManager()  &&  GetCompEM().HasConversionOfEnergyToQuantity() );
+		{
+			if ( HasQuantity() )
+			{
+				float energy_0to1 = GetCompEM().GetEnergy0To1();
+				SetQuantityNormalized( energy_0to1 );
+			}
+		}
 	}
 
 	void SetTemperature(float value, bool allow_client = false)
@@ -3002,28 +3112,7 @@ class ItemBase extends InventoryItem
 	{		
 		return IsBeingPlaced() && IsSoundSynchRemote();
 	}
-	
-	//! adds this item to a recipe specified by the 'recipe_classname' parameter, as ingredient number specified by the 'mask' parameter(Ingredient.FIRST,Ingredient.SECOND, Ingredient.BOTH as options)
-	//! returns if adding succeeded(repetetive addition of the same item to the same recipe will fail)
-	bool AddToRecipe(string recipe_classname, int mask)
-	{
-		int recipe_id = PluginRecipesManager.RecipeIDFromClassname(recipe_classname);
-		string name = this.GetType();
-		if( !PluginRecipesManager.m_RecipeCache.Contains( name ) )
-		{
-			PluginRecipesManager.m_RecipeCache.Insert(name, new CacheObject );
-		}
 
-		return PluginRecipesManager.m_RecipeCache.Get(name).AddRecipe(recipe_id,mask);
-	}
-
-	void InitializeRecipes()
-	{
-		OnInitializeRecipes();
-		PluginRecipesManager.m_RecipesInitializedItem.Insert( this.Type(), false);
-	}
-	
-	void OnInitializeRecipes();
 }
 
 EntityAI SpawnItemOnLocation (string object_name, notnull InventoryLocation loc, bool full_quantity)

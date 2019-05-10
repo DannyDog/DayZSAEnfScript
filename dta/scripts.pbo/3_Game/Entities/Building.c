@@ -34,7 +34,7 @@ class Building extends EntityAI
 		m_InteractActions = new TIntArray;
 		g_Game.ConfigGetIntArray("cfgVehicles " +GetType() + " InteractActions", m_InteractActions);
 	}
-	
+#ifdef OLD_ACTIONS
 	override void GetInteractActions( out TIntArray actions)
 	{
 		if ( m_InteractActions )
@@ -45,9 +45,14 @@ class Building extends EntityAI
 			}
 		}
 	}
-	
+#endif
 	override bool IsInventoryVisible()
 	{
 		return false;
+	}
+
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
 	}
 };

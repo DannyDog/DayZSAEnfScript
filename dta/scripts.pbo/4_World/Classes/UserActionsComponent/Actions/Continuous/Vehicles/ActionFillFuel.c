@@ -56,29 +56,32 @@ class ActionFillFuel: ActionContinuousBase
 		if( item.GetLiquidType() != LIQUID_GASOLINE )
 			return false;
 
-		Car car = Car.Cast( target.GetParent() );
+		Car car = Car.Cast( target.GetObject() );
 		if( !car )
 			return false;
 		
 		if( car.GetFluidFraction( CarFluid.FUEL ) >= 0.98 )
 			return false;
 
-		float distance = Math.AbsFloat(vector.Distance(car.GetPosition(), player.GetPosition()));
+		array<string> selections = new array<string>;
+		target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
 
 		CarScript carS = CarScript.Cast(car);
-		if( distance <= carS.GetActionDistanceFuel() )
+		
+		if( carS )
 		{
-			array<string> selections = new array<string>;
-			target.GetObject().GetActionComponentNameList(target.GetComponentIndex(), selections);
-
 			for (int s = 0; s < selections.Count(); s++)
 			{
 				if ( selections[s] == carS.GetActionCompNameFuel() )
 				{
-					return true;
+					float dist = vector.Distance( carS.GetRefillPointPosWS(), player.GetPosition() );
+
+					if ( dist < carS.GetActionDistanceFuel() )
+						return true;
 				}
 			}
 		}
+
 		return false;
 	}
 };

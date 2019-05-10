@@ -78,8 +78,8 @@ PanelWidgetClass GesturesMenu {
       FrameWidgetClass RadialSelector {
        visible 0
        clipchildren 0
-       position 0 0
-       size 100 309
+       position -1 -1
+       size 268 268
        halign center_ref
        valign center_ref
        hexactpos 1
@@ -87,11 +87,11 @@ PanelWidgetClass GesturesMenu {
        hexactsize 1
        vexactsize 1
        {
-        ImageWidgetClass SelectorImage {
+        ImageWidgetClass SelectorPointer {
          visible 1
          clipchildren 0
          color 1 0 0 1
-         position 0 22
+         position 0 -9
          size 100 32
          halign center_ref
          hexactpos 1
@@ -103,6 +103,25 @@ PanelWidgetClass GesturesMenu {
          "src alpha" 1
          "no wrap" 1
          stretch 1
+        }
+        ImageWidgetClass SelectorImage {
+         ignorepointer 1
+         color 1 0 0 1
+         position 0 5
+         size 256 128
+         halign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         imageTexture "{528E06782E5680C9}Gui/textures/radial_selector.edds"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+         Mask "{5B7F9513017B8F1C}Gui/textures/radial_selector_mask.edds"
+         "Transition width" 0.01
         }
        }
       }

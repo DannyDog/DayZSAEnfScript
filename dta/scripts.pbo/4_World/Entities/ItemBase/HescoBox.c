@@ -316,4 +316,13 @@ class HescoBox extends Inventory_Base
 			m_DeployLoopSound.SoundStop();
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionFoldObject);
+		AddAction(ActionDeployObject);
+	}
 }

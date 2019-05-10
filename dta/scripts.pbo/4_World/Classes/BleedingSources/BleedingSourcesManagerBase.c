@@ -36,9 +36,9 @@ class BleedingSourcesManagerBase
 		RegisterBleedingZone("RightArmRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 -90 0" , "0 0.05 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
 		RegisterBleedingZone("RightForeArm",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 -90 0" , "0 0.05 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
 		//dmgZone_leftHand
-		RegisterBleedingZone("LeftForeArmRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.05 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
+		RegisterBleedingZone("LeftForeArmRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0.1 0 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW, "BleedingSourceEffectLight");
 		//dmgZone_rightHand
-		RegisterBleedingZone("RightForeArmRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.05 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
+		RegisterBleedingZone("RightForeArmRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "-0.1 0 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW, "BleedingSourceEffectLight");
 		//dmgZone_leftLeg
 		RegisterBleedingZone("LeftLeg",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.07 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
 		RegisterBleedingZone("LeftLegRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.07 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
@@ -50,10 +50,10 @@ class BleedingSourcesManagerBase
 		RegisterBleedingZone("RightUpLeg",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 -90 0" , "0 0.12 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
 		RegisterBleedingZone("RightUpLegRoll",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 -90 0" , "0 0.06 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM);
 		//dmgZone_leftFoot
-		RegisterBleedingZone("LeftFoot",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 180 0" , "0 0 0.035", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
+		RegisterBleedingZone("LeftFoot",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 180 0" , "0 0 0.035", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW, "BleedingSourceEffectLight");
 		RegisterBleedingZone("LeftToeBase",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 -90 0" , "0 0.07 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
 		//dmgZone_rightFoot
-		RegisterBleedingZone("RightFoot",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 0 0" , "0 0 -0.035", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
+		RegisterBleedingZone("RightFoot",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 0 0" , "0 0 -0.035", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW, "BleedingSourceEffectLight");
 		RegisterBleedingZone("RightToeBase",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.07 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
 	}
 	
@@ -82,7 +82,7 @@ class BleedingSourcesManagerBase
 		return m_BleedingSourceZone.Get(GetSelectionNameFromBit(bit));
 	}
 	
-	protected void RegisterBleedingZone(string name, int max_time, string bone = "", vector orientation = "0 0 0", vector offset = "0 0 0", float flow_modifier = 1)
+	protected void RegisterBleedingZone(string name, int max_time, string bone = "", vector orientation = "0 0 0", vector offset = "0 0 0", float flow_modifier = 1, string particle_name = "BleedingSourceEffect")
 	{
 		if( m_BitOffset == BIT_INT_SIZE)
 		{
@@ -102,7 +102,7 @@ class BleedingSourcesManagerBase
 				bone_name = name;
 			}
 			
-			m_BleedingSourceZone.Insert(name, new BleedingSourceZone(name, bit, offset, orientation, bone_name, max_time, flow_modifier));
+			m_BleedingSourceZone.Insert(name, new BleedingSourceZone(name, bit, offset, orientation, bone_name, max_time, flow_modifier, particle_name));
 			m_BitToFireGeom.Insert(bit, name);
 			m_BitOffset++;
 		}
@@ -181,7 +181,8 @@ class BleedingSourcesManagerBase
 		string bone_name =  GetBleedingSourceMeta(bit).GetBoneName();
 		float flow_modifier = GetBleedingSourceMeta(bit).GetFlowModifier();
 		int max_time = GetBleedingSourceMeta(bit).GetMaxTime();
-		m_BleedingSources.Insert(bit, new BleedingSource(m_Player, bit,bone_name, orientation, offset, max_time, flow_modifier) );
+		string particle_name = GetBleedingSourceMeta(bit).GetParticleName();
+		m_BleedingSources.Insert(bit, new BleedingSource(m_Player, bit,bone_name, orientation, offset, max_time, flow_modifier, particle_name) );
 		m_Player.OnBleedingSourceAdded();
 	}
 	

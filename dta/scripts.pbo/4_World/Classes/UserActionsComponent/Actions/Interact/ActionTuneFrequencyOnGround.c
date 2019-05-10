@@ -21,6 +21,18 @@ class ActionTuneFrequencyOnGround : ActionInteractBase
 		string text = "#tune_frequency | " + m_RadioFreq + " MHz";
 		return text;
 	}
+
+#ifndef OLD_ACTIONS	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
+#endif
+
+	override bool HasProgress()
+	{
+		return false;
+	}
 		
 	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
 	{

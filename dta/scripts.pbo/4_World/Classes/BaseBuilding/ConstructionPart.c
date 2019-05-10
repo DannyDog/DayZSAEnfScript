@@ -46,7 +46,17 @@ class ConstructionPart
 	
 	void SetBuiltState( bool is_built )
 	{
+		bsbDebugPrint("[bsb] SetBuildState=" + is_built + " part=" + m_PartName);
 		m_IsBuilt = is_built;
+	}
+	
+	void SetRequestBuiltState( bool req_built )
+	{
+		bsbDebugPrint("[bsb] SetRequestBuiltState=" + req_built + " part=" + m_PartName);
+		if (GetGame().IsMultiplayer())
+			SetBuiltState(req_built);
+		else
+			; // skip set to true in single player - will be synced later
 	}
 	
 	bool IsBase()

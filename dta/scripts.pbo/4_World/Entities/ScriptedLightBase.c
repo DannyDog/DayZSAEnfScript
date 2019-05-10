@@ -9,21 +9,23 @@ Script author: Boris Vacula
 
 class ScriptedLightBase extends EntityLightSource
 {
-	private float m_LifetimeStart;
-	private float m_LifetimeEnd = -1; // -1 makes this light permanent
-	private float m_FadeOutTime = -1;
-	private float m_FadeInTime = -1;
-	private float m_Radius;
-	private float m_RadiusTarget;
-	private float m_Brightness;
-	private float m_BrightnessTarget;
-	private float m_BrightnessSpeedOfChange = 1;
-	private float m_RadiusSpeedOfChange = 1;
-	private float m_OptimizeShadowsRadius = 0; // Within this range between the light source and camera the shadows will be automatically disabled for performance reasons.
+	float m_LifetimeStart;
+	float m_LifetimeEnd = -1; // -1 makes this light permanent
+	float m_FadeOutTime = -1;
+	float m_FadeInTime = -1;
+	float m_Radius;
+	float m_RadiusTarget;
+	float m_Brightness;
+	float m_BrightnessTarget;
+	float m_BrightnessSpeedOfChange = 1;
+	float m_RadiusSpeedOfChange = 1;
+	float m_OptimizeShadowsRadius = 0; // Within this range between the light source and camera the shadows will be automatically disabled for performance reasons.
 	
-	private Object m_Parent; // Attachment parent
-	private vector m_LocalPos; // Local position to my attachment parent
-	private vector m_LocalOri; // Local orientation to my attachment parent
+	Object m_Parent; // Attachment parent
+	vector m_LocalPos; // Local position to my attachment parent
+	vector m_LocalOri; // Local orientation to my attachment parent
+	
+	ref Timer m_DeleteTimer;
 	
 	//! Constructor. Everything here is executed before the constructor of all children.
 	void ScriptedLightBase()
@@ -31,6 +33,28 @@ class ScriptedLightBase extends EntityLightSource
 		m_LifetimeStart = GetGame().GetTime();
 		SetEnabled(true);
 		SetEventMask(EntityEvent.FRAME);
+	}
+	
+	override bool IsScriptedLight()
+	{
+		return true;
+	}
+	
+	//! Correct way of deleting light from memory. It is necesarry to have this delay due to hierarchy.
+	private void DeleteLightWithDelay()
+	{
+		DetachFromParent(); // This is the reason for the delay
+		
+		if (!m_DeleteTimer)
+			m_DeleteTimer = new Timer( CALL_CATEGORY_SYSTEM );
+			
+		m_DeleteTimer.Run( 0.03 , this, "DeleteLightNow", NULL, true);
+	}
+	
+	// Deletes light now. use Destroy() instead. Otherwise you get errors related to hierarchy.
+	private void DeleteLightNow()
+	{
+		GetGame().ObjectDelete(this);
 	}
 	
 	//! Attaches this light on the parent entity, with optional position and orientation offset.
@@ -93,7 +117,10 @@ class ScriptedLightBase extends EntityLightSource
 		
 		if (m_Parent)
 		{
-			m_Parent.RemoveChild(this);
+			if ( !m_Parent.ToDelete()  &&  !ToDelete() )
+			{
+				m_Parent.RemoveChild(this);
+			}
 		}
 		
 		m_Parent = null;
@@ -123,7 +150,10 @@ class ScriptedLightBase extends EntityLightSource
 		}
 		else // Server side
 		{
-			Error("An instance of ScriptedLightBase was attempted to spawn on server side! Lights are CLIENT SIDE ONLY!");
+			if ( GetGame().IsDebug() )
+			{
+				Error("An instance of ScriptedLightBase was attempted to spawn on server side! Lights are CLIENT SIDE ONLY!");
+			}
 		}
 		
 		return light_instance;
@@ -195,8 +225,6 @@ class ScriptedLightBase extends EntityLightSource
 		{
 			m_RadiusSpeedOfChange = Math.AbsFloat(m_Radius - m_RadiusTarget) / time_in_s;
 		}
-		
-		
 	}
 	
 	//! Switches off the light and deletes it from memory
@@ -204,7 +232,7 @@ class ScriptedLightBase extends EntityLightSource
 	{
 		ClearEventMask(EntityEvent.FRAME);
 		SetEnabled(false);
-		GetGame().ObjectDelete(this);
+		DeleteLightWithDelay();
 	}
 	
 	//! Makes the light destroy itself after the given time in seconds. The light will fade out if it's set to do so with SetFadeOutTime(...)

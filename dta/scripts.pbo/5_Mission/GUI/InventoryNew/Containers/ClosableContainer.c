@@ -38,6 +38,11 @@ class ClosableContainer extends Container
 			OnHide();
 		}
 	}
+	
+	override Header GetHeader()
+	{
+		return m_ClosableHeader;
+	}
 
 	void Close()
 	{

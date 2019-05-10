@@ -4,7 +4,7 @@ class InventoryInputUserData
 	///@{ move
 	static void SerializeMove (ParamsWriteContext ctx, int type, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
-		ctx.Write(7); // le fu
+		ctx.Write(INPUT_UDT_INVENTORY);
 		ctx.Write(type);
 		src.WriteToContext(ctx);
 		dst.WriteToContext(ctx);
@@ -14,7 +14,7 @@ class InventoryInputUserData
 	{
 		if (GetGame().IsClient())
 		{
-			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms sending cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + src.DumpToString() + " dst=" + dst.DumpToString());
+			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms sending cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			SerializeMove(ctx, type, src, dst);
 			ctx.Send();
@@ -25,7 +25,7 @@ class InventoryInputUserData
 	{
 		if (GetGame().IsServer())
 		{
-			syncDebugPrint("[syncinv] server sending cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + src.DumpToString() + " dst=" + dst.DumpToString());
+			syncDebugPrint("[syncinv] server sending cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			SerializeMove(ctx, type, src, dst);
 			GameInventory.ServerLocationSyncMoveEntity(player, src.GetItem(), ctx);
@@ -34,74 +34,43 @@ class InventoryInputUserData
 	///@} move
 
 	///@{ swap
-	static void SerializeSwap (ParamsWriteContext ctx, notnull EntityAI item1, notnull EntityAI item2)
+	static void SerializeSwap (ParamsWriteContext ctx, notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2)
 	{
-		ctx.Write(7);
+		ctx.Write(INPUT_UDT_INVENTORY);
 		ctx.Write(InventoryCommandType.SWAP);
-		ctx.Write(item1);
-		ctx.Write(item2);
-	}
-
-	static void SendInputUserDataSwap (notnull EntityAI item1, notnull EntityAI item2)
-	{
-		if (GetGame().IsClient())
-		{
-			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms sending cmd=SWAP item1=" + item1 + " item2=" + item2);
-			ScriptInputUserData ctx = new ScriptInputUserData;
-			SerializeSwap(ctx, item1, item2);
-			ctx.Send();
-		}
-	}
-
-	static void SendServerSwap (notnull EntityAI item1, notnull EntityAI item2)
-	{
-		if (GetGame().IsServer())
-		{
-			syncDebugPrint("[syncinv] server sending cmd=SWAP item1=" + item1 + " item2=" + item2);
-			ScriptInputUserData ctx = new ScriptInputUserData;
-			SerializeSwap(ctx, item1, item2);
-			GameInventory.ServerLocationSwap(item1, item2, ctx);
-		}
-	}
-	///@} swap
-	
-	///@{ f-swap
-	static void SerializeForceSwap (ParamsWriteContext ctx, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation dst2)
-	{
-		ctx.Write(7);
-		ctx.Write(InventoryCommandType.FORCESWAP);
-		ctx.Write(item1);
-		ctx.Write(item2);
+		src1.WriteToContext(ctx);
+		src2.WriteToContext(ctx);
+		dst1.WriteToContext(ctx);
 		dst2.WriteToContext(ctx);
 	}
 
-	static void SendInputUserDataForceSwap (notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation dst2)
+	static void SendInputUserDataSwap (notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2)
 	{
 		if (GetGame().IsClient())
 		{
-			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms SendInputUserDataForceSwap cmd=FORCESWAP item1=" + item1 + " item2=" + item2 + " dst2=" + dst2.DumpToString());
+			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms sending cmd=SWAP src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 			ScriptInputUserData ctx = new ScriptInputUserData;
-			SerializeForceSwap(ctx, item1, item2, dst2);
+			SerializeSwap(ctx, src1, src2, dst1, dst2);
 			ctx.Send();
 		}
 	}
 
-	static void SendServerForceSwap (notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation dst2)
+	static void SendServerSwap (notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2)
 	{
-		if (GetGame().IsClient())
+		if (GetGame().IsServer())
 		{
-			syncDebugPrint("[syncinv] SendInputUserDataForceSwap cmd=FORCESWAP item1=" + item1 + " item2=" + item2 + " dst2=" + dst2.DumpToString());
+			syncDebugPrint("[syncinv] server sending cmd=SWAP src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 			ScriptInputUserData ctx = new ScriptInputUserData;
-			SerializeForceSwap(ctx, item1, item2, dst2);
-			GameInventory.ServerLocationSwap(item1, item2, ctx);
+			SerializeSwap(ctx, src1, src2, dst1, dst2);
+			GameInventory.ServerLocationSwap(src1, src2, dst1, dst2, ctx);
 		}
 	}
-	///@} f-swap
+	///@} swap
 
 	///@{ hand
 	static void SerializeHandEvent (ParamsWriteContext ctx, HandEventBase e)
 	{
-		ctx.Write(7);
+		ctx.Write(INPUT_UDT_INVENTORY);
 		ctx.Write(InventoryCommandType.HAND_EVENT);
 		e.WriteToContext(ctx);
 	}
@@ -110,7 +79,7 @@ class InventoryInputUserData
 	{
 		if (GetGame().IsClient())
 		{
-			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms SendInputUserDataHandEvent e=" + e);
+			syncDebugPrint("[syncinv] t=" + GetGame().GetTime() + "ms SendInputUserDataHandEvent e=" + e.DumpToString());
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			SerializeHandEvent(ctx, e);
 			ctx.Send();
@@ -123,20 +92,20 @@ class InventoryInputUserData
 		if (GetGame().IsServer())
 		{
 			if (e.IsServerSideOnly())
-				Error("[syncinv] SendServerHandEvent - called on server side event only, e=" + e);
+				Error("[syncinv] SendServerHandEvent - called on server side event only, e=" + e.DumpToString());
 			if (player.IsAlive())
-				Error("[syncinv] SendServerHandEvent - called on living thing.. server hand command is only for dead people, e=" + e);
-			syncDebugPrint("[syncinv] SendInputUserDataHandEvent e=" + e);
+				Error("[syncinv] SendServerHandEvent - called on living thing.. server hand command is only for dead people, e=" + e.DumpToString());
+			syncDebugPrint("[syncinv] SendServerHandEventViaInventoryCommand SendInputUserDataHandEvent e=" + e.DumpToString());
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			SerializeHandEvent(ctx, e);
-			GameInventory.ServerHandEvent(player, e.m_Entity, ctx);
+			GameInventory.ServerHandEvent(player, e.GetSrcEntity(), ctx);
 		}
 	}
 	///@} hand
 
 	static void SerializeDestroy (ParamsWriteContext ctx, notnull InventoryLocation src)
 	{
-		ctx.Write(7);
+		ctx.Write(INPUT_UDT_INVENTORY);
 		ctx.Write(InventoryCommandType.DESTROY);
 		src.WriteToContext(ctx);
 	}
@@ -145,7 +114,7 @@ class InventoryInputUserData
 	{
 		if (GetGame().IsClient())
 		{
-			syncDebugPrint("[syncinv] SendInputUserDataDestroy src=" + src.DumpToString());
+			syncDebugPrint("[syncinv] SendInputUserDataDestroy src=" + InventoryLocation.DumpToStringNullSafe(src));
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			SerializeDestroy(ctx, src);
 			ctx.Send();

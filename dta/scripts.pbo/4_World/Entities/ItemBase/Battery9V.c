@@ -24,6 +24,8 @@ class Battery9V extends ItemBase
 	
 	override void OnEnergyConsumed()
 	{
+		super.OnEnergyConsumed();
+		
 		if ( GetGame().IsServer() )
 		{
 			float energy_coef = GetCompEM().GetEnergy0To1();
@@ -54,5 +56,12 @@ class Battery9V extends ItemBase
 				SetSynchDirty();
 			}
 		}
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionMeasureBattery);
 	}
 }

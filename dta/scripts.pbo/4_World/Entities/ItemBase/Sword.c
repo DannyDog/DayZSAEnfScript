@@ -8,4 +8,11 @@ class Sword extends ToolBase
 	{
 		return true;
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionUnrestrainTarget);
+		AddAction(ActionMineBush);
+	}
 }

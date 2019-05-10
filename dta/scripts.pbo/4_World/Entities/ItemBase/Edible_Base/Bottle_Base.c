@@ -1,4 +1,4 @@
-enum SoundType
+enum SoundTypeBottle
 {
 	POURING			= 1,
 	EMPTYING		= 0,	
@@ -106,7 +106,7 @@ class Bottle_Base extends Edible_Base
 		
 		switch(rpc_type)
 		{
-			case SoundType.POURING:
+			case SoundTypeBottle.POURING:
 			
 				if ( play )
 				{
@@ -120,7 +120,7 @@ class Bottle_Base extends Edible_Base
 			
 			break;
 			
-			case SoundType.EMPTYING:
+			case SoundTypeBottle.EMPTYING:
 				
 				if ( play )
 				{
@@ -428,5 +428,27 @@ class Bottle_Base extends Edible_Base
 	float GetLiquidEmptyRate()
 	{
 		return m_LiquidEmptyRate;
+	}
+	
+	
+		
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionWorldLiquidActionSwitch);
+		AddAction(ActionFillFuel);
+		AddAction(ActionFillCoolant);
+		AddAction(ActionFillGeneratorTank);
+		AddAction(ActionExtinguishFireplaceByLiquid);
+		AddAction(ActionFillBottleBase);
+		AddAction(ActionWaterGardenSlot);
+		AddAction(ActionWaterPlant);
+		AddAction(ActionForceDrink);
+		AddAction(ActionPourLiquid);
+		AddAction(ActionDrainLiquid);
+		AddAction(ActionEmptyBottleBase);
+		AddAction(ActionWashHandsItem);
+		AddAction(ActionDrink);
 	}
 }

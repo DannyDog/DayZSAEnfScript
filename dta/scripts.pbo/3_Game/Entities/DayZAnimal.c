@@ -27,7 +27,7 @@ class DayZCreatureAI extends DayZCreature
 	proto native void DebugDisableAIControl();
 	proto native void DebugRestoreAIControl();
 #endif
-	proto native void AddDamageSphere(string bone_name, string ammo_name, float radius, float duration);
+	proto native void AddDamageSphere(string bone_name, string ammo_name, float radius, float duration, bool invertTeams);
 	
 	proto native DayZCreatureAIType GetCreatureAIType();
 	/*!
@@ -44,7 +44,7 @@ class DayZCreatureAI extends DayZCreature
 	
 	void AddDamageSphere(AnimDamageParams damage_params)
 	{ 
-		AddDamageSphere(damage_params.m_sBoneName, damage_params.m_sAmmoName, damage_params.m_fRadius, damage_params.m_fDuration); 
+		AddDamageSphere(damage_params.m_sBoneName, damage_params.m_sAmmoName, damage_params.m_fRadius, damage_params.m_fDuration, damage_params.m_bInvertTeams); 
 	}
 	
 	override void EEKilled(Object killer)

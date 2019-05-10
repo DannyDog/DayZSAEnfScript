@@ -56,8 +56,11 @@ class GesturesMenu extends UIScriptedMenu
 	protected Widget 							m_GestureItemCardPanel;
 	protected ref array<ref GestureMenuItem> 	m_GestureItems;
 	
+	protected TextWidget						m_CategoryNameText;
+	
 	//
 	const string 								RADIAL_TEXT		= "RadialText";
+	const string 								CATEGORY_NAME	= "CategoryName";
 	//selections
 	protected Widget 							m_SelectedItem;
 	protected bool 								m_IsCategorySelected;
@@ -105,7 +108,7 @@ class GesturesMenu extends UIScriptedMenu
 	{
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/radial_menu/radial_gestures/day_z_gestures.layout" );
 		m_GestureItemCardPanel = layoutRoot.FindAnyWidget( RadialMenu.RADIAL_ITEM_CARD_CONTAINER );
-
+		
 		//register gestures menu
 		RadialMenu.GetInstance().RegisterClass( this );
 		
@@ -115,26 +118,50 @@ class GesturesMenu extends UIScriptedMenu
 		//create content (widgets) for items
 		RefreshGestures();
 		
-		//set controller toolbar icons
-		#ifdef PLATFORM_CONSOLE
-				ImageWidget toolbar_select = ImageWidget.Cast(layoutRoot.FindAnyWidget( "SelectIcon" ));
-				ImageWidget toolbar_back = ImageWidget.Cast(layoutRoot.FindAnyWidget( "BackIcon" ));
-			#ifdef PLATFORM_XBOX
-				toolbar_select.LoadImageFile( 0, "set:xbox_buttons image:A" );
-				toolbar_back.LoadImageFile( 0, "set:xbox_buttons image:B" );
-			#endif		
-			#ifdef PLATFORM_PS4
-				toolbar_select.LoadImageFile( 0, "set:playstation_buttons image:cross" );
-				toolbar_back.LoadImageFile( 0, "set:playstation_buttons image:circle" );
-			#endif
-		#endif
-		
 		#ifdef PLATFORM_WINDOWS
-				Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
-				toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );
+			Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
+			toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );
 		#endif		
 		
+		//clear category name text
+		UpdateCategoryName( "" );
+		
 		return layoutRoot;
+	}
+	
+	override void OnShow()
+	{
+		super.OnShow();
+		
+		SetFocus( layoutRoot );
+	}
+	
+	override bool OnController( Widget w, int control, int value )
+	{
+		super.OnController( w, control, value );
+		
+		RadialMenu.GetInstance().SetControlType( RadialMenuControlType.CONTROLLER );
+
+		return false;
+	}	
+		
+	override bool OnMouseEnter( Widget w, int x, int y )
+	{
+		super.OnMouseEnter( w, x, y );
+		
+		RadialMenu.GetInstance().SetControlType( RadialMenuControlType.MOUSE );
+
+		return false;
+	}
+	
+	override bool UseMouse()
+	{
+		return true;
+	}
+	
+	override bool UseGamepad()
+	{
+		return true;
 	}
 	
 	//============================================
@@ -150,11 +177,14 @@ class GesturesMenu extends UIScriptedMenu
 		else
 		{
 			GetGestureItems( m_GestureItems, GestureCategories.CATEGORIES );
-		}		
+		}
+		
 		CreateGestureContent();
+		
+		UpdateToolbar();
 	}		
 	
-	void GetGestureItems( out ref array<ref GestureMenuItem> gesture_items, GestureCategories category )
+	protected void GetGestureItems( out ref array<ref GestureMenuItem> gesture_items, GestureCategories category )
 	{
 		gesture_items.Clear();
 		
@@ -224,7 +254,7 @@ class GesturesMenu extends UIScriptedMenu
 		}
 	}
 	
-	void CreateGestureContent()
+	protected void CreateGestureContent()
 	{
 		//delete existing gesture widgets
 		DeleteGestureItems();
@@ -237,25 +267,38 @@ class GesturesMenu extends UIScriptedMenu
 			Widget gesture_item_card_widget = Widget.Cast( GetGame().GetWorkspace().CreateWidgets( "gui/layouts/radial_menu/radial_gestures/day_z_gesture_item_card.layout", m_GestureItemCardPanel ) );
 			gesture_item.SetRadialItemCard( gesture_item_card_widget );
 			
-			//set text
-			TextWidget text_widget = TextWidget.Cast( gesture_item_card_widget.FindAnyWidget( RADIAL_TEXT ) );
-			text_widget.SetText( gesture_item.GetName() );
+			//update item card widget
+			UpdateQuickbarItemCard( gesture_item );
 			
 			//set data
 			gesture_item_card_widget.SetUserData( gesture_item );
 		}
 		
-		//adjust radial parameters for content
+		//set radial parameters for content
 		if ( m_GestureItems.Count() > 0 ) 
 		{
-			RadialMenu.GetInstance().AdjustRadialMenu( 0, 0.5, 0, 0.25, false );
+			RadialMenu radial_menu = RadialMenu.GetInstance();
+			radial_menu.SetRadiusOffset( 0 );
+			radial_menu.SetExecuteDistOffset( 0.5 );
+			radial_menu.SetOffsetFromTop( 0 );
+			radial_menu.SetItemCardRadiusOffset( 0.25 );
+			radial_menu.ActivateControllerTimeout( false );
 		}		
 		
 		//refresh radial menu
 		RadialMenu.GetInstance().Refresh();
 	}
 	
-	void DeleteGestureItems()
+	protected void UpdateQuickbarItemCard( GestureMenuItem gesture_item )
+	{
+		Widget gesture_item_card_widget = gesture_item.GetRadialItemCard();
+		
+		//set text
+		TextWidget text_widget = TextWidget.Cast( gesture_item_card_widget.FindAnyWidget( RADIAL_TEXT ) );
+		text_widget.SetText( gesture_item.GetName() );
+	} 
+	
+	protected void DeleteGestureItems()
 	{
 		Widget child;
 		Widget child_to_destroy;
@@ -270,15 +313,79 @@ class GesturesMenu extends UIScriptedMenu
 		}		
 	}
 	
+	protected void UpdateToolbar()
+	{
+		#ifdef PLATFORM_CONSOLE
+			//set controller toolbar icons
+			string select_img;
+			//string back_img;
+	
+			ImageWidget toolbar_select = ImageWidget.Cast( layoutRoot.FindAnyWidget( "SelectIcon" ) );
+			//ImageWidget toolbar_back = ImageWidget.Cast( layoutRoot.FindAnyWidget( "BackIcon" ) );
+							 
+			if ( instance.m_IsCategorySelected )
+			{
+				#ifdef PLATFORM_XBOX
+					select_img = "set:xbox_buttons image:A";
+					//back_img = "set:xbox_buttons image:B";
+				#endif		
+				#ifdef PLATFORM_PS4
+					string confirm = "cross";
+					if( GetGame().GetInput().GetEnterButton() == GamepadButton.A )
+					{
+						confirm = "cross";
+					}
+					else
+					{
+						confirm = "circle";
+					}
+					select_img = "set:playstation_buttons image:" + confirm;
+					//back_img = "set:playstation_buttons image:circle";
+				#endif
+			}
+			else
+			{
+				#ifdef PLATFORM_XBOX
+					select_img = "set:xbox_buttons image:R_up";
+					//back_img = "set:xbox_buttons image:B";
+				#endif		
+				#ifdef PLATFORM_PS4
+					select_img = "set:playstation_buttons image:R_up";
+					//back_img = "set:playstation_buttons image:circle";
+				#endif				
+			}
+			
+			toolbar_select.LoadImageFile( 0, select_img );
+			//toolbar_back.LoadImageFile( 0, back_img );
+		#endif
+	}
+	
+	protected void UpdateCategoryName( string name )
+	{
+		if ( !m_CategoryNameText )
+		{
+			m_CategoryNameText = TextWidget.Cast( layoutRoot.FindAnyWidget( CATEGORY_NAME ) );
+		}
+		
+		m_CategoryNameText.SetText( name );
+	}
+	
 	//============================================
 	// Radial Menu Events
 	//============================================
 	//Common
-	void OnControlsChanged( bool is_using_mouse )
+	void OnControlsChanged( RadialMenuControlType type )
 	{
 		//show/hide controller toolbar
 		Widget toolbar_panel = layoutRoot.FindAnyWidget( "toolbar_bg" );
-		toolbar_panel.Show( !RadialMenu.GetInstance().IsUsingMouse() );		
+		if ( type == RadialMenuControlType.CONTROLLER )
+		{
+			toolbar_panel.Show( true );
+		}
+		else
+		{
+			toolbar_panel.Show( true );
+		}
 	}
 	
 	//Mouse
@@ -321,16 +428,18 @@ class GesturesMenu extends UIScriptedMenu
 	void OnControllerPressBack( Widget w )
 	{
 		//back to category or close menu?
+		/*
 		if ( instance.m_IsCategorySelected )
 		{
-			RefreshGestures();							//back to categories
 			instance.m_IsCategorySelected = false; 		//reset category selection
+			RefreshGestures();							//back to categories
 		}
 		else
 		{
 			//close menu
 			CloseMenu();
 		}
+		*/
 	}		
 	
 	//Gestures Menu
@@ -354,12 +463,14 @@ class GesturesMenu extends UIScriptedMenu
 			w.GetUserData( gesture_item );
 
 			//is not category
+			/*
 			if ( gesture_item && gesture_item.GetCategory() != GestureCategories.CATEGORIES )
 			{	
 				//alter item visual
 				//TextWidget text_widget = TextWidget.Cast( gesture_item.GetRadialItemCard().FindAnyWidget( RADIAL_TEXT ) );
 				//text_widget.SetColor( ARGB( 255, 66, 175, 95 ) );
-			}	
+			}
+			*/	
 		}
 	}
 	
@@ -373,12 +484,14 @@ class GesturesMenu extends UIScriptedMenu
 			w.GetUserData( gesture_item );
 
 			//is not category
+			/*
 			if ( gesture_item && gesture_item.GetCategory() != GestureCategories.CATEGORIES )
 			{			
 				//alter item visual
 				//TextWidget text_widget = TextWidget.Cast( gesture_item.GetRadialItemCard().FindAnyWidget( RADIAL_TEXT ) );
 				//text_widget.SetColor( ARGB( 255, 255, 255, 255 ) );
 			}
+			*/
 		}
 	}	
 	
@@ -393,20 +506,23 @@ class GesturesMenu extends UIScriptedMenu
 			//is category
 			if ( gesture_item.GetCategory() == GestureCategories.CATEGORIES )
 			{
+				//set category selected
+				instance.m_IsCategorySelected = true;
+				
 				//show selected category gestures
 				GetGestureItems( m_GestureItems, gesture_item.GetID() );
 				CreateGestureContent();
 				RefreshGestures( gesture_item.GetID() );
 				
-				//set category selected
-				instance.m_IsCategorySelected = true;
+				//update category name text
+				UpdateCategoryName( gesture_item.GetName() );
 			}
 		}
 	}
 	
 	protected void ExecuteSelectedItem()
 	{
-		if ( instance.m_SelectedItem )
+		if ( instance.m_IsCategorySelected && instance.m_SelectedItem )
 		{
 			if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 			{
@@ -425,4 +541,4 @@ class GesturesMenu extends UIScriptedMenu
 			}
 		}
 	}
-}
+}	

@@ -117,14 +117,14 @@ class CAContinuousTimeIgnite : CAContinuousBase
 		//check roof
 		if ( fireplace_target.IsBaseFireplace() || fireplace_target.IsBarrelWithHoles() )	//base fireplace and barrel with Holes only
 		{
-			if ( !fireplace_target.IsEnoughRoomForFireAbove() )
+			if ( !fireplace_target.HasEnoughRoomForFireAbove() )
 			{
 				return fireplace_target.MESSAGE_IGNITE_UNDER_LOW_ROOF;
 			}
 		}
 		
 		//check surface
-		if ( fireplace_target.IsWaterSurface() )
+		if ( fireplace_target.IsOnWaterSurface() )
 		{
 			return fireplace_target.MESSAGE_IGNITE_IN_WATER;
 		}

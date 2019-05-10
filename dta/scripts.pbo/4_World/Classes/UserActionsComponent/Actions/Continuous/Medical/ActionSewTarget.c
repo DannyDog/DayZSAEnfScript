@@ -11,11 +11,6 @@ class ActionSewTarget: ActionContinuousBase
 	void ActionSewTarget()
 	{
 		m_CallbackClass = ActionSewTargetCB;
-		m_MessageStartFail = "There's no sewing left.";
-		m_MessageStart = "Player started sewing you.";
-		m_MessageSuccess = "Player finished sewing you.";
-		m_MessageFail = "Player moved and sewing was canceled.";
-		m_MessageCancel = "You stopped sewing.";
 		//m_Animation = "sew";
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_INTERACT;
 		m_FullBody = true;
@@ -47,15 +42,20 @@ class ActionSewTarget: ActionContinuousBase
 
 	override void OnFinishProgressServer( ActionData action_data )
 	{
-		const float ITEM_DAMAGE = 10;
-		float delta = action_data.m_Player.GetSoftSkillsManager().SubtractSpecialtyBonus( ITEM_DAMAGE, this.GetSpecialtyWeight() );
-		
 		PlayerBase ntarget = PlayerBase.Cast(action_data.m_Target.GetObject());
 		if (ntarget.GetBleedingManagerServer() )
 		{
 			ntarget.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
 		}
-		action_data.m_MainItem.AddHealth("GlobalHealth","Health",-delta);
+		
+		if (action_data.m_MainItem.HasQuantity())
+		{
+			action_data.m_MainItem.AddQuantity(-1,true);
+		}
+		else
+		{
+			action_data.m_MainItem.Delete();
+		}
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

@@ -127,4 +127,13 @@ class TransmitterBase extends ItemTransmitter
 	{
 		StopSoundSet( m_SoundLoop );
 	}	
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnTransmitter);
+		AddAction(ActionTurnOffTransmitter);
+		AddAction(ActionTuneFrequency);
+	}
 }

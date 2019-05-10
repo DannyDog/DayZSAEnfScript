@@ -79,6 +79,7 @@ const int MENU_VIDEO								= 33;
 const int MENU_KEYBINDINGS							= 34;
 const int MENU_TUTORIAL								= 35;
 const int MENU_CREDITS								= 36;
+const int MENU_INVITE_TIMER							= 37;
 
 const int GUI_WINDOW_MISSION_LOADER = 1;
 
@@ -412,6 +413,7 @@ const int		UA_IN_START = 17;
 const int		UA_IN_END = 18;
 const int		UA_SPAWN_DUST_A = 19;
 const int		UA_SPAWN_DUST_B = 20;
+const int		UA_IN_CRAFTING = 21;
 	
 const int		UA_ERROR = 24;
 	

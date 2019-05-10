@@ -135,7 +135,7 @@ class BearTrap extends TrapBase
 		
 	void PlaySoundBiteLeg()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapCloseDamage_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -143,7 +143,7 @@ class BearTrap extends TrapBase
 	
 	void PlaySoundBiteEmpty()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapClose_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -151,7 +151,7 @@ class BearTrap extends TrapBase
 	
 	void PlaySoundOpen()
 	{
-		if ( GetGame().IsClient()  ||  !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			SEffectManager.PlaySound("beartrapOpen_SoundSet", this.GetPosition(), 0, 0, false);
 		}
@@ -159,9 +159,12 @@ class BearTrap extends TrapBase
 	
 	override void OnActivate()
 	{
-		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer())
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			PlaySoundOpen();
+			if ( GetGame().GetPlayer() )
+			{
+				PlaySoundOpen();
+			}
 		}
 	}
 	
@@ -170,9 +173,7 @@ class BearTrap extends TrapBase
 	//================================================================
 	
 	override void OnPlacementComplete( Man player ) 
-	{
-		super.OnPlacementComplete( player );
-		
+	{		
 		if ( GetGame().IsServer() )
 		{
 			PlayerBase player_PB = PlayerBase.Cast( player );
@@ -190,5 +191,14 @@ class BearTrap extends TrapBase
 	override string GetLoopDeploySoundset()
 	{
 		return "beartrap_deploy_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionDeployObject);
 	}
 }

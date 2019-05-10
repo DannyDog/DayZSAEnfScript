@@ -1,8 +1,9 @@
 class VicinitySlotsContainer: Container
 {
-	protected ref Container		m_Container;
-	protected int				m_ItemsCount;
-	protected int				m_SlotsCount;
+	protected ref Container			m_Container;
+	protected int					m_ItemsCount;
+	protected int					m_SlotsCount;
+	protected ref array<EntityAI>	m_ShowedItems;
 	
 	void VicinitySlotsContainer( LayoutHolder parent )
 	{
@@ -33,6 +34,8 @@ class VicinitySlotsContainer: Container
 		WidgetEventHandler.GetInstance().RegisterOnDropReceived( m_Container.GetMainWidget(),  m_Parent, "OnDropReceivedFromHeader" );
 		WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_Container.GetMainWidget(),  m_Parent, "DraggingOverHeader" );
 		m_SlotsCount++;
+		
+		m_ShowedItems = new array<EntityAI>;
 	}
 	
 	EntityAI GetActiveItem()
@@ -209,11 +212,6 @@ class VicinitySlotsContainer: Container
 		{
 			return hands_icon.CombineItems( item_in_hands, ent );
 		}
-		else if( ent && !ent.IsInherited( Magazine ))
-		{
-			GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, ent );
-			return false;
-		}
 		return true;
 	}
 	
@@ -237,11 +235,23 @@ class VicinitySlotsContainer: Container
 		if( ItemManager.GetInstance().IsItemMoving() )
 		{
 			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
+			
 			if( selected_item && GetGame().GetPlayer().CanDropEntity( selected_item ) )
 			{
-				GetGame().GetPlayer().PredictiveDropEntity( selected_item );
-				ItemManager.GetInstance().SetSelectedItem( null, null, null );
-				return true;
+				bool draggable = false;
+				if( ItemBase.Cast( selected_item ) )
+				{
+					draggable = !GetGame().GetPlayer().GetInventory().HasInventoryReservation( selected_item, null );
+					draggable = draggable && selected_item.CanPutIntoHands( GetGame().GetPlayer() );
+					draggable = draggable && selected_item.GetInventory().CanRemoveEntity();
+				}
+				
+				if( draggable && m_ShowedItems.Find( selected_item ) == -1 )
+				{
+					GetGame().GetPlayer().PredictiveDropEntity( selected_item );
+					ItemManager.GetInstance().SetSelectedItem( null, null, null );
+					return true;
+				}
 			}
 		}
 		
@@ -307,25 +317,34 @@ class VicinitySlotsContainer: Container
 		
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
 		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-		
-		w.SetFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( icon_x, icon_y );
-		w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( true );
-		w.SetAlpha( 0.1 );
-		w.SetColor( ColorManager.BASE_COLOR );
-		name.Replace( "Col", "RadialIcon" );
-		w.GetParent().FindAnyWidget( name ).Show( true );
-		name.Replace( "RadialIcon", "Selected" );
-		w.FindAnyWidget( name ).Show( true );
+		if( i_item )
+		{
+			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
+			
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			if( i_item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
+			}
+			else
+			{
+				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
+			}
+			name.Replace( "Render", "Col" );
+			w.FindAnyWidget( name ).Show( true );
+			w.SetAlpha( 0.1 );
+			w.SetColor( ColorManager.BASE_COLOR );
+			name.Replace( "Col", "RadialIcon" );
+			w.GetParent().FindAnyWidget( name ).Show( true );
+			name.Replace( "RadialIcon", "Selected" );
+			w.FindAnyWidget( name ).Show( true );
+			ItemManager.GetInstance().SetDraggedItem( i_item );
+		}
 	}
 	
 	void OnIconDrop( Widget w )
 	{
 		ItemManager.GetInstance().HideDropzones();
-		
 		ItemManager.GetInstance().SetIsDragging( false );
 		w.ClearFlags( WidgetFlags.EXACTSIZE );
 		w.SetSize( 1, 1 );
@@ -351,7 +370,7 @@ class VicinitySlotsContainer: Container
 		int x;
 		int visible_items_count = 0;
 		int visible_rows = 0;
-		array<EntityAI> visible_items = new array<EntityAI>;
+		ref array<EntityAI> visible_items = new array<EntityAI>;
 		
 		for( x = 0; x < items.Count(); x++ )
 		{
@@ -360,21 +379,12 @@ class VicinitySlotsContainer: Container
 			{
 				continue;
 			}
-			else if( item.IsInherited( DayZInfected ) || item.IsInherited( SurvivorBase ) || item.IsInherited( Car ) || item.IsInherited( GardenBase ) || item.IsInherited(DayZAnimal) )
+			else if( item.IsInherited( DayZInfected ) || item.IsInherited( SurvivorBase ) || item.IsInherited( Car ) || item.IsInherited( GardenBase ) || item.IsInherited(DayZAnimal) || item.IsInherited( BaseBuildingBase ) )
 			{
 				continue;
 			}
 			visible_items.Insert( item );
 			visible_items_count++;
-		}
-		
-		if( visible_items_count > ITEMS_IN_ROW )
-		{
-			SlotsContainer.Cast( ( m_Container.Get( 0 ) ) ).SetColumnCount( ITEMS_IN_ROW );
-		}
-		else
-		{
-			SlotsContainer.Cast( ( m_Container.Get( 0 ) ) ).SetColumnCount( visible_items_count );
 		}
 		
 		RecomputeNumberOfContainers( visible_items );
@@ -390,7 +400,8 @@ class VicinitySlotsContainer: Container
 			icon.GetMainWidget().Show( true );
 			icon.GetPanelWidget().SetUserID( item.GetID() );
 			
-			icon.Init( item );
+			if( m_ShowedItems.Find( item ) != x )
+				icon.Init( item );
 			icon.UpdateInterval();
 			
 			if( !ItemManager.GetInstance().IsDragging() )
@@ -458,6 +469,8 @@ class VicinitySlotsContainer: Container
 			slots_last.GetMainWidget().Update();
 		}
 		#endif
+		
+		m_ShowedItems = visible_items;
 	}
 	
 	void DoubleClick(Widget w, int x, int y, int button)
@@ -754,6 +767,20 @@ class VicinitySlotsContainer: Container
 					m_Parent.m_Parent.Refresh();
 				}
 			}
+		}
+		
+		if( (items.Count() % ITEMS_IN_ROW) == 0 )
+		{
+			SlotsContainer.Cast( m_Container.Get( number_of_containers_needed - 1 ) ).SetColumnCount( ITEMS_IN_ROW );
+		}
+		else
+		{
+			SlotsContainer.Cast( m_Container.Get( number_of_containers_needed - 1 ) ).SetColumnCount( items.Count() % ITEMS_IN_ROW );
+		}
+		
+		for( int i = 0; i < number_of_containers_needed - 1; i++ )
+		{
+			SlotsContainer.Cast( m_Container.Get( i ) ).SetColumnCount( ITEMS_IN_ROW );
 		}
 	}
 }

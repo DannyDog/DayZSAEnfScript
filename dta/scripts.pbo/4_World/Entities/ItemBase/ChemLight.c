@@ -22,6 +22,8 @@ class Chemlight_ColorBase : ItemBase
 	
 	override void OnEnergyConsumed()
 	{
+		super.OnEnergyConsumed();
+		
 		if ( GetGame().IsServer() )
 		{
 			float energy_coef = GetCompEM().GetEnergy0To1();
@@ -144,4 +146,17 @@ class Chemlight_ColorBase : ItemBase
 			}
 		}
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTurnOnWhileInHands);
+	}
 };
+
+class Chemlight_White: Chemlight_ColorBase {};
+class Chemlight_Red: Chemlight_ColorBase {};
+class Chemlight_Green: Chemlight_ColorBase {};
+class Chemlight_Blue: Chemlight_ColorBase {};
+class Chemlight_Yellow: Chemlight_ColorBase {};

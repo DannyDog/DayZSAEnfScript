@@ -538,6 +538,19 @@ class Torch : ItemBase
 		else
 			return 2; // ???
 	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionLightItemOnFire);
+	}
+	
+	override void OnAttachmentQuantityChanged(ItemBase item)
+	{
+		super.OnAttachmentQuantityChanged(item);
+		CalculateQuantity();
+	}
 };
 
 class TorchLambda : ReplaceItemWithNewLambdaBase

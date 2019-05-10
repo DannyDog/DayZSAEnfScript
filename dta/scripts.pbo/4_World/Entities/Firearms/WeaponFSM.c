@@ -94,7 +94,11 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	bool LoadCurrentFSMState (ParamsReadContext ctx, int version)
 	{
 		if (LoadAndSetCurrentFSMState(ctx, version))
-			return m_State.LoadCurrentFSMState(ctx, version);
+		{
+			bool res = m_State.LoadCurrentFSMState(ctx, version);
+			wpnDebugPrint("[wpnfsm] LoadCurrentFSMState - loaded current state=" + GetCurrentState());
+			return res;
+		}
 		return false;
 	}
 	

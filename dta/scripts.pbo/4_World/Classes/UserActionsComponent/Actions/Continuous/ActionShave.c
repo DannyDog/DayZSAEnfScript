@@ -70,6 +70,6 @@ class ActionShave: ActionContinuousBase
 	{
 		super.OnFinishProgressClient( action_data );
 		
-		AnalyticsManager.OnActionFinishedShaveSelf();
+		GetGame().GetAnalyticsClient().OnActionFinishedShaveSelf();
 	}
 };

@@ -1,4 +1,11 @@
-class QuiltedJacket_ColorBase extends Clothing {};
+class QuiltedJacket_ColorBase extends Clothing
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		AddAction(ActionWringClothes);
+	}
+};
 class QuiltedJacket_Black extends QuiltedJacket_ColorBase {};
 class QuiltedJacket_Green extends QuiltedJacket_ColorBase {};
 class QuiltedJacket_Blue extends QuiltedJacket_ColorBase {};

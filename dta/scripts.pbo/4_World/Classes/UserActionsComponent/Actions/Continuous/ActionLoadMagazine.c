@@ -46,7 +46,7 @@ class ActionLoadMagazine: ActionContinuousBase
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{		
+	{
 		Magazine trg;
 		Magazine itm;
 		if ( Class.CastTo(trg, target.GetObject()) && Class.CastTo(itm, item) && itm.GetAmmoCount() < itm.GetAmmoMax() && trg.GetAmmoCount() != 0 )
@@ -80,6 +80,9 @@ class ActionLoadMagazine: ActionContinuousBase
 				}
 			}
 		}
+		
+		trg.SetSynchDirty();
+		itm.SetSynchDirty();
 		//manipulationDamage
 		//if(trg.GetAmmoCount() > 0 )
 			//trg.SetSynchDirty();

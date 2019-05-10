@@ -8,7 +8,7 @@ class HandStartReplacingItemElsewhereWithNewInHands extends HandStateBase
 		super.OnEntry(e);
 		
 		Man player = e.m_Player;
-		HandEvenReplaceWithNewBase edr = HandEvenReplaceWithNewBase.Cast(e);
+		HandEventReplaceWithNewBase edr = HandEventReplaceWithNewBase.Cast(e);
 		if (edr)
 		{
 			hndDebugPrint("[hndfsm] HandStartReplacingItemElsewhereWithNewInHands about to execute lambda");

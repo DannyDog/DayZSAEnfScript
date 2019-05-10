@@ -1,10 +1,11 @@
 FrameWidgetClass grid_container_root {
  visible 1
  ignorepointer 1
- size 491 0
+ size 1 0
+ halign center_ref
  hexactpos 1
  vexactpos 1
- hexactsize 1
+ hexactsize 0
  vexactsize 1
  draggable 0
  scriptclass "SizeToChild"
@@ -12,11 +13,11 @@ FrameWidgetClass grid_container_root {
   GridSpacerWidgetClass header_grid_container {
    clipchildren 1
    ignorepointer 1
-   position 0 0
-   size 491 0
+   size 1 0
+   halign center_ref
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    Padding 0
    Margin 0
@@ -25,15 +26,19 @@ FrameWidgetClass grid_container_root {
    Columns 1
    Rows 2
    {
-    PanelWidgetClass grid_container_header_spacer {
+    WrapSpacerWidgetClass grid_container_header_spacer {
      visible 0
      ignorepointer 1
-     position 0 0
      size 1 52
+     halign center_ref
      hexactpos 1
      vexactpos 1
      hexactsize 0
      vexactsize 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     content_halign center
      {
       ImageWidgetClass grid_container_header {
        visible 1
@@ -67,6 +72,7 @@ FrameWidgetClass grid_container_root {
          font "gui/fonts/sdf_MetronLight24"
          "exact text" 1
          "exact text size" 20
+         "size to text v" 1
          "text halign" center
          "text valign" center
          wrap 1
@@ -135,10 +141,10 @@ FrameWidgetClass grid_container_root {
      ignorepointer 1
      color 0 0 0 0.7059
      position 0 0
-     size 491 0
+     size 1 0
      hexactpos 1
      vexactpos 1
-     hexactsize 1
+     hexactsize 0
      vexactsize 1
      Padding 0
      Margin 0
@@ -149,10 +155,10 @@ FrameWidgetClass grid_container_root {
       PanelWidgetClass grid_container {
        visible 1
        position 0 0
-       size 491 0
+       size 1 0
        hexactpos 1
        vexactpos 1
-       hexactsize 1
+       hexactsize 0
        vexactsize 1
        priority 1
        scriptclass "SizeToChild"
@@ -161,10 +167,10 @@ FrameWidgetClass grid_container_root {
          visible 1
          clipchildren 1
          ignorepointer 1
-         size 491 0
+         size 1 0
          hexactpos 1
          vexactpos 1
-         hexactsize 1
+         hexactsize 0
          vexactsize 1
          style Colorable
          Padding 0

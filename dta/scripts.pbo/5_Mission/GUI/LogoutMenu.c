@@ -82,7 +82,7 @@ class LogoutMenu extends UIScriptedMenu
 
 		return false;
 	}
-
+	
 	override bool OnKeyDown(Widget w, int x, int y, int key)
 	{
 		super.OnKeyDown( w, x, y, key);
@@ -104,7 +104,16 @@ class LogoutMenu extends UIScriptedMenu
 		
 		return true;
 	}
-	
+
+	override void Update( float timeslice )
+	{
+		if( GetGame().GetInput().LocalPress( "UAUIBack", false ) )
+		{
+			Cancel();
+			Hide();
+		}		
+	}
+		
 	void SetLogoutTime()
 	{
 		m_LogoutTimetext.SetText(" ");
@@ -115,7 +124,7 @@ class LogoutMenu extends UIScriptedMenu
 		m_iTime = time;
 		m_LogoutTimetext.SetText(m_iTime.ToString());
 	}
-	
+		
 	void UpdateTime()
 	{
 		

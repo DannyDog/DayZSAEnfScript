@@ -1,0 +1,75 @@
+FrameWidgetClass rootFrame {
+ position 10 10
+ size 1223.75 1044.46997
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ {
+  TextWidgetClass TextWidget0 {
+   ignorepointer 1
+   position 157.63 321.63
+   size 509.16299 200.761
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   text "附近"
+   font "gui/fonts/china_sdf"
+  }
+  RichTextWidgetClass RichTextWidget1 {
+   ignorepointer 1
+   position 174.53 622.08203
+   size 513.91705 171.95799
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   text "????"
+   font "gui/fonts/sdf_NotoSansCJK-Light28"
+   wrap 1
+  }
+  ImageWidgetClass ImageWidget0 {
+   ignorepointer 1
+   position 325.51102 80.1391
+   size 625.04401 234.65001
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   imageTexture "{7EC90681964DCC2E}Gui/textures/dayz_logo_small_ca.edds"
+   mode blend
+   "src alpha" 0
+   "no wrap" 1
+   stretch 1
+   Mask "{EAA45FAEB23A18C4}Gui/textures/SplashScreenTransitionMask_8bit.edds"
+   "Transition width" 0.574
+  }
+  ImageWidgetClass ImageWidget1 {
+   ignorepointer 1
+   position 485.98099 396.98099
+   size 786.04999 370.00601
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   imageTexture "{7EC90681964DCC2E}Gui/textures/dayz_logo_small_ca.edds"
+   mode blend
+   "src alpha" 1
+   Mask "{EAA45FAEB23A18C4}Gui/textures/SplashScreenTransitionMask_8bit.edds"
+   "Transition width" 0
+   Progress 0.291
+  }
+  RichTextWidgetClass RichTextWidget0 {
+   ignorepointer 1
+   position 177.907 822.70203
+   size 853.013 76.4956
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   text "For normal hit hold <image set=\"playstation_buttons\" name=\"L2\" /> and press <image set=\"xbox_buttons\" name=\"RT\" />."
+   font "gui/fonts/sdf_MetronLight24"
+  }
+ }
+}

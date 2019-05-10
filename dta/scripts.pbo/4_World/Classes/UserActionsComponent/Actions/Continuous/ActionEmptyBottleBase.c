@@ -20,7 +20,7 @@ class ActionEmptyBottleBaseCB : ActionContinuousBaseCB
 				{
 					Bottle_Base vessel_in_hands = Bottle_Base.Cast( m_ActionData.m_MainItem );
 					Param1<bool> play = new Param1<bool>( true );
-					GetGame().RPCSingleParam( vessel_in_hands, SoundType.EMPTYING, play, true );
+					GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.EMPTYING, play, true );
 				}
 
 			break;
@@ -35,7 +35,7 @@ class ActionEmptyBottleBaseCB : ActionContinuousBaseCB
 		{
 			Bottle_Base target_vessel = Bottle_Base.Cast( m_ActionData.m_MainItem );
 			Param1<bool> play = new Param1<bool>( false );
-			GetGame().RPCSingleParam( target_vessel, SoundType.EMPTYING, play, true );
+			GetGame().RPCSingleParam( target_vessel, SoundTypeBottle.EMPTYING, play, true );
 		}
 	}
 };

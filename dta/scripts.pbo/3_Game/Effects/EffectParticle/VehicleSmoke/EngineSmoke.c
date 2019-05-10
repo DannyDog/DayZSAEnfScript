@@ -29,24 +29,27 @@ class EffEngineSmoke : EffVehicleSmoke
 				if (p)
 					p.Stop();
 				
-				SetParticleState( p.GetParticleID() );
-				p = GetParticle();
-				if (p)
+				if (p) // quick fix
 				{
-					float speed = parent.GetSpeedometer();
-					float lifetime_scale;
-					
-					if (speed < 100)
-						lifetime_scale = (100 - speed) / 100;
-					else
-						lifetime_scale = 0.1;
-					
-					float birthrate_scale = 1 + (speed * 0.02 );
-					
-					p.ScaleParticleParamFromOriginal( EmitorParam.LIFETIME, lifetime_scale );
-					p.ScaleParticleParamFromOriginal( EmitorParam.LIFETIME_RND, lifetime_scale );
-					p.ScaleParticleParamFromOriginal( EmitorParam.BIRTH_RATE, birthrate_scale );
-					p.ScaleParticleParamFromOriginal( EmitorParam.BIRTH_RATE_RND, birthrate_scale );
+					SetParticleState( p.GetParticleID() );
+					p = GetParticle();
+					if (p)
+					{
+						float speed = parent.GetSpeedometer();
+						float lifetime_scale;
+						
+						if (speed < 100)
+							lifetime_scale = (100 - speed) / 100;
+						else
+							lifetime_scale = 0.1;
+						
+						float birthrate_scale = 1 + (speed * 0.02 );
+						
+						p.ScaleParticleParamFromOriginal( EmitorParam.LIFETIME, lifetime_scale );
+						p.ScaleParticleParamFromOriginal( EmitorParam.LIFETIME_RND, lifetime_scale );
+						p.ScaleParticleParamFromOriginal( EmitorParam.BIRTH_RATE, birthrate_scale );
+						p.ScaleParticleParamFromOriginal( EmitorParam.BIRTH_RATE_RND, birthrate_scale );
+					}
 				}
 			}
 		}

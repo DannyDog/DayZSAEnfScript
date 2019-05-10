@@ -1,6 +1,6 @@
 class LandMineTrap extends TrapBase
 {
-	SoundOnVehicle m_TimerLoop;
+	protected ref EffectSound m_TimerLoopSound;
 	protected ref Timer m_DeleteTimer;
 	
 	void LandMineTrap()
@@ -12,32 +12,33 @@ class LandMineTrap extends TrapBase
 		
 		m_AddDeactivationDefect = true;
 	}
-	
-	/*override bool IsOneHandedBehaviour()
-	{
-		return true;
-	}*/
-	
+		
 	override void StartActivate( PlayerBase player )
 	{
 		super.StartActivate( player );
 		
-		if (GetGame().IsClient())
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			PlaySound("landmine_safetyPin", 3);
-			m_TimerLoop = PlaySoundLoop("landmine_timer2", 3);
+			SEffectManager.PlaySound("landmine_safetyPin_SoundSet", this.GetPosition(), 0, 0, false);
+			m_TimerLoopSound = SEffectManager.PlaySound("landmine_timer2_SoundSet", this.GetPosition(), 0, 0, true);
 		}
 	}
 	
 	override void OnActivate()
 	{
-		if (GetGame().IsClient())
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			PlaySound("landmine_ready", 3);
+			if ( m_TimerLoopSound )
+			{
+				m_TimerLoopSound.SoundStop();
+				m_TimerLoopSound.SetSoundAutodestroy( true );
+			}
+			
+			if ( GetGame().GetPlayer() )
+			{
+				PlaySoundActivate();
+			}
 		}
-		
-		GetGame().ObjectDelete(m_TimerLoop);
-		m_TimerLoop = NULL;
 	}
 	
 	override bool CanExplodeInFire()
@@ -81,14 +82,20 @@ class LandMineTrap extends TrapBase
 		}
 	}
 	
+	void PlaySoundActivate()
+	{
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
+		{
+			SEffectManager.PlaySound("landmineActivate_SoundSet", this.GetPosition(), 0, 0, false);
+		}
+	}
+	
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================
 		
 	override void OnPlacementComplete( Man player ) 
-	{
-		super.OnPlacementComplete( player );
-		
+	{		
 		if ( GetGame().IsServer() )
 		{
 			PlayerBase player_PB = PlayerBase.Cast( player );
@@ -104,5 +111,14 @@ class LandMineTrap extends TrapBase
 	override string GetLoopDeploySoundset()
 	{
 		return "landmine_deploy_SoundSet";
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionActivateTrap);
+		AddAction(ActionDeployObject);
 	}
 }

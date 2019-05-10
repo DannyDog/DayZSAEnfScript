@@ -1,10 +1,11 @@
 class Particle extends ScriptedEntity
 {
-	protected int		m_ParticleID;
-	protected float		m_Lifetime;
-	protected int		m_PreviousFrame;
-	protected bool 		m_IsPlaying;
-	protected bool 		m_IsRepeat;
+	protected 	int		m_ParticleID;
+	protected 	float	m_Lifetime;
+	protected 	int		m_PreviousFrame;
+	protected 	bool 	m_IsPlaying;
+	protected 	bool 	m_IsRepeat;
+	private 	bool 	m_MarkedForDeletion;
 	bool 				m_ForceOrientationRelativeToWorld = false;
 	vector 				m_DefaultOri;
 	vector 				m_DefaultPos;
@@ -12,7 +13,7 @@ class Particle extends ScriptedEntity
 	float 				m_MaxOriInterval;
 	ref Timer 			m_RandomizeOri;
 	
-	private Object 		m_ParentObject;
+	private Object 		m_ParentObject; // TO DO: Remove m_ParentObject parameter and use GetObject instead!
 	private Object 		m_ParticleEffect;
 	
 	private vector 		m_GlobalPosPreviousFrame;
@@ -48,6 +49,11 @@ class Particle extends ScriptedEntity
 	Object GetParticleParent()
 	{
 		return m_ParentObject;
+	}
+	
+	override bool IsParticle()
+	{
+		return true;
 	}
 	
 	//====================================
@@ -273,19 +279,29 @@ class Particle extends ScriptedEntity
 	{
 		if (m_Lifetime <= 0)
 		{
-			m_IsRepeat = IsRepeat(); // It is possible that the REPEAT flag was changed during lifetime, so it needs to be checked again.
-			
-			if ( m_IsRepeat )
+			if (!m_MarkedForDeletion)
 			{
-				m_Lifetime = GetMaxLifetime();
+				m_IsRepeat = IsRepeat(); // It is possible that the REPEAT flag was changed during lifetime, so it needs to be checked again.
+				
+				if ( m_IsRepeat )
+				{
+					m_Lifetime = GetMaxLifetime();
+				}
+				else
+				{
+					m_IsPlaying = false;
+					
+					if ( GetParticleCount() == 0 )
+					{
+						m_MarkedForDeletion = true;
+						OnToDelete();
+					}
+				}
 			}
 			else
 			{
-				m_IsPlaying = false;
-				
-				if ( GetParticleCount() == 0 )
+				if ( m_MarkedForDeletion )
 				{
-					OnToDelete();
 					GetGame().ObjectDelete( m_ParticleEffect );
 					m_ParticleEffect = NULL;
 					GetGame().ObjectDelete( this );
@@ -335,6 +351,9 @@ class Particle extends ScriptedEntity
 	// Called before deletion
 	private void OnToDelete()
 	{
+		
+		
+		
 		/* TODO Call Back To Effect
 		if (m_MyEffectHolder)
 		{
@@ -533,6 +552,17 @@ class Particle extends ScriptedEntity
 	void Stop()
 	{
 		m_IsPlaying = false;
+		
+		
+		// Without the following we might get an error when a particle parent is despawned client-side.
+		Object parent = Object.Cast( GetParent() );
+		if( parent )
+		{
+			vector world_pos = GetPosition();
+			parent.RemoveChild(this);
+			SetPosition(world_pos);
+		}
+		
 		UpdateState();
 	}
 	

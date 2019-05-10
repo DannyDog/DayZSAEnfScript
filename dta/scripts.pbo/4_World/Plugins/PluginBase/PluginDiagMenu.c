@@ -18,6 +18,7 @@ enum DiagMenuIDs
 	DM_PLAYER_AGENTS_INJECTS_SHOW,
 	DM_SOFT_SKILLS_MENU,
 	DM_GUN_PARTICLES,
+	DM_DISABLE_PERSONAL_LIGHT,
 	DM_SOFT_SKILLS_SHOW_DEBUG,
 	DM_SOFT_SKILLS_TOGGLE_STATE,
 	DM_SOFT_SKILLS_TOGGLE_MODEL,
@@ -65,6 +66,7 @@ enum DiagMenuIDs
 	DM_BS_RELOAD,
 	DM_QUICK_RESTRAIN,
 	DM_HAIR_MENU,
+	DM_HAIR_DISPLAY_DEBUG,
 	DM_HAIR_LEVEL,
 	DM_HAIR_LEVEL_HIDE,
 	DM_HAIR_HIDE_ALL
@@ -98,7 +100,6 @@ class PluginDiagMenu extends PluginBase
 	bool m_ToggleHud				= false;
 	bool m_ShowingWeaponDebug		= false;
 	bool m_AimNoiseEnabled			= true;
-	bool m_HairHidden 				= false;
 	int m_DisplayPlayerInfo			= false;
 	bool m_ProceduralRecoilEnabled 	= true;
 	bool m_EnableQuickRestrain 		= false;
@@ -113,11 +114,28 @@ class PluginDiagMenu extends PluginBase
 	int  m_DayzPlayerDebugMenu		= -1;
 	int m_BleedingSourceRequested;
 	int m_HairLevelSelected 		= 0;
+	int m_TotalHairLevelsAdjusted;
+	
+	//string m_HairSelections 		= "Clipping_GhillieHood, Clipping_grathelm, Clipping_ConstructionHelmet, Clipping_Hockey_hekmet, Clipping_Maska, Clipping_ProtecSkateHelmet2, Clipping_BandanaFace, Clipping_NioshFaceMask, Clipping_NBC_Hood, Clipping_MotoHelmet, Clipping_FireHelmet, Clipping_ushanka, Clipping_TankerHelmet, Clipping_SantasBeard, Clipping_Surgical_mask, Clipping_PumpkinHelmet, Clipping_Balaclava_3holes, Clipping_Balaclava, Clipping_GP5GasMask, Clipping_BoonieHat, Clipping_prison_cap, Clipping_MilitaryBeret_xx, Clipping_Policecap, Clipping_OfficerHat, Clipping_Hat_leather, Clipping_CowboyHat, Clipping_BandanaHead, Clipping_SantasHat, Clipping_FlatCap, Clipping_MxHelmet, Clipping_baseballcap, Clipping_BeanieHat, Clipping_MedicalScrubs_Hat, Clipping_RadarCap, Clipping_ZmijovkaCap, Clipping_HeadTorch, Clipping_pilotka, Clipping_MxHelmet, Clipping_HelmetMich, Clipping_Ssh68Helmet, Clipping_Mich2001, Clipping_Welding_Mask, Clipping_VintageHockeyMask, Clipping_mouth_rags, Clipping_Gasmask";
+	ref map<int,bool> m_HairHidingStateMap;
+	ref TStringArray m_HairSelectionArray;
 	
 	override void OnInit()
 	{
 		if( GetGame().IsMultiplayer() && GetGame().IsServer() ) return; //(only client/local)
-
+		
+		//----------------------
+		m_HairHidingStateMap = new map<int,bool>;
+		m_HairSelectionArray = new TStringArray;
+		
+		g_Game.ConfigGetTextArray("cfgVehicles Head_Default simpleHiddenSelections",m_HairSelectionArray);
+		m_TotalHairLevelsAdjusted = m_HairSelectionArray.Count() - 1;
+		for (int i = 0; i < m_HairSelectionArray.Count(); i++)
+		{
+			m_HairHidingStateMap.Insert(i,1); //all considered "shown" on init
+		}
+		
+		//----------------------
 		m_Timer = new Timer();
 
 		m_Timer.Run(0.5, this, "Update", NULL, true);
@@ -243,14 +261,16 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_GO_UNCONSCIOUS_DELAYED, "", "Uncons. in 10sec", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_QUICK_RESTRAIN, "ralt+0", "Quick Restrain", "Misc");
 				DiagMenu.RegisterMenu(DiagMenuIDs.DM_HAIR_MENU, "Hair Hiding", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_DISABLE_PERSONAL_LIGHT, "", "Disable Personal Light", "Misc");
 					//---------------------------------------------------------------
 					// LEVEL 3
 					//---------------------------------------------------------------
 					DiagMenu.RegisterBool(DiagMenuIDs.DM_ACTION_TARGETS_NEW, "", "New AT Selection", "Action Targets", true);
 					DiagMenu.RegisterBool(DiagMenuIDs.DM_ACTION_TARGETS_DEBUG, "", "Show Debug", "Action Targets");
 					DiagMenu.RegisterBool(DiagMenuIDs.DM_ACTION_TARGETS_SELPOS_DEBUG, "", "Show selection pos debug", "Action Targets");
-					DiagMenu.RegisterRange(DiagMenuIDs.DM_HAIR_LEVEL, "", "Hair Level#", "Hair Hiding","0,44,0,1");
-					DiagMenu.RegisterBool(DiagMenuIDs.DM_HAIR_LEVEL_HIDE, "", "Hide Selected Level", "Hair Hiding");
+					DiagMenu.RegisterBool(DiagMenuIDs.DM_HAIR_DISPLAY_DEBUG, "", "Display Debug", "Hair Hiding");
+					DiagMenu.RegisterRange(DiagMenuIDs.DM_HAIR_LEVEL, "", "Hair Level#", "Hair Hiding","0,"+m_TotalHairLevelsAdjusted+",0,1");
+					DiagMenu.RegisterBool(DiagMenuIDs.DM_HAIR_LEVEL_HIDE, "", "Toggle Hair Level", "Hair Hiding");
 					DiagMenu.RegisterBool(DiagMenuIDs.DM_HAIR_HIDE_ALL, "", "Hide/Show All", "Hair Hiding");
 
 			//---------------------------------------------------------------
@@ -332,6 +352,7 @@ class PluginDiagMenu extends PluginBase
 		CheckQuickRestrain();
 		CheckHairLevel();
 		CheckHairHide();
+		CheckPersonalLight();
 
 	}
 	//---------------------------------------------
@@ -500,12 +521,18 @@ class PluginDiagMenu extends PluginBase
 			SendSetHairLevelHideRPC(-1,value);
 			DiagMenu.SetValue(DiagMenuIDs.DM_HAIR_HIDE_ALL, false);//to prevent constant RPC calls, switch back to false
 		}
-		else if (value != m_HairHidden)
+		else if (value)
 		{
-			m_HairHidden = !m_HairHidden;
 			SendSetHairLevelHideRPC(m_HairLevelSelected,value);
-			DiagMenu.SetValue(DiagMenuIDs.DM_HAIR_LEVEL_HIDE, value);//to prevent constant RPC calls, switch back to false
+			DiagMenu.SetValue(DiagMenuIDs.DM_HAIR_LEVEL_HIDE, false);//to prevent constant RPC calls, switch back to false
 		}
+	}
+	
+	void CheckPersonalLight()
+	{
+		int value = DiagMenu.GetBool(DiagMenuIDs.DM_DISABLE_PERSONAL_LIGHT);
+		PlayerBaseClient.m_PersonalLightDisabledByDebug = value;
+		PlayerBaseClient.UpdatePersonalLight();
 	}
 	
 	//---------------------------------------------
@@ -1481,17 +1508,10 @@ class PluginDiagMenu extends PluginBase
 				}
 			//DayZPlayerSyncJunctures.SendPlayerUnconsciousness(player, !player.IsUnconscious() );
 			break;
-			/*case ERPCs.DEV_HAIR_LEVEL:
-				player.HideHair(!m_HairHidden);
-				m_HairHidden = !m_HairHidden;
-			break;*/
 			case ERPCs.DEV_HAIR_LEVEL_HIDE:
 				ctx.Read( CachedObjectsParams.PARAM2_INT_INT ); //PARAM2_INT_INT.param2 is BOOL here
-				player.HideHairLevel(CachedObjectsParams.PARAM2_INT_INT.param1,CachedObjectsParams.PARAM2_INT_INT.param2);
-				
-				//Print("CachedObjectsParams.PARAM2_INT_INT.param1 " + CachedObjectsParams.PARAM2_INT_INT.param1);
-				//Print("CachedObjectsParams.PARAM2_INT_INT.param2 " + CachedObjectsParams.PARAM2_INT_INT.param2);
-			
+				player.SetHairLevelToHide(CachedObjectsParams.PARAM2_INT_INT.param1,CachedObjectsParams.PARAM2_INT_INT.param2,true);
+				player.UpdateHairSelectionVisibility(true);
 			break;
 		}
 	}

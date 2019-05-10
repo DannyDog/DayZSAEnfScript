@@ -1,41 +1,65 @@
+
+class RecipeCacheData
+{
+	int m_Mask;
+	int m_BitCount;
+	
+	void RecipeCacheData(int mask)
+	{
+		SetMask(mask);
+	}
+	
+	int GetMask()
+	{
+		return m_Mask;
+	}
+	
+	int GetBitCount()
+	{
+		return m_BitCount;
+	}
+	
+	void SetMask(int mask)
+	{
+		m_Mask = mask;
+		m_BitCount = GetNumberOfSetBits(mask);
+	}
+	
+}
+
 class CacheObject
 {
-	
-	ref array<int> m_Recipes;
-	ref array<int> m_RecipeMasks;
-	ref array<int> m_RecipeBitCount;
-
+	ref map<int, ref RecipeCacheData> m_Recipes;
+	ref array<int> m_RecipeIDs;
+	//RecipeCacheData data;
 	void CacheObject()
 	{
-		m_Recipes = new array<int>;
-		m_RecipeMasks = new array<int>;
-		m_RecipeBitCount = new array<int>;
+		m_Recipes = new map<int, ref RecipeCacheData>;
+		m_RecipeIDs = new array<int>;
 	}
 
-	bool AddRecipe(int recipe, int mask)
+	bool AddRecipe(int recipe_id, int mask)
 	{
-		if(IsContainRecipe(recipe))
+		RecipeCacheData data = m_Recipes.Get(recipe_id);
+		if(data)
 		{
-			UpdateMask( recipe, mask );
-			return false;
+			UpdateMask(recipe_id, mask);
 		}
-		m_Recipes.Insert(recipe);
-		m_RecipeMasks.Insert(mask);
-		m_RecipeBitCount.Insert(GetNumberOfSetBits(mask));
+		else
+		{
+			m_Recipes.Insert(recipe_id, new RecipeCacheData(mask));
+			m_RecipeIDs.Insert(recipe_id);
+
+		}
 		return true;
 	}
 
-	void UpdateMask(int recipe_id, int new_mask)
-	{
-		for(int i = 0; i < m_Recipes.Count(); i++)
-		{
-			if( m_Recipes.Get(i) == recipe_id )
-			{
-				m_RecipeMasks.Set(i,new_mask);
-				m_RecipeBitCount.Set(i,GetNumberOfSetBits(new_mask));
 
-			}
-		}
+	void UpdateMask(int recipe_id, int mask)
+	{
+		RecipeCacheData data = m_Recipes.Get(recipe_id);
+		data.SetMask(data.GetMask() | mask);
+		
 	}
 
 	
@@ -46,43 +70,38 @@ class CacheObject
 	
 	array<int> GetRecipes()
 	{
-		return m_Recipes;
+		return m_RecipeIDs;
 	}
 	
-	array<int> GetMasks()
+	bool IsContainRecipe(int recipe_id)
 	{
-		return m_RecipeMasks;
+		return m_Recipes.Contains(recipe_id);
 	}
 	
-	bool IsContainRecipe(int id)
+	int GetMaskByRecipeID(int recipe_id)
 	{
-		for(int i = 0; i < m_Recipes.Count(); i++)
-		{
-			if( m_Recipes.Get(i) == id ) return true;
-		}
-		return false;
-	}
-	
-	array<int> GetBitCount()
-	{
-		return m_RecipeBitCount;
-	}
-
-	int GetMaskByRecipeID(int id)//REWORK.V speed it up by using a map
-	{
-		for(int i = 0; i < m_Recipes.Count(); i++)
-		{
-			if( m_Recipes.Get(i) == id ) return m_RecipeMasks.Get(i);
-		}
+		RecipeCacheData cache_data = m_Recipes.Get(recipe_id);
+		if(cache_data)
+			return cache_data.GetMask();
 		return 0;
 	}
 	
-	int GetBitCountByRecipeID(int id)//REWORK.V speed it up by using a map
+	int GetBitCountByRecipeID(int recipe_id)
 	{
-		for(int i = 0; i < m_Recipes.Count(); i++)
-		{
-			if( m_Recipes.Get(i) == id ) return m_RecipeBitCount.Get(i);
-		}
+		RecipeCacheData cache_data = m_Recipes.Get(recipe_id);
+		if(cache_data)
+			return cache_data.GetBitCount();
 		return 0;
+	}
+	
+	void DebugPrint()
+	{
+		for(int i = 0; i < m_Recipes.Count();i++)
+		{
+			Print("recipeID:"+m_Recipes.GetKey(i).ToString());
+			Print("mask:"+m_Recipes.GetElement(i).m_Mask.ToString());
+			Print("m_BitCount:"+m_Recipes.GetElement(i).m_BitCount.ToString());
+			
+		}
 	}
 }
