@@ -69,6 +69,7 @@ class ComponentEnergyManager : Component
 	ref map<string,EntityAI>		m_DeviceByPlugSelection;
 	
 	ref Timer 						m_UpdateTimer;
+	ref Timer 						m_UpdateQuantityTimer;
 	ref Timer 						m_DebugUpdate;
 	
 	const int MAX_SOCKETS_COUNT 	= 4;
@@ -185,6 +186,16 @@ class ComponentEnergyManager : Component
 			string error = "Error! Item " + m_ThisEntityAI.GetType() + " has invalid configuration of the energy->quantity conversion feature. To fix this, add 'varQuantityMax' parameter with value higher than 0 to the item's config. Then make sure to re-build the PBO containing this item!";
 			Error(error);
 			m_ConvertEnergyToQuantity = false;
+		}
+		else
+		{
+			if (m_ConvertEnergyToQuantity)
+			{
+				if (!m_UpdateQuantityTimer)
+					m_UpdateQuantityTimer = new Timer( CALL_CATEGORY_SYSTEM );
+				
+				m_UpdateQuantityTimer.Run( 0.3 , this, "OnEnergyAdded", NULL, false);
+			}
 		}
 		
 		// Set update interval
@@ -1353,6 +1364,9 @@ class ComponentEnergyManager : Component
 	//! Energy manager: Called when energy was added on this device
 	void OnEnergyAdded()
 	{
+		m_UpdateQuantityTimer.Stop();
+		m_UpdateQuantityTimer = NULL;
+		
 		m_ThisEntityAI.OnEnergyAdded();
 	}
 

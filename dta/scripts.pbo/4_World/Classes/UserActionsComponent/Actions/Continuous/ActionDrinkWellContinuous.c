@@ -41,11 +41,6 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if( player.GetItemInHands())
-		{
-			return false;			
-		}
-
 		if( target.GetObject() && target.GetObject().IsWell() )
 		{
 			return true;

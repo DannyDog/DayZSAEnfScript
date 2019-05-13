@@ -41,6 +41,8 @@ class Battery9V extends ItemBase
 	// Not needed right now, but it will be useful if we add rechargable batteries.
 	override void OnEnergyAdded()
 	{
+		super.OnEnergyAdded();
+		
 		if ( GetGame().IsServer() )
 		{
 			float energy_coef = GetCompEM().GetEnergy0To1();

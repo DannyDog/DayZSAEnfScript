@@ -300,11 +300,14 @@ class Magazine : InventoryItemSuper
 		}
 		return false;
 	}
-	
+};
+
+class MagazineStorage : Magazine
+{
 	override void SetActions()
 	{
 		super.SetActions();
 		AddAction(ActionLoadMagazine);
 		AddAction(ActionEmptyMagazine);
 	}
-};
+}

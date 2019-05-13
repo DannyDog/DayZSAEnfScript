@@ -354,7 +354,7 @@ class HeadlightH7 extends ItemBase
 	}
 };
 
-class HeadlightH7_Box extends ItemBase {};
+class HeadlightH7_Box extends Box_Base {};
 
 class WindscreenBox extends ItemBase {};
 

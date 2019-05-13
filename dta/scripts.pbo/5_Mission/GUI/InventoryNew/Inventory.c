@@ -571,8 +571,13 @@ class Inventory: LayoutHolder
 			InventoryItem item = InventoryItem.Cast( ItemManager.GetInstance().GetDraggedItem() );
 			if( item )
 			{
-				item.GetInventory().FlipCargo();
-				item.GetOnItemFlipped().Invoke(item.GetInventory().GetFlipCargo());
+				int size_x, size_y;
+				GetGame().GetInventoryItemSize( item, size_x, size_y );
+				if( size_x != size_y )
+				{
+					item.GetInventory().FlipCargo();
+					item.GetOnItemFlipped().Invoke(item.GetInventory().GetFlipCargo());
+				}
 			}
 		}
 		
