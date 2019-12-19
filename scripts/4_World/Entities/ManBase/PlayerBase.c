@@ -1566,9 +1566,9 @@ class PlayerBase extends ManBase
 		return m_HologramLocal;
 	}
 	
-	void PlacingStartServer()
+	void PlacingStartServer( ItemBase item )
 	{
-		m_HologramServer = new Hologram( this, GetLocalProjectionPosition() );
+		m_HologramServer = new Hologram( this, GetLocalProjectionPosition(), item );
 		GetHologramServer().SetProjectionPosition( GetLocalProjectionPosition() );
 		GetHologramServer().SetProjectionOrientation( GetLocalProjectionOrientation() );
 		GetHologramServer().GetProjectionEntity().OnPlacementStarted( this );
@@ -1576,9 +1576,9 @@ class PlayerBase extends ManBase
 		GetHologramServer().RefreshVisual();
 	}
 	
-	void PlacingStartLocal()
+	void PlacingStartLocal(ItemBase item)
 	{
-		m_HologramLocal = new Hologram( this, GetLocalProjectionPosition() );
+		m_HologramLocal = new Hologram( this, GetLocalProjectionPosition(), item );
 		GetHologramLocal().GetProjectionEntity().OnPlacementStarted( this );
 	}
 	
@@ -1695,7 +1695,7 @@ class PlayerBase extends ManBase
 		}
 		else
 		{
-			PlacingStartLocal();
+			PlacingStartLocal( GetItemInHands() );
 		}
 	}
 

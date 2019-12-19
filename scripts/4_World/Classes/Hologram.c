@@ -1,6 +1,6 @@
 class Hologram
 {
-	protected EntityAI 			m_Parent; 		
+	protected ItemBase 			m_Parent; 		
 	protected EntityAI 			m_Projection; 	
 	protected ItemBase 			m_ProjectionIB; 	
 	protected PlayerBase 		m_Player;
@@ -43,10 +43,10 @@ class Hologram
 	Shape m_DebugPlugArrowRightFar;
 	*/
 		
-	void Hologram( PlayerBase player, vector pos)
+	void Hologram( PlayerBase player, vector pos, ItemBase item)
 	{	
 		m_Player = player;
-		m_Parent = m_Player.GetHumanInventory().GetEntityInHands();
+		m_Parent = item;
 		m_Projection = NULL;
 		m_ProjectionIB = NULL;
 		m_ProjectionTrigger = NULL;
@@ -152,8 +152,11 @@ class Hologram
 
 	string ProjectionBasedOnParent()
 	{
-		ItemBase item_in_hands = ItemBase.Cast( m_Player.GetHumanInventory().GetEntityInHands() );
+		ItemBase item_in_hands = m_Parent;
 
+		if( !item_in_hands )
+			return "";
+		
 		if ( item_in_hands && item_in_hands.CanMakeGardenplot() )
 		{
 			return "GardenPlot";

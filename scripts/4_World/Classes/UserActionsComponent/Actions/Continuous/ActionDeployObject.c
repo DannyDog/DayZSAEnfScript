@@ -137,8 +137,6 @@ class ActionDeployObject: ActionContinuousBase
 	
 	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
 	{	
-		SetupAnimation( item );
-		
 		if( super.SetupAction(player, target, item, action_data, extra_data ))
 		{
 			PlaceObjectActionData poActionData;
@@ -146,7 +144,6 @@ class ActionDeployObject: ActionContinuousBase
 			poActionData.m_AlreadyPlaced = false;
 			if (!GetGame().IsMultiplayer() || GetGame().IsClient() )
 			{
-
 				Hologram hologram = player.GetHologramLocal();
 				if(hologram)
 				{
@@ -162,6 +159,10 @@ class ActionDeployObject: ActionContinuousBase
 				}
 			}
 			
+			if( !action_data.m_MainItem )
+				return false;
+			
+			SetupAnimation( action_data.m_MainItem );
 			return true;
 		}
 		return false;
@@ -210,10 +211,14 @@ class ActionDeployObject: ActionContinuousBase
 			EntityAI entity_for_placing = action_data.m_MainItem;
 			poActionData.m_Player.SetLocalProjectionPosition( poActionData.m_Position );
 			poActionData.m_Player.SetLocalProjectionOrientation( poActionData.m_Orientation );
-			poActionData.m_Player.PlacingStartServer();
 			
-			GetGame().AddActionJuncture( action_data.m_Player, entity_for_placing, 10000 );
-			action_data.m_MainItem.SetIsBeingPlaced( true );
+			if( action_data.m_MainItem )
+			{
+				poActionData.m_Player.PlacingStartServer(action_data.m_MainItem);
+			
+				GetGame().AddActionJuncture( action_data.m_Player, entity_for_placing, 10000 );
+				action_data.m_MainItem.SetIsBeingPlaced( true );
+			}
 		}
 		else
 		{
@@ -245,6 +250,7 @@ class ActionDeployObject: ActionContinuousBase
 		poActionData = PlaceObjectActionData.Cast(action_data);
 		
 		if ( !poActionData ) { return; }
+		if( !action_data.m_MainItem ) { return; }
 		
 		EntityAI entity_for_placing = action_data.m_MainItem;
 		vector position = action_data.m_Player.GetLocalProjectionPosition();
@@ -291,6 +297,9 @@ class ActionDeployObject: ActionContinuousBase
 	
 	override void OnEndServer( ActionData action_data  )
 	{
+		if( !action_data || !action_data.m_MainItem )
+			return;
+		
 		PlaceObjectActionData poActionData;
 		poActionData = PlaceObjectActionData.Cast(action_data);
 		if ( !poActionData.m_AlreadyPlaced )
