@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{2867BB20F5D5773C}DZ/anims/anm/player/menu/sword/p_menu_sword_1.anm"
+   "Idle02" "{B17902B9E83246AC}DZ/anims/anm/player/menu/sword/p_menu_sword_2.anm"
+   "Idle03" "{C6736A311C90A9DC}DZ/anims/anm/player/menu/sword/p_menu_sword_3.anm"
+   "Idle04" "{C1B490607A16131F}DZ/anims/anm/player/menu/sword/p_menu_sword_4.anm"
+   "Idle05" "{B6BEF8E88EB4FC6F}DZ/anims/anm/player/menu/sword/p_menu_sword_5.anm"
+   "Idle06" "{2FA041719353CDFF}DZ/anims/anm/player/menu/sword/p_menu_sword_6.anm"
+   "Idle07" "{58AA29F967F1228F}DZ/anims/anm/player/menu/sword/p_menu_sword_7.anm"
+   "Idle08" "{2867BB20F5D5773C}DZ/anims/anm/player/menu/sword/p_menu_sword_1.anm"
+   "Idle09" "{B17902B9E83246AC}DZ/anims/anm/player/menu/sword/p_menu_sword_2.anm"
+   "Idle10" "{C6736A311C90A9DC}DZ/anims/anm/player/menu/sword/p_menu_sword_3.anm"
+   "Idle11" "{C1B490607A16131F}DZ/anims/anm/player/menu/sword/p_menu_sword_4.anm"
+   "Idle12" "{B6BEF8E88EB4FC6F}DZ/anims/anm/player/menu/sword/p_menu_sword_5.anm"
+   "Idle13" "{2FA041719353CDFF}DZ/anims/anm/player/menu/sword/p_menu_sword_6.anm"
+   "Idle14" "{58AA29F967F1228F}DZ/anims/anm/player/menu/sword/p_menu_sword_7.anm"
+   "IdleMain" "{8B68B7C0AD1829C9}DZ/anims/anm/player/menu/sword/p_menu_sword_main.anm"
+  
+ }

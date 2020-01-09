@@ -1,0 +1,17 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{2DCC9BABB43BAAAE}DZ/anims/workspaces/player/player_main/player_main_2h.asi"
+ $animations {
+   "Combat.Erc.Block" "{FDAECBF4BD4D9D40}DZ/anims/anm/player/moves/2handed/p_2hd_erc_idle_block_extinguisher_ras.anm"
+   "Combat.Erc.EvadeL" "{2BFFAD5490674A32}DZ/anims/anm/player/moves/2handed/p_2hd_erc_extinguisher_evadeL_ras.anm"
+   "Combat.Erc.EvadeR" "{4731078504312B56}DZ/anims/anm/player/moves/2handed/p_2hd_erc_extinguisher_evadeR_ras.anm"
+   "Combat.Erc.Sprint_StrikeR01" "{0427DA895D3B5C45}DZ/anims/anm/player/attacks/2hd/extinguisher/p_2hd_erc_attackR_charged_extinguisher.anm"
+   "Combat.Erc.StrikeL01" "{503B784028E2FBE1}DZ/anims/anm/player/attacks/2hd/extinguisher/p_2hd_erc_attackL_Light_extinguisher_ras.anm"
+   "Combat.Erc.StrikeL02" "{980BCE4622A49C7E}DZ/anims/anm/player/attacks/2hd/extinguisher/p_2hd_erc_attackL_Heavy_extinguisher_ras.anm"
+   "Combat.Erc.StrikeR01" "{88D78825A80419BC}DZ/anims/anm/player/attacks/2hd/extinguisher/p_2hd_erc_attackR_Light_extinguisher_ras.anm"
+   "Combat.Erc.StrikeR03" "{2B186F59D49E6811}DZ/anims/anm/player/attacks/2hd/extinguisher/p_2hd_erc_attackR_ Heavy_extinguisher_ras.anm"
+   "Damage.ErcRas.Light F Block" "{E0CFCBF6A5787BD8}DZ/anims/anm/player/hits/Light/p_2h_extinguisher_erc_block_ras_hit_light_F.anm"
+   "Locomotion.ErcRas.Idle" "{2F335EB53DD3FE8C}DZ/anims/anm/player/moves/2handed/p_2hd_erc_idle_extinguisher_ras.anm"
+  
+ }

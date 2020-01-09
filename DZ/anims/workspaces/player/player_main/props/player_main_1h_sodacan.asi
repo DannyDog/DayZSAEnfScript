@@ -1,0 +1,24 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.DrinkCro.In" "{C2C58CE0B5907EAC}DZ/anims/anm/player/actions/consumption/p_cro_drink_can_in.anm"
+   "ActionContinuous.DrinkCro.Loop" "{9518BCD5C2C9D12A}DZ/anims/anm/player/actions/consumption/p_cro_drink_can_loop.anm"
+   "ActionContinuous.DrinkCro.Out" "{E8C2ACED2AADAB1A}DZ/anims/anm/player/actions/consumption/p_cro_drink_can_out.anm"
+   "ActionContinuous.DrinkErc.In" "{867D402ABC3D3714}DZ/anims/anm/player/actions/consumption/p_erc_drink_can_in.anm"
+   "ActionContinuous.DrinkErc.Loop" "{F6BBFAD562C4A8FF}DZ/anims/anm/player/actions/consumption/p_erc_drink_can_loop.anm"
+   "ActionContinuous.DrinkErc.Out" "{C33802B463CADEEA}DZ/anims/anm/player/actions/consumption/p_erc_drink_can_out.anm"
+   "ActionContinuous.DrinkPne.In" "{66D5AC5CE4690DFF}DZ/anims/anm/player/actions/consumption/p_pne_drink_can_in.anm"
+   "ActionContinuous.DrinkPne.Loop" "{D7B846A833986C6E}DZ/anims/anm/player/actions/consumption/p_pne_drink_can_loop.anm"
+   "ActionContinuous.DrinkPne.Out" "{8B5162C6816D6BD6}DZ/anims/anm/player/actions/consumption/p_pne_drink_can_out.anm"
+   "ActionContinuous.EmptyVesselFBCro.In" "{E6C1323D8A2DDC3F}DZ/anims/anm/player/actions/consumption/p_cro_emptying_fb_can_in.anm"
+   "ActionContinuous.EmptyVesselFBCro.Loop" "{D6583D6C35659274}DZ/anims/anm/player/actions/consumption/p_cro_emptying_fb_can_loop.anm"
+   "ActionContinuous.EmptyVesselFBCro.Out" "{6935E668B88EDF1B}DZ/anims/anm/player/actions/consumption/p_cro_emptying_fb_can_out.anm"
+   "ActionContinuous.EmptyVesselFBCro.Out2" "{93B35C83D2A11A2A}DZ/anims/anm/player/actions/consumption/p_cro_emptying_fb_can_empty.anm"
+   "ActionContinuous.EmptyVesselFBErc.In" "{C79B296B6BDD6ABF}DZ/anims/anm/player/actions/consumption/p_erc_emptying_fb_can_in.anm"
+   "ActionContinuous.EmptyVesselFBErc.Loop" "{44EF317BA325E3A6}DZ/anims/anm/player/actions/consumption/p_erc_emptying_fb_can_loop.anm"
+   "ActionContinuous.EmptyVesselFBErc.Out" "{BDA4A09DC0116256}DZ/anims/anm/player/actions/consumption/p_erc_emptying_fb_can_out.anm"
+   "ActionContinuous.EmptyVesselFBErc.Out2" "{319915FD2CD7542E}DZ/anims/anm/player/actions/consumption/p_erc_emptying_fb_can_empty.anm"
+  
+ }

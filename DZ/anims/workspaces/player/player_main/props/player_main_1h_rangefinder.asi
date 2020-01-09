@@ -1,0 +1,19 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.LookOpticsCro.Aim" "{784F58CA5FA7BF79}DZ/anims/anm/player/actions/items/optics/rangefinder/p_cro_optics_rangefinder_aim.anm"
+   "ActionContinuous.LookOpticsCro.In" "{4B07CD2A46C10635}DZ/anims/anm/player/actions/items/optics/rangefinder/p_cro_optics_rangefinder_in.anm"
+   "ActionContinuous.LookOpticsCro.Loop" "{11AC9E235F1483C9}DZ/anims/anm/player/actions/items/optics/rangefinder/p_cro_optics_rangefinder_loop.anm"
+   "ActionContinuous.LookOpticsCro.Out" "{0CEFAEBFB388A9FA}DZ/anims/anm/player/actions/items/optics/rangefinder/p_cro_optics_rangefinder_out.anm"
+   "ActionContinuous.LookOpticsErc.Aim" "{ED67F1DC26CCA94C}DZ/anims/anm/player/actions/items/optics/rangefinder/p_erc_optics_rangefinder_aim.anm"
+   "ActionContinuous.LookOpticsErc.In" "{E92D8454B8B74831}DZ/anims/anm/player/actions/items/optics/rangefinder/p_erc_optics_rangefinder_in.anm"
+   "ActionContinuous.LookOpticsErc.Loop" "{A20192CB7E799DA7}DZ/anims/anm/player/actions/items/optics/rangefinder/p_erc_optics_rangefinder_loop.anm"
+   "ActionContinuous.LookOpticsErc.Out" "{99C707A9CAE3BFCF}DZ/anims/anm/player/actions/items/optics/rangefinder/p_erc_optics_rangefinder_out.anm"
+   "ActionContinuous.LookOpticsPne.Aim" "{7059128DB1C309D1}DZ/anims/anm/player/actions/items/optics/rangefinder/p_pne_optics_rangefinder_aim.anm"
+   "ActionContinuous.LookOpticsPne.In" "{55375271E6FE905E}DZ/anims/anm/player/actions/items/optics/rangefinder/p_pne_optics_rangefinder_in.anm"
+   "ActionContinuous.LookOpticsPne.Loop" "{958015472727F277}DZ/anims/anm/player/actions/items/optics/rangefinder/p_pne_optics_rangefinder_loop.anm"
+   "ActionContinuous.LookOpticsPne.Out" "{04F9E4F85DEC1F52}DZ/anims/anm/player/actions/items/optics/rangefinder/p_pne_optics_rangefinder_out.anm"
+  
+ }

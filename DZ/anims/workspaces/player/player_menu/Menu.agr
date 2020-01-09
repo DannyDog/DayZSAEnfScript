@@ -1,0 +1,246 @@
+$AnimGraph 7 {
+	$Sheet "Menu" {
+		$Node AnimNodeSource {
+			 "Idle01Anim" "" "Idle01" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -13.6000004 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle02Anim" "" "Idle02" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -11.5 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle03Anim" "" "Idle03" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -9.4000006 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle04Anim" "" "Idle04" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -7.3000002 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle05Anim" "" "Idle05" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -5.2000003 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle06Anim" "" "Idle06" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -3.1000001 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle07Anim" "" "Idle07" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -1.0 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle08Anim" "" "Idle08" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 1.1 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle09Anim" "" "Idle09" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.2 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle10Anim" "" "Idle10" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 5.3000002 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle11Anim" "" "Idle11" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 7.4000001 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle12Anim" "" "Idle12" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 9.5 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle13Anim" "" "Idle13" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 11.6000004 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle14Anim" "" "Idle14" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 13.6999998 -2.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "IdleMainAnim" "" "IdleMain" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -15.6999998 -2.9000001
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleMaster" ""
+			$States 1 {
+				$State {
+					 "IdleMain" "" "IdleSwitch" "true" "notime" 0
+					$EditorData {
+						#EditorPos 0.0 1.1
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -1.5 2.5
+			}
+		}
+		$Node AnimNodeSwitch {
+			 "IdleSwitch" "" 0 0.0
+			$switchitems 15 {
+				$si {
+					 "IdleMainAnim" "True" "100%=1"
+				}
+				$si {
+					 "Idle01Anim" "" "100%=2"
+				}
+				$si {
+					 "Idle02Anim" "" "100%=3"
+				}
+				$si {
+					 "Idle03Anim" "" "100%=4"
+				}
+				$si {
+					 "Idle04Anim" "" "100%=5"
+				}
+				$si {
+					 "Idle05Anim" "" "100%=6"
+				}
+				$si {
+					 "Idle06Anim" "" "100%=7"
+				}
+				$si {
+					 "Idle07Anim" "" "100%=8"
+				}
+				$si {
+					 "Idle08Anim" "" "100%=9"
+				}
+				$si {
+					 "Idle09Anim" "" "100%=10"
+				}
+				$si {
+					 "Idle10Anim" "" "100%=11"
+				}
+				$si {
+					 "Idle11Anim" "" "100%=12"
+				}
+				$si {
+					 "Idle12Anim" "" "100%=13"
+				}
+				$si {
+					 "Idle13Anim" "" "100%=14"
+				}
+				$si {
+					 "Idle14Anim" "" "100%=0"
+				}
+			}
+			$EditorData {
+				#EditorPos -5.0 -0.8
+			}
+		}
+		$Node AnimNodeSwitch {
+			 "IdleSwitch" "" 0 0.0
+			$switchitems 15 {
+				$si {
+					 "IdleMainAnim" "True" "2%=0, 6.4%=1, 6.4%=2, 6.4%=3, 6.4%=4, 6.4%=5, 6.4%=6, 6.4%=7, 6.4%=8, 6.4%=9, 6.4%=10, 6.4%=11, 6.4%=12, 6.4%=13, 6.4%=14"
+				}
+				$si {
+					 "Idle01Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle02Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle03Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle04Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle05Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle06Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle07Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle08Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle09Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle10Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle11Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle12Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle13Anim" "" "100%=0"
+				}
+				$si {
+					 "Idle14Anim" "" "100%=0"
+				}
+			}
+			$EditorData {
+				#EditorPos 0.0 -0.8
+			}
+		}
+	}
+}

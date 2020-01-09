@@ -1,0 +1,11 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{2D145A4F7212F85E}DZ/anims/workspaces/player/player_main/player_main_pistol.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{30F0269ED23CB839}DZ/anims/anm/player/reloads/X2DartGun/p_erc_reload_X2Dart_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{7290ABDCF7EC192A}DZ/anims/anm/player/reloads/X2DartGun/p_erc_reload_action_X2Dart_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{6EB5413EAEE4CCD4}DZ/anims/anm/player/reloads/X2DartGun/p_pne_reload_X2Dart_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{D772EAFCECDDF071}DZ/anims/anm/player/reloads/X2DartGun/p_pne_reload_action_X2Dart_ras.anm"
+  
+ }

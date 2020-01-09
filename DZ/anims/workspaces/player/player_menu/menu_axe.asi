@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{AB9E277C8FDAD37D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle01.anm"
+   "Idle02" "{32809EE5923DE2ED}DZ/anims/anm/player/menu/axe/p_menu_axe_idle02.anm"
+   "Idle03" "{458AF66D669F0D9D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle03.anm"
+   "Idle04" "{424D0C3C0019B75E}DZ/anims/anm/player/menu/axe/p_menu_axe_idle04.anm"
+   "Idle05" "{354764B4F4BB582E}DZ/anims/anm/player/menu/axe/p_menu_axe_idle05.anm"
+   "Idle06" "{354764B4F4BB582E}DZ/anims/anm/player/menu/axe/p_menu_axe_idle05.anm"
+   "Idle07" "{AB9E277C8FDAD37D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle01.anm"
+   "Idle08" "{32809EE5923DE2ED}DZ/anims/anm/player/menu/axe/p_menu_axe_idle02.anm"
+   "Idle09" "{458AF66D669F0D9D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle03.anm"
+   "Idle10" "{424D0C3C0019B75E}DZ/anims/anm/player/menu/axe/p_menu_axe_idle04.anm"
+   "Idle11" "{354764B4F4BB582E}DZ/anims/anm/player/menu/axe/p_menu_axe_idle05.anm"
+   "Idle12" "{AB9E277C8FDAD37D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle01.anm"
+   "Idle13" "{32809EE5923DE2ED}DZ/anims/anm/player/menu/axe/p_menu_axe_idle02.anm"
+   "Idle14" "{458AF66D669F0D9D}DZ/anims/anm/player/menu/axe/p_menu_axe_idle03.anm"
+   "IdleMain" "{89977A0B4FEEE74C}DZ/anims/anm/player/menu/axe/p_menu_axe_idleMain.anm"
+  
+ }

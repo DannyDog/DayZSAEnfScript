@@ -1,0 +1,19 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.LookOpticsCro.Aim" "{267D590775413786}DZ/anims/anm/player/actions/items/optics/scope/p_cro_optics_scope_aim.anm"
+   "ActionContinuous.LookOpticsCro.In" "{968A98FF8557726E}DZ/anims/anm/player/actions/items/optics/scope/p_cro_optics_scope_in.anm"
+   "ActionContinuous.LookOpticsCro.Loop" "{C12140FB8202804E}DZ/anims/anm/player/actions/items/optics/scope/p_cro_optics_scope_loop.anm"
+   "ActionContinuous.LookOpticsCro.Out" "{52DDAF72996E2105}DZ/anims/anm/player/actions/items/optics/scope/p_cro_optics_scope_out.anm"
+   "ActionContinuous.LookOpticsErc.Aim" "{FB0F67F9957FB1BE}DZ/anims/anm/player/actions/items/optics/scope/p_erc_optics_scope_aim.anm"
+   "ActionContinuous.LookOpticsErc.In" "{E4A24989B9BFD62A}DZ/anims/anm/player/actions/items/optics/scope/p_erc_optics_scope_in.anm"
+   "ActionContinuous.LookOpticsErc.Loop" "{60786A1500166BB1}DZ/anims/anm/player/actions/items/optics/scope/p_erc_optics_scope_loop.anm"
+   "ActionContinuous.LookOpticsErc.Out" "{8FAF918C7950A73D}DZ/anims/anm/player/actions/items/optics/scope/p_erc_optics_scope_out.anm"
+   "ActionContinuous.LookOpticsPne.Aim" "{A23D8CC9BECC8B81}DZ/anims/anm/player/actions/items/optics/scope/p_pne_optics_scope_aim.anm"
+   "ActionContinuous.LookOpticsPne.In" "{699424CC6D527A67}DZ/anims/anm/player/actions/items/optics/scope/p_pne_optics_scope_in.anm"
+   "ActionContinuous.LookOpticsPne.Loop" "{3E3D0DB57CCE1F5C}DZ/anims/anm/player/actions/items/optics/scope/p_pne_optics_scope_loop.anm"
+   "ActionContinuous.LookOpticsPne.Out" "{D69D7ABC52E39D02}DZ/anims/anm/player/actions/items/optics/scope/p_pne_optics_scope_out.anm"
+  
+ }

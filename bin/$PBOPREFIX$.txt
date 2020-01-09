@@ -1,6 +1,6 @@
 ﻿//<'bin.pbo' properties via Mikero's dos tools, dll version 7.44>
 product=dayz;
 prefix=bin;
-version=83250;
+version=83353;
 PboType=Arma Addon;
 //</properties>

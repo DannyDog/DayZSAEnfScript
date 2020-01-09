@@ -1,0 +1,241 @@
+$AnimGraph 2 {
+	$Sheet "IdleRun" {
+		$Node AnimNodeStateMachine {
+			 "SampleDeath" ""
+			$States 2 {
+				$State {
+					 "Movement" "" "IdleRunOnValue" "" "notime" 0
+					$EditorData {
+						#EditorPos -7.2000003 12.1999998
+					}
+				}
+				$State {
+					 "Death" "" "DeathSM" "" "realtime" 0
+					$EditorData {
+						#EditorPos -3.7 12.1000004
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "" "Death" "IsCommand(C_DEATH)" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -7.2000003 13.6999998
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleRunChangeCommand" ""
+			$States 3 {
+				$State {
+					 "Idle" "" "Idle" "true" "notime" 0
+					$EditorData {
+						#EditorPos -7.2000003 -7.3000002
+					}
+				}
+				$State {
+					 "Run" "" "Run" "false" "notime" 0
+					$EditorData {
+						#EditorPos -5.0 -4.9000001
+					}
+				}
+				$State {
+					 "Sprint" "" "Sprint" "" "notime" 0
+					$EditorData {
+						#EditorPos -1.3000001 -7.0
+					}
+				}
+			}
+			$Transitions 6 {
+				$Transition {
+					 "Idle" "Run" "IsCommand(C_CHANGE) && MovementType == 1" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Idle" "Sprint" "IsCommand(C_CHANGE) && MovementType == 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Run" "Idle" "IsCommand(C_CHANGE) && MovementType == 0" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Run" "Sprint" "IsCommand(C_CHANGE) && MovementType  == 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Sprint" "Run" "IsCommand(C_CHANGE) && MovementType == 1" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Sprint" "Idle" "IsCommand(C_CHANGE) && MovementType  == 0" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -8.0 -3.6000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "DeathFall" "" "z_erc_death_side01" "noloop"
+			$EditorData {
+				#EditorPos 0.7 5.7000003
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "DeathSM" ""
+			$States 2 {
+				$State {
+					 "FromIdleToDeath" "" "DeathFall" "true" "notime" 0
+					$EditorData {
+						#EditorPos 0.7 8.1999998
+					}
+				}
+				$State {
+					 "NewState" "" "DeathIdle" "" "notime" 0
+					$EditorData {
+						#EditorPos 3.3 8.1999998
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "FromIdleToDeath" "NewState" "RemainingTimeLess(0.3)" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 0.6 9.9000006
+			}
+		}
+		$Node AnimNodeSource {
+			 "DeathIdle" "" "z_crwl_idle01" "loop"
+			$EditorData {
+				#EditorPos 3.3 5.7000003
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleRunOnCommand" ""
+			$States 3 {
+				$State {
+					 "Idle" "" "Idle" "" "notime" 0
+					$EditorData {
+						#EditorPos -8.1000004 -0.8
+					}
+				}
+				$State {
+					 "Run" "" "Run" "" "notime" 0
+					$EditorData {
+						#EditorPos -5.5 -0.8
+					}
+				}
+				$State {
+					 "Sprint" "" "Sprint" "" "notime" 0
+					$EditorData {
+						#EditorPos -2.9000001 -0.8
+					}
+				}
+			}
+			$Transitions 3 {
+				$Transition {
+					 "" "Idle" "IsCommand(COMMAND_IDLE)" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "" "Run" "IsCommand(COMMAND_RUN)" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "" "Sprint" "IsCommand(COMMAND_SPRINT)" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -7.0 0.9
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleRunOnValue" ""
+			$States 2 {
+				$State {
+					 "Idle" "" "Idle" "true" "notime" 0
+					$EditorData {
+						#EditorPos -7.0999999 7.0999999
+					}
+				}
+				$State {
+					 "Run" "" "BlendRunSprint0" "false" "realtime" 0
+					$EditorData {
+						#EditorPos -3.9000001 7.0999999
+					}
+				}
+			}
+			$Transitions 2 {
+				$Transition {
+					 "Idle" "Run" "bToRun" "0.3" "0.25" 0 "S"
+				}
+				$Transition {
+					 "Run" "Idle" "!bToRun" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -7.2000003 8.3000002
+			}
+		}
+		$Node AnimNodeBlend {
+			 "BlendRunSprint0" "" "BlendVal" "RunX1" "SprintX1"
+			$EditorData {
+				#EditorPos -3.9000001 5.0
+			}
+		}
+		$Node AnimNodeSource {
+			 "SprintX1" "" "zA_erc_sprintF" "loop"
+			$EditorData {
+				#EditorPos -2.6000001 3.6000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "RunX1" "" "zA_erc_runF" "loop"
+			$EditorData {
+				#EditorPos -5.0999999 3.6000001
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleRunChangeVar" ""
+			$States 3 {
+				$State {
+					 "Idle" "" "Idle" "MovementType == 0" "notime" 0
+					$EditorData {
+						#EditorPos -6.0999999 -13.1000004
+					}
+				}
+				$State {
+					 "Run" "" "Run" "MovementType == 1" "notime" 0
+					$EditorData {
+						#EditorPos -3.3 -11.8000002
+					}
+				}
+				$State {
+					 "Sprint" "" "Sprint" "MovementType == 2" "notime" 0
+					$EditorData {
+						#EditorPos -1.0 -12.6999998
+					}
+				}
+			}
+			$Transitions 4 {
+				$Transition {
+					 "Idle" "Run" "MovementType > 0" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Run" "Sprint" "MovementType == 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Sprint" "Run" "MovementType <= 1" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Run" "Idle" "MovementType == 0" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -6.8000002 -10.4000006
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "AnimNodeSourceSync" "" "zA_erc_walkF" "noloop" "ZWalk"
+			$EditorData {
+				#EditorPos 1.0 2.8
+			}
+		}
+	}
+}

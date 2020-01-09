@@ -1,0 +1,16 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.EatCro.In" "{23AD26FA05BC94CA}DZ/anims/anm/player/actions/consumption/p_cro_eat_fruit_in.anm"
+   "ActionContinuous.EatCro.Loop" "{718D256E87C89F50}DZ/anims/anm/player/actions/consumption/p_cro_eat_fruit_loop.anm"
+   "ActionContinuous.EatCro.Out" "{221D419C1930A5B5}DZ/anims/anm/player/actions/consumption/p_cro_eat_fruit_out.anm"
+   "ActionContinuous.EatErc.In" "{6715EA300C11DD72}DZ/anims/anm/player/actions/consumption/p_erc_eat_fruit_in.anm"
+   "ActionContinuous.EatErc.Loop" "{122E636E27C5E685}DZ/anims/anm/player/actions/consumption/p_erc_eat_fruit_loop.anm"
+   "ActionContinuous.EatErc.Out" "{09E7EFC55057D045}DZ/anims/anm/player/actions/consumption/p_erc_eat_fruit_out.anm"
+   "ActionContinuous.EatPne.In" "{87BD06465445E799}DZ/anims/anm/player/actions/consumption/p_pne_eat_fruit_in.anm"
+   "ActionContinuous.EatPne.Loop" "{332DDF1376992214}DZ/anims/anm/player/actions/consumption/p_pne_eat_fruit_loop.anm"
+   "ActionContinuous.EatPne.Out" "{418E8FB7B2F06579}DZ/anims/anm/player/actions/consumption/p_pne_eat_fruit_out.anm"
+  
+ }

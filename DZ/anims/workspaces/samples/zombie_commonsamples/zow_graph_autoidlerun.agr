@@ -1,0 +1,132 @@
+$AnimGraph 2 {
+	$Sheet "AutoIdleRun" {
+		$Node AnimNodeStateMachine {
+			 "AutomaticIdleRun" ""
+			$States 2 {
+				$State {
+					 "Idle0" "" "SubIdle" "true" "realtime" 0
+					$EditorData {
+						#EditorPos -4.5999999 1.5
+					}
+				}
+				$State {
+					 "Run0" "" "SubRun" "false" "realtime" 0
+					$EditorData {
+						#EditorPos -1.7 1.5
+					}
+				}
+			}
+			$Transitions 2 {
+				$Transition {
+					 "Idle0" "Run0" "RemainingTimeLess(0.3)" "0.7" "0.0" 1 "S"
+				}
+				$Transition {
+					 "Run0" "Idle0" "RemainingTimeLess(0.3)" "0.3" "" 1 "S2"
+				}
+			}
+			$EditorData {
+				#EditorPos -5.0 2.7
+			}
+		}
+		$Node AnimNodeSource {
+			 "Sprint" "" "zA_erc_sprintF" "loop"
+			$EditorData {
+				#EditorPos 0.2 5.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn" "" "zA_erc_turn180L_fast" "noloop"
+			$EditorData {
+				#EditorPos 3.1000001 5.5
+			}
+		}
+		$Node AnimNodeBlend {
+			 "BlendRunSprint" "" "BlendVal" "Run" "Sprint"
+			$EditorData {
+				#EditorPos -0.9 7.3000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle" "" "zA_erc_idle01" "loop"
+			$EditorData {
+				#EditorPos -4.3000002 5.5
+			}
+		}
+		$Node AnimNodeBlend {
+			 "BlendIdleRun" "" "BlendVal" "Idle" "Run"
+			$EditorData {
+				#EditorPos -3.3 7.3000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Run" "" "zA_erc_runF" "loop"
+			$EditorData {
+				#EditorPos -2.0 5.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "SubIdle" "" "zA_erc_idle01" "noloop"
+			$EditorData {
+				#EditorPos -4.5999999 -1.1
+			}
+		}
+		$Node AnimNodeSource {
+			 "SubRun" "" "zA_erc_runF" "noloop"
+			$EditorData {
+				#EditorPos -1.7 -1.0
+			}
+		}
+		$Node AnimNodeSource {
+			 "GroupSelectTest" "" "attacks.z_erc_attack_swingLR_short01" "noloop"
+			$EditorData {
+				#EditorPos 10.6999998 -4.0999999
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Swings-Short" "" "Fight" "attacks" "short"
+			$EditorData {
+				#EditorPos 5.4000001 2.3
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Swings-Test" "" "Fight" "attacks" "long"
+			$EditorData {
+				#EditorPos 8.1999998 2.3
+			}
+		}
+		$Node AnimNodeSource {
+			 "FightIdle" "" "zA_erc_idle01" "loop"
+			$EditorData {
+				#EditorPos 7.0 -4.0999999
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Fight" ""
+			$States 2 {
+				$State {
+					 "Idle" "" "FightIdle" "true" "notime" 0
+					$EditorData {
+						#EditorPos 6.9000001 -1.1
+					}
+				}
+				$State {
+					 "HitAnim" "" "GroupSelectTest" "" "realtime" 0
+					$EditorData {
+						#EditorPos 10.5 -1.2
+					}
+				}
+			}
+			$Transitions 2 {
+				$Transition {
+					 "Idle" "HitAnim" "IsCommand(C_HIT)" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "HitAnim" "Idle" "RemainingTimeLess(0.4)" "0.4" "" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 7.0999999 0.4
+			}
+		}
+	}
+}

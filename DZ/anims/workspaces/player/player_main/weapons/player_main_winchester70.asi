@@ -1,0 +1,23 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_Bullet" "{BB7CF898A9E88B18}DZ/anims/anm/player/reloads/Winchester70/p_erc_chambering_loop_bullet_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_NoBullet" "{112D5AE0D5F17DC8}DZ/anims/anm/player/reloads/Winchester70/p_erc_chambering_loop_noBullet_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.Fire" "{7988C74B82AF059A}DZ/anims/anm/player/reloads/Winchester70/p_erc_fire_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.FireEmptyAutomatic" "{36DD7D3E5561FC8D}DZ/anims/anm/player/reloads/Winchester70/p_erc_fire_empty_cocked_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.FireJam" "{D19FD38499ADDB85}DZ/anims/anm/player/reloads/Winchester70/p_erc_fire_jam_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{99DB9BC40B89EAF5}DZ/anims/anm/player/reloads/Winchester70/p_erc_unjam_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.Jamming Cancel" "{D929E01EF2A8273C}DZ/anims/anm/player/reloads/Winchester70/p_erc_unjam_cancel_Winchester70_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{F2FDA724F01E7BE3}DZ/anims/anm/player/reloads/Winchester70/p_erc_reload_action_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_Bullet" "{1E192EE155139836}DZ/anims/anm/player/reloads/Winchester70/p_pne_chambering_loop_bullet_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_NoBullet" "{71CC2B4FEBB56AD7}DZ/anims/anm/player/reloads/Winchester70/p_pne_chambering_loop_noBullet_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.Fire" "{C592116EDCE6DDF5}DZ/anims/anm/player/reloads/Winchester70/p_pne_fire_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.FireEmptyAutomatic" "{896CB5346F65D704}DZ/anims/anm/player/reloads/Winchester70/p_pne_fire_empty_cocked_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.FireJam" "{5812EB4BF839CE9F}DZ/anims/anm/player/reloads/Winchester70/p_pne_jam_winchester70_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{04E578959C864A68}DZ/anims/anm/player/reloads/Winchester70/p_pne_unjam_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.Jamming Cancel" "{91A4A853E45B8173}DZ/anims/anm/player/reloads/Winchester70/p_pne_unjam_cancel_Winchester70_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{37D624ADF551CC72}DZ/anims/anm/player/reloads/Winchester70/p_pne_reload_action_Winchester70_ras.anm"
+  
+ }

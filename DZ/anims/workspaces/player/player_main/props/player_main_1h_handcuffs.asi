@@ -1,0 +1,15 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.RestrainSelfCro.In" "{FACED3002E28B3BB}DZ/anims/anm/player/actions/items/p_cro_handcuff_self_in.anm"
+   "ActionContinuous.RestrainSelfCro.Loop" "{86EB06FCE3958BAE}DZ/anims/anm/player/actions/items/p_cro_handcuff_self_loop.anm"
+   "ActionContinuous.RestrainSelfCro.Out" "{DBBC09FC3FC7EB95}DZ/anims/anm/player/actions/items/p_cro_handcuff_self_out.anm"
+   "ActionContinuous.RestrainSelfCro.Out2" "{D484CB4F42936FCC}DZ/anims/anm/player/actions/items/p_cro_handcuff_self_cancel.anm"
+   "ActionContinuous.RestrainSelfErc.In" "{27BCEDFECE163583}DZ/anims/anm/player/actions/items/p_erc_handcuff_self_in.anm"
+   "ActionContinuous.RestrainSelfErc.Loop" "{A7B11DAA02653D2E}DZ/anims/anm/player/actions/items/p_erc_handcuff_self_loop.anm"
+   "ActionContinuous.RestrainSelfErc.Out" "{7AE52312BDD3006A}DZ/anims/anm/player/actions/items/p_erc_handcuff_self_out.anm"
+   "ActionContinuous.RestrainSelfErc.Out2" "{AB285886DC4EF597}DZ/anims/anm/player/actions/items/p_erc_handcuff_self_canceled.anm"
+  
+ }

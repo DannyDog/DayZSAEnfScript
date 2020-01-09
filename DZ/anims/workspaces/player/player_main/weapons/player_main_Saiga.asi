@@ -1,0 +1,30 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponChange.Pne.RifleLeftBackSlotShow" "{EDF3463F0739D8BB}DZ/anims/anm/player/reloads/Saiga/p_erc_reload_mag_remove_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.Chambering_Closed" "{F78F158647D868F2}DZ/anims/anm/player/reloads/Saiga/p_erc_chambering_Closed_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.Fire" "{3436410863E7DC38}DZ/anims/anm/player/reloads/Saiga/p_erc_fire_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.FireEmptyAutomatic" "{129F02FB85B1E00E}DZ/anims/anm/player/reloads/Saiga/p_erc_fire_empty_automatic_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.FireJam" "{D7AFFFB7E7C7BBE4}DZ/anims/anm/player/reloads/Saiga/p_erc_fire_Jam_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{3F483B86AE5B8283}DZ/anims/anm/player/reloads/Saiga/p_erc_unjam_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.Jamming Cancel" "{FB251D419E1AB8FE}DZ/anims/anm/player/reloads/Saiga/p_erc_unjam_cancel_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{55417DC5E5B8393B}DZ/anims/anm/player/reloads/Saiga/p_erc_reloadAction_Closed_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagBullet" "{0122EDC23B653024}DZ/anims/anm/player/reloads/Saiga/p_erc_reload_mag_noBullet_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{0122EDC23B653024}DZ/anims/anm/player/reloads/Saiga/p_erc_reload_mag_noBullet_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagazineDetach" "{EDF3463F0739D8BB}DZ/anims/anm/player/reloads/Saiga/p_erc_reload_mag_remove_Saiga_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{65A5247596FB4820}DZ/anims/anm/player/reloads/Saiga/p_erc_reload_noMag_bullet_Saiga_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{7D06A4F8ADC7CAEB}DZ/anims/anm/player/reloads/Saiga/p_pne_chambering_Closed_Saiga_ras.anm"
+   "WeaponOperations.PneRas.Fire" "{1535FD7532BB18A9}DZ/anims/anm/player/reloads/Saiga/p_pne_fire_Saiga_ras.anm"
+   "WeaponOperations.PneRas.FireEmptyAutomatic" "{D7B4817280FE579F}DZ/anims/anm/player/reloads/Saiga/p_pne_fire_empty_automatic_Saiga_ras.anm"
+   "WeaponOperations.PneRas.FireJam" "{70444C39042DAA63}DZ/anims/anm/player/reloads/Saiga/p_pne_fire_Jam_Saiga_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{B27E56C37AB62ECE}DZ/anims/anm/player/reloads/Saiga/p_pne_unjam_Saiga_ras.anm"
+   "WeaponOperations.PneRas.Jamming Cancel" "{661BFE1009151863}DZ/anims/anm/player/reloads/Saiga/p_pne_unjam_cancel_Saiga_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{1DCC3588F34B9F74}DZ/anims/anm/player/reloads/Saiga/p_pne_reloadAction_Closed_Saiga_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagBullet" "{49AFA58F2D96966B}DZ/anims/anm/player/reloads/Saiga/p_pne_reload_mag_noBullet_Saiga_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{49AFA58F2D96966B}DZ/anims/anm/player/reloads/Saiga/p_pne_reload_mag_noBullet_Saiga_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagazineDetach" "{677AF741ED267AA2}DZ/anims/anm/player/reloads/Saiga/p_pne_reload_mag_remove_Saiga_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{2D286C388008EE6F}DZ/anims/anm/player/reloads/Saiga/p_pne_reload_noMag_bullet_Saiga_ras.anm"
+  
+ }

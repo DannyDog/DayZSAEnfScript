@@ -1,0 +1,986 @@
+<skeletons version="1.0">
+	<skeleton name="hermit_newbindpose.xob">
+
+		<bone name="Scene_Root"									  lod = "0" />
+		<bone name="EntityPosition"	index = "0" movement = "true" lod = "0" />
+		<bone name="Collision"									  lod = "0" />
+		
+		<bone name="Pelvis"			index = "10" 				  lod = "0" />
+		
+		<bone name="Spine"			index = "11"				  lod = "0" />
+		<bone name="Spine1"			index = "12"				  lod = "0" />
+		<bone name="Spine2"			index = "13"				  lod = "0" />
+		<bone name="Spine3"			index = "14"				  lod = "0" />
+		<bone name="Neck"			index = "15"				  lod = "0" />
+		<bone name="Neck1"			index = "16"				  lod = "0" />
+		<bone name="Head"			index = "17"				  lod = "0" />
+		<bone name="LookAt"			index = "18"				  lod = "0" />
+
+		<bone name="LeftUpLeg"		index = "20"				  lod = "1" />
+		<bone name="LeftUpLegRoll"	index = "21"				  lod = "1" />
+		<bone name="LeftKneeExtra"	index = "22"				  lod = "1" />
+		<bone name="LeftLeg"		index = "23"				  lod = "1" />
+		<bone name="LeftLegRoll"	index = "24"				  lod = "1" />
+		<bone name="LeftFoot"		index = "25"				  lod = "1" />
+		<bone name="LeftToeBase"	index = "26"				  lod = "1" />
+		
+		<bone name="RightUpLeg"		index = "30"				  lod = "1" />
+		<bone name="RightUpLegRoll"	index = "31"				  lod = "1" />
+		<bone name="RightKneeExtra"	index = "32"				  lod = "1" />
+		<bone name="RightLeg"		index = "33"				  lod = "1" />
+		<bone name="RightLegRoll"	index = "34"				  lod = "1" />
+		<bone name="RightFoot"		index = "35"				  lod = "1" />
+		<bone name="RightToeBase"	index = "36"				  lod = "1" />
+				
+		<bone name="LeftShoulder"								  lod = "1" />
+		<bone name="LeftArm"									  lod = "1" />
+		<bone name="LeftArmRoll"								  lod = "1" />
+		<bone name="LeftForeArm"								  lod = "1" />
+		<bone name="LeftForeArmRoll"							  lod = "1" />
+		<bone name="LeftHand"									  lod = "1" />
+		
+		<bone name="RightShoulder"								  lod = "1" />
+		<bone name="RightArm"									  lod = "1" />
+		<bone name="RightArmExtra"								  lod = "1" />
+		<bone name="RightArmRoll"								  lod = "1" />
+		<bone name="RightForeArm"								  lod = "1" />
+		<bone name="RightForeArmRoll"							  lod = "1" />
+		<bone name="RightHand"									  lod = "1" />
+
+		<bone name="Character_Nulls" 							  lod = "2" />
+		<bone name="Floor_fingers"								  lod = "2" />
+		<bone name="Floor_feet"									  lod = "2" />
+
+		<bone name="LeftHandRing1"								  lod = "2" />
+		<bone name="LeftHandRing2"								  lod = "2" />
+		<bone name="LeftHandRing3"								  lod = "2" />
+		<bone name="LeftHandRing4"								  lod = "2" />
+		<bone name="LeftHandPinky1"								  lod = "2" />
+		<bone name="LeftHandPinky2"								  lod = "2" />
+		<bone name="LeftHandPinky3"								  lod = "2" />
+		<bone name="LeftHandPinky4"								  lod = "2" />
+		<bone name="LeftHandMiddle1"							  lod = "2" />
+		<bone name="LeftHandMiddle2"							  lod = "2" />
+		<bone name="LeftHandMiddle3"							  lod = "2" />
+		<bone name="LeftHandMiddle4"							  lod = "2" />
+		<bone name="LeftHandIndex1"								  lod = "2" />
+		<bone name="LeftHandIndex2"								  lod = "2" />
+		<bone name="LeftHandIndex3"								  lod = "2" />
+		<bone name="LeftHandIndex4"								  lod = "2" />
+		<bone name="LeftHandThumb1"								  lod = "2" />
+		<bone name="LeftHandThumb2"								  lod = "2" />
+		<bone name="LeftHandThumb3"								  lod = "2" />
+		<bone name="LeftHandThumb4"								  lod = "2" />
+		<bone name="LeftHand_Dummy"								  lod = "2" />
+		<bone name="LeftWristExtra"								  lod = "2" />
+		<bone name="LeftForeArmExtra"							  lod = "2" />
+		<bone name="LeftElbowExtra"								  lod = "2" />
+		<bone name="LeftArmExtra"								  lod = "2" />
+		
+		<bone name="RightHandPinky1"							  lod = "2" />
+		<bone name="RightHandPinky2"							  lod = "2" />
+		<bone name="RightHandPinky3"							  lod = "2" />
+		<bone name="RightHandPinky4"							  lod = "2" />
+		<bone name="RightHandRing1"								  lod = "2" />
+		<bone name="RightHandRing2"								  lod = "2" />
+		<bone name="RightHandRing3"								  lod = "2" />
+		<bone name="RightHandRing4"								  lod = "2" />
+		<bone name="RightHandThumb1"							  lod = "2" />
+		<bone name="RightHandThumb2"							  lod = "2" />
+		<bone name="RightHandThumb3"							  lod = "2" />
+		<bone name="RightHandThumb4"							  lod = "2" />
+		<bone name="RightHandMiddle1"							  lod = "2" />
+		<bone name="RightHandMiddle2"							  lod = "2" />
+		<bone name="RightHandMiddle3"							  lod = "2" />
+		<bone name="RightHandMiddle4"							  lod = "2" />
+		<bone name="RightHandIndex1"							  lod = "2" />
+		<bone name="RightHandIndex2"							  lod = "2" />
+		<bone name="RightHandIndex3"							  lod = "2" />
+		<bone name="RightHandIndex4"							  lod = "2" />
+		<bone name="RightHand_Dummy"							  lod = "2" />
+		<bone name="RightWristExtra"							  lod = "2" />
+		<bone name="RightForeArmExtra"							  lod = "2" />
+		<bone name="RightElbowExtra"							  lod = "2" />
+		<bone name="RightHipExtra"								  lod = "2" />
+		<bone name="LeftHipExtra"								  lod = "2" />
+		<bone name="LeftHip_Helper"								  lod = "2" />
+		<bone name="RightHip_Helper"							  lod = "2" />
+	</skeleton>
+	
+	<skeleton name="player_testing.xob">
+		<!--		Lod 0 -->
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="EntityPosition"	index = "0" movement = "true" lod = "0" />
+		<bone name="Opponent"				lod = "0" />
+		<bone name="RightHand_Dummy"		lod = "1" />
+		<bone name="LeftHand_Dummy"			lod = "1" />
+		<bone name="Camera3rd_Helper"		lod = "0" />
+		<bone name="Collision"				lod = "0" />
+		
+		<bone name="Pelvis"					lod = "0"  />
+		<bone name="Spine"					lod = "0"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Spine3"					lod = "0"/>
+		<bone name="Neck"					lod = "0"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		
+		<bone name="LeftShoulder"			lod = "1"/>
+		<bone name="LeftArm"				lod = "1"/>
+		<bone name="RightShoulder"			lod = "1"/>
+		<bone name="RightArm"				lod = "1"/>
+		
+		<bone name="LeftUpLeg"				lod = "1"/>
+		<bone name="LeftLeg"				lod = "1"/>
+		<bone name="RightUpLeg"				lod = "1"/>
+		<bone name="RightLeg"				lod = "1"/>
+		
+		<!--		Lod 1 -->	
+		<bone name="LeftArmRoll"			lod = "1"/>
+		<bone name="LeftForeArm"			lod = "1"/>
+		<bone name="LeftForeArmRoll" 		lod = "1"/>
+		<bone name="LeftHand"				lod = "1"/>
+		<bone name="RightArmRoll"			lod = "1"/>
+		<bone name="RightForeArm"			lod = "1"/>
+		<bone name="RightForeArmRoll"		lod = "1"/>
+		<bone name="RightHand"				lod = "1"/>
+		
+		<bone name="RightHandOrigin" 		lod = "1"/>
+		<bone name="LeftHandOrigin" 		lod = "1"/>		
+		<bone name="LeftHandIKTarget" 		lod = "1"/>
+		<bone name="LeftHandIK" 			lod = "1"/>
+		<bone name="RightHandIK" 			lod = "1"/>
+		<bone name="LeftForeArmDirection" lod = "1"/>
+		<bone name="RightForeArmDirection" lod = "1"/>
+		<bone name="LeftForeArmDirectionOrigin" lod = "1"/>
+		<bone name="RightForeArmDirectionOrigin" lod = "1"/>
+		<bone name="LeftFoot"				lod = "1"/>
+		<bone name="RightFoot"				lod = "1"/>
+		
+		<!--		Lod 2 -->			
+		<bone name="LeftUpLegRoll"			lod = "1"/>
+		<bone name="LeftKneeExtra"			lod = "1"/>
+		<bone name="LeftLegRoll"			lod = "1"/>
+		<bone name="LeftToeBase"			lod = "1"/>
+		<bone name="RightUpLegRoll"			lod = "1"/>
+		<bone name="RightKneeExtra" 		lod = "1"/>
+		<bone name="RightLegRoll"			lod = "1"/>
+		<bone name="RightToeBase"			lod = "1"/>
+		
+		<bone name="Face_Hub"				lod = "2"/>
+		<bone name="Face_EyelidUpperLeft"	lod = "2"/>
+		<bone name="Face_EyelidUpperRight"	lod = "2"/>
+		<bone name="Face_Jawbone"			lod = "2"/>
+		<bone name="Face_Chin"				lod = "2"/>
+		<bone name="Face_ChopLeft"			lod = "2"/>
+		<bone name="Face_ChopRight"			lod = "2"/>
+		<bone name="Face_Jowl"				lod = "2"/>
+		<bone name="Face_LipLowerLeft"		lod = "2"/>
+		<bone name="Face_LipLowerMiddle"	lod = "2"/>
+		<bone name="Face_LipLowerRight"		lod = "2"/>
+		<bone name="Face_Tongue"			lod = "2"/>
+		<bone name="EyeRight"				lod = "2"/>
+		<bone name="EyeLeft"				lod = "2"/>
+		<bone name="Face_CheekFrontLeft"	lod = "2"/>
+		<bone name="Face_CheekFrontRight"	lod = "2"/>
+		<bone name="Face_CheekUpperLeft"	lod = "2"/>
+		<bone name="Face_CheekUpperRight"	lod = "2"/>
+		<bone name="Face_CornerLeft"		lod = "2"/>
+		<bone name="Face_CheekSideLeft"		lod = "2"/>
+		<bone name="Face_CornerRight"		lod = "2"/>
+		<bone name="Face_CheekSideRight"	lod = "2"/>
+		<bone name="Face_EyelidLowerLeft"	lod = "2"/>
+		<bone name="Face_EyelidLowerRight"	lod = "2"/>
+		<bone name="Face_Eyelids"			lod = "2"/>
+		<bone name="Face_Forehead"			lod = "2"/>
+		<bone name="Face_BrowFrontLeft"		lod = "2"/>
+		<bone name="Face_BrowFrontRight"	lod = "2"/>
+		<bone name="Face_BrowMiddle"		lod = "2"/>
+		<bone name="Face_BrowSideLeft"		lod = "2"/>
+		<bone name="Face_BrowSideRight"		lod = "2"/>
+		<bone name="Face_LipUpperLeft"		lod = "2"/>
+		<bone name="Face_LipUpperMiddle"	lod = "2"/>
+		<bone name="Face_LipUpperRight"		lod = "2"/>
+		<bone name="Face_NostrilLeft"		lod = "2"/>
+		<bone name="Face_NostrilRight"		lod = "2"/>
+		
+		<bone name="LeftHandRing"			lod = "2"/>
+		<bone name="LeftHandRing1"			lod = "2"/>
+		<bone name="LeftHandRing2"			lod = "2"/>
+		<bone name="LeftHandRing3"			lod = "2"/>
+		<bone name="LeftHandRing4"			lod = "2"/>
+		<bone name="LeftHandMiddle1"		lod = "2"/>
+		<bone name="LeftHandMiddle2"		lod = "2"/>
+		<bone name="LeftHandMiddle3"		lod = "2"/>
+		<bone name="LeftHandMiddle4"		lod = "2"/>
+		<bone name="LeftHandIndex1"			lod = "2"/>
+		<bone name="LeftHandIndex2"			lod = "2"/>
+		<bone name="LeftHandIndex3"			lod = "2"/>
+		<bone name="LeftHandIndex4"			lod = "2"/>
+		<bone name="LeftHandThumb1"			lod = "2"/>
+		<bone name="LeftHandThumb2"			lod = "2"/>
+		<bone name="LeftHandThumb3"			lod = "2"/>
+		<bone name="LeftHandThumb4"			lod = "2"/>
+		<bone name="LeftHandPinky"			lod = "2"/>
+		<bone name="LeftHandPinky1"			lod = "2"/>
+		<bone name="LeftHandPinky2"			lod = "2"/>
+		<bone name="LeftHandPinky3"			lod = "2"/>
+		<bone name="LeftHandPinky4"			lod = "2"/>
+		<bone name="RightHandRing"			lod = "2"/>
+		<bone name="RightHandRing1"			lod = "2"/>
+		<bone name="RightHandRing2"			lod = "2"/>
+		<bone name="RightHandRing3"			lod = "2"/>
+		<bone name="RightHandRing4"			lod = "2"/>
+		<bone name="RightHandThumb1"		lod = "2"/>
+		<bone name="RightHandThumb2"		lod = "2"/>
+		<bone name="RightHandThumb3"		lod = "2"/>
+		<bone name="RightHandThumb4"		lod = "2"/>
+		<bone name="RightHandMiddle1"		lod = "2"/>
+		<bone name="RightHandMiddle2"		lod = "2"/>
+		<bone name="RightHandMiddle3"		lod = "2"/>
+		<bone name="RightHandMiddle4"		lod = "2"/>
+		<bone name="RightHandIndex1"		lod = "2"/>
+		<bone name="RightHandIndex2"		lod = "2"/>
+		<bone name="RightHandIndex3"		lod = "2"/>
+		<bone name="RightHandIndex4"		lod = "2"/>
+		<bone name="RightHandPinky"			lod = "2"/>
+		<bone name="RightHandPinky1"		lod = "2"/>
+		<bone name="RightHandPinky2"		lod = "2"/>
+		<bone name="RightHandPinky3"		lod = "2"/>
+		<bone name="RightHandPinky4"		lod = "2"/>
+		
+		<!--		Lod 3 -->		
+		<bone name="Weapon_Root"			lod = "2"/>
+		<bone name="Weapon_Bullet"			lod = "2"/>
+		<bone name="Weapon_Trigger"			lod = "2"/>
+		<bone name="Weapon_Magazine"		lod = "2"/>
+		<bone name="Weapon_Bolt"			lod = "2"/>
+		<bone name="Weapon_Bone_01"			lod = "2"/>
+		<bone name="Weapon_Bone_02"			lod = "2"/>
+		<bone name="Weapon_Bone_03"			lod = "2"/>
+		<bone name="Weapon_Bone_04"			lod = "2"/>
+		<bone name="Weapon_Bone_05"			lod = "2"/>
+		<bone name="Weapon_Bone_06"			lod = "2"/>
+			
+		<bone name="LeftWristExtra"			lod = "2"/>
+		<bone name="LeftForeArmExtra"		lod = "2"/>
+		<bone name="LeftElbowExtra"			lod = "2"/>
+		<bone name="LeftArmExtra"			lod = "2"/>
+		<bone name="RightArmExtra"			lod = "2"/>
+		<bone name="RightWristExtra"		lod = "2"/>
+		<bone name="RightForeArmExtra"		lod = "2"/>
+		<bone name="RightElbowExtra"		lod = "2"/>
+				
+		<bone name="RightHipExtra"			lod = "2"/>
+		<bone name="LeftHipExtra"			lod = "2"/>
+		<bone name="LeftHip_Helper"			lod = "2"/>
+		<bone name="RightHip_Helper"		lod = "2"/>
+		<bone name="LeftToeBase_End"		lod = "2"/>
+		<bone name="RightToeBase_End"		lod = "2"/>
+		
+		<bone name="Camera1st_lock_dummy"	lod = "2"/>
+		
+		<bone name="Weapon_Holster"			lod = "2"/>
+		<bone name="Pistol_Holster"			lod = "2"/>
+		<bone name="Weapon2hnd_Holster"		lod = "2"/>
+		<bone name="RightHandIK_Helper"		lod = "2"/>
+		<bone name="RightAimIK_Helper"		lod = "2"/>
+		<bone name="Marker"					lod = "2"/>
+		<bone name="weapon"					lod = "2"/>
+
+	
+		<!--	To Be removed -->		
+		<bone name="Bullet"					lod = "2"/>
+		<bone name="Trigger"				lod = "2"/>
+		<bone name="Magazine"				lod = "2"/>
+		<bone name="Bolt"					lod = "2"/>
+		<bone name="Bullets_Magazine"		lod = "2"/>
+		<bone name="Bullets_holder"			lod = "2"/>
+		<bone name="Bullets_on_holder"		lod = "2"/>
+		<bone name="Universal1"				lod = "2"/>
+		<bone name="Universal2"				lod = "2"/>
+				
+	</skeleton>
+	
+	<skeleton name="cervus_elaphus_skeleton.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="EntityPosition"			lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="FrontLLegCollarbone"	lod = "1"/>
+		<bone name="FrontLLeg1"				lod = "1"/>
+		<bone name="FrontLLeg2"				lod = "1"/>
+		<bone name="FrontLLeg3"				lod = "1"/>
+		<bone name="FrontLLegAnkle"			lod = "1"/>
+		<bone name="FrontRLegCollarbone"	lod = "1"/>
+		<bone name="FrontRLeg1"				lod = "1"/>
+		<bone name="FrontRLeg2"				lod = "1"/>
+		<bone name="FrontRLeg3"				lod = "1"/>
+		<bone name="FrontRLegAnkle"			lod = "1"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Neck2"					lod = "0"/>
+		<bone name="Neck3"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Lear"					lod = "1"/>
+		<bone name="Rear"					lod = "1"/>
+		<bone name="Jaw"					lod = "1"/>
+		<bone name="Tongue1"				lod = "2"/>
+		<bone name="Tongue2"				lod = "2"/>
+		<bone name="Tongue3"				lod = "2"/>
+		<bone name="LEye"					lod = "2"/>
+		<bone name="REye"					lod = "2"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="Tail1"					lod = "2"/>
+		<bone name="Tail2"					lod = "2"/>
+		<bone name="BackLLeg1"				lod = "1"/>
+		<bone name="BackLLeg2"				lod = "1"/>
+		<bone name="BackLLeg3"				lod = "1"/>
+		<bone name="BackLLegAnkle"			lod = "1"/>
+		<bone name="BackRLeg1"				lod = "1"/>
+		<bone name="BackRLeg2"				lod = "1"/>
+		<bone name="BackRLeg3"				lod = "1"/>
+		<bone name="BackRLegAnkle"			lod = "1"/>
+	</skeleton>
+	
+	<skeleton name="sus_scrofa_skeleton.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="LBLeg1"					lod = "1"/>
+		<bone name="LBLeg2"					lod = "1"/>
+		<bone name="LBLeg3"					lod = "1"/>
+		<bone name="LBLegAnkle"				lod = "1"/>
+		<bone name="LBLegDigit11"			lod = "1"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="Neck"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Mouth"					lod = "1"/>
+		<bone name="tongue_1"				lod = "1"/>
+		<bone name="tongue_2"				lod = "1"/>
+		<bone name="tongue_3"				lod = "1"/>
+		<bone name="tongue_4"				lod = "1"/>
+		<bone name="LEar"					lod = "1"/>
+		<bone name="REar"					lod = "1"/>
+		<bone name="Nose"					lod = "1"/>
+		<bone name="lids_R"					lod = "1"/>
+		<bone name="lids_L"					lod = "1"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="LFLegCollarbone"		lod = "1"/>
+		<bone name="LFLeg1"					lod = "1"/>
+		<bone name="LFLeg2"					lod = "1"/>
+		<bone name="LFLeg3"					lod = "1"/>
+		<bone name="LFLegAnkle"				lod = "1"/>
+		<bone name="LFLegDigit11"			lod = "1"/>
+		<bone name="RFLegCollarbone"		lod = "1"/>
+		<bone name="RFLeg1"					lod = "1"/>
+		<bone name="RFLeg2"					lod = "1"/>
+		<bone name="RFLeg3"					lod = "1"/>
+		<bone name="RFLegAnkle"				lod = "1"/>
+		<bone name="RFLegDigit11"			lod = "1"/>
+		<bone name="Tail1"					lod = "1"/>
+		<bone name="Tail2"					lod = "1"/>
+		<bone name="Tail3"					lod = "1"/>
+		<bone name="RBLeg1"					lod = "1"/>
+		<bone name="RBLeg2"					lod = "1"/>
+		<bone name="RBLeg3"					lod = "1"/>
+		<bone name="RBLegAnkle"				lod = "1"/>
+		<bone name="RBLegDigit11"			lod = "1"/>
+		<bone name="EntityPosition"			lod = "0"/>
+	</skeleton>
+
+	
+	<skeleton name="lepus_europaeus_skeleton.xob">
+		<bone name="Scene_Root"/>
+		<bone name="Pelvis"/>
+		<bone name="Spine1"/>
+		<bone name="Spine2"/>
+		<bone name="Chest"/>
+		<bone name="LFLegCollarbone"/>
+		<bone name="LFLeg1"/>
+		<bone name="LFLeg2"/>
+		<bone name="LFLegAnkle"/>
+		<bone name="LFLegDigit11"/>
+		<bone name="Neck"/>
+		<bone name="Head"/>
+		<bone name="LEar"/>
+		<bone name="REar"/>
+		<bone name="Jaw"/>
+		<bone name="pin_lookat"/>
+		<bone name="RFLegCollarbone"/>
+		<bone name="RFLeg1"/>
+		<bone name="RFLeg2"/>
+		<bone name="RFLegAnkle"/>
+		<bone name="RFLegDigit11"/>
+		<bone name="LBLeg1"/>
+		<bone name="LBLeg2"/>
+		<bone name="LBLegAnkle"/>
+		<bone name="LBLegDigit11"/>
+		<bone name="RBLeg1"/>
+		<bone name="RBLeg2"/>
+		<bone name="RBLegAnkle"/>
+		<bone name="RBLegDigit11"/>
+		<bone name="Tail1"/>
+		<bone name="EntityPosition"/>
+	</skeleton>
+	
+	<skeleton name="z_hermit.xob">
+		<bone name="Scene_Root"					lod = "0" />
+		<bone name="EntityPosition"				lod = "0" />
+		<bone name="Collision_aprox"			lod = "0" />
+
+		<bone name="Pelvis"						lod = "0" />
+		
+		<bone name="Spine"						lod = "0" />
+		<bone name="Spine1"						lod = "0" />
+		<bone name="Spine2"						lod = "0" />
+		<bone name="Spine3"						lod = "0" />
+		<bone name="Neck"						lod = "0" />
+		<bone name="Neck1"						lod = "0" />
+		<bone name="Head"						lod = "0" />
+		<bone name="LookAt"						lod = "0" />
+
+		<bone name="LeftUpLeg"					lod = "1" />
+		<bone name="LeftUpLegRoll"				lod = "1" />
+		<bone name="LeftKneeExtra"				lod = "1" />
+		<bone name="LeftLeg"					lod = "1" />
+		<bone name="LeftLegRoll"				lod = "1" />
+		<bone name="LeftFoot"					lod = "1" />
+		<bone name="LeftToeBase"				lod = "1" />
+		
+		<bone name="RightUpLeg"					lod = "1" />
+		<bone name="RightUpLegRoll"				lod = "1" />
+		<bone name="RightKneeExtra"				lod = "1" />
+		<bone name="RightLeg"					lod = "1" />
+		<bone name="RightLegRoll"				lod = "1" />
+		<bone name="RightFoot"					lod = "1" />
+		<bone name="RightToeBase"				lod = "1" />
+		
+		<bone name="LeftShoulder"				lod = "1" />
+		<bone name="LeftArm"					lod = "1" />
+		<bone name="LeftArmRoll"				lod = "1" />
+		<bone name="LeftForeArm"				lod = "1" />
+		<bone name="LeftForeArmRoll"			lod = "1" />
+		<bone name="LeftHand"					lod = "1" />
+		
+		<bone name="RightShoulder"				lod = "1" />
+		<bone name="RightArm"					lod = "1" />
+		<bone name="RightArmExtra"				lod = "1" />
+		<bone name="RightArmRoll"				lod = "1" />
+		<bone name="RightForeArm"				lod = "1" />
+		<bone name="RightForeArmRoll"			lod = "1" />
+		<bone name="RightHand"					lod = "1" />
+
+		<bone name="LeftHandRing"				lod = "2" />
+		<bone name="LeftHandRing1"				lod = "2" />
+		<bone name="LeftHandRing2"				lod = "2" />
+		<bone name="LeftHandRing3"				lod = "2" />
+		<bone name="LeftHandRing4"				lod = "2" />
+		<bone name="LeftHandPinky1"				lod = "2" />
+		<bone name="LeftHandPinky2"				lod = "2" />
+		<bone name="LeftHandPinky3"				lod = "2" />
+		<bone name="LeftHandPinky4"				lod = "2" />
+		<bone name="LeftHandMiddle1"			lod = "2" />
+		<bone name="LeftHandMiddle2"			lod = "2" />
+		<bone name="LeftHandMiddle3"			lod = "2" />
+		<bone name="LeftHandMiddle4"			lod = "2" />
+		<bone name="LeftHandIndex1"				lod = "2" />
+		<bone name="LeftHandIndex2"				lod = "2" />
+		<bone name="LeftHandIndex3"				lod = "2" />
+		<bone name="LeftHandIndex4"				lod = "2" />
+		<bone name="LeftHandThumb1"				lod = "2" />
+		<bone name="LeftHandThumb2"				lod = "2" />
+		<bone name="LeftHandThumb3"				lod = "2" />
+		<bone name="LeftHandThumb4"				lod = "2" />
+		<bone name="LeftHand_Dummy"				lod = "2" />
+		<bone name="LeftWristExtra"				lod = "2" />
+		<bone name="LeftForeArmExtra"			lod = "2" />
+		<bone name="LeftElbowExtra"				lod = "2" />
+		<bone name="LeftArmExtra"				lod = "2" />
+		
+		<bone name="RightHandRing"				lod = "2" />
+		<bone name="RightHandPinky1"			lod = "2" />
+		<bone name="RightHandPinky2"			lod = "2" />
+		<bone name="RightHandPinky3"			lod = "2" />
+		<bone name="RightHandPinky4"			lod = "2" />
+		<bone name="RightHandRing1"				lod = "2" />
+		<bone name="RightHandRing2"				lod = "2" />
+		<bone name="RightHandRing3"				lod = "2" />
+		<bone name="RightHandRing4"				lod = "2" />
+		<bone name="RightHandThumb1"			lod = "2" />
+		<bone name="RightHandThumb2"			lod = "2" />
+		<bone name="RightHandThumb3"			lod = "2" />
+		<bone name="RightHandThumb4"			lod = "2" />
+		<bone name="RightHandMiddle1"			lod = "2" />
+		<bone name="RightHandMiddle2"			lod = "2" />
+		<bone name="RightHandMiddle3"			lod = "2" />
+		<bone name="RightHandMiddle4"			lod = "2" />
+		<bone name="RightHandIndex1"			lod = "2" />
+		<bone name="RightHandIndex2"			lod = "2" />
+		<bone name="RightHandIndex3"			lod = "2" />
+		<bone name="RightHandIndex4"			lod = "2" />
+		<bone name="RightHand_Dummy"			lod = "2" />
+		<bone name="RightWristExtra"			lod = "2" />
+		<bone name="RightForeArmExtra"			lod = "2" />
+		<bone name="RightElbowExtra"			lod = "2" />
+		<bone name="RightHipExtra"				lod = "2" />
+		<bone name="LeftHipExtra"				lod = "2" />
+		<bone name="LeftHip_Helper"				lod = "2" />
+		<bone name="RightHip_Helper"			lod = "2" />
+
+		<bone name="Character_Nulls"			lod = "2" />
+		<bone name="Floor_fingers"				lod = "2" />
+		<bone name="Floor_feet"					lod = "2" />
+	</skeleton>
+	
+	<skeleton name="gallus_gallus_domesticus_feminam_skeleton.xob">
+		<bone name="Scene_Root"					lod = "0"/>
+		<bone name="Pelvis"						lod = "0"/>
+		<bone name="Spine"						lod = "0"/>
+		<bone name="Chest"						lod = "0"/>
+		<bone name="Neck1"						lod = "0"/>
+		<bone name="Neck2"						lod = "0"/>
+		<bone name="Neck3"						lod = "0"/>
+		<bone name="Head"						lod = "0"/>
+		<bone name="Head_move"					lod = "0"/>
+		<bone name="pin_lookat"					lod = "0"/>
+		<bone name="LArmCollarbone"				lod = "1"/>
+		<bone name="LArm1"						lod = "1"/>
+		<bone name="LArmPalm"					lod = "1"/>
+		<bone name="Lpalm_bone2"				lod = "1"/>
+		<bone name="Lpalm_bone1"				lod = "1"/>
+		<bone name="RArmCollarbone"				lod = "1"/>
+		<bone name="RArm1"						lod = "1"/>
+		<bone name="RArmPalm"					lod = "1"/>
+		<bone name="Rpalm_bone2"				lod = "1"/>
+		<bone name="Rpalm_bone1"				lod = "1"/>
+		<bone name="LLeg1"						lod = "1"/>
+		<bone name="LLeg2"						lod = "1"/>
+		<bone name="LLeg3"						lod = "1"/>
+		<bone name="LLegAnkle"					lod = "1"/>
+		<bone name="fingerL001"					lod = "2"/>
+		<bone name="fingerL002"					lod = "2"/>
+		<bone name="fingerL003"					lod = "2"/>
+		<bone name="RLeg1"						lod = "1"/>
+		<bone name="RLeg2"						lod = "1"/>
+		<bone name="RLeg3"						lod = "1"/>
+		<bone name="RLegAnkle"					lod = "1"/>
+		<bone name="fingerR001"					lod = "2"/>
+		<bone name="fingerR002"					lod = "2"/>
+		<bone name="fingerR003"					lod = "2"/>
+		<bone name="Tail1"						lod = "1"/>
+		<bone name="EntityPosition"				lod = "0"/>
+	</skeleton>
+
+ 	<skeleton name="capra_hircus_skeleton.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="LFLegCollarbone"		lod = "1"/>
+		<bone name="LFLeg1"					lod = "1"/>
+		<bone name="LFLeg2"					lod = "1"/>
+		<bone name="LFLeg3"					lod = "1"/>
+		<bone name="LFLegAnkle"				lod = "1"/>
+		<bone name="RFLegCollarbone"		lod = "1"/>
+		<bone name="RFLeg1"					lod = "1"/>
+		<bone name="RFLeg2"					lod = "1"/>
+		<bone name="RFLeg3"					lod = "1"/>
+		<bone name="RFLegAnkle"				lod = "1"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Neck2"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Jaw"					lod = "1"/>
+		<bone name="Tongue1"				lod = "1"/>
+		<bone name="Tongue2"				lod = "1"/>
+		<bone name="Tongue3"				lod = "1"/>
+		<bone name="Beard1"					lod = "2"/>
+		<bone name="Beard2"					lod = "2"/>
+		<bone name="Beard3"					lod = "2"/>
+		<bone name="Beard_goat_m_1"			lod = "2"/>
+		<bone name="Beard_goat_m_2"			lod = "2"/>
+		<bone name="Beard_goat_m_3"			lod = "2"/>
+		<bone name="LEar"					lod = "1"/>
+		<bone name="REar"					lod = "1"/>
+		<bone name="LEye"					lod = "2"/>
+		<bone name="REye"					lod = "2"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="ChestBone"				lod = "2"/>
+		<bone name="LBLeg1"					lod = "1"/>
+		<bone name="LBLeg2"					lod = "1"/>
+		<bone name="LBLeg3"					lod = "1"/>
+		<bone name="LBLegAnkle"				lod = "1"/>
+		<bone name="RBLeg1"					lod = "1"/>
+		<bone name="RBLeg2"					lod = "1"/>
+		<bone name="RBLeg3"					lod = "1"/>
+		<bone name="RBLegAnkle"				lod = "1"/>
+		<bone name="Tail1"					lod = "1"/>
+		<bone name="Tail2"					lod = "1"/>
+		<bone name="Tail3"					lod = "1"/>
+		<bone name="Udder1"					lod = "2"/>
+		<bone name="RUdder2"				lod = "2"/>
+		<bone name="LUdder2"				lod = "2"/>
+		<bone name="Crotch"					lod = "1"/>
+		<bone name="EntityPosition"			lod = "0"/>
+	</skeleton>
+
+		<skeleton name="CowAndBull_skeleton.xob">
+		<bone name="Scene_Root"			lod = "0" />
+		<bone name="Pelvis"				lod = "0"/>
+		<bone name="LBLeg1"				lod = "1"/>
+		<bone name="LBLeg2"				lod = "1"/>
+		<bone name="LBLeg3"				lod = "1"/>
+		<bone name="LBLegAnkle"			lod = "1"/>
+		<bone name="Spine1"				lod = "0"/>
+		<bone name="Spine2"				lod = "0"/>
+		<bone name="Chest"				lod = "0"/>
+		<bone name="LFLegCollarbone"	lod = "1"/>
+		<bone name="LFLeg1"				lod = "1"/>
+		<bone name="LFLeg2"				lod = "1"/>
+		<bone name="LFLeg3"				lod = "1"/>
+		<bone name="LFLegAnkle"			lod = "1"/>
+		<bone name="RFLegCollarbone"	lod = "1"/>
+		<bone name="RFLeg1"				lod = "1"/>
+		<bone name="RFLeg2"				lod = "1"/>
+		<bone name="RFLeg3"				lod = "1"/>
+		<bone name="RFLegAnkle"			lod = "1"/>
+		<bone name="Neck1"				lod = "0"/>
+		<bone name="Neck2"				lod = "0"/>
+		<bone name="Neck3"				lod = "0"/>
+		<bone name="Head"				lod = "0"/>
+		<bone name="Jaw"				lod = "1"/>
+		<bone name="tongue_1"			lod = "2"/>
+		<bone name="tongue_2"			lod = "2"/>
+		<bone name="tongue_3"			lod = "2"/>
+		<bone name="tongue_4"			lod = "2"/>
+		<bone name="tongue_5"			lod = "2"/>
+		<bone name="tongue_6"			lod = "2"/>
+		<bone name="LEar"				lod = "2"/>
+		<bone name="REar"				lod = "2"/>
+		<bone name="R_eyeLid"			lod = "2"/>
+		<bone name="L_eyeLid"			lod = "2"/>
+		<bone name="Neck3_bonus"		lod = "2"/>
+		<bone name="Neck2_bonus"		lod = "2"/>
+		<bone name="Neck1_bonus"		lod = "2"/>
+		<bone name="Tail1"				lod = "1"/>
+		<bone name="Tail2"				lod = "1"/>
+		<bone name="Tail3"				lod = "1"/>
+		<bone name="Tail4"				lod = "1"/>
+		<bone name="Tail5"				lod = "1"/>
+		<bone name="Tail6"				lod = "1"/>
+		<bone name="RBLeg1"				lod = "1"/>
+		<bone name="RBLeg2"				lod = "1"/>
+		<bone name="RBLeg3"				lod = "1"/>
+		<bone name="RBLegAnkle"			lod = "1"/>
+		<bone name="Udder"				lod = "2"/>
+		<bone name="UdderR"				lod = "2"/>
+		<bone name="UdderL"				lod = "2"/>
+		<bone name="UdderBull"			lod = "2"/>
+		<bone name="UdderBull_R"		lod = "2"/>
+		<bone name="UdderBull_L"		lod = "2"/>
+		<bone name="pin_lookat"			lod = "0"/>
+		<bone name="EntityPosition"		lod = "0"/>
+	</skeleton>
+
+
+
+  <skeleton name="sus_domesticus_skeleton.xob">
+		<bone name="Scene_Root"			lod = "0"/>
+		<bone name="Pelvis"				lod = "0"/>
+		<bone name="Spine1"				lod = "0"/>
+		<bone name="Spine2"				lod = "0"/>
+		<bone name="Chest"				lod = "0"/>
+		<bone name="Neck"				lod = "0"/>
+		<bone name="Head"				lod = "0"/>
+		<bone name="Mouth"				lod = "1"/>
+		<bone name="Tongue1"			lod = "2"/>
+		<bone name="Tongue2"			lod = "2"/>
+		<bone name="Tongue3"			lod = "2"/>
+		<bone name="Tongue4"			lod = "2"/>
+		<bone name="EarL"				lod = "1"/>
+		<bone name="EarR"				lod = "1"/>
+		<bone name="Nose"				lod = "1"/>
+		<bone name="eyeL"				lod = "2"/>
+		<bone name="eyeR"				lod = "2"/>
+		<bone name="pin_lookat"			lod = "0"/>
+		<bone name="LFLegCollarbone"	lod = "1"/>
+		<bone name="LFLeg1"				lod = "1"/>
+		<bone name="LFLeg2"				lod = "1"/>
+		<bone name="LFLeg3"				lod = "1"/>
+		<bone name="LFLegAnkle"			lod = "1"/>
+		<bone name="RFLegCollarbone"	lod = "1"/>
+		<bone name="RFLeg1"				lod = "1"/>
+		<bone name="RFLeg2"				lod = "1"/>
+		<bone name="RFLeg3"				lod = "1"/>
+		<bone name="RFLegAnkle"			lod = "1"/>
+		<bone name="LBLeg1"				lod = "1"/>
+		<bone name="LBLeg2"				lod = "1"/>
+		<bone name="LBLeg3"				lod = "1"/>
+		<bone name="LBLegAnkle"			lod = "1"/>
+		<bone name="RBLeg1"				lod = "1"/>
+		<bone name="RBLeg2"				lod = "1"/>
+		<bone name="RBLeg3"				lod = "1"/>
+		<bone name="RBLegAnkle"			lod = "1"/>
+		<bone name="Tail1"				lod = "1"/>
+		<bone name="Tail2"				lod = "1"/>
+		<bone name="Tail3"				lod = "1"/>
+		<bone name="EntityPosition"		lod = "0"/>
+	</skeleton>
+	
+	<skeleton name="ovis_aries_fem_skeleton.xob">
+		<bone name="Scene_Root"			lod = "0"/>
+		<bone name="Pelvis"				lod = "0"/>
+		<bone name="Spine1"				lod = "0"/>
+		<bone name="Spine2"				lod = "0"/>
+		<bone name="Chest"				lod = "0"/>
+		<bone name="LFLegCollarbone"	lod = "1"/>
+		<bone name="LFLeg1"				lod = "1"/>
+		<bone name="LFLeg2"				lod = "1"/>
+		<bone name="LFLeg3"				lod = "1"/>
+		<bone name="LFLegAnkle"			lod = "1"/>
+		<bone name="RFLegCollarbone"	lod = "1"/>
+		<bone name="RFLeg1"				lod = "1"/>
+		<bone name="RFLeg2"				lod = "1"/>
+		<bone name="RFLeg3"				lod = "1"/>
+		<bone name="RFLegAnkle"			lod = "1"/>
+		<bone name="Neck1"				lod = "0"/>
+		<bone name="Neck2"				lod = "0"/>
+		<bone name="Head"				lod = "0"/>
+		<bone name="Jaw"				lod = "1"/>
+		<bone name="Tongue1"			lod = "2"/>
+		<bone name="Tongue2"			lod = "2"/>
+		<bone name="Tongue3"			lod = "2"/>
+		<bone name="LEar"				lod = "1"/>
+		<bone name="REar"				lod = "1"/>
+		<bone name="LEye"				lod = "2"/>
+		<bone name="REye"				lod = "2"/>
+		<bone name="pin_lookat"			lod = "0"/>
+		<bone name="LBLeg1"				lod = "1"/>
+		<bone name="LBLeg2"				lod = "1"/>
+		<bone name="LBLeg3"				lod = "1"/>
+		<bone name="LBLegAnkle"			lod = "1"/>
+		<bone name="RBLeg1"				lod = "1"/>
+		<bone name="RBLeg2"				lod = "1"/>
+		<bone name="RBLeg3"				lod = "1"/>
+		<bone name="RBLegAnkle"			lod = "1"/>
+		<bone name="Tail1"				lod = "1"/>
+		<bone name="Balls"				lod = "2"/>
+		<bone name="Udder"				lod = "2"/>
+		<bone name="EntityPosition"		lod = "0"/>
+	</skeleton>
+	
+	<skeleton name="vulpes_vulpes_skeleton.xob">
+		<bone name="Scene_Root"/>
+		<bone name="Pelvis"/>
+		<bone name="Spine1"/>
+		<bone name="Spine2"/>
+		<bone name="Chest"/>
+		<bone name="Neck1"/>
+		<bone name="Neck2"/>
+		<bone name="Head"/>
+		<bone name="Jaw"/>
+		<bone name="LEar"/>
+		<bone name="REar"/>
+		<bone name="pin_lookat"/>
+		<bone name="LFLegCollarbone"/>
+		<bone name="LFLeg1"/>
+		<bone name="LFLeg2"/>
+		<bone name="LFLeg3"/>
+		<bone name="LFLegAnkle"/>
+		<bone name="RFLegCollarbone"/>
+		<bone name="RFLeg1"/>
+		<bone name="RFLeg2"/>
+		<bone name="RFLeg3"/>
+		<bone name="RFLegAnkle"/>
+		<bone name="Tail1"/>
+		<bone name="Tail2"/>
+		<bone name="Tail3"/>
+		<bone name="Tail4"/>
+		<bone name="LBLeg1"/>
+		<bone name="LBLeg2"/>
+		<bone name="LBLeg3"/>
+		<bone name="LBLegAnkle"/>
+		<bone name="RBLeg1"/>
+		<bone name="RBLeg2"/>
+		<bone name="RBLeg3"/>
+		<bone name="RBLegAnkle"/>
+		<bone name="EntityPosition"/>
+	</skeleton>
+	
+	<skeleton name="capreolus_capreolus_skeleton.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="EntityPosition"			lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="FrontLLegCollarbone"	lod = "1"/>
+		<bone name="FrontLLeg1"				lod = "1"/>
+		<bone name="FrontLLeg2"				lod = "1"/>
+		<bone name="FrontLLeg3"				lod = "1"/>
+		<bone name="FrontLLegAnkle"			lod = "1"/>
+		<bone name="FrontRLegCollarbone"	lod = "1"/>
+		<bone name="FrontRLeg1"				lod = "1"/>
+		<bone name="FrontRLeg2"				lod = "1"/>
+		<bone name="FrontRLeg3"				lod = "1"/>
+		<bone name="FrontRLegAnkle"			lod = "1"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Neck2"					lod = "0"/>
+		<bone name="Neck3"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Lear"					lod = "1"/>
+		<bone name="Rear"					lod = "1"/>
+		<bone name="Jaw"					lod = "1"/>
+		<bone name="Tongue1"				lod = "2"/>
+		<bone name="Tongue2"				lod = "2"/>
+		<bone name="Tongue3"				lod = "2"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="REye"					lod = "2"/>
+		<bone name="LEye"					lod = "2"/>
+		<bone name="Tail1"					lod = "1"/>
+		<bone name="Tail2"					lod = "1"/>
+		<bone name="BackLLeg1"				lod = "1"/>
+		<bone name="BackLLeg2"				lod = "1"/>
+		<bone name="BackLLeg3"				lod = "1"/>
+		<bone name="BackLLegAnkle"			lod = "1"/>
+		<bone name="BackRLeg1"				lod = "1"/>
+		<bone name="BackRLeg2"				lod = "1"/>
+		<bone name="BackRLeg3"				lod = "1"/>
+		<bone name="BackRLegAnkle"			lod = "1"/>
+	</skeleton>
+	
+	<skeleton name="gallus_gallus_domesticus.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="Spine"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Neck2"					lod = "0"/>
+		<bone name="Neck3"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Head_move"				lod = "0"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="LArmCollarbone"			lod = "1"/>
+		<bone name="LArm1"					lod = "1"/>
+		<bone name="LArmPalm"				lod = "1"/>
+		<bone name="Lpalm_bone2"			lod = "1"/>
+		<bone name="Lpalm_bone1"			lod = "1"/>
+		<bone name="RArmCollarbone"			lod = "1"/>
+		<bone name="RArm1"					lod = "1"/>
+		<bone name="RArmPalm"				lod = "1"/>
+		<bone name="Rpalm_bone2"			lod = "1"/>
+		<bone name="Rpalm_bone1"			lod = "1"/>
+		<bone name="LLeg1"					lod = "1"/>
+		<bone name="LLeg2"					lod = "1"/>
+		<bone name="LLeg3"					lod = "1"/>
+		<bone name="LLegAnkle"				lod = "1"/>
+		<bone name="fingerL001"				lod = "2"/>
+		<bone name="fingerL002"				lod = "2"/>
+		<bone name="fingerL003"				lod = "2"/>
+		<bone name="RLeg1"					lod = "1"/>
+		<bone name="RLeg2"					lod = "1"/>
+		<bone name="RLeg3"					lod = "1"/>
+		<bone name="RLegAnkle"				lod = "1"/>
+		<bone name="fingerR001"				lod = "2"/>
+		<bone name="fingerR002"				lod = "2"/>
+		<bone name="fingerR003"				lod = "2"/>
+		<bone name="Tail1"					lod = "1"/>
+		<bone name="Tail2"					lod = "1"/>
+		<bone name="Tail3"					lod = "1"/>
+		<bone name="EntityPosition"			lod = "0"/>
+	</skeleton>
+	
+	<skeleton name="canis_lupus_skeleton.xob">
+		<bone name="Scene_Root"				lod = "0"/>
+		<bone name="Pelvis"					lod = "0"/>
+		<bone name="Spine1"					lod = "0"/>
+		<bone name="Spine2"					lod = "0"/>
+		<bone name="Chest"					lod = "0"/>
+		<bone name="LFLegCollarbone"		lod = "1"/>
+		<bone name="LFLeg1"					lod = "1"/>
+		<bone name="LFLeg2"					lod = "1"/>
+		<bone name="LFLeg3"					lod = "1"/>
+		<bone name="LFLegAnkle"				lod = "1"/>
+		<bone name="RFLegCollarbone"		lod = "1"/>
+		<bone name="RFLeg1"					lod = "1"/>
+		<bone name="RFLeg2"					lod = "1"/>
+		<bone name="RFLeg3"					lod = "1"/>
+		<bone name="RFLegAnkle"				lod = "1"/>
+		<bone name="Neck1"					lod = "0"/>
+		<bone name="Neck2"					lod = "0"/>
+		<bone name="Head"					lod = "0"/>
+		<bone name="Jaw"					lod = "1"/>
+		<bone name="Tongue1"				lod = "1"/>
+		<bone name="Tongue2"				lod = "1"/>
+		<bone name="Tongue3"				lod = "1"/>
+		<bone name="LEar"					lod = "1"/>
+		<bone name="REar"					lod = "1"/>
+		<bone name="LEye"					lod = "1"/>
+		<bone name="REye"					lod = "1"/>
+		<bone name="pin_lookat"				lod = "0"/>
+		<bone name="JawL"					lod = "1"/>
+		<bone name="JawR"					lod = "1"/>
+		<bone name="LBLeg1"					lod = "1"/>
+		<bone name="LBLeg2"					lod = "1"/>
+		<bone name="LBLeg3"					lod = "1"/>
+		<bone name="LBLegAnkle"				lod = "1"/>
+		<bone name="RBLeg1"					lod = "1"/>
+		<bone name="RBLeg2"					lod = "1"/>
+		<bone name="RBLeg3"					lod = "1"/>
+		<bone name="RBLegAnkle"				lod = "1"/>
+		<bone name="Tail1"					lod = "1"/>
+		<bone name="Tail2"					lod = "1"/>
+		<bone name="Tail3"					lod = "1"/>
+		<bone name="Tail4"					lod = "1"/>
+		<bone name="EntityPosition"			lod = "0"/>
+	</skeleton>
+	
+	<skeleton name="ursus_arctos_skeleton.xob">
+		<bone name="Scene_Root"/>
+		<bone name="Pelvis"/>
+		<bone name="Spine1"/>
+		<bone name="Spine2"/>
+		<bone name="Chest"/>
+		<bone name="Neck1"/>
+		<bone name="Neck2"/>
+		<bone name="Head"/>
+		<bone name="Jaw"/>
+		<bone name="tongue1"/>
+		<bone name="tongue2"/>
+		<bone name="tongue3"/>
+		<bone name="tongue4"/>
+		<bone name="REar"/>
+		<bone name="LEar"/>
+		<bone name="lids_R"/>
+		<bone name="lids_L"/>
+		<bone name="LGrin"/>
+		<bone name="RGrin"/>
+		<bone name="Nose"/>
+		<bone name="pin_lookat"/>
+		<bone name="LFLegCollarbone"/>
+		<bone name="LFLeg1"/>
+		<bone name="LFLeg2"/>
+		<bone name="LFLegAnkle"/>
+		<bone name="LFLegDigit11"/>
+		<bone name="RFLegCollarbone"/>
+		<bone name="RFLeg1"/>
+		<bone name="RFLeg2"/>
+		<bone name="RFLegAnkle"/>
+		<bone name="RFLegDigit11"/>
+		<bone name="LBLeg1"/>
+		<bone name="LBLeg2"/>
+		<bone name="LBLegAnkle"/>
+		<bone name="LBLegDigit11"/>
+		<bone name="RBLeg1"/>
+		<bone name="RBLeg2"/>
+		<bone name="RBLegAnkle"/>
+		<bone name="RBLegDigit11"/>
+		<bone name="Tail1"/>
+		<bone name="EntityPosition"/>
+	</skeleton>
+
+</skeletons>

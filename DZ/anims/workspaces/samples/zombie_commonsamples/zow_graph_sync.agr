@@ -1,0 +1,47 @@
+$AnimGraph 2 {
+	$Sheet "Sync" {
+		$Node AnimNodeSourceSync {
+			 "SyncWalk" "" "zA_erc_walkF" "loop" "ZWalk"
+			$EditorData {
+				#EditorPos -2.8 0.9
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "AnimNodeStateMachine" ""
+			$States 2 {
+				$State {
+					 "SyncWalk" "" "WalkBlend" "" "normtime" 1
+					$EditorData {
+						#EditorPos -2.1000001 5.9000001
+					}
+				}
+				$State {
+					 "NewState" "" "Idle" "true" "notime" 1
+					$EditorData {
+						#EditorPos 1.2 5.9000001
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "NewState" "SyncWalk" "IsCommand(COMMAND_RUN)" "0.3" "0.5" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -2.3 7.0
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "IL Walk 1" "" "p_IL_erc_walkF_test_3loop" "loop" "ZWalk"
+			$EditorData {
+				#EditorPos 0.0 0.9
+			}
+		}
+		$Node AnimNodeBlend {
+			 "WalkBlend" "" "BlendVal" "SyncWalk" "IL Walk 1"
+			$EditorData {
+				#EditorPos -1.9 3.4000001
+			}
+		}
+	}
+}

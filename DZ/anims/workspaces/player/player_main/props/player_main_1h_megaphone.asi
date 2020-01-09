@@ -1,0 +1,25 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.RaiseItemCro.Aim" "{CD9D77D2710D5109}DZ/anims/anm/player/actions/items/p_cro_megaphone_look.anm"
+   "ActionContinuous.RaiseItemCro.In" "{F719A15403A45BC3}DZ/anims/anm/player/actions/items/p_cro_megaphone_in.anm"
+   "ActionContinuous.RaiseItemCro.Loop" "{D54564C68D9100C6}DZ/anims/anm/player/actions/items/p_cro_megaphone_loop.anm"
+   "ActionContinuous.RaiseItemCro.Out" "{956B16F508029067}DZ/anims/anm/player/actions/items/p_cro_megaphone_out.anm"
+   "ActionContinuous.RaiseItemErc.Aim" "{AE3E31D2D10028DC}DZ/anims/anm/player/actions/items/p_erc_megaphone_look.anm"
+   "ActionContinuous.RaiseItemErc.In" "{B3A16D9E0A09127B}DZ/anims/anm/player/actions/items/p_erc_megaphone_in.anm"
+   "ActionContinuous.RaiseItemErc.Loop" "{B6E622C62D9C7913}DZ/anims/anm/player/actions/items/p_erc_megaphone_loop.anm"
+   "ActionContinuous.RaiseItemErc.Out" "{BE91B8AC4165E597}DZ/anims/anm/player/actions/items/p_erc_megaphone_out.anm"
+   "ActionContinuous.RaiseItemPne.Aim" "{8F3D8DAF805CEC4D}DZ/anims/anm/player/actions/items/p_pne_megaphone_look.anm"
+   "ActionContinuous.RaiseItemPne.In" "{530981E8525D2890}DZ/anims/anm/player/actions/items/p_pne_megaphone_in.anm"
+   "ActionContinuous.RaiseItemPne.Loop" "{97E59EBB7CC0BD82}DZ/anims/anm/player/actions/items/p_pne_megaphone_loop.anm"
+   "ActionContinuous.RaiseItemPne.Out" "{F6F8D8DEA3C250AB}DZ/anims/anm/player/actions/items/p_pne_megaphone_out.anm"
+   "ActionOnce.ItemOffCro.Once" "{87D3D322D5B76976}DZ/anims/anm/player/actions/items/p_cro_megaphone_off.anm"
+   "ActionOnce.ItemOffErc.Once" "{AC297D7B9CD01C86}DZ/anims/anm/player/actions/items/p_erc_megaphone_off.anm"
+   "ActionOnce.ItemOffPne.Once" "{E4401D097E77A9BA}DZ/anims/anm/player/actions/items/p_pne_megaphone_off.anm"
+   "ActionOnce.ItemOnCro.Once" "{4AC9F3D37CBF47DD}DZ/anims/anm/player/actions/items/p_cro_megaphone_on.anm"
+   "ActionOnce.ItemOnErc.Once" "{0E713F1975120E65}DZ/anims/anm/player/actions/items/p_erc_megaphone_on.anm"
+   "ActionOnce.ItemOnPne.Once" "{EED9D36F2D46348E}DZ/anims/anm/player/actions/items/p_pne_megaphone_on.anm"
+  
+ }

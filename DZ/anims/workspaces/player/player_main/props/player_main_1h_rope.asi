@@ -1,0 +1,24 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.EatCro.In" "{FC091350EBBD3809}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_in.anm"
+   "ActionContinuous.EatCro.Loop" "{C169BF82181DF0A5}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_loop.anm"
+   "ActionContinuous.EatCro.Out" "{D0AEFCABF7DAD86C}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_out.anm"
+   "ActionContinuous.EatErc.In" "{D7F3BD09A2DA4DF9}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_in.anm"
+   "ActionContinuous.EatErc.Loop" "{B3416EF424F554E1}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_loop.anm"
+   "ActionContinuous.EatErc.Out" "{B30DBAAB57D7A1B9}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_out.anm"
+   "ActionContinuous.EatPne.In" "{9F9ADD7B407DF8C5}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_in.anm"
+   "ActionContinuous.EatPne.Loop" "{3E7703B1F018F8AC}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_loop.anm"
+   "ActionContinuous.EatPne.Out" "{920E06D6068B6528}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_out.anm"
+   "ActionContinuous.RestrainSelfCro.In" "{A6DEE739B1D623DC}DZ/anims/anm/player/actions/interactions/p_cro_self_trans_rst_in.anm"
+   "ActionContinuous.RestrainSelfCro.Loop" "{21627306965132DA}DZ/anims/anm/player/actions/interactions/p_cro_self_trans_rst_loop.anm"
+   "ActionContinuous.RestrainSelfCro.Out" "{ACE5E046A91D1D34}DZ/anims/anm/player/actions/interactions/p_cro_self_trans_rst_out.anm"
+   "ActionContinuous.RestrainSelfCro.Out2" "{30CC3A077C209B0F}DZ/anims/anm/player/actions/interactions/p_cro_self_trans_rst_cancel.anm"
+   "ActionContinuous.RestrainSelfErc.In" "{0787CDD733C2C823}DZ/anims/anm/player/actions/interactions/p_erc_self_trans_rst_in.anm"
+   "ActionContinuous.RestrainSelfErc.Loop" "{F5F335F3EECE8F97}DZ/anims/anm/player/actions/interactions/p_erc_self_trans_rst_loop.anm"
+   "ActionContinuous.RestrainSelfErc.Out" "{8DBFFB1048EDABB4}DZ/anims/anm/player/actions/interactions/p_erc_self_trans_rst_out.anm"
+   "ActionContinuous.RestrainSelfErc.Out2" "{92E673798256D50B}DZ/anims/anm/player/actions/interactions/p_erc_self_trans_rst_cancel.anm"
+  
+ }

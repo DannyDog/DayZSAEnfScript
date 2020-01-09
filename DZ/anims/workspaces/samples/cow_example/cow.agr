@@ -1,0 +1,20 @@
+$AnimGraph 3 {
+	#AnimSetTemplate "dz/anims/workspaces/samples/cow_example/cow_sample.ast"
+	#AnimSyncTable "dz/anims/workspaces/samples/cow_example/cow_synctable.asy"
+	$Controls {
+		$Commands {
+			 CMD_Turn -1
+			 CMD_Death -1
+		}
+		$Vars {
+			#Var MovementSpeed float 0.0 0.0 2.0 ""
+			#Var Stance int 1 0 2 ""
+			#Var MovementDirection float 0.0 -180.0 180.0 ""
+		}
+		$Expressions {
+		}
+	}
+	$Files {
+		 "dz/anims/workspaces/samples/cow_example/Locomotion.agr"
+	}
+}

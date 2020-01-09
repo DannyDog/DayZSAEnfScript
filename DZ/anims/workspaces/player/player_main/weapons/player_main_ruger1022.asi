@@ -1,0 +1,17 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{0A5B1C8379C26E21}DZ/anims/anm/player/reloads/Ruger1022/p_erc_chambering_Ruger1022_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{DF4E0C487A424AC6}DZ/anims/anm/player/reloads/Ruger1022/p_erc_jam_Ruger1022_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{B7496CBD263A12CF}DZ/anims/anm/player/reloads/Ruger1022/p_erc_reload_action_Ruger1022_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{9E5B49775DF83AA5}DZ/anims/anm/player/reloads/Ruger1022/p_erc_reload_mag_nobullet_Ruger1022_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{AF003F4D7C232C03}DZ/anims/anm/player/reloads/Ruger1022/p_erc_reload_nomag_bullet_Ruger1022_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{AFB95DA362F3877A}DZ/anims/anm/player/reloads/Ruger1022/p_pne_chambering_Ruger1022_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{810B6BE8069A3E2B}DZ/anims/anm/player/reloads/Ruger1022/p_pne_jam_Ruger1022_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{3DC0DDC3CC25B0D6}DZ/anims/anm/player/reloads/Ruger1022/p_pne_reload_action_Ruger1022_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{7DC36C8B418E9D8B}DZ/anims/anm/player/reloads/Ruger1022/p_pne_reload_mag_nobullet_Ruger1022_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{4C981AB160558B2D}DZ/anims/anm/player/reloads/Ruger1022/p_pne_reload_nomag_bullet_Ruger1022_ras.anm"
+  
+ }

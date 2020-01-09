@@ -1,0 +1,31 @@
+$animsettemplate {
+ #ngrouptypes 1
+ $groupType {
+  #ngroupnames 0
+  #nanims 21
+  $anims {
+    "Idle01"
+    "Idle02"
+    "Idle03"
+    "Idle04"
+    "Idle05"
+    "Idle06"
+    "Idle07"
+    "Idle08"
+    "Idle09"
+    "Idle10"
+    "Idle11"
+    "Idle12"
+    "Idle13"
+    "Idle14"
+    "Idle15"
+    "Idle16"
+    "Idle17"
+    "Idle18"
+    "Idle19"
+    "IdleMain"
+    "IdleMain2"
+   
+  }
+ }
+}

@@ -1,0 +1,19 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.LookOpticsCro.Aim" "{A0E5997FB5CECA15}DZ/anims/anm/player/actions/items/optics/nightvision/p_cro_optics_nightvision_aim.anm"
+   "ActionContinuous.LookOpticsCro.In" "{974EF0DE163E17A5}DZ/anims/anm/player/actions/items/optics/nightvision/p_cro_optics_nightvision_in.anm"
+   "ActionContinuous.LookOpticsCro.Loop" "{63C978692D5BE67A}DZ/anims/anm/player/actions/items/optics/nightvision/p_cro_optics_nightvision_loop.anm"
+   "ActionContinuous.LookOpticsCro.Out" "{D4456F0A59E1DC96}DZ/anims/anm/player/actions/items/optics/nightvision/p_cro_optics_nightvision_out.anm"
+   "ActionContinuous.LookOpticsErc.Aim" "{35CD3069CCA5DC20}DZ/anims/anm/player/actions/items/optics/nightvision/p_erc_optics_nightvision_aim.anm"
+   "ActionContinuous.LookOpticsErc.In" "{3564B9A0E84859A1}DZ/anims/anm/player/actions/items/optics/nightvision/p_erc_optics_nightvision_in.anm"
+   "ActionContinuous.LookOpticsErc.Loop" "{D06474810C36F814}DZ/anims/anm/player/actions/items/optics/nightvision/p_erc_optics_nightvision_loop.anm"
+   "ActionContinuous.LookOpticsErc.Out" "{416DC61C208ACAA3}DZ/anims/anm/player/actions/items/optics/nightvision/p_erc_optics_nightvision_out.anm"
+   "ActionContinuous.LookOpticsPne.Aim" "{A8F3D3385BAA7CBD}DZ/anims/anm/player/actions/items/optics/nightvision/p_pne_optics_nightvision_aim.anm"
+   "ActionContinuous.LookOpticsPne.In" "{897E6F85B60181CE}DZ/anims/anm/player/actions/items/optics/nightvision/p_pne_optics_nightvision_in.anm"
+   "ActionContinuous.LookOpticsPne.Loop" "{E7E5F30D556897C4}DZ/anims/anm/player/actions/items/optics/nightvision/p_pne_optics_nightvision_loop.anm"
+   "ActionContinuous.LookOpticsPne.Out" "{DC53254DB7856A3E}DZ/anims/anm/player/actions/items/optics/nightvision/p_pne_optics_nightvision_out.anm"
+  
+ }

@@ -1,0 +1,19 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.LookOpticsCro.Aim" "{8F5A622C0854F126}DZ/anims/anm/player/actions/items/optics/binocular/p_cro_optics_binoculars_aim.anm"
+   "ActionContinuous.LookOpticsCro.In" "{EEC19B83316DACDE}DZ/anims/anm/player/actions/items/optics/binocular/p_cro_optics_binoculars_in.anm"
+   "ActionContinuous.LookOpticsCro.Loop" "{0C0C52D87E5AB070}DZ/anims/anm/player/actions/items/optics/binocular/p_cro_optics_binoculars_loop.anm"
+   "ActionContinuous.LookOpticsCro.Out" "{FBFA9459E47BE7A5}DZ/anims/anm/player/actions/items/optics/binocular/p_cro_optics_binoculars_out.anm"
+   "ActionContinuous.LookOpticsErc.Aim" "{2D702B52F622BF22}DZ/anims/anm/player/actions/items/optics/binocular/p_erc_optics_binoculars_aim.anm"
+   "ActionContinuous.LookOpticsErc.In" "{7C769794A72DDD0C}DZ/anims/anm/player/actions/items/optics/binocular/p_erc_optics_binoculars_in.anm"
+   "ActionContinuous.LookOpticsErc.Loop" "{9924FBCE0731A645}DZ/anims/anm/player/actions/items/optics/binocular/p_erc_optics_binoculars_loop.anm"
+   "ActionContinuous.LookOpticsErc.Out" "{59D0DD271A0DA9A1}DZ/anims/anm/player/actions/items/optics/binocular/p_erc_optics_binoculars_out.anm"
+   "ActionContinuous.LookOpticsPne.Aim" "{916AFD77A86B674D}DZ/anims/anm/player/actions/items/optics/binocular/p_pne_optics_binoculars_aim.anm"
+   "ActionContinuous.LookOpticsPne.In" "{CDD4C0CFA9166E18}DZ/anims/anm/player/actions/items/optics/binocular/p_pne_optics_binoculars_in.anm"
+   "ActionContinuous.LookOpticsPne.Loop" "{041A189F903E06D8}DZ/anims/anm/player/actions/items/optics/binocular/p_pne_optics_binoculars_loop.anm"
+   "ActionContinuous.LookOpticsPne.Out" "{E5CA0B02444471CE}DZ/anims/anm/player/actions/items/optics/binocular/p_pne_optics_binoculars_out.anm"
+  
+ }

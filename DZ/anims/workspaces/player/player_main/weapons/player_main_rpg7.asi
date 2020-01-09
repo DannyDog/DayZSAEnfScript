@@ -1,0 +1,9 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{A8E22C28130075D9}DZ/anims/anm/player/reloads/RPG7/p_erc_reload_action_RPG7.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Open" "{A8108DABB1573976}DZ/anims/anm/player/reloads/RPG7/p_erc_reload_RPG7.anm"
+  
+ }

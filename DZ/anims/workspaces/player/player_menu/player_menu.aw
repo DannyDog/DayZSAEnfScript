@@ -1,0 +1,19 @@
+$animWorkspace {
+ #animSetTemplate "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #NanimSetInstances 12
+ #animSetInstance "{6FAA51E6E427DAA7}DZ/anims/workspaces/player/player_menu/menu_unarmed.asi"
+ #animSetInstance "{54EA733AF8EDB4CA}DZ/anims/workspaces/player/player_menu/menu_1handed.asi"
+ #animSetInstance "{7ECE54990E03D2E5}DZ/anims/workspaces/player/player_menu/menu_2handed.asi"
+ #animSetInstance "{262E2B5CC2EF1EEA}DZ/anims/workspaces/player/player_menu/menu_axe.asi"
+ #animSetInstance "{C8139B979A3AD30B}DZ/anims/workspaces/player/player_menu/menu_baseballbat.asi"
+ #animSetInstance "{2903829A6401EE19}DZ/anims/workspaces/player/player_menu/menu_bow.asi"
+ #animSetInstance "{6C4806D89A4A1B36}DZ/anims/workspaces/player/player_menu/menu_broom.asi"
+ #animSetInstance "{56DA6F5343E47AB8}DZ/anims/workspaces/player/player_menu/menu_chainsaw.asi"
+ #animSetInstance "{90CEAA9AA919A58A}DZ/anims/workspaces/player/player_menu/menu_knife.asi"
+ #animSetInstance "{2EE303D88F5A4B5C}DZ/anims/workspaces/player/player_menu/menu_pistol.asi"
+ #animSetInstance "{BBAD1D5EA5A03B0F}DZ/anims/workspaces/player/player_main/menu_rifle.asi"
+ #animSetInstance "{3AB8234A499E68D1}DZ/anims/workspaces/player/player_menu/menu_sword.asi"
+ #previewModel "{03FB754D362549FC}DZ/characters/bodies/player_f_testing.xob"
+ #previewModel "{934CA9D85BFC36AB}DZ/characters/bodies/player_testing.xob"
+ #animGraph "{37B0200F26784044}DZ/anims/workspaces/player/player_menu/player_menu.agr"
+}

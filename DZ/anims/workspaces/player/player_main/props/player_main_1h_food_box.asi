@@ -1,0 +1,16 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.EatCro.In" "{FC091350EBBD3809}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_in.anm"
+   "ActionContinuous.EatCro.Loop" "{C169BF82181DF0A5}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_loop.anm"
+   "ActionContinuous.EatCro.Out" "{D0AEFCABF7DAD86C}DZ/anims/anm/player/actions/consumption/p_cro_eating_box_out.anm"
+   "ActionContinuous.EatErc.In" "{D7F3BD09A2DA4DF9}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_in.anm"
+   "ActionContinuous.EatErc.Loop" "{B3416EF424F554E1}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_loop.anm"
+   "ActionContinuous.EatErc.Out" "{B30DBAAB57D7A1B9}DZ/anims/anm/player/actions/consumption/p_erc_eating_box_out.anm"
+   "ActionContinuous.EatPne.In" "{9F9ADD7B407DF8C5}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_in.anm"
+   "ActionContinuous.EatPne.Loop" "{3E7703B1F018F8AC}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_loop.anm"
+   "ActionContinuous.EatPne.Out" "{920E06D6068B6528}DZ/anims/anm/player/actions/consumption/p_pne_eating_box_out.anm"
+  
+ }

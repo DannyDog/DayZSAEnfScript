@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_NoBullet" "{359B1F6340D40B07}DZ/anims/anm/player/reloads/Trumpet/p_erc_chambering_loop_trumpet_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{F2DF8E5E37BFB9B3}DZ/anims/anm/player/reloads/Trumpet/p_erc_jam_Trumpet_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{EF0B6F8B2107AEEB}DZ/anims/anm/player/reloads/Trumpet/p_erc_reload_action_trumpet_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_NoBullet" "{BF12AE1DAACBA91E}DZ/anims/anm/player/reloads/Trumpet/p_pne_chambering_loop_trumpet_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{7FE9E31BE35215FE}DZ/anims/anm/player/reloads/Trumpet/p_pne_jam_Trumpet_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{3C09DC01EBB750B4}DZ/anims/anm/player/reloads/Trumpet/p_pne_reload_action_trumpet_ras.anm"
+  
+ }

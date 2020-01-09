@@ -1,0 +1,25 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ #ikpose "{139AFB2DF6656444}DZ/anims/anm/player/ik/weapons/mosin9130.anm"
+ $animations {
+   "Combat.Erc.Bayonet" "{8DBFD8DBD80F1A2D}DZ/anims/anm/player/attacks/rifle/p_rfl_long_erc_melee_attack_bayonet.anm"
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_Bullet" "{F9BA3A0F18483285}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_chambering_loop_bullet_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_NoBullet" "{9481D45D15BCD8E4}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_chambering_loop_nobullet_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.Fire" "{414E3A64EFACBEFF}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_fire_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.FireEmptyAutomatic" "{3175190330291D3A}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_fire_empty_cocked_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.FireJam" "{04F140F1E68B55BE}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_fire_jam_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{479AEA120127D2EF}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_jam_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.Jamming Cancel" "{3ED449DBF435671C}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_jam_cancel_Mosin1903_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{DF79699DDE0894A4}DZ/anims/anm/player/reloads/Mosin_1903/p_erc_reload_action_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_Bullet" "{0C1CBC1155C3F7C5}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_chambering_loop_bullet_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_NoBullet" "{F07BFD1EC385CE31}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_chambering_loop_nobullet_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.Fire" "{E6A589EA0C46AF78}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_fire_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.FireEmptyAutomatic" "{3DCAF07D4F680394}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_fire_empty_cocked_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.FireJam" "{99CFA3A07184F523}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_fire_jam_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{19DF8DB27DFFA602}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_jam_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.Jamming Cancel" "{9B3608FBEF048E47}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_jam_cancel_Mosin1903_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{55F0D8E3341736BD}DZ/anims/anm/player/reloads/Mosin_1903/p_pne_reload_action_Mosin1903_ras.anm"
+  
+ }

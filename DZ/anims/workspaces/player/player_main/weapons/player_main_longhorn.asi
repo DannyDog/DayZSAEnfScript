@@ -1,0 +1,17 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{C00BE12F6BA82BE9}DZ/anims/anm/player/reloads/LongHorn/p_erc_chambering1_LongHorn_ras.anm"
+   "WeaponOperations.ErcRas.Chambering_Open" "{8BC732A747FE275F}DZ/anims/anm/player/reloads/LongHorn/p_erc_chambering_LongHorn_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{3267930A7B4E9F57}DZ/anims/anm/player/reloads/LongHorn/p_erc_jam_Longhorn_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{78539370B3064988}DZ/anims/anm/player/reloads/LongHorn/p_erc_reload_action1_LongHorn_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Open" "{87A43F7FD7344E08}DZ/anims/anm/player/reloads/LongHorn/p_erc_reload_action_LongHorn_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{65E9A00F7099C2B2}DZ/anims/anm/player/reloads/LongHorn/p_pne_chambering1_LongHorn_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Open" "{BC46B52B1EA0488F}DZ/anims/anm/player/reloads/LongHorn/p_pne_chambering_LongHorn_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{6B55783A50FDA568}DZ/anims/anm/player/reloads/LongHorn/p_pne_jam_Longhorn_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{F2DA220E5919EB91}DZ/anims/anm/player/reloads/LongHorn/p_pne_reload_action1_LongHorn_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Open" "{08C408A39A4B9AB0}DZ/anims/anm/player/reloads/LongHorn/p_pne_reload_action_LongHorn_ras.anm"
+  
+ }

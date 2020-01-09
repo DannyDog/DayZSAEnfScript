@@ -1,0 +1,20 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{8F69E288CFC2B70D}DZ/anims/workspaces/player/player_main/props/player_main_1h_torch.asi"
+ $animations {
+   "ActionOnce.CloseItemOnceCro.Once" "{405C4E03F79B1CB7}DZ/anims/anm/player/actions/items/p_cro_close_compass.anm"
+   "ActionOnce.CloseItemOnceErc.Once" "{6BA6E05ABEFC6947}DZ/anims/anm/player/actions/items/p_erc_close_compass.anm"
+   "ActionOnce.CloseItemOncePne.Once" "{23CF80285C5BDC7B}DZ/anims/anm/player/actions/items/p_pne_close_compass.anm"
+   "ActionOnce.OpenItemOnceCro.Once" "{5FF44429774E8394}DZ/anims/anm/player/actions/items/p_cro_open_compass.anm"
+   "ActionOnce.OpenItemOnceErc.Once" "{1B4C88E37EE3CA2C}DZ/anims/anm/player/actions/items/p_erc_open_compass.anm"
+   "ActionOnce.OpenItemOncePne.Once" "{FBE4649526B7F0C7}DZ/anims/anm/player/actions/items/p_pne_open_compass.anm"
+   "Locomotion.Cro.Look" "{BEF590E4D5D97BDD}DZ/anims/anm/player/layered/look/p_1hd_torch_cro_look.anm"
+   "Locomotion.Cro.MoveLook" "{CF655C2EE9F04454}DZ/anims/anm/player/layered/look/p_1hd_torch_cro_movelook.anm"
+   "Locomotion.Erc.Look" "{4281AEDB0C42524D}DZ/anims/anm/player/layered/look/p_1hd_torch_erc_look.anm"
+   "Locomotion.Erc.MoveLook" "{2963C905CD87CEE0}DZ/anims/anm/player/layered/look/p_1hd_torch_erc_movelook.anm"
+   "Locomotion.Erc.SprintF" "{32A5233CA02A7CCB}DZ/anims/anm/player/moves/1handed/p_1hd_erc_sprintF_low.anm"
+   "Locomotion.Erc.SprintFL" "{1D5804FD127A4284}DZ/anims/anm/player/moves/1handed/p_1hd_erc_sprintFL_low.anm"
+   "Locomotion.Erc.SprintFR" "{7196AE2C862C23E0}DZ/anims/anm/player/moves/1handed/p_1hd_erc_sprintFR_low.anm"
+  
+ }

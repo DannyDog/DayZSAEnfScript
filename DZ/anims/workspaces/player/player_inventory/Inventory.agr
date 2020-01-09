@@ -1,0 +1,42 @@
+$AnimGraph 6 {
+	$Sheet "MasterGraph" {
+		$Node AnimNodeSource {
+			 "EquipAnim" "" "Equip" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -7.4000001 7.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "IdleAnim" "" "Idle" "loop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -9.5 7.5
+			}
+		}
+		$Node AnimNodeQueue {
+			 "MasterQueue" "" "IdleAnim"
+			$items 2 {
+				$item {
+					 "EquipAnim" "IsCommand(CMD_Equip)" "" "" 0.1 0.3 0 1
+				}
+				$item {
+					 "UnequipAnim" "IsCommand(CMD_Unequip)" "" "" 0.1 0.3 0 1
+				}
+			}
+			$EditorData {
+				#EditorPos -7.4000001 8.4000006
+			}
+		}
+		$Node AnimNodeSource {
+			 "UnequipAnim" "" "Unequip" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -5.3000002 7.5
+			}
+		}
+	}
+}

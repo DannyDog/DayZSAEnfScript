@@ -1,0 +1,24 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "Combat.Erc.StrikeL01" "{02495CCB1DE81A6C}DZ/anims/anm/player/attacks/rifle/p_rfl_Long_erc_attackL_Light_low.anm"
+   "Combat.Erc.StrikeR01" "{B8221D3CE97ED4A2}DZ/anims/anm/player/attacks/rifle/p_rfl_Long_erc_attackR_Light_low.anm"
+   "WeaponOperations.ErcRas.Chambering_Closed" "{0FA49F997A8691C1}DZ/anims/anm/player/reloads/CZ550/p_erc_chambering1_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{3C26B1452A846FFF}DZ/anims/anm/player/reloads/CZ527/p_erc_jam_CZ527_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{16D1D7E2268BCACF}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_action_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.ReloadBoltAction2" "{852EAE5A320814B9}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_action2_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagBullet" "{AFCBF10353D051BD}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_mag_bullet_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{A915896041F27345}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_mag_nobullet_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{CD9240D7EC6C0B41}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_nomag_bullet_CZ550_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagNoBullet" "{BD89E3CCB846453F}DZ/anims/anm/player/reloads/CZ550/p_erc_reload_nomag_nobullet_CZ550_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{B3BE49BC24CF49AE}DZ/anims/anm/player/reloads/CZ550/p_pne_chambering1_CZ550_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{744FD137C823DAC3}DZ/anims/anm/player/reloads/CZ527/p_pne_jam_CZ527_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{2150506E7FD5A51F}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_action_CZ550_ras.anm"
+   "WeaponOperations.PneRas.ReloadBoltAction2" "{20CCEF7A2939FDE2}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_action2_CZ550_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagBullet" "{2542407DB9CFF3A4}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_mag_bullet_CZ550_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{E198C12D5701D50A}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_mag_nobullet_CZ550_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{851F089AFA9FAD0E}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_nomag_bullet_CZ550_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagNoBullet" "{B1360AB2C7075B91}DZ/anims/anm/player/reloads/CZ550/p_pne_reload_nomag_nobullet_CZ550_ras.anm"
+ }

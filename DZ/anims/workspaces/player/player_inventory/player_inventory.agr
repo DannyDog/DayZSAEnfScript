@@ -1,0 +1,18 @@
+$AnimGraph 6 {
+	#AnimSetTemplate "dz/anims/workspaces/player/player_inventory/player_inventory.ast"
+	$Controls {
+		$Commands {
+			 CMD_Unequip -1
+			 CMD_Equip -1
+		}
+		$Vars {
+		}
+		$Expressions {
+		}
+		$DebugControls {
+		}
+	}
+	$Files {
+		 "dz/anims/workspaces/player/player_inventory/Inventory.agr"
+	}
+}

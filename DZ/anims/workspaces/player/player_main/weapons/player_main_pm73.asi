@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "Combat.Erc.StrikeL01" "{005596480B0CB91A}DZ/anims/anm/player/attacks/rifle/p_rfl_Short_erc_attackL_Light_low.anm"
+   "Combat.Erc.StrikeR01" "{BA3ED7BFFF9A77D4}DZ/anims/anm/player/attacks/rifle/p_rfl_Short_erc_attackR_Light_low.anm"
+   "WeaponOperations.ErcRas.Chambering_Closed" "{F0E0B299F6C01AF6}DZ/anims/anm/player/reloads/PM73/p_erc_chambering1_PM73.anm"
+   "WeaponOperations.ErcRas.Chambering_Open" "{FEC49ED77A427E40}DZ/anims/anm/player/reloads/PM73/p_erc_chambering_PM73.anm"
+   "WeaponOperations.ErcRas.Jamming" "{DE90850D0D3065FA}DZ/anims/anm/player/reloads/PM73/p_erc_jam_PM73_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{3387F8E9525552FF}DZ/anims/anm/player/reloads/PM73/p_erc_reload_action_PM73_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{1106723E3553FCC3}DZ/anims/anm/player/reloads/PM73/p_erc_reload_mag_nobullet_PM73_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{8377D3A96A406527}DZ/anims/anm/player/reloads/PM73/p_erc_reload_nomag_bullet_PM73_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{A9D259A9DD7320C9}DZ/anims/anm/player/reloads/PM73/p_pne_chambering1_PM73.anm"
+   "WeaponOperations.PneRas.Chambering_Open" "{73F2F392AEAFD20D}DZ/anims/anm/player/reloads/PM73/p_pne_chambering_PM73.anm"
+   "WeaponOperations.PneRas.Jamming" "{3E38697B55645F11}DZ/anims/anm/player/reloads/PM73/p_pne_jam_PM73_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{AEB91BB8C55AF262}DZ/anims/anm/player/reloads/PM73/p_pne_reload_action_PM73_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{79CAE64918922596}DZ/anims/anm/player/reloads/PM73/p_pne_reload_mag_nobullet_PM73_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{EBBB47DE4781BC72}DZ/anims/anm/player/reloads/PM73/p_pne_reload_nomag_bullet_PM73_ras.anm"
+  
+ }

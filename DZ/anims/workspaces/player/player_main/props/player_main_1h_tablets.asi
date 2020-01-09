@@ -1,0 +1,16 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.EatCro.In" "{263D1876B45783C2}DZ/anims/anm/player/actions/healing/p_cro_eatingTablets_in.anm"
+   "ActionContinuous.EatCro.Loop" "{493649AB3372A079}DZ/anims/anm/player/actions/healing/p_cro_eatingTablets_loop.anm"
+   "ActionContinuous.EatCro.Out" "{B9E04A83558F77F9}DZ/anims/anm/player/actions/healing/p_cro_eatingTablets_out.anm"
+   "ActionContinuous.EatErc.In" "{FB4F2688546905FA}DZ/anims/anm/player/actions/healing/p_erc_eatingTablets_in.anm"
+   "ActionContinuous.EatErc.Loop" "{686C52FDD28216F9}DZ/anims/anm/player/actions/healing/p_erc_eatingTablets_loop.anm"
+   "ActionContinuous.EatErc.Out" "{18B9606DD79B9C06}DZ/anims/anm/player/actions/healing/p_erc_eatingTablets_out.anm"
+   "ActionContinuous.EatPne.In" "{A27DCDB87FDA3FC5}DZ/anims/anm/player/actions/healing/p_pne_eatingTablets_in.anm"
+   "ActionContinuous.EatPne.Loop" "{CF87E1733168077E}DZ/anims/anm/player/actions/healing/p_pne_eatingTablets_loop.anm"
+   "ActionContinuous.EatPne.Out" "{46FC07CDAB43E8EB}DZ/anims/anm/player/actions/healing/p_pne_eatingTablets_out.anm"
+  
+ }

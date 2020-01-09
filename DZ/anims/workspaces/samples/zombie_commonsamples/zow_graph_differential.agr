@@ -1,0 +1,22 @@
+$AnimGraph 2 {
+	$Sheet "Diff" {
+		$Node AnimNodeBlend {
+			 "AnimNodeBlend" "" "BlendVal" "DiffIdle" "DiffLookAt0"
+			$EditorData {
+				#EditorPos -0.5 6.9000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "DiffIdle" "" "zA_erc_idle01" "loop"
+			$EditorData {
+				#EditorPos -1.7 5.0999999
+			}
+		}
+		$Node AnimNodePose {
+			 "DiffLookAt0" "" "zA_erc_lookat_gradual" "PoseTime"
+			$EditorData {
+				#EditorPos 0.9 5.0999999
+			}
+		}
+	}
+}

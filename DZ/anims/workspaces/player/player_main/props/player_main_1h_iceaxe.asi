@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{B81FFF44D015B873}DZ/anims/workspaces/player/player_main/weapons/player_main_1h_pipe.asi"
+ $animations {
+   "ActionInLoopOut.DigCacheErc.Cancel" "{F797600A8181AC1D}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_dig_cancel.anm"
+   "ActionInLoopOut.DigCacheErc.InLoopOut" "{F38A16814F1C8C9A}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_digcache.anm"
+   "ActionInLoopOut.DigErc.Cancel" "{F797600A8181AC1D}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_dig_cancel.anm"
+   "ActionInLoopOut.DigErc.InLoopOut" "{BA189A6BF5AF388C}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_dig.anm"
+   "ActionInLoopOut.DigManipulateErc.Cancel" "{F797600A8181AC1D}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_dig_cancel.anm"
+   "ActionInLoopOut.DigManipulateErc.InLoopOut" "{BA189A6BF5AF388C}DZ/anims/anm/player/actions/horticulture/p_cro_handshovel_dig.anm"
+  
+ }

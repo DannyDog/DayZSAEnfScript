@@ -1,0 +1,32 @@
+$AnimGraph 2 {
+	#AnimSetTemplate "dz/anims/workspaces/samples/zombie_commonsamples/zow.ast"
+	#AnimSyncTable "dz/anims//workspaces/samples/zombie_commonsamples/zow_synctable.asy"
+	$Controls {
+		$Commands {
+			 COMMAND_IDLE -1
+			 COMMAND_RUN -1
+			 COMMAND_SPRINT -1
+			 C_CHANGE -1
+			 C_DEATH -1
+			 C_HIT -1
+		}
+		$Vars {
+			#Var bToRun bool 0 ""
+			#Var BlendVal float 0.0 0.0 1.0 ""
+			#Var MovementType int 0 0 2 ""
+			#Var PoseTime float 0.0 0.0 1.0 ""
+		}
+		$Expressions {
+			
+			#Expr Epxr0 "MovementType == 1 && MovementType == 2"
+		}
+	}
+	$Files {
+		 "dz/anims/workspaces/samples/zombie_commonsamples/zow_graph_autoidlerun.agr"
+		 "dz/anims//workspaces/samples/zombie_commonsamples/zow_graph_idlerun.agr"
+		 "dz/anims//workspaces/samples/zombie_commonsamples/zow_graph_attack.agr"
+		 "dz/anims/workspaces/samples/zombie_commonsamples/zow_graph_sync.agr"
+		 "dz/anims/workspaces/samples/zombie_commonsamples/zow_graph_broadcasttest.agr"
+		 "dz/anims/workspaces/samples/zombie_commonsamples/zow_graph_differential.agr"
+	}
+}

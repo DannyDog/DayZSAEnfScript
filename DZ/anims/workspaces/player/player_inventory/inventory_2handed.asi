@@ -1,0 +1,9 @@
+$animsetinstance {
+ #template "dz/anims/workspaces/player/player_inventory/player_inventory.ast"
+ #nparents 0
+ $animations {
+   "Equip" "dz/anims/anm/player/moves/2handed/transitions/p_2hd_erc_arming.anm"
+   "Idle" "dz/anims/anm/player/moves/2handed/p_2hd_erc_idle_low.anm"
+   "Unequip" "dz/anims/anm/player/moves/2handed/transitions/p_2hd_erc_disarming.anm"
+  
+ }

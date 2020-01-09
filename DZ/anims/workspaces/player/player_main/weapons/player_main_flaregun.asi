@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{2D145A4F7212F85E}DZ/anims/workspaces/player/player_main/player_main_pistol.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{987601AFF7BF1123}DZ/anims/anm/player/reloads/Flaregun/p_erc_chambering_Flaregun_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{B07F0DB55239F618}DZ/anims/anm/player/reloads/Flaregun/p_erc_reload_action1_Flaregun_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Open" "{4A56F2D1F20EE0F1}DZ/anims/anm/player/reloads/Flaregun/p_erc_reload_action_Flaregun_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{AFF78623AEE17EF3}DZ/anims/anm/player/reloads/Flaregun/p_pne_chambering_Flaregun_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{3AF6BCCBB8265401}DZ/anims/anm/player/reloads/Flaregun/p_pne_reload_action1_Flaregun_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Open" "{C536C50DBF713449}DZ/anims/anm/player/reloads/Flaregun/p_pne_reload_action_Flaregun_ras.anm"
+  
+ }

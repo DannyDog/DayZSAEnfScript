@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{2D145A4F7212F85E}DZ/anims/workspaces/player/player_main/player_main_pistol.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{643940D4A4BA154E}DZ/anims/anm/player/reloads/P1/p_erc_chambering1_P1_ras.anm"
+   "WeaponOperations.ErcRas.Chambering_Open" "{F96360DF8A0B9694}DZ/anims/anm/player/reloads/P1/p_erc_chambering_P1_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{32AF849D350CDA47}DZ/anims/anm/player/reloads/P1/p_erc_jam_P1_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{FAD3FD7DF96BE7C0}DZ/anims/anm/player/reloads/P1/p_erc_reload_action1_P1_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Open" "{E540E2B013D461D6}DZ/anims/anm/player/reloads/P1/p_erc_reload_action_P1_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagBullet" "{8A89611BA25DCB63}DZ/anims/anm/player/reloads/P1/p_erc_reload_mag_bullet_P1_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{8BE9D84E4A9FECA6}DZ/anims/anm/player/reloads/P1/p_erc_reload_nomag_bullet_P1_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{C3D2F35A475004C9}DZ/anims/anm/player/reloads/P1/p_pne_chambering1_P1_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Open" "{A726077FF6D3E279}DZ/anims/anm/player/reloads/P1/p_pne_chambering_P1_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{863899247AAFFEE3}DZ/anims/anm/player/reloads/P1/p_pne_jam_P1_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{46C92B58A7223FAF}DZ/anims/anm/player/reloads/P1/p_pne_reload_action1_P1_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Open" "{54E2B5EB1DEFD2C2}DZ/anims/anm/player/reloads/P1/p_pne_reload_action_P1_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagBullet" "{2F6B203BB96C2238}DZ/anims/anm/player/reloads/P1/p_pne_reload_mag_bullet_P1_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{0489EF9207E0381E}DZ/anims/anm/player/reloads/P1/p_pne_reload_nomag_bullet_P1_ras.anm"
+  
+ }

@@ -1,0 +1,514 @@
+$AnimGraph 7 {
+	$Sheet "Attack" {
+		$Node AnimNodeSource {
+			 "Attack Left Heavy" "" "Attack.Attack Left Heavy" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -23.1000004 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Attack Left Light" "" "Attack.Attack Left Light" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -28.8999996 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Attack Right Heavy" "" "Attack.Attack Right Heavy" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -20.3000011 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Attack Right Light" "" "Attack.Attack Right Light" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -25.8999996 4.7000003
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Attack StateMachine" "TagAttack"
+			$States 11 {
+				$State {
+					 "Attack Right Light" "" "Attack Right Light" "GetCommandI(CMD_ATTACK) == 1" "realtime" 1
+					$EditorData {
+						#EditorPos -25.8999996 6.5
+					}
+				}
+				$State {
+					 "Attack Left Light" "" "Attack Left Light" "GetCommandI(CMD_ATTACK) == 0" "realtime" 1
+					$EditorData {
+						#EditorPos -28.8999996 6.5
+					}
+				}
+				$State {
+					 "Attack Left Heavy" "" "Attack Left Heavy" "GetCommandI(CMD_ATTACK) == 2" "realtime" 1
+					$EditorData {
+						#EditorPos -23.1000004 6.5
+					}
+				}
+				$State {
+					 "Attack Right Heavy" "" "Attack Right Heavy" "GetCommandI(CMD_ATTACK) == 3" "realtime" 1
+					$EditorData {
+						#EditorPos -20.3000011 6.5
+					}
+				}
+				$State {
+					 "DoorHeadAttack" "" "Head Source" "GetCommandI(CMD_ATTACK) == 10" "realtime" 1
+					$EditorData {
+						#EditorPos -12.1000004 6.5
+					}
+				}
+				$State {
+					 "DoorShoulderAttack" "" "Shoulder Source" "GetCommandI(CMD_ATTACK) == 11" "realtime" 1
+					$EditorData {
+						#EditorPos -9.8000002 6.5
+					}
+				}
+				$State {
+					 "DoorLRAttack" "" "LR Source" "GetCommandI(CMD_ATTACK) == 12" "realtime" 1
+					$EditorData {
+						#EditorPos -7.4000001 6.5
+					}
+				}
+				$State {
+					 "DoorPushAttack" "" "Push Source" "GetCommandI(CMD_ATTACK) == 9" "realtime" 1
+					$EditorData {
+						#EditorPos -14.4000006 6.5
+					}
+				}
+				$State {
+					 "DoorKickAttack" "" "Kick Source" "GetCommandI(CMD_ATTACK) == 13" "realtime" 1
+					$EditorData {
+						#EditorPos -4.9000001 6.5
+					}
+				}
+				$State {
+					 "DoorChargeR" "" "Door Charge R Source" "GetCommandI(CMD_ATTACK) == 14 && MovementSpeed >= 1" "realtime" 1
+					$EditorData {
+						#EditorPos -2.5 6.5
+					}
+				}
+				$State {
+					 "DoorChargeL" "" "Door Charge L Source" "GetCommandI(CMD_ATTACK) == 15 && MovementSpeed >= 1" "realtime" 1
+					$EditorData {
+						#EditorPos -0.1 6.5
+					}
+				}
+			}
+			$Transitions 4 {
+				$Transition {
+					 "" "Attack Left Light" "GetCommandI(CMD_ATTACK) == 0" "0.2" "GetEventTime(\"Attack.Attack Left Light\", \"BlendIn\")" 1 "S"
+				}
+				$Transition {
+					 "" "Attack Right Light" "GetCommandI(CMD_ATTACK) == 1" "0.2" "GetEventTime(\"Attack.Attack Right Light\", \"BlendIn\")" 1 "S"
+				}
+				$Transition {
+					 "" "Attack Left Heavy" "GetCommandI(CMD_ATTACK) == 2" "0.2" "GetEventTime(\"Attack.Attack Left Heavy\", \"BlendIn\")" 1 "S"
+				}
+				$Transition {
+					 "" "Attack Right Heavy" "GetCommandI(CMD_ATTACK) == 3" "0.2" "GetEventTime(\"Attack.Attack Right Heavy\", \"BlendIn\")" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -25.3999996 8.6000004
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Center Attack Group" "" "Attack StateMachine" "Attack" "Center"
+			$EditorData {
+				#EditorPos -25.3999996 11.8000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crawl Attack" "" "Attack.Up.Crawl Attack" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -11.3000002 11.6999998
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Crawl Fight StateMachine" "TagAttack"
+			$States 2 {
+				$State {
+					 "Short Attack " "" "Crwl Attack R Source" "MovementSpeed >= 1" "realtime" 1
+					$EditorData {
+						#EditorPos -14.0 13.6000004
+					}
+				}
+				$State {
+					 "Crawl Attack" "" "Crawl Attack" "MovementSpeed ==0" "realtime" 1
+					$EditorData {
+						#EditorPos -11.1999998 13.6000004
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -14.1999998 15.4000006
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crwl Attack R Source" "" "Attack.Down.Crawl Attack Run" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -14.0 11.6000004
+			}
+		}
+		$Node AnimNodeSource {
+			 "Door Charge L Source" "" "Attack Door.Attack Door Charge 02" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -0.1 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Door Charge R Source" "" "Attack Door.Charge.Attack Door Charge 01" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.5 4.7000003
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Down Attack Group" "" "Attack StateMachine" "Attack" "Down"
+			$EditorData {
+				#EditorPos -22.5 11.8000002
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Erc Fight StateMachine" ""
+			$States 4 {
+				$State {
+					 "Up Attack" "" "Up Attack Group" "IsCommand(CMD_ATTACK) && GetCommandF(CMD_ATTACK) == 0" "notime" 1
+					$EditorData {
+						#EditorPos -28.3999996 14.3000002
+					}
+				}
+				$State {
+					 "Center Attack" "" "Center Attack Group" "IsCommand(CMD_ATTACK) && GetCommandF(CMD_ATTACK) == 1" "notime" 1
+					$EditorData {
+						#EditorPos -25.3999996 14.3000002
+					}
+				}
+				$State {
+					 "Down Attack" "" "Down Attack Group" "IsCommand(CMD_ATTACK) && GetCommandF(CMD_ATTACK) == 2" "notime" 1
+					$EditorData {
+						#EditorPos -22.5 14.3000002
+					}
+				}
+				$State {
+					 "Run Attack" "" "Run Attack Group" "MovementSpeed >= 1 && IsCommand(CMD_ATTACK)" "notime" 1
+					$EditorData {
+						#EditorPos -19.7000008 14.3000002
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -24.6000004 16.1000004
+			}
+		}
+		$Node AnimNodeSource {
+			 "Head Source" "" "Attack Door.Erc.Attack Door Head" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -12.1000004 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Kick Source" "" "Attack Door.Erc.Attack Door Kick" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -4.9000001 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "LR Source" "" "Attack Door.Erc.Attack Door LR 01" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -7.4000001 4.7000003
+			}
+		}
+		$Node AnimNodeSource {
+			 "Push Source" "" "Attack Door.Erc.Attack Door Push" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -14.4000006 4.7000003
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Run Attack Group" "" "Attack StateMachine" "Attack" "Run"
+			$EditorData {
+				#EditorPos -19.7000008 11.8000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Shoulder Source" "" "Attack Door.Erc.Attack Door Shoulder L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -9.8000002 4.7000003
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "Up Attack Group" "" "Attack StateMachine" "Attack" "Up"
+			$EditorData {
+				#EditorPos -28.3999996 11.8000002
+			}
+		}
+	}
+	$Sheet "Hit" {
+		$Node AnimNodeSource {
+			 "BellyBAnim" "" "Hits.Hit_Belly_B" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.6000001 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BellyFAnim" "" "Hits.Hit_Belly_F" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -8.9000006 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BellyLAnim" "" "Hits.Hit_Belly_L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -4.7000003 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BellyRAnim" "" "Hits.Hit_Belly_R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -6.8000002 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BodyBAnim" "" "Hits.Hit_Body_B" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 6.8000002 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BodyFAnim" "" "Hits.Hit_Body_F" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 0.5 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BodyLAnim" "" "Hits.Hit_Body_L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 4.7000003 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "BodyRAnim" "" "Hits.Hit_Body_R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 2.6000001 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "HeadBAnim" "" "Hits.Hit_Head_B" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 16.0 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "HeadFAnim" "" "Hits.Hit_Head_F" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 9.6999998 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "HeadLAnim" "" "Hits.Hit_Head_L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 13.9000006 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "HeadRAnim" "" "Hits.Hit_Head_R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 11.8000002 6.5
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "HitAnimSTM" ""
+			$States 12 {
+				$State {
+					 "BellyR" "" "BellyRAnim" "(GetCommandI(CMD_HIT_LIGHT) == 0 && inRange(GetCommandF(CMD_HIT_LIGHT), 45.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 0 && inRange(GetCommandF(CMD_HIT_HEAVY), 45.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos -6.8000002 8.1000004
+					}
+				}
+				$State {
+					 "BellyL" "" "BellyLAnim" "(GetCommandI(CMD_HIT_LIGHT) == 0 && inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, -45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 0 && inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, -45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos -4.7000003 8.1000004
+					}
+				}
+				$State {
+					 "BellyB" "" "BellyBAnim" "(GetCommandI(CMD_HIT_LIGHT) == 0 && !inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 0 && !inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos -2.6000001 8.1000004
+					}
+				}
+				$State {
+					 "BellyF" "" "BellyFAnim" "(GetCommandI(CMD_HIT_LIGHT) == 0 && inRange(GetCommandF(CMD_HIT_LIGHT), -45.0, 45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 0 && inRange(GetCommandF(CMD_HIT_HEAVY), -45.0, 45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos -8.9000006 8.1000004
+					}
+				}
+				$State {
+					 "BodyF" "" "BodyFAnim" "(GetCommandI(CMD_HIT_LIGHT) == 1 && inRange(GetCommandF(CMD_HIT_LIGHT), -45.0, 45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 1 && inRange(GetCommandF(CMD_HIT_HEAVY), -45.0, 45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 0.5 8.1000004
+					}
+				}
+				$State {
+					 "BodyR" "" "BodyRAnim" "(GetCommandI(CMD_HIT_LIGHT) == 1 && inRange(GetCommandF(CMD_HIT_LIGHT), 45.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 1 && inRange(GetCommandF(CMD_HIT_HEAVY), 45.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 2.6000001 8.1000004
+					}
+				}
+				$State {
+					 "BodyL" "" "BodyLAnim" "(GetCommandI(CMD_HIT_LIGHT) == 1 && inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, -45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 1 && inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, -45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 4.7000003 8.1000004
+					}
+				}
+				$State {
+					 "BodyB" "" "BodyBAnim" "(GetCommandI(CMD_HIT_LIGHT) == 1 && !inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 1 && !inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 6.8000002 8.1000004
+					}
+				}
+				$State {
+					 "HeadF" "" "HeadFAnim" "(GetCommandI(CMD_HIT_LIGHT) == 2 && inRange(GetCommandF(CMD_HIT_LIGHT), -45.0, 45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 2 && inRange(GetCommandF(CMD_HIT_HEAVY), -45.0, 45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 9.6999998 8.1000004
+					}
+				}
+				$State {
+					 "HeadR" "" "HeadRAnim" "(GetCommandI(CMD_HIT_LIGHT) == 2 && inRange(GetCommandF(CMD_HIT_LIGHT), 45.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 2 && inRange(GetCommandF(CMD_HIT_HEAVY), 45.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 11.8000002 8.1000004
+					}
+				}
+				$State {
+					 "HeadL" "" "HeadLAnim" "(GetCommandI(CMD_HIT_LIGHT) == 2 && inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, -45.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 2 && inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, -45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 13.9000006 8.1000004
+					}
+				}
+				$State {
+					 "HeadB" "" "HeadBAnim" "(GetCommandI(CMD_HIT_LIGHT) == 2 && !inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, 135.0))
+||
+(GetCommandI(CMD_HIT_HEAVY) == 2 && !inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 16.0 8.1000004
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 3.6000001 9.4000006
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "HitForceSTM" "TagDamageHit"
+			$States 2 {
+				$State {
+					 "LightHitState" "" "HitGroupLight" "IsCommand(CMD_HIT_LIGHT)" "realtime" 1
+					$EditorData {
+						#EditorPos 5.0999999 12.6000004
+					}
+				}
+				$State {
+					 "HeavyHitState" "" "HitGroupHeavy" "IsCommand(CMD_HIT_HEAVY)" "realtime" 1
+					$EditorData {
+						#EditorPos 2.2 12.6000004
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 2.1000001 14.1000004
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "HitGroupHeavy" "" "HitAnimSTM" "Hits" "Heavy"
+			$EditorData {
+				#EditorPos 2.2 10.6000004
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "HitGroupLight" "" "HitAnimSTM" "Hits" "Light"
+			$EditorData {
+				#EditorPos 5.0999999 10.6000004
+			}
+		}
+	}
+}

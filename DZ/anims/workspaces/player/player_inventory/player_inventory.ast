@@ -1,0 +1,14 @@
+$animsettemplate {
+ #ngrouptypes 1
+ $groupType {
+  #ngroupnames 0
+  #nanims 4
+  $anims {
+    "Equip"
+    "Idle"
+    "Unequip"
+    "unarmed"
+   
+  }
+ }
+}

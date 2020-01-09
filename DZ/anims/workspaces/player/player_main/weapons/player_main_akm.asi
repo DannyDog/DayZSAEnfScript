@@ -1,0 +1,30 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ #ikpose "{F7A52CEE6628658F}DZ/anims/anm/player/ik/weapons/izh18.anm"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{B3DA38AE1EEA3954}DZ/anims/anm/player/reloads/AKM/p_erc_chambering_Closed_AKM_ras.anm"
+   "WeaponOperations.ErcRas.Fire" "{50EDD1C64CAAF032}DZ/anims/anm/player/reloads/AKM/p_erc_fire_AKM_ras.anm"
+   "WeaponOperations.ErcRas.FireEmptyAutomatic" "{67DC47B5FE80A981}DZ/anims/anm/player/reloads/AKM/p_erc_fire_empty_automatic_AKM_ras.anm"
+   "WeaponOperations.ErcRas.FireJam" "{5C1ADE9E222548A6}DZ/anims/anm/player/reloads/AKM/p_erc_fire_Jam_AKM_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{96CDFBBA0F874266}DZ/anims/anm/player/reloads/AKM/p_erc_jam_AKM_ras.anm"
+   "WeaponOperations.ErcRas.Jamming Cancel" "{DCF743FEB466F7E9}DZ/anims/anm/player/reloads/AKM/p_erc_jam_cancel_AKM.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{23D4B5F1676D561C}DZ/anims/anm/player/reloads/AKM/p_erc_reloadAction_Closed_AKM_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagBullet" "{F6C115816F65EB04}DZ/anims/anm/player/reloads/AKM/p_erc_reload_mag_noBullet_AKM_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{F6C115816F65EB04}DZ/anims/anm/player/reloads/AKM/p_erc_reload_mag_noBullet_AKM_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagazineDetach" "{5A59AA4548ACBD2A}DZ/anims/anm/player/reloads/AKM/p_erc_reload_mag_remove_AKM_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{ED602EB6B14CA29A}DZ/anims/anm/player/reloads/AKM/p_erc_reload_noMag_bullet_AKM_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{60D88B24D45AC70B}DZ/anims/anm/player/reloads/AKM/p_pne_chambering_Closed_AKM_ras.anm"
+   "WeaponOperations.PneRas.Fire" "{B0453DB014FECAD9}DZ/anims/anm/player/reloads/AKM/p_pne_fire_AKM_ras.anm"
+   "WeaponOperations.PneRas.FireEmptyAutomatic" "{0F10D3C2D34170D4}DZ/anims/anm/player/reloads/AKM/p_pne_fire_empty_automatic_AKM_ras.anm"
+   "WeaponOperations.PneRas.FireJam" "{052835AE09967299}DZ/anims/anm/player/reloads/AKM/p_pne_fire_Jam_AKM_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{145E48706EF1F045}DZ/anims/anm/player/reloads/AKM/p_pne_jam_AKM_ras.anm"
+   "WeaponOperations.PneRas.Jamming Cancel" "{FDF4FF83E53A3378}DZ/anims/anm/player/reloads/AKM/p_pne_jam_cancel_AKM.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{A95D048F8D72F405}DZ/anims/anm/player/reloads/AKM/p_pne_reloadAction_Closed_AKM_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagBullet" "{7C48A4FF857A491D}DZ/anims/anm/player/reloads/AKM/p_pne_reload_mag_noBullet_AKM_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{7C48A4FF857A491D}DZ/anims/anm/player/reloads/AKM/p_pne_reload_mag_noBullet_AKM_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagazineDetach" "{895B19CF821C4375}DZ/anims/anm/player/reloads/AKM/p_pne_reload_mag_remove_AKM_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{67E99FC85B530083}DZ/anims/anm/player/reloads/AKM/p_pne_reload_noMag_bullet_AKM_ras.anm"
+  
+ }

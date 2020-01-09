@@ -1,0 +1,22 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.Chambering_Closed" "{3485272109034385}DZ/anims/anm/player/reloads/AUG/p_erc_chambering_AUG_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{2A85626953B2D9A2}DZ/anims/anm/player/reloads/AUG/p_erc_jam_aug_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{50A7BBD732C5D392}DZ/anims/anm/player/reloads/AUG/p_erc_reload_action_AUG_ras.anm"
+   "WeaponOperations.ErcRas.ReloadBoltAction2" "{67F00022333C1874}DZ/anims/anm/player/reloads/AUG/p_erc_reload_action2_AUG_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagBullet" "{0A8E699292632FD0}DZ/anims/anm/player/reloads/AUG/p_erc_reload_mag_bullet_AUG_ras.anm"
+   "WeaponOperations.ErcRas.ReloadMagNoBullet" "{314FBBE61086C79B}DZ/anims/anm/player/reloads/AUG/p_erc_reload_mag_nobullet_AUG_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagBullet" "{2AEE80D1CEAF8E05}DZ/anims/anm/player/reloads/AUG/p_erc_reload_nomag_bullet_AUG_ras.anm"
+   "WeaponOperations.ErcRas.ReloadNoMagNoBullet" "{4328A6FB3C6E53E9}DZ/anims/anm/player/reloads/AUG/p_erc_reload_nomag_nobullet_AUG_ras.anm"
+   "WeaponOperations.PneRas.Chambering_Closed" "{936E94AFEAE95202}DZ/anims/anm/player/reloads/AUG/p_pne_chambering_AUG_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{A816D1A332C46B81}DZ/anims/anm/player/reloads/AUG/p_pne_jam_aug_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{ECBD6DF26C8C0BFD}DZ/anims/anm/player/reloads/AUG/p_pne_reload_action_AUG_ras.anm"
+   "WeaponOperations.PneRas.ReloadBoltAction2" "{FACEE373A433B8E9}DZ/anims/anm/player/reloads/AUG/p_pne_reload_action2_AUG_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagBullet" "{D98CDA1858D3D18F}DZ/anims/anm/player/reloads/AUG/p_pne_reload_mag_bullet_AUG_ras.anm"
+   "WeaponOperations.PneRas.ReloadMagNoBullet" "{BBC60A98FA996582}DZ/anims/anm/player/reloads/AUG/p_pne_reload_mag_nobullet_AUG_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagBullet" "{A06731AF24B02C1C}DZ/anims/anm/player/reloads/AUG/p_pne_reload_nomag_bullet_AUG_ras.anm"
+   "WeaponOperations.PneRas.ReloadNoMagNoBullet" "{0BA5EEB62A9DF5A6}DZ/anims/anm/player/reloads/AUG/p_pne_reload_nomag_nobullet_AUG_ras.anm"
+ }

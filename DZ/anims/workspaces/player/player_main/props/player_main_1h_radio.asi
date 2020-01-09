@@ -1,0 +1,22 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.ItemTuneCro.In" "{B09F29862338E157}DZ/anims/anm/player/actions/items/p_cro_radio_in.anm"
+   "ActionContinuous.ItemTuneCro.Loop" "{54A58F5787CDCEF5}DZ/anims/anm/player/actions/items/p_cro_radio_tuneUp.anm"
+   "ActionContinuous.ItemTuneCro.Out" "{47C482B98AA89222}DZ/anims/anm/player/actions/items/p_cro_radio_out.anm"
+   "ActionContinuous.ItemTuneErc.In" "{5699BCAD074F6BE3}DZ/anims/anm/player/actions/items/p_erc_radio_in.anm"
+   "ActionContinuous.ItemTuneErc.Loop" "{101D439D8E60874D}DZ/anims/anm/player/actions/items/p_erc_radio_tuneUp.anm"
+   "ActionContinuous.ItemTuneErc.Out" "{6D061A251629F9E7}DZ/anims/anm/player/actions/items/p_erc_radio_out.anm"
+   "ActionContinuous.ItemTunePne.In" "{BB0ADF650D8C6DD1}DZ/anims/anm/player/actions/items/p_pne_radio_in.anm"
+   "ActionContinuous.ItemTunePne.Loop" "{F0B5AFEBD634BDA6}DZ/anims/anm/player/actions/items/p_pne_radio_tuneUp.anm"
+   "ActionContinuous.ItemTunePne.Out" "{87458F21D89F9629}DZ/anims/anm/player/actions/items/p_pne_radio_out.anm"
+   "ActionOnce.ItemOffCro.Once" "{557C476E571D6B33}DZ/anims/anm/player/actions/items/p_cro_radio_off.anm"
+   "ActionOnce.ItemOffErc.Once" "{7FBEDFF2CB9C00F6}DZ/anims/anm/player/actions/items/p_erc_radio_off.anm"
+   "ActionOnce.ItemOffPne.Once" "{95FD4AF6052A6F38}DZ/anims/anm/player/actions/items/p_pne_radio_off.anm"
+   "ActionOnce.ItemOnCro.Once" "{0D4F7B015C23FD49}DZ/anims/anm/player/actions/items/p_cro_radio_on.anm"
+   "ActionOnce.ItemOnErc.Once" "{EB49EE2A785477FD}DZ/anims/anm/player/actions/items/p_erc_radio_on.anm"
+   "ActionOnce.ItemOnPne.Once" "{06DA8DE2729771CF}DZ/anims/anm/player/actions/items/p_pne_radio_on.anm"
+  
+ }

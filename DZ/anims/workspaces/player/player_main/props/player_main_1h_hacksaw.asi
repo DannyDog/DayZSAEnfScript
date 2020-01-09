@@ -1,0 +1,11 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{B81FFF44D015B873}DZ/anims/workspaces/player/player_main/weapons/player_main_1h_pipe.asi"
+ $animations {
+   "ActionInLoopOut.DisassembleCro.Cancel" "{51798CF0851379CF}DZ/anims/anm/player/actions/basebuilding/p_1hd_hacksaw_cro_disassemble_cancel.anm"
+   "ActionInLoopOut.DisassembleCro.InLoopOut" "{2AB2317B7CE12F8B}DZ/anims/anm/player/actions/basebuilding/p_1hd_hacksaw_cro_disassemble.anm"
+   "ActionInLoopOut.DisassembleErc.Cancel" "{702397A664E3CF4F}DZ/anims/anm/player/actions/basebuilding/p_1hd_hacksaw_erc_disassemble_cancel.anm"
+   "ActionInLoopOut.DisassembleErc.InLoopOut" "{F97B5A0AA0150349}DZ/anims/anm/player/actions/basebuilding/p_1hd_hacksaw_erc_disassemble.anm"
+  
+ }

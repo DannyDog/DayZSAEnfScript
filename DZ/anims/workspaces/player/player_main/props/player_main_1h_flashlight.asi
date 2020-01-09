@@ -1,0 +1,28 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{8F69E288CFC2B70D}DZ/anims/workspaces/player/player_main/props/player_main_1h_torch.asi"
+ $animations {
+   "ActionContinuous.ItemTuneCro.In" "{DFA36776CEFA81F5}DZ/anims/anm/player/actions/items/p_cro_flashlight_in.anm"
+   "ActionContinuous.ItemTuneCro.Loop" "{B6B6FF574F69AB9A}DZ/anims/anm/player/actions/items/p_cro_flashlight_tuneDown.anm"
+   "ActionContinuous.ItemTuneCro.Out" "{71B1094D6B9E7407}DZ/anims/anm/player/actions/items/p_cro_flashlight_out.anm"
+   "ActionContinuous.ItemTuneErc.In" "{F459C92F879DF405}DZ/anims/anm/player/actions/items/p_erc_flashlight_in.anm"
+   "ActionContinuous.ItemTuneErc.Loop" "{6227B9A237F616D7}DZ/anims/anm/player/actions/items/p_erc_flashlight_tuneDown.anm"
+   "ActionContinuous.ItemTuneErc.Out" "{12124F4DCB930DD2}DZ/anims/anm/player/actions/items/p_erc_flashlight_out.anm"
+   "ActionContinuous.ItemTunePne.In" "{BC30A95D653A4139}DZ/anims/anm/player/actions/items/p_pne_flashlight_in.anm"
+   "ActionContinuous.ItemTunePne.Loop" "{3D366707756A59AE}DZ/anims/anm/player/actions/items/p_pne_flashlight_tuneDown.anm"
+   "ActionContinuous.ItemTunePne.Out" "{3311F3309ACFC943}DZ/anims/anm/player/actions/items/p_pne_flashlight_out.anm"
+   "ActionOnce.ItemOffCro.Once" "{6309CC9AB62B8D16}DZ/anims/anm/player/actions/items/p_cro_flashlight_off.anm"
+   "ActionOnce.ItemOffErc.Once" "{00AA8A9A1626F4C3}DZ/anims/anm/player/actions/items/p_erc_flashlight_off.anm"
+   "ActionOnce.ItemOffPne.Once" "{21A936E7477A3052}DZ/anims/anm/player/actions/items/p_pne_flashlight_off.anm"
+   "ActionOnce.ItemOnCro.Once" "{627335F1B1E19DEB}DZ/anims/anm/player/actions/items/p_cro_flashlight_on.anm"
+   "ActionOnce.ItemOnErc.Once" "{49899BA8F886E81B}DZ/anims/anm/player/actions/items/p_erc_flashlight_on.anm"
+   "ActionOnce.ItemOnPne.Once" "{01E0FBDA1A215D27}DZ/anims/anm/player/actions/items/p_pne_flashlight_on.anm"
+   "Combat.Erc.Sprint_StrikeR01" "{621CC52AF86DD1F9}DZ/anims/anm/player/attacks/1hd/flashlight/p_erc_flashlight_attackR_charge.anm"
+   "Locomotion.Cro.Look" "{9759FEDC25EE99E5}DZ/anims/anm/player/layered/look/p_1hd_flashlight_cro_look.anm"
+   "Locomotion.Cro.MoveLook" "{F850A5951DC52C89}DZ/anims/anm/player/layered/look/p_1hd_flashlight_cro_movelook.anm"
+   "Locomotion.Erc.Look" "{6B2DC0E3FC75B075}DZ/anims/anm/player/layered/look/p_1hd_flashlight_erc_look.anm"
+   "Locomotion.Erc.MoveLook" "{1E5630BE39B2A63D}DZ/anims/anm/player/layered/look/p_1hd_flashlight_erc_movelook.anm"
+   "Locomotion.Pne.Look" "{8352E6A6B22564B1}DZ/anims/anm/player/layered/look/p_1hd_flashlight_pne_look.anm"
+  
+ }

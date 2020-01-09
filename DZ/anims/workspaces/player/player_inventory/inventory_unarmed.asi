@@ -1,0 +1,7 @@
+$animsetinstance {
+ #template "dz/anims/workspaces/player/player_inventory/player_inventory.ast"
+ #nparents 0
+ $animations {
+   "Idle" "dz/anims/anm/player/moves/unarmed/p_erc_idle.anm"
+  
+ }

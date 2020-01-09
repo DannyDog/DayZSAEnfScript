@@ -1,0 +1,1411 @@
+$AnimGraph 7 {
+	$Sheet "Erected" {
+		$Node AnimNodePose2 {
+			 "AggroIdleLookAt" "" "zAggroLookAt" "LookDirY" "LookDirX" "Y(-90): X(-180) = 0, X(-90) = 1, X(0) = 2, X(90) = 3, X(180) = 4
+Y(0): X(-180) = 5, X(-90) = 6, X(0) = 7, X(90) = 8, X(180) = 9
+Y(90): X(-180) = 10,  X(-90) = 11,  X(0) = 12, X(90) = 13, X(180) = 14"
+			$EditorData {
+				#EditorPos -7.0999999 7.3000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "AggroIdleSource" "" "Idles.IdleAggro" "loop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -9.1999998 7.3000002
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "AggroLookBlendT" "" "AggroIdleSource" "AggroIdleLookAt" "" "" "Look" 0.3 "S" 1
+			$EditorData {
+				#EditorPos -8.1000004 8.5
+			}
+		}
+		$Node AnimNodeBlend {
+			 "AggroMoveBlend" "" "clamp(1-MovementSpeed, 0.0, 1.0)" "Erected Locomotion" "AggroLookBlendT" 3
+			$EditorData {
+				#EditorPos -6.2000003 10.6999998
+			}
+		}
+		$Node AnimNodeSource {
+			 "AggroToAlertSource" "" "Idles.AggroToAlert" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.2 11.1999998
+			}
+		}
+		$Node AnimNodePose2 {
+			 "AlertIdleLookAt" "" "LookAt Erc" "LookDirY" "LookDirX" "Y(-90): X(-180) = 0, X(-90) = 1, X(0) = 2, X(90) = 3, X(180) = 4
+Y(0): X(-180) = 5, X(-90) = 6, X(0) = 7, X(90) = 8, X(180) = 9
+Y(90): X(-180) = 10,  X(-90) = 11,  X(0) = 12, X(90) = 13, X(180) = 14"
+			$EditorData {
+				#EditorPos 1.3000001 8.1999998
+			}
+		}
+		$Node AnimNodeSource {
+			 "AlertIdleSource" "" "Idles.IdleToAlert" "loop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -1.3000001 8.1999998
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "AlertLookBlendT" "" "AlertIdleSource" "AlertIdleLookAt" "" "" "Look" 0.3 "S" 1
+			$EditorData {
+				#EditorPos 0.1 9.6999998
+			}
+		}
+		$Node AnimNodeBlend {
+			 "AlertMoveBlend" "" "clamp(1-MovementSpeed, 0.0, 1.0)" "Erected Locomotion" "AlertLookBlendT" 3
+			$EditorData {
+				#EditorPos 2.0 11.1999998
+			}
+		}
+		$Node AnimNodeSource {
+			 "AlertToAggroSource" "" "Idles.ToAggro" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.2 11.9000006
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Erected Locomotion" ""
+			$States 1 {
+				$State {
+					 "Movement" "" "MoveLookBlendT" "MovementSpeed > 0" "normtime" 0
+					$EditorData {
+						#EditorPos 4.0999999 1.6
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 3.4000001 3.0
+			}
+		}
+		$Node AnimNodeSource {
+			 "Idle Source" "" "Idles.Idle01" "loop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 11.1000004 8.5
+			}
+		}
+		$Node AnimNodePose2 {
+			 "IdleLookAt" "" "LookAt Erc" "LookDirY" "LookDirX" "Y(-90): X(-180) = 0, X(-90) = 1, X(0) = 2, X(90) = 3, X(180) = 4
+Y(0): X(-180) = 5, X(-90) = 6, X(0) = 7, X(90) = 8, X(180) = 9
+Y(90): X(-180) = 10,  X(-90) = 11,  X(0) = 12, X(90) = 13, X(180) = 14"
+			$EditorData {
+				#EditorPos 13.8000002 8.5
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "IdleLookBlendT" "" "Idle Source" "IdleLookAt" "" "" "Look" 0.3 "S" 1
+			$EditorData {
+				#EditorPos 12.8000002 10.0
+			}
+		}
+		$Node AnimNodeBlend {
+			 "IdleMoveBlend" "" "clamp(1-MovementSpeed, 0.0, 1.0)" "Erected Locomotion" "IdleLookBlendT" 3
+			$EditorData {
+				#EditorPos 11.3000002 11.3000002
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleSTM" ""
+			$States 5 {
+				$State {
+					 "Idle" "" "IdleMoveBlend" "IdleState == 0" "notime" 0
+					$EditorData {
+						#EditorPos 11.1999998 18.7000008
+					}
+				}
+				$State {
+					 "AlertIdle" "" "AlertMoveBlend" "IdleState == 1" "notime" 0
+					$EditorData {
+						#EditorPos 2.0 18.7000008
+					}
+				}
+				$State {
+					 "AggroIdle" "" "AggroMoveBlend" "IdleState == 2" "notime" 0
+					$EditorData {
+						#EditorPos -6.4000001 18.6000004
+					}
+				}
+				$State {
+					 "AlertToAggro" "" "AlertToAggroSource" "" "realtime" 1
+					$EditorData {
+						#EditorPos -2.2 13.6999998
+					}
+				}
+				$State {
+					 "AggroToAlert" "" "AggroToAlertSource" "" "realtime" 1
+					$EditorData {
+						#EditorPos -2.2 15.4000006
+					}
+				}
+			}
+			$Transitions 7 {
+				$Transition {
+					 "AlertIdle" "AlertToAggro" "IdleState == 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Idle" "AlertToAggro" "IdleState == 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "AlertToAggro" "AggroIdle" "RemainingTimeLess(0.35)" "0.35" "" 1 "S"
+				}
+				$Transition {
+					 "AggroIdle" "AggroToAlert" "IdleState == 1" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "AggroToAlert" "AlertIdle" "RemainingTimeLess(0.35)" "0.35" "" 1 "S"
+				}
+				$Transition {
+					 "Idle" "AlertIdle" "IdleState == 1" "0.3" "GetLowerTime()" 1 "S"
+				}
+				$Transition {
+					 "AlertIdle" "Idle" "IdleState == 0" "0.3" "GetLowerTime()" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 7.4000001 22.1000004
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "IdleTurnSTM" ""
+			$States 4 {
+				$State {
+					 "IdleMove" "" "IdleSTM" "" "notime" 0
+					$EditorData {
+						#EditorPos 7.3000002 29.6000004
+					}
+				}
+				$State {
+					 "Turn" "" "Turns STM" "" "notime" 0
+					$EditorData {
+						#EditorPos 11.6999998 29.6000004
+					}
+				}
+				$State {
+					 "Vault" "" "VaultSTM" "" "notime" 0
+					$EditorData {
+						#EditorPos 4.2000003 29.6000004
+					}
+				}
+				$State {
+					 "RunAttack" "" "Erc Fight StateMachine" "" "notime" 0
+					$EditorData {
+						#EditorPos 9.8000002 31.1000004
+					}
+				}
+			}
+			$Transitions 9 {
+				$Transition {
+					 "IdleMove" "Turn" "IsCommand(CMD_TURN) && !(GetCommandF(CMD_TURN) > -45 && GetCommandF(CMD_TURN) < 45)" "0.1" "" 0 "S"
+				}
+				$Transition {
+					 "Turn" "IdleMove" "RemainingTimeLess(0.2)" "0.3" "" 1 "S"
+				}
+				$Transition {
+					 "IdleMove" "Vault" "IsCommand(CMD_VAULT) " "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Vault" "IdleMove" "RemainingTimeLess(0.2) && MovementSpeed > 0" "0.5" "0.8" 1 "S"
+				}
+				$Transition {
+					 "Vault" "IdleMove" "RemainingTimeLess(0.5) && MovementSpeed == 0" "0.5" "" 1 "S"
+				}
+				$Transition {
+					 "RunAttack" "IdleMove" "RemainingTimeLess(0.1)" "0.2" "" 1 "S"
+				}
+				$Transition {
+					 "IdleMove" "RunAttack" "IsCommand(CMD_ATTACK)" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "IdleMove" "RunAttack" "MovementSpeed >= 1 && IsCommand(CMD_ATTACK)" "0.2" "0.2" 0 "S"
+				}
+				$Transition {
+					 "RunAttack" "IdleMove" "RemainingTimeLess(0.3) && MovementSpeed >=1" "0.3" "" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 6.7000003 31.6000004
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Idles StateMachine" ""
+			$States 4 {
+				$State {
+					 "VarA" "" "VarA GroupSelect" "VariationsStance == 0" "notime" 0
+					$EditorData {
+						#EditorPos 3.1000001 42.4000015
+					}
+				}
+				$State {
+					 "VarB" "" "VarB GroupSelect" "VariationsStance == 1" "notime" 0
+					$EditorData {
+						#EditorPos 3.1000001 39.9000015
+					}
+				}
+				$State {
+					 "VarC" "" "VarC GroupSelect" "VariationsStance == 2" "notime" 0
+					$EditorData {
+						#EditorPos 12.5 42.4000015
+					}
+				}
+				$State {
+					 "VarD" "" "VarD GroupSelect" "VariationsStance == 3" "notime" 0
+					$EditorData {
+						#EditorPos 12.5 39.9000015
+					}
+				}
+			}
+			$Transitions 12 {
+				$Transition {
+					 "VarA" "VarC" "VariationsStance == 2" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarC" "VarA" "VariationsStance == 0" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarB" "VarD" "VariationsStance == 3" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarD" "VarB" "VariationsStance == 1" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarA" "VarB" "VariationsStance == 1" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarB" "VarA" "VariationsStance == 0" "0.2" "0.0" 0 "S"
+				}
+				$Transition {
+					 "VarB" "VarC" "VariationsStance == 2" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarC" "VarB" "VariationsStance == 1" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarC" "VarD" "VariationsStance == 3" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarD" "VarC" "VariationsStance == 2" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarD" "VarA" "VariationsStance == 0" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "VarA" "VarD" "VariationsStance == 3" "0.2" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 5.3000002 43.6000023
+			}
+		}
+		$Node AnimNodeSource {
+			 "KnuckleTransSource" "" "Knuckle Trans" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 0.1 23.3000011
+			}
+		}
+		$Node AnimNodePose2 {
+			 "MoveLookAt" "" "LookAt Move" "LookDirY" "LookDirX" "Y(-90): X(-90) = 0, X(0) = 1, X(90) = 2
+Y(0): X(-90) = 3, X(0) = 4, X(90) = 5
+Y(90): X(-90) = 6, X(0) = 7, X(90) = 8"
+			$EditorData {
+				#EditorPos 7.2000003 -2.6000001
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "MoveLookBlendT" "" "WalkRunBlend" "MoveLookAt" "" "" "Look" 0.3 "S" 1
+			$EditorData {
+				#EditorPos 4.0999999 -0.7
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "Run sync" "" "Locomotions.RunF" "loop" "z_run"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 2.3 -5.9000001
+			}
+		}
+		$Node AnimNodeBlend {
+			 "RunSprintBlend" "" "clamp(MovementSpeed-2, 0.0, 1.0)" "Run sync" "Sprint Blend" 3
+			$EditorData {
+				#EditorPos 3.5 -4.9000001
+			}
+		}
+		$Node AnimNodeBlendN {
+			 "Sprint Blend" "" "MovementDirection" 0 "S"
+			$Inputs {
+				 -45.0 "SprintFL Sync"
+				 0.0 "SprintF Sync"
+				 45.0 "SprintFR Sync"
+				
+			}
+			$EditorData {
+				#EditorPos 4.7000003 -6.0
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "SprintF Sync" "" "Locomotions.SprintF" "loop" "z_run"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 4.7000003 -7.5999999
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "SprintFL Sync" "" "Locomotions.SprintFL" "loop" "z_run"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.2 -6.8000002
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "SprintFR Sync" "" "Locomotions.SprintFR" "loop" "z_run"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 6.0999999 -6.8000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180L Aggro Fast Source" "" "Turn.180L Aggro Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 30.3000011 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180L Aggro Source" "" "Turn.180L Aggro" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 18.8999996 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180L Fast Source" "" "Turn.180L Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 30.3000011 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180L Run Source" "" "Turn.180L Run" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 41.9000015 22.3999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180L Source" "" "Turn.180L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 18.8999996 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180R Aggro Fast Source" "" "Turn.180R Aggro Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 37.7000008 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180R Aggro Source" "" "Turn.180R Aggro" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 26.2000008 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180R Fast Source" "" "Turn.180R Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 37.7999992 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180R Run Source" "" "Turn.180R Run" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 49.1000023 22.3999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn180R Source" "" "Turn.180R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 26.2000008 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90L Aggro Fast Source" "" "Turn.90L Aggro Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 32.7999992 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90L Aggro Source" "" "Turn.90L Aggro" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 21.2000008 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90L Fast Source" "" "Turn.90L Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 32.7999992 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90L Run Source" "" "Turn.90L Run" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 44.5 22.3999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90L Source" "" "Turn.90L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 21.2000008 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90R Aggro Fast Source" "" "Turn.90R Aggro Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 35.2000008 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90R Aggro Source" "" "Turn.90R Aggro" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 23.7000008 27.8999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90R Fast Source" "" "Turn.90R Fast" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 35.2999992 22.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90R Run Source" "" "Turn.90R Run" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 46.7999992 22.3999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "Turn90R Source" "" "Turn.90R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 23.7000008 22.5
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Turns STM" "TagTurns"
+			$States 20 {
+				$State {
+					 "Turn 180L" "" "Turn180L Source" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135)
+&&
+GetCommandI(CMD_TURN) == 0 && IdleState < 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 18.8999996 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180R" "" "Turn180R Source" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135)
+&& 
+GetCommandI(CMD_TURN) == 0 && IdleState < 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 26.2000008 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90L" "" "Turn90L Source" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45)
+&&
+GetCommandI(CMD_TURN) == 0 && IdleState < 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 21.2000008 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90R" "" "Turn90R Source" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135)
+&& 
+GetCommandI(CMD_TURN) == 0 && IdleState < 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 23.6000004 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180L Fast" "" "Turn180L Fast Source" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135)
+ && 
+GetCommandI(CMD_TURN) == 1 && IdleState < 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 30.3000011 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180L Run" "" "Turn180L Run Source" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135)
+ && 
+MovementSpeed >= 2 
+" "realtime" 1
+					$EditorData {
+						#EditorPos 41.9000015 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90L Fast" "" "Turn90L Fast Source" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45) 
+&&
+ GetCommandI(CMD_TURN) == 1 && IdleState < 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 32.7999992 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90L Run" "" "Turn90L Run Source" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45)
+ && 
+MovementSpeed >= 2
+" "realtime" 1
+					$EditorData {
+						#EditorPos 44.5 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90R Fast" "" "Turn90R Fast Source" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135)
+&&
+ GetCommandI(CMD_TURN) == 1 && IdleState < 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 35.2999992 24.3999996
+					}
+				}
+				$State {
+					 "Turn 90R Run" "" "Turn90R Run Source" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135) 
+&& 
+MovementSpeed >= 2
+" "realtime" 1
+					$EditorData {
+						#EditorPos 46.7999992 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180R Fast" "" "Turn180R Fast Source" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135) 
+&& 
+GetCommandI(CMD_TURN) == 1 && IdleState < 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 37.7999992 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180R Run" "" "Turn180R Run Source" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135)
+ &&
+ MovementSpeed >= 2
+" "realtime" 1
+					$EditorData {
+						#EditorPos 49.1000023 24.3999996
+					}
+				}
+				$State {
+					 "Turn 180L Aggro" "" "Turn180L Aggro Source" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135)
+ && 
+GetCommandI(CMD_TURN) == 0 && IdleState == 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 18.8999996 25.5
+					}
+				}
+				$State {
+					 "Turn 90L Aggro" "" "Turn90L Aggro Source" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45)
+ && 
+GetCommandI(CMD_TURN) == 0 && IdleState == 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 21.3000011 25.5
+					}
+				}
+				$State {
+					 "Turn 90R Aggro" "" "Turn90R Aggro Source" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135)
+&& 
+GetCommandI(CMD_TURN) == 0 && IdleState == 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 23.7000008 25.5
+					}
+				}
+				$State {
+					 "Turn 180R Aggro" "" "Turn180R Aggro Source" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135) 
+&&
+ GetCommandI(CMD_TURN) == 0 && IdleState == 2 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 26.2000008 25.5
+					}
+				}
+				$State {
+					 "Turn180L Aggro Fast" "" "Turn180L Aggro Fast Source" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135) 
+&&
+ GetCommandI(CMD_TURN) == 1 && IdleState == 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 30.3000011 25.5
+					}
+				}
+				$State {
+					 "Turn90R Aggro Fast" "" "Turn90R Aggro Fast Source" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135)
+&& 
+GetCommandI(CMD_TURN) == 1 && IdleState == 2
+&&MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 35.2000008 25.5
+					}
+				}
+				$State {
+					 "Turn180R Aggro Fast" "" "Turn180R Aggro Fast Source" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135) 
+&& 
+GetCommandI(CMD_TURN) == 1 && IdleState == 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 37.7000008 25.5
+					}
+				}
+				$State {
+					 "Turn90L Aggro Fast" "" "Turn90L Aggro Fast Source" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45)
+ &&
+ GetCommandI(CMD_TURN) == 1 && IdleState == 2
+&& MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos 32.7999992 25.5
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 16.7000008 26.8999996
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarA GroupSelect" "" "VarA Loc GroupSelect" "Idles" "VarA"
+			$EditorData {
+				#EditorPos 3.1000001 37.2000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarA Loc GroupSelect" "" "VarA Turn GroupSelect" "Locomotions" "VarA"
+			$EditorData {
+				#EditorPos 3.1000001 36.5
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarA Turn GroupSelect" "" "IdleTurnSTM" "Turn" "VarA"
+			$EditorData {
+				#EditorPos 3.1000001 35.7000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarB GroupSelect" "" "VarB Loc GroupSelect" "Idles" "VarB"
+			$EditorData {
+				#EditorPos 6.0999999 37.2000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarB Loc GroupSelect" "" "VarB Turn GroupSelect" "Locomotions" "VarB"
+			$EditorData {
+				#EditorPos 6.0999999 36.5
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarB Turn GroupSelect" "" "IdleTurnSTM" "Turn" "VarB"
+			$EditorData {
+				#EditorPos 6.0999999 35.7000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarC GroupSelect" "" "VarC Loc GroupSelect" "Idles" "VarC"
+			$EditorData {
+				#EditorPos 9.6000004 37.2000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarC Loc GroupSelect" "" "VarC Turn GroupSelect" "Locomotions" "VarC"
+			$EditorData {
+				#EditorPos 9.6000004 36.5
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarC Turn GroupSelect" "" "IdleTurnSTM" "Turn" "VarC"
+			$EditorData {
+				#EditorPos 9.6000004 35.7999992
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarD GroupSelect" "" "VarD Loc GroupSelect" "Idles" "VarD"
+			$EditorData {
+				#EditorPos 12.5 37.2000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarD Loc GroupSelect" "" "VarD Turn GroupSelect" "Locomotions" "VarD"
+			$EditorData {
+				#EditorPos 12.5 36.5
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "VarD Turn GroupSelect" "" "IdleTurnSTM" "Turn" "VarD"
+			$EditorData {
+				#EditorPos 12.5 35.7999992
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "VaultSTM" ""
+			$States 2 {
+				$State {
+					 "TransTOVault" "" "Vault Master" "" "notime" 1
+					$EditorData {
+						#EditorPos -2.8 25.3999996
+					}
+				}
+				$State {
+					 "KnuckleRun" "" "KnuckleTransSource" "" "realtime" 1
+					$EditorData {
+						#EditorPos 0.1 25.3999996
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "TransTOVault" "KnuckleRun" "GetCommandI(CMD_VAULT) == -1" "0.3" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -3.6000001 26.7000008
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "Walk sync" "" "Locomotions.WalkF" "loop" "z_walk"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -0.1 -4.9000001
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "WalkRunBlend" "" "Walk sync" "RunSprintBlend" "" "" "MovementSpeed >= 2" 0.5 "S" 3
+			$EditorData {
+				#EditorPos 1.2 -3.5
+			}
+		}
+	}
+	$Sheet "Crawl" {
+		$Node AnimNodeSource {
+			 "Crawl Idle Source" "" "Crawl.z_crwl_idle01" "loop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -6.8000002 7.0999999
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "Crawl Run Sync" "" "Crawl.z_crwl_runF" "loop" "z_crawl"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.1000001 6.5
+			}
+		}
+		$Node AnimNodeSourceSync {
+			 "Crawl Walk Sync" "" "Crawl.z_crwl_walkF" "loop" "z_crawl"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 0.3 6.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "CrawlDeathAnim" "" "Crawl.A.Death" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.9000001 21.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "CrawlHitBackAnim" "" "Crawl.A.Hit Back" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -0.6 15.9000006
+			}
+		}
+		$Node AnimNodeSource {
+			 "CrawlHitForwardAnim" "" "Crawl.A.Hit Forward" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.8 15.9000006
+			}
+		}
+		$Node AnimNodeSource {
+			 "CrawlHitLeftAnim" "" "Crawl.A.Hit Left" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 1.6 15.9000006
+			}
+		}
+		$Node AnimNodeQueue {
+			 "CrawlHitQ" "" "CrawlSTM"
+			$items 1 {
+				$item {
+					 "CrawlHitSTM" "IsCommand(CMD_HIT_LIGHT) || IsCommand(CMD_HIT_HEAVY)" "" "" 0.1 0.3 0 1
+				}
+			}
+			$EditorData {
+				#EditorPos -5.0999999 20.3000011
+			}
+		}
+		$Node AnimNodeSource {
+			 "CrawlHitRightAnim" "" "Crawl.A.Hit Right" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.8 15.9000006
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "CrawlHitSTM" ""
+			$States 4 {
+				$State {
+					 "Foward" "" "CrawlHitForwardAnim" "inRange(GetCommandF(CMD_HIT_LIGHT), -45.0, 45.0))
+||
+inRange(GetCommandF(CMD_HIT_HEAVY), -45.0, 45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos -2.8 17.7000008
+					}
+				}
+				$State {
+					 "Back" "" "CrawlHitBackAnim" "(IsCommand(CMD_HIT_LIGHT) && !inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, 135.0)))
+||
+(IsCommand(CMD_HIT_HEAVY) && !inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, 135.0)))" "realtime" 1
+					$EditorData {
+						#EditorPos -0.6 17.7000008
+					}
+				}
+				$State {
+					 "Left" "" "CrawlHitLeftAnim" "inRange(GetCommandF(CMD_HIT_LIGHT), -135.0, 45.0))
+||
+inRange(GetCommandF(CMD_HIT_HEAVY), -135.0, 45.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 1.6 17.7000008
+					}
+				}
+				$State {
+					 "Right" "" "CrawlHitRightAnim" "inRange(GetCommandF(CMD_HIT_LIGHT), 45.0, 135.0))
+||
+inRange(GetCommandF(CMD_HIT_HEAVY), 45.0, 135.0))" "realtime" 1
+					$EditorData {
+						#EditorPos 3.8 17.7000008
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -3.1000001 18.8000011
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "CrawlSTM" "TagCrawl"
+			$States 4 {
+				$State {
+					 "Idle" "" "LookCrawlBlendT" "MovementSpeed < 0.1" "notime" 0
+					$EditorData {
+						#EditorPos -5.2000003 10.8000002
+					}
+				}
+				$State {
+					 "Crawl Walk State" "" "MoveCrawlBlendT" "MovementSpeed >= 0.1" "normtime" 0
+					$EditorData {
+						#EditorPos 3.2 10.8000002
+					}
+				}
+				$State {
+					 "Crawl Attack State" "" "Crawl Fight StateMachine" "" "notime" 0
+					$EditorData {
+						#EditorPos -0.5 12.1999998
+					}
+				}
+				$State {
+					 "CrawlTurn" "" "CrawlTurnSTM" "" "notime" 0
+					$EditorData {
+						#EditorPos -7.4000001 13.9000006
+					}
+				}
+			}
+			$Transitions 8 {
+				$Transition {
+					 "Idle" "Crawl Walk State" "MovementSpeed >= 0.1 && MovementSpeed < 2" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Crawl Walk State" "Idle" "MovementSpeed < 0.1" "0.5" "" 0 "S"
+				}
+				$Transition {
+					 "Idle" "Crawl Attack State" "IsCommand(CMD_ATTACK)" "" "" 0 "S"
+				}
+				$Transition {
+					 "Crawl Attack State" "Idle" "RemainingTimeLess(0.01) && MovementSpeed < 0.1" "0.2" "" 1 "S"
+				}
+				$Transition {
+					 "Crawl Walk State" "Crawl Attack State" "IsCommand(CMD_ATTACK)" "0.3" "" 0 "S"
+				}
+				$Transition {
+					 "Crawl Attack State" "Crawl Walk State" "RemainingTimeLess(0.2) && MovementSpeed >= 0.1" "0.4" "" 1 "S"
+				}
+				$Transition {
+					 "Idle" "CrawlTurn" "IsCommand(CMD_TURN)" "0.2" "" 0 "S"
+				}
+				$Transition {
+					 "CrawlTurn" "Idle" "RemainingTimeLess(0.01)" "" "" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -5.3000002 15.1999998
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "CrawlTurnSTM" ""
+			$States 4 {
+				$State {
+					 "Crwl180L" "" "Crwl180LSource" "(GetCommandF(CMD_TURN) >= -180 && GetCommandF(CMD_TURN) < -135)" "realtime" 1
+					$EditorData {
+						#EditorPos -8.3000002 4.0
+					}
+				}
+				$State {
+					 "Crwl90L" "" "Crwl90LSource" "(GetCommandF(CMD_TURN) >= -135 && GetCommandF(CMD_TURN) <= -45)" "realtime" 1
+					$EditorData {
+						#EditorPos -5.9000001 4.0
+					}
+				}
+				$State {
+					 "Crwl90R" "" "Crwl90RSource" "(GetCommandF(CMD_TURN) >= 45 && GetCommandF(CMD_TURN) <= 135)" "realtime" 1
+					$EditorData {
+						#EditorPos -3.5 4.0
+					}
+				}
+				$State {
+					 "Crwl180R" "" "Crwl180RSource" "(GetCommandF(CMD_TURN) <= 180 && GetCommandF(CMD_TURN) > 135)" "realtime" 1
+					$EditorData {
+						#EditorPos -1.0 4.0
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -8.1999998 5.2000003
+			}
+		}
+		$Node AnimNodeBlend {
+			 "CrawlWalkRunBlend" "" "MovementSpeed-1" "Crawl Walk Sync" "Crawl Run Sync" 3
+			$EditorData {
+				#EditorPos 1.7 7.4000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crwl180LSource" "" "Turn.Crawl.180L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -8.4000006 2.3
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crwl180RSource" "" "Turn.Crawl.180R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -1.0 2.3
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crwl90LSource" "" "Turn.Crawl.90L" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -5.9000001 2.3
+			}
+		}
+		$Node AnimNodeSource {
+			 "Crwl90RSource" "" "Turn.Crawl.90R" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -3.5 2.3
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Erc To Crawl StateMachine" ""
+			$States 7 {
+				$State {
+					 "Hit Foot LB " "" "Hit Foot LB Source" "GetCommandI(CMD_CRAWL) == 0" "realtime" 0
+					$EditorData {
+						#EditorPos -10.6000004 24.7000008
+					}
+				}
+				$State {
+					 "Hit Foot LF" "" "Hit Foot LF Source" "GetCommandI(CMD_CRAWL) == 1" "realtime" 0
+					$EditorData {
+						#EditorPos -7.9000001 24.7000008
+					}
+				}
+				$State {
+					 "Hit Foot RB" "" "Hit Foot RB Source" "GetCommandI(CMD_CRAWL) == 2" "realtime" 0
+					$EditorData {
+						#EditorPos -2.5 24.7000008
+					}
+				}
+				$State {
+					 "Hit Foot RF" "" "Hit Foot RF Source" "GetCommandI(CMD_CRAWL) == 3" "realtime" 0
+					$EditorData {
+						#EditorPos 0.6 24.7000008
+					}
+				}
+				$State {
+					 "Crawl" "" "CrawlHitQ" "" "notime" 0
+					$EditorData {
+						#EditorPos -5.2000003 23.3999996
+					}
+				}
+				$State {
+					 "Death" "" "CrawlDeathAnim" "" "realtime" 0
+					$EditorData {
+						#EditorPos 3.9000001 23.5
+					}
+				}
+				$State {
+					 "DeathStanding" "" "Death StateMachine" "" "realtime" 0
+					$EditorData {
+						#EditorPos 4.0 25.3999996
+					}
+				}
+			}
+			$Transitions 7 {
+				$Transition {
+					 "Hit Foot LB " "Crawl" "RemainingTimeLess(0.01)" "0.3" "" 1 "S"
+				}
+				$Transition {
+					 "Hit Foot LF" "Crawl" "RemainingTimeLess(0.01)" "0.3" "" 1 "S"
+				}
+				$Transition {
+					 "Hit Foot RB" "Crawl" "RemainingTimeLess(0.01)" "0.3" "" 1 "S"
+				}
+				$Transition {
+					 "Hit Foot RF" "Crawl" "RemainingTimeLess(0.01)" "0.3" "" 1 "S"
+				}
+				$Transition {
+					 "" "Death" "IsCommand(CMD_DEATH) && RemainingTimeLess(1.7)" "GetRemainingTime()/2" "" 1 "S"
+				}
+				$Transition {
+					 "" "DeathStanding" "IsCommand(CMD_DEATH)" "0.2" "0.2" 1 "S"
+				}
+				$Transition {
+					 "Crawl" "Death" "IsCommand(CMD_DEATH)" "0.1" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -5.3000002 26.6000004
+			}
+		}
+		$Node AnimNodeSource {
+			 "Hit Foot LB Source" "" "Hits.Hit_Foot_LB" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -10.6000004 21.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Hit Foot LF Source" "" "Hits.Hit_Foot_LF" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -7.9000001 21.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Hit Foot RB Source" "" "Hits.Hit_Foot_RB" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -2.5 21.5
+			}
+		}
+		$Node AnimNodeSource {
+			 "Hit Foot RF Source" "" "Hits.Hit_Foot_RF" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 0.6 21.5
+			}
+		}
+		$Node AnimNodePose2 {
+			 "LookAtCrawl" "" "LookAt Crawl" "LookDirY" "LookDirX" "Y(-90): X(-180) = 0, X(-90) = 1, X(0) = 2, X(90) = 3, X(180) = 4
+Y(0): X(-180) = 5, X(-90) = 6, X(0) = 7, X(90) = 8, X(180) = 9
+Y(90): X(-180) = 10,  X(-90) = 11,  X(0) = 12, X(90) = 13, X(180) = 14"
+			$EditorData {
+				#EditorPos -3.7 7.0999999
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "LookCrawlBlendT" "" "Crawl Idle Source" "LookAtCrawl" "" "" "Look" 0.3 "S" 1
+			$EditorData {
+				#EditorPos -5.3000002 8.4000006
+			}
+		}
+		$Node AnimNodeBlendTAdd {
+			 "MoveCrawlBlendT" "" "CrawlWalkRunBlend" "MoveLookAtCrawl" "" "" "Look" 0.3 "S" 0
+			$EditorData {
+				#EditorPos 3.2 8.9000006
+			}
+		}
+		$Node AnimNodePose2 {
+			 "MoveLookAtCrawl" "" "LookAt Move Crawl" "LookDirY" "LookDirX" "Y(-90): X(-90) = 0, X(0) = 1, X(90) = 2
+Y(0): X(-90) = 3, X(0) = 4, X(90) = 5
+Y(90): X(-90) = 6, X(0) = 7, X(90) = 8"
+			$EditorData {
+				#EditorPos 5.0999999 7.5
+			}
+		}
+	}
+	$Sheet "Death" {
+		$Node AnimNodeSource {
+			 "Back Source" "" "Death.Death Back" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 3.7 -6.4000001
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Death StateMachine" ""
+			$States 3 {
+				$State {
+					 "Run" "" "DeathRunG" "MovementSpeed > 0 && GetCommandI(CMD_DEATH) == 0" "realtime" 0
+					$EditorData {
+						#EditorPos 3.7 0.4
+					}
+				}
+				$State {
+					 "Idle" "" "DeathIdleGroup" "MovementSpeed == 0 && GetCommandI(CMD_DEATH) == 0" "realtime" 0
+					$EditorData {
+						#EditorPos 1.4 0.4
+					}
+				}
+				$State {
+					 "Fast" "" "DeathFastG" "GetCommandI(CMD_DEATH) == 1" "realtime" 0
+					$EditorData {
+						#EditorPos 5.9000001 0.4
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 1.2 2.4000001
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "DeathFastG" "" "Direction" "Death" "Fast"
+			$EditorData {
+				#EditorPos 5.9000001 -1.8000001
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "DeathIdleGroup" "" "Direction" "Death" "Idle"
+			$EditorData {
+				#EditorPos 1.5 -1.8000001
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "DeathRunG" "" "Direction" "Death" "Run"
+			$EditorData {
+				#EditorPos 3.7 -1.8000001
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Direction" ""
+			$States 4 {
+				$State {
+					 "Front" "" "Front Source" "inRange(GetCommandF(CMD_DEATH), -45.0, 45.0)" "notime" 0
+					$EditorData {
+						#EditorPos 1.4 -4.7000003
+					}
+				}
+				$State {
+					 "Back" "" "Back Source" "!inRange(GetCommandF(CMD_DEATH), -135.0, 135.0)" "notime" 0
+					$EditorData {
+						#EditorPos 3.7 -4.7000003
+					}
+				}
+				$State {
+					 "Right" "" "Right Source" "inRange(GetCommandF(CMD_DEATH), 45.0, 135.0)" "notime" 0
+					$EditorData {
+						#EditorPos 6.0999999 -4.7000003
+					}
+				}
+				$State {
+					 "Left" "" "Left Source" "inRange(GetCommandF(CMD_DEATH), -135.0, -45.0)" "notime" 0
+					$EditorData {
+						#EditorPos 8.4000006 -4.7000003
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos 3.1000001 -3.6000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Front Source" "" "Death.Death Front" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 1.4 -6.4000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Left Source" "" "Death.Death Left" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 8.4000006 -6.4000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "Right Source" "" "Death.Death Right" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 6.0999999 -6.4000001
+			}
+		}
+	}
+	$Sheet "Master Control" {
+		$Node AnimNodeGroupSelect {
+			 "CrawlGroupSelect" "" "Erc To Crawl StateMachine" "Crawl" "A"
+			$EditorData {
+				#EditorPos -1.3000001 11.6000004
+			}
+		}
+		$Node AnimNodeBlendT {
+			 "DeathT" "" "HitQ" "Death StateMachine" "IsCommand(CMD_DEATH)" "" "" 0.1 "S" 7
+			$EditorData {
+				#EditorPos 1.9 11.6000004
+			}
+		}
+		$Node AnimNodeQueue {
+			 "HitQ" "" "MasterState"
+			$items 1 {
+				$item {
+					 "HitForceSTM" "IsCommand(CMD_HIT_LIGHT) || IsCommand(CMD_HIT_HEAVY)" "IsCommand(CMD_DEATH)" "" 0.1 0.2 1 0
+				}
+			}
+			$EditorData {
+				#EditorPos 1.9 10.1999998
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "MasterControl" ""
+			$States 2 {
+				$State {
+					 "Crawl" "" "CrawlGroupSelect" "false" "notime" 0
+					$EditorData {
+						#EditorPos -1.3000001 13.3000002
+					}
+				}
+				$State {
+					 "Stand" "" "DeathT" "true" "notime" 0
+					$EditorData {
+						#EditorPos 1.9 13.3000002
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "Stand" "Crawl" "IsCommand(CMD_CRAWL)" "0.2" "" 0 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -0.7 14.6000004
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "MasterState" ""
+			$States 2 {
+				$State {
+					 "Locomotion" "" "Idles StateMachine" "" "notime" 0
+					$EditorData {
+						#EditorPos 2.2 7.4000001
+					}
+				}
+				$State {
+					 "Attack" "" "Erc Fight StateMachine" "" "notime" 0
+					$EditorData {
+						#EditorPos 4.9000001 7.4000001
+					}
+				}
+			}
+			$Transitions 2 {
+				$Transition {
+					 "Attack" "Locomotion" "RemainingTimeLess(0.05)" "0.3" "0.0" 1 "S"
+				}
+				$Transition {
+					 "Locomotion" "Attack" "IsCommand(CMD_ATTACK) && MovementSpeed == 0" "0.2" "" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos 1.9 8.8000002
+			}
+		}
+	}
+}

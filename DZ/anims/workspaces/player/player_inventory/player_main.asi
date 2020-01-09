@@ -1,0 +1,7 @@
+$animsetinstance {
+ #template "dz/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 0
+ #nsources 0
+ $animations {
+  
+ }

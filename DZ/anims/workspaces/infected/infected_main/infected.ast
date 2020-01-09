@@ -1,0 +1,227 @@
+$animsettemplate {
+ #ngrouptypes 10
+ $groupType {
+  #ngroupnames 0
+  #nanims 10
+  $anims {
+    "Knuckle Run"
+    "Knuckle Trans"
+    "LookAt Crawl"
+    "LookAt Erc"
+    "LookAt Move"
+    "LookAt Move Crawl"
+    "zA_erc_lookat_gradual"
+    "zAggroLookAt"
+    "z_erc_attack_up_combo03"
+    "z_erc_idle_fight01"
+   
+  }
+ }
+ $groupType "Attack" {
+  #ngroupnames 4
+  #nanims 7
+  $groupnames {
+    "Center"
+    "Down"
+    "Run"
+    "Up"
+   
+  }
+  $anims {
+    "Attack Left Heavy"
+    "Attack Left Light"
+    "Attack Right Heavy"
+    "Attack Right Light"
+    "Crawl Attack"
+    "Crawl Attack Combo"
+    "Crawl Attack Run"
+   
+  }
+ }
+ $groupType "Attack Door" {
+  #ngroupnames 2
+  #nanims 9
+  $groupnames {
+    "Charge"
+    "Erc"
+   
+  }
+  $anims {
+    "Attack Door Charge 01"
+    "Attack Door Charge 02"
+    "Attack Door Head"
+    "Attack Door Kick"
+    "Attack Door LR 01"
+    "Attack Door LR 02"
+    "Attack Door Push"
+    "Attack Door Shoulder L"
+    "Attack Door Shoulder R"
+   
+  }
+ }
+ $groupType "Crawl" {
+  #ngroupnames 1
+  #nanims 9
+  $groupnames {
+    "A"
+   
+  }
+  $anims {
+    "Death"
+    "Hit Back"
+    "Hit Forward"
+    "Hit Left"
+    "Hit Right"
+    "z_crwl_idle01"
+    "z_crwl_idle02"
+    "z_crwl_runF"
+    "z_crwl_walkF"
+   
+  }
+ }
+ $groupType "Death" {
+  #ngroupnames 5
+  #nanims 5
+  $groupnames {
+    "Fast"
+    "Idle"
+    "Run"
+    "Sprint"
+    "Walk"
+   
+  }
+  $anims {
+    "Death Back"
+    "Death Front"
+    "Death Left"
+    "Death Right"
+    "z_erc_death_side01"
+   
+  }
+ }
+ $groupType "Hits" {
+  #ngroupnames 3
+  #nanims 16
+  $groupnames {
+    "Heavy"
+    "Knuckle"
+    "Light"
+   
+  }
+  $anims {
+    "Hit_Belly_B"
+    "Hit_Belly_F"
+    "Hit_Belly_L"
+    "Hit_Belly_R"
+    "Hit_Body_B"
+    "Hit_Body_F"
+    "Hit_Body_L"
+    "Hit_Body_R"
+    "Hit_Foot_LB"
+    "Hit_Foot_LF"
+    "Hit_Foot_RB"
+    "Hit_Foot_RF"
+    "Hit_Head_B"
+    "Hit_Head_F"
+    "Hit_Head_L"
+    "Hit_Head_R"
+   
+  }
+ }
+ $groupType "Idles" {
+  #ngroupnames 4
+  #nanims 12
+  $groupnames {
+    "VarA"
+    "VarB"
+    "VarC"
+    "VarD"
+   
+  }
+  $anims {
+    "AggroToAlert"
+    "AlertToIdle"
+    "Idle01"
+    "Idle02"
+    "Idle03"
+    "Idle04"
+    "Idle05"
+    "Idle06"
+    "IdleAggro"
+    "IdleToAlert"
+    "ToAggro"
+    "ToIdle"
+   
+  }
+ }
+ $groupType "Locomotions" {
+  #ngroupnames 4
+  #nanims 5
+  $groupnames {
+    "VarA"
+    "VarB"
+    "VarC"
+    "VarD"
+   
+  }
+  $anims {
+    "RunF"
+    "SprintF"
+    "SprintFL"
+    "SprintFR"
+    "WalkF"
+   
+  }
+ }
+ $groupType "Turn" {
+  #ngroupnames 5
+  #nanims 20
+  $groupnames {
+    "Crawl"
+    "VarA"
+    "VarB"
+    "VarC"
+    "VarD"
+   
+  }
+  $anims {
+    "180L"
+    "180L Aggro"
+    "180L Aggro Fast"
+    "180L Fast"
+    "180L Run"
+    "180R"
+    "180R Aggro"
+    "180R Aggro Fast"
+    "180R Fast"
+    "180R Run"
+    "90L"
+    "90L Aggro"
+    "90L Aggro Fast"
+    "90L Fast"
+    "90L Run"
+    "90R"
+    "90R Aggro"
+    "90R Aggro Fast"
+    "90R Fast"
+    "90R Run"
+   
+  }
+ }
+ $groupType "Vault" {
+  #ngroupnames 1
+  #nanims 5
+  $groupnames {
+    "A"
+   
+  }
+  $anims {
+    "Vault 110cm"
+    "Vault 160cm"
+    "Vault 210cm"
+    "Vault 50cm"
+    "Vault 50cm Inplace"
+   
+  }
+ }
+}

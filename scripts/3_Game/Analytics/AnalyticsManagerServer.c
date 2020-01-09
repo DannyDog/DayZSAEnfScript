@@ -13,6 +13,8 @@ class AnalyticsManagerServer
 		player.StatRegister( STAT_PLAYERS_KILLED );
 		player.StatRegister( STAT_INFECTED_KILLED );
 		player.StatRegister( STAT_LONGEST_SURVIVOR_HIT );
+
+		player.StatSyncToClient();
 	}
 		
 	void OnPlayerDisconnect( Man player )
@@ -32,7 +34,7 @@ class AnalyticsManagerServer
 		Print("");
 		*/
 		
-		player.StatSyncToClient();
+//		player.StatSyncToClient();
 	}
 	
 	//Entity-Entity hit
@@ -102,6 +104,7 @@ class AnalyticsManagerServer
 			
 		//update stat
 		killer.StatUpdate( STAT_PLAYERS_KILLED, 1 );
+		killer.StatSyncToClient();		
 	}
 	
 	protected void OnInfectedKilled( Man killer, EntityAI target )
@@ -116,5 +119,6 @@ class AnalyticsManagerServer
 			
 		//update stat
 		killer.StatUpdate( STAT_INFECTED_KILLED, 1 );
+		killer.StatSyncToClient();		
 	}
 }

@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{D8376A942AFC034F}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle01.anm"
+   "Idle02" "{4129D30D371B32DF}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle02.anm"
+   "Idle03" "{3623BB85C3B9DDAF}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle03.anm"
+   "Idle04" "{31E441D4A53F676C}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle04.anm"
+   "Idle05" "{46EE295C519D881C}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle05.anm"
+   "Idle06" "{DFF090C54C7AB98C}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle06.anm"
+   "Idle07" "{A8FAF84DB8D856FC}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle07.anm"
+   "Idle08" "{D07F64678177CC0A}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle08.anm"
+   "Idle09" "{A7750CEF75D5237A}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle09.anm"
+   "Idle10" "{5B354584D383844B}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle10.anm"
+   "Idle11" "{2C3F2D0C27216B3B}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle11.anm"
+   "Idle12" "{B52194953AC65AAB}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle12.anm"
+   "Idle13" "{C22BFC1DCE64B5DB}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idle13.anm"
+   "Idle14" "{5D6BEB89CC54854B}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idleMain01.anm"
+   "IdleMain" "{C4755210D1B3B4DB}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idleMain02.anm"
+   "IdleMain2" "{C4755210D1B3B4DB}DZ/anims/anm/player/menu/baseballbat/p_menu_baseballbat_idleMain02.anm"
+ }

@@ -1,0 +1,31 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.ChamberingBulletL" "{B457E71D3D28E103}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_in_BulletL_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.ChamberingBulletR" "{0E3CA6EAC9BE2FCD}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_in_BulletR_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.ChamberingCancel" "{A927C2E9199B87AA}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_cancel_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.ChamberingOut" "{71EAD3A85D6E3B02}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_out_noBullet_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.Chambering_NoBulletL" "{102D60DBEFEBA602}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_in_noBulletL_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.Chambering_NoBulletR" "{AA46212C1B7D68CC}DZ/anims/anm/player/reloads/IZH43/p_erc_chambering_in_noBulletR_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.Fire" "{5191E9DE527504F0}DZ/anims/anm/player/reloads/IZH43/p_erc_fire_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.FireEmptyAutomatic" "{3BE73BA109B43A68}DZ/anims/anm/player/reloads/IZH43/p_erc_fire_empty_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.FireJam" "{5D055651282BDB04}DZ/anims/anm/player/reloads/IZH43/p_erc_fire_Jam_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{62B846B05237CE5D}DZ/anims/anm/player/reloads/IZH43/p_erc_unjam_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.Jamming Cancel" "{CC333EEBA25216D9}DZ/anims/anm/player/reloads/IZH43/p_erc_unjam_cancel_IZH43_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{58C9643CF8FF8E38}DZ/anims/anm/player/reloads/IZH43/p_erc_reload_action_IZH43_ras.anm"
+   "WeaponOperations.PneRas.ChamberingBulletL" "{B8E80E634269FFAD}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_in_BulletL_IZH43_ras.anm"
+   "WeaponOperations.PneRas.ChamberingBulletR" "{02834F94B6FF3163}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_in_BulletR_IZH43_ras.anm"
+   "WeaponOperations.PneRas.ChamberingCancel" "{23AE7397F38425B3}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_cancel_IZH43_ras.anm"
+   "WeaponOperations.PneRas.ChamberingOut" "{9272F65441189C2C}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_out_noBullet_IZH43_ras.anm"
+   "WeaponOperations.PneRas.Chambering_NoBulletL" "{F3B54527F39D012C}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_in_noBulletL_IZH43_ras.anm"
+   "WeaponOperations.PneRas.Chambering_NoBulletR" "{49DE04D0070BCFE2}DZ/anims/anm/player/reloads/IZH43/p_pne_chambering_in_noBulletR_IZH43_ras.anm"
+   "WeaponOperations.PneRas.Fire" "{709255A30329C061}DZ/anims/anm/player/reloads/IZH43/p_pne_fire_IZH43_ras.anm"
+   "WeaponOperations.PneRas.FireEmptyAutomatic" "{8A456CFA078F897C}DZ/anims/anm/player/reloads/IZH43/p_pne_fire_empty_IZH43_ras.anm"
+   "WeaponOperations.PneRas.FireJam" "{FAEEE5DFCBC1CA83}DZ/anims/anm/player/reloads/IZH43/p_pne_fire_Jam_IZH43_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{EF8E2BF586DA6210}DZ/anims/anm/player/reloads/IZH43/p_pne_unjam_IZH43_ras.anm"
+   "WeaponOperations.PneRas.Jamming Cancel" "{510DDDBA355DB644}DZ/anims/anm/player/reloads/IZH43/p_pne_unjam_cancel_IZH43_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{6F48E3B0A1A1E1E8}DZ/anims/anm/player/reloads/IZH43/p_pne_reload_action_IZH43_ras.anm"
+  
+ }

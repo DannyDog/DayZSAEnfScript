@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionInLoopOut.EmptyMagCro.InLoopOut" "{105C2B46019215F4}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_cro_magEmpty_low_ILO.anm"
+   "ActionInLoopOut.EmptyMagErc.InLoopOut" "{CD2E15B8E1AC93CC}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_erc_magEmpty_low_ILO.anm"
+   "ActionInLoopOut.EmptyMagPne.InLoopOut" "{941CFE88CA1FA9F3}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_pne_magEmpty_low_ILO.anm"
+   "ActionInLoopOut.FillMagCro.InLoopOut" "{62EC4EFDA1848998}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_cro_magFill_low_ILO.anm"
+   "ActionInLoopOut.FillMagErc.InLoopOut" "{10C49F8B9D6C2DDC}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_erc_magFill_low_ILO.anm"
+   "ActionInLoopOut.FillMagPne.InLoopOut" "{9DF2F2CE49818191}DZ/anims/anm/player/actions/magazines/magazine_fnp45/p_magazine_fnp45_pne_magFill_low_ILO.anm"
+  
+ }

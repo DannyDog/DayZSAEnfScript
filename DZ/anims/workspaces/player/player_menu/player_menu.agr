@@ -1,0 +1,18 @@
+$AnimGraph 7 {
+	#AnimSetTemplate "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+	$Controls {
+		$Commands {
+			 CMD_HIT -1
+		}
+		$Vars {
+			#Var BlendVal float 0.0 0.0 2.0 ""
+		}
+		$Expressions {
+		}
+		$DebugControls {
+		}
+	}
+	$Files {
+		 "dz/anims/workspaces/player/player_menu/Menu.agr"
+	}
+}

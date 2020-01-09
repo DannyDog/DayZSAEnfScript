@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{2DCC9BABB43BAAAE}DZ/anims/workspaces/player/player_main/player_main_2h.asi"
+ $animations {
+   "ActionInLoopOut.DigCacheErc.Cancel" "{DDD36AF64EC7F9E9}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_dig_cancel.anm"
+   "ActionInLoopOut.DigCacheErc.InLoopOut" "{61499C8B97E61E69}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_digcache.anm"
+   "ActionInLoopOut.DigErc.Cancel" "{DDD36AF64EC7F9E9}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_dig_cancel.anm"
+   "ActionInLoopOut.DigErc.InLoopOut" "{34364F89C04922BF}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_dig.anm"
+   "ActionInLoopOut.DigManipulateErc.Cancel" "{DDD36AF64EC7F9E9}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_dig_cancel.anm"
+   "ActionInLoopOut.DigManipulateErc.InLoopOut" "{8C591DE6D7625A84}DZ/anims/anm/player/actions/horticulture/p_erc_hoe_dig_manipulate.anm"
+  
+ }

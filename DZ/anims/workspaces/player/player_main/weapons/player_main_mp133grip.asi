@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
+ $animations {
+   "WeaponOperations.ErcRas.ChamberingLoop_Closed_NoBullet" "{B7ED442C182DF229}DZ/anims/anm/player/reloads/MP133_grip/p_erc_chambering_loop_MP133grip_ras.anm"
+   "WeaponOperations.ErcRas.Jamming" "{ADA473B5BCCD58AA}DZ/anims/anm/player/reloads/MP133_grip/p_erc_jam_MP133grip_ras.anm"
+   "WeaponOperations.ErcRas.ReloadAction_Closed" "{7405F5B6D0A05BC1}DZ/anims/anm/player/reloads/MP133_grip/p_erc_reload_action_MP133grip_ras.anm"
+   "WeaponOperations.PneRas.ChamberingLoop_Closed_NoBullet" "{FF600C610EDE5466}DZ/anims/anm/player/reloads/MP133_grip/p_pne_chambering_loop_MP133grip_ras.anm"
+   "WeaponOperations.PneRas.Jamming" "{F3E11415C0152C47}DZ/anims/anm/player/reloads/MP133_grip/p_pne_jam_MP133grip_ras.anm"
+   "WeaponOperations.PneRas.ReloadAction_Closed" "{FE8C44C83ABFF9D8}DZ/anims/anm/player/reloads/MP133_grip/p_pne_reload_action_MP133grip_ras.anm"
+  
+ }

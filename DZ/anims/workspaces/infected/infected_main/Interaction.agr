@@ -1,0 +1,133 @@
+$AnimGraph 7 {
+	$Sheet "Vault" {
+		$Node AnimNodeSourceSync {
+			 "KnuckleRunSource" "" "Knuckle Run" "loop" "KnuckleRun"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -3.6000001 18.8000011
+			}
+		}
+		$Node AnimNodeSource {
+			 "Vault 110cm Source" "" "Vault.Vault 110cm" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -10.3000002 12.3000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Vault 160cm Source" "" "Vault.Vault 160cm" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -5.0 12.1999998
+			}
+		}
+		$Node AnimNodeSource {
+			 "Vault 210 cm Source" "" "Vault.Vault 210cm" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -1.9 12.1999998
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Vault Master" "TagVault"
+			$States 3 {
+				$State {
+					 "Vault Big" "TagVaultStart" "Vault StateMachine" "GetCommandI(CMD_VAULT) > 1" "notime" 0
+					$EditorData {
+						#EditorPos -6.5 20.8999996
+					}
+				}
+				$State {
+					 "Knuckle RUN" "" "KnuckleRunSource" "" "normtime" 0
+					$EditorData {
+						#EditorPos -3.6000001 20.8999996
+					}
+				}
+				$State {
+					 "Vault Small" "" "Vault Small STM" "GetCommandI(CMD_VAULT) < 2" "realtime" 1
+					$EditorData {
+						#EditorPos -13.6000004 20.7000008
+					}
+				}
+			}
+			$Transitions 1 {
+				$Transition {
+					 "Vault Big" "Knuckle RUN" "RemainingTimeLess(0.2)" "0.3" "0.7" 1 "S"
+				}
+			}
+			$EditorData {
+				#EditorPos -8.4000006 22.3000011
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Vault Small STM" ""
+			$States 3 {
+				$State {
+					 "Vault 50cm" "" "Vault50cmSource" "GetCommandI(CMD_VAULT) == 0" "realtime" 1
+					$EditorData {
+						#EditorPos -13.6999998 14.5
+					}
+				}
+				$State {
+					 "Vault 110 CM" "" "Vault 110cm Source" "GetCommandI(CMD_VAULT) == 1" "realtime" 1
+					$EditorData {
+						#EditorPos -10.3000002 14.5
+					}
+				}
+				$State {
+					 "Vault50cmInplace" "" "Vault50InplaceSource" "GetCommandI(CMD_VAULT) == 0 && MovementSpeed < 2" "realtime" 1
+					$EditorData {
+						#EditorPos -16.8999996 14.5
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -13.6000004 15.8000002
+			}
+		}
+		$Node AnimNodeStateMachine {
+			 "Vault StateMachine" ""
+			$States 2 {
+				$State {
+					 "Vault 160cm State" "" "Vault 160cm Source" "GetCommandI(CMD_VAULT) == 2" "realtime" 1
+					$EditorData {
+						#EditorPos -5.0 14.5
+					}
+				}
+				$State {
+					 "Vault 210cm State" "" "Vault 210 cm Source" "GetCommandI(CMD_VAULT) == 3" "realtime" 1
+					$EditorData {
+						#EditorPos -1.9 14.5
+					}
+				}
+			}
+			$Transitions 0 {
+			}
+			$EditorData {
+				#EditorPos -6.5 15.8000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Vault50InplaceSource" "" "Vault.A.Vault 50cm Inplace" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -16.8999996 12.3000002
+			}
+		}
+		$Node AnimNodeSource {
+			 "Vault50cmSource" "" "Vault.Vault 50cm" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos -13.6999998 12.3000002
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{6999D78DBAA43087}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle04.anm"
+   "Idle02" "{1E93BF054E06DFF7}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle05.anm"
+   "Idle03" "{878D069C53E1EE67}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle06.anm"
+   "Idle04" "{F0876E14A7430117}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle07.anm"
+   "Idle05" "{8802F23E9EEC9BE1}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle08.anm"
+   "Idle06" "{878D069C53E1EE67}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle06.anm"
+   "Idle07" "{F0876E14A7430117}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle07.anm"
+   "Idle08" "{8802F23E9EEC9BE1}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle08.anm"
+   "Idle09" "{FF089AB66A4E7491}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle09.anm"
+   "Idle10" "{0348D3DDCC18D3A0}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle10.anm"
+   "Idle11" "{7442BB5538BA3CD0}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle11.anm"
+   "Idle12" "{ED5C02CC255D0D40}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle12.anm"
+   "Idle13" "{9A566A44D1FFE230}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle13.anm"
+   "Idle14" "{9D919015B77958F3}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle14.anm"
+   "Idle15" "{EA9BF89D43DBB783}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle15.anm"
+   "Idle16" "{738541045E3C8613}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle16.anm"
+   "Idle17" "{048F298CAA9E6963}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idle17.anm"
+   "IdleMain" "{1C99C040E1FF1091}DZ/anims/anm/player/menu/rifle/p_menu_rifle_idleMain.anm"
+  
+ }

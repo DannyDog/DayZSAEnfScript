@@ -1,0 +1,10 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.StartFireCro.In" "{EF40AA69223B3642}DZ/anims/anm/player/actions/items/p_cro_ignite_by_match_in.anm"
+   "ActionContinuous.StartFireCro.Loop" "{26E96FCE63902D27}DZ/anims/anm/player/actions/items/p_cro_ignite_by_match_loop.anm"
+   "ActionContinuous.StartFireCro.Out" "{383B9FA11B0B4D36}DZ/anims/anm/player/actions/items/p_cro_ignite_by_match_out.anm"
+  
+ }

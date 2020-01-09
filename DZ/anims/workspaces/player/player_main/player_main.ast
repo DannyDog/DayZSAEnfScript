@@ -1,0 +1,1191 @@
+$animsettemplate {
+ #ngrouptypes 27
+ $groupType {
+  #ngroupnames 0
+  #nanims 25
+  $anims {
+    "FacialAnger"
+    "FacialBlink"
+    "FacialConfused"
+    "FacialDisgusted"
+    "FacialExhausted"
+    "FacialFear"
+    "FacialHappy"
+    "FacialHitHeavy"
+    "FacialHitLight"
+    "FacialIdle01"
+    "FacialIdle02"
+    "FacialIdle03"
+    "FacialIdleInj01"
+    "FacialIdleInj02"
+    "FacialIdleInj03"
+    "FacialJoy"
+    "FacialLaugher"
+    "FacialNeutral"
+    "FacialPain"
+    "FacialSadness"
+    "FacialSpooked"
+    "FacialSuprised"
+    "FacialTalking"
+    "FacialTired"
+    "FacialUnconscious"
+   
+  }
+ }
+ $groupType "ActionContinuous" {
+  #ngroupnames 111
+  #nanims 7
+  $groupnames {
+    "AnimalSkinningCro"
+    "BandageCro"
+    "BandageTargetCro"
+    "BandageTargetErc"
+    "BlowFireplaceCro"
+    "CPRCro"
+    "CatchRainCro"
+    "CatchRainErc"
+    "CatchRainPne"
+    "CheckPulseCro"
+    "CleanWoundTargetCro"
+    "CleanWoundTargetErc"
+    "CollectBloodCro"
+    "CollectBloodErc"
+    "CoverHeadSelfCro"
+    "CoverHeadSelfErc"
+    "CoverHeadTargetCro"
+    "CoverHeadTargetErc"
+    "CraftingAddCro"
+    "CraftingAddErc"
+    "CraftingCro"
+    "Deploy1hdCro"
+    "Deploy2hdCro"
+    "DeployCro"
+    "DeployHeavyErc"
+    "DrinkCro"
+    "DrinkErc"
+    "DrinkPne"
+    "DrinkPneBack"
+    "DrinkPondCro"
+    "DrinkPondErc"
+    "DrinkWellCro"
+    "DrinkWellErc"
+    "EatCro"
+    "EatErc"
+    "EatPne"
+    "EatPneBack"
+    "EmptyVesselCro"
+    "EmptyVesselErc"
+    "EmptyVesselFBCro"
+    "EmptyVesselFBErc"
+    "FillBottlePondCro"
+    "FillBottlePondErc"
+    "FillBottleWellCro"
+    "FireExtinguisherErc"
+    "FishingCro"
+    "ForceFeedCro"
+    "ForceFeedErc"
+    "GiveLCro"
+    "GiveLErc"
+    "GiveLPne"
+    "GiveRCro"
+    "GiveRErc"
+    "GiveRPne"
+    "InteractCro"
+    "InteractErc"
+    "ItemTuneCro"
+    "ItemTuneErc"
+    "ItemTunePne"
+    "KneelCro"
+    "LookOpticsCro"
+    "LookOpticsErc"
+    "LookOpticsPne"
+    "OpenItemCro"
+    "OpenItemErc"
+    "OpenItemPne"
+    "Placing1hdCro"
+    "Placing2hdCro"
+    "PlacingHeavyErc"
+    "RaiseItemCro"
+    "RaiseItemErc"
+    "RaiseItemPne"
+    "RestrainSelfCro"
+    "RestrainSelfErc"
+    "RestrainTargetCro"
+    "RestrainTargetErc"
+    "SalineBloodBagCro"
+    "SalineBloodBagErc"
+    "SalineBloodBagTargetCro"
+    "SalineBloodBagTargetErc"
+    "SearchInventoryCro"
+    "SearchInventoryErc"
+    "SearchInventoryPne"
+    "ShaveCro"
+    "ShaveErc"
+    "SprayPlantCro"
+    "StartFireCro"
+    "StartFireErc"
+    "StitchUpCro"
+    "StitchUpErc"
+    "StruggleRestrainedCro"
+    "StruggleRestrainedErc"
+    "StruggleRestrainedPne"
+    "TakeTempSelfCro"
+    "TakeTempSelfErc"
+    "TakeTempSelfPne"
+    "UnrestrainTargetCro"
+    "UnrestrainTargetErc"
+    "ViewCompassCro"
+    "ViewCompassErc"
+    "ViewCompassPne"
+    "ViewMapCro"
+    "ViewMapErc"
+    "ViewMapPne"
+    "ViewNoteCro"
+    "ViewNoteErc"
+    "ViewNotePne"
+    "VomitingCro"
+    "WashHandsPondCro"
+    "WashHandsWellCro"
+    "WringCro"
+   
+  }
+  $anims {
+    "Action"
+    "ActionLoop"
+    "Aim"
+    "In"
+    "Loop"
+    "Out"
+    "Out2"
+   
+  }
+ }
+ $groupType "ActionInLoopOut" {
+  #ngroupnames 20
+  #nanims 2
+  $groupnames {
+    "AssembleCro"
+    "AssembleErc"
+    "CutBarkCro"
+    "CutBarkErc"
+    "DigCacheErc"
+    "DigErc"
+    "DigManipulateErc"
+    "DisassembleCro"
+    "DisassembleErc"
+    "EmptyMagCro"
+    "EmptyMagErc"
+    "EmptyMagPne"
+    "FillMagCro"
+    "FillMagErc"
+    "FillMagPne"
+    "HackBushCro"
+    "HackBushErc"
+    "HackTreeCro"
+    "HackTreeErc"
+    "MineRockErc"
+   
+  }
+  $anims {
+    "Cancel"
+    "InLoopOut"
+   
+  }
+ }
+ $groupType "ActionOnce" {
+  #ngroupnames 83
+  #nanims 2
+  $groupnames {
+    "AttachItemCro"
+    "AttachItemErc"
+    "BatonExtendCro"
+    "BatonExtendErc"
+    "BatonRetractCro"
+    "BatonRetractErc"
+    "CleanHandsCro"
+    "CleanHandsErc"
+    "CleanHandsPne"
+    "CloseItemOnceCro"
+    "CloseItemOnceErc"
+    "CloseItemOncePne"
+    "CloseLidCro"
+    "CloseLidErc"
+    "DropItemHandsCro"
+    "DropItemHandsErc"
+    "DropItemHandsPne"
+    "DropItemInventoryCro"
+    "DropItemInventoryErc"
+    "DropItemInventoryPne"
+    "DropRFLItem"
+    "EmptySeedsPackCro"
+    "EmptySeedsPackErc"
+    "FishingRodExtendCro"
+    "FishingRodExtendErc"
+    "FishingRodRetractCro"
+    "FishingRodRetractErc"
+    "HandcuffSelfCro"
+    "HandcuffSelfErc"
+    "HandcuffTargetCro"
+    "HandcuffTargetErc"
+    "HideItemCro"
+    "HideItemErc"
+    "HideItemPne"
+    "InjectionCro"
+    "InjectionTargetCro"
+    "InjectionTargetErc"
+    "InteractOnceCro"
+    "InteractOnceErc"
+    "ItemOffCro"
+    "ItemOffErc"
+    "ItemOffPne"
+    "ItemOnCro"
+    "ItemOnErc"
+    "ItemOnPne"
+    "LickBatteryCro"
+    "LickBatteryErc"
+    "LickBatteryPne"
+    "LitChemlightCro"
+    "LitChemlightErc"
+    "LitChemlightPne"
+    "LitFlareCro"
+    "LitFlareErc"
+    "LitFlarePne"
+    "OpenDoorCro"
+    "OpenDoorErc"
+    "OpenItemOnceCro"
+    "OpenItemOnceErc"
+    "OpenItemOncePne"
+    "OpenLidCro"
+    "OpenLidErc"
+    "PickUpHandsCro"
+    "PickUpHandsErc"
+    "PickUpHandsPne"
+    "PickUpHeavyErc"
+    "PickUpInventoryCro"
+    "PickUpInventoryErc"
+    "PickUpInventoryPne"
+    "PokeCro"
+    "PullOut"
+    "RestrainedCro"
+    "RestrainedErc"
+    "RestrainedPne"
+    "SipPondCro"
+    "UnlockHandcuffsTargetCro"
+    "UnlockHandcuffsTargetErc"
+    "UnpinGrenadeCro"
+    "UnpinGrenadeErc"
+    "UnpinGrenadePne"
+    "WpnAttachBarrelErc"
+    "WpnAttachBarrelPne"
+    "WpnAttachScopeErc"
+    "WpnAttachScopePne"
+   
+  }
+  $anims {
+    "Once"
+    "OnceRas"
+   
+  }
+ }
+ $groupType "Combat" {
+  #ngroupnames 3
+  #nanims 28
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Pne"
+   
+  }
+  $anims {
+    "Bayonet"
+    "Bayonet02"
+    "Block"
+    "Buttstock"
+    "Buttstock02"
+    "Cancelled"
+    "Chamber"
+    "Combat Evade B"
+    "Combat Evade L"
+    "Combat Evade R"
+    "EvadeB"
+    "EvadeL"
+    "EvadeR"
+    "In"
+    "Kick"
+    "Loop"
+    "Reload"
+    "Shoot"
+    "Shove"
+    "Sprint_StrikeR01"
+    "StrikeL01"
+    "StrikeL02"
+    "StrikeLInplace01"
+    "StrikeLInplace02"
+    "StrikeR01"
+    "StrikeR03"
+    "StrikeRInplace01"
+    "StrikeRInplace03"
+   
+  }
+ }
+ $groupType "Damage" {
+  #ngroupnames 6
+  #nanims 13
+  $groupnames {
+    "Cro"
+    "CroRas"
+    "Erc"
+    "ErcRas"
+    "Pne"
+    "PneRas"
+   
+  }
+  $anims {
+    "Heavy B"
+    "Heavy F"
+    "Heavy L"
+    "Heavy R"
+    "KnockDown B"
+    "KnockDown F"
+    "KnockDown L"
+    "KnockDown R"
+    "Light B"
+    "Light F"
+    "Light F Block"
+    "Light L"
+    "Light R"
+   
+  }
+ }
+ $groupType "Deaths" {
+  #ngroupnames 8
+  #nanims 12
+  $groupnames {
+    "Cro"
+    "CroRas"
+    "Erc"
+    "ErcRas"
+    "Pne"
+    "PneBack"
+    "PneBackRas"
+    "PneRas"
+   
+  }
+  $anims {
+    "BodyBack"
+    "BodyFront"
+    "BodyLeft"
+    "BodyRight"
+    "FastBack"
+    "FastFront"
+    "FastLeft"
+    "FastRight"
+    "Land"
+    "Swim"
+    "UnconsciousLand"
+    "UnconsciousWater"
+   
+  }
+ }
+ $groupType "Falls" {
+  #ngroupnames 3
+  #nanims 7
+  $groupnames {
+    "Erc"
+    "Pne"
+    "Uncon"
+   
+  }
+  $anims {
+    "DeathForward"
+    "FallBack"
+    "FallForward"
+    "LandBack"
+    "LandHeavy"
+    "LandLight"
+    "LandMedium"
+   
+  }
+ }
+ $groupType "Gesture" {
+  #ngroupnames 54
+  #nanims 16
+  $groupnames {
+    "CampfireCro"
+    "DabbingCro"
+    "DabbingErc"
+    "FacepalmCro"
+    "FacepalmErc"
+    "GunShoulderErc"
+    "HeartCro"
+    "HeartErc"
+    "HeartPne"
+    "HoldCro"
+    "HoldErc"
+    "HoldPne"
+    "LayingDownCro"
+    "ListeningCro"
+    "ListeningErc"
+    "ListeningPne"
+    "LookAtMeCro"
+    "LookAtMeErc"
+    "LookAtMePne"
+    "MilitarySaluteErc"
+    "OKCro"
+    "OKErc"
+    "OKPne"
+    "PointCro"
+    "PointErc"
+    "PointPne"
+    "PointSelfCro"
+    "PointSelfErc"
+    "PointSelfPne"
+    "SOSErc"
+    "SaluteCro"
+    "SaluteErc"
+    "SalutePne"
+    "SilenceCro"
+    "SilenceErc"
+    "SilencePne"
+    "SitACro"
+    "SitBCro"
+    "TauntFingerCro"
+    "TauntFingerErc"
+    "TauntFingerPne"
+    "TauntPistolErc"
+    "ThumbDownCro"
+    "ThumbDownErc"
+    "ThumbDownPne"
+    "ThumbUpCro"
+    "ThumbUpErc"
+    "ThumbUpPne"
+    "TimeoutCro"
+    "TimeoutErc"
+    "TimeoutPne"
+    "WatchingCro"
+    "WatchingErc"
+    "WatchingPne"
+   
+  }
+  $anims {
+    "In"
+    "InMove"
+    "Look"
+    "Loop"
+    "Out"
+    "Out2"
+    "OutMove"
+    "RasIn"
+    "RasLoop"
+    "RasOut"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+   
+  }
+ }
+ $groupType "GestureOnce" {
+  #ngroupnames 40
+  #nanims 2
+  $groupnames {
+    "ClapCro"
+    "ClapErc"
+    "ComeCro"
+    "ComeErc"
+    "ComePne"
+    "DabbingCro"
+    "DabbingErc"
+    "DanceErc"
+    "DownCro"
+    "DownErc"
+    "DownPne"
+    "MoveCro"
+    "MoveErc"
+    "MovePne"
+    "NodHeadErc"
+    "NodHeadPne"
+    "ShakeHeadErc"
+    "ShakeHeadPne"
+    "ShrugCro"
+    "ShrugErc"
+    "ShrugPne"
+    "SurrenderInCro"
+    "SurrenderInErc"
+    "SurrenderInPne"
+    "SurrenderInPneBack"
+    "SurrenderOutCro"
+    "SurrenderOutErc"
+    "SurrenderOutPne"
+    "SurrenderOutPneBack"
+    "TauntElbowCro"
+    "TauntElbowErc"
+    "TauntKissCro"
+    "TauntKissErc"
+    "TauntKissPne"
+    "TauntThinkCro"
+    "TauntThinkErc"
+    "TauntThinkPne"
+    "TauntThroatCro"
+    "TauntThroatErc"
+    "TauntThroatPne"
+   
+  }
+  $anims {
+    "Once"
+    "RasOnce"
+   
+  }
+ }
+ $groupType "Jumping" {
+  #ngroupnames 4
+  #nanims 16
+  $groupnames {
+    "IdleL"
+    "IdleR"
+    "LFoot"
+    "RFoot"
+   
+  }
+  $anims {
+    "JumpBLIn"
+    "JumpBLOut"
+    "JumpBRIn"
+    "JumpBROut"
+    "JumpBackIn"
+    "JumpBackOut"
+    "JumpFLIn"
+    "JumpFLOut"
+    "JumpFRIn"
+    "JumpFROut"
+    "JumpForwardIn"
+    "JumpForwardOut"
+    "JumpSpotIn"
+    "JumpSpotOut"
+    "JumpSprintIn"
+    "JumpSprintOut"
+   
+  }
+ }
+ $groupType "Kneeling" {
+  #ngroupnames 3
+  #nanims 5
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Pne"
+   
+  }
+  $anims {
+    "ActionLoop"
+    "In"
+    "Loop"
+    "Out"
+    "Out2"
+   
+  }
+ }
+ $groupType "Ladder" {
+  #ngroupnames 2
+  #nanims 20
+  $groupnames {
+    "LeftFoot"
+    "RightFoot"
+   
+  }
+  $anims {
+    "Down"
+    "DownFast"
+    "EnterGround"
+    "EnterRoof"
+    "EnterWater"
+    "ExitGround"
+    "ExitLeft"
+    "ExitRight"
+    "ExitRoof"
+    "ExitUnconscious"
+    "ExitWater"
+    "Idle"
+    "Idle01"
+    "Idle02"
+    "Idle03"
+    "Idle04"
+    "Idle05"
+    "Look"
+    "Up"
+    "UpFast"
+   
+  }
+ }
+ $groupType "Locomotion" {
+  #ngroupnames 10
+  #nanims 55
+  $groupnames {
+    "Cro"
+    "CroRas"
+    "Erc"
+    "ErcRas"
+    "Pne"
+    "PneB"
+    "PneBRas"
+    "PneRas"
+    "WaterHigh"
+    "WaterLow"
+   
+  }
+  $anims {
+    "Aim"
+    "AimRun"
+    "AimToBack"
+    "AimWalk"
+    "AimingDownSight"
+    "BreathAdd"
+    "EvadeL"
+    "EvadeR"
+    "GoCrouch"
+    "GoCrouchMove"
+    "GoErect"
+    "GoErectMove"
+    "GoProne"
+    "GoProneMove"
+    "Idle"
+    "Idle01"
+    "Idle02"
+    "Idle03"
+    "Idle04"
+    "Idle05"
+    "IdleExhausted"
+    "Look"
+    "MoveLook"
+    "MoveLookHead"
+    "RunB"
+    "RunBL"
+    "RunBR"
+    "RunF"
+    "RunFL"
+    "RunFR"
+    "RunL"
+    "RunR"
+    "RunSlidingPose"
+    "SickCold"
+    "SickCough"
+    "SickHot"
+    "SickSneeze"
+    "SpineLook"
+    "SprintF"
+    "SprintFL"
+    "SprintFR"
+    "Turn0"
+    "TurnL180"
+    "TurnL90"
+    "TurnR180"
+    "TurnR90"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+    "WalkL"
+    "WalkR"
+    "WalkSlidingPose"
+   
+  }
+ }
+ $groupType "LocomotionInjured" {
+  #ngroupnames 8
+  #nanims 50
+  $groupnames {
+    "Cro"
+    "CroRas"
+    "Erc"
+    "ErcRas"
+    "Pne"
+    "PneB"
+    "PneBRas"
+    "PneRas"
+   
+  }
+  $anims {
+    "Aim"
+    "AimRun"
+    "AimToBack"
+    "AimWalk"
+    "Arm"
+    "BreathAdd"
+    "Death"
+    "Disarm"
+    "EvadeL"
+    "EvadeR"
+    "GoCrouch"
+    "GoCrouchMove"
+    "GoErect"
+    "GoErectMove"
+    "GoProne"
+    "GoProneMove"
+    "Idle"
+    "IdleExhausted"
+    "Look"
+    "MoveLook"
+    "RunB"
+    "RunBL"
+    "RunBR"
+    "RunF"
+    "RunFL"
+    "RunFR"
+    "RunL"
+    "RunR"
+    "RunSlidingPose"
+    "SickCold"
+    "SickCough"
+    "SickSneeze"
+    "SprintF"
+    "SprintFL"
+    "SprintFR"
+    "Turn0"
+    "TurnL180"
+    "TurnL90"
+    "TurnR180"
+    "TurnR90"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+    "WalkL"
+    "WalkR"
+    "WalkSlidingPose"
+    "WeaponObstructed"
+   
+  }
+ }
+ $groupType "RPS" {
+  #ngroupnames 1
+  #nanims 6
+  $groupnames {
+    "Erc"
+   
+  }
+  $anims {
+    "In"
+    "Out"
+    "Paper"
+    "Pump"
+    "Rock"
+    "Scissors"
+   
+  }
+ }
+ $groupType "Restrained" {
+  #ngroupnames 4
+  #nanims 23
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Kneel"
+    "Pne"
+   
+  }
+  $anims {
+    "GoCrouch"
+    "GoErected"
+    "GoKneel"
+    "GoProne"
+    "Idle"
+    "In"
+    "Look"
+    "MoveLook"
+    "Out"
+    "RestrainSelfCancel"
+    "RestrainSelfIn"
+    "RestrainSelfLoop"
+    "RestrainSelfOut"
+    "RunF"
+    "RunFL"
+    "RunFR"
+    "Struggle"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+   
+  }
+ }
+ $groupType "Suicide" {
+  #ngroupnames 9
+  #nanims 4
+  $groupnames {
+    "1hd"
+    "fireaxe"
+    "pitchfork"
+    "pst"
+    "rfl"
+    "spear"
+    "sword"
+    "unarmed"
+    "woodaxe"
+   
+  }
+  $anims {
+    "Cancelled"
+    "In"
+    "Loop"
+    "Out"
+   
+  }
+ }
+ $groupType "Surrender" {
+  #ngroupnames 3
+  #nanims 22
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Pne"
+   
+  }
+  $anims {
+    "GoCrouch"
+    "GoErected"
+    "GoProne"
+    "GoRestrained"
+    "Idle"
+    "In"
+    "Look"
+    "MoveLook"
+    "Out"
+    "Turn0"
+    "TurnL180"
+    "TurnL90"
+    "TurnR180"
+    "TurnR90"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+    "WalkL"
+    "WalkR"
+   
+  }
+ }
+ $groupType "Swim" {
+  #ngroupnames 1
+  #nanims 9
+  $groupnames {
+    "Normal"
+   
+  }
+  $anims {
+    "Fast"
+    "Idle"
+    "IdleDeath"
+    "Slow"
+    "StrafeB"
+    "StrafeF"
+    "StrafeL"
+    "StrafeR"
+    "UnconDeath"
+   
+  }
+ }
+ $groupType "Throw" {
+  #ngroupnames 4
+  #nanims 25
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Pne"
+    "PoB"
+   
+  }
+  $anims {
+    "AimPose"
+    "AimPoseWalk"
+    "Cancel"
+    "Idle"
+    "In"
+    "Out1hd"
+    "Out2hd"
+    "OutRfl"
+    "Shake"
+    "SlidingPose"
+    "Strength"
+    "ToCrouch"
+    "ToErect"
+    "ToProne"
+    "Turn0"
+    "TurnL180"
+    "TurnL90"
+    "TurnR180"
+    "TurnR90"
+    "WalkB"
+    "WalkBL"
+    "WalkBR"
+    "WalkF"
+    "WalkFL"
+    "WalkFR"
+   
+  }
+ }
+ $groupType "Unconscious" {
+  #ngroupnames 8
+  #nanims 12
+  $groupnames {
+    "Cro"
+    "Erc"
+    "Pne"
+    "PneBack"
+    "Water"
+    "WaterDeep"
+    "WaterShallowCro"
+    "WaterShallowErc"
+   
+  }
+  $anims {
+    "Death"
+    "InFastB"
+    "InFastF"
+    "InFastL"
+    "InFastR"
+    "InSlow"
+    "InWalkBSlow"
+    "InWalkFSlow"
+    "InWalkLSlow"
+    "InWalkRSlow"
+    "Loop"
+    "Out"
+   
+  }
+ }
+ $groupType "Vehicle" {
+  #ngroupnames 8
+  #nanims 66
+  $groupnames {
+    "Bus_01"
+    "CivilianSedan"
+    "Hatchback_02"
+    "OffroadHatchback"
+    "Sedan_02"
+    "Truck_01_cargo"
+    "Truck_02"
+    "Van_01"
+   
+  }
+  $anims {
+    "AccelerationSpine"
+    "CoDriverAim"
+    "CoDriverAimIdle"
+    "CoDriverClimbOut"
+    "CoDriverCrawlOut"
+    "CoDriverDeath"
+    "CoDriverGetIn"
+    "CoDriverGetOut"
+    "CoDriverIdle"
+    "CoDriverJumpOut"
+    "CoDriverPulledOut"
+    "CoDriverSwitchSeat"
+    "CoDriverUnconsciousDeath"
+    "CoDriverUnconsciousIdle"
+    "CoDriverUnconsciousIn"
+    "CoDriverUnconsciousOut"
+    "DriverAim"
+    "DriverAimIdle"
+    "DriverBreak"
+    "DriverClimbOut"
+    "DriverClutch"
+    "DriverCrawlOut"
+    "DriverDeath"
+    "DriverGetIn"
+    "DriverGetOut"
+    "DriverIdle"
+    "DriverJumpOut"
+    "DriverPulledOut"
+    "DriverSteeringExtreme"
+    "DriverSteeringMain"
+    "DriverSwitchSeat"
+    "DriverThrottle"
+    "DriverUnconsciousDeath"
+    "DriverUnconsciousIdle"
+    "DriverUnconsciousIn"
+    "DriverUnconsciousOut"
+    "PassengerLAim"
+    "PassengerLAimIdle"
+    "PassengerLClimbOut"
+    "PassengerLCrawlOut"
+    "PassengerLDeath"
+    "PassengerLGetIn"
+    "PassengerLGetOut"
+    "PassengerLIdle"
+    "PassengerLJumpOut"
+    "PassengerLPulledOut"
+    "PassengerLSwitchSeat"
+    "PassengerLUnconsciousDeath"
+    "PassengerLUnconsciousIdle"
+    "PassengerLUnconsciousIn"
+    "PassengerLUnconsciousOut"
+    "PassengerRAim"
+    "PassengerRAimIdle"
+    "PassengerRClimbOut"
+    "PassengerRCrawlOut"
+    "PassengerRDeath"
+    "PassengerRGetIn"
+    "PassengerRGetOut"
+    "PassengerRIdle"
+    "PassengerRJumpOut"
+    "PassengerRPulledOut"
+    "PassengerRSwitchSeat"
+    "PassengerRUnconsciousDeath"
+    "PassengerRUnconsciousIdle"
+    "PassengerRUnconsciousIn"
+    "PassengerRUnconsciousOut"
+   
+  }
+ }
+ $groupType "VehicleActions" {
+  #ngroupnames 8
+  #nanims 17
+  $groupnames {
+    "Bus_01"
+    "CivilianSedan"
+    "Hatchback_02"
+    "OffroadHatchback"
+    "Sedan_02"
+    "Truck_01_cargo"
+    "Truck_02"
+    "Van_01"
+   
+  }
+  $anims {
+    "CodriverDoorClose"
+    "CodriverDoorOpen"
+    "DriverDoorClose"
+    "DriverDoorOpen"
+    "DriverEngineStartIn"
+    "DriverEngineStartLoop"
+    "DriverEngineStartOut"
+    "DriverEngineStop"
+    "DriverHornIn"
+    "DriverHornLoop"
+    "DriverHornOut"
+    "DriverLights"
+    "DriverShiftGear"
+    "PassengerLDoorClose"
+    "PassengerLDoorOpen"
+    "PassengerRDoorClose"
+    "PassengerRDoorOpen"
+   
+  }
+ }
+ $groupType "VerticalMovement" {
+  #ngroupnames 1
+  #nanims 9
+  $groupnames {
+    "ErcRun"
+   
+  }
+  $anims {
+    "Climb110"
+    "Climb150"
+    "Climb190"
+    "ClimbOver110In"
+    "ClimbOver110Out"
+    "ClimbOver150In"
+    "ClimbOver150Out"
+    "ClimbOver190In"
+    "ClimbOver190Out"
+   
+  }
+ }
+ $groupType "WeaponChange" {
+  #ngroupnames 2
+  #nanims 20
+  $groupnames {
+    "ErcCro"
+    "Pne"
+   
+  }
+  $anims {
+    "1HDLeftBackSlotHide"
+    "1HDLeftBackSlotShow"
+    "1HDRightBackSlotHide"
+    "1HDRightBackSlotShow"
+    "2HDLeftBackSlotHide"
+    "2HDLeftBackSlotShow"
+    "2HDRightBackSlotHide"
+    "2HDRightBackSlotShow"
+    "InventorySlotHide"
+    "InventorySlotShow"
+    "KnifeSlotHide"
+    "KnifeSlotShow"
+    "PistolBeltHide"
+    "PistolBeltShow"
+    "PistolChestHide"
+    "PistolChestShow"
+    "RifleLeftBackSlotHide"
+    "RifleLeftBackSlotShow"
+    "RifleRightBackSlotHide"
+    "RifleRightBackSlotShow"
+   
+  }
+ }
+ $groupType "WeaponOperations" {
+  #ngroupnames 2
+  #nanims 42
+  $groupnames {
+    "ErcRas"
+    "PneRas"
+   
+  }
+  $anims {
+    "ChamberingBulletL"
+    "ChamberingBulletR"
+    "ChamberingCancel"
+    "ChamberingFast_Closed"
+    "ChamberingFast_Open"
+    "ChamberingIn"
+    "ChamberingLook"
+    "ChamberingLoop"
+    "ChamberingLoop1"
+    "ChamberingLoop_Closed_Bullet"
+    "ChamberingLoop_Closed_NoBullet"
+    "ChamberingLoop_Open_Bullet"
+    "ChamberingLoop_Open_NoBullet"
+    "ChamberingOut"
+    "Chambering_Closed"
+    "Chambering_Closed_Uncocked"
+    "Chambering_NoBulletL"
+    "Chambering_NoBulletR"
+    "Chambering_Open"
+    "Fire"
+    "FireCocked"
+    "FireEmptyAutomatic"
+    "FireJam"
+    "FireLast"
+    "FireUncocked"
+    "Jamming"
+    "Jamming Cancel"
+    "Jamming Check"
+    "Obstruction"
+    "ReloadAction_Closed"
+    "ReloadAction_Closed_Uncocked"
+    "ReloadAction_Open"
+    "ReloadBoltAction2"
+    "ReloadClipInBullet"
+    "ReloadClipInNoBullet"
+    "ReloadClipOut"
+    "ReloadClipPose"
+    "ReloadMagBullet"
+    "ReloadMagNoBullet"
+    "ReloadMagazineDetach"
+    "ReloadNoMagBullet"
+    "ReloadNoMagNoBullet"
+   
+  }
+ }
+}

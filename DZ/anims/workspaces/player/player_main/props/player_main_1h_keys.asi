@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "ActionContinuous.UnrestrainTargetCro.In" "{90DB917C19EACD97}DZ/anims/anm/player/actions/items/p_1hd_keys_cro_unlock_in.anm"
+   "ActionContinuous.UnrestrainTargetCro.Loop" "{13659800FD848B9E}DZ/anims/anm/player/actions/items/p_1hd_keys_cro_unlock_loop.anm"
+   "ActionContinuous.UnrestrainTargetCro.Out" "{CF06897C794759FC}DZ/anims/anm/player/actions/items/p_1hd_keys_cro_unlock_out.anm"
+   "ActionContinuous.UnrestrainTargetErc.In" "{BA1909E0856BA652}DZ/anims/anm/player/actions/items/p_1hd_keys_erc_unlock_in.anm"
+   "ActionContinuous.UnrestrainTargetErc.Loop" "{C0ACF3712170A75C}DZ/anims/anm/player/actions/items/p_1hd_keys_erc_unlock_loop.anm"
+   "ActionContinuous.UnrestrainTargetErc.Out" "{D663EB4296BE23BA}DZ/anims/anm/player/actions/items/p_1hd_keys_erc_unlock_out.anm"
+  
+ }

@@ -1,0 +1,21 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{DAEFE9C8AD16D05B}DZ/anims/anm/player/menu/broom/p_menu_broom_idle01.anm"
+   "Idle02" "{43F15051B0F1E1CB}DZ/anims/anm/player/menu/broom/p_menu_broom_idle02.anm"
+   "Idle03" "{34FB38D944530EBB}DZ/anims/anm/player/menu/broom/p_menu_broom_idle03.anm"
+   "Idle04" "{333CC28822D5B478}DZ/anims/anm/player/menu/broom/p_menu_broom_idle04.anm"
+   "Idle05" "{4436AA00D6775B08}DZ/anims/anm/player/menu/broom/p_menu_broom_idle05.anm"
+   "Idle06" "{DD281399CB906A98}DZ/anims/anm/player/menu/broom/p_menu_broom_idle06.anm"
+   "Idle07" "{AA227B113F3285E8}DZ/anims/anm/player/menu/broom/p_menu_broom_idle07.anm"
+   "Idle08" "{D2A7E73B069D1F1E}DZ/anims/anm/player/menu/broom/p_menu_broom_idle08.anm"
+   "Idle09" "{DAEFE9C8AD16D05B}DZ/anims/anm/player/menu/broom/p_menu_broom_idle01.anm"
+   "Idle10" "{43F15051B0F1E1CB}DZ/anims/anm/player/menu/broom/p_menu_broom_idle02.anm"
+   "Idle11" "{34FB38D944530EBB}DZ/anims/anm/player/menu/broom/p_menu_broom_idle03.anm"
+   "Idle12" "{333CC28822D5B478}DZ/anims/anm/player/menu/broom/p_menu_broom_idle04.anm"
+   "Idle13" "{4436AA00D6775B08}DZ/anims/anm/player/menu/broom/p_menu_broom_idle05.anm"
+   "Idle14" "{DD281399CB906A98}DZ/anims/anm/player/menu/broom/p_menu_broom_idle06.anm"
+   "IdleMain" "{E85D861CF80310D6}DZ/anims/anm/player/menu/broom/p_menu_broom_idleMain.anm"
+  
+ }

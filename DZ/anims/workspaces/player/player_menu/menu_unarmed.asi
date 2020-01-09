@@ -1,0 +1,26 @@
+$animsetinstance {
+ #template "{2542460F11BD94B7}DZ/anims/workspaces/player/player_menu/player_menu.ast"
+ #nparents 0
+ $animations {
+   "Idle01" "{E06BEE0B4CB76E0D}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle01.anm"
+   "Idle02" "{7975579251505F9D}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle02.anm"
+   "Idle03" "{0E7F3F1AA5F2B0ED}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle03.anm"
+   "Idle04" "{09B8C54BC3740A2E}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle04.anm"
+   "Idle05" "{7EB2ADC337D6E55E}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle05.anm"
+   "Idle06" "{E7AC145A2A31D4CE}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle06.anm"
+   "Idle07" "{90A67CD2DE933BBE}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle07.anm"
+   "Idle08" "{E823E0F8E73CA148}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle08.anm"
+   "Idle09" "{9F298870139E4E38}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle09.anm"
+   "Idle10" "{6369C11BB5C8E909}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle10.anm"
+   "Idle11" "{1463A993416A0679}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle11.anm"
+   "Idle12" "{8D7D100A5C8D37E9}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle12.anm"
+   "Idle13" "{FA777882A82FD899}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle13.anm"
+   "Idle14" "{FDB082D3CEA9625A}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle14.anm"
+   "Idle15" "{8ABAEA5B3A0B8D2A}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle15.anm"
+   "Idle16" "{13A453C227ECBCBA}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle16.anm"
+   "Idle17" "{64AE3B4AD34E53CA}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle17.anm"
+   "Idle18" "{1C2BA760EAE1C93C}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle18.anm"
+   "Idle19" "{6B21CFE81E43264C}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idle19.anm"
+   "IdleMain" "{956128615C697921}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idleMain01.anm"
+   "IdleMain2" "{0C7F91F8418E48B1}DZ/anims/anm/player/menu/unarmed/p_menu_unarmed_idleMain02.anm"
+ }

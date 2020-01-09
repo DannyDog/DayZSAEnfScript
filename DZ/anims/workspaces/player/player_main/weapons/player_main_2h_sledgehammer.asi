@@ -1,0 +1,13 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{C6321B216554C8F7}DZ/anims/workspaces/player/player_main/weapons/player_main_2h_fireaxe.asi"
+ $animations {
+   "ActionInLoopOut.DisassembleCro.Cancel" "{2D01259ED9AF4737}DZ/anims/anm/player/actions/basebuilding/p_2hd_sledgehammer_erc_disassemble_cancel.anm"
+   "ActionInLoopOut.DisassembleCro.InLoopOut" "{85F5FABD228ABA03}DZ/anims/anm/player/actions/basebuilding/p_2hd_sledgehammer_erc_disassemble.anm"
+   "ActionInLoopOut.DisassembleErc.Cancel" "{2D01259ED9AF4737}DZ/anims/anm/player/actions/basebuilding/p_2hd_sledgehammer_erc_disassemble_cancel.anm"
+   "ActionInLoopOut.DisassembleErc.InLoopOut" "{85F5FABD228ABA03}DZ/anims/anm/player/actions/basebuilding/p_2hd_sledgehammer_erc_disassemble.anm"
+   "ActionInLoopOut.MineRockErc.Cancel" "{4DFBC69D30E8F7D7}DZ/anims/anm/player/actions/horticulture/p_erc_pickaxe_dig_cancel.anm"
+   "ActionInLoopOut.MineRockErc.InLoopOut" "{C4F3F2E817B82582}DZ/anims/anm/player/actions/horticulture/p_erc_sledgehammer_mine.anm"
+  
+ }

@@ -1,0 +1,158 @@
+$AnimGraph 7 {
+	#AnimSetTemplate "{0F9B2A38DA6C0C92}DZ/anims/workspaces/infected/infected_main/infected.ast"
+	#AnimSyncTable "{526768D42722C4C9}DZ/anims/workspaces/infected/synctable.asy"
+	$Controls {
+		$Commands {
+			 CMD_HIT_LIGHT -1
+			 CMD_HIT_HEAVY -1
+			 CMD_DEATH -1
+			 CMD_ATTACK -1
+			 CMD_TURN -1
+			 CMD_VAULT -1
+			 CMD_CRAWL -1
+		}
+		$Vars {
+			#Var MovementSpeed float 0.0 0.0 3.0 ""
+			#Var MovementDirection float 0.0 -180.0 180.0 ""
+			#Var LookDirY float 0.0 -90.0 90.0 ""
+			#Var LookDirX float 0.0 -180.0 180.0 ""
+			#Var VariationsStance int 0 0 3 ""
+			#Var Look bool 0 ""
+			#Var IdleState int 0 0 2 ""
+			#Var TurnDir float 0.0 -180.0 180.0 ""
+		}
+		$Expressions {
+		}
+		$DebugControls {
+			
+			#DCtrl 2 "Impacts Body" "Hit body light Front" "" "CMD_HIT" 0.0 4
+			
+			#DCtrl 2 "Impacts Body" "Hit body light Back" "" "CMD_HIT" 0.0 5
+			
+			#DCtrl 2 "Impacts Body" "Hit body light Right" "" "CMD_HIT" 0.0 7
+			
+			#DCtrl 2 "Impacts Body" "Hit body light Left" "" "CMD_HIT" 0.0 6
+			
+			#DCtrl 2 "Impacts Body" "Hit body heavy Front" "" "CMD_HIT" 1.0 4
+			
+			#DCtrl 2 "Impacts Body" "Hit body heavy Back" "" "CMD_HIT" 1.0 5
+			
+			#DCtrl 2 "Impacts Body" "Hit body heavy Right" "" "CMD_HIT" 1.0 7
+			
+			#DCtrl 2 "Deaths" "Death F" "" "CMD_DEATH" 0.0 0
+			
+			#DCtrl 2 "Deaths" "Death B" "" "CMD_DEATH" 0.0 1
+			
+			#DCtrl 2 "Deaths" "Death R" "" "CMD_DEATH" 0.0 2
+			
+			#DCtrl 2 "Deaths" "Death L" "" "CMD_DEATH" 0.0 3
+			
+			#DCtrl 2 "Impacts Body" "Hit body heavy Left" "" "CMD_HIT" 1.0 6
+			
+			#DCtrl 2 "Impacts Head" "Hit head Front" "" "CMD_HIT" 0.0 0
+			
+			#DCtrl 2 "Impacts Head" "Hit head Back" "" "CMD_HIT" 0.0 1
+			
+			#DCtrl 2 "Impacts Head" "Hit head Left" "" "CMD_HIT" 0.0 2
+			
+			#DCtrl 2 "Impacts Head" "Hit head Right" "" "CMD_HIT" 0.0 3
+			
+			#DCtrl 2 "Impact Belly" "Hit belly Front" "" "CMD_HIT" 0.0 8
+			
+			#DCtrl 2 "Impact Belly" "Hit belly Back" "" "CMD_HIT" 0.0 9
+			
+			#DCtrl 2 "Impact Belly" "Hit belly Left" "" "CMD_HIT" 0.0 10
+			
+			#DCtrl 2 "Impact Belly" "Hit belly Right" "" "CMD_HIT" 0.0 11
+			
+			#DCtrl 2 "Impact Foot" "Hit Foot LB" "" "CMD_CRAWL" 0.0 0
+			
+			#DCtrl 2 "Impact Foot" "Hit Foot LF" "" "CMD_CRAWL" 0.0 1
+			
+			#DCtrl 2 "Impact Foot" "Hit Foot RB" "" "CMD_CRAWL" 0.0 2
+			
+			#DCtrl 2 "Impact Foot" "Hit Foot RF" "" "CMD_CRAWL" 0.0 3
+			
+			#DCtrl 2 "Attacks" "L Up Light" "" "CMD_ATTACK" 0.0 0
+			
+			#DCtrl 2 "Attacks" "R Up Light" "" "CMD_ATTACK" 0.0 1
+			
+			#DCtrl 2 "Attacks" "L Up Heavy" "" "CMD_ATTACK" 0.0 2
+			
+			#DCtrl 2 "Attacks" "R Up Heavy" "" "CMD_ATTACK" 0.0 3
+			
+			#DCtrl 2 "Attacks" "L Center Light" "" "CMD_ATTACK" 1.0 0
+			
+			#DCtrl 2 "Attacks" "R Center Light" "" "CMD_ATTACK" 1.0 1
+			
+			#DCtrl 2 "Attacks" "L Center Heavy" "" "CMD_ATTACK" 1.0 2
+			
+			#DCtrl 2 "Attacks" "R Center Heavy" "" "CMD_ATTACK" 1.0 3
+			
+			#DCtrl 2 "Attacks" "L Down Light" "" "CMD_ATTACK" 2.0 0
+			
+			#DCtrl 2 "Attacks Door" "Door Push" "" "CMD_ATTACK" 0.0 9
+			
+			#DCtrl 2 "Attacks Door" "Door Head" "" "CMD_ATTACK" 0.0 10
+			
+			#DCtrl 2 "Attacks Door" "Door Shoulder" "" "CMD_ATTACK" 0.0 11
+			
+			#DCtrl 2 "Attacks Door" "Door arms LR" "" "CMD_ATTACK" 0.0 12
+			
+			#DCtrl 2 "Attacks Door" "Door Kick" "" "CMD_ATTACK" 0.0 13
+			
+			#DCtrl 2 "Vault" "Vault 50cm" "" "CMD_VAULT" 0.0 0
+			
+			#DCtrl 2 "Vault" "Vault 110cm" "" "CMD_VAULT" 0.0 1
+			
+			#DCtrl 2 "Vault" "Vault 160cm" "" "CMD_VAULT" 0.0 2
+			
+			#DCtrl 2 "Vault" "Vault 210cm" "" "CMD_VAULT" 0.0 3
+			
+			#DCtrl 2 "Turn" "Turn 180L Normal" "" "CMD_TURN" -180.0 0
+			
+			#DCtrl 2 "Turn" "Turn 90L Normal" "" "CMD_TURN" -90.0 0
+			
+			#DCtrl 2 "Turn" "Turn 90R Normal" "" "CMD_TURN" 90.0 0
+			
+			#DCtrl 2 "Turn" "Turn 180R Normal" "" "CMD_TURN" 180.0 0
+			
+			#DCtrl 2 "Turn" "Turn 180L Fast" "" "CMD_TURN" -180.0 1
+			
+			#DCtrl 2 "Turn" "Turn 90L Fast" "" "CMD_TURN" -90.0 1
+			
+			#DCtrl 2 "Turn" "Turn 90R Fast" "" "CMD_TURN" 90.0 1
+			
+			#DCtrl 2 "Turn" "Turn 180R Fast" "" "CMD_TURN" 180.0 1
+			
+			#DCtrl 2 "Attacks Door" "Door Charge R" "" "CMD_ATTACK" 0.0 14
+			
+			#DCtrl 2 "Attacks Door" "Door Charge L" "" "CMD_ATTACK" 0.0 15
+			
+			#DCtrl 2 "Vault" "Knuckle Run Out" "" "CMD_VAULT" 0.0 -1
+			
+			#DCtrl 2 "Crawl Attack" "Crawl Attack" "" "CMD_ATTACK" 0.0 7
+			
+			#DCtrl 2 "Crawl Attack" "Crawl Attack Combo" "" "CMD_ATTACK" 0.0 8
+			
+			#DCtrl 2 "Impacts Body Knucklerun" "Knuckle BodyF hit" "" "CMD_HIT" 2.0 4
+			
+			#DCtrl 2 "Impacts Body Knucklerun" "Knuckle BodyR hit" "" "CMD_HIT" 2.0 7
+			
+			#DCtrl 2 "Impacts Body Knucklerun" "Knuckle BodyL hit" "" "CMD_HIT" 2.0 6
+			
+			#DCtrl 2 "Impacts Body Knucklerun" "Knuckle BodyB hit" "" "CMD_HIT" 2.0 5
+			
+			#DCtrl 2 "Attacks" "R Down Light" "" "CMD_ATTACK" 2.0 1
+			
+			#DCtrl 2 "Attacks" "L Down Heavy" "" "CMD_ATTACK" 2.0 2
+			
+			#DCtrl 2 "Attacks" "R Down Heavy" "" "CMD_ATTACK" 2.0 3
+		}
+	}
+	$Files {
+		 "dz/anims/workspaces/infected/infected_main/Locomotion.agr"
+		 "dz/anims/workspaces/infected/infected_main/Combat.agr"
+		 "dz/anims/workspaces/infected/infected_main/Interaction.agr"
+	}
+}
