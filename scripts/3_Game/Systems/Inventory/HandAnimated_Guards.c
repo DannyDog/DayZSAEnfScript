@@ -181,9 +181,12 @@ class HandSelectAnimationOfTakeToHandsEvent extends HandGuardBase
 class HandSelectAnimationOfMoveFromHandsEvent extends HandGuardBase
 {
 	protected Man m_Player;
-	ref HandGuardHasRoomForItem m_HasRoomGuard = new HandGuardHasRoomForItem;
+	ref HandGuardHasRoomForItem m_HasRoomGuard;
 
-	void HandSelectAnimationOfMoveFromHandsEvent (Man p = NULL) { m_Player = p; }
+	void HandSelectAnimationOfMoveFromHandsEvent (Man p = NULL) {
+		 m_Player = p; 
+		m_HasRoomGuard = new HandGuardHasRoomForItem(p);
+	}
 
 	override bool GuardCondition (HandEventBase e)
 	{

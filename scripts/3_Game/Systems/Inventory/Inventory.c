@@ -537,7 +537,7 @@ class GameInventory
 				Man man = Man.Cast(src.GetParent());
 				if (man)
 				{
-					Print("Inventory::EEInit - Man=" + man + " item=" + this);
+					inventoryDebugPrint("Inventory::EEInit - Man=" + man + " item=" + this);
 					man.GetHumanInventory().OnEntityInHandsCreated(src);
 				}
 			}
@@ -582,10 +582,10 @@ class GameInventory
 	 * @param[in]	item	\p		item to be placed in inventory
 	 * @return	true if item can be added, false otherwise
 	 **/
-	bool CanAddEntityToInventory (notnull EntityAI item)
+	bool CanAddEntityToInventory (notnull EntityAI item, int flag = FindInventoryLocationType.ANY)
 	{
 		InventoryLocation il = new InventoryLocation;
-		bool result = FindFreeLocationFor(item, FindInventoryLocationType.ANY, il);
+		bool result = FindFreeLocationFor(item, flag, il);
 		return result;
 	}
 	/**
@@ -660,6 +660,7 @@ class GameInventory
 	///@{ synchronization
 	bool OnInputUserDataProcess (ParamsReadContext ctx) { }
 	bool OnInventoryJunctureFromServer (ParamsReadContext ctx) { }
+	bool OnInventoryJunctureRepairFromServer (ParamsReadContext ctx) { }
 	void OnServerInventoryCommand (ParamsReadContext ctx) { }
 	///@} synchronization
 
@@ -685,7 +686,7 @@ class GameInventory
 	**/
 	bool TakeEntityToInventory (InventoryMode mode, FindInventoryLocationType flags, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
@@ -694,7 +695,7 @@ class GameInventory
 			if (FindFreeLocationFor(item, flags, dst))
 				return TakeToDst(mode, src, dst);
 
-			Print("[inv] I::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " Warning - no room for item");
+			inventoryDebugPrint("[inv] I::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " Warning - no room for item");
 			return false;
 		}
 		Error("[inv] I::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " Error - src has no inventory location");
@@ -704,7 +705,7 @@ class GameInventory
 	/// helper that finds location first, then moves the entity into it
 	bool TakeEntityToTargetInventory (InventoryMode mode, notnull EntityAI target, FindInventoryLocationType flags, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2Target(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Take2Target(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
@@ -714,7 +715,7 @@ class GameInventory
 			if (target.GetInventory().FindFreeLocationFor(item, flags, dst))
 				return TakeToDst(mode, src, dst);
 
-			Print("[inv] I::Take2Target(" + typename.EnumToString(InventoryMode, mode) + ") target=" + target + " item=" + item + " Warning - no room for item in target");
+			inventoryDebugPrint("[inv] I::Take2Target(" + typename.EnumToString(InventoryMode, mode) + ") target=" + target + " item=" + item + " Warning - no room for item in target");
 			return false;
 		}
 		Error("[inv] I::Take2Target(" + typename.EnumToString(InventoryMode, mode) + ") target=" + target + " item=" + item + " Error - src has no inventory location");
@@ -729,15 +730,19 @@ class GameInventory
 	 **/
 	bool TakeToDst (InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
-		Print("[inv] I::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+		inventoryDebugPrint("[inv] I::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 
 		switch (mode)
 		{
 			case InventoryMode.PREDICTIVE:
 				InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);
+				ClearInventoryReservation(dst.GetItem(),dst);
 				return LocationSyncMoveEntity(src, dst);
 
 			case InventoryMode.JUNCTURE:
+				DayZPlayer player = GetGame().GetPlayer();
+				player.GetHumanInventory().AddInventoryReservation(dst.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+			
 				InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);
 				return true;
 
@@ -761,14 +766,14 @@ class GameInventory
 	 **/
 	bool TakeEntityToCargo (InventoryMode mode, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2Cgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Take2Cgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		return TakeEntityToInventory(mode, FindInventoryLocationType.CARGO, item);
 	}
 
 	/// Put item into into cargo of another entity
 	bool TakeEntityToTargetCargo (InventoryMode mode, notnull EntityAI target, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2TargetCgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + "to cargo of target=" + target);
+		inventoryDebugPrint("[inv] I::Take2TargetCgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + "to cargo of target=" + target);
 		return TakeEntityToTargetInventory(mode, target, FindInventoryLocationType.CARGO, item);
 	}
 
@@ -779,7 +784,7 @@ class GameInventory
 	 **/
 	bool TakeEntityToCargoEx (InventoryMode mode, notnull EntityAI item, int idx, int row, int col)
 	{
-		Print("[inv] I::Take2Cgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " row=" + row + " col=" + col);
+		inventoryDebugPrint("[inv] I::Take2Cgo(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " row=" + row + " col=" + col);
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
@@ -795,7 +800,7 @@ class GameInventory
 	/// Put item into into cargo on specific cargo location of another entity
 	bool TakeEntityToTargetCargoEx (InventoryMode mode, notnull CargoBase cargo, notnull EntityAI item, int row, int col)
 	{
-		Print("[inv] I::Take2TargetCgoEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + "to cargo of target=" + cargo.GetCargoOwner() + " row=" + row + " col=" + col);
+		inventoryDebugPrint("[inv] I::Take2TargetCgoEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + "to cargo of target=" + cargo.GetCargoOwner() + " row=" + row + " col=" + col);
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
@@ -810,14 +815,14 @@ class GameInventory
 
 	bool TakeEntityAsAttachmentEx (InventoryMode mode, notnull EntityAI item, int slot)
 	{
-		Print("[inv] I::Take2AttEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " slot=" + slot);
+		inventoryDebugPrint("[inv] I::Take2AttEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " slot=" + slot);
 		return TakeEntityAsTargetAttachmentEx(mode, GetInventoryOwner(), item, slot);
 	}
 
 	/// put item as attachment of target
 	bool TakeEntityAsTargetAttachmentEx (InventoryMode mode, notnull EntityAI target, notnull EntityAI item, int slot)
 	{
-		Print("[inv] I::Take2TargetAttEx(" + typename.EnumToString(InventoryMode, mode) + ") as ATT of target=" + target + " item=" + item + " slot=" + slot);
+		inventoryDebugPrint("[inv] I::Take2TargetAttEx(" + typename.EnumToString(InventoryMode, mode) + ") as ATT of target=" + target + " item=" + item + " slot=" + slot);
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
@@ -832,13 +837,13 @@ class GameInventory
 
 	bool TakeEntityAsAttachment (InventoryMode mode, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2Att(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Take2Att(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		return TakeEntityToInventory(mode, FindInventoryLocationType.ATTACHMENT, item);
 	}
 
 	bool TakeEntityAsTargetAttachment (InventoryMode mode, notnull EntityAI target, notnull EntityAI item)
 	{
-		Print("[inv] I::Take2AttEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Take2AttEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		return TakeEntityToTargetInventory(mode, target, FindInventoryLocationType.ATTACHMENT, item);
 	}
 
@@ -899,7 +904,7 @@ class GameInventory
 		InventoryLocation src1, src2, dst1, dst2;
 		if (GameInventory.MakeSrcAndDstForSwap(item1, item2, src1, src2, dst1, dst2))
 		{
-			Print("[inv] I::Swap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
+			inventoryDebugPrint("[inv] I::Swap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 
 			switch (mode)
 			{
@@ -908,6 +913,10 @@ class GameInventory
 					return LocationSwap(src1, src2, dst1, dst2);
 
 				case InventoryMode.JUNCTURE:
+					DayZPlayer player = GetGame().GetPlayer();
+					player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
+					player.GetHumanInventory().AddInventoryReservation(dst2.GetItem(), dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
+
 					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, dst2);
 					return true;
 
@@ -928,7 +937,7 @@ class GameInventory
 		InventoryLocation src1, src2, dst1;
 		if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
 		{
-			Print("[inv] I::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(item2_dst));
+			inventoryDebugPrint("[inv] I::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(item2_dst));
 
 			switch (mode)
 			{
@@ -937,6 +946,10 @@ class GameInventory
 					return LocationSwap(src1, src2, dst1, item2_dst);
 
 				case InventoryMode.JUNCTURE:
+					DayZPlayer player = GetGame().GetPlayer();
+					player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
+					player.GetHumanInventory().AddInventoryReservation(item2_dst.GetItem(), item2_dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+				
 					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, item2_dst);
 					return true;
 
@@ -962,7 +975,7 @@ class GameInventory
 
 	bool DropEntity (InventoryMode mode, EntityAI owner, notnull EntityAI item)
 	{
-		Print("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
@@ -978,7 +991,7 @@ class GameInventory
 
 	bool LocalDestroyEntity (notnull EntityAI item)
 	{
-		Print("[inv] I::LocalDestroyEntity inv item=" + item);
+		inventoryDebugPrint("[inv] I::LocalDestroyEntity inv item=" + item);
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
@@ -998,7 +1011,7 @@ class GameInventory
 		InventoryLocation src = new InventoryLocation;
 		if (lambda.m_OldItem.GetInventory().GetCurrentInventoryLocation(src))
 		{
-			Print("[inv] I::ReplaceItemWithNew executing lambda=" + lambda + "on old_item=" + lambda.m_OldItem);
+			inventoryDebugPrint("[inv] I::ReplaceItemWithNew executing lambda=" + lambda + "on old_item=" + lambda.m_OldItem);
 			if (src.GetType() == InventoryLocationType.HANDS && src.GetParent().IsAlive())
 				Error("[inv] I::ReplaceItemWithNew Source location == HANDS, alive player has to handle this");
 

@@ -236,6 +236,7 @@ class InGameMenu extends UIScriptedMenu
 		
 		MissionGameplay missionGP = MissionGameplay.Cast(GetGame().GetMission());
 		missionGP.DestroyAllMenus();
+		missionGP.SetPlayerRespawning(true);
 		//---------------------------------------------------
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetMission().Continue);
 		Close();

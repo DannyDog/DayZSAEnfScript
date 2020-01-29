@@ -39,7 +39,7 @@ class cfgWeapons
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";
-		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag"};
 		magazines[] = {"Mag_Saiga_5Rnd","Mag_Saiga_8Rnd","Mag_Saiga_Drum20Rnd"};
 		magazineSwitchTime = 0.2;
 		PPDOFProperties[] = {1,0.5,10,140,4,10};
@@ -145,7 +145,7 @@ class cfgWeapons
 		descriptionShort = "$STR_cfgWeapons_Saiga12KShotgun1";
 		model = "\dz\weapons\shotguns\saiga\saiga.p3d";
 		itemSize[] = {7,3};
-		attachments[] = {"weaponButtstockSaiga","weaponOpticsAK","weaponWrap"};
+		attachments[] = {"weaponButtstockSaiga","weaponWrap","weaponOpticsAK"};
 		class DamageSystem
 		{
 			class GlobalHealth

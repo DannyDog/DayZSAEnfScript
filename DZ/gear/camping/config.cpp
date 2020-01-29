@@ -1340,6 +1340,7 @@ class CfgVehicles
 		itemSize[] = {1,5};
 		weight = 280;
 		itemBehaviour = 1;
+		attachments[] = {"Rope"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1455,6 +1456,7 @@ class CfgVehicles
 		itemSize[] = {1,5};
 		weight = 280;
 		itemBehaviour = 1;
+		attachments[] = {"Rope"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1635,7 +1637,7 @@ class CfgVehicles
 			class AnimRotate
 			{
 				source = "user";
-				animPeriod = 0.01;
+				animPeriod = 0.018;
 				initPhase = 0;
 			};
 			class Wall_Interact_Rotate: AnimRotate{};
@@ -2042,7 +2044,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L1_WoodenLogs","Material_L1_Nails","Material_L1_WoodenPlanks"};
-				icon = "cat_bb_level_1";
+				icon = "cat_bb_watchtower";
 				selection = "level_1";
 			};
 			class Level_1_Wall_1
@@ -2050,7 +2052,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L1W1_Nails","Material_L1W1_WoodenPlanks","Material_L1W1_MetalSheets","Level_1_Wall_1_Camonet","Level_1_Wall_1_Barbedwire_1","Level_1_Wall_1_Barbedwire_2"};
-				icon = "cat_bb_level_1_wall_1";
+				icon = "cat_bb_watchtower_wall_1";
 				selection = "level_1_wall_1";
 			};
 			class Level_1_Wall_2
@@ -2058,7 +2060,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L1W2_Nails","Material_L1W2_WoodenPlanks","Material_L1W2_MetalSheets","Level_1_Wall_2_Camonet","Level_1_Wall_2_Barbedwire_1","Level_1_Wall_2_Barbedwire_2"};
-				icon = "cat_bb_level_1_wall_2";
+				icon = "cat_bb_watchtower_wall_2";
 				selection = "level_1_wall_2";
 			};
 			class Level_1_Wall_3
@@ -2066,7 +2068,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L1W3_Nails","Material_L1W3_WoodenPlanks","Material_L1W3_MetalSheets","Level_1_Wall_3_Camonet","Level_1_Wall_3_Barbedwire_1","Level_1_Wall_3_Barbedwire_2"};
-				icon = "cat_bb_level_1_wall_3";
+				icon = "cat_bb_watchtower_wall_3";
 				selection = "level_1_wall_3";
 			};
 			class Level_2
@@ -2074,7 +2076,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L2_WoodenLogs","Material_L2_Nails","Material_L2_WoodenPlanks"};
-				icon = "cat_bb_level_2";
+				icon = "cat_bb_watchtower";
 				selection = "level_2";
 			};
 			class Level_2_Wall_1
@@ -2082,7 +2084,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L2W1_Nails","Material_L2W1_WoodenPlanks","Material_L2W1_MetalSheets","Level_2_Wall_1_Camonet"};
-				icon = "cat_bb_level_2_wall_1";
+				icon = "cat_bb_watchtower_wall_1";
 				selection = "level_2_wall_1";
 			};
 			class Level_2_Wall_2
@@ -2090,7 +2092,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L2W2_Nails","Material_L2W2_WoodenPlanks","Material_L2W2_MetalSheets","Level_2_Wall_2_Camonet"};
-				icon = "cat_bb_level_2_wall_2";
+				icon = "cat_bb_watchtower_wall_2";
 				selection = "level_2_wall_2";
 			};
 			class Level_2_Wall_3
@@ -2098,7 +2100,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L2W3_Nails","Material_L2W3_WoodenPlanks","Material_L2W3_MetalSheets","Level_2_Wall_3_Camonet"};
-				icon = "cat_bb_level_2_wall_3";
+				icon = "cat_bb_watchtower_wall_3";
 				selection = "level_2_wall_3";
 			};
 			class Level_3
@@ -2106,7 +2108,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L3_WoodenLogs","Material_L3_Nails","Material_L3_WoodenPlanks","Material_L3_MetalSheets"};
-				icon = "cat_bb_level_3";
+				icon = "cat_bb_watchtower";
 				selection = "level_3";
 			};
 			class Level_3_Wall_1
@@ -2114,7 +2116,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L3W1_Nails","Material_L3W1_WoodenPlanks","Material_L3W1_MetalSheets","Level_3_Wall_1_Camonet"};
-				icon = "cat_bb_level_3_wall_1";
+				icon = "cat_bb_watchtower_wall_1";
 				selection = "level_3_wall_1";
 			};
 			class Level_3_Wall_2
@@ -2122,7 +2124,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L3W2_Nails","Material_L3W2_WoodenPlanks","Material_L3W2_MetalSheets","Level_3_Wall_2_Camonet"};
-				icon = "cat_bb_level_3_wall_2";
+				icon = "cat_bb_watchtower_wall_2";
 				selection = "level_3_wall_2";
 			};
 			class Level_3_Wall_3
@@ -2130,7 +2132,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L3W3_Nails","Material_L3W3_WoodenPlanks","Material_L3W3_MetalSheets","Level_3_Wall_3_Camonet"};
-				icon = "cat_bb_level_3_wall_3";
+				icon = "cat_bb_watchtower_wall_3";
 				selection = "level_3_wall_3";
 			};
 		};
@@ -3978,7 +3980,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_CombinationLock0";
 		descriptionShort = "$STR_CfgVehicles_CombinationLock1";
 		model = "\DZ\gear\camping\combination_lock3.p3d";
-		inventorySlot = "Att_CombinationLock";
+		inventorySlot[] = {"Att_CombinationLock"};
 		rotationFlags = 34;
 		itemSize[] = {3,3};
 		weight = 350;
@@ -4730,7 +4732,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_CableReel0";
 		descriptionShort = "$STR_CfgVehicles_CableReel1";
 		model = "\dz\gear\camping\cable_reel.p3d";
-		inventorySlot = "CableReel";
+		inventorySlot[] = {"CableReel"};
 		weight = 5000;
 		itemSize[] = {3,4};
 		itemBehaviour = 2;
@@ -5040,7 +5042,7 @@ class CfgNonAIVehicles
 		scope = 2;
 		simulation = "ProxyInventory";
 		model = "";
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		autocenter = 0;
 		animated = 0;
 		shadow = 1;
@@ -5092,7 +5094,7 @@ class CfgNonAIVehicles
 	class Proxycable_reel
 	{
 		model = "DZ\gear\camping\cable_reel.p3d";
-		inventorySlot = "CableReel";
+		inventorySlot[] = {"CableReel"};
 		scope = 2;
 		simulation = "ProxyInventory";
 		autocenter = 0;

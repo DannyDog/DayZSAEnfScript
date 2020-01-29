@@ -837,10 +837,11 @@ class BaseBuildingBase extends ItemBase
 		return true;
 	}
 	
-	void FoldBaseBuildingObject()
+	ItemBase FoldBaseBuildingObject()
 	{
-		CreateConstructionKit();
+		ItemBase item = CreateConstructionKit();
 		DestroyConstruction();
+		return item;
 	}
 	
 	//Damage triggers (barbed wire)
@@ -880,10 +881,10 @@ class BaseBuildingBase extends ItemBase
 			area_damage.SetExtents( extents[0], extents[1] );
 			area_damage.SetAreaPosition( center );
 			area_damage.SetAreaOrientation( orientation );
-			area_damage.SetLoopInterval( 0.5 );
-			area_damage.SetDeferDuration( 0.5 );
-			area_damage.SetHitZones( { "Head","Torso","LeftHand","LeftLeg","LeftFoot","RightHand","RightLeg","RightFoot" } );
-			area_damage.SetAmmoName( "MeleeDamage" );
+			area_damage.SetLoopInterval( 1.0 );
+			area_damage.SetDeferDuration( 0.2 );
+			area_damage.SetHitZones( { "Torso","LeftHand","LeftLeg","LeftFoot","RightHand","RightLeg","RightFoot" } );
+			area_damage.SetAmmoName( "BarbedWireHit" );
 			area_damage.Spawn();
 			
 			m_DamageTriggers.Insert( slot_name, area_damage );

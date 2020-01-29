@@ -36,7 +36,7 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;//CCTSurface(UAMaxDistances.DEFAULT);
+		m_ConditionTarget = new CCTSurface(1.5);
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
@@ -47,22 +47,13 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 
 		g_Game.SurfaceUnderObject(player, surfType, liquidType);
 
-		if ( liquidType == LIQUID_WATER )
+		if ( g_Game.SurfaceIsPond(pos_cursor[0],pos_cursor[2]) || liquidType == LIQUID_WATER )
 		{
-			if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-			{
+			/*pos_cursor[1] = g_Game.SurfaceY(pos_cursor[0],pos_cursor[2]);
+			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT )
+			{*/
 				return true;
-			}
-			else
-			{
-				pos_cursor[1] = g_Game.SurfaceY(pos_cursor[0],pos_cursor[2]);
-				// TODO: use some automatic way for setting of surface description (when it's possible)
-				//GetGame().SurfaceGetType(pos_cursor[0], pos_cursor[2], m_TargetDescription);
-				if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT )
-				{
-					return true;
-				}
-			}
+			//}
 		}
 		return false;
 	}
@@ -82,8 +73,14 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
 	}
 	
+	override void OnEndServer(ActionData action_data)
+	{
+		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+	}
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
+		//Print("OnFinishProgressServer");
 		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
 		float amount = UAQuantityConsumed.DRINK;
 		action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_POND);
@@ -91,15 +88,34 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 
 	override void OnEndAnimationLoopServer( ActionData action_data )
 	{
+		//Print("OnEndAnimationLoopServer");
 		if(action_data.m_Player.HasBloodyHands())
 		{
 			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
 		}
 	}
-
-	override void OnEndServer( ActionData action_data )
+	
+	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
 	{
-		OnFinishProgressServer(action_data);
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		super.WriteToContext(ctx, action_data);
+		
+		if( HasTarget() )
+		{
+			ctx.Write(action_data.m_Target.GetCursorHitPos());
+		}
+	}
+	
+	override bool ReadFromContext(ParamsReadContext ctx, out ActionReciveData action_recive_data )
+	{		
+		super.ReadFromContext(ctx, action_recive_data);
+		
+		if( HasTarget() )
+		{
+			vector cursor_position;
+			if ( !ctx.Read(cursor_position) )
+				return false;
+			action_recive_data.m_Target.SetCursorHitPos(cursor_position);
+		}
+		return true;
 	}
 };

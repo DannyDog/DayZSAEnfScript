@@ -175,7 +175,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_SKS0";
 		descriptionShort = "$STR_cfgWeapons_SKS1";
 		model = "\dz\weapons\firearms\SKS\SKS.p3d";
-		attachments[] = {"weaponOpticsMosin","weaponBayonetSKS","weaponWrap","suppressorImpro"};
+		attachments[] = {"weaponWrap","weaponOpticsMosin","suppressorImpro","weaponBayonetSKS"};
 		itemSize[] = {9,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\SKS\data\sks_co.paa","",""};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\SKS\data\sks.rvmat","",""};

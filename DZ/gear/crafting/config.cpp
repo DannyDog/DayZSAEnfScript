@@ -75,6 +75,7 @@ class CfgVehicles
 		rotationFlags = 17;
 		itemSize[] = {1,3};
 		weight = 280;
+		inventorySlot[] = {"Rope"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -335,7 +336,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WoodenStick0";
 		descriptionShort = "$STR_CfgVehicles_WoodenStick1";
 		model = "\dz\gear\crafting\bp_wooden_stick.p3d";
-		inventorySlot = "WoodenStick";
+		inventorySlot[] = {"WoodenStick"};
 		weight = 220;
 		itemSize[] = {5,1};
 		canBeSplit = 1;
@@ -541,7 +542,6 @@ class CfgVehicles
 		weight = 670;
 		itemSize[] = {1,8};
 		inventorySlot[] = {"Shoulder","Melee"};
-		suicideAnim = "spear";
 		itemBehaviour = 1;
 		attachments[] = {"Ingredient"};
 		absorbency = 0.9;
@@ -566,7 +566,7 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 350;
 		itemSize[] = {3,2};
-		inventorySlot = "Glass";
+		inventorySlot[] = {"Glass"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -671,13 +671,13 @@ class CfgNonAIVehicles
 	class ProxyMaska_glass_g: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Glass";
+		inventorySlot[] = {"Glass"};
 		model = "\dz\characters\headgear\Maska_glass_g.p3d";
 	};
 	class ProxyMeat_steak: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		model = "\dz\gear\food\meat_steak.p3d";
 		class AnimationSources
 		{

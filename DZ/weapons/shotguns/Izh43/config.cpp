@@ -39,7 +39,7 @@ class cfgWeapons
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";
-		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Mag_12gaSnaploader_2Rnd"};
+		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag","Mag_12gaSnaploader_2Rnd"};
 		DisplayMagazine = 0;
 		magazines[] = {};
 		PPDOFProperties[] = {1,0.5,10,175,4,10};
@@ -190,7 +190,7 @@ class cfgWeapons
 			cartridgeVel = "nabojniceend_2";
 			modes[] = {"Single","Burst"};
 			magazines[] = {};
-			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Mag_12gaSnaploader_2Rnd"};
+			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
 			barrelArmor = 1000.0;
 			initSpeedMultiplier = 1.0;
 			irDistance = 0.0;
@@ -290,7 +290,7 @@ class cfgWeapons
 			cartridgeVel = "nabojniceend_2";
 			modes[] = {"Single","Burst"};
 			magazines[] = {};
-			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Mag_12gaSnaploader_2Rnd"};
+			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
 			barrelArmor = 1000.0;
 			initSpeedMultiplier = 1.0;
 			irDistance = 0.0;

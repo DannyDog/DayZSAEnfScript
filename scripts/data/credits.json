@@ -6,9 +6,20 @@
                 {
                     "SectionName": "#project_lead",
                     "SectionLines": [
-                        "Julien Vida",
+                        "Adam Franců",
                         "David Durčák",
                         "Eugen Harton"
+                    ]
+                }
+            ]
+        },
+		{
+            "DepartmentName": "",
+            "Sections": [
+                {
+                    "SectionName": "#executive_producer",
+                    "SectionLines": [
+						"Julien Vida"
                     ]
                 }
             ]
@@ -19,9 +30,9 @@
                 {
                     "SectionName": "#production",
                     "SectionLines": [
-                        "Ľuboš Kubiš",
-                        "Roman Múdry",
                         "Tim Pulsmeier",
+						"Ľuboš Kubiš",
+                        "Roman Múdry",
                         "Matt Lightfoot"
                     ]
                 }
@@ -45,6 +56,7 @@
                 {
                     "SectionName": "#lead_designer",
                     "SectionLines": [
+					    "Tomáš Pulkrábek",
                         "Peter Nespešný"
                     ]
                 }
@@ -60,8 +72,7 @@
                         "Marek Žilavý",
                         "Martin Strnad",
                         "Michal Břinda",
-                        "Ondřej Malota",
-                        "Tomáš Pulkrábek"
+                        "Ondřej Malota"
                     ]
                 }
             ]
@@ -90,7 +101,6 @@
                         "Jakub Palkovič",
                         "Ľuboš Kováč",
                         "Martin Strapko",
-                        "Martin Weiser",
                         "Peter Jánošík",
                         "Radek Řáda",
                         "Vratislav Jindřich"
@@ -104,7 +114,6 @@
                 {
                     "SectionName": "#environment_designers",
                     "SectionLines": [
-                        "Adam Franců",
                         "Arseniy Smirnov",
                         "Ivan Buchta",
                         "Mark Gill",
@@ -136,6 +145,7 @@
                 {
                     "SectionName": "#programmers",
                     "SectionLines": [
+					    "Martin Weiser",
                         "Adrian Turcanu",
                         "Aleš Renner",
                         "Eduard Pribula",
@@ -248,7 +258,8 @@
                         "Peter Skala",
                         "Rastislav Hlavatý",
                         "Roman Straponček",
-                        "Théo Escamez"
+                        "Théo Escamez",
+						"Yogesh Batra"
                     ]
                 }
             ]
@@ -282,7 +293,8 @@
                 {
                     "SectionName": "#audio_lead",
                     "SectionLines": [
-                        "Jan Dušek"
+                        "Jan Dušek",
+						"Tomáš Bayer"
                     ]
                 }
             ]
@@ -297,8 +309,7 @@
                         "Andrej Sinkević",
                         "Filip Čenžák",
                         "Kryštof Havel",
-                        "Marek Lacena",
-                        "Tomáš Bayer"
+                        "Marek Lacena"
                     ]
                 }
             ]
@@ -333,6 +344,7 @@
                     "SectionName": "#quality_assurance_specialists",
                     "SectionLines": [
                         "Daniel Fialka",
+						"Dominik Novák",
                         "Erik Vrškový",
                         "Jan Jirák",
                         "Jiří Dytrych",
@@ -368,6 +380,7 @@
                         "Martin Cmar",
                         "Martin Krošlák",
                         "Michal Varnuška",
+						"Michal Žák",
                         "Miroslav Horváth",
                         "Peter Čimo",
                         "Vincent Mahnke"
@@ -485,11 +498,34 @@
             "DepartmentName": "",
             "Sections": [
                 {
+                    "SectionName": "#bohemia_interactive_development_teams",
+                    "SectionLines": [
+                        "Contact Team",
+						"Livonia Terrain Team"
+                    ]
+                }
+            ]
+        },		
+        {
+            "DepartmentName": "",
+            "Sections": [
+                {
                     "SectionName": "#brand_and_pr_manager",
                     "SectionLines": [
                         "Anna Buenafe",
                         "Martin Čulák",
                         "Dustin Hucks"
+                    ]
+                }
+            ]
+        },
+		{
+            "DepartmentName": "",
+            "Sections": [
+                {
+                    "SectionName": "#marketing_specialist",
+                    "SectionLines": [
+                        "Scott Bowen"
                     ]
                 }
             ]
@@ -500,7 +536,8 @@
                 {
                     "SectionName": "#brand_and_pr_management_team",
                     "SectionLines": [
-                        "Matěj Smrček",
+                        "Miguel Raimundo",
+						"Matěj Smrček",
                         "Michael Christensen",
                         "Zuzana Cinková"
                     ]
@@ -532,10 +569,44 @@
                         "Jan Libich",
                         "Matt Lightfoot",
                         "Nela Wojaczková",
-                        "Nikolas Rašín",
                         "Ota Vrťátko",
                         "Petr Hovanec",
                         "Vanessa Itriago Ramos"
+                    ]
+                }
+            ]
+        },
+		{
+            "DepartmentName": "",
+            "Sections": [
+                {
+                    "SectionName": "#technical_publishing_manager",
+                    "SectionLines": [
+                        "David Kolečkář"
+                    ]
+                }
+            ]
+        },
+		{
+            "DepartmentName": "",
+            "Sections": [
+                {
+                    "SectionName": "#platform_support_lead",
+                    "SectionLines": [
+                        "Filip Rybář"
+                    ]
+                }
+            ]
+        },
+		{
+            "DepartmentName": "",
+            "Sections": [
+                {
+                    "SectionName": "#platform_support_specialists",
+                    "SectionLines": [
+                        "Kristýna Valíková",
+						"Nikolas Rašín",
+						"Richard Kužidlo"
                     ]
                 }
             ]
@@ -617,13 +688,13 @@
                         "Danila Konrad",
                         "David Mařák",
                         "Dominik Kučera",
-                        "Dominik Novák",
                         "Doubravka Ježková",
                         "Egor Ploskov",
                         "Emil Zima",
                         "Filip Čort",
                         "Filip Faschingbauer",
                         "Filip Knotek",
+						"Filip Konupka",
                         "František Bláha",
                         "František Pichnarčík",
                         "Hynek Svoboda",
@@ -648,29 +719,36 @@
                         "Josef Vozáb",
                         "Kamil Beer",
                         "Karolína Skalová",
+						"Kristina Kirichenko",
                         "Kryštof Verner",
                         "Le Do",
                         "Lucie Svobodová",
-                        "Marek Hvizdoš",
+						"Lukáš Jaro",
+						"Marek Hvizdoš",
                         "Marek Vítek",
                         "Marta Hlinková",
                         "Martin Bílek",
                         "Martin Mayer",
                         "Martin Mokrejš",
+						"Martin Pivon",
                         "Martin Suriak",
                         "Matěj Müller",
-                        "Matěj Smrček",
+						"Matouš Hrdlicka",
                         "Matyáš Soviš",
                         "Max Hejtmánek",
                         "Michal Jandura",
                         "Michal Kolman",
                         "Michal Měřinský",
                         "Michal Skramuský",
+						"Miroslav Kovář",
                         "Oldřich Kalous",
                         "Ondřej Borz",
                         "Ondřej Vanáč",
                         "Ondřej Vanča",
                         "Pankaj Singh",
+						"Patrik Šedivý",
+						"Pavel Fitz",
+						"Pavel Fronek",
                         "Pavel Hamata",
                         "Pavol Sočuvka",
                         "Petr Hlaváč",
@@ -692,7 +770,8 @@
                         "Sittiporn Lapasuwan",
                         "Soňa Cicoňová",
                         "Stanislav Zolotuchin",
-                        "Štěpán Šach",
+                        "Štěpán Riedl",
+						"Štěpán Šach",
                         "Štěpán Šikýř",
                         "Tadeáš Varga",
                         "Teo Kryštůfek",
@@ -785,7 +864,7 @@
                         "Slavomír Pavlíček",
                         "Tomáš Rokos",
                         "Veronika Vyškovská",
-                        "Zbyněk Schwarz "
+                        "Zbyněk Schwarz"
                     ]
                 }
             ]
@@ -827,7 +906,7 @@
             "DepartmentName": "",
             "Sections": [
                 {
-                    "SectionName": "#speacial_thanks",
+                    "SectionName": "#special_thanks",
                     "SectionLines": [
                         "Bořivoj Hlava",
                         "Dmitry Sorokin",
@@ -849,7 +928,7 @@
                         "Petr Rak",
                         "Quirin Eberle",
                         "Roman Roba",
-                        "You"
+                        "and You"
                     ]
                 }
             ]

@@ -2,12 +2,13 @@ class ActionDestroyCombinationLockCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT_DESTROY);
+		m_ActionData.m_ActionComponent = new CAContinuousRepeat(6.0);
 	}
 };
 
 class ActionDestroyCombinationLock: ActionContinuousBase
-{	
+{
+	static int CYCLES = 5;
 	void ActionDestroyCombinationLock()
 	{
 		m_CallbackClass = ActionDestroyCombinationLockCB;
@@ -50,8 +51,13 @@ class ActionDestroyCombinationLock: ActionContinuousBase
 			CombinationLock combination_lock = fence.GetCombinationLock();
 			if ( combination_lock )
 			{
-				combination_lock.UnlockServer( action_data.m_Player, fence );
-				GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( combination_lock.DestroyLock, 200, false );
+				combination_lock.AddHealth("","",-(combination_lock.GetMaxHealth("","")/CYCLES));
+				
+				if ( combination_lock.IsDamageDestroyed() )
+				{
+					combination_lock.UnlockServer( action_data.m_Player, fence );
+					GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( combination_lock.DestroyLock, 200, false );
+				}
 			}
 		}
 		

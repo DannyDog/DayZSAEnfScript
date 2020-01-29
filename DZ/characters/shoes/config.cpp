@@ -30,7 +30,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_MaleFeet_Base0";
 		model = "\DZ\characters\shoes\feet3_m.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"DZ\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -140,7 +140,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_FemaleFeet_Base0";
 		model = "\DZ\characters\shoes\feet3_f.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"dz\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -367,7 +367,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_AthleticShoes_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_AthleticShoes_ColorBase1";
 		model = "\DZ\characters\shoes\athleticShoes_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 330;
@@ -446,7 +446,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HikingBoots_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_HikingBoots_ColorBase1";
 		model = "\DZ\characters\shoes\hikingBoots_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 400;
@@ -540,7 +540,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HikingBootsLow_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_HikingBootsLow_ColorBase1";
 		model = "\DZ\characters\shoes\hikingBoots_low_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,3};
 		weight = 270;
@@ -646,7 +646,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Wellies_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Wellies_ColorBase1";
 		model = "\DZ\characters\shoes\wellies_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 700;
@@ -752,7 +752,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WorkingBoots_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_WorkingBoots_ColorBase1";
 		model = "\DZ\characters\shoes\WorkingBoots_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,3};
 		weight = 1100;
@@ -864,7 +864,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_JungleBoots_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_JungleBoots_ColorBase1";
 		model = "\DZ\characters\shoes\JungleBoots_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 1230;
@@ -976,7 +976,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_DressShoes_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_DressShoes_ColorBase1";
 		model = "\DZ\characters\shoes\LeatherShoes_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 780;
@@ -1087,7 +1087,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MilitaryBoots_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MilitaryBoots_ColorBase1";
 		model = "\DZ\characters\shoes\MilitaryBoots_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 1100;
@@ -1200,7 +1200,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_CombatBoots_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_CombatBoots_ColorBase1";
 		model = "\DZ\characters\shoes\CombatBoots_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 1350;
@@ -1312,7 +1312,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_JoggingShoes_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_JoggingShoes_ColorBase1";
 		model = "\DZ\characters\shoes\JoggingShoes_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 300;
@@ -1388,7 +1388,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherShoes_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherShoes_ColorBase1";
 		model = "\DZ\characters\shoes\Shoes_LeatherMoccasins_g.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 380;
@@ -1543,7 +1543,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Sneakers_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Sneakers_ColorBase1";
 		model = "\DZ\characters\shoes\Sneakers_g.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 780;
@@ -1621,7 +1621,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_NBCBootsBase0";
 		descriptionShort = "$STR_CfgVehicles_NBCBootsBase1";
 		model = "\DZ\characters\shoes\NBC_Boots_g.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {3,2};
 		weight = 300;
@@ -1693,7 +1693,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Ballerinas_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Ballerinas_ColorBase1";
 		model = "\DZ\characters\shoes\Ballerinas_ground.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,2};
 		weight = 520;
@@ -1763,7 +1763,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TTSKOBoots0";
 		descriptionShort = "$STR_CfgVehicles_TTSKOBoots1";
 		model = "\DZ\characters\shoes\TTsKO_Boots_g.p3d";
-		inventorySlot = "Feet";
+		inventorySlot[] = {"Feet"};
 		itemInfo[] = {"Clothing","Feet"};
 		itemSize[] = {4,4};
 		weight = 1200;

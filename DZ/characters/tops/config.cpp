@@ -30,7 +30,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_MaleTorso_Base0";
 		model = "\DZ\characters\tops\torso3_m.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 	};
@@ -139,7 +139,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_FemaleTorso_Base0";
 		model = "\DZ\characters\tops\torso3_f.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 	};
@@ -328,7 +328,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Armband_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Armband_ColorBase1";
 		model = "\DZ\characters\tops\armbend_g.p3d";
-		inventorySlot = "Armband";
+		inventorySlot[] = {"Armband"};
 		itemInfo[] = {"Clothing","Armband"};
 		rotationFlags = 34;
 		weight = 80;
@@ -432,7 +432,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Sweater_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Sweater_ColorBase1";
 		model = "\DZ\characters\tops\sweater_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1320;
 		itemSize[] = {3,2};
@@ -539,7 +539,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Shirt_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Shirt_ColorBase1";
 		model = "\DZ\characters\tops\Shirt_ground.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 270;
 		itemSize[] = {3,2};
@@ -622,7 +622,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TShirt_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_TShirt_ColorBase1";
 		model = "\DZ\characters\tops\tshirt_ground.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 310;
 		itemSize[] = {3,2};
@@ -732,7 +732,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Hoodie_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Hoodie_ColorBase1";
 		model = "\DZ\characters\tops\hoodie_ground.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 850;
 		itemSize[] = {3,3};
@@ -851,7 +851,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TacticalShirt_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_TacticalShirt_ColorBase1";
 		model = "\DZ\characters\tops\pcu5jacket_ground.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 270;
 		itemSize[] = {4,3};
@@ -959,7 +959,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HikingJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_HikingJacket_ColorBase1";
 		model = "\DZ\characters\tops\pcu5jacket_ground.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 270;
 		itemSize[] = {4,3};
@@ -1066,7 +1066,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Raincoat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Raincoat_ColorBase1";
 		model = "\DZ\characters\tops\raincoat_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1700;
 		itemSize[] = {3,3};
@@ -1162,7 +1162,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_M65Jacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_M65Jacket_ColorBase1";
 		model = "\DZ\characters\tops\M65_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1630;
 		itemSize[] = {4,3};
@@ -1269,7 +1269,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TTsKOJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_TTsKOJacket_ColorBase1";
 		model = "\DZ\characters\tops\TTsKO_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1510;
 		itemSize[] = {4,3};
@@ -1359,7 +1359,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GorkaEJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_GorkaEJacket_ColorBase1";
 		model = "\DZ\characters\tops\gorka_up_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 2100;
 		itemSize[] = {4,3};
@@ -1466,7 +1466,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_RidersJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_RidersJacket_ColorBase1";
 		model = "\DZ\characters\tops\riders_jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 12;
 		weight = 2800;
@@ -1556,7 +1556,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WoolCoat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_WoolCoat_ColorBase1";
 		model = "\DZ\characters\tops\WoolCoat_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 3200;
 		itemSize[] = {4,4};
@@ -1697,7 +1697,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TrackSuitJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_TrackSuitJacket_ColorBase1";
 		model = "\DZ\characters\tops\TrackSuit_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 940;
 		itemSize[] = {3,2};
@@ -1778,7 +1778,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PoliceJacket0";
 		descriptionShort = "$STR_CfgVehicles_PoliceJacket1";
 		model = "\DZ\characters\tops\PoliceJacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 2100;
 		itemSize[] = {4,3};
@@ -1864,7 +1864,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PoliceJacketOrel0";
 		descriptionShort = "$STR_CfgVehicles_PoliceJacketOrel1";
 		model = "\DZ\characters\tops\PoliceJacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 2700;
 		itemSize[] = {4,3};
@@ -1949,7 +1949,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ParamedicJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_ParamedicJacket_ColorBase1";
 		model = "\DZ\characters\tops\ParaMedic_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1100;
 		itemSize[] = {4,3};
@@ -2047,7 +2047,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_FirefighterJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_FirefighterJacket_ColorBase1";
 		model = "\DZ\characters\tops\Firefighter_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 1;
 		weight = 7400;
@@ -2143,7 +2143,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PrisonUniformJacket0";
 		descriptionShort = "$STR_CfgVehicles_PrisonUniformJacket1";
 		model = "\DZ\characters\tops\prison_top_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 410;
 		itemSize[] = {3,3};
@@ -2194,7 +2194,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MiniDress_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MiniDress_ColorBase1";
 		model = "\DZ\characters\tops\MiniDress_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 520;
 		itemSize[] = {3,3};
@@ -2286,7 +2286,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_QuiltedJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_QuiltedJacket_ColorBase1";
 		model = "\DZ\characters\tops\QuiltedJacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 17;
 		weight = 2010;
@@ -2412,7 +2412,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BomberJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BomberJacket_ColorBase1";
 		model = "\DZ\characters\tops\BomberJacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 3200;
 		itemSize[] = {4,3};
@@ -2533,7 +2533,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherJacket_ColorBase1";
 		model = "\DZ\characters\tops\Top_LeatherJacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 3100;
 		itemSize[] = {4,4};
@@ -2689,7 +2689,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HuntingJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_HuntingJacket_ColorBase1";
 		model = "\DZ\characters\tops\Hunting_jacket_G.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 34;
 		weight = 3200;
@@ -2803,7 +2803,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MedicalScrubsShirt_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MedicalScrubsShirt_ColorBase1";
 		model = "\DZ\characters\tops\MedicalScrubs_Shirt_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 500;
 		itemSize[] = {3,2};
@@ -2869,7 +2869,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LabCoat0";
 		descriptionShort = "$STR_CfgVehicles_LabCoat1";
 		model = "\dz\characters\tops\LabCoat_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 17;
 		weight = 370;
@@ -2922,7 +2922,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_NurseDress_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_NurseDress_ColorBase1";
 		model = "\dz\characters\tops\NurseDress_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 4;
 		weight = 200;
@@ -2984,7 +2984,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_USMCJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_USMCJacket_ColorBase1";
 		model = "\dz\characters\tops\USMC_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1500;
 		itemSize[] = {4,3};
@@ -3080,7 +3080,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Blouse_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Blouse_ColorBase1";
 		model = "\DZ\characters\tops\blouse_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 105;
 		itemSize[] = {3,2};
@@ -3144,7 +3144,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_NBCJacketBase0";
 		descriptionShort = "$STR_CfgVehicles_NBCJacketBase1";
 		model = "\DZ\characters\tops\NBC_Jacket_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1500;
 		itemSize[] = {4,3};
@@ -3235,7 +3235,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_DenimJacket1";
 		model = "\DZ\characters\tops\denim_jacket_g.p3d";
 		rotationFlags = 17;
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 350;
 		itemSize[] = {4,3};
@@ -3321,7 +3321,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_telnyashkashirt0";
 		descriptionShort = "$STR_cfgvehicles_telnyashkashirt1";
 		model = "\DZ\characters\tops\Telnyashka_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 34;
 		weight = 200;
@@ -3375,7 +3375,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ChernarusSportShirt0";
 		descriptionShort = "$STR_CfgVehicles_ChernarusSportShirt1";
 		model = "\DZ\characters\tops\Chernarus_sport_shirt_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 34;
 		weight = 350;
@@ -3428,7 +3428,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_JumpsuitJacket_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_JumpsuitJacket_ColorBase1";
 		model = "\DZ\characters\tops\Jumpsuit_top_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		rotationFlags = 17;
 		weight = 1050;
@@ -3540,7 +3540,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_BDUJacket1";
 		model = "\DZ\characters\tops\M65_Jacket_g.p3d";
 		visibilityModifier = 0.7;
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1700;
 		itemSize[] = {4,3};
@@ -3624,7 +3624,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ManSuit_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_ManSuit_ColorBase1";
 		model = "\DZ\characters\tops\Man_suit_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1500;
 		itemSize[] = {4,3};
@@ -3757,7 +3757,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WomanSuit_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_WomanSuit_ColorBase1";
 		model = "\DZ\characters\tops\Woman_suit_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1200;
 		itemSize[] = {4,3};
@@ -3890,7 +3890,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherShirt_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherShirt_ColorBase1";
 		model = "\DZ\characters\tops\long_sleeve_shirt_g.p3d";
-		inventorySlot = "Body";
+		inventorySlot[] = {"Body"};
 		itemInfo[] = {"Clothing","Body"};
 		weight = 1300;
 		itemSize[] = {3,2};
@@ -3976,17 +3976,6 @@ class CfgVehicles
 		class DamageSystem: DamageSystem
 		{
 			class GlobalArmor: GlobalArmor{};
-		};
-	};
-	class TShirtAbove: TShirt_ColorBase
-	{
-		scope = 1;
-		displayName = "$STR_CfgVehicles_TShirtAbove0";
-		visibilityModifier = 0.98;
-		class ClothingTypes
-		{
-			male = "\DZ\characters\tops\tshirt_m_above0.p3d";
-			female = "\DZ\characters\tops\tshirt_m_above0.p3d";
 		};
 	};
 };

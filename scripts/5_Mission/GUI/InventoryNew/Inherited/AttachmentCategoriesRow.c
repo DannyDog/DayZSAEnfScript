@@ -93,7 +93,7 @@ class AttachmentCategoriesRow: ClosableContainer
 				}
 				else if( selected_slot != -1 )
 				{
-					if( prev_item )
+					if( prev_item && prev_item.GetInventory().CanRemoveEntity() )
 					{
 						InventoryLocation inv_loc = new InventoryLocation;
 						prev_item.GetInventory().GetCurrentInventoryLocation( inv_loc );
@@ -125,7 +125,7 @@ class AttachmentCategoriesRow: ClosableContainer
 						selected_item.GetInventory().GetCurrentInventoryLocation( inv_loc_src );
 						m_Entity.GetInventory().FindFreeLocationFor( selected_item, FindInventoryLocationType.ATTACHMENT, inv_loc_dst );
 						
-						if( inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
+						if( selected_item.GetInventory().CanRemoveEntity() && inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
 						{
 							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc_dst.GetSlot() );
 							quantity = selected_item.GetQuantity();
@@ -189,7 +189,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		
 		if( item && !item.IsLockedInSlot() && !GetFocusedIcon().IsOutOfReach() )
 		{
-			player.PredictiveDropEntity( item );
+			player.PhysicalPredictiveDropItem( item );
 			return true;
 		}
 		return false;
@@ -360,17 +360,18 @@ class AttachmentCategoriesRow: ClosableContainer
 	
 	override bool IsEmpty()
 	{
-		return false;
+		return GetFocusedIcon().GetEntity() == null && !GetFocusedIcon().IsOutOfReach();
 	}
 	
 	override bool IsItemActive()
 	{
-		return false;
+		return GetFocusedIcon().GetEntity() != null && !GetFocusedIcon().IsOutOfReach();
 	}
 
 	override bool IsItemWithQuantityActive()
 	{
-		return false;
+		ItemBase item = GetFocusedIcon().GetItem();
+		return item && !GetFocusedIcon().IsOutOfReach() && item.CanBeSplit();
 	}
 	
 	void SetDefaultFocus()
@@ -714,63 +715,6 @@ class AttachmentCategoriesRow: ClosableContainer
 			ItemManager.GetInstance().ShowSourceDropzone( iw.GetItem() );
 			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
 		}
-	}
-	
-	void OnIconDrag( Widget w )
-	{
-		ItemManager.GetInstance().SetIsDragging( true );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget(name) );
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item )
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-	
-			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-			icon_x = x_content / 10;
-			icon_y = x_content / 10;
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-		
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Col", "Selected" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Selected", "Temperature" );
-			w.FindAnyWidget( name ).Show( false );
-			name.Replace( "Temperature", "RadialIcon" );
-			w.GetParent().FindAnyWidget( name ).Show( false );
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-		}
-	}
-	
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Col" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Col", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
-		name.Replace( "Selected", "Temperature" );
-		w.FindAnyWidget( name ).Show( false );
-		//name.Replace( "Temperature", "GhostSlot" );
-		//w.GetParent().FindAnyWidget( name ).Show( true );
 	}
 	
 	void DoubleClick(Widget w, int x, int y, int button)
@@ -1117,9 +1061,6 @@ class AttachmentCategoriesRow: ClosableContainer
 					WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetMainWidget(),  this, "DraggingOverHeader" );
 					WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetGhostSlot(),  this, "DraggingOverHeader" );
 					WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetPanelWidget(),  this, "DraggingOverHeader" );
-					
-					WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetMainWidget(),  this, "OnIconDrag" );
-					WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetPanelWidget(),  this, "OnIconDrag" );
 					
 					WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetMainWidget(),  this, "OnIconDrop" );
 					WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetPanelWidget(),  this, "OnIconDrop" );

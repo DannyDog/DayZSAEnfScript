@@ -34,7 +34,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BandageDressing0";
 		descriptionShort = "$STR_CfgVehicles_BandageDressing1";
 		model = "\dz\gear\medical\Bandage_dressing.p3d";
-		inventorySlot = "MedicalBandage";
+		inventorySlot[] = {"MedicalBandage"};
 		isMeleeWeapon = 1;
 		varQuantityInit = 4;
 		varQuantityMin = 0;
@@ -96,7 +96,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_DisinfectantSpray0";
 		descriptionShort = "$STR_CfgVehicles_DisinfectantSpray1";
 		model = "\dz\gear\medical\DisinfectantSpray.p3d";
-		inventorySlot = "Disinfectant";
+		inventorySlot[] = {"Disinfectant"};
 		quantityBar = 1;
 		weight = 50;
 		stackedUnit = "ml";
@@ -253,6 +253,7 @@ class CfgVehicles
 		itemSize[] = {1,2};
 		weight = 20;
 		stackedUnit = "pills";
+		quantityBar = 0;
 		absorbency = 0.7;
 		class DamageSystem
 		{
@@ -311,6 +312,7 @@ class CfgVehicles
 		itemSize[] = {1,2};
 		weight = 20;
 		stackedUnit = "pills";
+		quantityBar = 0;
 		absorbency = 0.9;
 		class DamageSystem
 		{
@@ -369,6 +371,7 @@ class CfgVehicles
 		varQuantityDestroyOnMin = 1;
 		weight = 20;
 		stackedUnit = "pills";
+		quantityBar = 0;
 		absorbency = 0.7;
 		class DamageSystem
 		{
@@ -1058,7 +1061,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 20;
 					healthLevels[] = {{1.0,{"DZ\gear\medical\data\BloodBag_Full.rvmat"}},{0.7,{"DZ\gear\medical\data\BloodBag_Full.rvmat"}},{0.5,{"DZ\gear\medical\data\BloodBag_Full_damage.rvmat"}},{0.3,{"DZ\gear\medical\data\BloodBag_Full_damage.rvmat"}},{0.0,{"DZ\gear\medical\data\BloodBag_Full_destruct.rvmat"}}};
 				};
 			};

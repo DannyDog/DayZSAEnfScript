@@ -37,7 +37,7 @@ class CfgVehicles
 		absorbency = 1;
 		itemSize[] = {1,1};
 		rotationFlags = 16;
-		inventorySlot = "Paper";
+		inventorySlot[] = {"Paper"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -285,7 +285,7 @@ class CfgVehicles
 		varQuantityInit = 8.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 8.0;
-		inventorySlot = "Stones";
+		inventorySlot[] = {"Stones"};
 		isMeleeWeapon = 1;
 		class DamageSystem
 		{
@@ -359,7 +359,7 @@ class CfgVehicles
 		varQuantityMax = 6.0;
 		varQuantityDestroyOnMin = 1;
 		varStackMax = 1.0;
-		inventorySlot = "Firewood";
+		inventorySlot[] = {"Firewood"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -399,7 +399,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 50;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "BatteryD";
+		inventorySlot[] = {"BatteryD"};
 		rotationFlags = 17;
 		class EnergyManager
 		{
@@ -449,7 +449,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 20;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "GasCanister";
+		inventorySlot[] = {"GasCanister"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -488,7 +488,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 20;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "GasCanister";
+		inventorySlot[] = {"GasCanister"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -527,7 +527,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 20;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "GasCanister";
+		inventorySlot[] = {"GasCanister"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -561,7 +561,7 @@ class CfgVehicles
 		weight = 120;
 		itemSize[] = {2,3};
 		quantityBar = 1;
-		inventorySlot = "ButaneTorchCanister";
+		inventorySlot[] = {"ButaneTorchCanister"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -718,7 +718,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 20;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "tripWireAttachment";
+		inventorySlot[] = {"tripWireAttachment"};
 		rotationFlags = 17;
 		hiddenSelections[] = {"Burning","Burned_out","Pristine","All"};
 		hiddenSelectionsTextures[] = {"dz\gear\consumables\data\road_flare_co.paa"};
@@ -811,7 +811,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 100;
 		varQuantityDestroyOnMin = 0;
-		inventorySlot = "Chemlight";
+		inventorySlot[] = {"Chemlight"};
 		rotationFlags = 17;
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\gear\consumables\data\chemlight_ca.paa"};
@@ -1177,7 +1177,7 @@ class CfgVehicles
 		weight = 1;
 		absorbency = 0.8;
 		itemSize[] = {1,1};
-		inventorySlot = "Hook";
+		inventorySlot[] = {"Hook"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1199,7 +1199,7 @@ class CfgVehicles
 		weight = 1;
 		absorbency = 0.8;
 		itemSize[] = {1,1};
-		inventorySlot = "Hook";
+		inventorySlot[] = {"Hook"};
 		rotationFlags = 17;
 		class DamageSystem
 		{
@@ -1249,7 +1249,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_bark_oak0";
 		descriptionShort = "$STR_CfgVehicles_Bark_Oak1";
 		model = "\dz\gear\consumables\oak_bark.p3d";
-		inventorySlot = "OakBark";
+		inventorySlot[] = {"OakBark"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1268,7 +1268,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Bark_Birch0";
 		descriptionShort = "$STR_CfgVehicles_Bark_Birch1";
 		model = "\dz\gear\consumables\birch_bark.p3d";
-		inventorySlot = "BirchBark";
+		inventorySlot[] = {"BirchBark"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1347,7 +1347,7 @@ class CfgVehicles
 		weight = 15;
 		absorbency = 0.8;
 		itemSize[] = {1,1};
-		inventorySlot = "Hook";
+		inventorySlot[] = {"Hook"};
 		rotationFlags = 17;
 		hookType = "Hook";
 		class DamageSystem
@@ -1380,7 +1380,7 @@ class CfgVehicles
 		weight = 15;
 		absorbency = 0.8;
 		itemSize[] = {1,1};
-		inventorySlot = "Hook";
+		inventorySlot[] = {"Hook"};
 		rotationFlags = 17;
 		hookType = "BoneHook";
 		class DamageSystem
@@ -1415,7 +1415,7 @@ class CfgVehicles
 		itemSize[] = {3,5};
 		stackedUnit = "g";
 		quantityBar = 1;
-		inventorySlot = "Lime";
+		inventorySlot[] = {"Lime"};
 		varQuantityInit = 5000.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 5000.0;
@@ -1538,9 +1538,9 @@ class CfgVehicles
 		weight = 5000;
 		itemSize[] = {7,20};
 		canBeSplit = 0;
-		varQuantityInit = 84.0;
+		varQuantityInit = 252.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 84.0;
+		varQuantityMax = 252.0;
 		varQuantityDestroyOnMin = 1;
 		rotationFlags = 256;
 		physLayer = "item_large";
@@ -1660,7 +1660,7 @@ class CfgNonAIVehicles
 	class Proxyroad_flare: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "tripWireAttachment";
+		inventorySlot[] = {"tripWireAttachment"};
 		model = "\dz\gear\consumables\road_flare.p3d";
 		class AnimationSources
 		{
@@ -1681,19 +1681,19 @@ class CfgNonAIVehicles
 	class ProxyGasCannisterLarge: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "GasCanister";
+		inventorySlot[] = {"GasCanister"};
 		model = "\dz\gear\consumables\GasCannisterLarge.p3d";
 	};
 	class Proxybait_hook: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Hook";
+		inventorySlot[] = {"Hook"};
 		model = "\dz\gear\consumables\bait_hook.p3d";
 	};
 	class ProxyChemlight: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Chemlight";
+		inventorySlot[] = {"Chemlight"};
 		model = "\DZ\gear\consumables\Chemlight.p3d";
 	};
 };

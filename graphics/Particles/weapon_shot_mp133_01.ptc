@@ -238,40 +238,6 @@ EffectDef {
    EffectTime 0.1
    Repeat 0
   }
-  EmitorDef fragments_front {
-   ConeAngle 360 0 20
-   MaxNum 20
-   BirthRate 60
-   Angles 0 0 -90
-   LocalTransform 0
-   Material "{391690195D614CE5}Graphics/Particles/materials/smoke/smoke_dust_02.emat"
-   SizeMultiplier 2
-   SizeRND 0.5
-   RandomRotDir 1
-   RotMultiplier 50
-   RandomAngle 1
-   Velocity 20
-   VelocityRND 20
-   AirResistance 15
-   AirResistanceRND 10
-   Wind 1
-   LifeTime 0.05
-   LifeTimeRND 0.1
-   Color {
-    0 0 0 0 1 0 0 0
-   }
-   Alpha {
-    0 1 0.62458 1 1 0
-   }
-   RotationSpeed {
-    0 0.09615 1 0.13291
-   }
-   Size {
-    0 0.15823 1 0.63924
-   }
-   EffectTime 0.1
-   Repeat 0
-  }
   EmitorDef smoke_front_cone {
    ConeAngle 360 0 10
    MaxNum 1

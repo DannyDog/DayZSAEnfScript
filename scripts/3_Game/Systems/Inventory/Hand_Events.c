@@ -66,6 +66,7 @@ class HandEventBase
 	int GetAnimationID () { return m_AnimationID; }
 	bool AcquireInventoryJunctureFromServer (notnull Man player) { return false; }
 	bool CheckRequest () { return true; }
+	bool CanPerformEvent () { return true; }
 	bool CheckRequestSrc () { return true; }
 	bool IsServerSideOnly () { return false; }
 
@@ -162,6 +163,16 @@ class HandEventTake extends HandEventBase
 	{
 		return GameInventory.CheckMoveToDstRequest(m_Player, GetSrc(), GetDst(), GameInventory.c_MaxItemDistanceRadius);
 	}
+	
+	override bool CanPerformEvent ()
+	{
+		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
+		{
+			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			return false;
+		}
+		return true;
+	}
 
 	override bool AcquireInventoryJunctureFromServer (notnull Man player)
 	{
@@ -210,6 +221,16 @@ class HandEventMoveTo extends HandEventBase
 	{
 		return GameInventory.CheckMoveToDstRequest(m_Player, GetSrc(), GetDst(), GameInventory.c_MaxItemDistanceRadius);
 	}
+	
+	override bool CanPerformEvent ()
+	{
+		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
+		{
+			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			return false;
+		}
+		return true;
+	}
 
 	override bool AcquireInventoryJunctureFromServer (notnull Man player)
 	{
@@ -256,6 +277,16 @@ class HandEventDrop extends HandEventBase
 	{
 		return GameInventory.CheckMoveToDstRequest(m_Player, GetSrc(), GetDst(), GameInventory.c_MaxItemDistanceRadius);
 	}
+	
+	override bool CanPerformEvent ()
+	{
+		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
+		{
+			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			return false;
+		}
+		return true;
+	}
 
 	override bool AcquireInventoryJunctureFromServer (notnull Man player)
 	{
@@ -282,10 +313,14 @@ class HandEventThrow extends HandEventDrop
 			if (entity)
 			{
 				m_Dst = new InventoryLocation;
-			entity.GetTransform(mat);
-			m_Dst.SetGround(entity, mat);
+				entity.GetTransform(mat);
+				m_Dst.SetGround(entity, mat);
+			}
+			else
+			{
+				Error("[hndfsm] HandEventThrow src entity null!");
+			}
 		}
-	}
 	}
 	
 	override InventoryLocation GetDst ()
@@ -397,6 +432,16 @@ class HandEventSwap extends HandEventBase
 			hndDebugPrint("Warning: HandEventSwap.CheckRequest test2 failed");
 		return test1 && test2;
 	}
+	
+	override bool CanPerformEvent ()
+	{
+		if (false == GameInventory.CanForceSwapEntities(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
+		{
+			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			return false;
+		}
+		return true;
+	}
 
 	override bool AcquireInventoryJunctureFromServer (notnull Man player)
 	{
@@ -415,19 +460,24 @@ class HandEventForceSwap extends HandEventSwap
 	
 	override bool CheckRequest ()
 	{
+		bool test1 = false;
 		EntityAI inHands = m_Player.GetHumanInventory().GetEntityInHands();
 		if (GetSrcEntity() && inHands && m_Dst && m_Dst.IsValid())
 		{
-			bool test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
+			test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
 			if (!test1)
 				hndDebugPrint("Warning: HandEventForceSwap.CheckRequest test1 failed");
-
-			bool test2 = GameInventory.CanForceSwapEntities(m_Src.GetItem(), null, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
-			if (!test2)
-				hndDebugPrint("Warning: HandEventForceSwap.CheckRequest test2 failed");
-			return test1 && test2;
 		}
-		return false;
+		return test1;
+	}
+	
+	override bool CanPerformEvent ()
+	{
+		Print("Warning - CanFSwap #5");
+		bool test2 = GameInventory.CanForceSwapEntities(m_Src.GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
+		if (!test2)
+			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+		return test2;
 	}
 };
 

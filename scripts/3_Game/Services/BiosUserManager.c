@@ -210,6 +210,7 @@ class BiosUserManager
 			{
 				Print("OnSignedOut(): AbortMission");
 				GetGame().GetMission().AbortMission();
+				GetGame().AbortMission();
 			}
 			
 			GetGame().GetInput().ResetActiveGamepad();

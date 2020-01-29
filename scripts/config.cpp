@@ -192,7 +192,7 @@ class CfgSlots
 	{
 		name = "VestPouch";
 		displayName = "VestPouch";
-		ghostIcon = "muzzle";
+		ghostIcon = "vestpouches";
 	};
 	class Slot_VestBackpack
 	{
@@ -216,7 +216,7 @@ class CfgSlots
 	{
 		name = "pistolOptics";
 		displayName = "pistolOptics";
-		ghostIcon = "weaponoptics";
+		ghostIcon = "weaponopticssmall";
 	};
 	class Slot_weaponBayonet
 	{
@@ -228,13 +228,13 @@ class CfgSlots
 	{
 		name = "weaponBayonetAK";
 		displayName = "weaponBayonetAK";
-		ghostIcon = "bayonetak";
+		ghostIcon = "bayonet";
 	};
 	class Slot_weaponBayonetMosin
 	{
 		name = "weaponBayonetMosin";
 		displayName = "weaponBayonetMosin";
-		ghostIcon = "bayonetmosin";
+		ghostIcon = "bayonet";
 	};
 	class Slot_weaponBayonetSKS
 	{
@@ -258,7 +258,7 @@ class CfgSlots
 	{
 		name = "weaponButtstockM4";
 		displayName = "weaponButtstockM4";
-		ghostIcon = "buttstockm4";
+		ghostIcon = "buttstock";
 	};
 	class Slot_weaponButtstockMP5
 	{
@@ -312,13 +312,13 @@ class CfgSlots
 	{
 		name = "weaponMuzzleAK";
 		displayName = "weaponMuzzleAK";
-		ghostIcon = "weaponmuzzle";
+		ghostIcon = "supressor";
 	};
 	class Slot_weaponMuzzleM4
 	{
 		name = "weaponMuzzleM4";
 		displayName = "weaponMuzzleM4";
-		ghostIcon = "weaponmuzzle";
+		ghostIcon = "supressor";
 	};
 	class Slot_weaponMuzzleMP5
 	{
@@ -360,7 +360,7 @@ class CfgSlots
 	{
 		name = "weaponOpticsAcog";
 		displayName = "optic_acog";
-		ghostIcon = "opticacog";
+		ghostIcon = "weaponoptics";
 	};
 	class Slot_weaponOpticsAK
 	{
@@ -519,7 +519,7 @@ class CfgSlots
 	{
 		name = "Glass";
 		displayName = "Glass";
-		ghostIcon = "glass";
+		ghostIcon = "gorkavisor";
 	};
 	class Slot_Hook
 	{
@@ -531,13 +531,13 @@ class CfgSlots
 	{
 		name = "Ingredient";
 		displayName = "Ingredient";
-		ghostIcon = "ingredient";
+		ghostIcon = "food";
 	};
 	class Slot_Lights
 	{
 		name = "Lights";
 		displayName = "Lights";
-		ghostIcon = "lights";
+		ghostIcon = "cat_christmaslights";
 	};
 	class Slot_MedicalBandage
 	{
@@ -574,7 +574,7 @@ class CfgSlots
 	{
 		name = "Bait";
 		displayName = "Bait";
-		ghostIcon = "bait";
+		ghostIcon = "hook";
 	};
 	class Slot_matchinside
 	{
@@ -2029,7 +2029,7 @@ class CfgSlots
 		name = "Att_CombinationLock";
 		displayName = "Combination lock";
 		selection = "att_combinationlock";
-		ghostIcon = "enginebelt";
+		ghostIcon = "combolock";
 	};
 	class Slot_Wall_Barbedwire_1
 	{
@@ -2080,7 +2080,7 @@ class CfgSlots
 	class Slot_NVG
 	{
 		name = "NVG";
-		displayName = "NVG";
+		displayName = "nvggoggles";
 		ghostIcon = "muzzle";
 	};
 	class Slot_helmetFlashlight
@@ -2136,5 +2136,11 @@ class CfgSlots
 		name = "GasMaskFilter";
 		displayName = "GasMaskFilter";
 		ghostIcon = "";
+	};
+	class Slot_Rope
+	{
+		name = "Rope";
+		displayName = "Rope";
+		ghostIcon = "rope";
 	};
 };

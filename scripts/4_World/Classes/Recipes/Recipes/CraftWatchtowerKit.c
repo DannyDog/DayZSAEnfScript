@@ -63,6 +63,9 @@ class CraftWatchtowerKit extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
+		/*ItemBase fence_kit = results[0];
+		Rope rope = Rope.Cast(fence_kit.GetInventory().CreateAttachment("Rope"));
+		MiscGameplayFunctions.TransferItemProperties(ingredients[0],rope);*/
 		Debug.Log("Recipe Do method called","recipes");
 	}
 };

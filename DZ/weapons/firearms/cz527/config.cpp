@@ -130,7 +130,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_CZ5270";
 		descriptionShort = "$STR_cfgWeapons_CZ5271";
 		model = "\dz\weapons\firearms\cz527\cz527.p3d";
-		attachments[] = {"weaponWrap","suppressorImpro","weaponOpticsHunting"};
+		attachments[] = {"weaponWrap","weaponOpticsHunting","suppressorImpro"};
 		itemSize[] = {9,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\cz527\data\cz527_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\cz527\data\cz527.rvmat"};

@@ -171,6 +171,7 @@ class MissionServer extends MissionBase
 			InvokeOnConnect(player,identity );
 			SyncEvents.SendPlayerList();
 			ControlPersonalLight(player);
+			SyncGlobalLighting(player);
 			break;
 			
 		case ClientReadyEventTypeID:
@@ -190,6 +191,7 @@ class MissionServer extends MissionBase
 			// Send list of players at all clients
 			SyncEvents.SendPlayerList();
 			ControlPersonalLight(player);
+			SyncGlobalLighting(player);
 			break;
 					
 		case ClientRespawnEventTypeID:
@@ -301,6 +303,17 @@ class MissionServer extends MissionBase
 		else
 		{
 			Error("Error! Player was not initialized at the right time. Thus cannot send RPC command to enable or disable personal light!");
+		}
+	}
+	
+	// syncs global lighting setup from the server (lightingConfig server config parameter) 
+	void SyncGlobalLighting( PlayerBase player )
+	{
+		if ( player )
+		{
+			int lightingID = GetGame().ServerConfigGetInt( "lightingConfig" );
+			Param1<int> lightID = new Param1<int>( lightingID );
+			GetGame().RPCSingleParam( player, ERPCs.RPC_SEND_LIGHTING_SETUP, lightID, true, player.GetIdentity() );
 		}
 	}
 	

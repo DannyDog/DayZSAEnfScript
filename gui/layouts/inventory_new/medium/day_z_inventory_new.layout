@@ -110,7 +110,7 @@ FrameWidgetClass inventory_root {
         }
         PanelWidgetClass CenterPanel {
          visible 1
-         clipchildren 1
+         clipchildren 0
          ignorepointer 1
          color 1 1 1 0
          position 0 40

@@ -349,6 +349,12 @@ class LeftArea: Container
 			
 	}
 	
+	EntityAI GetFocusedItem()
+	{
+		EntityAI item = GetFocusedContainer().GetFocusedEntity();
+		return item;
+	}
+	
 	VicinityContainer GetVicinityContainer()
 	{
 		return m_VicinityContainer;

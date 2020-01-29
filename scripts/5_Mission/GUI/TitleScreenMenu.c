@@ -27,13 +27,10 @@ class TitleScreenMenu extends UIScriptedMenu
 			GetGame().GetPlayerName(gamertag);
 			#ifdef PLATFORM_XBOX
 				BiosUserManager user_manager = GetGame().GetUserManager();
-				if( user_manager )
-				{
-					if( user_manager.GetSelectedUser() )
-						m_TextPress.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
-					else
-						m_TextPress.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
-				}
+				if( user_manager && user_manager.GetSelectedUser() )
+					m_TextPress.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
+				else
+					m_TextPress.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
 			#endif
 					
 			#ifdef PLATFORM_PS4

@@ -14,6 +14,11 @@ class Land_Radio_PanelPAS extends PASBroadcaster
 		return true;
 	}
 	
+	override bool DisableVicinityIcon()
+	{
+		return true;
+	}
+	
 	//--- POWER EVENTS
 	override void OnSwitchOn()
 	{

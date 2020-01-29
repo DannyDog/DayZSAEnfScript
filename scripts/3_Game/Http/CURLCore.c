@@ -73,10 +73,18 @@ class CURLCallback : Managed
 	void OnSuccess( string data, int dataSize )
 	{
 		// override this with your implementation
-		Print(" !!! OnSuccess() ");
-		Print(dataSize);
+		Print(" !!! OnSuccess() size=" + dataSize );
 		if( dataSize > 0 )
 			Print(data);
+	};
+
+	/**
+	\brief Called when data arrived and/ or file created successfully
+	*/
+	void OnFileCreated( string fileName, int dataSize )
+	{
+		// override this with your implementation
+		Print(" !!! OnFileCreated() file=" + fileName + " size=" + dataSize );
 	};
 
 };
@@ -95,6 +103,16 @@ class CURLContext
 	\brief Processes GET request and returns data immediately (thread blocking operation!)
 	*/
 	proto native string GET_now( string request );
+
+	/**
+	\brief Processes GET request and returns result (ECURLResultState) and/ or stores data int specified file (timeout, error) when finished
+	*/
+	proto native int FILE( CURLCallback cb, string request, string filename );
+
+	/**
+	\brief Processes GET request and returns result (ECURLResultState) and/ stores data int specified file immediately (thread blocking operation!)
+	*/
+	proto native int FILE_now( string request, string filename );
 
 	/**
 	\brief Pushes POST request and returns result (ECURLResultState) and/ or data (timeout, error) when finished

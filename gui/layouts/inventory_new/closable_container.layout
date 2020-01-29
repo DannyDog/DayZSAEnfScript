@@ -17,7 +17,7 @@ WrapSpacerWidgetClass container_root {
  "Size To Content V" 1
  {
   WrapSpacerWidgetClass body {
-   ignorepointer 1
+   ignorepointer 0
    position 0 0
    size 1 0
    hexactpos 1

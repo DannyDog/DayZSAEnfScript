@@ -84,6 +84,7 @@ class PlayerBase extends ManBase
 	float							m_UnconsciousTime;
 	int 							m_ShockSimplified;
 	bool							m_IsRestrained;
+	bool 							m_IsRestrainStarted;
 	bool							m_ImmunityBoosted;
 	float							m_UnconsciousVignetteTarget = 2;
 	float							m_CameraSwayModifier = 0.2;
@@ -154,14 +155,6 @@ class PlayerBase extends ManBase
 	vector m_LastFirePoint;
 	int m_LastFirePointIndex;
 	
-	//writing notes start
-	bool enterNoteMenuRead;
-	bool enterNoteMenuWrite;
-	EntityAI m_writingImplement;
-	EntityAI m_paper;
-	int m_Handwriting = 0; //to be extended into some index (list with multiple font types)
-	//writing notes end
-	
 	bool ItemToInventory;
 	bool m_IsFighting = false;
 
@@ -172,6 +165,8 @@ class PlayerBase extends ManBase
 	ActionUnfoldMapCB m_hac;
 	bool m_MapOpen;
 	bool m_MapCloseRequestProcessed;
+	protected float m_LastMapScale = -1.0;
+	protected vector m_LastMapPos;
 	
 	//inventory soft locking
 	protected bool 					m_InventorySoftLocked;
@@ -360,6 +355,7 @@ class PlayerBase extends ManBase
 		RegisterNetSyncVariableBool("m_HasBloodyHandsVisible");
 		RegisterNetSyncVariableBool("m_HasBloodTypeVisible");
 		RegisterNetSyncVariableBool("m_LiquidTendencyDrain");
+		RegisterNetSyncVariableBool("m_IsRestrainStarted");
 		//RegisterNetSyncVariableBool("m_LiftWeapon_player");
 		
 		m_OriginalSlidePoseAngle = GetSlidePoseAngle();
@@ -614,6 +610,12 @@ class PlayerBase extends ManBase
 		if( m_ActionManager )
 			m_ActionManager.Interrupt();
 		
+		if( ammo.ToType().IsInherited(Nonlethal_Base) )
+		{
+			//Print("PlayerBase | EEHitBy | nonlethal hit");
+			AddHealth("","Health",-ConvertNonlethalDamage(damageResult.GetDamage(dmgZone,"Shock")));
+		}
+		
 		//analytics
 		GetGame().GetAnalyticsServer().OnEntityHit( source, this );
 	}
@@ -624,10 +626,17 @@ class PlayerBase extends ManBase
 			m_FliesEff.Stop();
 		if( m_SoundFliesEffect )
 		{
-			SEffectManager.DestroySound(m_SoundFliesEffect);
-			m_SoundFliesEffect = null;
+			StopSoundSet(m_SoundFliesEffect);
+			//SEffectManager.DestroySound(m_SoundFliesEffect);
+			//m_SoundFliesEffect = null;
 		}
 	}
+	
+	float ConvertNonlethalDamage(float damage)
+	{
+		float converted_dmg = damage * GameConstants.PROJECTILE_CONVERSION_PLAYERS;
+		return converted_dmg;
+	} 
 	
 	/** Call only on client or single player PlayerBase
  	 *  (as GetGame().GetPlayer())
@@ -910,7 +919,6 @@ class PlayerBase extends ManBase
 		AddAction(ActionTakeMaterialToHandsSwitch);
 		AddAction(ActionUncoverHeadSelf);
 		//AddAction(ActionAttach);
-		//AddAction(ActionDrinkPond);//OK
 		AddAction(ActionDrinkPondContinuous);
 		AddAction(ActionIgniteFireplaceByAir);
 		AddAction(ActionMineBushByHand);
@@ -1211,7 +1219,7 @@ class PlayerBase extends ManBase
 	
 	bool CanBeRestrained()
 	{
-		if( IsInVehicle() || IsEmotePlaying() || IsRaised() || IsSwimming() || IsClimbing() || IsClimbingLadder() || IsRestrained() || !GetWeaponManager() || GetWeaponManager().IsRunning() || !GetActionManager() || GetActionManager().GetRunningAction() != null || IsMapOpen() )
+		if( IsInVehicle() || IsRaised() || IsSwimming() || IsClimbing() || IsClimbingLadder() || IsRestrained() || !GetWeaponManager() || GetWeaponManager().IsRunning() || !GetActionManager() || GetActionManager().GetRunningAction() != null || IsMapOpen() )
 		{
 			return false;
 		}
@@ -1220,6 +1228,17 @@ class PlayerBase extends ManBase
 			return false;
 		}
 		return true;
+	}
+	
+	void SetRestrainStarted(bool restrain_started)
+	{
+		m_IsRestrainStarted = restrain_started;
+		SetSynchDirty();
+	}
+	
+	bool IsRestrainStarted()
+	{
+		return m_IsRestrainStarted;
 	}
 	
 	void SetRestrained(bool	is_restrained)
@@ -1310,7 +1329,7 @@ class PlayerBase extends ManBase
 		}
 		else
 		{
-			return m_RecipeID;			
+			return m_RecipeID;
 		}		
 	}
 	
@@ -1528,7 +1547,7 @@ class PlayerBase extends ManBase
 	//---------------------------------------------------------------------------------------------------------------------------
 	void OnPlayerLoaded()
 	{
-		//Print("---OnPlayerLoaded--- | timestamp: " + GetSimulationTimeStamp());
+		//Print("PlayerBase | OnPlayerLoaded()");
 		InitEditor();
 		
 		if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
@@ -1536,10 +1555,13 @@ class PlayerBase extends ManBase
 			m_ModuleLifespan.SynchLifespanVisual( this, m_LifeSpanState, m_HasBloodyHandsVisible, m_HasBloodTypeVisible, m_BloodType );
 		}	
 	
-		if ( m_Hud )
+		if ( m_Hud && IsControlledPlayer() /*&& ((GetGame().IsMultiplayer() && GetGame().IsClient()) || !GetGame().IsMultiplayer())*/)
 		{
 			m_Hud.UpdateBloodName();
 			PPEffects.SetDeathDarkening(0);
+			GetGame().GetUIManager().CloseAll();
+			GetGame().GetMission().SetPlayerRespawning(false);
+			//GetGame().GetUIManager().FindMenu(MENU_INGAME);
 		}
 		
 		int slot_id = InventorySlots.GetSlotIdFromString("Head");
@@ -1746,12 +1768,14 @@ class PlayerBase extends ManBase
 	{
 		if( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
 			ClientData.RemovePlayerBase( this );
+		
 		if( m_FliesEff )
 			m_FliesEff.Stop();
 		if( m_SoundFliesEffect )
 		{
-			SEffectManager.DestroySound(m_SoundFliesEffect);
-			m_SoundFliesEffect = null;
+			StopSoundSet(m_SoundFliesEffect);
+			//SEffectManager.DestroySound(m_SoundFliesEffect);
+			//m_SoundFliesEffect = null;
 		}
 	}
 
@@ -2391,7 +2415,8 @@ class PlayerBase extends ManBase
 			EntityAI entity_in_hands = GetHumanInventory().GetEntityInHands();
 			if( entity_in_hands && CanDropEntity(entity_in_hands) && !IsRestrained() )
 			{
-				PredictiveDropEntity(entity_in_hands);
+				//PredictiveDropEntity(entity_in_hands);
+				DropItem(ItemBase.Cast(entity_in_hands));
 				//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerDropEntity,1000,false,( GetHumanInventory().GetEntityInHands() ));
 			}
 		}
@@ -3917,7 +3942,7 @@ class PlayerBase extends ManBase
 			{
 				float value;
 				if( ctx.Read( value ) )
-					m_Hud.SetTemperature( value.ToString() + "C" );
+					m_Hud.SetTemperature( value.ToString() + "#degrees_celsius" );
 				break;
 			}
 			
@@ -3930,6 +3955,22 @@ class PlayerBase extends ManBase
 				}
 			break;
 			*/
+			
+			case ERPCs.RPC_SEND_LIGHTING_SETUP:
+			{
+				ref Param1<int> lightingID = new Param1<int>( 0 ); 
+				if ( ctx.Read( lightingID ) )
+				{
+					Mission mission = GetGame().GetMission();
+					if ( mission )
+					{
+						WorldLighting wLighting = mission.GetWorldLighting();
+						if ( wLighting )
+							wLighting.SetGlobalLighting( lightingID.param1 );
+					}
+				}
+				break;
+			}
 		}
 		
 		//woodcutting
@@ -4017,6 +4058,7 @@ class PlayerBase extends ManBase
 	//--------------------------------------------------------------------------
 	void OnSelectPlayer()
 	{
+		//Print("PlayerBase | OnSelectPlayer()");
 		m_QuickBarBase.updateSlotsCount();
 		
 		m_PlayerSelected = true;
@@ -4191,23 +4233,6 @@ class PlayerBase extends ManBase
 				GetGame().MutePlayer( uid, GetIdentity().GetPlainId(), mute );
 				// commented because plainID should not be present in logs
 				//Print( "Player: " + GetIdentity().GetId() + " set mute for " + uid + " to " + mute );
-			}
-		}
-		
-		if( userDataType == INPUT_UDT_USER_SYNC_PERMISSIONS )
-		{
-			map<string, bool> mute_list;
-			if( ctx.Read( mute_list ) )
-			{
-				for( int i = 0; i < mute_list.Count(); i++ )
-				{
-					uid = mute_list.GetKey( i );
-					mute = mute_list.GetElement( i );
-					GetGame().MutePlayer( uid, GetIdentity().GetPlainId(), mute );
-
-					// commented because plainID should not be present in logs
-					// Print( "Player: " + GetIdentity().GetId() + " set mute for " + uid + " to " + mute );
-				}
 			}
 		}
 		
@@ -4896,7 +4921,7 @@ class PlayerBase extends ManBase
 
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
 	{
-		Print("---- PlayerBase OnStoreLoad START ----, version: "+version);
+		//Print("---- PlayerBase OnStoreLoad START ----, version: "+version);
 		m_aQuickBarLoad = new array<ref Param2<EntityAI,int>>;
 		
 		// todo :: this should be after base call !!!!
@@ -5762,6 +5787,9 @@ class PlayerBase extends ManBase
 			case DayZPlayerSyncJunctures.SJ_INVENTORY:
 				GetInventory().OnInventoryJunctureFromServer(pCtx);
 				break;
+			case DayZPlayerSyncJunctures.SJ_INVENTORY_REPAIR:
+				GetInventory().OnInventoryJunctureRepairFromServer(pCtx);
+				break;
 			case DayZPlayerSyncJunctures.SJ_ACTION_INTERRUPT:
 			case DayZPlayerSyncJunctures.SJ_ACTION_ACK_ACCEPT:
 			case DayZPlayerSyncJunctures.SJ_ACTION_ACK_REJECT:
@@ -6043,6 +6071,11 @@ class PlayerBase extends ManBase
 		return false;
 	}
 	
+	bool IsPlayerLoaded()
+	{
+		return m_PlayerLoaded;
+	}
+	
 	//disconnected, caused problems. Awaiting refactor
 	override void CheckAnimationOverrides()
 	{
@@ -6168,6 +6201,7 @@ class PlayerBase extends ManBase
 	
 	override bool PredictiveSwapEntities (notnull EntityAI item1, notnull EntityAI item2)
 	{
+		//Print("PlayerBase | PredictiveSwapEntities");
 		Magazine swapmag1 = Magazine.Cast(item1);
 		Magazine swapmag2 = Magazine.Cast(item2);
 
@@ -6204,27 +6238,21 @@ class PlayerBase extends ManBase
 			}
 		}
 		
-		//Print("---swappping---");
-		InventoryLocation il = new InventoryLocation;
-		if ( item1.IsHeavyBehaviour() && item1.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND && !m_ActionManager.GetRunningAction() )
+		EntityAI item_hands;
+		EntityAI item_ground;
+		if ( IsSwapBetweenHandsAndGroundLargeItem(item1,item2,item_hands,item_ground) && !m_ActionManager.GetRunningAction() )
 		{
 			ActionManagerClient mngr_client;
 			CastTo(mngr_client,m_ActionManager);
 			
-			ActionTarget atrg = new ActionTarget(item1,null,-1,vector.Zero,-1.0);
-			if ( mngr_client.GetAction(ActionSwapItemToHands).Can(this,atrg,ItemBase.Cast(item2)) )
+			ActionTarget atrg = new ActionTarget(item_ground,null,-1,vector.Zero,-1.0);
+			if ( mngr_client.GetAction(ActionSwapItemToHands).Can(this,atrg,ItemBase.Cast(item_hands)) )
 			{
-				mngr_client.PerformActionStart(mngr_client.GetAction(ActionSwapItemToHands),atrg,ItemBase.Cast(item2));
+				mngr_client.PerformActionStart(mngr_client.GetAction(ActionSwapItemToHands),atrg,ItemBase.Cast(item_hands));
+				return true;
 			}
-			return true;
+			return super.PredictiveSwapEntities( item1, item2);
 		}
-		/*else if ( item1.IsHeavyBehaviour() && ActionSwapItemToHands.Cast(m_ActionManager.GetRunningAction()) )
-		{
-			InventoryLocation inloc = new InventoryLocation;
-			bool bl = PredictiveForceSwapEntities( item1, item2, inloc );
-			//bool bl  = PredictiveSwapEntities( item1, item2);
-			return bl;
-		}*/
 		else
 			return super.PredictiveSwapEntities( item1, item2);
 	}
@@ -6234,6 +6262,7 @@ class PlayerBase extends ManBase
 		InventoryLocation il = new InventoryLocation;
 		if ( item1.IsHeavyBehaviour() && item1.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND && !m_ActionManager.GetRunningAction() )
 		{
+			//Print("override bool PredictiveForceSwapEntities (notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)");
 			ActionManagerClient mngr_client;
 			CastTo(mngr_client,m_ActionManager);
 			
@@ -6288,6 +6317,21 @@ class PlayerBase extends ManBase
 			return super.PredictiveTakeToDst(src,dst);
 		}
 		return false;
+	}
+	
+	bool IsSwapBetweenHandsAndGroundLargeItem(notnull EntityAI item1, notnull EntityAI item2, out EntityAI item_hands, out EntityAI item_ground)
+	{
+		InventoryLocation il = new InventoryLocation;
+		if (item1.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.HANDS)
+			item_hands = item1;
+		if (item2.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.HANDS)
+			item_hands = item2;
+		if (item1.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND)
+			item_ground = item1;
+		if (item2.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND)
+			item_ground = item2;
+		
+		return item_hands && item_ground && (item_hands.ConfigGetString("physLayer") == "item_large" || item_ground.ConfigGetString("physLayer") == "item_large");
 	}
 	
 	//! Dynamic hair hiding
@@ -6557,7 +6601,10 @@ class PlayerBase extends ManBase
 					p = m_FliesEff.GetParticle();
 					AddChild(p, boneIdx);
 					if( !m_SoundFliesEffect )
-						m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
+					{
+						//m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
+						PlaySoundSetLoop(m_SoundFliesEffect,"Flies_SoundSet",1.0,1.0);
+					}
 				}
 			break;
 			case PlayerConstants.CORPSE_STATE_DECAYED :
@@ -6572,7 +6619,10 @@ class PlayerBase extends ManBase
 					p = m_FliesEff.GetParticle();
 					AddChild(p, boneIdx);
 					if( !m_SoundFliesEffect )
-						m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
+					{
+						//m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
+						PlaySoundSetLoop(m_SoundFliesEffect,"Flies_SoundSet",1.0,1.0);
+					}
 				}
 			break;
 			
@@ -6584,8 +6634,9 @@ class PlayerBase extends ManBase
 				}
 				if ( m_SoundFliesEffect )
 				{
-					SEffectManager.DestroySound(m_SoundFliesEffect);
-					m_SoundFliesEffect = null;
+					StopSoundSet(m_SoundFliesEffect);
+					//SEffectManager.DestroySound(m_SoundFliesEffect);
+					//m_SoundFliesEffect = null;
 				}
 		}
 	}
@@ -6603,5 +6654,57 @@ class PlayerBase extends ManBase
 		}
 		else
 			//Print("No 'decay_preload' selection found on " + this);
+	}
+	
+	void SetLastMapInfo(float scale, vector pos)
+	{
+		m_LastMapScale = scale;
+		m_LastMapPos = pos;
+	}
+	
+	bool GetLastMapInfo(out float scale, out vector pos)
+	{
+		scale = m_LastMapScale;
+		pos = m_LastMapPos;
+		
+		return m_LastMapScale != -1.0;
+	}
+	
+	override bool PhysicalPredictiveDropItem(EntityAI entity, bool heavy_item_only = true)
+	{
+		vector dir;
+		ItemBase item = ItemBase.Cast(entity);
+		
+		if (GetItemInHands() == item) //from hands
+		{
+			if (entity.ConfigGetString("physLayer") != "item_large" && heavy_item_only)
+			{
+				return PredictiveDropEntity(item);
+			}
+			else
+			{
+				dir = GetOrientation();
+				//item.m_ItemBeingDropped = true;
+				return GetHumanInventory().ThrowEntity(item,dir,0);
+			}
+		}
+		else //from anywhere else
+		{
+			ActionManagerClient mngr_client;
+			if (CastTo(mngr_client,m_ActionManager))
+			{
+				ActionTarget atrg;
+				if ( mngr_client.GetAction(ActionDropItemSimple).Can(this,atrg,item) )
+				{
+					//Param1<bool> p1 = new Param1<bool>(false);
+					//p1.param1 = heavy_item_only;
+					mngr_client.PerformActionStart(mngr_client.GetAction(ActionDropItemSimple),atrg,item/*,p1*/);
+					return true;
+				}
+				return false;
+			}
+			else
+				return true;
+		}
 	}
 }

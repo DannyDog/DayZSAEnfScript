@@ -1533,7 +1533,7 @@ class CfgVehicles
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
 		itemInfo[] = {"Knife"};
-		inventorySlot = "Knife";
+		inventorySlot[] = {"Knife"};
 		RestrainUnlockType = 1;
 		rotationFlags = 17;
 		isMeleeWeapon = 1;
@@ -1610,7 +1610,7 @@ class CfgVehicles
 		itemInfo[] = {"Knife"};
 		RestrainUnlockType = 1;
 		rotationFlags = 17;
-		inventorySlot = "Knife";
+		inventorySlot[] = {"Knife"};
 		isMeleeWeapon = 1;
 		suicideAnim = "onehanded";
 		canSkinBodies = 1;

@@ -94,6 +94,7 @@ class cfgWeapons
 			{
 				class MuzzleFlash
 				{
+					overrideParticle = "weapon_shot_mp5k_01";
 					ignoreIfSuppressed = 1;
 					illuminateWorld = 1;
 				};
@@ -158,7 +159,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_MP5K0";
 		descriptionShort = "$STR_cfgWeapons_MP5K1";
 		model = "\dz\weapons\firearms\MP5\MP5K.p3d";
-		attachments[] = {"weaponOptics","weaponButtstockMP5","weaponMuzzleMP5","WeaponHandguardMP5","weaponFlashlight","pistolMuzzle"};
+		attachments[] = {"weaponButtstockMP5","WeaponHandguardMP5","weaponOptics","weaponFlashlight","weaponMuzzleMP5","pistolMuzzle"};
 		itemSize[] = {5,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\MP5\data\mp5k_body_CO.paa"};
 		hiddenSelectionsMaterials[] = {"DZ\weapons\firearms\MP5\data\mp5k_body.rvmat"};

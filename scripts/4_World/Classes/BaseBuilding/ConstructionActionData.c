@@ -4,7 +4,7 @@ class ConstructionActionData
 	
 	//base building
 	ref array<ConstructionPart> m_BuildParts;
-	int 						m_PartIndex;
+	int 						m_PartIndex; //used on client only, action synchronizes it to server to avoid mismatch
 	string 						m_MainPartName;
 	ref ConstructionPart 		m_TargetPart;
 	

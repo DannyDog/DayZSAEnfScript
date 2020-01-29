@@ -79,6 +79,11 @@ class ZombieContainer: CollapsibleContainer
 		return GetFocusedContainer() == m_Container;
 	}
 	
+	override bool IsItemActive()
+	{
+		return GetFocusedItem() != null;
+	}
+	
 	bool IsItemWithContainerActive()
 	{
 		ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
@@ -100,76 +105,6 @@ class ZombieContainer: CollapsibleContainer
 			ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
 			ToggleWidget( item_preview.GetParent() );
 		}
-	}
-	
-	void OnIconDrag( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
-
-		ItemManager.GetInstance().SetIsDragging( true );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget(name) );
-		ipw.SetForceFlipEnable(false);
-		
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item )
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-			icon_x = x_content / 10;
-			icon_y = x_content / 10;
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-	
-			if( !ipw.GetItem() )
-			{
-				return;
-			}
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Col", "RadialIcon" );
-			w.GetParent().GetParent().FindAnyWidget( name ).Show( false );
-			name.Replace( "RadialIcon", "AmmoIcon" );
-			w.GetParent().FindAnyWidget( name ).Show( false );
-			name.Replace( "AmmoIcon", "Selected" );
-			w.GetParent().FindAnyWidget( name ).Show( true );
-			
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-		}
-	}
-
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-		
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(true);
-		ipw.SetForceFlip(false);
-		
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Col", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
 	}
 	
 	override void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver )
@@ -664,8 +599,6 @@ class ZombieContainer: CollapsibleContainer
 				icon.GetMainWidget().Show( true );
 				icon.Clear();
 				
-				WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetPanelWidget(),  this, "OnIconDrag" );
-				WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetPanelWidget(),  this, "OnIconDrop" );
 				WidgetEventHandler.GetInstance().RegisterOnDoubleClick( icon.GetPanelWidget(),  this, "DoubleClick" );
 				
 				//END - GetWidgetSlot
@@ -957,7 +890,7 @@ class ZombieContainer: CollapsibleContainer
 			EntityAI item = GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity();
 			if( item && player.CanDropEntity( item ) )
 			{
-				player.PredictiveDropEntity( item );
+				player.PhysicalPredictiveDropItem( item );
 				return true;
 			}
 		}

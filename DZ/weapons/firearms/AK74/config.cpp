@@ -171,7 +171,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_AK740";
 		descriptionShort = "$STR_cfgWeapons_AK741";
 		model = "\dz\weapons\firearms\AK101\ak101.p3d";
-		attachments[] = {"weaponButtstockAK","WeaponHandguardAK","weaponOpticsAK","weaponFlashlight","weaponWrap","weaponMuzzleAK","weaponBayonetAK"};
+		attachments[] = {"weaponButtstockAK","WeaponHandguardAK","weaponWrap","weaponOpticsAK","weaponFlashlight","weaponMuzzleAK","weaponBayonetAK"};
 		itemSize[] = {8,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK101\data\ak101_co.paa","DZ\weapons\attachments\magazine\data\magazine_ak74_tan_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK101\data\ak101.rvmat","DZ\weapons\attachments\magazine\data\magazine_ak74_tan.rvmat"};

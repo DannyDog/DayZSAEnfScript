@@ -111,7 +111,7 @@ FrameWidgetClass inventory_root {
         }
         PanelWidgetClass CenterPanel {
          visible 1
-         clipchildren 1
+         clipchildren 0
          ignorepointer 1
          color 1 1 1 0
          position 0 40
@@ -155,7 +155,7 @@ FrameWidgetClass inventory_root {
           ScrollWidgetClass HandsPanel {
            visible 1
            disabled 0
-           clipchildren 1
+           clipchildren 0
            inheritalpha 0
            ignorepointer 0
            keepsafezone 0

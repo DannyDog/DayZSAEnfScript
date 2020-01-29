@@ -118,12 +118,19 @@ class ActionUnfoldMapCB : HumanCommandActionCallback //ActionSingleUseBaseCB
 			//MiscGameplayFunctions.TurnItemIntoItem(chernomap, opened_map, m_ActionData.m_Player);
 			chernomap.SetMapStateOpen(true,m_ActionData.m_Player);
 	
+			if (!GetGame().IsMultiplayer() || GetGame().IsServer())
+			{
+				//chernomap.SyncMapMarkers();
+			}
 			if (!GetGame().IsMultiplayer() || GetGame().IsClient())
 			{
 				UIManager 	m_UIManager;
+				UIScriptedMenu 	map_menu;
 				m_UIManager = GetGame().GetUIManager();
 				m_UIManager.CloseAll();
-				m_UIManager.EnterScriptedMenu(MENU_MAP, NULL);
+				map_menu = m_UIManager.EnterScriptedMenu(MENU_MAP, NULL);
+				map_menu.InitMapItem(chernomap);
+				map_menu.LoadMapMarkers();
 			}
 		}
 		else if (chernomap && m_ActionData.m_Player.IsMapOpen())
@@ -196,6 +203,8 @@ class ActionUnfoldMap: ActionBase
 	override void OnStartServer( ActionData action_data )
 	{
 		OpenMap( action_data );
+		ItemMap chernomap = ItemMap.Cast(action_data.m_MainItem);
+		chernomap.SyncMapMarkers(); //TODO solve some other way!
 	}
 	
 	override void OnEndRequest(ActionData action_data)

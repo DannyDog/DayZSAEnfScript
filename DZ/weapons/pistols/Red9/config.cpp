@@ -78,7 +78,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_Red90";
 		descriptionShort = "$STR_cfgWeapons_Red91";
 		model = "\dz\weapons\pistols\Red9\Red9.p3d";
-		attachments[] = {"suppressorImpro","weaponButtstockRed9"};
+		attachments[] = {"weaponButtstockRed9","suppressorImpro"};
 		itemSize[] = {4,2};
 		hiddenSelectionsTextures[] = {"dz\weapons\pistols\Red9\data\red9_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\pistols\Red9\data\red9.rvmat"};

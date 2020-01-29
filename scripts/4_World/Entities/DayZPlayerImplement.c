@@ -520,13 +520,13 @@ class DayZPlayerImplement extends DayZPlayer
 		switch (userDataType)
 		{
 			case INPUT_UDT_WEAPON_REMOTE_EVENT:
-				GetDayZPlayerInventory().OnEventFromRemoteWeapon(ctx);
+				GetDayZPlayerInventory().OnEventForRemoteWeapon(ctx);
 				break;
 			case INPUT_UDT_HAND_REMOTE_EVENT:
-				GetDayZPlayerInventory().OnHandEventFromRemote(ctx);
+				GetDayZPlayerInventory().OnHandEventForRemote(ctx);
 				break;
 			case INPUT_UDT_INVENTORY:
-				GetDayZPlayerInventory().OnInputUserDataFromRemote(ctx);
+				GetDayZPlayerInventory().OnInputUserDataForRemote(ctx);
 				break;
 			default:
 				Error("OnInputForRemote - unknown userDataType=" + userDataType);

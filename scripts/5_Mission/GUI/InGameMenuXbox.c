@@ -346,14 +346,17 @@ class InGameMenuXbox extends UIScriptedMenu
 				GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(player.ShowDeadScreen, DayZPlayerImplement.DEAD_SCREEN_DELAY, false, false);
 			}
 			
-			GetGame().GetUIManager().CloseAll();
+			MissionGameplay missionGP = MissionGameplay.Cast(GetGame().GetMission());
+			missionGP.DestroyAllMenus();
+			missionGP.SetPlayerRespawning(true);
 			//---------------------------------------------------
-			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetMission().Continue);
+			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(missionGP.Continue);
 		}
 		else
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().RestartMission);
 		}
+		//Close();
 	}
 	
 	bool IsLocalPlayer( string uid )

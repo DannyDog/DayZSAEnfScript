@@ -44,7 +44,7 @@ class ActionMeasureTemperatureSelf: ActionContinuousBase
 		if(thermometer)
 		{
 			ScriptRPC rpc = new ScriptRPC();
-			rpc.Write(thermometer.GetTemperatureMessage(action_data.m_Player));
+			rpc.Write(thermometer.GetTemperatureValue(action_data.m_Player));
 			rpc.Send(action_data.m_Player, ERPCs.RPC_SYNC_THERMOMETER, true, action_data.m_Player.GetIdentity() );
 		}
 		

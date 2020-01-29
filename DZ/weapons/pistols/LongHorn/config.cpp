@@ -32,7 +32,7 @@ class cfgWeapons
 	class LongHorn_Base: Pistol_Base
 	{
 		scope = 0;
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		weight = 1700;
 		absorbency = 0.0;
 		repairableWithKits[] = {5,1};
@@ -75,7 +75,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_LongHorn0";
 		descriptionShort = "$STR_cfgWeapons_LongHorn1";
 		model = "\dz\weapons\pistols\LongHorn\LongHorn.p3d";
-		attachments[] = {"suppressorImpro","weaponOpticsCrossbow"};
+		attachments[] = {"weaponOpticsCrossbow","suppressorImpro"};
 		itemSize[] = {5,2};
 		class DamageSystem
 		{

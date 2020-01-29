@@ -298,6 +298,7 @@ class Object extends IEntity
 	
 	proto native void CreateDynamicPhysics(PhxInteractionLayers layer);
 	proto native void EnableDynamicCCD(bool state);
+	proto native void SetDynamicPhysicsLifeTime(float lifeTime);
 
 	//! Called when tree is chopped down. 'cutting_entity' can be tool, or player, if cutting bush with bare hands
 	void OnTreeCutDown( EntityAI cutting_entity )
@@ -539,6 +540,12 @@ class Object extends IEntity
 	}
 		
 	bool HasProxyParts()
+	{
+		return false;
+	}
+	
+	//! Disables icon in the vicinity, useful for large, immovable items, that are not buildings
+	bool DisableVicinityIcon()
 	{
 		return false;
 	}

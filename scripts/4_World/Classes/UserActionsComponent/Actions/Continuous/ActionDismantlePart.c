@@ -2,7 +2,22 @@ class ActionDismantlePartCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTime( UATimeSpent.DEFAULT_DECONSTRUCT );
+		float time = SetBuildingDuration(m_ActionData.m_MainItem);
+		m_ActionData.m_ActionComponent = new CAContinuousTime( time );
+	}
+	
+	float SetBuildingDuration( ItemBase item )
+	{
+		switch( item.Type() )
+		{
+			case Pickaxe:
+			case Shovel:
+			case FieldShovel:
+				return 7.0;
+			default:
+				return UATimeSpent.DEFAULT_DECONSTRUCT;
+		}
+		return UATimeSpent.DEFAULT_DECONSTRUCT;
 	}
 };
 
@@ -87,9 +102,10 @@ class ActionDismantlePart: ActionContinuousBase
 	{
 		switch( item.Type() )
 		{
+			case Pickaxe:
 			case Shovel:
 			case FieldShovel:
-				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DIGMANIPULATE;
+				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DIG;
 				break;
 			case Pliers:
 				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_INTERACT;

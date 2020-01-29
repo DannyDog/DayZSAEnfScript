@@ -46,6 +46,19 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 				
 				if ( construction_action_data.GetConstructionPartsCount() > 1 )
 				{
+					int valid_recipes;
+					//--------------------------------------------------
+					for(int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
+					{
+						if( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item ) )
+						{
+							valid_recipes++;
+						}
+					}
+					if (valid_recipes <= 1)
+						return false;
+					//--------------------------------------------------
+					
 					//camera and position checks
 					if ( !base_building.IsFacingPlayer( player, main_part_name ) && !player.GetInputController().CameraIsFreeLook() && base_building.HasProperDistance( main_part_name, player ) )
 					{
@@ -64,12 +77,25 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 		return false;
 	}
 	
-	override void Start( ActionData action_data )
+	//-------------------------------------------------
+	override void OnStartClient(ActionData action_data)
 	{
-		super.Start( action_data );
+		super.OnStartClient( action_data );
 		
-		//set next index
+		SetNextIndex(action_data);
+	}
+	
+	override void OnStartServer(ActionData action_data)
+	{
+		super.OnStartServer( action_data );
+		
+		if (!GetGame().IsMultiplayer())
+			SetNextIndex(action_data);
+	}
+	
+	void SetNextIndex(ActionData action_data)
+	{
 		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
 		construction_action_data.SetNextIndex();
-	}	
+	}
 }

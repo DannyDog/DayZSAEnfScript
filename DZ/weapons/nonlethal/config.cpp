@@ -73,7 +73,7 @@ class cfgWeapons
 		reloadAction = "GestureReloadPistolFNP45";
 		cursor = "aimGunGhost";
 		cursorAim = "aimPistol";
-		inventorySlot = "Pistol";
+		inventorySlot[] = {"Pistol"};
 		animClass = "Pistol";
 		armAction = "HandGun";
 	};
@@ -83,7 +83,7 @@ class cfgWeapons
 		disarmAction = "disarmRifle";
 		cursor = "aimGunGhost";
 		cursorAim = "aimRifle";
-		inventorySlot = "Shoulder";
+		inventorySlot[] = {"Shoulder"};
 		animClass = "Rifle";
 	};
 };

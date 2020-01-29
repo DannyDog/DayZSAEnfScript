@@ -370,26 +370,6 @@ class AttachmentCategoriesContainer: CollapsibleContainer
 			}
 		}
 	}
-	
-	void OnIconDrag( Widget w )
-	{
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "RadialIcon" );
-		ClosableContainer c = ClosableContainer.Cast( m_Body.Get( w.GetUserID() + 2 ) );
-		w.GetParent().FindAnyWidget( name ).Show( false );
-	}
-	
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "RadialIcon" );
-		name.Replace( "GhostSlot", "Selected" );
-		w.GetParent().FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
-		ClosableContainer c = ClosableContainer.Cast( m_Body.Get( w.GetUserID() + 2 ) );
-		w.GetParent().FindAnyWidget( name ).Show( c.IsOpened() );
-	}
 
 	override void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver )
 	{

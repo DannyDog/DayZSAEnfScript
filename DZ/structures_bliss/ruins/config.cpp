@@ -281,6 +281,10 @@ class CfgVehicles
 		scope = 1;
 		model = "\DZ\structures_bliss\Ruins\Ruin_Church2.p3d";
 	};
+	class Land_Ruin_Church2_NoIvy: Land_Ruin_Church2
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_Church2_NoIvy.p3d";
+	};
 	class Land_Ruin_House_1B01: HouseNoDestruct
 	{
 		scope = 1;
@@ -536,6 +540,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_Ruin_HouseBig1_NoIvy: Land_Ruin_HouseBig1
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig1_NoIvy.p3d";
+	};
 	class Land_Ruin_HouseBig1_Half: HouseNoDestruct
 	{
 		scope = 1;
@@ -675,6 +683,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_Ruin_HouseBig1_NoIvy_Half: Land_Ruin_HouseBig1_Half
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig1_NoIvy_Half.p3d";
 	};
 	class Land_Ruin_HouseBig2: HouseNoDestruct
 	{
@@ -887,6 +899,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_Ruin_HouseBig2_NoIvy: Land_Ruin_HouseBig2
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig2_NoIvy.p3d";
+	};
 	class Land_Ruin_HouseBig2_Half: HouseNoDestruct
 	{
 		scope = 1;
@@ -1098,6 +1114,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_Ruin_HouseBig2_NoIvy_Half: Land_Ruin_HouseBig2_Half
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig2_NoIvy_Half.p3d";
+	};
 	class Land_Ruin_HouseBig3: HouseNoDestruct
 	{
 		scope = 1;
@@ -1237,6 +1257,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_Ruin_HouseBig3_NoIvy: Land_Ruin_HouseBig3
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig3_NoIvy.p3d";
 	};
 	class Land_Ruin_HouseBig3_Half: HouseNoDestruct
 	{
@@ -1378,6 +1402,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_Ruin_HouseBig3_NoIvy_Half: Land_Ruin_HouseBig3_Half
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseBig3_NoIvy_Half.p3d";
+	};
 	class Land_Ruin_HouseSmall1: HouseNoDestruct
 	{
 		scope = 1;
@@ -1518,10 +1546,18 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_Ruin_HouseSmall1_NoIvy: Land_Ruin_HouseSmall1
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseSmall1_NoIvy.p3d";
+	};
 	class Land_Ruin_HouseSmall1_Half: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures_bliss\Ruins\Ruin_HouseSmall1_Half.p3d";
+	};
+	class Land_Ruin_HouseSmall1_NoIvy_Half: Land_Ruin_HouseSmall1_Half
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseSmall1_NoIvy_Half.p3d";
 	};
 	class Land_Ruin_HouseSmall2: HouseNoDestruct
 	{
@@ -1662,6 +1698,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_Ruin_HouseSmall2_NoIvy: Land_Ruin_HouseSmall2
+	{
+		model = "\DZ\structures_bliss\Ruins\Ruin_HouseSmall2_NoIvy.p3d";
 	};
 	class Land_Ruin_Mil_ControlTower: HouseNoDestruct
 	{

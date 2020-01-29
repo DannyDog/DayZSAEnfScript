@@ -183,7 +183,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_UMP450";
 		descriptionShort = "$STR_cfgWeapons_UMP451";
 		model = "\dz\weapons\firearms\UMP45\ump.p3d";
-		attachments[] = {"weaponFlashlight","weaponOptics","pistolMuzzle","weaponWrap"};
+		attachments[] = {"weaponWrap","weaponOptics","weaponFlashlight","pistolMuzzle"};
 		itemSize[] = {6,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\UMP45\data\ump45_co.paa"};
 		hiddenSelectionsMaterials[] = {"DZ\weapons\firearms\UMP45\data\ump45.rvmat"};

@@ -66,11 +66,6 @@ class WriteLetter extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
-		//Print("Lorem Ipsum...");
-		player.enterNoteMenuWrite = true;
-		player.m_writingImplement = ingredients[0];
-		player.m_paper = ingredients[1];
-		//EnfWriteNote(ingredients[1],ingredients[0]);
 		Debug.Log("Recipe Do method called","recipes");
 	}
 };

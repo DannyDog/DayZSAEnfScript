@@ -30,7 +30,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_MaleLegs_Base0";
 		model = "\DZ\characters\pants\legs3_m.p3d";
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"dz\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -140,7 +140,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "$STR_FemaleLegs_Base0";
 		model = "\DZ\characters\pants\legs3_f.p3d";
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"dz\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -363,7 +363,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Jeans_ColorBase1";
 		model = "\DZ\characters\pants\jeans_ground.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -485,7 +485,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_CargoPants_ColorBase1";
 		model = "\DZ\characters\pants\cargoPants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -602,7 +602,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_TTSKOPants1";
 		model = "\DZ\characters\pants\ttsko_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -689,7 +689,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_HunterPants_ColorBase1";
 		model = "\DZ\characters\pants\HunterPants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -806,7 +806,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_CanvasPants_ColorBase1";
 		model = "\DZ\characters\pants\CanvasPants_Long_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -921,7 +921,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_CanvasPantsMidi_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_CanvasPantsMidi_ColorBase1";
 		model = "\DZ\characters\pants\CanvasPants_Midi_g.p3d";
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -1037,7 +1037,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_TrackSuitPants_ColorBase1";
 		model = "\DZ\characters\pants\TrackSuit_Pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -1118,7 +1118,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_GorkaPants_ColorBase1";
 		model = "\DZ\characters\pants\gorka_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -1229,7 +1229,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PolicePants1";
 		model = "\DZ\characters\pants\PolicePants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -1317,7 +1317,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PolicePantsOrel1";
 		model = "\DZ\characters\pants\ttsko_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -1404,7 +1404,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_ParamedicPants_ColorBase1";
 		model = "\DZ\characters\pants\ParaMedic_Pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -1505,7 +1505,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_FirefightersPants_ColorBase1";
 		model = "\DZ\characters\pants\Firefighter_Pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,4};
@@ -1603,7 +1603,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PrisonUniformPants1";
 		model = "\DZ\characters\pants\prison_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -1688,7 +1688,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherPants_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherPants_ColorBase1";
 		model = "\DZ\characters\pants\Pants_LeatherPants_g.p3d";
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		lootCategory = "Crafted";
@@ -1866,7 +1866,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_MedicalScrubsPants_ColorBase1";
 		model = "\DZ\characters\pants\MedicalScrubs_Pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -1967,7 +1967,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_USMCPants_ColorBase1";
 		model = "\dz\characters\pants\USMC_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -2066,7 +2066,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_SlacksPants_ColorBase1";
 		model = "\DZ\characters\pants\Slacks_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		weight = 184;
@@ -2199,7 +2199,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_BDUPants1";
 		model = "\DZ\characters\pants\bdu_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {4,3};
@@ -2287,7 +2287,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_NBCPantsBase1";
 		model = "\DZ\characters\pants\NBC_Pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -2344,7 +2344,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Breeches_ColorBase1";
 		model = "\DZ\characters\pants\BreechesF_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};
@@ -2455,7 +2455,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_ShortJeans_ColorBase1";
 		model = "\DZ\characters\pants\ShortJeans_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,1};
@@ -2545,7 +2545,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Skirt_ColorBase1";
 		model = "\DZ\characters\pants\Skirt_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,1};
@@ -2620,7 +2620,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_JumpsuitPants_ColorBase1";
 		model = "\DZ\characters\pants\Jumpsuit_pants_g.p3d";
 		ContinuouActions[] = {"AT_WRING_CLOTHES"};
-		inventorySlot = "Legs";
+		inventorySlot[] = {"Legs"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Legs"};
 		itemSize[] = {3,2};

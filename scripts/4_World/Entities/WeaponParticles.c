@@ -298,14 +298,15 @@ class WeaponParticlesBase // This class represents every particle effect you see
 	{
 		int particle_id = -1;
 		
-		if (m_OverrideParticle == -1)
+		string particle_file = "";
+		string cfg_path = "CfgAmmo " + ammoType + " muzzleFlashParticle";
+		if (GetGame().ConfigGetText( cfg_path, particle_file))
+			particle_id = ParticleList.GetParticleID( ParticleList.GetPathToParticles() + particle_file);
+		
+		// Config is accessed only once because the data is saved into a map for repeated access.
+		
+		if ( particle_id > 0 || m_OverrideParticle == -1)
 		{
-			string particle_file = "";
-			string cfg_path = "CfgAmmo " + ammoType + " muzzleFlashParticle";
-			
-			// Config is accessed only once because the data is saved into a map for repeated access.
-			GetGame().ConfigGetText( cfg_path, particle_file);
-			
 			if (particle_file == "")
 			{
 				string ammo_particle_error = "ERROR! Cannot spawn particle effect because item " + ammoType + " is missing config parameter muzzleFlashParticle!";

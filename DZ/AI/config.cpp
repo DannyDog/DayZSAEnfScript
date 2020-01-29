@@ -1233,8 +1233,8 @@ class CfgAIBehaviours
 						minSpeed = 0.53;
 						acceleration = 5.0;
 						maxAngleSpeed = 90.0;
-						slowRadius = 0.0;
-						stopRadius = 0.5;
+						slowRadius = 1.9;
+						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
 						pathFilter = "RoeDeerOnRun";
@@ -1381,7 +1381,7 @@ class CfgAIBehaviours
 					walkToDurationMin = 7;
 					walkToDurationMax = 14;
 					stayLookAtDurationMin = 10;
-					stayLookAtDurationMax = 20;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 10;
 					pathLength = 10.0;
@@ -1390,9 +1390,9 @@ class CfgAIBehaviours
 						maxSpeed = 0.9;
 						minSpeed = 0.53;
 						acceleration = 5.0;
-						maxAngleSpeed = 90.0;
-						slowRadius = 0.0;
-						stopRadius = 0.5;
+						maxAngleSpeed = 10.0;
+						slowRadius = 1.9;
+						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
 						pathFilter = "RoeDeerOnRun";
@@ -1435,7 +1435,7 @@ class CfgAIBehaviours
 					walkToDurationMin = 7;
 					walkToDurationMax = 15;
 					stayLookAtDurationMin = 10;
-					stayLookAtDurationMax = 20;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 10;
 					pathLength = 10.0;
@@ -1444,9 +1444,9 @@ class CfgAIBehaviours
 						maxSpeed = 0.9;
 						minSpeed = 0.53;
 						acceleration = 5.0;
-						maxAngleSpeed = 90.0;
-						slowRadius = 0.0;
-						stopRadius = 0.5;
+						maxAngleSpeed = 10.0;
+						slowRadius = 1.9;
+						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
 						pathFilter = "RoeDeerOnRun";
@@ -3356,7 +3356,7 @@ class CfgAIBehaviours
 						minSpeed = 0.7;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
@@ -3475,8 +3475,8 @@ class CfgAIBehaviours
 					walkAwayDurationMax = 10;
 					walkToDurationMin = 4;
 					walkToDurationMax = 8;
-					stayLookAtDurationMin = 10;
-					stayLookAtDurationMax = 15;
+					stayLookAtDurationMin = 15;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 15;
 					pathLength = 10.0;
@@ -3486,7 +3486,7 @@ class CfgAIBehaviours
 						minSpeed = 0.7;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
@@ -3513,7 +3513,7 @@ class CfgAIBehaviours
 					walkToDurationMin = 20;
 					walkToDurationMax = 30;
 					stayLookAtDurationMin = 15;
-					stayLookAtDurationMax = 20;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 15;
 					pathLength = 10.0;
@@ -3523,7 +3523,7 @@ class CfgAIBehaviours
 						minSpeed = 0.7;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
@@ -5134,7 +5134,7 @@ class CfgAIBehaviours
 						minSpeed = 0.8;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
@@ -5144,7 +5144,7 @@ class CfgAIBehaviours
 					};
 					class CatchUpMovement
 					{
-						mmaxSpeed = 5.0;
+						maxSpeed = 5.0;
 						minSpeed = 0.8;
 						acceleration = 5.0;
 						maxAngleSpeed = 90.0;
@@ -5221,7 +5221,7 @@ class CfgAIBehaviours
 					};
 					class CatchUpMovement
 					{
-						mmaxSpeed = 5.0;
+						maxSpeed = 5.0;
 						minSpeed = 0.8;
 						acceleration = 5.0;
 						maxAngleSpeed = 90.0;
@@ -5252,7 +5252,7 @@ class CfgAIBehaviours
 					walkToDurationMin = 4;
 					walkToDurationMax = 8;
 					stayLookAtDurationMin = 10;
-					stayLookAtDurationMax = 15;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 15;
 					pathLength = 10.0;
@@ -5262,7 +5262,7 @@ class CfgAIBehaviours
 						minSpeed = 0.8;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";
@@ -5289,7 +5289,7 @@ class CfgAIBehaviours
 					walkToDurationMin = 20;
 					walkToDurationMax = 30;
 					stayLookAtDurationMin = 15;
-					stayLookAtDurationMax = 20;
+					stayLookAtDurationMax = 25;
 					stayDurationMin = 5;
 					stayDurationMax = 15;
 					pathLength = 10.0;
@@ -5299,7 +5299,7 @@ class CfgAIBehaviours
 						minSpeed = 0.8;
 						acceleration = 5.0;
 						maxAngleSpeed = 10.0;
-						slowRadius = 0.0;
+						slowRadius = 1.9;
 						stopRadius = 2.0;
 						slowToTurn = "true";
 						smoothAcceleration = "true";

@@ -1,6 +1,6 @@
-﻿//<'anims_cfg.pbo' properties via Mikero's dos tools, dll version 7.44>
+﻿//<'anims_cfg.pbo' properties via Mikero's dos tools, dll version 7.51>
 product=dayz;
 prefix=DZ\anims\cfg;
-version=81732P;
+version=83537P;
 PboType=Arma Addon;
 //</properties>

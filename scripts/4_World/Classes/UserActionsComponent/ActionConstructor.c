@@ -86,6 +86,7 @@ class ActionConstructor
 		actions.Insert(ActionStopEngine);
 		actions.Insert(ActionUnfoldMap);
 		actions.Insert(ActionDropItem);
+		actions.Insert(ActionDropItemSimple);
 		actions.Insert(ActionSwitchSeats);
 		actions.Insert(ActionTurnOnHeadtorch);
 		actions.Insert(ActionTurnOffHeadtorch);
@@ -193,6 +194,7 @@ class ActionConstructor
 		actions.Insert(ActionBuildOven);
 		actions.Insert(ActionDismantleOven);
 		actions.Insert(ActionWritePaper);
+		actions.Insert(ActionReadPaper);
 		actions.Insert(ActionFillFuel);
 		actions.Insert(ActionPourLiquid);
 		actions.Insert(ActionDrainLiquid);
@@ -237,8 +239,6 @@ class ActionConstructor
 		actions.Insert(ActionRemovePlant);
 		actions.Insert(ActionHarvestCrops);
 		actions.Insert(ActionFoldObject);
-		//actions.Insert(ActionDrinkPond); //! old take a sip action
-		//actions.Insert(ActionDrinkWell); //! old take a sip action
 		actions.Insert(ActionRepositionPluggedItem);
 		//actions.Insert(ActionPickBerry);
 		actions.Insert(ActionTurnOnTransmitterOnGround);

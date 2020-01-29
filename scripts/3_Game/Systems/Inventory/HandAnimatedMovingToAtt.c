@@ -101,11 +101,7 @@ class HandAnimatedMovingToAtt extends HandStateBase
 			m_Hide.m_ActionType = ev_move.GetAnimationID();
 			m_Show.m_ActionType = ev_move.GetAnimationID();
 			
-
-			if( GetGame().IsClient() || !GetGame().IsMultiplayer() )
-			{
-				e.m_Player.GetHumanInventory().AddInventoryReservation(m_Entity, m_ilEntity, GameInventory.c_InventoryReservationTimeoutShortMS);
-			}
+			m_ilEntity = m_Show.m_Dst;
 		}
 		
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)

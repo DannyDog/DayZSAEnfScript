@@ -157,6 +157,12 @@ class HandsArea: LayoutHolder
 	{
 		m_ParentWidget = m_Parent.GetMainWidget().FindAnyWidget( "HandsPanel" );
 	}
+	
+	EntityAI GetFocusedItem()
+	{
+		return GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();;
+	}
+	
 
 	override void OnShow()
 	{

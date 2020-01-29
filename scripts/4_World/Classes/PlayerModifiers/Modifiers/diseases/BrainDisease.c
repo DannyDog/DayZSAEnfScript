@@ -59,10 +59,10 @@ class BrainDiseaseMdfr: ModifierBase
 	override protected void OnTick(PlayerBase player, float deltaT)
 	{
 		m_Time += deltaT;
-		float brain_agents = player.GetSingleAgentCountNormalized(eAgents.BRAIN);
-		float chance_of_laughter = brain_agents / Math.RandomInt(1,10);
-		
-		if( Math.RandomFloat01() < chance_of_laughter )
+		float brain_agents = player.GetSingleAgentCountNormalized(eAgents.BRAIN) / 8.0;
+		float chance_of_laughter = Math.RandomFloat01();
+
+		if( chance_of_laughter < brain_agents )
 		{
 			player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_LAUGHTER);
 		}

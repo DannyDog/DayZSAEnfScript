@@ -3,9 +3,9 @@ class PersonalLight extends PointLightBase
 	void PersonalLight()
 	{
 		SetVisibleDuringDaylight(false);
-		SetRadiusTo( 15 );
-		SetBrightnessTo(0.2);
-		SetDiffuseColor(0.1, 0.3, 0.6);
+		SetRadiusTo( 3 );
+		SetBrightnessTo(0.38);
+		SetDiffuseColor(0.2, 0.23, 0.25);
 		SetCastShadow(false);
 		EnableSpecular(false);
 		EnableLinear(true);
@@ -17,8 +17,9 @@ class PersonalLight extends PointLightBase
 		if ( GetGame()  &&  IsEnabled() )
 		{
 			vector pos = GetGame().GetCurrentCameraPosition();
+			pos += Vector( 0, -0.4, 0 );
 			
-			SetPosition(pos);
+			SetPosition( pos );
 		}
 	}
 	

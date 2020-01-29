@@ -337,6 +337,8 @@ class ActionDeployObject: ActionContinuousBase
 
 	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
 	{
+		super.WriteToContext(ctx, action_data);
+		
 		PlaceObjectActionData poActionData;
 		poActionData = PlaceObjectActionData.Cast(action_data);
 

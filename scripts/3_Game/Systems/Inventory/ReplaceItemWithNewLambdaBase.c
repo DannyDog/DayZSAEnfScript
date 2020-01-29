@@ -50,6 +50,15 @@ class ReplaceItemWithNewLambdaBase
 			{
 				m_NewLocation = new InventoryLocation;
 				m_NewLocation.CopyLocationFrom(m_OldLocation, true);	// A.2) prepare new location from old
+				
+				//setting proper location type for ground pos
+				if (!m_NewLocation.GetParent())
+				{
+					vector m4[4];
+					Math3D.MatrixIdentity4(m4);
+					m4[3] = m_NewLocation.GetPos();
+					m_NewLocation.SetGround(null,m4);
+				}
 			}
 			return true;
 		}

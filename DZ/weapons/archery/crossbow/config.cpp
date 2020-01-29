@@ -40,8 +40,6 @@ class cfgWeapons
 		rotationFlags = 34;
 		weight = 2700;
 		itemSize[] = {10,5};
-		lootCategory = "Rifles";
-		lootTag[] = {"Hunting","Civilian"};
 		chamberSize = 5;
 		chamberedRound = "";
 		magazines[] = {};

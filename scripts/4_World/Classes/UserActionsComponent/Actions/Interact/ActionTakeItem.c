@@ -133,7 +133,20 @@ class ActionTakeItem: ActionInteractBase
 		InventoryLocation targetInventoryLocation = new InventoryLocation;
 		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
 		
-		action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
+		
+		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		
+		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
+		{
+			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		}
+		else
+		{
+			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
+		}
+		
+		//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
 	}
 	
 	override void OnExecuteClient( ActionData action_data )
@@ -144,6 +157,17 @@ class ActionTakeItem: ActionInteractBase
 		InventoryLocation targetInventoryLocation = new InventoryLocation;
 		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
 		
-		action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
+		//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		
+		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
+		{
+			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		}
+		else
+		{
+			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
+		}
 	}
 };

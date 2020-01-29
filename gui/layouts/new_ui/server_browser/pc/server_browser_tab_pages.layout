@@ -988,7 +988,7 @@ WindowWidgetClass server_browser_tab_root {
               EditBoxWidgetClass search_name_setting_option {
                clipchildren 0
                ignorepointer 1
-               position 0 -1
+               position 0 0
                size 0.96 0.8
                halign center_ref
                valign center_ref
@@ -1097,7 +1097,7 @@ WindowWidgetClass server_browser_tab_root {
              {
               EditBoxWidgetClass search_ip_setting_option {
                ignorepointer 1
-               position 0 -1
+               position 0 0
                size 0.96 0.8
                halign center_ref
                valign center_ref

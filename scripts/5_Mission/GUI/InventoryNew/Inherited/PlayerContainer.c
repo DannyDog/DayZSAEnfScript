@@ -108,8 +108,6 @@ class PlayerContainer: CollapsibleContainer
 				icon.GetMainWidget().Show( true );
 				icon.Clear();
 				
-				WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetPanelWidget(),  this, "OnIconDrag" );
-				WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetPanelWidget(),  this, "OnIconDrop" );
 				WidgetEventHandler.GetInstance().RegisterOnDoubleClick( icon.GetPanelWidget(),  this, "DoubleClick" );
 				
 				//END - GetWidgetSlot
@@ -302,7 +300,7 @@ class PlayerContainer: CollapsibleContainer
 					{
 						if( item.GetInventory().CanRemoveEntity() )
 						{
-							GetGame().GetPlayer().PredictiveDropEntity( item );
+							GetGame().GetPlayer().PhysicalPredictiveDropItem( item );
 						}
 					}
 					else
@@ -728,7 +726,7 @@ class PlayerContainer: CollapsibleContainer
 			EntityAI item = GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity();
 			if( item && player.CanDropEntity( item ) )
 			{
-				player.PredictiveDropEntity( item );
+				player.PhysicalPredictiveDropItem( item );
 				return true;
 			}
 		}
@@ -1121,73 +1119,6 @@ class PlayerContainer: CollapsibleContainer
 		}
 	}
 
-	void OnIconDrag( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
-
-		ItemManager.GetInstance().SetIsDragging( true );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget(name) );
-		ipw.SetForceFlipEnable(false);
-		
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item )
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-
-			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-			icon_x = x_content / 10;
-			icon_y = x_content / 10;
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-	
-			if( !ipw.GetItem() )
-			{
-				return;
-			}
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Col", "AmmoIcon" );
-			w.GetParent().FindAnyWidget( name ).Show( false );
-			name.Replace( "AmmoIcon", "Selected" );
-			w.GetParent().FindAnyWidget( name ).Show( true );
-			
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-		}
-	}
-
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-		
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(true);
-		ipw.SetForceFlip(false);
-		
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Col", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
-	}
-
 	override void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver )
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( GetItemPreviewWidget( w ) );
@@ -1206,9 +1137,9 @@ class PlayerContainer: CollapsibleContainer
 		if( !item.GetInventory().CanRemoveEntity() )
 			return;
 		
-		if( ( m_Player.GetInventory().CanAddEntityToInventory( item ) && !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
+		if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
-			m_Player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
+			m_Player.PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
 		}
 	}
 
@@ -1248,7 +1179,7 @@ class PlayerContainer: CollapsibleContainer
 			return;
 		}
 
-		if( ( m_Player.GetInventory().CanAddEntityToInventory( item ) && !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
+		if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			ItemManager.GetInstance().HideDropzones();
 			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
@@ -1256,8 +1187,10 @@ class PlayerContainer: CollapsibleContainer
 		}
 		else
 		{
+			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
-			ItemManager.GetInstance().ShowSourceDropzone( item );
+			//ItemManager.GetInstance().ShowSourceDropzone( item );
 		}
 	}
 
@@ -1327,7 +1260,7 @@ class PlayerContainer: CollapsibleContainer
 				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			}
-			else if( ( m_Player.GetInventory().CanAddEntityToInventory( item ) && !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
+			else if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -1339,11 +1272,19 @@ class PlayerContainer: CollapsibleContainer
 				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			}
+			else
+			{
+				ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
+				ItemManager.GetInstance().HideDropzones();
+				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
+			}
 		}
 		else
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
-			ItemManager.GetInstance().ShowSourceDropzone( item );
+			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
+			//ItemManager.GetInstance().ShowSourceDropzone( item );
 		}
 	}
 
@@ -1422,9 +1363,9 @@ class PlayerContainer: CollapsibleContainer
 		{
 			real_player.PredictiveTakeEntityToTargetAttachment( m_Player, item );
 		}
-		else if( ( m_Player.GetInventory().CanAddEntityToInventory( item ) && !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
+		else if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
-			real_player.PredictiveTakeEntityToTargetInventory( m_Player, FindInventoryLocationType.ANY, item );
+			real_player.PredictiveTakeEntityToTargetInventory( m_Player, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
 		}
 
 		if ( menu )

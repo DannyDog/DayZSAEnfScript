@@ -1,6 +1,6 @@
 class Thermometer extends ItemBase
 {
-	string GetTemperatureMessage(PlayerBase player)
+	float GetTemperatureValue(PlayerBase player)
 	{
 		string temp;
 		float value;
@@ -10,12 +10,12 @@ class Thermometer extends ItemBase
 		}
 		else
 		{
-			
 			value = Math.RandomFloatInclusive(PlayerConstants.NORMAL_TEMPERATURE_L, PlayerConstants.NORMAL_TEMPERATURE_H);
 		}
 		value = Math.Round(value * 10) / 10;
-		temp = value.ToString();
-		return temp + "C";
+		return value;
+		//temp = value.ToString();
+		//return temp + "C";
 	}
 	
 	override void SetActions()

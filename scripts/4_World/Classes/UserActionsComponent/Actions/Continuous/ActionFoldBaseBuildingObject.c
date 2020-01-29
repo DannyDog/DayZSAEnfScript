@@ -18,12 +18,11 @@ class ActionFoldBaseBuildingObject: ActionContinuousBase
 	}
 	
 	override void CreateConditionComponents()  
-	{	
-		
+	{
 		m_ConditionTarget = new CCTNonRuined( UAMaxDistances.DEFAULT );
 		m_ConditionItem = new CCINotPresent;
 	}
-		
+	
 	override string GetText()
 	{
 		return "#fold";
@@ -35,7 +34,7 @@ class ActionFoldBaseBuildingObject: ActionContinuousBase
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
+	{
 		Object targetObject = target.GetObject();
 		
 		if ( targetObject.CanUseConstruction() )
@@ -52,9 +51,18 @@ class ActionFoldBaseBuildingObject: ActionContinuousBase
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
-	{	
+	{
+		ItemBase item;
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
-		base_building.FoldBaseBuildingObject();
+		item = base_building.FoldBaseBuildingObject();
+		if ( !GetGame().IsMultiplayer() )
+		{
+			action_data.m_Player.PredictiveTakeEntityToHands(item);
+		}
+		else
+		{
+			action_data.m_Player.ServerTakeEntityToHands(item);
+		}
 	}
 	
 	override string GetAdminLogMessage(ActionData action_data)

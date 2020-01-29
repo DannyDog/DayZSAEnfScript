@@ -1,16 +1,45 @@
 class ActionSawPlanksCB : ActionContinuousBaseCB
 {
+	static const float TIME_SAW_HANDSAW = 1.5;
+	static const float TIME_SAW_HACKSAW = 3.0;
+	static const float TIME_AXES = 1.2;
+	
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT_CONSTRUCT);
+		m_ActionData.m_ActionComponent = new CAContinuousRepeat(GetDefaultTime());
+	}
+	
+	float GetDefaultTime()
+	{
+		string item_type = m_ActionData.m_MainItem.GetType();
+		
+		switch(item_type)
+		{
+			case "Hacksaw": 
+				return TIME_SAW_HACKSAW;
+			break;
+		
+			case "HandSaw": 
+				return TIME_SAW_HANDSAW;
+			break;
+		
+			default: // axes
+				return TIME_AXES;
+			break
+		}
+		Print("ActionSawPlanksCB | Item detection error, assigning negative time");
+		return -1;
 	}
 };
 
 class ActionSawPlanks: ActionContinuousBase
-{	
+{
 	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 3; // any other item, including hacksaw
-	static const int DECREASE_HEALTH_OF_TOOL_AXE = 6; // axes
+	static const int DECREASE_HEALTH_OF_TOOL_AXE = 3; // axes
 	static const int DECREASE_FUEL_OF_CHAINSAW = 9; // chainsaw fuel in ml
+	
+	static const int YIELD = 3;
+	ItemBase m_Planks;
 	
 	void ActionSawPlanks()
 	{
@@ -26,12 +55,12 @@ class ActionSawPlanks: ActionContinuousBase
 		m_ConditionTarget = new CCTNonRuined(UAMaxDistances.DEFAULT);
 		m_ConditionItem = new CCINonRuined;
 	}
-
+	
 	override string GetText()
 	{
 		return "#saw_planks";
 	}
-
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		Object target_O = target.GetObject();
@@ -42,10 +71,6 @@ class ActionSawPlanks: ActionContinuousBase
 			
 			switch(item_type)
 			{
-				/*case "Hacksaw": 
-					
-				break;*/
-				
 				case "Chainsaw":
 					if ( item.HasEnergyManager()  &&  item.GetCompEM().CanWork() )
 					{
@@ -63,55 +88,70 @@ class ActionSawPlanks: ActionContinuousBase
 		
 		return false;
 	}
-
+	
 	override void OnFinishProgressServer( ActionData action_data )
-	{	
+	{
 		PileOfWoodenPlanks item_POWP = PileOfWoodenPlanks.Cast( action_data.m_Target.GetObject() );
-		item_POWP.RemovePlanks(3);
+		item_POWP.RemovePlanks(YIELD);
 		
 		vector pos = action_data.m_Player.GetPosition();
-		ItemBase planks = ItemBase.Cast( GetGame().CreateObject("WoodenPlank", pos) );
-
-		planks.SetQuantity( Math.Round( action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( 9, this.GetSpecialtyWeight() ) ), true );
+		if (!m_Planks)
+		{
+			m_Planks = ItemBase.Cast( GetGame().CreateObject("WoodenPlank", pos) );
+			m_Planks.SetQuantity(YIELD);
+		}
+		else if ((m_Planks.GetQuantity() + YIELD) >= m_Planks.GetQuantityMax())
+		{
+			int remnant = m_Planks.GetQuantity() + YIELD - m_Planks.GetQuantityMax();
+			m_Planks.SetQuantity(m_Planks.GetQuantityMax());
+			if (remnant > 0)
+			{
+				m_Planks = ItemBase.Cast( GetGame().CreateObject("WoodenPlank", pos) );
+				m_Planks.SetQuantity(remnant);
+			}
+		}
+		else
+		{
+			m_Planks.AddQuantity(YIELD);
+		}
 		
 		ItemBase item = action_data.m_MainItem;
 		
 		string item_type = item.GetType();
-			
-			switch(item_type)
-			{
-				case "WoodAxe": 
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_AXE);
-				break;
-			
-				case "FirefighterAxe": 
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_AXE);
-				break;
-			
-				case "FirefighterAxe_Black": 
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_AXE);
-				break;
-			
-				case "FirefighterAxe_Green": 
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_AXE);
-				break;
-			
-				case "Hatchet": 
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_AXE);
-				break;
-			
-				case "Chainsaw":
-					if ( item.HasEnergyManager() )
-					{
-						item.GetCompEM().ConsumeEnergy(DECREASE_FUEL_OF_CHAINSAW);
-					}
-				break;
-			
-				default: // Hacksaw and other
-					item.DecreaseHealth( "", "", DECREASE_HEALTH_OF_TOOL_DEFAULT);
-				break
-			}		
 		
+		switch(item_type)
+		{
+			case "WoodAxe": 
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
+			break;
+		
+			case "FirefighterAxe": 
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
+			break;
+		
+			case "FirefighterAxe_Black": 
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
+			break;
+		
+			case "FirefighterAxe_Green": 
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
+			break;
+		
+			case "Hatchet": 
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
+			break;
+		
+			case "Chainsaw":
+				if ( item.HasEnergyManager() )
+				{
+					item.GetCompEM().ConsumeEnergy(DECREASE_FUEL_OF_CHAINSAW);
+				}
+			break;
+		
+			default: // Hacksaw and other
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_DEFAULT, GetSpecialtyWeight() ));
+			break
+		}
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

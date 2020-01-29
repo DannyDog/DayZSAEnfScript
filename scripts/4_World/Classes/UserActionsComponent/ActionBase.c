@@ -11,6 +11,7 @@ enum ActionConditionMask
 }
 class ActionReciveData
 {
+	ItemBase							m_MainItem;
 	ref ActionTarget					m_Target;
 }
 
@@ -134,6 +135,14 @@ class ActionBase : ActionBase_Basic
 		if ( action_recive_data )
 		{
 			HandleReciveData(action_recive_data,action_data);
+			
+			if( MainItemAlwaysInHands() )
+			{
+				if( player.GetItemInHands() != action_data.m_MainItem )
+				{
+					return false;
+				}
+			}
 		}
 		
 		if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) && !IsInstant() )
@@ -287,6 +296,16 @@ class ActionBase : ActionBase_Basic
 	{
 		return false;
 	}
+	
+	bool UseMainItem()
+	{
+		return true;
+	}
+	
+	bool MainItemAlwaysInHands()
+	{
+		return true;
+	}
 
 	protected bool ActionConditionContinue( ActionData action_data ) //condition for action
 	{
@@ -312,6 +331,11 @@ class ActionBase : ActionBase_Basic
 		Object targetObject = null;
 		Object targetParent = null;
 		
+		if( UseMainItem() )
+		{
+			ctx.Write(action_data.m_MainItem);
+		}
+			
 		if( HasTarget() && !IsUsingProxies() )
 		{
 			// callback data
@@ -358,8 +382,15 @@ class ActionBase : ActionBase_Basic
 		Object actionTargetParent = null;
 		int componentIndex = -1;
 		int proxyBoneIdx = -1;
+		ItemBase mainItem = null;
 		
 		ref ActionTarget target;
+		
+		if( UseMainItem() )
+		{
+			if ( !ctx.Read(mainItem) )
+				return false;
+		}
 
 		if( HasTarget() && !IsUsingProxies() )
 		{			
@@ -404,14 +435,17 @@ class ActionBase : ActionBase_Basic
 			
 			target = new ActionTarget(actionTargetObject, actionTargetParent, componentIndex, vector.Zero, 0);
 						
-			action_recive_data.m_Target = target;		
+			action_recive_data.m_Target = target;
 		}
 
+		action_recive_data.m_MainItem = mainItem;
 		return true;
 	}
 	
 	void HandleReciveData(ActionReciveData action_recive_data, ActionData action_data)
 	{
+		action_data.m_MainItem = action_recive_data.m_MainItem;
+		
 		if(HasTarget())
 		{
 			if (action_recive_data.m_Target)

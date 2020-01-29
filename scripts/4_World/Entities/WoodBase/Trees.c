@@ -118,8 +118,8 @@ class TreeSoft_t_BetulaPendula_2fc: TreeSoft_BetulaPendula_Base
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 4;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 5.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -484,8 +484,8 @@ class TreeHard_t_BetulaPendula_3f: TreeHard_BetulaPendula
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 4;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 5.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -499,8 +499,8 @@ class TreeHard_t_BetulaPendula_3fb: TreeHard_BetulaPendula
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 4;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 5.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -514,8 +514,8 @@ class TreeHard_t_BetulaPendula_3fc: TreeHard_BetulaPendula
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 4;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 5.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -529,8 +529,8 @@ class TreeHard_t_BetulaPendula_3s: TreeHard_BetulaPendula
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 4;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 5.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -634,7 +634,7 @@ class TreeHard_t_FagusSylvatica_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
+		m_PrimaryDropsAmount = 2;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 3.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -709,7 +709,7 @@ class TreeHard_t_FraxinusExcelsior_2f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
+		m_PrimaryDropsAmount = 2;
 		m_SecondaryDropsAmount = 3;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -739,8 +739,8 @@ class TreeHard_t_FraxinusExcelsior_3s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -754,8 +754,8 @@ class TreeHard_t_juglansRegia_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -769,8 +769,8 @@ class TreeHard_t_juglansRegia_3s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
@@ -784,7 +784,7 @@ class TreeHard_t_LarixDecidua_2f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 4;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -799,7 +799,7 @@ class TreeHard_t_LarixDecidua_2fb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 4;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -814,7 +814,7 @@ class TreeHard_t_LarixDecidua_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -829,7 +829,7 @@ class TreeHard_t_LarixDecidua_3f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 4;
 		m_SecondaryDropsAmount = 3;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -844,7 +844,7 @@ class TreeHard_t_LarixDecidua_3fb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 3;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -874,7 +874,7 @@ class TreeHard_t_naked_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 4;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -904,7 +904,7 @@ class TreeHard_t_PiceaAbies_2f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -919,7 +919,7 @@ class TreeHard_t_PiceaAbies_2fb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -934,7 +934,7 @@ class TreeHard_t_PiceaAbies_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
+		m_PrimaryDropsAmount = 2;
 		m_SecondaryDropsAmount = 4;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -982,12 +982,12 @@ class TreeHard_t_PiceaAbies_3s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 4;
 		m_SecondaryDropsAmount = 3;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeHard_t_PinusSylvestris_2f: TreeHard
@@ -997,7 +997,7 @@ class TreeHard_t_PinusSylvestris_2f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1012,7 +1012,7 @@ class TreeHard_t_PinusSylvestris_2fb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1027,7 +1027,7 @@ class TreeHard_t_PinusSylvestris_2s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1042,7 +1042,7 @@ class TreeHard_t_PinusSylvestris_2sb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 1;
+		m_PrimaryDropsAmount = 2;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1072,7 +1072,7 @@ class TreeHard_t_PinusSylvestris_3f: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1087,7 +1087,7 @@ class TreeHard_t_PinusSylvestris_3fb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1102,7 +1102,7 @@ class TreeHard_t_PinusSylvestris_3fc: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1117,7 +1117,7 @@ class TreeHard_t_PinusSylvestris_3s: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 2;
+		m_PrimaryDropsAmount = 3;
 		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
@@ -1357,8 +1357,8 @@ class TreeHard_t_quercusRobur_3sb: TreeHard
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 3;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 4;
+		m_SecondaryDropsAmount = 6;
 		m_ToolDamage = 2.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";

@@ -120,12 +120,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel0 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel0 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -135,46 +135,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background0 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity0 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -486,12 +476,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel1 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel1 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -501,46 +491,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background1 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity1 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -850,12 +830,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel2 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel2 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -865,46 +845,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background2 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity2 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -1214,12 +1184,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel3 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel3 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -1229,46 +1199,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background3 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity3 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -1578,12 +1538,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel4 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel4 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -1593,46 +1553,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background4 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity4 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -1942,12 +1892,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel5 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel5 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -1957,46 +1907,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background5 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity5 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -2306,12 +2246,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel6 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel6 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -2321,46 +2261,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background6 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity6 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }
@@ -2670,12 +2600,12 @@ GridSpacerWidgetClass height_wrapper {
            vertical 0
            flipped 0
           }
-          PanelWidgetClass QuantityStackPanel7 {
-           visible 1
-           clipchildren 1
+          GridSpacerWidgetClass QuantityStackPanel7 {
+           clipchildren 0
            inheritalpha 0
            ignorepointer 1
-           position 2 2
+           color 0 0 0 0.7843
+           position 1 1
            size 29 18
            halign right_ref
            valign bottom_ref
@@ -2685,46 +2615,36 @@ GridSpacerWidgetClass height_wrapper {
            vexactsize 1
            priority 600
            draggable 0
-           style blank
+           style Colorable
+           Padding 0
+           Margin 3
+           "Size To Content H" 1
+           "Size To Content V" 1
+           content_halign right
+           content_valign center
+           Columns 1
+           Rows 1
            {
-            ImageWidgetClass Background7 {
-             visible 1
-             ignorepointer 1
-             color 0 0 0 0.7843
-             size 29 29
-             halign center_ref
-             valign center_ref
-             hexactpos 0
-             vexactpos 0
-             hexactsize 1
-             vexactsize 1
-             fixaspect inside
-             image0 ""
-             mode blend
-             "src alpha" 1
-             "no wrap" 1
-             filter 1
-             nocache 0
-            }
             TextWidgetClass Quantity7 {
+             clipchildren 0
              inheritalpha 0
              ignorepointer 1
-             color 1 1 1 0.7843
-             size 1 0.7
-             halign center_ref
-             valign center_ref
+             size 1 1
+             halign right_ref
+             valign bottom_ref
              hexactpos 1
              vexactpos 1
              hexactsize 0
              vexactsize 0
-             fixaspect inside
              priority 500
              style Light
-             text "99"
-             font "gui/fonts/sdf_MetronBook24"
-             "text color" 1 1 1 0.7843
-             "exact text" 0
-             "text halign" center
+             text "100"
+             font "gui/fonts/sdf_MetronLight24"
+             "exact text" 1
+             "exact text size" 15
+             "size to text h" 1
+             "size to text v" 0
+             "text halign" right
              "text valign" center
             }
            }

@@ -471,7 +471,7 @@ class HandsContainer: Container
 			EntityAI item_in_hands = player.GetHumanInventory().GetEntityInHands();
 			if( item_in_hands && player.CanDropEntity( item_in_hands ) && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() )
 			{
-				if( player.PredictiveDropEntity( item_in_hands ) )
+				if( player.PhysicalPredictiveDropItem( item_in_hands ) )
 				{
 					m_MainWidget.FindAnyWidget("Selected").Show( false );
 					m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
@@ -546,7 +546,7 @@ class HandsContainer: Container
 					}
 					else
 					{
-						if( player.GetHumanInventory().CanAddEntityInHands( selected_item ) )
+						if( player.GetHumanInventory().CanAddEntityInHands( selected_item ) && selected_item.GetInventory().CanRemoveEntity() )
 						{
 			 				ItemBase item_base = ItemBase.Cast( selected_item );
 							float stackable = item_base.ConfigGetFloat("varStackMax");
@@ -934,65 +934,6 @@ class HandsContainer: Container
 		cmenu.Show( m_am_pos_x, m_am_pos_y );
 	}
 
-	bool OnIconDrag( Widget w, int x, int y )
-	{
-		ItemManager.GetInstance().SetIsDragging( true );
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(false);
-
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item )
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-			GetMainWidget().GetScreenSize( x_content, y_content );
-			icon_x = x_content / 10;
-			icon_y = x_content / 10;
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-			
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Col", "Selected" );
-			w.FindAnyWidget( name ).Show( true );
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-		}
-
-		return false;
-	}
-
-	bool OnIconDrop( Widget w, int x, int y, Widget reciever )
-	{
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(true);
-		ipw.SetForceFlip(false);
-		
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Col", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-
-		return false;
-	}
 
 	override void OnDropReceivedFromHeader( Widget w, int x, int y, Widget receiver )
 	{

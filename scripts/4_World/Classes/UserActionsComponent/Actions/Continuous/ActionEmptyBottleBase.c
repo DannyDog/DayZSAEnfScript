@@ -78,7 +78,7 @@ class ActionEmptyBottleBase: ActionContinuousBase
 		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			return true;
 		
-		if ( item.IsLiquidPresent() && !target.GetObject() && player.IsCurrentCameraAimedAtGround() )
+		if ( item.IsLiquidPresent() && player.IsCurrentCameraAimedAtGround() )
 		{
 			return true;
 		}
@@ -93,12 +93,4 @@ class ActionEmptyBottleBase: ActionContinuousBase
 		}
 		return false;
 	}
-	/*override void OnEndServer( ActionData action_data )
-	{
-		if ( action_data.m_MainItem.GetQuantity() < 0.01 )
-		{
-			action_data.m_MainItem.SetQuantity(0);
-			action_data.m_MainItem.SetLiquidType(0);
-		}
-	}*/
 };

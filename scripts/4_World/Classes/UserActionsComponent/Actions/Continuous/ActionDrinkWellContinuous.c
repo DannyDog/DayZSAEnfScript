@@ -61,28 +61,47 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	{
 		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
 	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		//Print("OnEndServer");
+		//OnFinishProgressServer(action_data);
+		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+	}
 
 	override void OnFinishProgressServer( ActionData action_data )
 	{
+		//Print("OnFinishProgressServer");
 		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
 		if(nacdata)
 		{
 			float amount = UAQuantityConsumed.DRINK;
 			action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_WELL);
 		}
-	}
-
-	override void OnEndAnimationLoopServer( ActionData action_data )
-	{
+		
 		if(action_data.m_Player.HasBloodyHands())
 		{
 			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
 		}
 	}
 	
-	override void OnEndServer( ActionData action_data )
+	/*override void OnExecuteServer( ActionData action_data )
 	{
-		OnFinishProgressServer(action_data);
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		//Print("OnExecuteServer");
+		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
+		if(nacdata)
+		{
+			float amount = UAQuantityConsumed.DRINK;
+			action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_WELL);
+		}
+	}*/
+
+	override void OnEndAnimationLoopServer( ActionData action_data )
+	{
+		//Print("OnEndAnimationLoopServer");
+		if(action_data.m_Player.HasBloodyHands())
+		{
+			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
+		}
 	}
 };

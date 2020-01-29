@@ -237,8 +237,8 @@ class MiscGameplayFunctions
 
 		if( !GetGame().IsClient())
 		{
-			if( transfer_health ) target_ib.SetHealth("", "", source.GetHealth("",""));
-			//target_ib.SetHealth("", "", source.GetHealth01("","") * target_ib.GetMaxHealth("",""));
+			//if( transfer_health ) target_ib.SetHealth("", "", source.GetHealth("",""));
+			target_ib.SetHealth("", "", source.GetHealth01("","") * target_ib.GetMaxHealth("",""));
 		}
 	}
 
@@ -651,6 +651,86 @@ class MiscGameplayFunctions
 		return false;
 	}
 	
+	//TODO
+	static string SanitizeString(string input)
+	{
+		int max_length = 512;
+		string output = input;
+		
+		output = output.Substring(0,Math.Clamp(max_length,0,output.Length()));
+		return output;
+	}
+	
+	static bool ComplexBuildCollideCheckClient( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		bool b1,b2;
+		BaseBuildingBase base_building = BaseBuildingBase.Cast( target.GetObject() );
+		if (base_building)
+		{
+			Construction construction = base_building.GetConstruction();
+			Construction construction2 = base_building.m_Construction;
+			
+			ConstructionActionData construction_action_data = player.GetConstructionActionData();
+			string part_name = construction_action_data.GetCurrentBuildPart().GetPartName();
+			
+			if (base_building.m_Construction)
+				b1 = !base_building.m_Construction.IsColliding( part_name );
+			b2 = BuildCondition( player, target, item, true );
+			
+		}
+		return b1 && b2;
+	}
+	
+	static bool BuildCondition( PlayerBase player, ActionTarget target, ItemBase item, bool camera_check )
+	{	
+		if ( player && !player.IsLeaning() )
+		{
+			Object targetObject = target.GetObject();
+			if ( targetObject && targetObject.CanUseConstruction() )
+			{
+				BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
+				ConstructionActionData construction_action_data = player.GetConstructionActionData();
+				construction_action_data.SetTarget( targetObject );
+				
+				string main_part_name = targetObject.GetActionComponentName( target.GetComponentIndex() );
+				
+				if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
+				{
+					construction_action_data.RefreshPartsToBuild( main_part_name, item );
+				}
+				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
+	
+				//Debug
+				/*
+				if ( constrution_part )
+				{
+					Construction construction = base_building.GetConstruction();	
+					construction.IsColliding( constrution_part.GetPartName() );
+				}
+				*/
+
+				if ( constrution_part )
+				{
+					//camera and position checks
+					if ( !base_building.IsFacingPlayer( player, constrution_part.GetMainPartName() ) && !player.GetInputController().CameraIsFreeLook() && base_building.HasProperDistance( main_part_name, player ) )
+					{
+						//Camera check (client-only)
+						if ( camera_check )
+						{
+							if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
+							{
+								return !base_building.IsFacingCamera( constrution_part.GetMainPartName() );
+							}
+						}
+						
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
 };
 
 class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda

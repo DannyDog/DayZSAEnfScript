@@ -124,6 +124,26 @@ class CfgAmmo
 			};
 		};
 	};
+	class BarbedWireHit: MeleeDamage
+	{
+		class DamageApplied
+		{
+			type = "Barbedwire";
+			bleedThreshold = 0.8;
+			class Health
+			{
+				damage = 1;
+			};
+			class Blood
+			{
+				damage = 100;
+			};
+			class Shock
+			{
+				damage = 0;
+			};
+		};
+	};
 	class FirearmHit_Pistol: MeleeDamage
 	{
 		affectSkeleton = 0.1;

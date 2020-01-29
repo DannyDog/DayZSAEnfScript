@@ -34,7 +34,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\HelmetMich_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -168,7 +168,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BaseballCap_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BaseballCap_ColorBase1";
 		model = "\DZ\characters\headgear\BaseballCap_ground.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -273,7 +273,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\HeloHelmet_ground.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -405,7 +405,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\ConstructionHelmet_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -550,7 +550,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BurlapSack0";
 		descriptionShort = "$STR_CfgVehicles_BurlapSack1";
 		model = "\dz\characters\headgear\Head_sack_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -605,7 +605,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BeanieHat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BeanieHat_ColorBase1";
 		model = "\DZ\characters\headgear\BeanieHat_ground.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -702,7 +702,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Ushanka_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Ushanka_ColorBase1";
 		model = "\DZ\characters\headgear\ushanka_ground.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -772,7 +772,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_pumpkinhelmet0";
 		descriptionShort = "$STR_cfgvehicles_pumpkinhelmet1";
 		model = "\DZ\characters\headgear\PumpkinHelmet_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -844,7 +844,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\MotoHelmet_ground.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1012,7 +1012,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\MotoHelmet_ground.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1178,7 +1178,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Headtorch_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Headtorch_ColorBase1";
 		model = "\DZ\characters\headgear\HeadTorch_ground.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1263,7 +1263,7 @@ class CfgVehicles
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_BandanaHead","Clipping_BandanaFace"};
-		hideSelectionsByInventorySlot = 1;
+		hideSelectionsByinventorySlot[] = {1};
 		hiddenSelections[] = {"camoGround","camoMale_H","camoMale_M","camoFemale_H","camoFemale_M"};
 		simpleHiddenSelections[] = {"hide_headgear","hide_mask"};
 		class DamageSystem
@@ -1440,7 +1440,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_RadarCap_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_RadarCap_ColorBase1";
 		model = "\DZ\characters\headgear\RadarCap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1520,7 +1520,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MilitaryBeret_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MilitaryBeret_ColorBase1";
 		model = "\DZ\characters\headgear\RadarCap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1628,7 +1628,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_FlatCap_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_FlatCap_ColorBase1";
 		model = "\DZ\characters\headgear\FlatCap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1726,7 +1726,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ZmijovkaCap_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_ZmijovkaCap_ColorBase1";
 		model = "\DZ\characters\headgear\ZmijovkaCap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1795,7 +1795,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_CowboyHat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_CowboyHat_ColorBase1";
 		model = "\DZ\characters\headgear\CowboyHat_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1875,7 +1875,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BoonieHat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BoonieHat_ColorBase1";
 		model = "\DZ\characters\headgear\BoonieHat_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -1996,7 +1996,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_OfficerHat0";
 		descriptionShort = "$STR_CfgVehicles_OfficerHat1";
 		model = "\DZ\characters\headgear\Officerhat_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2050,7 +2050,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PoliceCap0";
 		descriptionShort = "$STR_CfgVehicles_PoliceCap1";
 		model = "\DZ\characters\headgear\PoliceCap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2104,7 +2104,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PilotkaCap0";
 		descriptionShort = "$STR_CfgVehicles_PilotkaCap1";
 		model = "\DZ\characters\headgear\pilotka_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2158,7 +2158,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TankerHelmet0";
 		descriptionShort = "$STR_CfgVehicles_TankerHelmet1";
 		model = "\DZ\characters\headgear\TankerHelmet_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2216,7 +2216,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\Maska_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		attachments[] = {"Glass"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -2348,7 +2348,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\FireHelmet_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2476,7 +2476,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\ProtecSkateHelmet2_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2621,7 +2621,7 @@ class CfgVehicles
 		model = "\DZ\characters\masks\Welding_Mask_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2680,7 +2680,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PrisonerCap0";
 		descriptionShort = "$STR_CfgVehicles_PrisonerCap1";
 		model = "\DZ\characters\headgear\prison_cap_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2730,7 +2730,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GhillieHood_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_GhillieHood_ColorBase1";
 		model = "\DZ\characters\headgear\GhillieHood_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2825,7 +2825,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherHat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherHat_ColorBase1";
 		model = "\DZ\characters\headgear\Hat_Leather_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -2952,7 +2952,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MedicalScrubsHat_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MedicalScrubsHat_ColorBase1";
 		model = "\DZ\characters\headgear\MedicalScrubs_Hat_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3021,7 +3021,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\greathelm_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3144,7 +3144,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\Ssh68Helmet_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3261,7 +3261,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\MxHelmet_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3421,7 +3421,7 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 34;
 		itemSize[] = {3,1};
-		inventorySlot = "DBHelmetVisor";
+		inventorySlot[] = {"DBHelmetVisor"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -3442,7 +3442,7 @@ class CfgVehicles
 		model = "\dz\characters\headgear\MxHelmet_mouthguard.p3d";
 		rotationFlags = 34;
 		itemSize[] = {3,1};
-		inventorySlot = "DBHelmetMouth";
+		inventorySlot[] = {"DBHelmetMouth"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -3461,7 +3461,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_NBCHoodBase0";
 		descriptionShort = "$STR_CfgVehicles_NBCHoodBase1";
 		model = "\DZ\characters\headgear\NBC_Hood_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3518,7 +3518,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\Hockey_helmet_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3656,7 +3656,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SantasHat0";
 		descriptionShort = "$STR_CfgVehicles_SantasHat1";
 		model = "\DZ\characters\headgear\SantasHat_g.p3d";
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3694,7 +3694,7 @@ class CfgVehicles
 		model = "\DZ\characters\headgear\Mich2001_g.p3d";
 		repairableWithKits[] = {5,8};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Headgear";
+		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Headgear"};
@@ -3812,19 +3812,19 @@ class CfgNonAIVehicles
 	class ProxyMxHelmet_visor: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "DBHelmetVisor";
+		inventorySlot[] = {"DBHelmetVisor"};
 		model = "\dz\characters\headgear\MxHelmet_visor.p3d";
 	};
 	class ProxyMxHelmet_mouthguard: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "DBHelmetMouth";
+		inventorySlot[] = {"DBHelmetMouth"};
 		model = "\dz\characters\headgear\MxHelmet_mouthguard.p3d";
 	};
 	class Proxyhelmet_flashlight: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "helmetFlashlight";
+		inventorySlot[] = {"helmetFlashlight"};
 		model = "\dz\characters\headgear\proxies\helmet_flashlight.p3d";
 	};
 };

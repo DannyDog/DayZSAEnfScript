@@ -17,7 +17,6 @@ class SlotsIcon: LayoutHolder
 	
 	protected Widget				m_CursorWidget;
 	protected Widget				m_ColWidget;
-	protected Widget				m_SelectedWidget
 	protected Widget				m_MountedWidget;
 	protected Widget				m_OutOfReachWidget;
 	protected Widget				m_ReservedWidget;
@@ -52,7 +51,6 @@ class SlotsIcon: LayoutHolder
 		
 		m_CursorWidget			= m_MainWidget.FindAnyWidget( "Cursor" + index );
 		m_ColWidget				= m_MainWidget.FindAnyWidget( "Col" + index );
-		m_SelectedWidget		= m_MainWidget.FindAnyWidget( "Selected" + index );
 		m_MountedWidget			= m_MainWidget.FindAnyWidget( "Mounted" + index );
 		m_OutOfReachWidget		= m_MainWidget.FindAnyWidget( "OutOfReach" + index );
 
@@ -84,6 +82,9 @@ class SlotsIcon: LayoutHolder
 		
 		WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_PanelWidget,  this, "MouseEnter" );
 		WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_PanelWidget,  this, "MouseLeave" );
+		
+		WidgetEventHandler.GetInstance().RegisterOnDrag( m_PanelWidget, this, "OnIconDrag" );
+		WidgetEventHandler.GetInstance().RegisterOnDrop( m_PanelWidget, this, "OnIconDrop" );
 		
 		//WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_ReservedWidget,  this, "MouseEnter" );
 		//WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_ReservedWidget,  this, "MouseLeave" );
@@ -147,11 +148,6 @@ class SlotsIcon: LayoutHolder
 	Widget GetReservedWidget()
 	{
 		return m_ReservedWidget;
-	}
-	
-	Widget GetSelectedWidget()
-	{
-		return m_SelectedWidget;
 	}
 	
 	Widget GetMountedWidget()
@@ -274,6 +270,11 @@ class SlotsIcon: LayoutHolder
 	EntityAI GetEntity()
 	{
 		return EntityAI.Cast( m_Obj );
+	}
+	
+	ItemBase GetItem()
+	{
+		return m_Item;
 	}
 	
 	void RefreshMuzzleIcon()
@@ -412,6 +413,20 @@ class SlotsIcon: LayoutHolder
 	
 	void Clear()
 	{
+		if (m_IsDragged)
+		{
+			m_IsDragged = false;
+			ItemManager.GetInstance().HideDropzones();
+			ItemManager.GetInstance().SetIsDragging( false );
+			m_PanelWidget.ClearFlags( WidgetFlags.EXACTSIZE );
+			m_PanelWidget.SetSize( 1, 1 );
+			m_ColWidget.Show( false );
+			m_SelectedPanel.Show( false );
+			m_SelectedPanel.SetColor( ARGBF( 1, 1, 1, 1 ) );
+			m_ItemPreview.SetForceFlipEnable(true);
+			Widget a = CancelWidgetDragging();
+			ItemManager.GetInstance().SetWidgetDraggable( a, false );
+		}
 		if( m_Obj )
 		{
 			m_Obj.GetOnItemFlipped().Remove( UpdateFlip );
@@ -437,7 +452,7 @@ class SlotsIcon: LayoutHolder
 		m_RadialIconPanel.Show( false );
 		m_QuantityPanel.Show( false );
 		m_ColWidget.Show( false );
-		m_SelectedWidget.Show( false );
+		m_SelectedPanel.Show( false );
 		m_MountedWidget.Show( false );
 		m_OutOfReachWidget.Show( false );
 		m_ReservedWidget.Show( false );
@@ -493,7 +508,9 @@ class SlotsIcon: LayoutHolder
 	
 	bool IsOutOfReach()
 	{
-		return ( m_OutOfReachWidget.IsVisible() || m_MountedWidget.IsVisible() );
+		bool oot = ( m_OutOfReachWidget.IsVisible() || m_MountedWidget.IsVisible() );
+		//Print( "WAT " + oot );
+		return oot;
 	}
 	
 	bool MouseEnter(Widget w, int x, int y)
@@ -536,4 +553,75 @@ class SlotsIcon: LayoutHolder
 				SetItemSize();
 		}
 	}
+	
+	void OnIconDrag( Widget w )
+	{
+		if(!m_Obj || !w)
+		{
+			return;
+		}
+		ItemManager.GetInstance().HideDropzones();
+		if( m_Obj.GetHierarchyRootPlayer() == GetGame().GetPlayer() )
+		{
+			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
+		}
+		else
+		{
+			ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
+		}
+
+		ItemManager.GetInstance().SetIsDragging( true );
+		int icon_x, icon_y;
+		float icon_size, y;
+		int m_sizeX, m_sizeY;
+
+		if( m_Item )
+		{
+			GetGame().GetInventoryItemSize( m_Item, icon_x, icon_y );
+			
+			CargoContainer c_parent = CargoContainer.Cast( m_Parent );
+			HandsPreview h_parent = HandsPreview.Cast( m_Parent );
+
+			if( GetRoot().m_MainWidget.FindAnyWidget( "HandsPanel" ) )
+			{
+				GetRoot().m_MainWidget.FindAnyWidget( "HandsPanel" ).GetScreenSize( icon_size, y );
+			}
+			
+			icon_size = icon_size / 10;
+			
+			w.SetFlags( WidgetFlags.EXACTSIZE );
+			m_ItemPreview.SetForceFlipEnable(false);
+			
+			if( !m_Item.GetInventory().GetFlipCargo() )
+			{
+				w.SetSize( icon_x * icon_size , icon_y * icon_size );
+			}
+			else
+			{
+				w.SetSize( icon_y * icon_size , icon_x * icon_size );
+			}
+		
+			m_ColWidget.Show( true );
+			m_SelectedPanel.Show( true );
+			
+			m_RadialIcon.Show( false );
+			
+			ItemManager.GetInstance().SetDraggedItem( m_Item );
+		}
+		m_IsDragged = true;
+	}
+	
+	void OnIconDrop( Widget w )
+	{
+		m_IsDragged = false;
+		ItemManager.GetInstance().HideDropzones();
+		ItemManager.GetInstance().SetIsDragging( false );
+		w.ClearFlags( WidgetFlags.EXACTSIZE );
+		w.SetSize( 1, 1 );
+		m_ColWidget.Show( false );
+		m_SelectedPanel.Show( false );
+		m_SelectedPanel.SetColor( ARGBF( 1, 1, 1, 1 ) );
+		m_ItemPreview.SetForceFlipEnable(true);
+	}
+	
 }

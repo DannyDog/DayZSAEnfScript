@@ -33,6 +33,7 @@ class MissionGameplay extends MissionBase
 	protected bool 					m_InitOnce;
 	protected bool 					m_ControlDisabled;
 	protected bool 					m_QuickbarHold;
+	protected bool 					m_PlayerRespawning;
 	
 	// von control info
 	protected bool					m_VoNActive;
@@ -90,6 +91,7 @@ class MissionGameplay extends MissionBase
 		}
 			
 		PPEffects.Init();
+		MapMarkerTypes.Init();
 		
 		m_UIManager = GetGame().GetUIManager();
 			
@@ -192,25 +194,9 @@ class MissionGameplay extends MissionBase
 	{
 		if( mute_list && mute_list.Count() > 0 )
 		{
-			if ( ScriptInputUserData.CanStoreInputUserData() )
-			{
-				ScriptInputUserData ctx = new ScriptInputUserData;
-				ctx.Write( INPUT_UDT_USER_SYNC_PERMISSIONS );
-				ref map<string, bool> mute_list2;
-				if( mute_list.Count() > 4 )
-				{
-					mute_list2 = new map<string, bool>;
-					for( int i = mute_list.Count() - 1; i >= 4; i-- )
-					{
-						mute_list2.Insert( mute_list.GetKey( i ), mute_list.GetElement( i ) );
-						mute_list.RemoveElement( i );
-					}
-				}
-				ctx.Write( mute_list );
-				Print( mute_list );
-				ctx.Send();
-				SendMuteListToServer( mute_list2 );
-			}
+			ScriptRPC rpc = new ScriptRPC();
+			rpc.Write(mute_list);
+			rpc.Send(null, ERPCs.RPC_USER_SYNC_PERMISSIONS, true, null);
 		}
 	}
 	
@@ -244,6 +230,7 @@ class MissionGameplay extends MissionBase
 		UIScriptedMenu menu = m_UIManager.GetMenu();
 		InventoryMenu inventory = InventoryMenu.Cast( m_UIManager.FindMenu(MENU_INVENTORY) );
 		MapMenu map_menu = MapMenu.Cast( m_UIManager.FindMenu(MENU_MAP) );
+		NoteMenu note_menu = NoteMenu.Cast( m_UIManager.FindMenu(MENU_NOTE) );
 		GesturesMenu gestures_menu = GesturesMenu.Cast(m_UIManager.FindMenu(MENU_GESTURES));
 		RadialQuickbarMenu quickbar_menu = RadialQuickbarMenu.Cast(m_UIManager.FindMenu(MENU_RADIAL_QUICKBAR));
 		//m_InventoryMenu = inventory;
@@ -258,23 +245,6 @@ class MissionGameplay extends MissionBase
 			{
 				playerPB.GetHologramLocal().UpdateHologram( timeslice );
 			}
-		
-			if( playerPB.enterNoteMenuRead )
-			{
-				playerPB.enterNoteMenuRead = false;
-				Paper paper = Paper.Cast(playerPB.GetItemInHands());
-				m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
-				m_Note.InitRead(paper.m_AdvancedText);
-				m_Hud.ShowHudUI( false );
-			}
-		
-			if( playerPB.enterNoteMenuWrite )
-			{
-				playerPB.enterNoteMenuWrite = false;
-				m_Note = NoteMenu.Cast( GetUIManager().EnterScriptedMenu(MENU_NOTE, menu) ); //NULL means no parent
-				m_Note.InitWrite(playerPB.m_paper,playerPB.m_writingImplement,playerPB.m_Handwriting);
-				m_Hud.ShowHudUI( false );
-			}
 			
 			/*if( !menu && m_ControlDisabled && !playerPB.GetCommand_Melee2() )
 			{
@@ -286,7 +256,7 @@ class MissionGameplay extends MissionBase
 		//Radial quickbar
 		if( input.LocalPress("UAUIQuickbarRadialOpen",false) )
 		{
-			//open gestures menu
+			//open quickbar menu
 			if ( playerPB.IsAlive() && !playerPB.IsRaised() && !playerPB.GetCommand_Vehicle() )	//player hands not raised, player is not in prone and player is not interacting with vehicle
 			{
 				if ( !GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
@@ -304,7 +274,7 @@ class MissionGameplay extends MissionBase
 		
 		if( input.LocalRelease("UAUIQuickbarRadialOpen",false) )
 		{
-			//close gestures menu
+			//close quickbar menu
 			if ( GetUIManager().IsMenuOpen( MENU_RADIAL_QUICKBAR ) )
 			{
 				RadialQuickbarMenu.CloseMenu();
@@ -569,6 +539,10 @@ class MissionGameplay extends MissionBase
 				{
 					PlayerControlDisable(INPUT_EXCLUDE_INVENTORY);
 				}
+				else if(menu == note_menu && !m_ControlDisabled)
+				{
+					PlayerControlDisable(INPUT_EXCLUDE_INVENTORY);
+				}
 				else if(menu == gestures_menu && !m_ControlDisabled && !gestures_menu.IsMenuClosing())
 				{
 					PlayerControlDisable(INPUT_EXCLUDE_MOUSE_RADIAL);
@@ -601,7 +575,6 @@ class MissionGameplay extends MissionBase
 						}
 					}
 				}
-				
 			}
 			else if (input.LocalPress("UAUIMenu",false))
 			{
@@ -633,17 +606,6 @@ class MissionGameplay extends MissionBase
 		m_Hud.KeyPress(key);
 		
 #ifdef DEVELOPER
-		// drop item prototype
-		/*if ( key == KeyCode.KC_N )
-		{
-			PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-			if (player && player.GetItemInHands() && !GetUIManager().GetMenu())
-			{
-				ActionManagerClient manager = ActionManagerClient.Cast(player.GetActionManager());
-				manager.ActionDropItemStart(player.GetItemInHands(),null);
-			}
-		}*/
-		
 		if ( key == KeyCode.KC_Q )
 		{
 			
@@ -958,7 +920,11 @@ class MissionGameplay extends MissionBase
 		if ( IsPaused() || ( GetGame().GetUIManager().GetMenu() && GetGame().GetUIManager().GetMenu().GetID() == MENU_INGAME ) )
 			return;
 
-		if ( g_Game.IsClient() && g_Game.GetGameState() == DayZGameState.CONNECTING )
+		if ( g_Game.IsClient() && g_Game.GetGameState() != DayZGameState.IN_GAME )
+			return;
+		
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		if ( player && !player.IsPlayerLoaded() || IsPlayerRespawning() )
 			return;
 		
 		CloseAllMenus();
@@ -978,7 +944,20 @@ class MissionGameplay extends MissionBase
 		
 		PlayerControlEnable(true);
 		GetUIManager().CloseMenu(MENU_INGAME);
+		//GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(CloseInGameMenu,1,true);
 	}
+	
+	/*void CloseInGameMenu()
+	{
+		if (GetUIManager().IsMenuOpen(MENU_INGAME))
+		{
+			GetUIManager().CloseMenu(MENU_INGAME);
+		}
+		else
+		{
+			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(CloseInGameMenu);
+		}
+	}*/
 	
 	override bool IsMissionGameplay()
 	{
@@ -1191,5 +1170,25 @@ class MissionGameplay extends MissionBase
 			ImageWidget voiceWidget = m_VoiceLevelsWidgets.Get( n );
 			voiceWidget.Show(false);
 		}
+	}
+	
+	override UIScriptedMenu GetNoteMenu()
+	{
+		return m_Note;
+	};
+	
+	override void SetNoteMenu(UIScriptedMenu menu)
+	{
+		m_Note = NoteMenu.Cast(menu);
+	};
+	
+	override void SetPlayerRespawning(bool state)
+	{
+		m_PlayerRespawning = state;
+	}
+	
+	override bool IsPlayerRespawning()
+	{
+		return m_PlayerRespawning;
 	}
 }

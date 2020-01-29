@@ -483,7 +483,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PlantMaterial0";
 		descriptionShort = "$STR_CfgVehicles_PlantMaterial1";
 		model = "\dz\gear\cultivation\plant_material.p3d";
-		inventorySlot = "Plant";
+		inventorySlot[] = {"Plant"};
 		lootCategory = "Crafted";
 		itemSize[] = {3,2};
 		rotationFlags = 12;

@@ -173,7 +173,8 @@ class VicinityContainer: CollapsibleContainer
 		{
 			ipw = ItemPreviewWidget.Cast( w );
 		}
-		else
+		
+		if(!ipw)
 		{
 			return;
 		}
@@ -199,13 +200,13 @@ class VicinityContainer: CollapsibleContainer
 				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				return;
 			}
-			else if( GetGame().GetPlayer().CanDropEntity( ipw.GetItem() ) )
+			/*else if( GetGame().GetPlayer().CanDropEntity( ipw.GetItem() ) )
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				return;
-			}
+			}*/
 		}
 			
 		ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
@@ -259,10 +260,10 @@ class VicinityContainer: CollapsibleContainer
 				return;
 			player.PredictiveSwapEntities( item, receiver_item );
 		}
-		else if( player.CanDropEntity( item ) )
+		/*else if( player.CanDropEntity( item ) )
 		{
 			player.PredictiveDropEntity( item );
-		}
+		}*/
 		
 		ItemManager.GetInstance().HideDropzones();
 		ItemManager.GetInstance().SetIsDragging( false );
@@ -341,7 +342,7 @@ class VicinityContainer: CollapsibleContainer
 				float stackable = item_base.ConfigGetFloat("varStackMax");
 				if( stackable == 0 || item_base.GetQuantity() <= stackable )
 				{
-					player.PredictiveDropEntity( item );
+					player.PhysicalPredictiveDropItem( item );
 				}
 				else if( stackable != 0 && stackable <= item_base.GetQuantity() )
 				{
@@ -371,7 +372,7 @@ class VicinityContainer: CollapsibleContainer
 		
 		EntityAI eai;
 		vector pos = player.GetPosition();
-		ref array<ref EntityAI> objects;
+		ref array<EntityAI> objects;
 		
 		VicinityItemManager.GetInstance().Update( player.GetDeltaT() );
 		objects = VicinityItemManager.GetInstance().GetVicinityItems();
@@ -385,14 +386,14 @@ class VicinityContainer: CollapsibleContainer
 		for( int i = 0; i < objects.Count(); i++ )
 		{
 			eai = objects.Get( i );			
-			if ( game_inventory.IsPlaceholderEntity( eai ) )
+			if ( eai == null || game_inventory.IsPlaceholderEntity( eai ) )
 				continue; // noproxy: ignore body placeholder
 
 			if( eai.IsInventoryVisible() )
 			{
 				showable_items.Insert( eai );
 
-				if( !eai.IsInherited( DayZInfected ) && !eai.IsInherited( PlayerBase ) && !eai.IsInherited( AnimalBase ) )
+				if( !eai.IsInherited( DayZInfected ) && !eai.IsInherited( PlayerBase ) && !eai.IsInherited( AnimalBase ) && !eai.DisableVicinityIcon() )
 				{
 					m_ShowedItemIcons.Insert( eai );
 				}

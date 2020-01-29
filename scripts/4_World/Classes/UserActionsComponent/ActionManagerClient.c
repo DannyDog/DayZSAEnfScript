@@ -801,7 +801,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int i = 0; i < actions.Count(); i++ )
 				{			
 					picked_action = ActionBase.Cast(actions[i]);
-					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 							return true;
@@ -831,7 +831,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int j = 0; j < actions.Count(); j++ )
 				{
 					picked_action = ActionBase.Cast(actions[j]);
-					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 						{
@@ -863,7 +863,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int i = 0; i < actions.Count(); i++ )
 				{			
 					picked_action = ActionBase.Cast(actions[i]);
-					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBeSetFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 							return true;
@@ -877,7 +877,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int j = 0; j < actions.Count(); j++ )
 				{
 					picked_action = ActionBase.Cast(actions[j]);
-					if ( picked_action && picked_action.HasTarget() && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.HasTarget() && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBeSetFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 							return true;
@@ -907,7 +907,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int i = 0; i < actions.Count(); i++ )
 				{			
 					picked_action = ActionBase.Cast(actions[i]);
-					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBeSetFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 						{
@@ -924,7 +924,7 @@ class ActionManagerClient: ActionManagerBase
 				for ( int j = 0; j < actions.Count(); j++ )
 				{
 					picked_action = ActionBase.Cast(actions[j]);
-					if ( picked_action && picked_action.HasTarget() && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBePerformedFromQuickbar() )
+					if ( picked_action && picked_action.HasTarget() && picked_action.Can(m_Player,target, itemInHand) && picked_action.CanBeSetFromInventory() )
 					{
 						if( hasTarget == picked_action.HasTarget())
 						{

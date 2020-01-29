@@ -7,6 +7,11 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 	protected ref map<EntityAI, ref AttachmentsWrapper>		m_AttachmentAttachmentsContainers;
 	protected ref map<EntityAI, ref Attachments>			m_AttachmentAttachments;
 	protected ref array<int>								m_AttachmentSlotsSorted;
+	
+	void ContainerWithCargoAndAttachments( LayoutHolder parent, int sort = -1 )
+	{
+		WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_MainWidget,  this, "DraggingOverHeader2" );
+	}
 
 	void ~ContainerWithCargoAndAttachments()
 	{
@@ -697,7 +702,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					{
 						if( item.GetInventory().CanRemoveEntity() )
 						{
-							GetGame().GetPlayer().PredictiveDropEntity( item );
+							GetGame().GetPlayer().PhysicalPredictiveDropItem( item );
 						}
 					}
 					else
@@ -715,78 +720,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 	void DraggingOverHeader2(Widget w, int x, int y, Widget receiver )
 	{
 		DraggingOverHeader(w, x, y, receiver );
-	}
-
-	void OnIconDrag( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		if( m_Entity.GetHierarchyRootPlayer() == GetGame().GetPlayer() )
-		{
-			ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
-		}
-		else
-		{
-			ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
-		}
-		string name = w.GetName();
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget(name) );
-		ipw.SetForceFlipEnable(false);
-
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item ) 
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-	
-			m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "body" ).GetScreenSize( x_content, y_content );
-			icon_x = x_content / 10;
-			icon_y = x_content / 10;
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			name.Replace( "Col", "RadialIcon" );
-			w.GetParent().FindAnyWidget( name ).Show( false );
-			name.Replace( "RadialIcon", "Temperature" );
-			w.FindAnyWidget( name ).Show( false );
-			name.Replace( "Temperature", "Selected" );
-			w.FindAnyWidget( name ).Show( true );
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-			ItemManager.GetInstance().SetIsDragging( true );
-		}
-	}
-
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(true);
-		ipw.SetForceFlip(false);
-
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Col", "Temperature" );
-		w.FindAnyWidget( name ).Show( false );
-		name.Replace( "Temperature", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
 	}
 
 	void DropReceived( Widget w, int x, int y, CargoContainer cargo )
@@ -1116,6 +1049,14 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		if( c_x > x && c_y > y && target_entity.GetInventory().CanAddEntityInCargoEx( item, idx, x, y, item.GetInventory().GetFlipCargo() ) )
 		{
 			color = ColorManager.GREEN_COLOR;
+			if( target_entity.GetHierarchyRootPlayer() == GetGame().GetPlayer() )
+			{
+				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
+			}
+			else
+			{
+				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
+			}
 		}
 		else
 		{

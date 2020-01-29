@@ -350,7 +350,7 @@ class Sedan_02 extends CarScript
 
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
-		};
+		}
 
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
@@ -375,16 +375,16 @@ class Sedan_02_Red extends Sedan_02
 			entity.GetInventory().CreateInInventory( "SparkPlug" );
 			entity.GetInventory().CreateInInventory( "CarRadiator" );
 
-			entity.GetInventory().CreateInInventory( "Sedan_02_Door_1_1_RedRust" );
-			entity.GetInventory().CreateInInventory( "Sedan_02_Door_1_2_RedRust" );
-			entity.GetInventory().CreateInInventory( "Sedan_02_Door_2_1_RedRust" );
-			entity.GetInventory().CreateInInventory( "Sedan_02_Door_2_2_RedRust" );
-			entity.GetInventory().CreateInInventory( "Sedan_02_Hood_RedRust" );
-			entity.GetInventory().CreateInInventory( "Sedan_02_Trunk_RedRust" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Door_1_1_Red" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Door_1_2_Red" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Door_2_1_Red" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Door_2_2_Red" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Hood_Red" );
+			entity.GetInventory().CreateInInventory( "Sedan_02_Trunk_Red" );
 
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
-		};
+		}
 
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
@@ -419,7 +419,7 @@ class Sedan_02_Grey extends Sedan_02
 
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
-		};
+		}
 
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );

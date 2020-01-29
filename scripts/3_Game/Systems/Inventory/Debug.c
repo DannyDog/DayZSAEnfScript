@@ -16,3 +16,11 @@ void actionDebugPrint (string s)
 #endif
 }
 
+void inventoryDebugPrint (string s)
+{
+#ifdef INV_DEBUG
+	PrintToRPT("" + s); // comment/uncomment to hide/see debug logs
+#else
+	//Print("" + s); // comment/uncomment to hide/see debug logs
+#endif
+}

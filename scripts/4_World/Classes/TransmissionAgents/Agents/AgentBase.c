@@ -1,18 +1,17 @@
 class AgentBase extends MessageReceiverBase
 {
-	float			m_Type = 0;
-	float			m_Invasibility;//how fast the agent grows when potent enough to grow
-	float 			m_TransferabilityIn;//to the player
-	float			m_TransferabilityOut;//from the player
-	float			m_Digestibility = 0.1;//multiplier for agents digested in the player stomach from an infected item(agents_transfered = digested_amount(in grams or mls) * m_Digestibility)
-	int				m_MaxCount = 1;
-	float 			m_AutoinfectProbability = -1;//probability of autoinfect as percentage per hour (50 means 50% chance autoinfect with this agent will happen 1x times within an hour of gameplay)(also dependent on CanAutoinfectPlayer check)
-	//int				m_ChanceOfInfection = 1;//chance of transmission from enviro sources like ponds etc. [0..1]
-	float 			m_TransferabilityAirOut; // transferibility airborne out
-	float 			m_AntibioticsResistance = 1;//[0..1], 0 means antibiotics have full effect, 1 means no effect
+	float	m_Type = 0;
+	float	m_Invasibility;					//how fast the agent grows when potent enough to grow
+	float 	m_TransferabilityIn;			//to the player
+	float	m_TransferabilityOut;			//from the player
+	float	m_Digestibility = 0.1;			//multiplier for agents digested in the player stomach from an infected item(agents_transfered = digested_amount(in grams or mls) * m_Digestibility)
+	int		m_MaxCount = 1;
+	float 	m_AutoinfectProbability = CalculateAutoinfectProbability(0);	// [0..1], 0 = zero chance, 1 = 100% chance of getting this agent once per hour
+	float 	m_TransferabilityAirOut; 		// transferibility airborne out
+	float 	m_AntibioticsResistance = 1;	//[0..1], 0 means antibiotics have full effect, 1 means no effect
 	
-	EStatLevels m_Potency = EStatLevels.MEDIUM;//grow when player's immune system is at this level or lower
-	float m_DieOffSpeed = 1;//how fast the agent dies off when not potent enough to grow(per sec)
+	EStatLevels m_Potency = EStatLevels.MEDIUM;		//grow when player's immune system is at this level or lower
+	float m_DieOffSpeed = 1;						//how fast the agent dies off when not potent enough to grow(per sec)
 	
 	void AgentBase()
 	{
@@ -51,19 +50,19 @@ class AgentBase extends MessageReceiverBase
 		return m_Digestibility;
 	}
 
+	float CalculateAutoinfectProbability( float userprob )
+	{
+		return ( 1 - Math.Pow( 1 - userprob, ( 1 / 1200 ) ) );
+	}
+
 	bool AutoinfectCheck(float deltaT, PlayerBase player)
 	{
-		if ( m_AutoinfectProbability == -1 ) 
+		if ( m_AutoinfectProbability == 0.0 ) 
 			return false;
 		
-		float probability = (m_AutoinfectProbability / 3600) * deltaT * 1000;
-		float dice_throw = Math.RandomFloat(0,100 * 1000);
-		/*
-		Print(probability);
-		Print(dice_throw);
-		Print("-----------");
-		*/
-		if( dice_throw < probability )
+		float dice_throw = Math.RandomFloat01();
+		
+		if ( dice_throw < m_AutoinfectProbability )
 		{
 			return CanAutoinfectPlayer(player);
 		}

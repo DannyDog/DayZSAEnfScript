@@ -324,10 +324,78 @@ class Hatchback_02 extends CarScript
 
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
-		};
+		}
 
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
 		Fill( CarFluid.OIL, 4.0 );
 	}
 }
+
+class Hatchback_02_Black extends Hatchback_02
+{
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+
+			entity.GetInventory().CreateInInventory( "CarBattery" );
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+			entity.GetInventory().CreateInInventory( "CarRadiator" );
+
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_1_1_Black" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_1_2_Black" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_2_1_Black" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_2_2_Black" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Hood_Black" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Trunk_Black" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		}
+
+		Fill( CarFluid.FUEL, 50 );
+		Fill( CarFluid.COOLANT, 6.0 );
+		Fill( CarFluid.OIL, 4.0 );
+	}
+};
+
+class Hatchback_02_Blue extends Hatchback_02
+{
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Wheel" );
+
+			entity.GetInventory().CreateInInventory( "CarBattery" );
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+			entity.GetInventory().CreateInInventory( "CarRadiator" );
+
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_1_1_Blue" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_1_2_Blue" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_2_1_Blue" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Door_2_2_Blue" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Hood_Blue" );
+			entity.GetInventory().CreateInInventory( "Hatchback_02_Trunk_Blue" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		}
+
+		Fill( CarFluid.FUEL, 50 );
+		Fill( CarFluid.COOLANT, 6.0 );
+		Fill( CarFluid.OIL, 4.0 );
+	}
+};

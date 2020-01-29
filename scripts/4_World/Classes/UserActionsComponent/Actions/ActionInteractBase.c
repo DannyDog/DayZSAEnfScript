@@ -76,4 +76,13 @@ class ActionInteractBase : AnimatedActionBase
 		return AC_INTERACT;
 	}
 	
+	override bool UseMainItem()
+	{
+		return false;
+	}
+	
+	override bool MainItemAlwaysInHands()
+	{
+		return false;
+	}	
 };

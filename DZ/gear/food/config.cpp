@@ -363,7 +363,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		absorbency = 0;
-		inventorySlot = "Guts";
+		inventorySlot[] = {"Guts"};
 		isMeleeWeapon = 1;
 		class DamageSystem
 		{
@@ -453,7 +453,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 500;
 		absorbency = 0;
-		inventorySlot = "Guts";
+		inventorySlot[] = {"Guts"};
 		isMeleeWeapon = 1;
 		class DamageSystem
 		{
@@ -1612,7 +1612,7 @@ class CfgVehicles
 		varQuantityMax = 125;
 		quantityBar = 1;
 		ammoType = "G_GrenadeHand";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_boiled","cs_dried"};
@@ -1948,7 +1948,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 130;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		class DamageSystem
@@ -2037,7 +2037,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 110;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_rotten"};
@@ -2127,7 +2127,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 125;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "Cultivation_TomatoSeeds";
 		containsSeedsQuantity = "10";
 		hiddenSelections[] = {"cs_raw","cs_burned"};
@@ -2241,7 +2241,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 125;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "Cultivation_PepperSeeds";
 		containsSeedsQuantity = "10";
 		hiddenSelections[] = {"cs_raw","cs_dried"};
@@ -2355,7 +2355,7 @@ class CfgVehicles
 		quantityBar = 1;
 		itemSize[] = {1,3};
 		absorbency = 0.2;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "Cultivation_ZucchiniSeeds";
 		containsSeedsQuantity = "15";
 		hiddenSelections[] = {"cs_raw","cs_burned"};
@@ -2468,7 +2468,7 @@ class CfgVehicles
 		varQuantityMax = 2300;
 		quantityBar = 1;
 		absorbency = 0.2;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "Cultivation_PumpkinSeeds";
 		containsSeedsQuantity = "20";
 		hiddenSelections[] = {"cs_raw","cs_rotten"};
@@ -2557,7 +2557,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_baked","cs_dried"};
@@ -2670,7 +2670,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		isMeleeWeapon = 1;
@@ -2807,7 +2807,7 @@ class CfgVehicles
 		quantityBar = 1;
 		stackedUnit = "g";
 		absorbency = 0.2;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_rotten"};
@@ -3123,7 +3123,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 10;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw"};
@@ -3235,7 +3235,7 @@ class CfgVehicles
 		varQuantityInit = 150;
 		varQuantityMin = 0;
 		varQuantityMax = 150;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3365,7 +3365,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3495,7 +3495,7 @@ class CfgVehicles
 		varQuantityMax = 230;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3625,7 +3625,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3755,7 +3755,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3880,7 +3880,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4010,7 +4010,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4140,7 +4140,7 @@ class CfgVehicles
 		varQuantityMax = 180;
 		itemSize[] = {2,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4270,7 +4270,7 @@ class CfgVehicles
 		varQuantityMax = 300;
 		itemSize[] = {2,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4400,7 +4400,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4530,7 +4530,7 @@ class CfgVehicles
 		varQuantityMax = 130;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4660,7 +4660,7 @@ class CfgVehicles
 		varQuantityMax = 125;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4790,7 +4790,7 @@ class CfgVehicles
 		varQuantityMax = 110;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4920,7 +4920,7 @@ class CfgVehicles
 		varQuantityMax = 300;
 		itemSize[] = {2,3};
 		absorbency = 0.3;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -5050,7 +5050,7 @@ class CfgVehicles
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -5181,7 +5181,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 500;
 		quantityBar = 1;
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\lard_raw_CO.paa","dz\gear\food\data\lard_baked_CO.paa","dz\gear\food\data\lard_boiled_CO.paa","dz\gear\food\data\lard_dried_CO.paa","dz\gear\food\data\lard_burnt_CO.paa"};
@@ -5646,7 +5646,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 100;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_agaricus_raw_CO.paa","dz\gear\food\data\mushroom_agaricus_baked_CO.paa","dz\gear\food\data\mushroom_agaricus_baked_CO.paa","dz\gear\food\data\mushroom_agaricus_dried_CO.paa","dz\gear\food\data\mushroom_agaricus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_agaricus_raw.rvmat","dz\gear\food\data\mushroom_agaricus_baked.rvmat","dz\gear\food\data\mushroom_agaricus_boiled.rvmat","dz\gear\food\data\mushroom_agaricus_dried.rvmat","dz\gear\food\data\mushroom_agaricus_burnt.rvmat","dz\gear\food\data\mushroom_agaricus_rotten.rvmat"};
@@ -5749,7 +5749,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_boiled"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_amanita_raw_CO.paa","dz\gear\food\data\mushroom_amanita_boiled_CO.paa","dz\gear\food\data\mushroom_amanita_baked_CO.paa","dz\gear\food\data\mushroom_amanita_dried_CO.paa","dz\gear\food\data\mushroom_amanita_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_amanita_raw.rvmat","dz\gear\food\data\mushroom_amanita_baked.rvmat","dz\gear\food\data\mushroom_amanita_boiled.rvmat","dz\gear\food\data\mushroom_amanita_dried.rvmat","dz\gear\food\data\mushroom_amanita_burnt.rvmat","dz\gear\food\data\mushroom_amanita_rotten.rvmat"};
@@ -5852,7 +5852,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_baked","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_macrolepiota_raw_CO.paa","dz\gear\food\data\mushroom_macrolepiota_baked_CO.paa","dz\gear\food\data\mushroom_macrolepiota_baked_CO.paa","dz\gear\food\data\mushroom_macrolepiota_dried_CO.paa","dz\gear\food\data\mushroom_macrolepiota_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_macrolepiota_raw.rvmat","dz\gear\food\data\mushroom_macrolepiota_baked.rvmat","dz\gear\food\data\mushroom_macrolepiota_boiled.rvmat","dz\gear\food\data\mushroom_macrolepiota_dried.rvmat","dz\gear\food\data\mushroom_macrolepiota_burnt.rvmat","dz\gear\food\data\mushroom_macrolepiota_rotten.rvmat"};
@@ -5955,7 +5955,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_lactarius_raw_CO.paa","dz\gear\food\data\mushroom_lactarius_baked_CO.paa","dz\gear\food\data\mushroom_lactarius_baked_CO.paa","dz\gear\food\data\mushroom_lactarius_dried_CO.paa","dz\gear\food\data\mushroom_lactarius_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_lactarius_raw.rvmat","dz\gear\food\data\mushroom_lactarius_baked.rvmat","dz\gear\food\data\mushroom_lactarius_boiled.rvmat","dz\gear\food\data\mushroom_lactarius_dried.rvmat","dz\gear\food\data\mushroom_lactarius_burnt.rvmat","dz\gear\food\data\mushroom_lactarius_rotten.rvmat"};
@@ -6058,7 +6058,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 50;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\Psilocybe_semilanceata_CO.paa","dz\gear\food\data\Psilocybe_semilanceata_dried_CO.paa","dz\gear\food\data\Psilocybe_semilanceata_dried_CO.paa","dz\gear\food\data\Psilocybe_semilanceata_dried_CO.paa","dz\gear\food\data\Psilocybe_semilanceata_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\Psilocybe_semilanceata_raw.rvmat","dz\gear\food\data\Psilocybe_semilanceata_baked.rvmat","dz\gear\food\data\Psilocybe_semilanceata_boiled.rvmat","dz\gear\food\data\Psilocybe_semilanceata_dried.rvmat","dz\gear\food\data\Psilocybe_semilanceata_burnt.rvmat","dz\gear\food\data\Psilocybe_semilanceata_rotten.rvmat"};
@@ -6162,7 +6162,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		rotationFlags = 1;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_auricularia_raw_CO.paa","dz\gear\food\data\mushroom_auricularia_baked_CO.paa","dz\gear\food\data\mushroom_auricularia_boiled_CO.paa","dz\gear\food\data\mushroom_auricularia_dried_CO.paa","dz\gear\food\data\mushroom_auricularia_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_auricularia_raw.rvmat","dz\gear\food\data\mushroom_auricularia_baked.rvmat","dz\gear\food\data\mushroom_auricularia_boiled.rvmat","dz\gear\food\data\mushroom_auricularia_dried.rvmat","dz\gear\food\data\mushroom_auricularia_burnt.rvmat","dz\gear\food\data\mushroom_auricularia_rotten.rvmat"};
@@ -6265,7 +6265,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_boletus_raw_CO.paa","dz\gear\food\data\mushroom_boletus_baked_CO.paa","dz\gear\food\data\mushroom_boletus_boiled_CO.paa","dz\gear\food\data\mushroom_boletus_boiled_CO.paa","dz\gear\food\data\mushroom_boletus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_boletus_raw.rvmat","dz\gear\food\data\mushroom_boletus_baked.rvmat","dz\gear\food\data\mushroom_boletus_boiled.rvmat","dz\gear\food\data\mushroom_boletus_dried.rvmat","dz\gear\food\data\mushroom_boletus_burnt.rvmat","dz\gear\food\data\mushroom_boletus_rotten.rvmat"};
@@ -6369,7 +6369,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		rotationFlags = 1;
 		stackedUnit = "";
-		inventorySlot = "Ingredient";
+		inventorySlot[] = {"Ingredient"};
 		hiddenSelections[] = {"cs_raw","cs_boiled","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_pleurotus_raw_CO.paa","dz\gear\food\data\mushroom_pleurotus_baked_CO.paa","dz\gear\food\data\mushroom_pleurotus_baked_CO.paa","dz\gear\food\data\mushroom_pleurotus_dried_CO.paa","dz\gear\food\data\mushroom_pleurotus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_pleurotus_raw.rvmat","dz\gear\food\data\mushroom_pleurotus_baked.rvmat","dz\gear\food\data\mushroom_pleurotus_boiled.rvmat","dz\gear\food\data\mushroom_pleurotus_dried.rvmat","dz\gear\food\data\mushroom_pleurotus_burnt.rvmat","dz\gear\food\data\mushroom_pleurotus_rotten.rvmat"};

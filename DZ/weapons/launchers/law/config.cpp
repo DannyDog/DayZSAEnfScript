@@ -95,7 +95,6 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_LAW0";
 		descriptionShort = "$STR_cfgWeapons_LAW1";
 		model = "\dz\weapons\launchers\law\law.p3d";
-		lootTag[] = {"Military_west"};
 		attachments[] = {};
 		class Damage
 		{

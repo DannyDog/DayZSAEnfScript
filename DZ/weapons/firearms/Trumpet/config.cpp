@@ -80,7 +80,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_Trumpet0";
 		descriptionShort = "$STR_cfgWeapons_Trumpet1";
 		model = "\dz\weapons\firearms\Trumpet\trumpet.p3d";
-		attachments[] = {"suppressorImpro","weaponOpticsHunting"};
+		attachments[] = {"weaponOpticsHunting","suppressorImpro"};
 		itemSize[] = {9,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\Trumpet\data\trombone_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\Trumpet\data\trumpet.rvmat"};

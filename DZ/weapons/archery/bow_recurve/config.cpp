@@ -37,7 +37,6 @@ class cfgWeapons
 		model = "\dz\weapons\archery\bow_Recurve\bow_recurve.p3d";
 		animClass = "Bow";
 		rotationFlags = 17;
-		lootCategory = "Crafted";
 		weight = 550;
 		itemSize[] = {6,10};
 		reloadAction = "ReloadBow";

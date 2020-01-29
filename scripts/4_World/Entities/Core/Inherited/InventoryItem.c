@@ -399,8 +399,14 @@ class CarRadiator extends InventoryItemSuper
 			
 			Class.CastTo( car, parent );
 
+		
 			if ( car )
-				car.LeakAll( CarFluid.COOLANT );
+			{
+				float amount = car.GetFluidFraction( CarFluid.COOLANT );
+				float newAmount = Math.RandomFloat( amount * 0.2, amount * 0.75 );
+
+				car.Leak( CarFluid.COOLANT, newAmount );
+			}
 		}
 	}
 
@@ -616,11 +622,14 @@ typedef ItemGrenade GrenadeBase;
 //-----------------------------------------------------------------------------
 class ItemMap extends InventoryItemSuper
 {
-	string m_TextureClosed;
-	string m_TextureOpened;
-	string m_TextureLegend;
-	string m_DisplayName;
-	string m_Description;
+	//protected ref array<vector,int,int,string> 	m_MarkerArray;
+	protected ref array<ref MapMarker> 	m_MapMarkerArray;
+	
+	string	m_TextureClosed;
+	string 	m_TextureOpened;
+	string 	m_TextureLegend;
+	string 	m_DisplayName;
+	string 	m_Description;
 	
 	void ItemMap()
 	{
@@ -637,19 +646,16 @@ class ItemMap extends InventoryItemSuper
 		GetGame().ConfigGetText(path + " mapTextureOpened",m_TextureOpened);
 		GetGame().ConfigGetText(path + " mapTextureLegend",m_TextureLegend);
 		
-		/*if (GetMapStateAnimation())
-		{
-			SetObjectTexture(0,m_TextureClosed);
-		}
-		else
-		{
-			SetObjectTexture(1,m_TextureOpened);
-			SetObjectTexture(2,m_TextureLegend);
-		}*/
-		
 		SetObjectTexture(0,m_TextureClosed);
 		SetObjectTexture(1,m_TextureOpened);
 		SetObjectTexture(2,m_TextureLegend);
+		
+		//m_MarkerArray = new ref array<vector,int,int,string>;
+		m_MapMarkerArray = new ref array<ref MapMarker>;
+		if (GetGame().IsMultiplayer() && GetGame().IsServer())
+		{
+			SyncMapMarkers();
+		}
 	}
 	
 	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
@@ -688,6 +694,62 @@ class ItemMap extends InventoryItemSuper
 		return false;
 	}
 	
+	void SyncMapMarkers()
+	{
+		if (m_MapMarkerArray.Count() <= 0)
+			return;
+		
+		PlayerIdentity pid; 
+		//Param1<ref array<vector,int,int,string>> params = new Param1<ref array<vector,int,int,string>>( m_MarkerArray );
+		Param1<ref array<ref MapMarker>> params = new Param1<ref array<ref MapMarker>>( m_MapMarkerArray );
+		
+		if (GetGame().IsServer() && GetHierarchyRootPlayer()) //TODO do we need PlayerIdentity here?
+		{
+			pid = GetHierarchyRootPlayer().GetIdentity();
+			RPCSingleParam(ERPCs.RPC_SEND_MAP_MARKERS,params,true,pid);
+		}
+		else
+		{
+			RPCSingleParam(ERPCs.RPC_SEND_MAP_MARKERS,params,true);
+		}
+	}
+	
+	override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
+	{
+		super.OnRPC(sender, rpc_type, ctx);
+		
+		//array<vector,int,int,string> tmp_array = new array<vector,int,int,string>;
+		//Param1<ref array<vector,int,int,string>> param = new Param1<ref array<vector,int,int,string>>(m_MarkerArray);
+		Param1<ref array<ref MapMarker>> params = new Param1<ref array<ref MapMarker>>( m_MapMarkerArray );
+		
+		if (rpc_type == ERPCs.RPC_SEND_MAP_MARKERS)
+		{
+			if (ctx.Read(params))
+			{
+				//Print("Map | OnRPC | m_MapMarkerArray_new count: " + m_MapMarkerArray_new.Count());
+			}
+		}
+	}
+	
+	override bool OnStoreLoad(ParamsReadContext ctx, int version)
+	{
+		if ( !super.OnStoreLoad(ctx, version) )
+			return false;
+		
+		if (version >= 108 && !ctx.Read(m_MapMarkerArray))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	override void OnStoreSave(ParamsWriteContext ctx)
+	{
+		super.OnStoreSave(ctx);
+		
+		ctx.Write(m_MapMarkerArray);		
+	}
+	
 	override bool NameOverride(out string output)
 	{
 		output = m_DisplayName;
@@ -701,4 +763,56 @@ class ItemMap extends InventoryItemSuper
 		
 		return true;
 	}
+	
+	/*array<vector,int,int,string> GetMarkerArray()
+	{
+		return m_MarkerArray;
+	}*/
+	
+	void InsertMarker(vector pos, string text, int color, int idx)
+	{
+		ref MapMarker marker = MapMarker(pos,text,color,idx);
+		m_MapMarkerArray.Insert(marker);
+	}
+	
+	array<ref MapMarker> GetMarkerArray()
+	{
+		return m_MapMarkerArray;
+	}
 };
+
+class MapMarker
+{
+	protected vector 	m_Position;
+	protected int  		m_Color;
+	protected int 		m_IconIdx;
+	protected string 	m_Text;
+	
+	void MapMarker(vector pos, string text, int color, int idx)
+	{
+		m_Position = pos;
+		m_Text = text;
+		m_Color = color;
+		m_IconIdx = idx;
+	}
+	
+	vector GetMarkerPos()
+	{
+		return m_Position;
+	}
+	
+	string GetMarkerText()
+	{
+		return m_Text;
+	}
+	
+	int GetMarkerColor()
+	{
+		return m_Color;
+	}
+	
+	int GetMarkerIcon()
+	{
+		return m_IconIdx;
+	}
+}

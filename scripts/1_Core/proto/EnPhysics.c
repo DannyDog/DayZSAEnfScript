@@ -164,6 +164,14 @@ proto native void dBodySetInertiaTensorM(notnull IEntity body, vector m[3]);
 proto native float dBodyGetMass(notnull IEntity ent);
 proto native void dBodySetMass(notnull IEntity body, float mass);
 
+proto native void dBodyApplyTorqueImpulse(notnull IEntity ent, vector torqueImpulse);
+proto native vector dBodyGetInvInertiaDiagLocal(notnull IEntity ent);
+proto native float dBodyComputeImpulseDenominator(notnull IEntity ent, vector position, vector normal);
+proto native float dBodyComputeAngularImpulseDenominator(notnull IEntity ent, vector axis);
+proto native vector dBodyGetLocalInertia(notnull IEntity ent);
+
+proto void dBodyGetInvInertiaTensorWorld(notnull IEntity body, out vector inertiaTensorWS[3]);
+
 /**
 \brief Applies impuls on a pos position in world coordinates
 */

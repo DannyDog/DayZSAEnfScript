@@ -22,8 +22,6 @@ class VicinitySlotsContainer: Container
 			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetGhostSlot(),  m_Parent, "DraggingOverHeader" );
 			WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetMainWidget(),  m_Parent, "DraggingOverHeader" );
 			
-			WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetPanelWidget(),  this, "OnIconDrag" );
-			WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetPanelWidget(),  this, "OnIconDrop" );
 			WidgetEventHandler.GetInstance().RegisterOnDoubleClick( icon.GetPanelWidget(),  this, "DoubleClick" );
 			WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "MouseClick" );
 			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( icon.GetPanelWidget(),  this, "MouseButtonDown" );
@@ -43,6 +41,11 @@ class VicinitySlotsContainer: Container
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );
 		ItemManager.GetInstance().SetSelectedVicinityItem( ipw );
 		return ipw.GetItem();
+	}
+	
+	override EntityAI GetFocusedEntity()
+	{
+		return GetActiveItem();
 	}
 	
 	bool IsItemWithContainerActive()
@@ -267,14 +270,14 @@ class VicinitySlotsContainer: Container
 				
 				if( draggable && m_ShowedItems.Find( selected_item ) == -1 )
 				{
-					GetGame().GetPlayer().PredictiveDropEntity( selected_item );
+					GetGame().GetPlayer().PhysicalPredictiveDropItem( selected_item );
 					ItemManager.GetInstance().SetSelectedItem( null, null, null );
 					return true;
 				}
 			}
 		}
 		
-		if( ent )
+		if( ent && ent.GetInventory().CanRemoveEntity())
 		{
 			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 			if( item_in_hands )
@@ -318,71 +321,6 @@ class VicinitySlotsContainer: Container
 	override void OnShow()
 	{
 		super.OnShow();
-	}
-	
-	void OnIconDrag( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
-		
-		ItemManager.GetInstance().SetIsDragging( true );
-		string name = w.GetName();
-		float icon_x, icon_y, x_content, y_content;
-		int m_sizeX, m_sizeY;
-		m_Parent.m_Parent.m_Parent.GetMainWidget().FindAnyWidget( "HandsPanel" ).GetScreenSize( x_content, y_content );			
-		name.Replace( "PanelWidget", "Render" );
-		icon_x = x_content / 10;
-		icon_y = x_content / 10;
-		
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(false);
-		
-		InventoryItem i_item = InventoryItem.Cast( ipw.GetItem() );
-		if( i_item )
-		{
-			GetGame().GetInventoryItemSize( i_item, m_sizeX, m_sizeY );
-			
-			w.SetFlags( WidgetFlags.EXACTSIZE );
-			if( i_item.GetInventory().GetFlipCargo() )
-			{
-				w.SetSize( icon_x * m_sizeY - 1 , icon_y * m_sizeX + m_sizeX - 1 );
-			}
-			else
-			{
-				w.SetSize( icon_x * m_sizeX - 1 , icon_y * m_sizeY + m_sizeY - 1 );
-			}
-			name.Replace( "Render", "Col" );
-			w.FindAnyWidget( name ).Show( true );
-			w.SetAlpha( 0.1 );
-			w.SetColor( ColorManager.BASE_COLOR );
-			name.Replace( "Col", "RadialIcon" );
-			w.GetParent().FindAnyWidget( name ).Show( true );
-			name.Replace( "RadialIcon", "Selected" );
-			w.FindAnyWidget( name ).Show( true );
-			ItemManager.GetInstance().SetDraggedItem( i_item );
-		}
-	}
-	
-	void OnIconDrop( Widget w )
-	{
-		ItemManager.GetInstance().HideDropzones();
-		ItemManager.GetInstance().SetIsDragging( false );
-		w.ClearFlags( WidgetFlags.EXACTSIZE );
-		w.SetSize( 1, 1 );
-		string name = w.GetName();
-		
-		name.Replace( "PanelWidget", "Render" );
-		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( w.FindAnyWidget( name ) );
-		ipw.SetForceFlipEnable(true);
-		ipw.SetForceFlip(false);
-		
-		name.Replace( "Render", "Col" );
-		w.FindAnyWidget( name ).Show(false);
-		name.Replace( "Col", "RadialIcon" );
-		w.GetParent().FindAnyWidget( name ).Show( true );
-		name.Replace( "RadialIcon", "Selected" );
-		w.FindAnyWidget( name ).Show( false );
-		w.FindAnyWidget( name ).SetColor( ARGBF( 1, 1, 1, 1 ) );
 	}
 	
 	int GetRowSlotCount()
@@ -738,7 +676,7 @@ class VicinitySlotsContainer: Container
 			
 			if( player.CanDropEntity( item ) )
 			{
-				player.PredictiveDropEntity( item );
+				player.PhysicalPredictiveDropItem( item );
 			}
 		}
 	}
@@ -768,8 +706,6 @@ class VicinitySlotsContainer: Container
 						WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetGhostSlot(),  m_Parent, "DraggingOverHeader" );
 						WidgetEventHandler.GetInstance().RegisterOnDraggingOver( icon.GetMainWidget(),  m_Parent, "DraggingOverHeader" );
 						
-						WidgetEventHandler.GetInstance().RegisterOnDrag( icon.GetPanelWidget(),  this, "OnIconDrag" );
-						WidgetEventHandler.GetInstance().RegisterOnDrop( icon.GetPanelWidget(),  this, "OnIconDrop" );
 						WidgetEventHandler.GetInstance().RegisterOnDoubleClick( icon.GetPanelWidget(),  this, "DoubleClick" );
 						WidgetEventHandler.GetInstance().RegisterOnMouseButtonUp( icon.GetPanelWidget(),  this, "MouseClick" );
 						WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( icon.GetPanelWidget(),  this, "MouseButtonDown" );

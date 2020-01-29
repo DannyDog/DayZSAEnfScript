@@ -52,26 +52,50 @@ class ActionTakeItemToHands: ActionInteractBase
 		return true;
 	}
 	
-	override void OnStartServer( ActionData action_data )
-	{
-		//NOTE: removed until better solution is found
-		/*vector rotation = vector.Zero;
-		vector target_dir = action_data.m_Target.GetObject().GetPosition() - action_data.m_Player.GetPosition();
-		
-		rotation[0] = Math.Atan2(target_dir[0], target_dir[2]) * Math.RAD2DEG;
-		action_data.m_Player.SetOrientation(rotation);*/
-	}
-	
 	override void OnExecuteServer( ActionData action_data )
 	{
-		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
-		action_data.m_Player.PredictiveTakeEntityToHands(ntarget);
+		if (GetGame().IsMultiplayer())
+			return;
+		
+		InventoryLocation il = new InventoryLocation;
+		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
+		il.SetHands(action_data.m_Player,ntarget);
+		//action_data.m_Player.G
+		
+		InventoryLocation targetInventoryLocation = new InventoryLocation;
+		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
+		
+		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		
+		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
+		{
+			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		}
+		else
+		{
+			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
+		}
 	}
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
-		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
-		action_data.m_Player.PredictiveTakeEntityToHands(ntarget);
+		InventoryLocation il = new InventoryLocation;
+		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
+		il.SetHands(action_data.m_Player,ntarget);
+		
+		InventoryLocation targetInventoryLocation = new InventoryLocation;
+		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
+		
+		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		
+		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
+		{
+			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+		}
+		else
+		{
+			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
+		}
 	}
 	
 	override void CreateAndSetupActionCallback( ActionData action_data )
@@ -108,6 +132,8 @@ class ActionTakeItemToHands: ActionInteractBase
 
 class ActionSwapItemToHands: ActionTakeItemToHands
 {
+	bool m_Executable;
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		ItemBase tgt_item = ItemBase.Cast( target.GetObject() );
@@ -116,38 +142,108 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 		
 		if ( player.GetInventory().CanSwapEntities(tgt_item,item) )
 		{
+			//Print("ActionSwapItemToHands | ActionCondition: true");
 			return true;
 		}
+		//Print("ActionSwapItemToHands | ActionCondition: false");
 		return false;
 	}
 	
-	/*override void OnStartServer( ActionData action_data )
+	override bool UseMainItem()
 	{
-		Print("Server - ActionSwapItemToHands starting");
+		return true;
 	}
 	
-	override void OnStartClient( ActionData action_data )
+	override bool MainItemAlwaysInHands()
 	{
-		Print("Client - ActionSwapItemToHands starting");
-	}*/
+		return true;
+	}
+	
+	override void CreateAndSetupActionCallback( ActionData action_data )
+	{
+		EntityAI target = EntityAI.Cast(action_data.m_Target.GetObject());
+		ActionBaseCB callback;
+		if (!target)
+			return;
+		
+		if (target.IsHeavyBehaviour())
+		{
+			Class.CastTo(callback, action_data.m_Player.StartCommand_Action(DayZPlayerConstants.CMD_ACTIONFB_PICKUP_HEAVY,GetCallbackClassTypename(),DayZPlayerConstants.STANCEMASK_ERECT));
+		}
+		else
+		{
+			return;
+		}
+		callback.SetActionData(action_data); 
+		callback.InitActionComponent();
+		action_data.m_Callback = callback;
+	}
+	
+	override void Start( ActionData action_data )
+	{
+		super.Start( action_data );
+		
+		Print("action_data.m_Target.GetObject() + " + action_data.m_Target.GetObject());
+		Print("action_data.m_MainItem + " + action_data.m_MainItem);
+		
+		bool b1 = action_data.m_MainItem.ConfigGetString("physLayer") == "item_large";
+		action_data.m_MainItem.m_ThrowItemOnDrop = b1; //hack, should be redundant anyway
+		
+		if (!EntityAI.Cast(action_data.m_Target.GetObject()).IsHeavyBehaviour())
+		{
+			action_data.m_Player.GetActionManager().Interrupt();
+		}
+		else
+			m_Executable = true;
+	}
 	
 	override void OnExecuteServer( ActionData action_data )
 	{
-		//Print("Server - OnExecuteServer");
-		InventoryLocation inloc = new InventoryLocation;
-		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
-		//action_data.m_Player.PredictiveSwapEntities(ntarget,action_data.m_MainItem);
-		//action_data.m_Player.PredictiveForceSwapEntities( ntarget, action_data.m_MainItem, inloc );
-		action_data.m_Player.LocalSwapEntities(ntarget,action_data.m_MainItem);
+		if (!m_Executable)
+			return;
+		
+		if (GetGame().IsMultiplayer())
+			return;
+		
+		PerformSwap(action_data);
 	}
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
-		//Print("Client - OnExecuteClient");
-		InventoryLocation inloc = new InventoryLocation;
+		if (!m_Executable)
+			return;
+		
+		PerformSwap(action_data);
+	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		if (m_Executable)
+		{
+			m_Executable = false;
+			return;
+		}
+		
+		if (GetGame().IsMultiplayer())
+			return;
+		
+		PerformSwap(action_data);
+	}
+	
+	override void OnEndClient( ActionData action_data )
+	{
+		if (m_Executable)
+		{
+			m_Executable = false;
+			return;
+		}
+		
+		PerformSwap(action_data);
+	}
+	
+	void PerformSwap( ActionData action_data )
+	{
 		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
-		//action_data.m_Player.PredictiveSwapEntities(ntarget,action_data.m_MainItem);
-		//action_data.m_Player.PredictiveForceSwapEntities( ntarget, action_data.m_MainItem, inloc );
-		action_data.m_Player.LocalSwapEntities(ntarget,action_data.m_MainItem);
+		action_data.m_Player.TakeEntityToHandsImpl(InventoryMode.PREDICTIVE,ntarget);
 	}
 }

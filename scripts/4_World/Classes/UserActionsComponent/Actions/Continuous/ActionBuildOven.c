@@ -36,7 +36,7 @@ class ActionBuildOven: ActionContinuousBase
 
 	override bool HasProgress()
 	{
-		return false;
+		return true;
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )

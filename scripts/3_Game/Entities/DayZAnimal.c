@@ -382,8 +382,16 @@ class DayZAnimal extends DayZCreatureAI
 		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
 		m_TransportHitRegistered = false;
 		
-		ComponentAnimalBleeding animal_bleeding = ComponentAnimalBleeding.Cast( GetComponent( COMP_TYPE_ANIMAL_BLEEDING ) );
-		animal_bleeding.CreateWound( damageResult, dmgZone, ammo );
+		if( ammo.ToType().IsInherited(Nonlethal_Base) )
+		{
+			//Print("DayZAnimal | EEHitBy | nonlethal hit");
+			AddHealth("","Health",-ConvertNonlethalDamage(damageResult.GetDamage(dmgZone,"Shock")));
+		}
+		else
+		{
+			ComponentAnimalBleeding animal_bleeding = ComponentAnimalBleeding.Cast( GetComponent( COMP_TYPE_ANIMAL_BLEEDING ) );
+			animal_bleeding.CreateWound( damageResult, dmgZone, ammo );
+		}
 		
 		int type = 0;
 		int direction = 0;
@@ -566,4 +574,10 @@ class DayZAnimal extends DayZCreatureAI
 	{
 		return GetSelectionPositionMS(pSelection);
 	}
+	
+	float ConvertNonlethalDamage(float damage)
+	{
+		float converted_dmg = damage * GameConstants.PROJECTILE_CONVERSION_ANIMALS;
+		return converted_dmg;
+	} 
 }

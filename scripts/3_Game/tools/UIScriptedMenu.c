@@ -558,4 +558,9 @@ class UIScriptedMenu extends UIMenuPanel
 	{
 		return true;
 	}
+	
+	void InitNoteWrite(EntityAI paper, EntityAI pen, string text = "") {}
+	void InitNoteRead(string text = "") {}
+	void InitMapItem(EntityAI item) {}
+	void LoadMapMarkers() {}
 };

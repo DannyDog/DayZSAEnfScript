@@ -7,6 +7,7 @@ class BotEventBase
 	EntityAI m_Entity;
 
 	void BotEventBase (PlayerBase p = NULL, EntityAI e = NULL) { m_Entity = e; }
+	string DumpToString () {}
 };
 
 //class BotEventXXX : BotEventBase { void BotEventXXX (PlayerBase p = NULL) { } };

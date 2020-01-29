@@ -76,6 +76,7 @@ class UATimeSpent
 	const float BLOOD = 2;
 	
 	const float START_ENGINE = 0.5;
+	//const float INFINITE = -1;
 };
 
 /**@class	Constants for maximal Distances where from the action can be done
@@ -106,6 +107,6 @@ class UADamageApplied
 	const float BUILD 		= 10;
 	const float DISMANTLE 	= 15;
 	const float DESTROY 	= 50;
-	const float SAW_LOCK 	= 50;
+	const float SAW_LOCK 	= 34;
 	const float SKINNING 	= 1;
 };

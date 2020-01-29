@@ -45,9 +45,11 @@ class HumanInventory : GameInventory
 	proto native int FindUserReservedLocationIndex (notnull EntityAI e);
 	proto native int FindCollidingUserReservedLocationIndex (notnull EntityAI e, notnull InventoryLocation dst);
 	proto native void GetUserReservedLocation (int index, out notnull InventoryLocation dst);
+	proto native void GetFirstUserReservedLocationForContainer (int index, out notnull InventoryLocation dst);
 	proto native void SetUserReservedLocation (notnull EntityAI eai, notnull InventoryLocation dst);
 	proto native void ClearUserReservedLocation (notnull EntityAI eai);
 	proto native bool ClearUserReservedLocationAtIndex (int index);
+	proto native void ClearUserReservedLocationForContainer (notnull EntityAI eai);
 	proto native bool GetDebugFlag ();
 
 	/**
@@ -158,7 +160,11 @@ class HumanInventory : GameInventory
 					HandEvent(InventoryMode.PREDICTIVE, throwEvent);
 					return true;
 
-				default: return super.DropEntity(InventoryMode.PREDICTIVE, src.GetParent(), item);
+				//default: return super.DropEntity(InventoryMode.PREDICTIVE, src.GetParent(), item);
+				default:
+					DayZPlayer player = DayZPlayer.Cast(item.GetHierarchyRootPlayer());
+					DropEntity(InventoryMode.PREDICTIVE,player,item);
+					return true;
 			}
 		}
 		Error("No inventory location");
@@ -171,6 +177,12 @@ class HumanInventory : GameInventory
 		{
 			Man man_src = Man.Cast(src.GetParent());
 			hndDebugPrint("[inv] HI::RedirectToHandEvent - source location == HANDS, player has to handle this");
+			
+			EntityAI item = src.GetItem();
+			ClearUserReservedLocation(item);
+			item.GetOnReleaseLock().Invoke(item);
+			AddInventoryReservation(item, dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+	
 			man_src.GetHumanInventory().HandEvent(mode, new HandEventMoveTo(man_src, src, dst));
 			return true;
 		}
@@ -178,6 +190,9 @@ class HumanInventory : GameInventory
 		if (dst.GetType() == InventoryLocationType.HANDS)
 		{
 			hndDebugPrint("[inv] HI::RedirectToHandEvent - dst location == HANDS, player has to handle this");
+			
+			AddInventoryReservation(src.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+			
 			Man man_dst = Man.Cast(dst.GetParent());
 			man_dst.GetHumanInventory().HandEvent(mode, new HandEventTake(man_dst, src));
 			return true;
@@ -187,7 +202,7 @@ class HumanInventory : GameInventory
 
 	override bool TakeToDst (InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
-		Print("[inv] Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+		hndDebugPrint("[inv] Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 
 		if (RedirectToHandEvent(mode, src, dst))
 			return true;
@@ -206,7 +221,7 @@ class HumanInventory : GameInventory
 				if (RedirectToHandEvent(mode, src, dst))
 					return true;
 
-				Print("[inv] HumanInventory::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+				hndDebugPrint("[inv] HumanInventory::Take2Inv(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 				return super.TakeEntityToInventory(mode, flags, item);
 			}
 			else
@@ -296,7 +311,7 @@ class HumanInventory : GameInventory
 					}
 					else
 					{
-						Print("[inv] HumanInventory::Swap HandEventSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + "src2=" + InventoryLocation.DumpToStringNullSafe(src2));
+						hndDebugPrint("[inv] HumanInventory::Swap HandEventSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + "src2=" + InventoryLocation.DumpToStringNullSafe(src2));
 						HandEvent(mode, new HandEventSwap(GetManOwner(), src1, src2, dst1, dst2));
 					}
 					handled = true;
@@ -328,7 +343,7 @@ class HumanInventory : GameInventory
 		InventoryLocation src1, src2, dst1;
 		if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
 		{
-			Print("[inv] HumanInventory::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2));
+			hndDebugPrint("[inv] HumanInventory::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") dst1=" + InventoryLocation.DumpToStringNullSafe(dst1)+ " dst2=" + InventoryLocation.DumpToStringNullSafe(item2_dst));
 			bool handled = false;
 			switch (src1.GetType())
 			{

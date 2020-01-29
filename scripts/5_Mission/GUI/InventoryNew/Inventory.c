@@ -441,7 +441,8 @@ class Inventory: LayoutHolder
 			if( item )
 			{
 				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-				if( player && ( player.GetInventory().CanAddEntityToInventory( item ) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+				InventoryLocation il = new InventoryLocation;
+				if( player && player.GetInventory().FindFreeLocationFor(item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, il) )
 				{
 					player.PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
 				}
@@ -564,9 +565,10 @@ class Inventory: LayoutHolder
 	override void UpdateInterval()
 	{
 		PlayerBase player;
+		InventoryItem item;
 		if( GetGame().GetInput().LocalPress( "UAUIRotateInventory", false ) )
 		{
-			InventoryItem item = InventoryItem.Cast( ItemManager.GetInstance().GetDraggedItem() );
+			item = InventoryItem.Cast( ItemManager.GetInstance().GetDraggedItem() );
 			if( item )
 			{
 				int size_x, size_y;
@@ -654,28 +656,40 @@ class Inventory: LayoutHolder
 		{
 			if( m_HandsArea.IsActive() )
 			{
-				if( m_HandsArea.TransferItemToVicinity() )
+				item = m_HandsArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
-					m_HandsArea.SetActive( false );
-					m_HandsArea.UnfocusGrid();
-					m_LeftArea.SetActive( true );
-					m_HadFastTransferred = true;
+					if( m_HandsArea.TransferItemToVicinity() )
+					{
+						m_HandsArea.SetActive( false );
+						m_HandsArea.UnfocusGrid();
+						m_LeftArea.SetActive( true );
+						m_HadFastTransferred = true;
+					}
 				}
 			}
 			else if( m_RightArea.IsActive() )
 			{
-				if( m_RightArea.TransferItemToVicinity() )
+				item = m_RightArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
-					//m_RightArea.SetActive( false );
-					//m_RightArea.UnfocusGrid();
-					//m_LeftArea.SetActive( true );
-					m_HadFastTransferred = true;
+					if( m_RightArea.TransferItemToVicinity() )
+					{
+						//m_RightArea.SetActive( false );
+						//m_RightArea.UnfocusGrid();
+						//m_LeftArea.SetActive( true );
+						m_HadFastTransferred = true;
+					}
 				}
 			}
 			else if( m_LeftArea.IsActive() )
 			{
-				m_LeftArea.TransferItemToVicinity();
-				m_HadFastTransferred = true;
+				item = m_LeftArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
+				{
+					m_LeftArea.TransferItemToVicinity();
+					m_HadFastTransferred = true;
+				}
 			}
 			
 			UpdateConsoleToolbar();
@@ -724,24 +738,36 @@ class Inventory: LayoutHolder
 			
 			if( m_RightArea.IsActive() )
 			{
-				m_RightArea.TransferItem();
+				item = m_RightArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
+				{
+					m_RightArea.TransferItem();
+				}
 			}
 			else if( m_LeftArea.IsActive() )
 			{
-				if( m_LeftArea.TransferItem() )
+				item = m_LeftArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
-					//m_LeftArea.SetActive( false );
-					//m_LeftArea.UnfocusGrid();
-					//m_RightArea.SetActive( true );
+					if( m_LeftArea.TransferItem() )
+					{
+						//m_LeftArea.SetActive( false );
+						//m_LeftArea.UnfocusGrid();
+						//m_RightArea.SetActive( true );
+					}
 				}
 			}
 			else if( m_HandsArea.IsActive() )
 			{
-				if( m_HandsArea.TransferItem() )
+				item = m_HandsArea.GetFocusedItem();
+				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
-					m_HandsArea.SetActive( false );
-					m_HandsArea.UnfocusGrid();
-					m_RightArea.SetActive( true );
+					if( m_HandsArea.TransferItem() )
+					{
+						m_HandsArea.SetActive( false );
+						m_HandsArea.UnfocusGrid();
+						m_RightArea.SetActive( true );
+					}
 				}
 			}
 			

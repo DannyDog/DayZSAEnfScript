@@ -35,7 +35,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\sport_glasses_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 17;
 		itemSize[] = {3,1};
@@ -104,7 +104,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\aviator_glasses_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 17;
 		weight = 36;
@@ -152,7 +152,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\sunglasses_designer_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 17;
 		weight = 40;
@@ -200,7 +200,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\glasses_thick_frame_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 17;
 		weight = 50;
@@ -248,7 +248,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\glasses_thin_frame_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 17;
 		weight = 30;
@@ -296,7 +296,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\TacGoggles_g.p3d";
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 1;
 		itemSize[] = {2,1};
@@ -343,7 +343,7 @@ class CfgVehicles
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		attachments[] = {"NVG"};
-		inventorySlot = "Eyewear";
+		inventorySlot[] = {"Eyewear"};
 		itemInfo[] = {"Clothing","Eyewear"};
 		rotationFlags = 2;
 		itemSize[] = {3,3};
@@ -389,7 +389,7 @@ class CfgVehicles
 		model = "\DZ\characters\glasses\NVG.p3d";
 		simulation = "itemoptics";
 		animClass = "Binoculars";
-		inventorySlot = "NVG";
+		inventorySlot[] = {"NVG"};
 		itemSize[] = {2,2};
 		weight = 300;
 		rotationFlags = 1;
@@ -450,7 +450,7 @@ class CfgNonAIVehicles
 	class ProxyNVG: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "NVG";
+		inventorySlot[] = {"NVG"};
 		model = "\DZ\characters\glasses\NVG.p3d";
 	};
 };

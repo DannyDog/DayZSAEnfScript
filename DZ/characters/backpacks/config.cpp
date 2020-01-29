@@ -31,7 +31,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_TaloonBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_TaloonBag_ColorBase1";
 		model = "\dz\characters\backpacks\taloon_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -40,7 +40,7 @@ class cfgVehicles
 		itemsCargoSize[] = {7,6};
 		absorbency = 0.3;
 		heatIsolation = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Outdoor";
 		randomQuantity = 3;
@@ -111,7 +111,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_TortillaBag0";
 		descriptionShort = "$STR_cfgVehicles_TortillaBag1";
 		model = "\dz\characters\backpacks\tortilla_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -121,7 +121,7 @@ class cfgVehicles
 		absorbency = 0;
 		heatIsolation = 0.08;
 		visibilityModifier = 0.8;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		class ClothingTypes
 		{
@@ -167,7 +167,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_CourierBag0";
 		descriptionShort = "$STR_cfgVehicles_CourierBag1";
 		model = "\dz\characters\backpacks\ImpCourierBag_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -177,7 +177,7 @@ class cfgVehicles
 		absorbency = 0.6;
 		heatIsolation = 0.02;
 		visibilityModifier = 0.8;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Small";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -226,7 +226,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_FurCourierBag0";
 		descriptionShort = "$STR_cfgVehicles_FurCourierBag1";
 		model = "\dz\characters\backpacks\ImpCourierBagFur_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -285,7 +285,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_ImprovisedBag0";
 		descriptionShort = "$STR_cfgVehicles_ImprovisedBag1";
 		model = "\dz\characters\backpacks\bp_Improvised_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -295,7 +295,7 @@ class cfgVehicles
 		absorbency = 0.6;
 		heatIsolation = 0.02;
 		visibilityModifier = 0.7;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Small";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -344,7 +344,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_FurImprovisedBag0";
 		descriptionShort = "$STR_cfgVehicles_FurImprovisedBag1";
 		model = "\dz\characters\backpacks\bp_Improvised_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -404,7 +404,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_DryBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_DryBag_ColorBase1";
 		model = "\dz\characters\backpacks\drybag_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -413,7 +413,7 @@ class cfgVehicles
 		weight = 600;
 		absorbency = 0;
 		heatIsolation = 1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		canBeDigged = 1;
 		soundAttType = "Outdoor";
@@ -497,7 +497,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_HuntingBag0";
 		descriptionShort = "$STR_cfgVehicles_HuntingBag1";
 		model = "\dz\characters\backpacks\hunting_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -507,7 +507,7 @@ class cfgVehicles
 		absorbency = 0.4;
 		heatIsolation = 0.1;
 		visibilityModifier = 0.8;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Military";
 		randomQuantity = 4;
@@ -556,7 +556,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_MountainBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_MountainBag_ColorBase1";
 		model = "\dz\characters\backpacks\mountain_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -565,7 +565,7 @@ class cfgVehicles
 		weight = 2300;
 		absorbency = 0.2;
 		heatIsolation = 0.13;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Outdoor";
 		randomQuantity = 4;
@@ -647,7 +647,7 @@ class cfgVehicles
 		absorbency = 0.3;
 		heatIsolation = 0.1;
 		visibilityModifier = 0.75;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Military";
 		randomQuantity = 1;
@@ -696,7 +696,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_ChildBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_ChildBag_ColorBase1";
 		model = "\dz\characters\backpacks\childs_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -705,7 +705,7 @@ class cfgVehicles
 		weight = 1850;
 		absorbency = 0.1;
 		heatIsolation = 0.5;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Outdoor";
 		randomQuantity = 2;
@@ -771,7 +771,7 @@ class cfgVehicles
 		displayName = "$STR_cfgvehicles_GhillieBushrag_colorbase0";
 		descriptionShort = "$STR_cfgVehicles_GhillieBushrag_ColorBase1";
 		model = "\dz\characters\backpacks\GhillieBushrag_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
 		itemSize[] = {4,3};
@@ -844,7 +844,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_GhillieTop_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_GhillieTop_ColorBase1";
 		model = "\dz\characters\backpacks\GhillieBushrag_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		itemInfo[] = {"Clothing","Back"};
 		lootCategory = "Crafted";
 		rotationFlags = 16;
@@ -852,7 +852,7 @@ class cfgVehicles
 		weight = 800;
 		absorbency = 1;
 		heatIsolation = 0.85;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Ghillie";
 		hiddenSelections[] = {"camoGround","camo","camo1"};
@@ -918,7 +918,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_GhillieSuit_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_GhillieSuit_ColorBase1";
 		model = "\dz\characters\backpacks\GhillieBushrag_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		itemInfo[] = {"Clothing","Back"};
 		lootCategory = "Crafted";
 		rotationFlags = 16;
@@ -990,7 +990,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_LeatherSack_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_LeatherSack_ColorBase1";
 		model = "\dz\characters\backpacks\Bag_LeatherSack_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		lootCategory = "Crafted";
@@ -1108,7 +1108,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_AssaultBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_AssaultBag_ColorBase1";
 		model = "\dz\characters\backpacks\boulder_m53_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Back"};
@@ -1118,7 +1118,7 @@ class cfgVehicles
 		weight = 900;
 		absorbency = 0.4;
 		heatIsolation = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Military";
 		randomQuantity = 4;
@@ -1184,7 +1184,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_CoyoteBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_CoyoteBag_ColorBase1";
 		model = "\dz\characters\backpacks\CoyotesBP_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -1193,7 +1193,7 @@ class cfgVehicles
 		weight = 2600;
 		absorbency = 0.2;
 		heatIsolation = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Military";
 		randomQuantity = 4;
@@ -1253,7 +1253,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_AliceBag_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_AliceBag_ColorBase1";
 		model = "\dz\characters\backpacks\alicebackpack_g.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		attachments[] = {"Chemlight","WalkieTalkie"};
 		itemInfo[] = {"Clothing","Back"};
 		rotationFlags = 16;
@@ -1262,7 +1262,7 @@ class cfgVehicles
 		weight = 1600;
 		absorbency = 0.1;
 		heatIsolation = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Military";
 		randomQuantity = 4;
@@ -1329,13 +1329,13 @@ class cfgVehicles
 		displayName = "$str_cfgvehicles_largetent_backpack0";
 		descriptionShort = "$str_cfgvehicles_largetent_backpack1";
 		model = "DZ\gear\camping\proxies\LargeTentPackProxy.p3d";
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		itemInfo[] = {"Clothing","Back"};
 		weight = 1300;
 		itemSize[] = {4,5};
 		absorbency = 0.3;
 		heatIsolation = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "Outdoor";
 		visibilityModifier = 0.95;

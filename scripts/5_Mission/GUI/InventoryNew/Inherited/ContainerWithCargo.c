@@ -11,6 +11,8 @@ class ContainerWithCargo: ClosableContainer
 		this.Insert( m_CargoGrid );
 		
 		m_CargoGrid.GetRootWidget().SetSort( 1 );
+		
+		WidgetEventHandler.GetInstance().RegisterOnDraggingOver( m_MainWidget,  this, "DraggingOverGrid" );
 	}
 	
 	override bool IsEmpty()

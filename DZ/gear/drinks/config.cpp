@@ -33,7 +33,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Canteen0";
 		descriptionShort = "$STR_CfgVehicles_Canteen1";
 		model = "\dz\gear\drinks\Canteen.p3d";
-		inventorySlot = "Belt_Left";
+		inventorySlot[] = {"Belt_Left"};
 		weight = 250;
 		itemSize[] = {2,2};
 		varQuantityInit = 1000;
@@ -589,7 +589,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SodaCan_Empty0";
 		descriptionShort = "$STR_CfgVehicles_SodaCan_Empty1";
 		model = "\dz\gear\drinks\SodaCan_Used.p3d";
-		inventorySlot = "tripWireAttachment";
+		inventorySlot[] = {"tripWireAttachment"};
 		class AnimEvents
 		{
 			class SoundWeapon
@@ -629,7 +629,7 @@ class CfgNonAIVehicles
 	class ProxySodaCan_Used: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "tripWireAttachment";
+		inventorySlot[] = {"tripWireAttachment"};
 		model = "\dz\gear\drinks\SodaCan_Used.p3d";
 	};
 };

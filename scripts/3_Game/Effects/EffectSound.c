@@ -36,6 +36,7 @@ class EffectSound : Effect
 	void EffectSound()
 	{
 		m_SoundWaveKind = WaveKind.WAVEEFFECTEX;
+		m_SoundWaveVolume = 0;
 		m_SoundWaveVolumeMax = 1;
 		m_SoundAutodestroy = false;
 	}
@@ -79,11 +80,19 @@ class EffectSound : Effect
 	{
 		m_SoundWaveVolume = volume;
 		if ( m_SoundWaveObject )
-		{
 			m_SoundWaveObject.SetVolumeRelative( volume );
-		}
 	}
 	
+	//=====================================
+	// SetSoundMaxVolume
+	//=====================================
+	void SetSoundMaxVolume(float volume)
+	{
+		m_SoundWaveVolumeMax = volume;
+		if ( m_SoundWaveObject )
+			m_SoundWaveObject.SetVolumeRelative( m_SoundWaveVolume );
+	}
+		
 	//=====================================
 	// SetSoundLoop
 	//=====================================
@@ -92,9 +101,7 @@ class EffectSound : Effect
 		m_SoundLoop = loop;
 		
 		if ( m_SoundWaveObject )
-		{
 			m_SoundWaveObject.Loop( loop );
-		}
 	}
 	
 	//=====================================

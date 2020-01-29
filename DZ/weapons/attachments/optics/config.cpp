@@ -54,7 +54,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 350;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponOptics";
+		inventorySlot[] = {"weaponOptics"};
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -98,7 +98,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 644;
 		itemSize[] = {1,1};
-		inventorySlot = "weaponOptics";
+		inventorySlot[] = {"weaponOptics"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -136,7 +136,7 @@ class cfgVehicles
 		attachments[] = {"BatteryD"};
 		animClass = "Binoculars";
 		simulation = "itemoptics";
-		inventorySlot = "weaponOptics";
+		inventorySlot[] = {"weaponOptics"};
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -197,7 +197,7 @@ class cfgVehicles
 		attachments[] = {"BatteryD"};
 		animClass = "Binoculars";
 		simulation = "itemoptics";
-		inventorySlot = "weaponOptics";
+		inventorySlot[] = {"weaponOptics"};
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -261,7 +261,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 150;
 		itemSize[] = {1,1};
-		inventorySlot = "pistolOptics";
+		inventorySlot[] = {"pistolOptics"};
 		simulation = "itemoptics";
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
@@ -320,7 +320,7 @@ class cfgVehicles
 		attachments[] = {"BatteryD"};
 		animClass = "Binoculars";
 		simulation = "itemoptics";
-		inventorySlot = "weaponOpticsCrossbow";
+		inventorySlot[] = {"weaponOpticsCrossbow"};
 		selectionFireAnim = "zasleh";
 		rotationFlags = 16;
 		reversed = 0;
@@ -382,7 +382,7 @@ class cfgVehicles
 		attachments[] = {"BatteryD"};
 		animClass = "Binoculars";
 		simulation = "itemoptics";
-		inventorySlot = "WeaponOptics";
+		inventorySlot[] = {"WeaponOptics"};
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -447,7 +447,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 440;
 		itemSize[] = {2,1};
-		inventorySlot = "WeaponOptics";
+		inventorySlot[] = {"WeaponOptics"};
 		selectionFireAnim = "zasleh";
 		simulation = "itemoptics";
 		dispersionModifier = -0.000125;
@@ -513,7 +513,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 800;
 		itemSize[] = {3,1};
-		inventorySlot = "weaponOpticsMosin";
+		inventorySlot[] = {"weaponOpticsMosin"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
@@ -562,7 +562,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 800;
 		itemSize[] = {2,2};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
@@ -611,7 +611,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 700;
 		itemSize[] = {3,2};
-		inventorySlot = "weaponOpticsLRS";
+		inventorySlot[] = {"weaponOpticsLRS"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
@@ -664,7 +664,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 700;
 		itemSize[] = {4,1};
-		inventorySlot = "weaponOpticsHunting";
+		inventorySlot[] = {"weaponOpticsHunting"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
@@ -750,7 +750,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 700;
 		itemSize[] = {3,1};
-		inventorySlot = "weaponOpticsCrossbow";
+		inventorySlot[] = {"weaponOpticsCrossbow"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.048;
 		dispersionCondition = "true";
@@ -802,7 +802,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 600;
 		itemSize[] = {3,2};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -866,7 +866,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 600;
 		itemSize[] = {3,2};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
@@ -929,7 +929,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 600;
 		itemSize[] = {3,1};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
@@ -996,7 +996,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 800;
 		itemSize[] = {2,2};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
@@ -1058,7 +1058,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 2000;
 		itemSize[] = {4,3};
-		inventorySlot = "weaponOpticsAK";
+		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";

@@ -11,11 +11,11 @@ const int INPUT_UDT_ADVANCED_PLACEMENT				= 9;
 //const int INPUT_UDT_WEAPON_REMOTE_SYNC			= 9; // obsolette
 const int INPUT_UDT_WEAPON_REMOTE_EVENT				= 10;
 const int INPUT_UDT_USER_MUTE_XBOX					= 11;
-const int INPUT_UDT_USER_SYNC_PERMISSIONS			= 12;
-const int INPUT_UDT_HAND_REMOTE_EVENT				= 13;
-const int INPUT_UDT_WEAPON_LIFT_EVENT 				= 14;
-const int INPUT_UDT_RESET_ADS						= 15;
-const int INPUT_UDT_GESTURE							= 16;
+const int INPUT_UDT_HAND_REMOTE_EVENT				= 12;
+//const int INPUT_UDT_USER_SYNC_PERMISSIONS			= 12;// obsolete
+const int INPUT_UDT_WEAPON_LIFT_EVENT 				= 13;
+const int INPUT_UDT_RESET_ADS						= 14;
+const int INPUT_UDT_GESTURE							= 15;
 
 // ELECTRICITY SYSTEM CONSTANTS
 

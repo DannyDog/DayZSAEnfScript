@@ -27,12 +27,7 @@ class ActionCloseFence: ActionInteractBase
 			
 			if ( fence && fence.CanCloseFence() )
 			{
-				string selection = fence.GetActionComponentName( target.GetComponentIndex() );
-				
-				if ( selection == "wall_interact" )
-				{
-					return true;
-				}
+				return true;
 			}
 		}
 		

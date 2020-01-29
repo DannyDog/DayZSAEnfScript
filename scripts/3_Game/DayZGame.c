@@ -1403,7 +1403,8 @@ class DayZGame extends CGame
 			
 			GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.LoginTimeCountdown, 1000, true);
 		}
-		GetPlayer().StopDeathDarkeningEffect();
+		if (GetPlayer())
+			GetPlayer().StopDeathDarkeningEffect();
 		PPEffects.SetDeathDarkening(1);
 	}
 	
@@ -1641,13 +1642,10 @@ class DayZGame extends CGame
 			string text = Widget.TranslateString( "#console_start_game" );
 			#ifdef PLATFORM_XBOX
 				BiosUserManager user_manager = GetGame().GetUserManager();
-				if( user_manager )
-				{
-					if( user_manager.GetSelectedUser() )
-						text_widget.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
-					else
-						text_widget.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
-				}
+				if( user_manager && user_manager.GetSelectedUser() )
+					text_widget.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
+				else
+					text_widget.SetText( string.Format( text, "<image set=\"xbox_buttons\" name=\"A\" />" ) );
 			#endif
 					
 			#ifdef PLATFORM_PS4
@@ -2411,6 +2409,19 @@ class DayZGame extends CGame
 					ctx.Read(icon_ext);
 					
 					NotificationSystem.AddNotificationExtended( show_time_ext, title_text_ext, detail_text_ext, icon_ext );
+				}
+				case ERPCs.RPC_USER_SYNC_PERMISSIONS:
+				{
+					map<string, bool> mute_list;
+					if( ctx.Read( mute_list ) )
+					{
+						for( int i = 0; i < mute_list.Count(); i++ )
+						{
+							string uid = mute_list.GetKey( i );
+							bool mute = mute_list.GetElement( i );
+							MutePlayer( uid, sender.GetPlainId(), mute );
+						}
+					}
 				}
 			}
 			// global rpc's handling

@@ -240,7 +240,11 @@ class CfgVehicles
 		itemSize[] = {10,15};
 		weight = 10000;
 		itemBehaviour = 0;
-		stackedUnit = "ml";
+		quantityBar = 0;
+		varQuantityInit = 0.0;
+		varQuantityMin = 0.0;
+		varQuantityMax = 0.0;
+		stackedUnit = "";
 		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Book","OakBark","BirchBark"};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
@@ -461,7 +465,7 @@ class CfgVehicles
 		weight = 440;
 		itemSize[] = {4,3};
 		itemsCargoSize[] = {4,3};
-		inventorySlot = "CookingEquipment";
+		inventorySlot[] = {"CookingEquipment"};
 		lootTag[] = {"Kitchen"};
 		lootCategory = "Tools";
 		stackedRandom = 0;
@@ -533,7 +537,7 @@ class CfgVehicles
 		lootCategory = "Tools";
 		allowOwnedCargoManipulation = 1;
 		volume = 1000;
-		inventorySlot = "CookingEquipment";
+		inventorySlot[] = {"CookingEquipment"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -732,7 +736,7 @@ class CfgVehicles
 		suicideAnim = "pitchfork";
 		lootCategory = "Tools";
 		lootTag[] = {"Camping"};
-		inventorySlot = "CookingTripod";
+		inventorySlot[] = {"CookingTripod"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -764,7 +768,7 @@ class CfgNonAIVehicles
 	{
 		scope = 2;
 		model = "\dz\gear\cooking\CookingPot.p3d";
-		inventorySlot = "CookingEquipment";
+		inventorySlot[] = {"CookingEquipment"};
 		class AnimationSources
 		{
 			class handleRotate
@@ -778,7 +782,7 @@ class CfgNonAIVehicles
 	class ProxyBook_kniga: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Book";
+		inventorySlot[] = {"Book"};
 		model = "\dz\gear\books\Book_kniga.p3d";
 	};
 };

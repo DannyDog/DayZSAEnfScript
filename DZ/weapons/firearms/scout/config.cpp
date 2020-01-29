@@ -83,7 +83,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_Scout0";
 		descriptionShort = "$STR_cfgWeapons_Scout1";
 		model = "\dz\weapons\firearms\scout\scout.p3d";
-		attachments[] = {"weaponOptics","weaponWrap","suppressorImpro","weaponOpticsHunting"};
+		attachments[] = {"weaponWrap","weaponOpticsHunting","weaponOptics","suppressorImpro"};
 		itemSize[] = {9,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\scout\data\scout_blk_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\scout\data\scout.rvmat"};

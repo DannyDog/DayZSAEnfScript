@@ -70,7 +70,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		bool remote =  inst_type == DayZPlayerInstanceType.INSTANCETYPE_REMOTE || inst_type == DayZPlayerInstanceType.INSTANCETYPE_AI_REMOTE;
 		if (synchronous || GetInventoryOwner().IsDamageDestroyed() || remote)
 		{
-			hndDebugPrint("[hndfsm] SYNCHRONOUS hand event e=" + e.ToString());
+ 			hndDebugPrint("[hndfsm] SYNCHRONOUS hand event e=" + e.ToString());
 			ProcessHandEvent(e);
 		}
 		else
@@ -106,7 +106,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 
 		Weapon_Base weapon;
 		Class.CastTo(weapon, GetEntityInHands());
-
+		
 		if (hcw && weapon && weapon.CanProcessWeaponEvents())
 		{
 			weapon.GetCurrentState().OnUpdate(dt);
@@ -161,7 +161,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 			}
 		}
 	}
-
+	
 	void HandleInventory (float dt)
 	{
 		HumanCommandWeapons hcw = GetDayZPlayerOwner().GetCommandModifier_Weapons();
@@ -169,13 +169,13 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		EntityAI ih = GetEntityInHands();
 		Weapon_Base weapon;
 		Class.CastTo(weapon, ih);
-
+		
 		if (hcw)
 		{
 			m_FSM.GetCurrentState().OnUpdate(dt);
 
 			hndDebugSpamALot("[hndfsm] HCW: playing A=" + typename.EnumToString(WeaponActions, hcw.GetRunningAction()) + " AT=" + WeaponActionTypeToString(hcw.GetRunningAction(), hcw.GetRunningActionType()) + " fini=" + hcw.IsActionFinished());
-
+			
 			if ( !m_FSM.GetCurrentState().IsIdle() || !m_FSM.IsRunning() )
 			{
 				while (true)
@@ -241,10 +241,35 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		int tmp = -1;
 		ctx.Read(tmp);
 		syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " store Juncture packet STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp());
-		StoreJunctureData(ctx);
+			StoreJunctureData(ctx);
 		return true;
 	}
-
+	
+	///@{ juncture
+	/**@fn			OnInventoryJunctureFromServer
+	 * @brief		reaction to engine callback
+	 *	originates in:
+	 *				engine - DayZPlayer::OnSyncJuncture
+	 *				script - PlayerBase.OnSyncJuncture
+	 **/
+	override bool OnInventoryJunctureRepairFromServer (ParamsReadContext ctx)
+	{
+		InventoryLocation il = new InventoryLocation;
+		if (!il.ReadFromContext(ctx) )
+			return false;
+		
+		InventoryLocation il_current = new InventoryLocation;
+		
+		EntityAI item = il.GetItem();
+		item.GetInventory().GetCurrentInventoryLocation(il_current);
+		
+		if( !il_current.CompareLocationOnly(il))
+		{
+			LocationMoveEntity(il_current,il);
+		}
+		return true;
+	}
+	
 	/**@fn			OnHandleStoredJunctureData
 	 * @brief		reaction to engine callback
 	 *	originates in engine - DayZPlayerInventory::HandleStoredJunctureData
@@ -275,7 +300,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	override bool OnInputUserDataProcess (ParamsReadContext ctx)
 	{
 		syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " store InputUserData packet STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp());
-		StoreInputUserData(ctx);
+			StoreInputUserData(ctx);
 		return true;
 	}
 
@@ -297,7 +322,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	proto native void StoreInputUserData (ParamsReadContext ctx);
 	///@} input user data
 	
-	bool OnInputUserDataFromRemote (ParamsReadContext ctx)
+	bool OnInputUserDataForRemote (ParamsReadContext ctx)
 	{
 		syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " remote handling InputUserData packet from server");
 		return HandleInputData(false, true, ctx);
@@ -314,9 +339,14 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	 **/
 	bool HandleInputData (bool handling_juncture, bool remote, ParamsReadContext ctx)
 	{
+		syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " HANDLE rmt=" + remote + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " HandleInputData t=" + GetGame().GetTime() + " pos=" + GetDayZPlayerOwner().GetPosition());
+
 		int type = -1;
 		if (!ctx.Read(type))
 			return false;
+		
+		InventoryLocation correct_il;
+		ScriptJunctureData ctx_repair;
 
 		switch (type)
 		{
@@ -335,14 +365,52 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 
 				if (false == GameInventory.CheckRequestSrc(GetManOwner(), src, GameInventory.c_MaxItemDistanceRadius))
 				{
+					if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+					{
+						correct_il = new InventoryLocation;
+						src.GetItem().GetInventory().GetCurrentInventoryLocation(correct_il);
+						
+						
+						if( !correct_il.CompareLocationOnly(src) )
+						{
+							ctx_repair = new ScriptJunctureData;
+							correct_il.WriteToContext(ctx_repair);
+							
+							GetDayZPlayerOwner().SendSyncJuncture(DayZPlayerSyncJunctures.SJ_INVENTORY_REPAIR, ctx_repair);
+						}
+					}
 					syncDebugPrint("[cheat] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " failed src check with cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src));
 					return false; // stale packet
 				}
 				
 				if (false == GameInventory.CheckMoveToDstRequest(GetManOwner(), src, dst, GameInventory.c_MaxItemDistanceRadius))
 				{
+					/*if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+					{
+						correct_il = new InventoryLocation;
+						src.GetItem().GetInventory().GetCurrentInventoryLocation(correct_il);
+						
+						
+						if( !correct_il.CompareLocationOnly(src) )
+						{
+							ctx_repair = new ScriptJunctureData;
+							correct_il.WriteToContext(ctx_repair);
+							
+							//GetDayZPlayerOwner().SendSyncJuncture(DayZPlayerSyncJunctures.SJ_INVENTORY_REPAIR, ctx_repair);
+						}
+					}*/
+					
 					Error("[cheat] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " is cheating with cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 					return false; // cheater
+				}
+				
+				if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+				{
+					if (false == GameInventory.LocationCanMoveEntity(src, dst))
+					{
+						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT move cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+						return false;
+					}
 				}
 				
 				syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " HandleInputData t=" + GetGame().GetTime() + "ms received cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
@@ -369,14 +437,21 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 						return true; // abort, do not send anything to remotes
 					}
 				}
-
-				LocationSyncMoveEntity(src, dst);
+				
+				if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+				{
+					ClearInventoryReservation(dst.GetItem(),dst);
+				}
+				
+				LocationSyncMoveEntity(src, dst);				
 				break;
 			}
 
 			case InventoryCommandType.HAND_EVENT:
 			{
 				HandEventBase e = HandEventBase.CreateHandEventFromContext(ctx);
+				
+				syncDebugPrint("[syncinv] HandleInputData remote input (cmd=HAND_EVENT) e=" + e.DumpToString());
 
 				if (remote && !e.GetSrcEntity())
 				{
@@ -386,6 +461,19 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 
 				if (false == e.CheckRequestSrc())
 				{
+					if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+					{
+						correct_il = new InventoryLocation;
+						e.GetSrcEntity().GetInventory().GetCurrentInventoryLocation(correct_il);
+						
+						if( !correct_il.CompareLocationOnly(e.GetSrc()) )
+						{
+							ctx_repair = new ScriptJunctureData;
+							correct_il.WriteToContext(ctx_repair);
+							
+							GetDayZPlayerOwner().SendSyncJuncture(DayZPlayerSyncJunctures.SJ_INVENTORY_REPAIR, ctx_repair);
+						}
+					}
 					return false; // stale packet
 				}
 
@@ -393,6 +481,15 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				{
 					Error("[cheat] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " is cheating with cmd=" + typename.EnumToString(InventoryCommandType, type) + " event=" + e.DumpToString());
 					return false; // cheater
+				}
+				
+				if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+				{
+					if (false == e.CanPerformEvent())
+					{
+						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT do cmd=HAND_EVENT e=" + e.DumpToString());
+						return false;
+					}
 				}
 
 				syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " HandleInputData t=" + GetGame().GetTime() + "ms received cmd=" + typename.EnumToString(InventoryCommandType, type) + " event=" + e.DumpToString());
@@ -463,6 +560,15 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					Error("[cheat] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " is cheating with cmd=" + typename.EnumToString(InventoryCommandType, type) + " src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 					return false; // cheater
 				}
+				
+				if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+				{
+					if (false == GameInventory.CanForceSwapEntities(src1.GetItem(), dst1, src2.GetItem(), dst2))
+					{
+						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT swap cmd=" + typename.EnumToString(InventoryCommandType, type) + " src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) +" | src2=" + InventoryLocation.DumpToStringNullSafe(src2) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
+						return false;
+					}
+				}
 
 				if (src1.IsValid() && src2.IsValid() && dst1.IsValid() && dst2.IsValid())
 				{
@@ -487,6 +593,12 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 							Error("[syncinv] HandleInputData: unexpected return code from TryAcquireTwoInventoryJuncturesFromServer"); return true;
 							return true; // abort, do not send anything to remotes
 						}
+					}
+					
+					if (GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+					{
+						ClearInventoryReservation(dst1.GetItem(),dst1);
+						ClearInventoryReservation(dst2.GetItem(),dst2);
 					}
 
 					LocationSwap(src1, src2, dst1, dst2);
@@ -668,10 +780,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		GetDayZPlayerOwner().GetItemAccessor().OnItemInHandsChanged(true);
 	}
 
-	/**@fn			OnEventFromRemoteWeapon
+	/**@fn			OnEventForRemoteWeapon
 	 * @brief		reaction of remote weapon to (common user/anim/...) event sent from server
 	 **/
-	bool OnEventFromRemoteWeapon (ParamsReadContext ctx)
+	bool OnEventForRemoteWeapon (ParamsReadContext ctx)
 	{
 		if (GetEntityInHands())
 		{
@@ -698,18 +810,18 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				}
 			}
 			else
-				Error("OnEventFromRemoteWeapon - entity in hands, but not weapon. item=" + GetEntityInHands());
+				Error("OnEventForRemoteWeapon - entity in hands, but not weapon. item=" + GetEntityInHands());
 		}
 		else
-			Error("OnEventFromRemoteWeapon - no entity in hands");
+			Error("OnEventForRemoteWeapon - no entity in hands");
 		return true;
 	}
 
 
-	/**@fn			OnHandEventFromRemote
+	/**@fn			OnHandEventForRemote
 	 * @brief		reaction of remote weapon to (common user/anim/...) event sent from server
 	 **/
-	bool OnHandEventFromRemote (ParamsReadContext ctx)
+	bool OnHandEventForRemote (ParamsReadContext ctx)
 	{
 		HandEventBase e = HandEventBase.CreateHandEventFromContext(ctx);
 		if (e)
@@ -783,7 +895,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	
 	bool IsProcessing()
 	{
-		return !m_FSM.GetCurrentState().IsIdle();
+		return !m_FSM.GetCurrentState().IsIdle() || m_PostedEvent;
 	}
 };
 

@@ -205,7 +205,8 @@ class MainMenuConsole extends UIScriptedMenu
 		GetDayZGame().GetBacklit().MainMenu_OnShow();
 	
 		SetFocus( m_LastFocusedButton );
-		
+
+		LoadMods();
 		Refresh();
 		
 		if( m_ScenePC && m_ScenePC.GetIntroCamera() )

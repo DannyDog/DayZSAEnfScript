@@ -33,7 +33,7 @@ class EmoteCB : HumanCommandActionCallback
 					
 					if ( m_player.GetItemInHands() )
 					{
-						m_player.DropItem(m_player.GetItemInHands());
+						m_player.PhysicalPredictiveDropItem(m_player.GetItemInHands());
 					}
 				}
 				m_Manager.m_ItemToBeCreated = true;
@@ -93,6 +93,8 @@ class EmoteManager
 	protected const int 	CALLBACK_CMD_INVALID = -1;
 	protected const int 	CALLBACK_CMD_END = -2;
 	protected const int 	CALLBACK_CMD_GESTURE_INTERRUPT = -3;
+	//protected const int 	CALLBACK_CMD_SERVER = 0;
+	//protected const int 	CALLBACK_CMD_CLIENT = 1;
 	protected const float 	WATER_DEPTH = 0.15;
 	PluginAdminLog 			m_AdminLog;
 	ref Timer 				m_ReservationTimer;
@@ -174,11 +176,13 @@ class EmoteManager
 		}
 		
 		int gestureSlot = DetermineGestureIndex();
-
-		if ( m_DeferredEmoteExecution == CALLBACK_CMD_GESTURE_INTERRUPT )
-			m_GestureInterruptInput = true;
 		
-		if ( m_Callback ) 
+		if ( m_DeferredEmoteExecution == CALLBACK_CMD_GESTURE_INTERRUPT )
+		{
+			//m_GestureInterruptInput = true;
+		}
+		
+		if ( m_Callback )
 		{
 			bool uiGesture = false;
 			if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
@@ -187,13 +191,17 @@ class EmoteManager
 				
 				if (InterruptGestureCheck())
 				{
-					SendEmoteRequestSync(CALLBACK_CMD_GESTURE_INTERRUPT);
+					SendEmoteRequestSync(CALLBACK_CMD_END); //TODO CALLBACK_CMD_END CALLBACK_CMD_GESTURE_INTERRUPT
 				}
 			}
 			
 			if( (gestureSlot > 0 && gestureSlot != 12 ) || m_GestureInterruptInput || (m_HIC.IsSingleUse() && !uiGesture) || (m_HIC.IsContinuousUseStart() && !uiGesture) || (m_Callback.m_IsFullbody && !uiGesture && m_HIC.IsWeaponRaised()) ) 
 			{
-				if (m_CurrentGestureID == ID_EMOTE_SUICIDE  && m_HIC.IsSingleUse())
+				/*if (m_GestureInterruptInput)
+				{
+					SendEmoteRequestSync(CALLBACK_CMD_END);
+				}
+				else */if (m_CurrentGestureID == ID_EMOTE_SUICIDE  && m_HIC.IsSingleUse())
 				{
 					if (m_Callback.GetState() == m_Callback.STATE_LOOP_LOOP)
 					{
@@ -201,7 +209,6 @@ class EmoteManager
 					}
 					else
 					{
-						//m_Callback.Cancel();
 						return;
 					}
 				}
@@ -223,14 +230,12 @@ class EmoteManager
 						m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_END);
 					}
 				}
-				//HACK find a better solution
 				else if (m_CurrentGestureID != ID_EMOTE_SUICIDE || (m_CurrentGestureID == ID_EMOTE_SUICIDE && m_Callback.GetState() < 3))
 				{
 					SendEmoteRequestSync(CALLBACK_CMD_END);
 				}
 				else if (m_CurrentGestureID == ID_EMOTE_SUICIDE)
 				{
-					//m_Callback.Cancel();
 					SendEmoteRequestSync(CALLBACK_CMD_END);
 				}
 			}
@@ -250,7 +255,12 @@ class EmoteManager
 			{
 				EndCallbackCommand();
 			}
-		}	
+			
+			if ( m_DeferredEmoteExecution == CALLBACK_CMD_GESTURE_INTERRUPT )
+			{
+				InterruptCallbackCommand();
+			}
+		}
 		//no m_Callback exists //TODO please future me, refactor into some sort of switch
 		else
 		{
@@ -362,8 +372,25 @@ class EmoteManager
 	//server and client
 	void OnSyncJuncture(int pJunctureID, ParamsReadContext pCtx)
 	{
+		int gesture_id;
+		int juncture_type = -1;
 		if (!m_CancelEmote)
-			pCtx.Read(m_DeferredEmoteExecution);
+		{
+			pCtx.Read(gesture_id);
+			
+			/*if (!pCtx.Read(juncture_type))
+			{
+				m_DeferredEmoteExecution = gesture_id;
+			}
+			else if (juncture_type == CALLBACK_CMD_SERVER)
+			{
+				ScriptJunctureData pCtx2 = new ScriptJunctureData;
+				pCtx2.Write(gesture_id);
+				
+				m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_GESTURE_REQUEST, pCtx2);
+			}*/
+			m_DeferredEmoteExecution = gesture_id;
+		}
 		else
 			m_CancelEmote = false;
 		//Print(m_DeferredEmoteExecution);
@@ -798,6 +825,9 @@ class EmoteManager
 					}
 				break;
 				
+				/*case ID_EMOTE_DEBUG :
+				break;*/
+				
 				default :
 					Print("EmoteManager.c | PlayEmote | WRONG ID");
 					m_bEmoteIsPlaying = false;
@@ -977,6 +1007,16 @@ class EmoteManager
 			m_MenuEmote = new EmoteLauncher(id,interrupts_same);
 	}
 	
+	void InterruptCallbackCommand()
+	{
+		//Print("ending ECB - interrupt");
+		m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_INTERRUPT);
+		
+		if (m_MenuEmote)
+			m_MenuEmote = null;
+		m_DeferredEmoteExecution = CALLBACK_CMD_INVALID;
+	}
+	
 	void EndCallbackCommand()
 	{
 		//Print("ending ECB - proper");
@@ -1000,8 +1040,6 @@ class EmoteManager
 		ScriptInputUserData ctx = new ScriptInputUserData;
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() )
 		{
-			bool b1 = ctx.CanStoreInputUserData();
-			bool b2 = CanPlayEmote(id);
 			if ( ctx.CanStoreInputUserData() && CanPlayEmote(id) )
 			{
 				ctx.Write(INPUT_UDT_GESTURE);
@@ -1048,11 +1086,11 @@ class EmoteManager
 			}
 			m_MenuEmote = NULL;
 		}
-		else
+		/*else
 		{
 			EndCallbackCommand();
 			m_MenuEmote = NULL;
-		}
+		}*/
 	}
 	
 	bool IsControllsLocked()
@@ -1084,7 +1122,7 @@ class EmoteManager
 			return false;
 		}
 		
-		if ( m_HIC.IsWeaponRaised() || m_Player.IsClimbing() || m_Player.IsFighting() || m_Player.IsSwimming() || m_Player.IsClimbingLadder() || m_Player.IsFalling() || m_Player.IsUnconscious() || m_Player.IsJumpInProgress() ) 	// rework conditions into something better?
+		if ( m_HIC.IsWeaponRaised() || m_Player.IsClimbing() || m_Player.IsRestrainStarted() || m_Player.IsFighting() || m_Player.IsSwimming() || m_Player.IsClimbingLadder() || m_Player.IsFalling() || m_Player.IsUnconscious() || m_Player.IsJumpInProgress() ) 	// rework conditions into something better?
 		{
 			return false;
 		}
@@ -1124,7 +1162,7 @@ class EmoteManager
 				return;
 			if (m_Player.GetItemInHands() && GetGame().IsClient())
 			{
-				m_Player.DropItem(m_Player.GetItemInHands());
+				m_Player.PhysicalPredictiveDropItem(m_Player.GetItemInHands());
 			}
 			CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SURRENDERIN,DayZPlayerConstants.STANCEMASK_ALL,true);
 			if (m_Callback)
@@ -1203,9 +1241,9 @@ class EmoteManager
 	}
 	
 	//! force-ends surrender state from outside of normal flow
-	void EndSurrenderRequest(SurrenderData data)
+	void EndSurrenderRequest(SurrenderData data = null)
 	{
-		if (m_IsSurrendered)
+		if (m_IsSurrendered && data)
 		{
 			SetEmoteLockState(false);
 			if (m_Player.GetItemInHands())
@@ -1217,8 +1255,22 @@ class EmoteManager
 		}
 	}
 	
+	//sent from server to cancel general emote callback
+	void ServerRequestEmoteCancel()
+	{
+		ScriptJunctureData pCtx = new ScriptJunctureData;
+		pCtx.Write(CALLBACK_CMD_GESTURE_INTERRUPT);
+		//pCtx.Write(CALLBACK_CMD_SERVER);
+		
+		m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_GESTURE_REQUEST, pCtx);
+	}
+	
 	bool InterruptGestureCheck()
 	{
+		//interrupts any callback if restrain action is in progress, takes priority
+		/*if (m_Player.IsRestrainStarted())
+			return true;*/
+		
 		if (!m_Callback.m_IsFullbody)
 			return false;
 		

@@ -58,7 +58,7 @@ class PokeHolesBarrel extends RecipeBase
 		m_IngredientUseSoftSkills[1] = true;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		// crafting multiple results
-		AddResult("BarrelHoles_");//additional results, must be processed individually in Do method (as "results" parameter)
+		//AddResult("BarrelHoles_");//additional results, must be processed individually in Do method (as "results" parameter)
 		
 		m_ResultSetFullQuantity[0] = 0;
 		m_ResultSetQuantity[0] = -1;
@@ -82,12 +82,12 @@ class PokeHolesBarrel extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)
 	{
-		ItemBase barrel_old = ingredients[0];
-		ItemBase barrel_new = results[0];
-		if (!barrel_old || !barrel_new)
-			return;
+		ItemBase item = ingredients[0];
+		string class_name = item.GetType();
+		string color = item.ConfigGetString("color");
+		string new_class_name = "BarrelHoles_" + color;
 		
-		//TransferItemsToNew(player, barrel_old, barrel_new);
+		MiscGameplayFunctions.TurnItemIntoItem(ingredients[0],new_class_name,player);
 	}
 	
 	void TransferItemsToNew(PlayerBase player, ItemBase barrel_old, ItemBase barrel_new)

@@ -13,7 +13,7 @@ class VicinityItemManager
 	private const float CONE_HEIGHT_MIN 				= -0.5;
 	private const float CONE_HEIGHT_MAX 				= 3.0;
 	
-	private ref 	array<ref EntityAI> m_VicinityItems = new ref array<ref EntityAI>;
+	private ref 	array<EntityAI> m_VicinityItems = new ref array<EntityAI>;
 	private ref 	array<ref CargoBase> m_VicinityCargos = new ref array<ref CargoBase>;
 	private 		float m_RefreshCounter;
 	private static ref VicinityItemManager s_Instance;
@@ -30,7 +30,7 @@ class VicinityItemManager
 		//Print("VicinityItemManager Init");
 	}
 	
-	array<ref EntityAI> GetVicinityItems()
+	array<EntityAI> GetVicinityItems()
 	{
 		return m_VicinityItems;
 	}

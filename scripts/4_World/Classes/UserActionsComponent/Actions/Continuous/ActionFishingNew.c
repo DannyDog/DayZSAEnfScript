@@ -181,12 +181,12 @@ class ActionFishingNew: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTSurface(8);
 	}
 	
 	override bool HasTarget()
 	{
-		return false;
+		return true;
 	}
 	
 	override bool HasAlternativeInterrupt()

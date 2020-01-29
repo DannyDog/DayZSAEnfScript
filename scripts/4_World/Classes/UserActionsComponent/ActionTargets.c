@@ -16,6 +16,13 @@ class VicinityObjects
 		if(ib && (ib.IsBeingPlaced() || ib.IsHologram()))
 			return;
 
+		//! ignores plain objects
+		/*if(object && object.IsPlainObject())
+		{
+			Print("ERROR: VicinityObjects | StoreVicinityObject | IsPlainObject check fail");
+			return;
+		}*/
+		
 		if ( !m_VicinityObjects.Contains(object) )
 		{
 			//! init of VicinityObjects - object, parent(if exists)
@@ -28,7 +35,8 @@ class VicinityObjects
 	{
 		for(int i = 0; i < objects.Count(); i++)
 		{
-			StoreVicinityObject(objects[i]);
+			if (objects[i].GetType() != "")
+				StoreVicinityObject(objects[i]);
 		}
 	}
 	
@@ -145,6 +153,7 @@ class ActionTargets
 	
 	void Update()
 	{
+		int i;
 #ifdef DEVELOPER
 		m_Debug = DiagMenu.GetBool(DiagMenuIDs.DM_ACTION_TARGETS_DEBUG);
 #endif
@@ -169,27 +178,50 @@ class ActionTargets
 		m_RayEnd = m_RayStart + GetGame().GetCurrentCameraDirection() * c_RayDistance;
 
 		RaycastRVParams rayInput = new RaycastRVParams(m_RayStart, m_RayEnd, m_Player);
+		rayInput.flags = CollisionFlags.ALLOBJECTS;
+		//rayInput.sorted = true;
 		array<ref RaycastRVResult> results = new array<ref RaycastRVResult>;
 
 		if ( DayZPhysics.RaycastRVProxy(rayInput, results) )
 		{
 			if ( results.Count() > 0 )
 			{
-				cursorTarget = results[0].obj;
-				//! if the cursor target is a proxy
-				if ( results[0].hierLevel > 0 )
+				array<float> distance_helper = new array<float>;
+				array<float> distance_helper_unsorted = new array<float>;
+				float distance;
+				
+				for(i = 0; i < results.Count(); i++)
 				{
-					//! ignores attachments on player
-					if ( !results[0].parent.IsMan() )
-						m_VicinityObjects.StoreVicinityObject(results[0].obj, results[0].parent);
+					distance = vector.Distance(results[i].pos,m_RayStart);
+					distance_helper.Insert(distance);
 				}
-				else
+				distance_helper_unsorted.Copy(distance_helper);
+				distance_helper.Sort();
+				
+				RaycastRVResult res;
+				for( i = 0; i < results.Count(); i++)
 				{
-					m_VicinityObjects.StoreVicinityObject(results[0].obj, null);
+					res = results.Get(distance_helper_unsorted.Find(distance_helper[i])); //closest object
+					
+					cursorTarget = res.obj;
+					if ( cursorTarget && (cursorTarget.IsDamageDestroyed() && (cursorTarget.IsTree() || cursorTarget.IsBush())) )
+						continue;
+					//! if the cursor target is a proxy
+					if ( res.hierLevel > 0 )
+					{
+						//! ignores attachments on player
+						if ( !res.parent.IsMan() )
+							m_VicinityObjects.StoreVicinityObject(res.obj, res.parent);
+					}
+					else
+					{
+						m_VicinityObjects.StoreVicinityObject(res.obj, null);
+					}
+					
+					m_HitPos = res.pos;
+					hitComponentIndex = res.component;
+					break;
 				}
-
-				m_HitPos = results[0].pos;
-				hitComponentIndex = results[0].component;
 			}
 		}
 		else
@@ -208,10 +240,10 @@ class ActionTargets
 		m_VicinityObjects.TransformToVicinityObjects(vicinityObjects);
 
 		//! removes Vicinity objects that are not directly visible from player position
-		FilterObstructedObjects();
+		FilterObstructedObjects(cursorTarget);
 		
 		//! select & sort targets based on utility function
-		for( int i = 0; i < m_VicinityObjects.Count(); i++ )
+		for( i = 0; i < m_VicinityObjects.Count(); i++ )
 		{
 			Object object = m_VicinityObjects.GetObject(i);
 			Object parent = m_VicinityObjects.GetParent(i);
@@ -228,6 +260,20 @@ class ActionTargets
 		}
 
 		//! action target for surface actions (lowest utility)
+		if (m_HitPos == vector.Zero)
+		{
+			vector 		contact_pos, contact_dir, hitNormal;
+			int 		contactComponent;
+			float 		hitFraction;
+			Object 		hitObject;
+			
+			m_RayEnd = m_RayStart + GetGame().GetCurrentCameraDirection() * c_RayDistance * 3;
+			
+			PhxInteractionLayers collisionLayerMask = PhxInteractionLayers.ROADWAY|PhxInteractionLayers.TERRAIN|PhxInteractionLayers.WATERLAYER;
+			DayZPhysics.RayCastBullet(m_RayStart,m_RayEnd,collisionLayerMask,null,hitObject,contact_pos,hitNormal,hitFraction);
+			m_HitPos = contact_pos;
+		}
+		
 		m_Targets.Insert(new ActionTarget(null, null, -1, m_HitPos, 0));
 
 #ifdef DEVELOPER
@@ -267,7 +313,7 @@ class ActionTargets
 		if ( object )
 		{
 			//! quick distance check
-			if (/*m_HitPos != vector.Zero && */vector.DistanceSq(m_Player.GetPosition(), m_HitPos) > c_MaxActionDistance * c_MaxActionDistance)
+			if (vector.DistanceSq(m_Player.GetPosition(), m_HitPos) > c_MaxActionDistance * c_MaxActionDistance)
 				return true;
 
 			// use CE_CENTER mem point for obstruction check
@@ -281,7 +327,7 @@ class ActionTargets
 				objCenterPos = object.GetPosition();
 				objCenterPos[1] = objCenterPos[1] + HEIGHT_OFFSET;
 			}
-
+			
 			if (DayZPhysics.RaycastRV( m_RayStart, objCenterPos, hitPosObstructed, hitNormal, hitComponentIndex, hitObjects, null, m_Player, false, false, ObjIntersectView ))
 			{
 				for ( int i = 0; i < hitObjects.Count(); i++ )
@@ -402,7 +448,7 @@ class ActionTargets
 		return vector.DistanceSq(pPoint, nearestPoint);		
 	}
 	
-	private void FilterObstructedObjects()
+	private void FilterObstructedObjects(Object cursor_target)
 	{
 #ifdef DEVELOPER
 		if(m_Debug)
@@ -423,14 +469,14 @@ class ActionTargets
 			{
 				//! when the number of obstructed items is higher than OBSTRUCTED_COUNT_THRESHOLD
 				//! remove do no run obstruction check and skip these items
-				if (numObstructed > OBSTRUCTED_COUNT_THRESHOLD)
+				if (numObstructed > OBSTRUCTED_COUNT_THRESHOLD && object != cursor_target)
 				{
 					m_VicinityObjects.Remove(object);
 					continue;
 				}
 
 				//! obstruction check
-				if (IsObstructed(object))
+				if (IsObstructed(object) && object != cursor_target)
 				{
 					m_VicinityObjects.Remove(object);
 					numObstructed++;
@@ -635,7 +681,7 @@ class ActionTargets
 	//--------------------------------------------------------
 	//! searching properties
 	private const float c_RayDistance = 5.0;
-	private const float c_MaxTargetDistance = 3.0;
+	private const float c_MaxTargetDistance = 5.0;
 	private const float c_MaxActionDistance = UAMaxDistances.DEFAULT;
 	private const float c_ConeAngle = 30.0;
 	private const float c_ConeHeightMin = -0.5;

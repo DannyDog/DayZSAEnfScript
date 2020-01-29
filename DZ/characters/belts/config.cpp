@@ -35,7 +35,7 @@ class CfgVehicles
 		attachments[] = {"Belt_Back","Belt_Right","Belt_Left"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Hips";
+		inventorySlot[] = {"Hips"};
 		itemInfo[] = {"Clothing","Hips"};
 		itemSize[] = {3,1};
 		weight = 20;
@@ -85,7 +85,7 @@ class CfgVehicles
 		attachments[] = {"Belt_Back","Belt_Right","Belt_Left"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Hips";
+		inventorySlot[] = {"Hips"};
 		itemInfo[] = {"Clothing","Hips"};
 		itemSize[] = {3,1};
 		weight = 20;
@@ -131,7 +131,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherKnifeSheath0";
 		descriptionShort = "$STR_CfgVehicles_LeatherKnifeSheath1";
 		model = "\DZ\characters\belts\knife_holster_g.p3d";
-		inventorySlot = "Belt_Back";
+		inventorySlot[] = {"Belt_Back"};
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Belt"};
 		weight = 110;
@@ -180,7 +180,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_knifesheath0";
 		descriptionShort = "$STR_cfgvehicles_knifesheath1";
 		model = "\DZ\characters\belts\nylon_KnifeSheath.p3d";
-		inventorySlot = "Belt_Back";
+		inventorySlot[] = {"Belt_Back"};
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Belt"};
 		weight = 110;
@@ -227,7 +227,7 @@ class CfgVehicles
 		attachments[] = {"Belt_Back","Belt_Right","Belt_Left"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
-		inventorySlot = "Hips";
+		inventorySlot[] = {"Hips"};
 		itemInfo[] = {"Clothing","Hips"};
 		itemSize[] = {3,1};
 		weight = 20;
@@ -342,19 +342,19 @@ class CfgNonAIVehicles
 	class Proxybelt_back_proxy: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Belt_Back";
+		inventorySlot[] = {"Belt_Back"};
 		model = "\DZ\characters\belts\proxies\belt_back_proxy.p3d";
 	};
 	class Proxybelt_right_proxy: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Belt_Right";
+		inventorySlot[] = {"Belt_Right"};
 		model = "\DZ\characters\belts\proxies\belt_right_proxy.p3d";
 	};
 	class Proxybelt_left_proxy: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Belt_Left";
+		inventorySlot[] = {"Belt_Left"};
 		model = "\DZ\characters\belts\proxies\belt_left_proxy.p3d";
 	};
 };

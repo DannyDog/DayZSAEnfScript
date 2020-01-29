@@ -29,7 +29,7 @@ class cfgVehicles
 	class ItemSuppressor: Inventory_Base
 	{
 		scope = 0;
-		inventorySlot = "weaponMuzzle";
+		inventorySlot[] = {"weaponMuzzle"};
 		simulation = "ItemSuppressor";
 		itemSize[] = {1,1};
 		selectionFireAnim = "zasleh";
@@ -59,7 +59,7 @@ class cfgVehicles
 		lootTag[] = {"Military_east"};
 		lootCategory = "Attachments";
 		openItemSpillRange[] = {10,20};
-		inventorySlot = "weaponBayonetAK";
+		inventorySlot[] = {"weaponBayonetAK"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
 		canSkinBodies = 1;
@@ -124,7 +124,7 @@ class cfgVehicles
 		lootTag[] = {"Military_west"};
 		lootCategory = "Attachments";
 		openItemSpillRange[] = {10,20};
-		inventorySlot = "weaponBayonet";
+		inventorySlot[] = {"weaponBayonet"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
 		canSkinBodies = 1;
@@ -189,7 +189,7 @@ class cfgVehicles
 		lootTag[] = {"Civilian"};
 		lootCategory = "Attachments";
 		openItemSpillRange[] = {10,20};
-		inventorySlot = "weaponBayonetMosin";
+		inventorySlot[] = {"weaponBayonetMosin"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
 		canSkinBodies = 1;
@@ -254,7 +254,7 @@ class cfgVehicles
 		lootTag[] = {"Military_east"};
 		lootCategory = "Attachments";
 		openItemSpillRange[] = {10,20};
-		inventorySlot = "weaponBayonetSKS";
+		inventorySlot[] = {"weaponBayonetSKS"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
 		canSkinBodies = 1;
@@ -315,7 +315,7 @@ class cfgVehicles
 		itemModelLength = 0.089;
 		lootTag[] = {"Hunting"};
 		lootCategory = "Attachments";
-		inventorySlot = "weaponMuzzleMosin";
+		inventorySlot[] = {"weaponMuzzleMosin"};
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.6,0.6,0.6};
@@ -357,7 +357,7 @@ class cfgVehicles
 		itemModelLength = 0.071;
 		lootTag[] = {"Police"};
 		lootCategory = "Attachments";
-		inventorySlot = "weaponMuzzleMP5";
+		inventorySlot[] = {"weaponMuzzleMP5"};
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.6,0.6,0.6};
@@ -462,7 +462,7 @@ class cfgVehicles
 		itemModelLength = 0.148;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_west"};
-		inventorySlot = "weaponMuzzleM4";
+		inventorySlot[] = {"weaponMuzzleM4"};
 		simulation = "ItemSuppressor";
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;
@@ -531,7 +531,7 @@ class cfgVehicles
 		itemModelLength = 0.23;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
-		inventorySlot = "weaponMuzzleAK";
+		inventorySlot[] = {"weaponMuzzleAK"};
 		simulation = "ItemSuppressor";
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.87;
@@ -599,7 +599,7 @@ class cfgVehicles
 		itemModelLength = 0.176;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east","Military_west","Police","Civilian"};
-		inventorySlot = "pistolMuzzle";
+		inventorySlot[] = {"pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		noiseShootModifier = -0.9;
 		barrelArmor = 600;
@@ -664,7 +664,7 @@ class cfgVehicles
 		itemSize[] = {1,1};
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
-		inventorySlot = "weaponMuzzleAK";
+		inventorySlot[] = {"weaponMuzzleAK"};
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		selectionFireAnim = "zasleh";
@@ -694,7 +694,7 @@ class cfgVehicles
 		itemSize[] = {1,2};
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
-		inventorySlot = "weaponMuzzleAK";
+		inventorySlot[] = {"weaponMuzzleAK"};
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		selectionFireAnim = "zasleh";
@@ -724,7 +724,7 @@ class cfgVehicles
 		itemSize[] = {1,2};
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
-		inventorySlot = "weaponMuzzleAK";
+		inventorySlot[] = {"weaponMuzzleAK"};
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;
 		simulation = "ItemSuppressor";
@@ -758,7 +758,7 @@ class cfgVehicles
 		itemModelLength = 0.136;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
-		inventorySlot = "pistolMuzzle";
+		inventorySlot[] = {"pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		noiseShootModifier = -0.9;
 		barrelArmor = 600;
@@ -807,7 +807,7 @@ class cfgVehicles
 		itemModelLength = 0.148;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_west"};
-		inventorySlot = "weaponBarrelAug";
+		inventorySlot[] = {"weaponBarrelAug"};
 		simulation = "ItemBarrel";
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;

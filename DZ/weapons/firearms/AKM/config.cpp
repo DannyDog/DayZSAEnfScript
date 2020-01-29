@@ -104,7 +104,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_AKM0";
 		descriptionShort = "$STR_cfgWeapons_AKM1";
 		model = "\dz\weapons\firearms\AKM\AKM.p3d";
-		attachments[] = {"weaponButtstockAK","WeaponHandguardAK","weaponOpticsAK","weaponFlashlight","weaponWrap","weaponBayonetAK","weaponMuzzleAK"};
+		attachments[] = {"weaponButtstockAK","WeaponHandguardAK","weaponWrap","weaponOpticsAK","weaponFlashlight","weaponMuzzleAK","weaponBayonetAK"};
 		itemSize[] = {8,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AKM\data\akm_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AKM\data\AKM.rvmat"};

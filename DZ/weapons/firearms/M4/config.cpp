@@ -107,7 +107,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_M4A10";
 		descriptionShort = "$STR_cfgWeapons_M4A11";
 		model = "\dz\weapons\firearms\m4\m4a1.p3d";
-		attachments[] = {"weaponMuzzleM4","weaponBayonet","weaponOptics","weaponButtstockM4","WeaponHandguardM4","weaponWrap","weaponFlashlight"};
+		attachments[] = {"weaponButtstockM4","WeaponHandguardM4","weaponWrap","weaponOptics","weaponFlashlight","weaponMuzzleM4","weaponBayonet"};
 		itemSize[] = {8,3};
 		spawnDamageRange[] = {0.0,0.6};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\m4\data\m4_body_co.paa"};
@@ -215,7 +215,7 @@ class cfgWeapons
 		handheld = "true";
 		armAction = "Disarm";
 		rotationFlags = 12;
-		inventorySlot = "weaponUnderSlugM4";
+		inventorySlot[] = {"weaponUnderSlugM4"};
 		simulation = "undersluglauncher";
 		weight = 1954;
 		itemSize[] = {3,2};

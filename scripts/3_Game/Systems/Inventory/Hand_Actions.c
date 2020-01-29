@@ -59,6 +59,8 @@ class HandActionThrow extends HandActionBase
 			InventoryItem item = InventoryItem.Cast(e.GetSrcEntity());
 			if( item )
 				item.ThrowPhysically(player, throwEvent.GetForce());
+			else
+				Error("[hndfsm] HandActionThrow - src entity null!");
 		}
 
 		player.OnItemInHandsChanged();

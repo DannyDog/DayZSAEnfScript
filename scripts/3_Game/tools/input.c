@@ -1,4 +1,11 @@
 
+enum EInputDeviceType
+{
+	UNKNOWN,
+	MOUSE_AND_KEYBOARD,
+	CONTROLLER
+};
+
 //-----------------------------------------------------------------------------
 class Input
 {
@@ -138,7 +145,14 @@ class Input
 	proto native bool		IsActiveGamepadSelected();
 	
 	/**
-	\note For PlayStation, Enter button in Asia territory is typically Circle button (B button), but in Europe and America it is Cross button (A button).
+	@return Input device, with the last input event ('mouse and keyboard', 'controller' or
+	'unknown' if none input event was fired from the beginning).
+	*/
+	proto native EInputDeviceType	GetCurrentInputDevice();
+	
+	/**
+	\note For PlayStation, Enter button in Asia territory is typically Circle button (B button),
+	but in Europe and America it is Cross button (A button).
 	\return Button, which represent Enter/Accept button.
 	*/
 	proto native GamepadButton		GetEnterButton();
@@ -178,7 +192,14 @@ class Input
 				DayZLoadState state = g_Game.GetLoadState();
 				if( state != DayZLoadState.MAIN_MENU_START && state != DayZLoadState.MAIN_MENU_USER_SELECT )
 				{
+					//#ifdef PLATFORM_XBOX
+					//if ( !IsEnabledMouseAndKeyboard() || GetCurrentInputDevice() != EInputDeviceType.MOUSE_AND_KEYBOARD )
+					//{
+					//	g_Game.CreateGamepadDisconnectMenu();	
+					//}
+					//#else
 					g_Game.CreateGamepadDisconnectMenu();
+					//#endif
 				}
 				
 				#ifdef PLATFORM_XBOX
@@ -233,6 +254,16 @@ class Input
 		return (user == GetGame().GetUserManager().GetSelectedUser());
 		#endif
 		return false;
+	}
+	
+	void OnLastInputDeviceChanged(EInputDeviceType inputDevice)
+	{
+		//#ifdef PLATFORM_XBOX
+		//if ( !IsActiveGamepadSelected() && inputDevice == EInputDeviceType.CONTROLLER )
+		//{
+		//	g_Game.CreateGamepadDisconnectMenu();
+		//}
+		//#endif
 	}
 };
 

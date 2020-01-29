@@ -2756,6 +2756,11 @@ class CfgVehicles
 		scope = 1;
 		model = "\dz\structures\specific\lunapark\Lunapark_Carousel_Swan.p3d";
 	};
+	class Land_Lunapark_Carousel_Small: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\dz\structures\specific\lunapark\Lunapark_Carousel_Small.p3d";
+	};
 	class Land_Lunapark_Ferris_wheel: HouseNoDestruct
 	{
 		scope = 1;

@@ -64,9 +64,6 @@ class Car extends Transport
 	//!	Returns the current speed of the vehicle in km/h.
 	proto native float GetSpeedometer();
 
-    //! Returns true if point on this car is under water.
-    proto native bool IsPointUnderWater( vector point );
-
 
 //-----------------------------------------------------------------------------
 // fluids

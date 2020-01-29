@@ -170,7 +170,7 @@ class MapDefaults
 	maxSatelliteAlpha = 0.0;
 	alphaFadeStartScale = 1.0;
 	alphaFadeEndScale = 1.0;
-	userMapPath = "dz\gear\navigation\data\usermap";
+	userMapPath = "";
 	maxUserMapAlpha = 1.0;
 	alphaUserMapFadeStartScale = 0.34;
 	alphaUserMapFadeEndScale = 0.34;

@@ -1,6 +1,5 @@
 class WorldCraftActionReciveData : ActionReciveData
 {
-	ItemBase	m_MainItem;
 	int 		m_RecipeID;
 }
 class WorldCraftActionData : ActionData

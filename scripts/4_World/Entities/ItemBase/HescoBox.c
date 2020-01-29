@@ -71,6 +71,13 @@ class HescoBox extends Inventory_Base
 		}
 	}
 	
+	override void OnCreatePhysics()
+	{
+		super.OnCreatePhysics();
+		
+		Fold();
+	}
+	
 	void RefreshVisuals()
 	{
 	}
@@ -145,10 +152,10 @@ class HescoBox extends Inventory_Base
 	{
 		super.EEItemLocationChanged (oldLoc, newLoc);
 		
-		RefreshPhysics();
+		//RefreshPhysics();
 	}
-	
-	void RefreshPhysicsDelayed()
+
+	void RefreshPhysics()
 	{
 		if ( this  &&  !ToDelete() )
 		{
@@ -175,14 +182,6 @@ class HescoBox extends Inventory_Base
 				return;
 			}
 		}
-	}
-	
-	void RefreshPhysics()
-	{
-		if (!m_Timer)
-			m_Timer = new Timer( CALL_CATEGORY_SYSTEM );
-		
-		m_Timer.Run(0.1, this, "RefreshPhysicsDelayed");
 	}
 
 	void Fill()

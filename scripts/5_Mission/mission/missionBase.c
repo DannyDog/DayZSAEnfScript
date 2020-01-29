@@ -6,6 +6,7 @@ class MissionBase extends MissionBaseWorld
 	
 	ref WidgetEventHandler 	m_WidgetEventHandler;
 	ref WorldData			m_WorldData;
+	ref WorldLighting		m_WorldLighting;
 	
 	ref array<PlayerBase> m_DummyPlayers = new array<PlayerBase>;
 	
@@ -48,6 +49,7 @@ class MissionBase extends MissionBaseWorld
 		else
 		{
 			GetDayZGame().GetAnalyticsClient().RegisterEvents();
+			m_WorldLighting	= new WorldLighting;
 		}
 	}
 
@@ -59,6 +61,11 @@ class MissionBase extends MissionBaseWorld
 		{
 			GetDayZGame().GetAnalyticsClient().UnregisterEvents();	
 		}
+	}
+	
+	override WorldLighting GetWorldLighting()
+	{
+		return m_WorldLighting;
 	}
 	
 	override WorldData GetWorldData()

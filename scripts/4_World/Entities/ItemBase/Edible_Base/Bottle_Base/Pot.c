@@ -53,12 +53,22 @@ class Pot extends Bottle_Base
 	override bool CanPutInCargo( EntityAI parent )
 	{
 		if( !super.CanPutInCargo(parent) ) {return false;}	
-		if ( !(parent.IsKindOf("Pot"))/* && !(parent.IsKindOf("Container_Base"))*/)
+		if ( !parent.IsKindOf("Pot") )
 		{
 			return true;
 		}
 		
 		return false;
+	}
+	
+	override bool CanReceiveItemIntoCargo (EntityAI cargo)
+	{
+		if( !super.CanReceiveItemIntoCargo(cargo) ) {return false;}	
+		if ( cargo.IsKindOf(this.GetType()) || cargo.FindAttachmentBySlotName("CookingEquipment"))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	override void EECargoIn(EntityAI item)

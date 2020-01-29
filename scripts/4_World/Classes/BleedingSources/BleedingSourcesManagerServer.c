@@ -128,13 +128,9 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 		//Print("dmg_max = " + dmg_max);
 		//Print("dmg = " + dmg);
 		//Print("bleed_threshold = " + bleed_threshold);
-		if ( dmg > (dmg_max * (1 - bleed_threshold)) )
-		{
-			AttemptAddBleedingSource(component);
-			//Print("BLEEDING");
-		}
+
 		//hackerino for zombino:
-		else if (source.IsZombie())
+		if (source.IsZombie())
 		{
 			int chance = Math.RandomInt(0,10); //10%
 			if (chance == 1)
@@ -142,6 +138,12 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 				AttemptAddBleedingSource(component);
 			}
 		}
+		else if ( dmg > (dmg_max * (1 - bleed_threshold)) )
+		{
+			AttemptAddBleedingSource(component);
+			//Print("BLEEDING");
+		}
+
 	}
 	
 	void DebugActivateBleedingSource(int source)

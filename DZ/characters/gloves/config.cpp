@@ -30,7 +30,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "Bare hands";
 		model = "\DZ\characters\gloves\hands3_m.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"dz\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -140,7 +140,7 @@ class CfgVehicles
 		scope = 1;
 		displayName = "Bare hands";
 		model = "\DZ\characters\gloves\hands3_f.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		hiddenSelections[] = {"personality"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.843137,0.768627,0.658824,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"dz\characters\heads\data\hhl_dummy_skin_material.rvmat"};
@@ -362,7 +362,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WorkingGloves_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_WorkingGloves_ColorBase1";
 		model = "\DZ\characters\gloves\working_gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		rotationFlags = 17;
@@ -434,7 +434,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_TacticalGloves_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_TacticalGloves_ColorBase1";
 		model = "\DZ\characters\gloves\tactical_gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		weight = 454;
@@ -501,7 +501,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_nbcglovesbase0";
 		descriptionShort = "$STR_cfgvehicles_nbcglovesbase1";
 		model = "\DZ\characters\gloves\NBC_Gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		rotationFlags = 17;
@@ -557,7 +557,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SurgicalGloves_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_SurgicalGloves_ColorBase1";
 		model = "\DZ\characters\gloves\Surgical_gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		weight = 100;
@@ -626,7 +626,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherGloves_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherGloves_ColorBase1";
 		model = "\DZ\characters\gloves\leather_gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		weight = 200;
@@ -743,7 +743,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_OMNOGloves_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_OMNOGloves_ColorBase1";
 		model = "\DZ\characters\gloves\OMNO_gloves_g.p3d";
-		inventorySlot = "Gloves";
+		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
 		weight = 450;

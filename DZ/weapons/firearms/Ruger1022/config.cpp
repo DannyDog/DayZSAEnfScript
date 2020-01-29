@@ -81,7 +81,7 @@ class cfgWeapons
 		descriptionShort = "$STR_cfgWeapons_Ruger10221";
 		model = "\dz\weapons\firearms\Ruger1022\Ruger1022.p3d";
 		itemSize[] = {9,3};
-		attachments[] = {"weaponWrap","suppressorImpro","weaponOpticsHunting"};
+		attachments[] = {"weaponWrap","weaponOpticsHunting","suppressorImpro"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\Ruger1022\data\ruger1022_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\Ruger1022\data\ruger1022.rvmat"};
 		class DamageSystem

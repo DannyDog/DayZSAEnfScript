@@ -130,7 +130,7 @@ class CfgVehicles
 		weight = 1133;
 		itemSize[] = {2,4};
 		fragility = 0.01;
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		lootCategory = "Tools";
 		lootTag[] = {"Work","Forester","Camping"};
 		itemInfo[] = {"Axe"};
@@ -326,7 +326,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Cleaver0";
 		descriptionShort = "$STR_CfgVehicles_Cleaver1";
 		model = "\dz\weapons\melee\blade\meat_cleaver.p3d";
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
@@ -544,7 +544,7 @@ class CfgVehicles
 		animClass = "Knife";
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "Knife";
+		inventorySlot[] = {"Knife"};
 		rotationFlags = 17;
 		canSkinBodies = 1;
 		RestrainUnlockType = 1;
@@ -738,7 +738,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HuntingKnife0";
 		descriptionShort = "$STR_CfgVehicles_HuntingKnife1";
 		model = "\dz\weapons\melee\blade\Hunting_knife.p3d";
-		inventorySlot = "Knife";
+		inventorySlot[] = {"Knife"};
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
@@ -958,7 +958,7 @@ class CfgVehicles
 		RestrainUnlockType = 1;
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		rotationFlags = 17;
 		canSkinBodies = 1;
 		weight = 500;

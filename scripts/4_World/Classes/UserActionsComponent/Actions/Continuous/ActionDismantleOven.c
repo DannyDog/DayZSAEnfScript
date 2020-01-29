@@ -34,10 +34,10 @@ class ActionDismantleOven: ActionContinuousBase
 		return ContinuousInteractActionInput;
 	}
 
-	override bool HasProgress()
+	/*override bool HasProgress()
 	{
 		return false;
-	}
+	}*/
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	

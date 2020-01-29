@@ -33,7 +33,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_m4_oe.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockM4";
+		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 354;
 		itemSize[] = {2,1};
 		dispersionModifier = -0.0002;
@@ -93,7 +93,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_m4_mp.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockM4";
+		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 330;
 		itemSize[] = {2,1};
 		dispersionModifier = -0.00025;
@@ -153,7 +153,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_m4_cqb.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockM4";
+		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 450;
 		itemSize[] = {2,1};
 		dispersionModifier = -0.00015;
@@ -215,7 +215,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_ak_wood.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 530;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.0002;
@@ -277,7 +277,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_ak_wood.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 530;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.0002;
@@ -339,7 +339,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_ak_folding.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 720;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.00015;
@@ -399,7 +399,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_ak_plastic.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 363;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.00015;
@@ -461,7 +461,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_aks.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 450;
 		itemSize[] = {2,1};
 		dispersionModifier = -5e-05;
@@ -522,7 +522,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_mp5K_stock.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockMP5";
+		inventorySlot[] = {"weaponButtstockMP5"};
 		weight = 450;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.00025;
@@ -569,7 +569,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_red9.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockRed9";
+		inventorySlot[] = {"weaponButtstockRed9"};
 		weight = 400;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.00025;
@@ -616,7 +616,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_fal_oe.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockFal";
+		inventorySlot[] = {"weaponButtstockFal"};
 		weight = 530;
 		itemSize[] = {3,1};
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -664,7 +664,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_fal_folding.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockFal";
+		inventorySlot[] = {"weaponButtstockFal"};
 		weight = 530;
 		itemSize[] = {3,1};
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -712,7 +712,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\buttstock_saiga_folding.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockSaiga";
+		inventorySlot[] = {"weaponButtstockSaiga"};
 		weight = 720;
 		itemSize[] = {3,1};
 		dispersionModifier = -0.0002;
@@ -762,7 +762,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 250;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardM4";
+		inventorySlot[] = {"weaponHandguardM4"};
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -822,7 +822,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 470;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardM4";
+		inventorySlot[] = {"weaponHandguardM4"};
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -882,7 +882,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 350;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardM4";
+		inventorySlot[] = {"weaponHandguardM4"};
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -942,7 +942,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 550;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardAK";
+		inventorySlot[] = {"weaponHandguardAK"};
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1003,7 +1003,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 550;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardAK";
+		inventorySlot[] = {"weaponHandguardAK"};
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1064,7 +1064,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 430;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardAK";
+		inventorySlot[] = {"weaponHandguardAK"};
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1124,7 +1124,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 160;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardAK";
+		inventorySlot[] = {"weaponHandguardAK"};
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1171,7 +1171,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 250;
 		itemSize[] = {1,2};
-		inventorySlot = "weaponHandguardMP5";
+		inventorySlot[] = {"weaponHandguardMP5"};
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1218,7 +1218,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 250;
 		itemSize[] = {1,2};
-		inventorySlot = "weaponHandguardMP5";
+		inventorySlot[] = {"weaponHandguardMP5"};
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1265,7 +1265,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 350;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardM249";
+		inventorySlot[] = {"weaponHandguardM249"};
 		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1312,7 +1312,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 400;
 		itemSize[] = {2,1};
-		inventorySlot = "weaponHandguardM249";
+		inventorySlot[] = {"weaponHandguardM249"};
 		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1357,7 +1357,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\bipod_atlas.p3d";
 		rotationFlags = 12;
 		reversed = 0;
-		inventorySlot = "weaponBipod";
+		inventorySlot[] = {"weaponBipod"};
 		weight = 376;
 		itemSize[] = {1,3};
 		dispersionModifier = -0.00025;
@@ -1413,7 +1413,7 @@ class cfgVehicles
 		model = "\DZ\weapons\attachments\support\bipod_m249.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponBipodM249";
+		inventorySlot[] = {"weaponBipodM249"};
 		weight = 376;
 		itemSize[] = {1,3};
 		dispersionModifier = -0.00025;
@@ -1466,7 +1466,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_GhillieAtt_ColorBase0";
 		descriptionShort = "$STR_cfgVehicles_GhillieAtt_ColorBase1";
 		model = "\DZ\weapons\attachments\support\ghillie_wrap.p3d";
-		inventorySlot = "weaponWrap";
+		inventorySlot[] = {"weaponWrap"};
 		rotationFlags = 17;
 		reversed = 0;
 		weight = 1500;
@@ -1551,7 +1551,7 @@ class cfgVehicles
 		model = "\DZ\weapons\firearms\ots14\ots14_grip.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 354;
 		itemSize[] = {2,2};
 		dispersionModifier = -0.0002;
@@ -1598,7 +1598,7 @@ class cfgVehicles
 		model = "\DZ\weapons\firearms\ots14\ots14_launcher.p3d";
 		rotationFlags = 17;
 		reversed = 0;
-		inventorySlot = "weaponButtstockAK";
+		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 1954;
 		itemSize[] = {3,2};
 		dispersionModifier = -0.0002;

@@ -354,10 +354,78 @@ class CivilianSedan extends CarScript
 
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
 			entity.GetInventory().CreateInInventory( "HeadlightH7" );
-		};
+		}
 
 		Fill( CarFluid.FUEL, 50 );
 		Fill( CarFluid.COOLANT, 6.0 );
 		Fill( CarFluid.OIL, 4.0 );
-	};
-}
+	}
+};
+
+class CivilianSedan_Wine extends CivilianSedan
+{
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+
+			entity.GetInventory().CreateInInventory( "CarBattery" );
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+			entity.GetInventory().CreateInInventory( "CarRadiator" );
+
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_Driver_Wine" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_CoDriver_Wine" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackLeft_Wine" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackRight_Wine" );
+			entity.GetInventory().CreateInInventory( "CivSedanHood_Wine" );
+			entity.GetInventory().CreateInInventory( "CivSedanTrunk_Wine" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		}
+
+		Fill( CarFluid.FUEL, 50 );
+		Fill( CarFluid.COOLANT, 6.0 );
+		Fill( CarFluid.OIL, 4.0 );
+	}
+};
+
+class CivilianSedan_Black extends CivilianSedan
+{
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+			entity.GetInventory().CreateInInventory( "CivSedanWheel" );
+
+			entity.GetInventory().CreateInInventory( "CarBattery" );
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+			entity.GetInventory().CreateInInventory( "CarRadiator" );
+
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_Driver_Black" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_CoDriver_Black" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackLeft_Black" );
+			entity.GetInventory().CreateInInventory( "CivSedanDoors_BackRight_Black" );
+			entity.GetInventory().CreateInInventory( "CivSedanHood_Black" );
+			entity.GetInventory().CreateInInventory( "CivSedanTrunk_Black" );
+
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+			entity.GetInventory().CreateInInventory( "HeadlightH7" );
+		}
+
+		Fill( CarFluid.FUEL, 50 );
+		Fill( CarFluid.COOLANT, 6.0 );
+		Fill( CarFluid.OIL, 4.0 );
+	}
+};

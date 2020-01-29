@@ -38,7 +38,7 @@ class cfgWeapons
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 6;
 		chamberedRound = "";
-		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag"};
 		magazines[] = {};
 		DisplayMagazine = 0;
 		PPDOFProperties[] = {1,0.5,10,140,4,10};

@@ -411,21 +411,60 @@ class CfgMagazines
 			};
 		};
 	};
+	class Ammo_12gaRubberSlug: Ammunition_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgMagazines_Ammo_12gaRubberSlug0";
+		descriptionShort = "$STR_CfgMagazines_Ammo_12gaRubberSlug1";
+		model = "\dz\weapons\ammunition\12ga_RubberRifled_slug.p3d";
+		iconCartridge = 4;
+		weight = 6;
+		count = 10;
+		ammo = "Bullet_12GaugeRubberSlug";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\ammunition\data\rem870_ammo.rvmat"}},{0.7,{"DZ\weapons\ammunition\data\rem870_ammo.rvmat"}},{0.5,{"DZ\weapons\ammunition\data\rem870_ammo_damage.rvmat"}},{0.3,{"DZ\weapons\ammunition\data\rem870_ammo_damage.rvmat"}},{0.0,{"DZ\weapons\ammunition\data\rem870_ammo_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Ammo_12gaBeanbag: Ammunition_Base
+	{
+		scope = 2;
+		displayName = "TODO";
+		descriptionShort = "TODO";
+		model = "\dz\weapons\ammunition\12ga_beanbag.p3d";
+		iconCartridge = 4;
+		weight = 6;
+		count = 10;
+		ammo = "Bullet_12GaugeBeanbag";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\ammunition\data\rem870_ammo.rvmat"}},{0.7,{"DZ\weapons\ammunition\data\rem870_ammo.rvmat"}},{0.5,{"DZ\weapons\ammunition\data\rem870_ammo_damage.rvmat"}},{0.3,{"DZ\weapons\ammunition\data\rem870_ammo_damage.rvmat"}},{0.0,{"DZ\weapons\ammunition\data\rem870_ammo_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
 	class Ammo_357: Ammunition_Base
 	{
 		scope = 2;
 		displayName = "$STR_CfgMagazines_Ammo_3570";
 		descriptionShort = "$STR_CfgMagazines_Ammo_3571";
-		model = "\dz\weapons\ammunition\357_LooseRounds.p3d";
+		model = "\dz\weapons\ammunition\357_looseRounds.p3d";
 		iconCartridge = 1;
 		weight = 8;
 		count = 20;
 		ammo = "Bullet_357";
-		class NoiseImpact
-		{
-			strength = 100.0;
-			type = "shot";
-		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -516,7 +555,7 @@ class CfgMagazines
 		descriptionShort = "$STR_CfgMagazines_Ammo_SharpStick1";
 		model = "\dz\weapons\projectiles\arrow_crude_simple.p3d";
 		rotationFlags = 34;
-		inventorySlot = "Firewood";
+		inventorySlot[] = {"Firewood"};
 		weight = 40;
 		itemSize[] = {2,1};
 		count = 5;
@@ -1336,9 +1375,11 @@ class CfgVehicles
 		scope = 2;
 		displayName = "$STR_CfgVehicles_AmmoBox_12gaSlug_10Rnd0";
 		descriptionShort = "$STR_CfgVehicles_AmmoBox_12gaSlug_10Rnd1";
-		model = "\dz\weapons\ammunition\12ga_rifledSlug_10RoundBox.p3d";
+		model = "\dz\weapons\ammunition\00Buck_10RoundBox.p3d";
 		rotationFlags = 17;
 		weight = 285;
+		hiddenSelections[] = {"zbytek"};
+		hiddenSelectionsTextures[] = {"dz\weapons\ammunition\data\12ga_rifledSlug_10RoundBox_co.paa"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1353,6 +1394,88 @@ class CfgVehicles
 		class Resources
 		{
 			class Ammo_12gaSlug
+			{
+				value = 10;
+				variable = "quantity";
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class interact
+				{
+					soundset = "ammoboxUnpack_SoundSet";
+					id = 70;
+				};
+			};
+		};
+	};
+	class AmmoBox_12gaRubberSlug_10Rnd: Box_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_AmmoBox_12gaRubberSlug_10Rnd0";
+		descriptionShort = "$STR_CfgVehicles_AmmoBox_12gaRubberSlug_10Rnd1";
+		model = "\dz\weapons\ammunition\00Buck_10RoundBox.p3d";
+		rotationFlags = 17;
+		weight = 285;
+		hiddenSelections[] = {"zbytek"};
+		hiddenSelectionsTextures[] = {"dz\weapons\ammunition\data\12ga_rubberbaton_box.paa"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\ammunition\data\00buck_box.rvmat"}},{0.7,{"DZ\weapons\ammunition\data\00buck_box.rvmat"}},{0.5,{"DZ\weapons\ammunition\data\00buck_box_damage.rvmat"}},{0.3,{"DZ\weapons\ammunition\data\00buck_box_damage.rvmat"}},{0.0,{"DZ\weapons\ammunition\data\00buck_box_destruct.rvmat"}}};
+				};
+			};
+		};
+		class Resources
+		{
+			class Ammo_12gaRubberSlug
+			{
+				value = 10;
+				variable = "quantity";
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class interact
+				{
+					soundset = "ammoboxUnpack_SoundSet";
+					id = 70;
+				};
+			};
+		};
+	};
+	class AmmoBox_12gaBeanbag_10Rnd: Box_Base
+	{
+		scope = 2;
+		displayName = "TODO";
+		descriptionShort = "TODO";
+		model = "\dz\weapons\ammunition\00Buck_10RoundBox.p3d";
+		rotationFlags = 17;
+		weight = 285;
+		Selections[] = {"zbytek"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.35,0.36,0.28,1.0,CO)"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\ammunition\data\00buck_box.rvmat"}},{0.7,{"DZ\weapons\ammunition\data\00buck_box.rvmat"}},{0.5,{"DZ\weapons\ammunition\data\00buck_box_damage.rvmat"}},{0.3,{"DZ\weapons\ammunition\data\00buck_box_damage.rvmat"}},{0.0,{"DZ\weapons\ammunition\data\00buck_box_destruct.rvmat"}}};
+				};
+			};
+		};
+		class Resources
+		{
+			class Ammo_12gaBeanbag
 			{
 				value = 10;
 				variable = "quantity";

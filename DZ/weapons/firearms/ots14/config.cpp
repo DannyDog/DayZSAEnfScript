@@ -92,7 +92,7 @@ class cfgWeapons
 		descriptionShort = "$STR_cfgWeapons_Groza1";
 		model = "\dz\weapons\firearms\ots14\ots14.p3d";
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\ots14\data\ots14_co.paa"};
-		attachments[] = {"weaponOpticsAK","weaponButtstockAK","weaponMuzzleAK"};
+		attachments[] = {"weaponButtstockAK","weaponOpticsAK","weaponMuzzleAK"};
 		itemSize[] = {5,3};
 		spawnDamageRange[] = {0.0,0.6};
 		class DamageSystem

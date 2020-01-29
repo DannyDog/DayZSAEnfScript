@@ -536,7 +536,7 @@ class CargoContainer extends Container
 			EntityAI entity = EntityAI.Cast( GetFocusedItem().GetObject() );
 			if( entity && player.CanDropEntity( entity ) )
 			{
-				player.PredictiveDropEntity( entity );
+				player.PhysicalPredictiveDropItem( entity );
 				return true;
 			}
 		}
@@ -744,7 +744,7 @@ class CargoContainer extends Container
 		if( ItemManager.GetInstance().IsItemMoving() )
 		{
 			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
-			if( selected_item && m_Entity )
+			if( selected_item && selected_item.GetInventory().CanRemoveEntity() && m_Entity )
 			{
 				bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo());
 				bool in_cargo = !player.GetInventory().HasEntityInInventory( selected_item ) || !m_Entity.GetInventory().HasEntityInCargo( selected_item );

@@ -570,13 +570,13 @@ class CarScript extends Car
                     vector pos2 = crew.GetBonePositionMS( boneIdx );
                     vector pos3 = crew.GetBonePositionWS( boneIdx );
 
-                    if ( IsPointUnderWater( pos1 ) )
+                    if ( GetGame().GetWaterDepth( pos1 ) > 0 )
                         Debug.DrawSphere(pos1, 0.03, COLOR_RED);
                     
-					if ( IsPointUnderWater( pos2 ) )
+					if ( GetGame().GetWaterDepth( pos2 ) > 0 )
                         Debug.DrawSphere(pos2, 0.03, COLOR_GREEN);
                     
-                    if ( IsPointUnderWater( pos3 ) )
+                    if ( GetGame().GetWaterDepth( pos3 ) > 0 )
                         Debug.DrawSphere(pos3, 0.03, COLOR_YELLOW, ShapeFlags.NOZBUFFER | ShapeFlags.NOZWRITE);
 
                 }
@@ -586,7 +586,7 @@ class CarScript extends Car
 		
 		if ( GetGame().IsServer() )
 		{
-			if ( IsPointUnderWater( GetEnginePosWS() ) )
+			if ( GetGame().GetWaterDepth( GetEnginePosWS() ) > 0 )
 			{
 				m_DrownTime += dt;
 				if ( m_DrownTime > DROWN_ENGINE_THRESHOLD )
@@ -605,7 +605,7 @@ class CarScript extends Car
 		//FX only on Client and in Single
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
-			if ( IsDamageDestroyed() && !IsPointUnderWater( GetEnginePosWS() ))
+			if ( IsDamageDestroyed() && GetGame().GetWaterDepth( GetEnginePosWS() ) <= 0 )
 			{
 				if ( !SEffectManager.IsEffectExist( m_enginePtcFx ) )
 				{

@@ -40,7 +40,7 @@ class CfgVehicles
 		weight = 2400;
 		absorbency = 0.5;
 		itemSize[] = {1,3};
-		inventorySlot = "WalkieTalkie";
+		inventorySlot[] = {"WalkieTalkie"};
 		rotationFlags = 1;
 		oldpower = 0;
 		isMeleeWeapon = 1;
@@ -115,7 +115,7 @@ class CfgVehicles
 		weight = 14500;
 		absorbency = 0.5;
 		itemSize[] = {5,5};
-		inventorySlot = "Back";
+		inventorySlot[] = {"Back"};
 		class ClothingTypes
 		{
 			male = "\dz\gear\radio\Base_radio_station_m.p3d";
@@ -278,7 +278,7 @@ class CfgNonAIVehicles
 	class ProxyWalkieTalkie: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "WalkieTalkie";
+		inventorySlot[] = {"WalkieTalkie"};
 		model = "\dz\gear\radio\WalkieTalkie.p3d";
 	};
 };

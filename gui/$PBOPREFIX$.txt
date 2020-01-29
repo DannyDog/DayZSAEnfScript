@@ -1,6 +1,6 @@
-﻿//<'gui.pbo' properties via Mikero's dos tools, dll version 7.44>
+﻿//<'gui.pbo' properties via Mikero's dos tools, dll version 7.51>
 product=dayz;
 prefix=gui;
-version=83353;
+version=83597;
 PboType=Arma Unknown pbo type (no config).;
 //</properties>

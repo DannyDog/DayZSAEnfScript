@@ -28,7 +28,7 @@ class CGame
 		m_AnalyticsManagerClient = new AnalyticsManagerClient;
 		
 		// actual script version - increase by one when you make changes
-		StorageVersion(107);
+		StorageVersion(108);
 	}
 	
 	private void ~CGame();
@@ -868,6 +868,7 @@ class CGame
 	proto native float		SurfaceGetSeaLevel();
 	proto native bool		SurfaceIsSea(float x, float z);
 	proto native bool		SurfaceIsPond(float x, float z);
+	proto native float      GetWaterDepth(vector posWS);
 	
 	proto native void 		UpdatePathgraphRegion(vector regionMin, vector regionMax);
 	

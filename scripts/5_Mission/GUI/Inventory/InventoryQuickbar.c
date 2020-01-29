@@ -163,7 +163,7 @@ class InventoryQuickbar extends InventoryGridController
 	{
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		
-		InventoryItem dragged_item = InventoryItem.Cast( ItemManager.GetInstance().GetDraggedItem() );
+		ItemBase dragged_item = ItemBase.Cast( ItemManager.GetInstance().GetDraggedItem() );
 		
 		ItemPreviewWidget iw = ItemPreviewWidget.Cast( w.FindAnyWidget( "Render" ) );
 		if( !iw )
@@ -174,13 +174,16 @@ class InventoryQuickbar extends InventoryGridController
 		}
 		
 		if(!dragged_item && iw)
-			dragged_item = InventoryItem.Cast( iw.GetItem() );
+			dragged_item = ItemBase.Cast( iw.GetItem() );
 		
-		InventoryItem quickbar_item = InventoryItem.Cast( player.GetQuickBarEntity(col) );
+		if(dragged_item && dragged_item.GetHierarchyRootPlayer()!= GetGame().GetPlayer())
+			return;
+		
+		ItemBase quickbar_item = ItemBase.Cast( player.GetQuickBarEntity(col) );
 		
 		if (m_DraggingIndex != INDEX_NOT_FOUND)
 		{
-			dragged_item = InventoryItem.Cast( player.GetQuickBarEntity(m_DraggingIndex) );
+			dragged_item = ItemBase.Cast( player.GetQuickBarEntity(m_DraggingIndex) );
 		}
 			
 		if (dragged_item && dragged_item.GetInventory().CanRemoveEntity())

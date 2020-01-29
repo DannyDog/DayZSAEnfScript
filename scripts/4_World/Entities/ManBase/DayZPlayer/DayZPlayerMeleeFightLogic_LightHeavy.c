@@ -165,7 +165,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						pContinueAttack = false; // reset continueAttack flag
 
 						return true;
-					}
+					}				
 					//! char stand up when performing firearm melee from crouch
 					else if( pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDCROUCH )
 					{

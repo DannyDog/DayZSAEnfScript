@@ -32,6 +32,8 @@ class ItemBase extends InventoryItem
 	bool	m_IsDeploySound;
 	bool	m_IsTakeable;
 	bool	m_IsSoundSynchRemote;
+	bool 	m_ThrowItemOnDrop;
+	//bool 	m_ItemBeingDropped;
 	string	m_SoundAttType;
 	// items color variables
 	int 	m_ColorComponentR;
@@ -680,8 +682,13 @@ class ItemBase extends InventoryItem
 	void SetIsBeingPlaced( bool is_being_placed )
 	{
 		m_IsBeingPlaced = is_being_placed;
+		if (!is_being_placed)
+			OnEndPlacement();
 		SetSynchDirty();
 	}
+	
+	//server-side
+	void OnEndPlacement() {}
 	
 	override bool IsHologram()
 	{
@@ -782,7 +789,8 @@ class ItemBase extends InventoryItem
 			{
 				if(new_player.GetHumanInventory().LocationGetEntity(oldLoc) == NULL )
 				{
-					new_player.GetHumanInventory().SetUserReservedLocation(this,oldLoc);
+					if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+						new_player.GetHumanInventory().SetUserReservedLocation(this,oldLoc);
 				}
 				
 				if( new_player.GetHumanInventory().FindUserReservedLocationIndex( this ) >= 0 )
@@ -834,6 +842,12 @@ class ItemBase extends InventoryItem
 					//it.GetOnReleaseLock().Invoke(it);
 				}
 			}
+			else if (old_player && newLoc.GetType() == InventoryLocationType.GROUND && m_ThrowItemOnDrop)
+			{
+				//Print("---ThrowPhysically---");
+				ThrowPhysically(old_player, vector.Zero);
+				m_ThrowItemOnDrop = false;
+			}
 		
 			if (m_OldLocation)
 			{
@@ -841,6 +855,16 @@ class ItemBase extends InventoryItem
 			}
 		}
 	}
+	
+	/*override void EOnContact(IEntity other, Contact extra)
+	{
+		if (m_ItemBeingDropped && extra.Normal[1] == 1.0 || (Math.AbsFloat(extra.RelativeNormalVelocityAfter) < 0.03 && extra.Normal[1] > 0.9))
+		{
+			Print("ItemBase | EOnContact");
+			SetDynamicPhysicsLifeTime(0.01);
+			m_ItemBeingDropped = false;
+		}
+	}*/
 	
 	override void OnItemAttachmentSlotChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
 	{
@@ -1258,7 +1282,7 @@ class ItemBase extends InventoryItem
 				if( split_quantity_new == 0 )
 				{
 					if( !GetGame().IsMultiplayer() )
-						player.PredictiveDropEntity( this );
+						player.PhysicalPredictiveDropItem( this );
 					else
 						player.ServerDropEntity( this );
 					return;
@@ -1620,8 +1644,8 @@ class ItemBase extends InventoryItem
 		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.SET_MAX_QUANTITY, "Set Quantity Max"));
 		
 		//health
-		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.ADD_HEALTH, "Health +20"));
-		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.REMOVE_HEALTH, "Health -20"));
+		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.ADD_HEALTH, "Health +20%"));
+		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.REMOVE_HEALTH, "Health -20%"));
 
 		//temperature
 		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.ADD_TEMPERATURE, "Temperature +20"));
@@ -1733,11 +1757,11 @@ class ItemBase extends InventoryItem
 	
 			if( action_id == EActions.ADD_HEALTH ) 
 			{
-				this.AddHealth("","",20);
+				this.AddHealth("","",GetMaxHealth("","Health")/5);
 			}
 			if( action_id == EActions.REMOVE_HEALTH ) 
 			{
-				this.AddHealth("","",-20);
+				this.AddHealth("","",-GetMaxHealth("","Health")/5);
 			}
 			
 			if( action_id == EActions.SET_QUANTITY_0 ) //SetMaxQuantity
@@ -2005,6 +2029,11 @@ class ItemBase extends InventoryItem
 				PluginItemDiagnostic mid = PluginItemDiagnostic.Cast( GetPlugin(PluginItemDiagnostic) );
 				mid.OnRPC(this,ctx);
 			}
+		}
+		
+		if(GetWrittenNoteData())
+		{
+			GetWrittenNoteData().OnRPC(sender, rpc_type,ctx);
 		}
 	}
 
@@ -2494,6 +2523,10 @@ class ItemBase extends InventoryItem
 		
 		int AttachmentsCount = 0;
 		CargoBase cargo;
+		
+		/*Print("this: " + this);
+		Print("GetInventory() " + GetInventory());		
+		Print("-----------------------------");*/
 		if (GetInventory())
 		{
 			AttachmentsCount = GetInventory().AttachmentCount();
@@ -2525,6 +2558,10 @@ class ItemBase extends InventoryItem
 			if (this.ConfigGetBool("canBeSplit")) //quantity determines size of the stack
 			{
 				totalWeight += Math.Round((item_wetness + 1) * this.GetQuantity() * ConfWeight);
+				/*Print("this: " + this);
+				Print("this.GetQuantity(): " + this.GetQuantity());
+				Print("totalWeight: " + totalWeight);
+				Print("-----------------------------");*/
 			}
 			else if (this.ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 			{
@@ -2832,6 +2869,10 @@ class ItemBase extends InventoryItem
 			nplayer.SetEnableQuickBarEntityShortcut(this,false);
 
 		}
+		
+		if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+			player.GetHumanInventory().ClearUserReservedLocationForContainer(this);
+		
 		
 		if ( HasEnergyManager() )
 		{
@@ -3272,7 +3313,12 @@ class ItemBase extends InventoryItem
 	{
 		return m_HeadHidingSelections;
 	}
-
+	
+	WrittenNoteData GetWrittenNoteData() {};
+	bool GetSpecialUserActionDamage(out float damage, int action_type = -1)
+	{
+		return false;
+	};
 }
 
 EntityAI SpawnItemOnLocation (string object_name, notnull InventoryLocation loc, bool full_quantity)

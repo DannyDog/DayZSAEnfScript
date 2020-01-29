@@ -71,6 +71,20 @@ class ActionDropItem: ActionSingleUseBase
 	{
 		if ( !GetGame().IsMultiplayer() )
 		{
+			/*action_data.m_Player.PredictiveDropEntity(action_data.m_Player.GetItemInHands());
+		
+			if ( action_data.m_Player.IsPlacingLocal() )
+			{
+				action_data.m_Player.TogglePlacingLocal();
+			}*/
+			PhysicalDropItem(action_data);
+		}
+	}
+	
+	override void OnExecuteClient( ActionData action_data )
+	{
+		/*if (action_data.m_Player.GetItemInHands().IsHeavyBehaviour())
+		{
 			action_data.m_Player.PredictiveDropEntity(action_data.m_Player.GetItemInHands());
 		
 			if ( action_data.m_Player.IsPlacingLocal() )
@@ -78,25 +92,15 @@ class ActionDropItem: ActionSingleUseBase
 				action_data.m_Player.TogglePlacingLocal();
 			}
 		}
-	}
-	
-	override void OnExecuteClient( ActionData action_data )
-	{
-		/*if (action_data.m_Player.GetItemInHands().IsHeavyBehaviour())
-		{*/
-			action_data.m_Player.PredictiveDropEntity(action_data.m_Player.GetItemInHands());
-		
-			if ( action_data.m_Player.IsPlacingLocal() )
-			{
-				action_data.m_Player.TogglePlacingLocal();
-			}
-		/*}
 		else
 		{
-			vector dir = action_data.m_Player.GetOrientation();
-			HumanInventory hin = action_data.m_Player.GetHumanInventory();
-			ItemBase item = action_data.m_Player.GetItemInHands();
-			hin.ThrowEntity(item,dir,0);
+			PhysicalDropItem(action_data);
 		}*/
+		PhysicalDropItem(action_data);
+	}
+	
+	void PhysicalDropItem( ActionData action_data )
+	{
+		action_data.m_Player.PhysicalPredictiveDropItem(action_data.m_Player.GetItemInHands());
 	}
 };

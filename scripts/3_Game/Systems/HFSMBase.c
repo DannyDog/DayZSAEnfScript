@@ -316,7 +316,7 @@ class HFSMBase<Class FSMStateBase, Class FSMEventBase, Class FSMActionBase, Clas
 		if (GetOwnerState())
 			fsmDebugPrint("[hfsm] SUB!::" + GetOwnerState().Type().ToString() + "::ProcessEvent(" + e.Type().ToString() + ")");
 		else
-			fsmDebugPrint("[hfsm] root::ProcessEvent(" + e.Type().ToString() + ")");
+			fsmDebugPrint("[hfsm] root::ProcessEvent(" + e.Type().ToString() + " =" + e.DumpToString());
 
 		// 1) completion transitions have priority (if any)
 		if (m_HasCompletions)

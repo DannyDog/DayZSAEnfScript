@@ -37,7 +37,6 @@ class cfgWeapons
 		model = "\dz\weapons\archery\bow_quickie\bow_quickie.p3d";
 		animClass = "Bow";
 		rotationFlags = 17;
-		lootCategory = "Crafted";
 		weight = 950;
 		itemSize[] = {4,9};
 		shotAction = "ReloadBow";

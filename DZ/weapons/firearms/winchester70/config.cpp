@@ -85,7 +85,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_Winchester700";
 		descriptionShort = "$STR_cfgWeapons_Winchester701";
 		model = "\dz\weapons\firearms\winchester70\winchester70.p3d";
-		attachments[] = {"weaponWrap","suppressorImpro","weaponOpticsHunting"};
+		attachments[] = {"weaponWrap","weaponOpticsHunting","suppressorImpro"};
 		itemSize[] = {10,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\winchester70\data\winchester70_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\winchester70\data\winchester70.rvmat"};

@@ -156,7 +156,7 @@ class Man extends EntityAI
 		TakeEntityToHandsImpl(InventoryMode.SERVER, item);
 	}
 
-	protected void TakeEntityToHandsImpl (InventoryMode mode, EntityAI item)
+	void TakeEntityToHandsImpl (InventoryMode mode, EntityAI item)
 	{
 		if (!GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
@@ -173,7 +173,9 @@ class Man extends EntityAI
 		{
 			if (itemInHands == null)
 			{	
-				GetHumanInventory().HandEvent(mode, new HandEventTake(this, src_item));
+				InventoryLocation hand_dst = new InventoryLocation;
+				hand_dst.SetHands(this, item);
+				GetHumanInventory().TakeToDst(mode, src_item, hand_dst);
 			}
 			else if (GetHumanInventory().CanSwapEntities(itemInHands, item))
 				GetInventory().SwapEntities(mode, itemInHands, item);
@@ -885,4 +887,5 @@ class Man extends EntityAI
 	bool IsInTransport () { return null != Transport.Cast(GetParent()); }
 	
 	void StopDeathDarkeningEffect() {}
+	bool PhysicalPredictiveDropItem(EntityAI entity, bool heavy_item_only = true) {}
 };

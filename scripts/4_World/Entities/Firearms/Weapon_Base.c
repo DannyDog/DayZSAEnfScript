@@ -513,6 +513,24 @@ class Weapon_Base extends Weapon
 		}*/
 	}
 	
+	override void EEItemLocationChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
+	{
+		super.EEItemLocationChanged(oldLoc, newLoc);
+
+		if (newLoc.GetType() == InventoryLocationType.HANDS)
+		{
+			PlayerBase player;
+			if (newLoc.GetParent() && PlayerBase.CastTo(player, newLoc.GetParent()))
+			{ 
+				HumanCommandMove cm = player.GetCommand_Move();
+				if (cm)
+				{
+					cm.SetMeleeBlock(false);
+				}
+			}
+		}
+	}
+	
 	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner)
 	{
 		super.OnItemLocationChanged(old_owner,new_owner);
@@ -545,6 +563,7 @@ class Weapon_Base extends Weapon
 		{
 			return true;
 		}
+		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(this) + " Weapon=" + this + " not in stable state=" + GetCurrentState().Type());
 		return false; // do not allow removal of weapon while weapon is busy
 	}
 

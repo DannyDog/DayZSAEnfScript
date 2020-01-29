@@ -150,7 +150,7 @@ class CfgNonAIVehicles
 	class ProxyEncore: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Pistol";
+		inventorySlot[] = {"Pistol"};
 		model = "\dz\gear\optics\binoculars.p3d";
 	};
 };

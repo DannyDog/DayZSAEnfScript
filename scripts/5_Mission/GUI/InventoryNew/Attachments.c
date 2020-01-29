@@ -171,7 +171,7 @@ class Attachments
 		if( ItemManager.GetInstance().IsItemMoving() )
 		{
 			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
-			if( selected_item )
+			if( selected_item && selected_item.GetInventory().CanRemoveEntity())
 			{
 				bool can_add = m_Entity.GetInventory().CanAddAttachment( selected_item );
 				if( can_add && !GetFocusedIcon().IsOutOfReach() )
@@ -299,7 +299,7 @@ class Attachments
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( item && !GetFocusedIcon().IsOutOfReach() )
 		{
-			player.PredictiveDropEntity( item );
+			player.PhysicalPredictiveDropItem( item );
 			return true;
 		}
 		return false;
@@ -568,11 +568,17 @@ class Attachments
 		for ( i = 0; i < m_AttachmentSlotNames.Count(); i++ )
 		{
 			SlotsIcon icon2 = SlotsContainer.Cast( m_AttachmentsContainer.Get( ( i / ITEMS_IN_ROW ) ) ).GetSlotIcon( i % ITEMS_IN_ROW );
-			WidgetEventHandler.GetInstance().RegisterOnDrag( icon2.GetPanelWidget(), m_Parent, "OnIconDrag" );
-			WidgetEventHandler.GetInstance().RegisterOnDrop( icon2.GetPanelWidget(), m_Parent, "OnIconDrop" );
 			WidgetEventHandler.GetInstance().RegisterOnDoubleClick( icon2.GetPanelWidget(), m_Parent, "DoubleClick" );
 			
 			string path = "CfgSlots" + " Slot_" + m_AttachmentSlotNames[i];
+
+			//Show different magazine icon for firearms and pistols
+			if ( m_AttachmentSlotNames[i] == "magazine" )
+			{
+				if ( !m_Entity.IsInherited( Pistol_Base ) )
+					path = "CfgSlots" + " Slot_" + "magazine2";
+			}
+			
 			string icon_name = "";
 			if( GetGame().ConfigGetText( path + " ghostIcon", icon_name ) && icon_name != "" )
 				icon2.GetGhostSlot().LoadImageFile( 0, "set:dayz_inventory image:" + icon_name );

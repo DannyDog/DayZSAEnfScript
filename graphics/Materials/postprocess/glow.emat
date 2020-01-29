@@ -4,7 +4,7 @@ GlowEffect {
  SpeedDarkToBright 6
  SpeedBrightToDark 6
  ToneMapping Filmic
- FilmicLinearAngle 0.623
+ FilmicLinearAngle 0.423
  BloomThreshold 0.5
  BloomSteepness 1.25
  BloomIntensity 0.75

@@ -16237,6 +16237,19 @@ class CfgVehicles
 				soundLocked = "doorWoodFrontRattle";
 				soundOpenABit = "doorWoodFrontOpenABit";
 			};
+			class DoorsTwin1
+			{
+				displayName = "door Twin1";
+				component = "DoorsTwin1";
+				soundPos = "doorsTwin1_action";
+				animPeriod = 1;
+				initPhase = 0;
+				initOpened = 0;
+				soundOpen = "doorWoodTwinOpen";
+				soundClose = "doorWoodTwinClose";
+				soundLocked = "doorWoodTwinRattle";
+				soundOpenABit = "doorWoodTwinOpenABit";
+			};
 		};
 		class DamageSystem
 		{
@@ -16537,6 +16550,64 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 					};
 					componentNames[] = {"doors5"};
+					fatalInjuryCoef = -1;
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+				};
+				class twin1
+				{
+					class Health
+					{
+						hitpoints = 1500;
+						transferToGlobalCoef = 0;
+					};
+					componentNames[] = {"doorsTwin1"};
 					fatalInjuryCoef = -1;
 					class ArmorType
 					{

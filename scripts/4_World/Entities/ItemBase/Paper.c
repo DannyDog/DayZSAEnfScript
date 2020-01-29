@@ -1,70 +1,42 @@
-typedef Param2<string, EntityAI> WritePaperParamsOld;
 
-//-----------------------
-typedef Param3<string, string, int> 			WritePaperParams; //message, pen, font
-typedef Param1<array<ref WritePaperParams>> 	PaperParams;
+//typedef Param3<string, string, int> 			WritePaperParams; //message, pen, font
+//typedef Param1<array<ref WritePaperParams>> 	PaperParams;
 //-----------------------
 
 class Paper extends ItemBase
 {
-	ref array<ref WritePaperParams> m_AdvancedText = new array<ref WritePaperParams>; //TODO
+	protected ref WrittenNoteData m_NoteContents;
 	
 	void Paper()
 	{
-		//m_AdvancedText = NULL;
+		m_NoteContents = new WrittenNoteData(this);
 	}
 	
 	void ~Paper()
 	{
-		m_AdvancedText.Clear();
-		m_AdvancedText = NULL;
 	}
 	
-	// EntityAI override
-	override void OnRPC( PlayerIdentity sender, int rpc_type, ParamsReadContext  ctx)
-	{
-		super.OnRPC(sender, rpc_type, ctx);
+	override bool OnStoreLoad(ParamsReadContext ctx, int version)
+	{   
+		if ( !super.OnStoreLoad(ctx, version) )
+			return false;
 		
-		if (rpc_type == ERPCs.RPC_WRITE_NOTE)
-		{
-			ref WritePaperParams param = new WritePaperParams("", "",0); // message, penColor, handwriting
-			
-			if (ctx.Read(param))
-			{
-				m_AdvancedText.Insert(param);
-				/* //SYNCFAIL
-				string message = GetItemVariableString("message");
+		if (version >= 108 && !ctx.Read(m_NoteContents))
+			return false;
 				
-				// remove any html tags added by user
-				param.param1.Replace("\n", "<br>");
-				
-				if (message != "") message += "<br>";
-				message +=  "<font color=\"" + param.param2.ConfigGetString("writingColor") + "\">" + param.param1 + "</font>";
-				
-				if (message.Length() < 1000) 
-				{
-					SetItemVariableString("message", message);
-				}
-				*/
-			}
-		}
-		if (rpc_type == ERPCs.RPC_READ_NOTE)
-		{
-			//Print("reading");
-			array<ref WritePaperParams> new_AdvancedText = new array<ref WritePaperParams>;
-			PaperParams paramsRead = new PaperParams(null);
-			if (ctx.Read(paramsRead))
-			{
-				new_AdvancedText = paramsRead.param1;
-				m_AdvancedText = new_AdvancedText;
-			}
-			if (!GetGame().IsServer() && GetGame().IsMultiplayer())
-			{
-				PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-				//PlayerBase player = PlayerBase.Cast(GetParent());
-				if ( player && player.GetInventory().HasEntityInInventory(this) ) 	player.enterNoteMenuRead = true;
-			}
-		}
+		return true;
+	}
+	
+	override void OnStoreSave(ParamsWriteContext ctx)
+	{
+		super.OnStoreSave(ctx);
+		
+		ctx.Write(m_NoteContents);		
+	}
+	
+	override WrittenNoteData GetWrittenNoteData()
+	{
+		return m_NoteContents;
 	}
 	
 	//================================================================

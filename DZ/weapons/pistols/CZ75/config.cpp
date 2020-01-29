@@ -118,7 +118,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_CZ750";
 		descriptionShort = "$STR_cfgWeapons_CZ751";
 		model = "\dz\weapons\pistols\CZ75\cz75.p3d";
-		attachments[] = {"pistolMuzzle","pistolFlashlight","pistolOptics"};
+		attachments[] = {"pistolOptics","pistolFlashlight","pistolMuzzle"};
 		itemSize[] = {3,2};
 		class DamageSystem
 		{

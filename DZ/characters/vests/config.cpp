@@ -32,7 +32,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PlateCarrierBlank0";
 		descriptionShort = "$STR_CfgVehicles_PlateCarrierBlank1";
 		model = "\DZ\characters\vests\plate_carrier_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		itemInfo[] = {"Clothing","Vest"};
 		attachments[] = {"VestHolster","VestPouch","VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		weight = 12000;
@@ -144,7 +144,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_SmershVest1";
 		model = "\DZ\characters\vests\smersh_g.p3d";
 		attachments[] = {"VestBackpack","VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
@@ -207,7 +207,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PressVest_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_PressVest_ColorBase1";
 		model = "\DZ\characters\vests\pressVest_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		attachments[] = {"VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -335,7 +335,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_UKAssVest_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_UKAssVest_ColorBase1";
 		model = "\DZ\characters\vests\UKAssVest_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		attachments[] = {"VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -429,7 +429,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_PoliceVest0";
 		descriptionShort = "$STR_CfgVehicles_PoliceVest1";
 		model = "\DZ\characters\vests\policeVest_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		attachments[] = {"VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -593,7 +593,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ChestHolster0";
 		descriptionShort = "$STR_CfgVehicles_ChestHolster1";
 		model = "\DZ\characters\vests\chest_holster_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
@@ -642,7 +642,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HighCapacityVest_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_HighCapacityVest_ColorBase1";
 		model = "\DZ\characters\vests\tacticalvest2_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		attachments[] = {"VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -769,7 +769,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_LeatherStorageVest_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_LeatherStorageVest_ColorBase1";
 		model = "\DZ\characters\vests\Vest_LeatherStorage_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		attachments[] = {"VestGrenadeA","VestGrenadeC"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -928,7 +928,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HuntingVest0";
 		descriptionShort = "$STR_CfgVehicles_HuntingVest1";
 		model = "\DZ\characters\vests\hunter_vest_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
@@ -1011,7 +1011,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ReflexVest0";
 		descriptionShort = "$STR_CfgVehicles_ReflexVest1";
 		model = "\DZ\characters\vests\orange_vest_g.p3d";
-		inventorySlot = "Vest";
+		inventorySlot[] = {"Vest"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
@@ -1061,49 +1061,49 @@ class CfgNonAIVehicles
 	class Proxyberetta: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "Pistol";
+		inventorySlot[] = {"Pistol"};
 		model = "DZ\characters\proxies\beretta.p3d";
 	};
 	class Proxyplate_carrier_pouches_g: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestPouch";
+		inventorySlot[] = {"VestPouch"};
 		model = "DZ\characters\vests\plate_carrier_pouches_g.p3d";
 	};
 	class Proxyplate_carrier_holster_g: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestHolster";
+		inventorySlot[] = {"VestHolster"};
 		model = "DZ\characters\vests\plate_carrier_holster_g.p3d";
 	};
 	class Proxysmersh_buttpack: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestBackpack";
+		inventorySlot[] = {"VestBackpack"};
 		model = "\DZ\characters\vests\proxy\smersh_buttpack.p3d";
 	};
 	class Proxyproxy_grenade_a: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestGrenadeA";
+		inventorySlot[] = {"VestGrenadeA"};
 		model = "\DZ\characters\vests\proxy\proxy_grenade_a.p3d";
 	};
 	class Proxyproxy_grenade_b: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestGrenadeB";
+		inventorySlot[] = {"VestGrenadeB"};
 		model = "\DZ\characters\vests\proxy\proxy_grenade_b.p3d";
 	};
 	class Proxyproxy_grenade_c: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestGrenadeC";
+		inventorySlot[] = {"VestGrenadeC"};
 		model = "\DZ\characters\vests\proxy\proxy_grenade_c.p3d";
 	};
 	class Proxyproxy_grenade_d: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "VestGrenadeD";
+		inventorySlot[] = {"VestGrenadeD"};
 		model = "\DZ\characters\vests\proxy\proxy_grenade_d.p3d";
 	};
 };

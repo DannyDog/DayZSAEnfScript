@@ -83,7 +83,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_Glock190";
 		descriptionShort = "$STR_cfgWeapons_Glock191";
 		model = "\dz\weapons\pistols\glock\Glock19.p3d";
-		attachments[] = {"pistolMuzzle","pistolOptics","pistolFlashlight"};
+		attachments[] = {"pistolOptics","pistolFlashlight","pistolMuzzle"};
 		itemSize[] = {3,2};
 		class DamageSystem
 		{

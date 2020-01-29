@@ -1,6 +1,7 @@
 class WatchtowerKit extends ItemBase
 {	
-	ref protected EffectSound m_DeployLoopSound;
+	ref protected EffectSound 	m_DeployLoopSound;
+	protected bool 				m_DeployedRegularly;
 	
 	void WatchtowerKit()
 	{
@@ -24,8 +25,27 @@ class WatchtowerKit extends ItemBase
 		//set visual on init
 		UpdateVisuals();
 		UpdatePhysics();
-	}
 		
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Call( AssembleKit );
+	}
+	
+	override void EEItemDetached(EntityAI item, string slot_name)
+	{
+		if (item && slot_name == "Rope")
+		{
+			if ((GetGame().IsServer() || !GetGame().IsMultiplayer()) && !m_DeployedRegularly)
+			{
+				DisassembleKit(ItemBase.Cast(item));
+			}
+			GetGame().ObjectDelete( this );
+		}
+	}
+	
+	override void OnEndPlacement()
+	{
+		m_DeployedRegularly = true;
+	}
+	
 	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged( old_owner, new_owner );
@@ -142,5 +162,22 @@ class WatchtowerKit extends ItemBase
 		
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDeployObject);
+	}
+	
+	void AssembleKit()
+	{
+		if (!IsHologram())
+		{
+			Rope rope = Rope.Cast(GetInventory().CreateAttachment("Rope"));
+		}
+	}
+	
+	void DisassembleKit(ItemBase item)
+	{
+		if (!IsHologram())
+		{
+			ItemBase stick = ItemBase.Cast(GetGame().CreateObject("WoodenStick",GetPosition()));
+			stick.SetQuantity(4);
+		}
 	}
 }

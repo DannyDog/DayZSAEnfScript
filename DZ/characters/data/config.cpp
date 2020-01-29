@@ -92,7 +92,7 @@ class CfgVehicles
 		accuracy = 1000;
 		handGunBone = "RightHand";
 		weaponBone = "RightHand_Dummy";
-		inventorySlot = "Driver";
+		inventorySlot[] = {"Driver"};
 		attachments[] = {"Head","Shoulder","Melee","Headgear","Mask","Eyewear","Hands","LeftHand","Gloves","Armband","Vest","Body","Back","Hips","Legs","Feet"};
 		simulation = "dayzplayer";
 		class enfAnimSys
@@ -4039,6 +4039,96 @@ class CfgVehicles
 					soundSet = "Colt1911_jam_SoundSet";
 					id = 1344;
 				};
+				class repeater_charge_open
+				{
+					soundSet = "repeater_charge_open_SoundSet";
+					id = 1350;
+				};
+				class repeater_charge_close
+				{
+					soundSet = "repeater_charge_close_SoundSet";
+					id = 1351;
+				};
+				class repeater_empty
+				{
+					soundSet = "repeater_empty_SoundSet";
+					id = 1352;
+				};
+				class repeater_chamber_load
+				{
+					soundSet = "repeater_chamber_load_SoundSet";
+					id = 1353;
+				};
+				class repeater_dry
+				{
+					soundSet = "repeater_dry_SoundSet";
+					id = 1354;
+				};
+				class repeater_pullout
+				{
+					soundSet = "repeater_pullout_SoundSet";
+					id = 1355;
+				};
+				class repeater_hand
+				{
+					soundSet = "repeater_hand_SoundSet";
+					id = 1356;
+				};
+				class repeater_jam
+				{
+					soundSet = "repeater_jam_SoundSet";
+					id = 1357;
+				};
+				class repeater_jamming1
+				{
+					soundSet = "repeater_jamming1_SoundSet";
+					id = 1358;
+				};
+				class repeater_jamming2
+				{
+					soundSet = "repeater_jamming2_SoundSet";
+					id = 1359;
+				};
+				class repeater_jamming3
+				{
+					soundSet = "repeater_jamming3_SoundSet";
+					id = 1360;
+				};
+				class repeater_jamming4
+				{
+					soundSet = "repeater_jamming4_SoundSet";
+					id = 1361;
+				};
+				class repeater_jamming5
+				{
+					soundSet = "repeater_jamming5_SoundSet";
+					id = 1362;
+				};
+				class repeater_jamming6
+				{
+					soundSet = "repeater_jamming6_SoundSet";
+					id = 1363;
+				};
+				class repeater_jamming7
+				{
+					soundSet = "repeater_jamming7_SoundSet";
+					id = 1364;
+				};
+				class repeater_jamming8
+				{
+					soundSet = "repeater_jamming8_SoundSet";
+					id = 1365;
+				};
+				class repeater_jamming9
+				{
+					soundSet = "repeater_jamming9_SoundSet";
+					id = 1366;
+				};
+				class repeater_jamming10
+				{
+					soundSet = "repeater_jamming10_SoundSet";
+					id = 1367;
+				};
 				class MagRifle_fill_loop
 				{
 					soundSet = "MagRifle_fill_loop_SoundSet";
@@ -7125,7 +7215,7 @@ class CfgNonAIVehicles
 	class ProxyAttachment;
 	class ProxyLHand_DZ: ProxyAttachment
 	{
-		inventorySlot = "LeftHand";
+		inventorySlot[] = {"LeftHand"};
 		model = "\dz\Characters\Proxies\LHand_DZ.p3d";
 	};
 };

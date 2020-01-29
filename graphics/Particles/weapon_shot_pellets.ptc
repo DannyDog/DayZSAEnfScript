@@ -1,0 +1,315 @@
+EffectDef {
+ MinFPS 30
+ Emitors {
+  EmitorDef glows {
+   ShapeType Sphere
+   ShapeSize 0 0 0
+   ConeAngle 360 360 0
+   LOD 0
+   MaxNum 2
+   BirthRate 300
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles 0 0 0
+   LocalTransform 0
+   Material "{257D7EAB9142037F}Graphics/Particles/materials/weapons/weapon_shot_fnx_03.emat"
+   ScaleX 1.2
+   SizeMultiplier 0.5
+   SizeRND 0.4
+   RandomRotDir 0
+   RotMultiplier 1
+   StretchMultiplier 1
+   VelAngle 0
+   RandomAngle 1
+   Sort 0
+   BillboardingType Full
+   Velocity 0
+   AirResistanceRND 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   Restitution -1
+   Spring 0
+   Wind 0
+   AnimOnce 0
+   AnimFPS 0
+   LifetimeByAnim 0
+   RandomFrame 0
+   LifeTime 0.05
+   LifeTimeRND 0
+   LifetimeShortening 0
+   Color {
+    0 1 1 1 0.2964 1 1 1 1 0 0 0
+   }
+   Alpha {
+    0 0.42949 1 0
+   }
+   RotationSpeed {
+    0 0
+   }
+   Size {
+    0 0 0.0144 0.16456 1 0.32692
+   }
+   EffectTime 0.05
+   Repeat 0
+   ColorMast {
+    0 1 1 1
+   }
+   AlphaMast {
+    0 1
+   }
+   RotationSpeedMast {
+    0 0
+   }
+   SizeMast {
+    0 1
+   }
+   BRateMast {
+    0 1
+   }
+  }
+  EmitorDef glowcore {
+   ShapeType Sphere
+   ShapeSize 0 0 0
+   ConeAngle 360 360 0
+   LOD 0
+   MaxNum 1
+   BirthRate 30
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles 0 0 0
+   LocalTransform 0
+   Material "{D17539339C9F6B0B}Graphics/Particles/materials/weapons/weapon_shot_fnx_02.emat"
+   SizeMultiplier 0
+   SizeRND 0.3
+   RandomRotDir 0
+   RotMultiplier 0
+   StretchMultiplier 0.031
+   VelAngle 0
+   RandomAngle 1
+   Sort 0
+   BillboardingType Full
+   Velocity 0
+   AirResistance 0
+   AirResistanceRND 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   Restitution -1
+   Spring 0
+   Wind 0
+   AnimOnce 0
+   AnimFPS 0
+   LifetimeByAnim 0
+   RandomFrame 0
+   LifeTime 0.1
+   LifeTimeRND 0
+   LifetimeShortening 0
+   Color {
+    0 1 1 1 0.625 0.2968 0.2968 0.2968 1 0 0 0
+   }
+   Alpha {
+    0 0.4359 1 0
+   }
+   RotationSpeed {
+    0 1
+   }
+   Size {
+    0 0 0.01327 0.17949 1 0.42949
+   }
+   EffectTime 0.05
+   Repeat 0
+   ColorMast {
+    0 1 1 1
+   }
+   AlphaMast {
+    0 1
+   }
+   RotationSpeedMast {
+    0 0
+   }
+   SizeMast {
+    0 1
+   }
+   BRateMast {
+    0 1
+   }
+  }
+  EmitorDef flame_up {
+   ShapeType Sphere
+   ShapeSize 0 0 0
+   ConeAngle 360 360 0
+   LOD 0
+   MaxNum 1
+   BirthRate 30
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles 0 0 -90
+   LocalTransform 0
+   Material "{8F9D10702312E504}Graphics/Particles/materials/weapons/weapon_shot_fnx_01.emat"
+   ScaleX 0.2
+   ScaleY 1
+   SizeMultiplier 2
+   SizeRND 3
+   RandomRotDir 0
+   RotMultiplier 0
+   StretchMultiplier 1
+   VelAngle 0
+   RandomAngle 0
+   Sort 0
+   BillboardingType None
+   Velocity 0
+   AirResistance 0
+   AirResistanceRND 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   Restitution -1
+   Spring 0
+   Wind 0
+   AnimOnce 0
+   AnimFPS 10
+   LifetimeByAnim 0
+   RandomFrame 1
+   LifeTime 0.1
+   LifeTimeRND 0
+   LifetimeShortening 0
+   Color {
+    0 1 1 1 1 0 0 0
+   }
+   Alpha {
+    0 1 0.5 1 1 0
+   }
+   RotationSpeed {
+    0 1
+   }
+   Size {
+    0 0 0.01327 0.17949 1 0.42949
+   }
+   EffectTime 0.05
+   Repeat 0
+   ColorMast {
+    0 1 1 1
+   }
+   AlphaMast {
+    0 1
+   }
+   RotationSpeedMast {
+    0 0
+   }
+   SizeMast {
+    0 1
+   }
+   BRateMast {
+    0 1
+   }
+  }
+  EmitorDef smoke_front {
+   ConeAngle 360 0 20
+   MaxNum 20
+   BirthRate 60
+   Angles 0 0 -90
+   LocalTransform 0
+   Material "{8E25684854DAB008}Graphics/Particles/materials/smoke/steam_small_cook_01.emat"
+   SizeMultiplier 2
+   SizeRND 0.5
+   RandomRotDir 1
+   RotMultiplier 50
+   RandomAngle 1
+   Velocity 20
+   VelocityRND 20
+   AirResistance 15
+   AirResistanceRND 10
+   Wind 1
+   LifeTime 0.3
+   LifeTimeRND 0.5
+   Color {
+    0 0.7608 0.7608 0.7608 1 0.4706 0.4706 0.4706
+   }
+   Alpha {
+    0 0.04487 0.125 0.15 1 0
+   }
+   RotationSpeed {
+    0 0.09615 1 1
+   }
+   Size {
+    0 0.25 1 0.5
+   }
+   EffectTime 0.1
+   Repeat 0
+  }
+  EmitorDef fragments_front {
+   ConeAngle 360 0 20
+   MaxNum 20
+   BirthRate 60
+   Angles 0 0 -90
+   LocalTransform 0
+   Material "{391690195D614CE5}Graphics/Particles/materials/smoke/smoke_dust_02.emat"
+   SizeMultiplier 2
+   SizeRND 0.5
+   RandomRotDir 1
+   RotMultiplier 50
+   RandomAngle 1
+   Velocity 20
+   VelocityRND 20
+   AirResistance 15
+   AirResistanceRND 10
+   Wind 1
+   LifeTime 0.05
+   LifeTimeRND 0.1
+   Color {
+    0 0 0 0 1 0 0 0
+   }
+   Alpha {
+    0 0.86709 0.10342 0.52532 1 0
+   }
+   RotationSpeed {
+    0 0.09615 1 0.13291
+   }
+   Size {
+    0 0.15823 1 0.63924
+   }
+   EffectTime 0.1
+   Repeat 0
+  }
+  EmitorDef smoke_front_cone {
+   ConeAngle 360 0 10
+   MaxNum 1
+   BirthRate 60
+   Angles 0 0 -90
+   LocalTransform 0
+   Material "{8E25684854DAB008}Graphics/Particles/materials/smoke/steam_small_cook_01.emat"
+   CenterX 0
+   CenterY -1
+   ScaleX 0.299
+   ScaleY 1
+   SizeMultiplier 2
+   SizeRND 0
+   RandomRotDir 0
+   RotMultiplier 0
+   VelAngle 0
+   RandomAngle 0
+   BillboardingType None
+   Velocity 0
+   VelocityRND 0
+   AirResistance 0
+   AirResistanceRND 0
+   LifeTime 0.1
+   LifeTimeRND 0
+   Color {
+    0 0.6667 0.6667 0.6667 1 0.6353 0.6353 0.6353
+   }
+   Alpha {
+    0 0.45 1 0
+   }
+   RotationSpeed {
+    0 0.09615 1 1
+   }
+   Size {
+    0 0.12179 1 1
+   }
+   EffectTime 0.1
+   Repeat 0
+  }
+ }
+}

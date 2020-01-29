@@ -38,12 +38,17 @@ class cfgWeapons
 		absorbency = 0.0;
 		repairableWithKits[] = {5,1};
 		repairCosts[] = {30.0,25.0};
+		PPDOFProperties[] = {1,0.5,20,165,4,10};
+		DisplayMagazine = 0;
+		WeaponLength = 1.1;
+		initSpeedMultiplier = 1.15;
 		chamberSize = 7;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_357"};
 		magazines[] = {};
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {2,2,1};
 		drySound[] = {"dz\sounds\weapons\firearms\mosin9130\mosin_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\rossim92\rossim92_reload_0",0.8,1,20};
 		reloadSound[] = {"dz\sounds\weapons\firearms\rossim92\rossim92_cycle_0",0.8,1,20};
@@ -67,11 +72,62 @@ class cfgWeapons
 			dispersion = 0.001;
 			magazineSlot = "magazine";
 		};
+		class Particles
+		{
+			class OnFire
+			{
+				class MuzzleFlash
+				{
+					overrideParticle = "weapon_shot_mosin9130_01";
+					ignoreIfSuppressed = 1;
+					illuminateWorld = 1;
+					positionOffset[] = {-0.05,0,0};
+				};
+			};
+			class OnOverheating
+			{
+				shotsToStartOverheating = 1;
+				maxOverheatingValue = 3;
+				overheatingDecayInterval = 4;
+				class BarrelSmoke
+				{
+					overrideParticle = "smoking_barrel_small";
+				};
+				class OpenChamberSmoke
+				{
+					onlyIfBoltIsOpen = 1;
+					overrideParticle = "smoking_barrel_small";
+					overridePoint = "Nabojnicestart";
+				};
+			};
+			class OnBulletCasingEject
+			{
+				class ChamberSmokeRaise
+				{
+					overrideParticle = "weapon_shot_chamber_smoke_raise";
+					overridePoint = "Nabojnicestart";
+				};
+			};
+		};
 		class OpticsInfo: OpticsInfoRifle
 		{
+			memoryPointCamera = "eye";
+			discreteDistance[] = {50,100,200,300};
+			discreteDistanceInitIndex = 1;
 			modelOptics = "-";
 			distanceZoomMin = 100;
 			distanceZoomMax = 100;
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 250;
+					healthLevels[] = {{1.0,{"DZ\weapons\firearms\repeater\Data\repeater.rvmat"}},{0.7,{"DZ\weapons\firearms\repeater\Data\repeater.rvmat"}},{0.5,{"DZ\weapons\firearms\repeater\Data\repeater_damage.rvmat"}},{0.3,{"DZ\weapons\firearms\repeater\Data\repeater_damage.rvmat"}},{0.0,{"DZ\weapons\firearms\repeater\Data\repeater_destruct.rvmat"}}};
+				};
+			};
 		};
 	};
 	class Repeater: Repeater_Base
@@ -84,10 +140,5 @@ class cfgWeapons
 		itemSize[] = {9,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\repeater\data\repeater_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\repeater\data\repeater.rvmat"};
-		class Damage
-		{
-			tex[] = {};
-			mat[] = {"DZ\weapons\firearms\repeater\data\repeater.rvmat","DZ\weapons\firearms\repeater\data\repeater_damage.rvmat","DZ\weapons\firearms\repeater\data\repeater_destruct.rvmat"};
-		};
 	};
 };

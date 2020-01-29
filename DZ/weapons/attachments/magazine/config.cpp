@@ -3946,7 +3946,7 @@ class CfgMagazines
 		itemSize[] = {1,1};
 		count = 2;
 		ammo = "Bullet_12GaugePellets";
-		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug"};
 		tracersEvery = 0;
 		mass = 10;
 		hiddenSelections[] = {"camo"};
@@ -4039,7 +4039,7 @@ class CfgMagazines
 		itemSize[] = {1,1};
 		count = 5;
 		ammo = "Bullet_12GaugePellets";
-		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag"};
 		tracersEvery = 0;
 		mass = 10;
 		hiddenSelections[] = {"camo"};
@@ -4132,7 +4132,7 @@ class CfgMagazines
 		itemSize[] = {1,2};
 		count = 8;
 		ammo = "Bullet_12GaugePellets";
-		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag"};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\magazine\data\saiga_mag8_co.paa"};
 		class DamageSystem
@@ -4224,7 +4224,7 @@ class CfgMagazines
 		itemSize[] = {2,2};
 		count = 20;
 		ammo = "Bullet_12GaugePellets";
-		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug"};
+		ammoItems[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Ammo_12gaBeanbag"};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\magazine\data\saiga_drum_co.paa"};
 		class DamageSystem

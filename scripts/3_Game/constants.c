@@ -629,4 +629,9 @@ class GameConstants
 	const float MINING_WOOD_FAST = 2.0;
 	const float MINING_WOOD_MEDIUM = 2.0;
 	const float MINING_WOOD_SLOW = 3.0;
+	
+	//! Non-lethal projectile damage QuantityConversions
+	const float PROJECTILE_CONVERSION_ANIMALS 	= 0.1;
+	const float PROJECTILE_CONVERSION_INFECTED 	= 0.1;
+	const float PROJECTILE_CONVERSION_PLAYERS 	= 0.1;
 }

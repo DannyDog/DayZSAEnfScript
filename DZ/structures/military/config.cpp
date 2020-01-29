@@ -12779,31 +12779,18 @@ class CfgVehicles
 				soundLocked = "doorWoodSmallRattle";
 				soundOpenABit = "doorWoodSmallOpenABit";
 			};
-			class Doors5
+			class DoorsTwin1
 			{
-				displayName = "door 5";
-				component = "Doors5";
-				soundPos = "doors5_action";
+				displayName = "door Twin1";
+				component = "DoorsTwin1";
+				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
 				initOpened = 0;
-				soundOpen = "doorMetalSlideOpen";
-				soundClose = "doorMetalSlideClose";
-				soundLocked = "doorMetalSlideRattle";
-				soundOpenABit = "doorMetalSlideOpenABit";
-			};
-			class Doors6
-			{
-				displayName = "door 6";
-				component = "Doors6";
-				soundPos = "doors6_action";
-				animPeriod = 1;
-				initPhase = 0;
-				initOpened = 0;
-				soundOpen = "doorMetalSlideOpen";
-				soundClose = "doorMetalSlideClose";
-				soundLocked = "doorMetalSlideRattle";
-				soundOpenABit = "doorMetalSlideOpenABit";
+				soundOpen = "doorMetalTwinOpen";
+				soundClose = "doorMetalTwinClose";
+				soundLocked = "doorMetalTwinRattle";
+				soundOpenABit = "doorMetalTwinOpenABit";
 			};
 		};
 		class DamageSystem
@@ -13155,14 +13142,14 @@ class CfgVehicles
 						};
 					};
 				};
-				class door6
+				class twin1
 				{
 					class Health
 					{
-						hitpoints = 1000;
+						hitpoints = 1500;
 						transferToGlobalCoef = 0;
 					};
-					componentNames[] = {"doors6"};
+					componentNames[] = {"doorsTwin1"};
 					fatalInjuryCoef = -1;
 					class ArmorType
 					{

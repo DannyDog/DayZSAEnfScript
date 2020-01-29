@@ -177,7 +177,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_FAL0";
 		descriptionShort = "$STR_cfgWeapons_FAL1";
 		model = "\dz\weapons\firearms\fal\fal.p3d";
-		attachments[] = {"weaponWrap","suppressorImpro","weaponButtstockFal","weaponOptics"};
+		attachments[] = {"weaponButtstockFal","weaponWrap","weaponOptics","suppressorImpro"};
 		itemSize[] = {8,3};
 		class DamageSystem
 		{

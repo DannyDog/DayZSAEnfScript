@@ -85,7 +85,7 @@ class cfgWeapons
 					overrideParticle = "weapon_shot_mosin9130_01";
 					ignoreIfSuppressed = 1;
 					illuminateWorld = 1;
-					positionOffset[] = {0.1,0,0};
+					positionOffset[] = {-0.03,0,0};
 				};
 			};
 			class OnOverheating
@@ -189,7 +189,7 @@ class cfgWeapons
 		scope = 2;
 		model = "\dz\weapons\firearms\mosin9130\mosin9130.p3d";
 		itemSize[] = {10,3};
-		attachments[] = {"weaponMuzzleMosin","weaponBayonetMosin","weaponOpticsMosin","weaponWrap","suppressorImpro"};
+		attachments[] = {"weaponWrap","weaponOpticsMosin","suppressorImpro","weaponMuzzleMosin","weaponBayonetMosin"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\mosin9130\data\mosin_9130_co.paa"};
 	};
 	class Mosin9130_Black: Mosin9130

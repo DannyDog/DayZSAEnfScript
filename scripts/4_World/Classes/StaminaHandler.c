@@ -209,7 +209,7 @@ class StaminaHandler
 		if( m_Player )
 		{
 			// Calculates actual max stamina based on player's load
-			if ( GetGame().IsServer() )
+			if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			{
 				//! gets stamina from PlayerStat
 				m_Stamina = m_Player.GetStatStamina().Get();

@@ -903,12 +903,20 @@ class Construction
 			//check collision on box trigger and collision box
 			//IsTrigger colliding was turned off (for now) for easier way to build something with other players around
 			if ( /* IsTriggerColliding() || */ GetGame().IsBoxColliding( Vector( center[0], center[1] + absolute_ofset, center[2] ), GetParent().GetOrientation(), edge_length, excluded_objects, collided_objects ) )
-			{	
+			{
 				//Debug
 				//DrawDebugCollisionBox( min_max, ARGB( 255, 255, 0, 0 ) );
 				//
-				
-				return true;	
+				for (int i = 0; i < collided_objects.Count(); i++)
+				{
+					//Print(collided_objects.Get(i).GetType());
+					EntityAI e = EntityAI.Cast(collided_objects.Get(i));
+					if ( e && !e.IsBuilding() && !e.IsTree() && (!e.IsRuined() || e.IsTransport()) && !BaseBuildingBase.Cast(e) ) //TODO add some sort of size check?
+					{
+						return true;
+					}
+				}
+				return false;
 			}
 			
 			//Debug

@@ -184,7 +184,7 @@ FrameWidgetClass Icon {
      flipped 0
     }
     GridSpacerWidgetClass QuantityStackPanel {
-     clipchildren 1
+     clipchildren 0
      inheritalpha 0
      ignorepointer 1
      color 0 0 0 0.7843
@@ -199,6 +199,8 @@ FrameWidgetClass Icon {
      priority 600
      draggable 0
      style Colorable
+     Padding 0
+     Margin 3
      "Size To Content H" 1
      "Size To Content V" 1
      content_halign center
@@ -207,6 +209,7 @@ FrameWidgetClass Icon {
      Rows 1
      {
       TextWidgetClass Quantity {
+       clipchildren 0
        inheritalpha 0
        ignorepointer 1
        size 1 1

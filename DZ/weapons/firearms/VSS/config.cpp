@@ -165,7 +165,7 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_VSS0";
 		descriptionShort = "$STR_cfgWeapons_VSS1";
 		model = "\dz\weapons\firearms\VSS\VSS.p3d";
-		attachments[] = {"weaponOpticsAK","weaponWrap"};
+		attachments[] = {"weaponWrap","weaponOpticsAK"};
 		itemSize[] = {8,3};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\VSS\data\vss_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\VSS\data\vss.rvmat"};

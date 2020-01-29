@@ -1,6 +1,6 @@
-﻿//<'anims_workspaces.pbo' properties via Mikero's dos tools, dll version 7.44>
+﻿//<'anims_workspaces.pbo' properties via Mikero's dos tools, dll version 7.51>
 product=dayz;
 prefix=DZ\anims\workspaces;
-version=83207;
+version=83537P;
 PboType=Arma Unknown pbo type (no config).;
 //</properties>

@@ -13,4 +13,10 @@ class Hammer extends Inventory_Base
 		AddAction(ActionMineRock1H);
 		AddAction(ActionBuildPart);
 	}
+	
+	override bool GetSpecialUserActionDamage(out float damage, int action_type = -1)
+	{
+		damage = 3.0;
+		return true;
+	};
 }

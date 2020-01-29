@@ -238,7 +238,7 @@ class CfgVehicles
 		weight = 2000;
 		itemSize[] = {5,4};
 		absorbency = 0;
-		inventorySlot = "CarRadiator";
+		inventorySlot[] = {"CarRadiator"};
 		rotationFlags = 32;
 		class DamageSystem
 		{
@@ -335,7 +335,7 @@ class CfgVehicles
 		weight = 180;
 		itemSize[] = {1,1};
 		absorbency = 0;
-		inventorySlot = "SparkPlug";
+		inventorySlot[] = {"SparkPlug"};
 		rotationFlags = 12;
 		class DamageSystem
 		{

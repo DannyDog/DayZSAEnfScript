@@ -538,6 +538,7 @@ class CfgAmmo
 	{
 		scope = 2;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_pellets.p3d";
+		muzzleFlashParticle = "weapon_shot_pellets";
 		casing = "FxCartridge_12Pellet";
 		round = "FxRound_12Pellet";
 		spawnPileType = "Ammo_12gaPellets";
@@ -698,10 +699,87 @@ class CfgAmmo
 			type = "shot";
 		};
 	};
+	class Bullet_12GaugeRubberSlug: Bullet_12GaugeSlug
+	{
+		scope = 2;
+		proxyShape = "\dz\weapons\projectiles\shotgunshell_rubber.p3d";
+		casing = "FxCartridge_12RubberSlug";
+		round = "FxRound_12RubberSlug";
+		spawnPileType = "Ammo_12gaRubberSlug";
+		initSpeed = 260;
+		typicalSpeed = 260;
+		airFriction = -0.01;
+		caliber = 0.1;
+		deflecting = 30;
+		dispersion = 0.01;
+		weight = 0.005;
+		class DamageApplied
+		{
+			type = "Projectile";
+			dispersion = 0.1;
+			bleedThreshold = 0.0;
+			defaultDamageOverride[] = {{0.5,1.0}};
+			class Health
+			{
+				damage = 0;
+			};
+			class Blood
+			{
+				damage = 0;
+			};
+			class Shock
+			{
+				damage = 100;
+			};
+		};
+		class NoiseHit
+		{
+			strength = 2;
+			type = "shot";
+		};
+	};
+	class Bullet_12GaugeBeanbag: Bullet_12GaugeSlug
+	{
+		scope = 2;
+		proxyShape = "\dz\weapons\projectiles\shotgunshell_beanbag.p3d";
+		casing = "FxCartridge_12Beanbag";
+		round = "FxRound_12Beanbag";
+		spawnPileType = "Ammo_12gaBeanbag";
+		initSpeed = 240;
+		typicalSpeed = 240;
+		airFriction = -0.006;
+		caliber = 0.1;
+		deflecting = 30;
+		dispersion = 0.05;
+		weight = 0.005;
+		class DamageApplied
+		{
+			type = "Projectile";
+			dispersion = 0.1;
+			bleedThreshold = 0.0;
+			defaultDamageOverride[] = {{0.5,1.0}};
+			class Health
+			{
+				damage = 0;
+			};
+			class Blood
+			{
+				damage = 0;
+			};
+			class Shock
+			{
+				damage = 100;
+			};
+		};
+		class NoiseHit
+		{
+			strength = 2;
+			type = "shot";
+		};
+	};
 	class Bullet_556x45: Bullet_Base
 	{
 		scope = 2;
-		muzzleFlashParticle = "weapon_shot_m4a1_01";
 		spawnPileType = "Ammo_556x45";
 		casing = "FxCartridge_556";
 		round = "FxRound_556";
@@ -807,7 +885,6 @@ class CfgAmmo
 		casing = "FxCartridge_762";
 		round = "FxRound_762";
 		spawnPileType = "Ammo_762x54";
-		muzzleFlashParticle = "weapon_shot_mp5k_02_boris";
 		hit = 12;
 		indirectHit = 0;
 		indirectHitRange = 0;
@@ -929,7 +1006,6 @@ class CfgAmmo
 		damageBarrel = 3;
 		damageBarrelDestroyed = 30;
 		weight = 0.008;
-		muzzleFlashParticle = "weapon_shot_akm_01";
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -970,7 +1046,6 @@ class CfgAmmo
 		casing = "FxCartridge_9mm";
 		round = "FxRound_9mm";
 		spawnPileType = "Ammo_45ACP";
-		muzzleFlashParticle = "weapon_shot_mp5k_02_boris";
 		hit = 0;
 		indirectHit = 0;
 		indirectHitRange = 0;
@@ -1020,10 +1095,10 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.9;
 		deflecting = 30;
-		airFriction = -0.000599;
+		airFriction = -0.0014;
 		typicalSpeed = 440;
-		initSpeed = 440;
-		weight = 0.008;
+		initSpeed = 382.6;
+		weight = 0.0102;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1032,7 +1107,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.5,1.0}};
 			class Health
 			{
-				damage = 80;
+				damage = 55;
 			};
 			class Blood
 			{
@@ -1040,7 +1115,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 0;
+				damage = 66;
 			};
 		};
 		class NoiseHit
@@ -1066,7 +1141,6 @@ class CfgAmmo
 		airFriction = -0.003;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
-		muzzleFlashParticle = "weapon_shot_mp5k_01";
 		weight = 0.0084;
 		class DamageApplied
 		{
@@ -1103,7 +1177,6 @@ class CfgAmmo
 		indirectHit = 0;
 		indirectHitRange = 0;
 		tracerScale = 1;
-		muzzleFlashParticle = "weapon_shot_mp5k_02_boris";
 		caliber = 0.8;
 		deflecting = 30;
 		initSpeed = 290;
@@ -1950,6 +2023,14 @@ class CfgVehicles
 	{
 		model = "\dz\weapons\projectiles\shotgunshell_slug.p3d";
 	};
+	class FxCartridge_12RubberSlug: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\shotgunshell_rubber.p3d";
+	};
+	class FxCartridge_12Beanbag: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\shotgunshell_beanbag.p3d";
+	};
 	class FxCartridge_22: FxCartridge
 	{
 		model = "\dz\weapons\projectiles\nabojnice_22.p3d";
@@ -1987,6 +2068,14 @@ class CfgVehicles
 	class FxRound_12Slug: FxRound
 	{
 		model = "\dz\weapons\projectiles\shotgunshell_slug.p3d";
+	};
+	class FxRound_12RubberSlug: FxRound
+	{
+		model = "\dz\weapons\projectiles\shotgunshell_rubber.p3d";
+	};
+	class FxRound_12Beanbag: FxRound
+	{
+		model = "\dz\weapons\projectiles\shotgunshell_beanbag.p3d";
 	};
 	class FxRound_22: FxRound
 	{

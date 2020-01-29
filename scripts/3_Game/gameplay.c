@@ -303,6 +303,10 @@ class MapWidget: Widget
 {
 	proto native void ClearUserMarks();
 	proto native void AddUserMark(vector pos, string text, int color /*ARGB*/, string texturePath);
+	proto native vector GetMapPos();
+	proto native void SetMapPos(vector worldPos);
+	proto native float GetScale();
+	proto native void SetScale(float scale);
 	proto native vector MapToScreen(vector worldPos);
 	proto native vector ScreenToMap(vector screenPos);
 };
@@ -627,6 +631,11 @@ class Mission
 		return NULL;
 	}
 	
+	WorldLighting GetWorldLighting()
+	{
+		return NULL;
+	}
+	
 	bool IsPaused() 
 	{ 
 		return false; 
@@ -679,6 +688,11 @@ class Mission
 	{
 		return false;
 	}
+	
+	UIScriptedMenu GetNoteMenu() {};
+	void SetNoteMenu(UIScriptedMenu menu) {};
+	void SetPlayerRespawning(bool state);
+	bool IsPlayerRespawning();
 };
 
 // -------------------------------------------------------------------------

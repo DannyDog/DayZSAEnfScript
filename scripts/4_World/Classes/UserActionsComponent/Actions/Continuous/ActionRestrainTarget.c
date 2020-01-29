@@ -80,12 +80,21 @@ class ActionRestrainTarget: ActionContinuousBase
 			SurrenderDataRestrain sdr = new SurrenderDataRestrain;
 			target_player.EndSurrenderRequest(sdr);
 		}
-		/*
-		if( target_player.IsMapOpen() )
+		else if( target_player.IsEmotePlaying() )
 		{
-			target_player.CloseMap();
+			target_player.m_EmoteManager.ServerRequestEmoteCancel();
 		}
-		*/
+		
+		target_player.SetRestrainStarted(true);
+	}
+	
+	override void OnEndServer(ActionData action_data)
+	{
+		PlayerBase target_player = PlayerBase.Cast(action_data.m_Target.GetObject());
+		if (target_player)
+		{
+			target_player.SetRestrainStarted(false);
+		}
 	}
 
 	override void OnFinishProgressServer( ActionData action_data )

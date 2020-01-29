@@ -33,7 +33,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GasMask0";
 		descriptionShort = "$STR_CfgVehicles_GasMask1";
 		model = "\DZ\characters\masks\GasMask_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 2;
 		weight = 730;
@@ -189,7 +189,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_NioshFaceMask0";
 		descriptionShort = "$STR_CfgVehicles_NioshFaceMask1";
 		model = "\DZ\characters\masks\NioshFaceMask_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 16;
 		weight = 340;
@@ -243,7 +243,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BalaclavaMask_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BalaclavaMask_ColorBase1";
 		model = "\DZ\characters\masks\Balaclava_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 1;
 		weight = 130;
@@ -345,7 +345,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GP5GasMask0";
 		descriptionShort = "$STR_CfgVehicles_GP5GasMask1";
 		model = "\DZ\characters\masks\GP5GasMask_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 1;
 		weight = 1090;
@@ -402,7 +402,7 @@ class CfgVehicles
 		displayName = "mask filter - PLACEHOLDER";
 		descriptionShort = "placeholder description";
 		model = "\DZ\characters\masks\GP5GasMask_filter.p3d";
-		inventorySlot = "GasMaskFilter";
+		inventorySlot[] = {"GasMaskFilter"};
 		rotationFlags = 2;
 		weight = 200;
 		itemSize[] = {2,2};
@@ -428,7 +428,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Balaclava3Holes_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_Balaclava3Holes_ColorBase1";
 		model = "\DZ\characters\masks\Balaclava_3holes_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 17;
 		weight = 300;
@@ -503,7 +503,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SantasBeard0";
 		descriptionShort = "$STR_CfgVehicles_SantasBeard1";
 		model = "\DZ\characters\masks\SantasBeard_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		weight = 220;
 		itemSize[] = {3,1};
@@ -556,7 +556,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_rag0";
 		descriptionShort = "$STR_cfgvehicles_rag1";
 		model = "\DZ\gear\consumables\Rags.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		ChangeInventorySlot[] = {"Mask"};
 		ChangeIntoOnDetach = "Rag";
 		itemInfo[] = {"Clothing","Mask"};
@@ -611,7 +611,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SurgicalMask0";
 		descriptionShort = "$STR_CfgVehicles_SurgicalMask1";
 		model = "\DZ\characters\masks\Surgical_mask_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		rotationFlags = 2;
 		weight = 340;
@@ -666,7 +666,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HockeyMask0";
 		descriptionShort = "$STR_CfgVehicles_HockeyMask1";
 		model = "\DZ\characters\masks\VintageHockeyMask_g.p3d";
-		inventorySlot = "Mask";
+		inventorySlot[] = {"Mask"};
 		itemInfo[] = {"Clothing","Mask"};
 		weight = 555;
 		itemSize[] = {3,2};
@@ -747,7 +747,7 @@ class CfgNonAIVehicles
 	class Proxymask_filter: ProxyAttachment
 	{
 		scope = 2;
-		inventorySlot = "GasMaskFilter";
+		inventorySlot[] = {"GasMaskFilter"};
 		model = "DZ\characters\masks\proxy\mask_filter.p3d";
 	};
 };

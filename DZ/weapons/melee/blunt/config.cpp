@@ -205,7 +205,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_BrassKnuckles_ColorBase1";
 		model = "\dz\weapons\melee\blunt\Brassknuckles.p3d";
 		rotationFlags = 17;
-		inventorySlot = "";
+		inventorySlot[] = {""};
 		weight = 142;
 		itemSize[] = {1,2};
 		fragility = 0.002;

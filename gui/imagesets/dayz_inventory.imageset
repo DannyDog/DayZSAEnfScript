@@ -62,9 +62,21 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass gorkavisor {
+   Name "gorkavisor"
+   Pos 510 510
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass dbhelmetvisor {
    Name "dbhelmetvisor"
    Pos 0 173
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass dbhelmetmouth {
+   Name "dbhelmetmouth"
+   Pos 170 1020
    Size 170 170
    Flags 0
   }
@@ -284,8 +296,8 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
-  ImageSetDefClass bait {
-   Name "bait"
+  ImageSetDefClass hook {
+   Name "hook"
    Pos 343 1707
    Size 170 170
    Flags 0
@@ -404,6 +416,12 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass weaponopticssmall {
+   Name "weaponopticssmall"
+   Pos 850 340
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass arrows {
    Name "arrows"
    Pos 1366 1025
@@ -440,6 +458,12 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass nvggoggles {
+   Name "nvggoggles"
+   Pos 680 340
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass weaponmuzzle {
    Name "weaponmuzzle"
    Pos 1196 173
@@ -448,21 +472,9 @@ ImageSetClass {
   }
   ImageSetDefClass bayonet {
    Name "bayonet"
-   Pos 1359 607
-   Size 128 36
-   Flags 3
-  }
-  ImageSetDefClass bayonetak {
-   Name "bayonetak"
-   Pos 1379 649
-   Size 128 36
-   Flags 3
-  }
-  ImageSetDefClass bayonetmosin {
-   Name "bayonetmosin"
-   Pos 1380 693
-   Size 128 36
-   Flags 3
+   Pos 1360 850
+   Size 170 170
+   Flags 0
   }
   ImageSetDefClass christmaslights {
    Name "christmaslights"
@@ -473,18 +485,6 @@ ImageSetClass {
   ImageSetDefClass supressor {
    Name "supressor"
    Pos 1196 684
-   Size 170 170
-   Flags 0
-  }
-  ImageSetDefClass buttstockm4 {
-   Name "buttstockm4"
-   Pos 1196 1366
-   Size 170 170
-   Flags 0
-  }
-  ImageSetDefClass opticacog {
-   Name "opticacog"
-   Pos 1196 1196
    Size 170 170
    Flags 0
   }
@@ -530,6 +530,12 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass vestpouches {
+   Name "vestpouches"
+   Pos 850 170
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass chemlight {
    Name "chemlight"
    Pos 684 855
@@ -560,6 +566,18 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass ingredient {
+   Name "ingredient"
+   Pos 340 510
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass combolock {
+   Name "combolock"
+   Pos 170 340
+   Size 170 170
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass AttachmentCategory {
@@ -583,26 +601,26 @@ ImageSetClass {
      Size 170 170
      Flags 0
     }
-    ImageSetDefClass cat_bb_level_1 {
-     Name "cat_bb_level_1"
+    ImageSetDefClass cat_bb_watchtower {
+     Name "cat_bb_watchtower"
      Pos 1537 684
      Size 170 170
      Flags 0
     }
-    ImageSetDefClass cat_bb_level_1_wall_1 {
-     Name "cat_bb_level_1_wall_1"
+    ImageSetDefClass cat_bb_watchtower_wall_1 {
+     Name "cat_bb_watchtower_wall_1"
      Pos 1537 855
      Size 170 170
      Flags 0
     }
-    ImageSetDefClass cat_bb_level_1_wall_2 {
-     Name "cat_bb_level_1_wall_2"
+    ImageSetDefClass cat_bb_watchtower_wall_2 {
+     Name "cat_bb_watchtower_wall_2"
      Pos 1537 1025
      Size 170 170
      Flags 0
     }
-    ImageSetDefClass cat_bb_level_1_wall_3 {
-     Name "cat_bb_level_1_wall_3"
+    ImageSetDefClass cat_bb_watchtower_wall_3 {
+     Name "cat_bb_watchtower_wall_3"
      Pos 1537 1196
      Size 170 170
      Flags 0
@@ -691,57 +709,15 @@ ImageSetClass {
      Size 170 170
      Flags 0
     }
-    ImageSetDefClass cat_bb_level_3 {
-     Name "cat_bb_level_3"
-     Pos 173 343
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_3_wall_1 {
-     Name "cat_bb_level_3_wall_1"
-     Pos 343 343
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_3_wall_2 {
-     Name "cat_bb_level_3_wall_2"
-     Pos 343 514
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_2_wall_3 {
-     Name "cat_bb_level_2_wall_3"
-     Pos 514 514
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_2 {
-     Name "cat_bb_level_2"
-     Pos 684 343
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_2_wall_1 {
-     Name "cat_bb_level_2_wall_1"
-     Pos 855 173
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_2_wall_2 {
-     Name "cat_bb_level_2_wall_2"
-     Pos 855 343
-     Size 170 170
-     Flags 0
-    }
-    ImageSetDefClass cat_bb_level_2_wall_3 {
-     Name "cat_bb_level_2_wall_3"
-     Pos 855 514
-     Size 170 170
-     Flags 0
-    }
     ImageSetDefClass cat_common_cargo {
      Name "cat_common_cargo"
      Pos 1025 343
+     Size 170 170
+     Flags 0
+    }
+    ImageSetDefClass cat_fp_cooking_grill {
+     Name "cat_fp_cooking_grill"
+     Pos 340 340
      Size 170 170
      Flags 0
     }

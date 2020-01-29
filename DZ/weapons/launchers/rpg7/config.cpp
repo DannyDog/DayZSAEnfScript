@@ -96,7 +96,6 @@ class cfgWeapons
 		displayName = "$STR_cfgWeapons_RPG70";
 		descriptionShort = "$STR_cfgWeapons_RPG71";
 		model = "\DZ\weapons\launchers\rpg7\rpg7.p3d";
-		lootTag[] = {"Military_east"};
 		attachments[] = {};
 		class Damage
 		{

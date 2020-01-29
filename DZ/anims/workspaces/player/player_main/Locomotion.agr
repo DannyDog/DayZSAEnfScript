@@ -2416,13 +2416,10 @@ chainAxis = -x"
 			}
 		}
 		$Node AnimNodeQueue {
-			 "LocomotionQ" "" "SickHotColdQ"
-			$items 4 {
+			 "LocomotionQ" "" "MeleeBlockQ"
+			$items 3 {
 				$item {
 					 "WeaponChangeStanceSTM" "IsCommand(CMD_Weapon_Hide) || IsCommand(CMD_Weapon_Show)" "" "" 0.1 0.35 1 0
-				}
-				$item {
-					 "MeleeBlockSrc" "MeleeBlock" "!MeleeBlock" "" 0.1 0.3 1 1
 				}
 				$item {
 					 "ActionMaster" "IsCommand(CMD_Action)" "GetCommandI(CMD_InternalAction) == -2" "" 0.2 0.4 1 1
@@ -2438,7 +2435,7 @@ chainAxis = -x"
 				}
 			}
 			$EditorData {
-				#EditorPos 3.4000001 19.2000008
+				#EditorPos 2.9000001 18.3000011
 			}
 		}
 		$Node AnimNodeBufferSave {
@@ -2451,6 +2448,17 @@ chainAxis = -x"
 			 "LocomotionQBufferUse" "" "LocomotionQ" "LocomotionQBuffer"
 			$EditorData {
 				#EditorPos 3.4000001 20.1000004
+			}
+		}
+		$Node AnimNodeQueue {
+			 "MeleeBlockQ" "" "SickHotColdQ"
+			$items 1 {
+				$item {
+					 "MeleeBlockSrc" "MeleeBlock && !IsTag(\"TagSwitch\")" "!MeleeBlock || IsTag(\"TagSwitch\")" "" 0.1 0.3 1 1
+				}
+			}
+			$EditorData {
+				#EditorPos 2.8 16.8000011
 			}
 		}
 		$Node AnimNodeSource {
@@ -5556,7 +5564,7 @@ RFootIKTarget = RightUpLeg, RightUpLegRoll, RightLeg, RightLegRoll, RightFoot"
 			}
 		}
 		$Node AnimNodeStateMachine {
-			 "ThrowOutSTM" "TagThrowing"
+			 "ThrowOutSTM" "TagThrowingOut"
 			$States 4 {
 				$State {
 					 "Erc" "" "ErcThrowOutG" "Stance == 0" "notime" 1
@@ -5710,7 +5718,7 @@ RFootIKTarget = RightUpLeg, RightUpLegRoll, RightLeg, RightLegRoll, RightFoot"
 					 "" "Throw" "IsCommand(CMD_Throwing) && GetCommandI(CMD_Throwing) >= 1" "0.3" "" 0 "S"
 				}
 				$Transition {
-					 "" "SlidingPose" "IsCommand(CMD_SlidingPose) && Stance != 2" "0.2" "" 1 "S"
+					 "" "SlidingPose" "IsCommand(CMD_SlidingPose) && Stance != 2  && !IsTag(\"TagThrowingOut\")" "0.2" "" 1 "S"
 				}
 			}
 			$EditorData {
@@ -6412,121 +6420,121 @@ RFootIKTarget = RightUpLeg, RightUpLegRoll, RightLeg, RightLegRoll, RightFoot"
 			 "WeaponChangeSTM" ""
 			$States 20 {
 				$State {
-					 "2HDBackRHide" "" "2HDBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 3" "notime" 0
+					 "2HDBackRHide" "TagSwitch" "2HDBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 3" "realtime" 0
 					$EditorData {
 						#EditorPos -20.0 7.0
 					}
 				}
 				$State {
-					 "2HDBackRShow" "" "2HDBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 3" "realtime" 1
+					 "2HDBackRShow" "TagSwitch" "2HDBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 3" "realtime" 1
 					$EditorData {
 						#EditorPos -21.2000008 6.3000002
 					}
 				}
 				$State {
-					 "2HDBackLHide" "" "2HDBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 0" "notime" 0
+					 "2HDBackLHide" "TagSwitch" "2HDBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 0" "realtime" 0
 					$EditorData {
 						#EditorPos -28.8000011 7.0
 					}
 				}
 				$State {
-					 "2HDBackLShow" "" "2HDBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 0" "realtime" 1
+					 "2HDBackLShow" "TagSwitch" "2HDBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 0" "realtime" 1
 					$EditorData {
 						#EditorPos -30.0 6.3000002
 					}
 				}
 				$State {
-					 "RflBackRHide" "" "RflBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 4" "notime" 0
+					 "RflBackRHide" "TagSwitch" "RflBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 4" "realtime" 0
 					$EditorData {
 						#EditorPos -17.6000004 7.0
 					}
 				}
 				$State {
-					 "RflBackRShow" "" "RflBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 4" "realtime" 1
+					 "RflBackRShow" "TagSwitch" "RflBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 4" "realtime" 1
 					$EditorData {
 						#EditorPos -18.8000011 6.3000002
 					}
 				}
 				$State {
-					 "RflBackLShow" "" "RflBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 1" "realtime" 1
+					 "RflBackLShow" "TagSwitch" "RflBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 1" "realtime" 1
 					$EditorData {
 						#EditorPos -27.6000004 6.3000002
 					}
 				}
 				$State {
-					 "RflBackLHide" "" "RflBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 1" "notime" 0
+					 "RflBackLHide" "TagSwitch" "RflBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 1" "realtime" 0
 					$EditorData {
 						#EditorPos -26.3999996 7.0
 					}
 				}
 				$State {
-					 "PistolBeltHide" "" "PistolBeltHideAnim" "GetCommandI(CMD_Weapon_Hide) == 6" "notime" 0
+					 "PistolBeltHide" "TagSwitch" "PistolBeltHideAnim" "GetCommandI(CMD_Weapon_Hide) == 6" "realtime" 0
 					$EditorData {
 						#EditorPos -11.1000004 7.0
 					}
 				}
 				$State {
-					 "PistolBeltShow" "" "PistolBeltShowAnim" "GetCommandI(CMD_Weapon_Show) == 6" "realtime" 1
+					 "PistolBeltShow" "TagSwitch" "PistolBeltShowAnim" "GetCommandI(CMD_Weapon_Show) == 6" "realtime" 1
 					$EditorData {
 						#EditorPos -12.3000002 6.3000002
 					}
 				}
 				$State {
-					 "PistolChestHide" "" "PistolChestHideAnim" "GetCommandI(CMD_Weapon_Hide) == 7" "notime" 0
+					 "PistolChestHide" "TagSwitch" "PistolChestHideAnim" "GetCommandI(CMD_Weapon_Hide) == 7" "realtime" 0
 					$EditorData {
 						#EditorPos -8.6000004 7.0
 					}
 				}
 				$State {
-					 "PistolChestShow" "" "PistolChestShowAnim" "GetCommandI(CMD_Weapon_Show) == 7" "realtime" 1
+					 "PistolChestShow" "TagSwitch" "PistolChestShowAnim" "GetCommandI(CMD_Weapon_Show) == 7" "realtime" 1
 					$EditorData {
 						#EditorPos -9.8000002 6.3000002
 					}
 				}
 				$State {
-					 "KnifeHide" "" "KnifeHideAnim" "GetCommandI(CMD_Weapon_Hide) == 8" "notime" 0
+					 "KnifeHide" "TagSwitch" "KnifeHideAnim" "GetCommandI(CMD_Weapon_Hide) == 8" "realtime" 0
 					$EditorData {
 						#EditorPos -4.9000001 7.0
 					}
 				}
 				$State {
-					 "KnifeShow" "" "KnifeShowAnim" "GetCommandI(CMD_Weapon_Show) == 8" "realtime" 1
+					 "KnifeShow" "TagSwitch" "KnifeShowAnim" "GetCommandI(CMD_Weapon_Show) == 8" "realtime" 1
 					$EditorData {
 						#EditorPos -6.0999999 6.3000002
 					}
 				}
 				$State {
-					 "InventoryHide" "" "InventoryHideAnim" "GetCommandI(CMD_Weapon_Hide) == 9" "notime" 0
+					 "InventoryHide" "TagSwitch" "InventoryHideAnim" "GetCommandI(CMD_Weapon_Hide) == 9" "realtime" 0
 					$EditorData {
 						#EditorPos -1.3000001 7.0
 					}
 				}
 				$State {
-					 "InventoryShow" "" "InventoryShowAnim" "GetCommandI(CMD_Weapon_Show) == 9" "realtime" 1
+					 "InventoryShow" "TagSwitch" "InventoryShowAnim" "GetCommandI(CMD_Weapon_Show) == 9" "realtime" 1
 					$EditorData {
 						#EditorPos -2.4000001 6.3000002
 					}
 				}
 				$State {
-					 "1hdBackLHide" "" "1hdBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 2" "notime" 0
+					 "1hdBackLHide" "TagSwitch" "1hdBackLHideAnim" "GetCommandI(CMD_Weapon_Hide) == 2" "realtime" 0
 					$EditorData {
 						#EditorPos -24.0 7.0
 					}
 				}
 				$State {
-					 "1hdBackLShow" "" "1hdBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 2" "realtime" 1
+					 "1hdBackLShow" "TagSwitch" "1hdBackLShowAnim" "GetCommandI(CMD_Weapon_Show) == 2" "realtime" 1
 					$EditorData {
 						#EditorPos -25.2000008 6.3000002
 					}
 				}
 				$State {
-					 "1hdBackRHide" "" "1hdBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 5" "notime" 0
+					 "1hdBackRHide" "TagSwitch" "1hdBackRHideAnim" "GetCommandI(CMD_Weapon_Hide) == 5" "realtime" 0
 					$EditorData {
 						#EditorPos -15.1999998 7.0
 					}
 				}
 				$State {
-					 "1hdBackRShow" "" "1hdBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 5" "realtime" 1
+					 "1hdBackRShow" "TagSwitch" "1hdBackRShowAnim" "GetCommandI(CMD_Weapon_Show) == 5" "realtime" 1
 					$EditorData {
 						#EditorPos -16.3999996 6.3000002
 					}
@@ -6534,34 +6542,34 @@ RFootIKTarget = RightUpLeg, RightUpLegRoll, RightLeg, RightLegRoll, RightFoot"
 			}
 			$Transitions 20 {
 				$Transition {
-					 "2HDBackLHide" "2HDBackLShow" "GetCommandI(CMD_Weapon_Show) == 0" "0.1" "GetEventTime(\"WeaponChange.2HDLeftBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "2HDBackLHide" "2HDBackLShow" "GetCommandI(CMD_Weapon_Show) == 0 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.2HDLeftBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "RflBackLHide" "RflBackLShow" "GetCommandI(CMD_Weapon_Show) == 1" "0.1" "GetEventTime(\"WeaponChange.RifleLeftBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "RflBackLHide" "RflBackLShow" "GetCommandI(CMD_Weapon_Show) == 1 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.RifleLeftBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "1hdBackLHide" "1hdBackLShow" "GetCommandI(CMD_Weapon_Show) == 2" "0.1" "GetEventTime(\"WeaponChange.1HDLeftBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "1hdBackLHide" "1hdBackLShow" "GetCommandI(CMD_Weapon_Show) == 2 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.1HDLeftBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "2HDBackRHide" "2HDBackRShow" "GetCommandI(CMD_Weapon_Show) == 3" "0.1" "GetEventTime(\"WeaponChange.2HDRightBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "2HDBackRHide" "2HDBackRShow" "GetCommandI(CMD_Weapon_Show) == 3 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.2HDRightBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "RflBackRHide" "RflBackRShow" "GetCommandI(CMD_Weapon_Show) == 4" "0.1" "GetEventTime(\"WeaponChange.RifleRightBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "RflBackRHide" "RflBackRShow" "GetCommandI(CMD_Weapon_Show) == 4 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.RifleRightBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "1hdBackRHide" "1hdBackRShow" "GetCommandI(CMD_Weapon_Show) == 5" "0.1" "GetEventTime(\"WeaponChange.1HDRightBackSlotShow\", \"BlendIn\")" 1 "S"
+					 "1hdBackRHide" "1hdBackRShow" "GetCommandI(CMD_Weapon_Show) == 5 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.1HDRightBackSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "PistolBeltHide" "PistolBeltShow" "GetCommandI(CMD_Weapon_Show) == 6" "0.1" "GetEventTime(\"WeaponChange.PistolBeltShow\", \"BlendIn\")" 1 "S"
+					 "PistolBeltHide" "PistolBeltShow" "GetCommandI(CMD_Weapon_Show) == 6 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.PistolBeltShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "PistolChestHide" "PistolChestShow" "GetCommandI(CMD_Weapon_Show) == 7" "0.1" "GetEventTime(\"WeaponChange.PistolChestShow\", \"BlendIn\")" 1 "S"
+					 "PistolChestHide" "PistolChestShow" "GetCommandI(CMD_Weapon_Show) == 7 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.PistolChestShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "KnifeHide" "KnifeShow" "GetCommandI(CMD_Weapon_Show) == 8" "0.1" "GetEventTime(\"WeaponChange.KnifeSlotShow\", \"BlendIn\")" 1 "S"
+					 "KnifeHide" "KnifeShow" "GetCommandI(CMD_Weapon_Show) == 8 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.KnifeSlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
-					 "InventoryHide" "InventoryShow" "GetCommandI(CMD_Weapon_Show) == 9" "0.1" "GetEventTime(\"WeaponChange.InventorySlotShow\", \"BlendIn\")" 1 "S"
+					 "InventoryHide" "InventoryShow" "GetCommandI(CMD_Weapon_Show) == 9 || RemainingTimeLess(0.01) " "0.1" "GetEventTime(\"WeaponChange.InventorySlotShow\", \"BlendIn\")" 1 "S"
 				}
 				$Transition {
 					 "" "2HDBackLShow" "GetCommandI(CMD_Weapon_Show) == 0" "0.1" "" 1 "S"

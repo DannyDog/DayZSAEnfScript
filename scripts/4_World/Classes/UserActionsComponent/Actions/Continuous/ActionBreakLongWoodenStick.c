@@ -26,6 +26,18 @@ class ActionBreakLongWoodenStick: ActionContinuousBase
 		m_ConditionTarget = new CCTNone;
 	}
 	
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		if( item.IsEmpty() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	override bool HasTarget()
 	{
 		return false;

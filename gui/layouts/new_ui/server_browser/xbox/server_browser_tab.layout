@@ -726,6 +726,117 @@ WindowWidgetClass server_browser_tab_root {
        hexactsize 0
        vexactsize 1
       }
+      ButtonWidgetClass search_name_button {
+       ignorepointer 1
+       size 1 30
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       {
+        GridSpacerWidgetClass search_name_button_panel {
+         ignorepointer 0
+         size 1 30
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 1
+         "no focus" 1
+         Padding 0
+         Margin 0
+         "Size To Content H" 1
+         Columns 2
+         Rows 1
+         {
+          FrameWidgetClass search_name_setting_panel {
+           ignorepointer 1
+           position 0 0
+           size 0.5 0.6
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           {
+            TextWidgetClass search_name_setting_label {
+             ignorepointer 1
+             position 0 0
+             size 1 0.55
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 0
+             vexactsize 0
+             text "#STR_server_browser_tab_root_filters_root_filters_content_search_name_setting_container_search_name_setting_search_name_setting_panel_search_name_setting_label0"
+             font "gui/fonts/sdf_MetronLight24"
+             "text offset" 15 0
+             "exact text" 0
+             "exact text size" 18
+             "text valign" center
+            }
+           }
+          }
+          FrameWidgetClass search_name_setting_panel2 {
+           ignorepointer 1
+           color 1 1 1 0.3725
+           position 0 0
+           size 0.5 1
+           hexactpos 1
+           vexactpos 1
+           hexactsize 0
+           vexactsize 0
+           {
+            PanelWidgetClass search_name_setting_option_wrapper {
+             clipchildren 1
+             ignorepointer 1
+             color 1 1 1 0.3922
+             position 0 0
+             size 217 20
+             valign center_ref
+             hexactpos 1
+             vexactpos 1
+             hexactsize 1
+             vexactsize 1
+             style Outline
+             {
+              EditBoxWidgetClass search_name_setting_option {
+               clipchildren 0
+               ignorepointer 1
+               position 0 0
+               size 0.96 0.8
+               halign center_ref
+               valign center_ref
+               hexactpos 1
+               vexactpos 1
+               hexactsize 0
+               vexactsize 0
+               style ServerBrowser
+               "no focus" 0
+               "next down" "search_ip_setting_option"
+               "limit visible" 0
+               "Use default text" 0
+               "exact text" 0
+               font "gui/fonts/sdf_MetronLight24"
+              }
+             }
+            }
+           }
+          }
+         }
+        }
+        PanelWidgetClass search_name_button_disable {
+         visible 0
+         ignorepointer 1
+         color 0.1569 0.1569 0.1569 0.902
+         position 0 0
+         size 1 1
+         hexactpos 1
+         vexactpos 1
+         hexactsize 0
+         vexactsize 0
+         style rover_sim_colorable
+        }
+       }
+      }
       ButtonWidgetClass sort_button {
        position 0 0
        size 1 30
