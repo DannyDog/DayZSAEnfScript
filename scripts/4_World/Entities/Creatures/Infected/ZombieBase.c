@@ -745,6 +745,7 @@ class ZombieBase extends DayZInfected
 			StartCommand_Hit(m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection);
 			
 			m_DamageHitToProcess = false;
+			m_HeavyHitOverride = false;
 			return true;
 		}
 
@@ -755,8 +756,8 @@ class ZombieBase extends DayZInfected
 	bool EvaluateDamageHitAnimation(EntityAI pSource, string pComponent, string pAmmoType, out bool pHeavyHit, out int pAnimType, out float pAnimHitDir)
 	{
 		//! heavy hit
-		pHeavyHit = GetGame().ConfigGetInt("cfgAmmo " + pAmmoType + " hitAnimation") > 0;
-				
+		pHeavyHit = ((GetGame().ConfigGetInt("cfgAmmo " + pAmmoType + " hitAnimation") > 0) || m_HeavyHitOverride);
+		
 		//! anim type
 		pAnimType = 0; // belly
 		
@@ -767,10 +768,10 @@ class ZombieBase extends DayZInfected
 			else if( pComponent == "Head" ) // head		
 				pAnimType = 2;
 		}
-				
+		
 		//! direction
 		pAnimHitDir = ComputeHitDirectionAngle(pSource);
-
+		
 		return true;
 	}
 	
@@ -897,4 +898,9 @@ class ZombieBase extends DayZInfected
 		}
 		return super.CanReceiveAttachment(attachment, slotId);
 	}
+	
+	/*override void SetCrawlTransition(string zone)
+	{
+		
+	}*/
 }

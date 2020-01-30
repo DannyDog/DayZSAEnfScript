@@ -58,7 +58,9 @@ class DayZInfected extends DayZCreatureAI
 	proto native DayZInfectedCommandMove GetCommand_Move();
 	proto native DayZInfectedCommandVault GetCommand_Vault();
 	proto native DayZInfectedCommandAttack GetCommand_Attack();
-		
+	
+	const float LEG_CRIPPLE_THRESHOLD = 74.0;
+	bool 		m_HeavyHitOverride;
 	//-------------------------------------------------------------
 	void DayZInfected()
 	{
@@ -85,7 +87,12 @@ class DayZInfected extends DayZCreatureAI
 			if( ammo.ToType().IsInherited(Nonlethal_Base) )
 			{
 				//Print("DayZInfected | EEHitBy | nonlethal hit");
-				AddHealth("","Health",-ConvertNonlethalDamage(damageResult.GetDamage(dmgZone,"Shock")));
+				float dam = damageResult.GetDamage(dmgZone,"Shock");
+				//Print("shock damage: " + damageResult.GetDamage(dmgZone,"Shock"));
+				//Print("GetHealth - before: " + GetHealth());
+				HandleSpecialZoneDamage(dmgZone,dam);
+				AddHealth("","Health",-ConvertNonlethalDamage(dam));
+				//Print("GetHealth - after: " + GetHealth());
 			}
 		}
 		
@@ -121,6 +128,24 @@ class DayZInfected extends DayZCreatureAI
 	float ConvertNonlethalDamage(float damage)
 	{
 		float converted_dmg = damage * GameConstants.PROJECTILE_CONVERSION_INFECTED;
+		//Print("ConvertNonlethalDamage | " + converted_dmg);
 		return converted_dmg;
-	} 
+	}
+	
+	void HandleSpecialZoneDamage(string dmgZone, float damage)
+	{
+		if ( damage < LEG_CRIPPLE_THRESHOLD ) //TODO insert dynamically from specific ammo damage (finding from config too slow here!)
+			return;
+		
+		if (dmgZone == "LeftLeg" || dmgZone == "RightLeg")
+		{
+			SetHealth(dmgZone,"Health",0.0);
+		}
+		if (dmgZone == "Torso" || dmgZone == "Head") //TODO separate behaviour for head hits, anim/AI
+		{
+			m_HeavyHitOverride = true;
+		}
+	}
+	
+	//void SetCrawlTransition(string zone) {}
 }

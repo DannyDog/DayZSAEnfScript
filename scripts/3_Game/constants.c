@@ -632,6 +632,6 @@ class GameConstants
 	
 	//! Non-lethal projectile damage QuantityConversions
 	const float PROJECTILE_CONVERSION_ANIMALS 	= 0.1;
-	const float PROJECTILE_CONVERSION_INFECTED 	= 0.1;
+	const float PROJECTILE_CONVERSION_INFECTED 	= 0.44;
 	const float PROJECTILE_CONVERSION_PLAYERS 	= 0.1;
 }

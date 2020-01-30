@@ -7820,25 +7820,13 @@
 						<category name="containers" />
 						<category name="clothes" />
 						<tag name="floor" />
-						<point pos="1.287842 0.010460 -4.979980" range="1.199951" height="2.000000" />
-						<point pos="2.666015 0.010460 -10.239501" range="0.729980" height="1.824951" />
-						<point pos="1.733887 0.010460 -13.060302" range="1.027832" height="1.942719" />
-						<point pos="8.343262 0.010460 -12.516846" range="1.199951" height="2.000000" />
-						<point pos="11.030273 0.010452 -4.491212" range="1.199951" height="2.000000" />
-						<point pos="6.071044 0.010460 -4.405518" range="1.199951" height="2.000000" />
-						<point pos="9.327393 0.010452 -5.499512" range="0.779057" height="2.000000" />
-						<point pos="16.152588 0.010452 -5.145508" range="1.199951" height="2.000000" />
-						<point pos="22.517574 0.010452 -5.022218" range="1.199951" height="2.000000" />
-						<point pos="26.908447 0.010452 -2.213870" range="1.199951" height="2.000000" />
-						<point pos="28.303955 0.010452 2.887449" range="1.199951" height="2.000000" />
-						<point pos="24.177488 0.010452 4.740963" range="1.199951" height="2.000000" />
-						<point pos="17.149660 0.010452 4.750730" range="1.199951" height="2.000000" />
-						<point pos="12.331054 0.010452 4.836424" range="1.199951" height="2.000000" />
-						<point pos="2.862550 0.010460 4.607178" range="1.199951" height="2.000000" />
-						<point pos="9.348145 0.010452 0.013427" range="1.199951" height="2.000000" />
-						<point pos="18.090088 0.010452 -0.466554" range="1.199951" height="2.000000" />
-						<point pos="21.144775 0.010452 1.879637" range="1.199951" height="2.000000" />
-						<point pos="22.251709 0.010452 -1.665529" range="1.199951" height="2.000000" />
+						<point pos="0.518773 0.010468 3.215217" range="0.377055" height="2.000000" />
+						<point pos="-4.140219 0.010468 3.639251" range="1.200000" height="2.000000" />
+						<point pos="1.118757 0.010468 -5.033102" range="0.690407" height="2.000000" />
+						<point pos="-6.432315 0.010468 -5.056009" range="1.200000" height="1.991425" />
+						<point pos="-11.541688 0.010468 4.757290" range="1.200000" height="2.000000" />
+						<point pos="-16.739067 0.010468 -4.682236" range="1.200000" height="2.000000" />
+						<point pos="-20.536377 0.010468 4.959951" range="1.200000" height="2.000000" />
 				</container>
 				<container name="lootshelves" lootmax="4">
 						<category name="tools" />
@@ -7846,16 +7834,20 @@
 						<category name="clothes" />
 						<category name="books" />
 						<tag name="shelves" />
-						<point pos="3.897460 0.561729 -10.052490" range="0.340625" height="0.219925" />
-						<point pos="4.161133 0.903702 -10.376221" range="0.199069" height="0.553589" />
-						<point pos="7.345946 0.562042 -10.382812" range="0.306250" height="0.370003" />
-						<point pos="9.359375 0.562042 -10.142334" range="0.271875" height="0.370003" />
+						<point pos="-1.800129 0.010468 -4.502141" range="0.623898" height="2.000000" />
+						<point pos="-1.196180 0.010468 3.200843" range="0.511047" height="2.000000" />
+						<point pos="-3.226580 0.010468 -0.251008" range="0.470706" height="2.000000" />
+						<point pos="-20.778181 0.010468 -4.218490" range="0.601893" height="2.000000" />
+						<point pos="-10.775822 0.010468 2.521199" range="0.681156" height="2.000000" />
 				</container>
 				<container name="lootweapons" lootmax="2">
 						<category name="weapons" />
 						<category name="explosives" />
-						<point pos="7.495117 1.062042 -9.938232" range="0.306250" height="0.370003" />
-						<point pos="8.810302 1.062042 -10.086182" range="0.237500" height="0.370003" />
+						<point pos="5.001691 0.010468 3.293729" range="0.673381" height="2.000000" />
+						<point pos="3.005081 0.010437 -5.157269" range="1.200000" height="1.917328" />
+						<point pos="7.347686 0.010437 -2.901450" range="0.670899" height="1.677246" />
+						<point pos="-9.047234 0.010468 0.008569" range="0.320149" height="2.000000" />
+						<point pos="-7.189093 0.010468 3.243827" range="0.355510" height="2.000000" />
 				</container>
 		</group>
 		<group name="Land_Mil_Guardhouse1" lootmax="2">

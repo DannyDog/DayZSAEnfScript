@@ -193,8 +193,8 @@ class ActionConstructor
 		actions.Insert(ActionStripCarrierVest);
 		actions.Insert(ActionBuildOven);
 		actions.Insert(ActionDismantleOven);
-		actions.Insert(ActionWritePaper);
-		actions.Insert(ActionReadPaper);
+		//actions.Insert(ActionWritePaper);
+		//actions.Insert(ActionReadPaper);
 		actions.Insert(ActionFillFuel);
 		actions.Insert(ActionPourLiquid);
 		actions.Insert(ActionDrainLiquid);
