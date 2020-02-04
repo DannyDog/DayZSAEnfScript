@@ -2081,7 +2081,7 @@ class CfgSlots
 	{
 		name = "NVG";
 		displayName = "nvggoggles";
-		ghostIcon = "muzzle";
+		ghostIcon = "nvggoggles";
 	};
 	class Slot_helmetFlashlight
 	{

@@ -1,6 +1,6 @@
 ﻿//<'graphics.pbo' properties via Mikero's dos tools, dll version 7.51>
 product=dayz;
 prefix=graphics;
-version=83611;
+version=83662;
 PboType=Arma Unknown pbo type (no config).;
 //</properties>

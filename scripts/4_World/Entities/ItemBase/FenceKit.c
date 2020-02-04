@@ -36,8 +36,8 @@ class FenceKit extends ItemBase
 			if ((GetGame().IsServer() || !GetGame().IsMultiplayer()) && !m_DeployedRegularly)
 			{
 				DisassembleKit(ItemBase.Cast(item));
+				Delete();
 			}
-			GetGame().ObjectDelete( this );
 		}
 	}
 	

@@ -41,12 +41,7 @@ class InviteMenu extends UIScriptedMenu
 			Close();
 		}
 		
-		if (m_iTime > 0)
-		{
-			m_iTime -= 1;
-			m_LogoutTimetext.SetText(m_iTime.ToString());	
-		}
-		else
+		if (m_iTime <= 0)
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.UpdateTime);
 			string ip;
@@ -63,15 +58,6 @@ class InviteMenu extends UIScriptedMenu
 		{
 			m_iTime -= 1;
 			m_LogoutTimetext.SetText(m_iTime.ToString());	
-		}
-		else
-		{
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Remove(this.UpdateTime);
-			string ip;
-			int port;
-			OnlineServices.GetInviteServerInfo( ip, port );
-			g_Game.ConnectFromJoin( ip, port );
-			//Close();
 		}
 	}
 

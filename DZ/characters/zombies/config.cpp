@@ -144,6 +144,10 @@ class CfgVehicles
 							{
 								damage = 1.5;
 							};
+							class Shock
+							{
+								damage = 1.5;
+							};
 						};
 						class FragGrenade
 						{

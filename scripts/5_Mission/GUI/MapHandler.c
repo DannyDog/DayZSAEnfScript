@@ -26,7 +26,7 @@ class MapHandler : ScriptedWidgetEventHandler
 		vector screen_to_map = MapWidget.Cast(w).ScreenToMap(Vector(x,y,0));
 		MapMenu m = MapMenu.Cast(g_Game.GetUIManager().FindMenu(MENU_MAP));
 		int rand = Math.RandomInt(0,eMapMarkerTypes.MARKERTYPE_MAX);
-		m.AddMarker(screen_to_map,ARGB(255,255,0,0),rand);
+		//m.AddMarker(screen_to_map,ARGB(255,255,0,0),rand);
 		
 		//m.AddUserMark(screen_to_map, "marker", ARGB(255,0,0,255), "\\dz\\gear\\navigation\\data\\map_tree_ca.paa");
 		

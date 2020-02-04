@@ -154,7 +154,16 @@ class ActionSkinning: ActionContinuousBase
 				for ( int i2 = 0; i2 < item_count; i2++ )
 				{
 					ItemBase spawn_result = CreateOrgan( action_data.m_Player, body_pos, item_to_spawn, cfg_skinning_organ_class, action_data.m_MainItem );
-					action_data.m_MainItem.DecreaseHealth("","",UADamageApplied.SKINNING); // wear out
+					action_data.m_MainItem.DecreaseHealth("","",UADamageApplied.SKINNING); // wear out tool
+
+					// handle fat/guts from human bodies
+					if ( ( item_to_spawn == "Lard" ) || ( item_to_spawn == "Guts" ) )
+					{
+						if ( body.IsKindOf( "SurvivorBase" ) )
+						{
+							spawn_result.InsertAgent(eAgents.BRAIN, 1);
+						}
+					}
 				}
 			}
 		}	

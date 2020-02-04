@@ -711,14 +711,12 @@ class CfgAmmo
 		airFriction = -0.01;
 		caliber = 0.1;
 		deflecting = 30;
-		dispersion = 0.01;
 		weight = 0.005;
 		class DamageApplied
 		{
 			type = "Projectile";
-			dispersion = 0.1;
+			dispersion = 0.05;
 			bleedThreshold = 0.0;
-			defaultDamageOverride[] = {{0.5,1.0}};
 			class Health
 			{
 				damage = 0;
@@ -729,7 +727,8 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 100;
+				damage = 75;
+				damageOverride[] = {{0.6,1.0}};
 			};
 		};
 		class NoiseHit

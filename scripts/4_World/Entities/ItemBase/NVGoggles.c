@@ -40,7 +40,8 @@ class NVGoggles extends PoweredOptic_Base
 		RotateGoggles(true);
 		
 		m_Strap = Clothing.Cast(parent);
-		SetPlayer(PlayerBase.Cast(m_Strap.GetHierarchyRootPlayer()));
+		if (m_Strap)
+			SetPlayer(PlayerBase.Cast(m_Strap.GetHierarchyRootPlayer()));
 	}
 	
 	override void OnWasDetached ( EntityAI parent, int slot_id )

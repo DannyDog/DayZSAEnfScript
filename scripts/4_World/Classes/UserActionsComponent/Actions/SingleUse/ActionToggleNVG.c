@@ -20,6 +20,16 @@ class ActionToggleNVG: ActionBase
 		return ToggleNVGActionInput;
 	}
 	
+	override bool HasTarget()
+	{
+		return true;
+	}
+	
+	override bool UseMainItem()
+	{
+		return false;
+	}
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		NVGoggles goggles;

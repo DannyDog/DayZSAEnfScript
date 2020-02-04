@@ -717,10 +717,10 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 	}
 	
-	void DraggingOverHeader2(Widget w, int x, int y, Widget receiver )
+	/*void DraggingOverHeader2(Widget w, int x, int y, Widget receiver )
 	{
 		DraggingOverHeader(w, x, y, receiver );
-	}
+	}*/
 
 	void DropReceived( Widget w, int x, int y, CargoContainer cargo )
 	{
@@ -859,14 +859,14 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			{
 				if( !receiver_item.GetInventory().CanRemoveEntity() )
 					return;
-				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
+				GetGame().GetPlayer().PredictiveSwapEntities( receiver_item, item );
 			}
 			else if( receiver_item.GetInventory().CanAddAttachment( item ) )
 			{
 				player.PredictiveTakeEntityToTargetAttachment(receiver_item, item);
 			}
 		}
-		else if( attached_entity && slot_id != -1 &&  attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
+		else if( attached_entity && attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
 			item_base	= ItemBase.Cast( item );
 			stackable	= item_base.ConfigGetFloat("varStackMax");
@@ -877,10 +877,10 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
+				item_base.SplitIntoStackMaxClient( attached_entity, slot_id );
 			}
 		}
-		else if(attached_entity && slot_id == -1 && attached_entity.GetInventory().CanAddAttachment(item))
+		else if(attached_entity && attached_entity.GetInventory().CanAddAttachment(item))
 		{
 			item_base	= ItemBase.Cast( item );
 			stackable	= item_base.ConfigGetFloat("varStackMax");
@@ -891,27 +891,24 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
+				item_base.SplitIntoStackMaxClient( attached_entity, -1 );
 			}
 		}
-		else/* if( m_Entity.GetInventory().CanAddAttachment( item ) )
+		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
 		{
 			item_base	= ItemBase.Cast( item );
 			stackable	= item_base.ConfigGetFloat("varStackMax");
 			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
-				if( slot_id != -1 )
-					player.PredictiveTakeEntityToTargetAttachmentEx(m_Entity, item, slot_id);
-				else
-					player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
+				player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
+				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
 			}
 		}
-		else */if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
 		}
@@ -1103,10 +1100,12 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		EntityAI attached_entity;
 		EntityAI receiver_item;
 		bool is_reserved = false;
+		int slot_id = -1;
 			
 		if(slots_icon)
 		{
 			attached_entity	= slots_icon.GetSlotParent();
+			slot_id			= slots_icon.GetSlotID();
 			receiver_item 	= slots_icon.GetEntity();
 			is_reserved 	= slots_icon.IsReserved();
 		}
@@ -1136,7 +1135,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			else if( receiver_item && !is_reserved )
 			{
 				ItemBase receiver_itemIB	= ItemBase.Cast( receiver_item );
-				ItemBase itemIB				= ItemBase.Cast( receiver_item );
+				ItemBase itemIB				= ItemBase.Cast( item );
 				if( receiver_itemIB && itemIB && receiver_itemIB.CanBeCombined( itemIB ) )
 				{
 					ItemManager.GetInstance().HideDropzones();
@@ -1177,7 +1176,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 				}
 			}
-			else if( attached_entity && attached_entity.GetInventory().CanAddAttachment( item ) )
+			else if( attached_entity && attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 			{
 				ItemManager.GetInstance().HideDropzones();
 				if( attached_entity.GetHierarchyRootPlayer() == GetGame().GetPlayer() )

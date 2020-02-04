@@ -9931,8 +9931,8 @@ class CfgVehicles
 				component = "Doors8";
 				soundPos = "doors8_action";
 				animPeriod = 1;
-				initPhase = ".5 0";
-				initOpened = 0;
+				initPhase = 0;
+				initOpened = 0.5;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";

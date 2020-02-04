@@ -136,7 +136,7 @@ class ActionBase : ActionBase_Basic
 		{
 			HandleReciveData(action_recive_data,action_data);
 			
-			if( MainItemAlwaysInHands() )
+			if( UseMainItem() && MainItemAlwaysInHands() )
 			{
 				if( player.GetItemInHands() != action_data.m_MainItem )
 				{

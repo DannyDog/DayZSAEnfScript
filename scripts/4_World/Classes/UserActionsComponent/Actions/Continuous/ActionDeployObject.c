@@ -55,6 +55,11 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 	void DropDuringPlacing()
 	{
 		EntityAI entity_for_placing = m_ActionData.m_MainItem;
+		if ( entity_for_placing.IsKindOf( "FenceKit" ) || entity_for_placing.IsKindOf( "WatchtowerKit" ) )
+		{
+			return;
+		}
+		
 		vector orientation = m_ActionData.m_Player.GetOrientation();
 		vector 	position = m_ActionData.m_Player.GetPosition() + m_ActionData.m_Player.GetDirection();
 		vector rotation_matrix[3];
@@ -324,14 +329,14 @@ class ActionDeployObject: ActionContinuousBase
 		else
 		{
 			//TODO: make OnEND placement event and move there
-			if ( action_data.m_MainItem.IsKindOf( "FenceKit" ) || action_data.m_MainItem.IsKindOf( "WatchtowerKit" ) )
-			{
-				GetGame().ObjectDelete(  action_data.m_MainItem );
-			}
 			
 			action_data.m_MainItem.SetIsDeploySound( false );
 			action_data.m_MainItem.SetIsPlaceSound( false );
 			action_data.m_MainItem.SoundSynchRemoteReset();
+			if ( action_data.m_MainItem.IsKindOf( "FenceKit" ) || action_data.m_MainItem.IsKindOf( "WatchtowerKit" ) )
+			{
+				action_data.m_MainItem.Delete();
+			}
 		}
 	}
 

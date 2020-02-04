@@ -4009,6 +4009,39 @@ class CfgVehicles
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\combilock3_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.7,{"DZ\gear\camping\data\combilock3_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.5,{"DZ\gear\camping\data\combilock3_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\combilock3_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\combilock3_metal_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_destruct.rvmat"}}};
 				};
 			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
 		};
 	};
 	class CombinationLock4: CombinationLock
@@ -4025,6 +4058,39 @@ class CfgVehicles
 				{
 					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\combilock4_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.7,{"DZ\gear\camping\data\combilock4_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.5,{"DZ\gear\camping\data\combilock4_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\combilock4_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\combilock4_metal_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_destruct.rvmat"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
 				};
 			};
 		};

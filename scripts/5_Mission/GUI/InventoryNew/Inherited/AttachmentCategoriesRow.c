@@ -577,7 +577,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			{
 				if( !receiver_item.GetInventory().CanRemoveEntity() )
 					return;
-				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
+				GetGame().GetPlayer().PredictiveSwapEntities( receiver_item, item );
 			}
 			else if( receiver_item.GetInventory().CanAddAttachment( item ) )
 			{
@@ -674,8 +674,8 @@ class AttachmentCategoriesRow: ClosableContainer
 		if( receiver_item )
 		{
 			int stack_max = InventorySlots.GetStackMaxForSlotId( receiver_item.GetInventory().GetSlotId(0) );
-			int quantity = receiver_item.GetQuantity();
-			bool combinable = ( quantity < stack_max ) && ( ItemBase.Cast( receiver_item ).CanBeCombined( ItemBase.Cast( iw.GetItem() ) ) );
+			//int quantity = receiver_item.GetQuantity();
+			//bool combinable = ( quantity < stack_max ) && ( ItemBase.Cast( receiver_item ).CanBeCombined( ItemBase.Cast( iw.GetItem() ) ) );
 			if( receiver_item.CanBeCombined( ItemBase.Cast( iw.GetItem() ) ) )
 			{
 				ItemManager.GetInstance().HideDropzones();

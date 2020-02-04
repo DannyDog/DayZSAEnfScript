@@ -9,6 +9,16 @@ class ActionTurnOffHeadtorch: ActionBase
 		return true;
 	}
 	
+	override bool HasTarget()
+	{
+		return true;
+	}
+	
+	override bool UseMainItem()
+	{
+		return false;
+	}
+	
 	override void CreateConditionComponents()  
 	{	
 		m_ConditionItem = new CCINone;

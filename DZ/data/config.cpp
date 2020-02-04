@@ -560,8 +560,8 @@ class CfgWorlds
 					groundReflectionCloud[] = {0.005,0.005,0.0075};
 					sky[] = {0.01,0.01,0.01};
 					skyAroundSun[] = {0.01,0.01,0.01};
-					desiredLuminanceCoef = 0.18;
-					desiredLuminanceCoefCloud = 0.18;
+					desiredLuminanceCoef = 0.08;
+					desiredLuminanceCoefCloud = 0.08;
 					EVMin = -2.0;
 					EVMax = 0.0;
 					filmGrainIntensity = 0.0;
@@ -588,8 +588,8 @@ class CfgWorlds
 					groundReflectionCloud[] = {0.01,0.01,0.015};
 					sky[] = {0.01,0.01,0.01};
 					skyAroundSun[] = {0.01,0.01,0.01};
-					desiredLuminanceCoef = 0.18;
-					desiredLuminanceCoefCloud = 0.18;
+					desiredLuminanceCoef = 0.08;
+					desiredLuminanceCoefCloud = 0.08;
 					EVMin = -2.0;
 					EVMax = 0.0;
 					filmGrainIntensity = 0.0;
@@ -616,8 +616,8 @@ class CfgWorlds
 					groundReflectionCloud[] = {0.01,0.01,0.015};
 					sky[] = {0.036,0.056,0.087};
 					skyAroundSun[] = {0.1011,0.1063,0.0926};
-					desiredLuminanceCoef = 0.2;
-					desiredLuminanceCoefCloud = 0.2;
+					desiredLuminanceCoef = 0.15;
+					desiredLuminanceCoefCloud = 0.15;
 					EVMin = -2.0;
 					EVMax = 0.0;
 					filmGrainIntensity = 0.0;
@@ -907,7 +907,7 @@ class CfgWorlds
 					speed = 0.5;
 					size = 0.65;
 					height = 0.85;
-					through = 0.0;
+					through = 0.1;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;

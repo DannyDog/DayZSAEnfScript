@@ -13,6 +13,7 @@ class Pickaxe extends ItemBase
 	override void SetActions()
 	{
 		super.SetActions();
+		AddAction(ActionBuildPartSwitch);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
 		AddAction(ActionUnrestrainTarget);
