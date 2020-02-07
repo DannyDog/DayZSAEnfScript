@@ -774,11 +774,17 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		
 		InventoryLocation dst = new InventoryLocation;
 		#ifdef PLATFORM_CONSOLE
+		x = 0;
 		y = target_cargo.GetItemCount();
 		target_entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.CARGO, dst );
 		#else
 		dst.SetCargoAuto(target_cargo, item, x, y, item.GetInventory().GetFlipCargo());
 		#endif
+		
+		InventoryLocation src = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation(src);
+		if(src.CompareLocationOnly(dst))
+			return;
 		
 		#ifdef PLATFORM_CONSOLE
 		if(dst.IsValid() && target_entity.GetInventory().LocationCanAddEntity(dst))
@@ -817,7 +823,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		receiver.GetUserData(slots_icon);
 		//string name = receiver.GetName();
 		//name.Replace("PanelWidget", "Render");
-		float stackable = 0.0;
 		
 		//ItemPreviewWidget receiver_iw = ItemPreviewWidget.Cast( receiver.FindAnyWidget(name) );
 		if( slots_icon )
@@ -834,6 +839,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			return;
 		}
 		ItemBase item_base	= ItemBase.Cast( item );
+		float stackable = item_base.ConfigGetFloat("varStackMax");
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
@@ -868,9 +874,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else if( attached_entity && attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
-			item_base	= ItemBase.Cast( item );
-			stackable	= item_base.ConfigGetFloat("varStackMax");
-			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachmentEx(attached_entity, item, slot_id);
@@ -882,9 +885,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else if(attached_entity && attached_entity.GetInventory().CanAddAttachment(item))
 		{
-			item_base	= ItemBase.Cast( item );
-			stackable	= item_base.ConfigGetFloat("varStackMax");
-			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachment(attached_entity, item);
@@ -896,9 +896,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
 		{
-			item_base	= ItemBase.Cast( item );
-			stackable	= item_base.ConfigGetFloat("varStackMax");
-			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);

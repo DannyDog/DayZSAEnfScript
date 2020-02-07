@@ -1103,10 +1103,10 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.5,1.0}};
+			defaultDamageOverride[] = {{0.8,1.0}};
 			class Health
 			{
-				damage = 55;
+				damage = 105.9;
 			};
 			class Blood
 			{

@@ -1275,11 +1275,17 @@ class HandsContainer: Container
 
 		InventoryLocation dst = new InventoryLocation;
 		#ifdef PLATFORM_CONSOLE
+		x = 0;
 		y = target_cargo.GetItemCount();
 		target_entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.CARGO, dst );
 		#else
 		dst.SetCargoAuto(target_cargo, item, x, y, item.GetInventory().GetFlipCargo());
 		#endif
+		
+		InventoryLocation src = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation(src);
+		if(src.CompareLocationOnly(dst))
+			return;
 		
 		#ifdef PLATFORM_CONSOLE
 		if(dst.IsValid() && target_entity.GetInventory().LocationCanAddEntity(dst))
@@ -1373,6 +1379,9 @@ class HandsContainer: Container
 			return;
 		}
 		
+		ItemBase item_base	= ItemBase.Cast( item );
+		float stackable = item_base.ConfigGetFloat("varStackMax");
+		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
 			return;
@@ -1404,48 +1413,47 @@ class HandsContainer: Container
 				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
 			}
 		}
-		else if( slot_owner && slot_owner.GetInventory().CanAddAttachment( item ) )
+		else if( slot_owner && slot_owner.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
-			ItemBase item_base2	= ItemBase.Cast( item );
-			float stackable2		= item_base2.ConfigGetFloat("varStackMax");
-			
-			if( stackable2 == 0 || stackable2 >= item_base2.GetQuantity() )
-			{
-				if( slot_id != -1 )
-					player.PredictiveTakeEntityToTargetAttachmentEx(slot_owner, item, slot_id);
-				else
-					player.PredictiveTakeEntityToTargetAttachment(slot_owner, item);
-			}
-			else if( stackable2 != 0 && stackable2 < item_base2.GetQuantity() )
-			{
-				item_base2.SplitIntoStackMaxClient( m_Entity, slot_id );
-			}
-		}
-		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
-		{
-			ItemBase item_base	= ItemBase.Cast( item );
-			float stackable		= item_base.ConfigGetFloat("varStackMax");
-			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
-				if( slot_id != -1 )
-					player.PredictiveTakeEntityToTargetAttachmentEx(m_Entity, item, slot_id);
-				else
-					player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
+				player.PredictiveTakeEntityToTargetAttachmentEx(slot_owner, item, slot_id);
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
 				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
 			}
 		}
+		else if( slot_owner && slot_owner.GetInventory().CanAddAttachment( item ) )
+		{
+			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			{
+				player.PredictiveTakeEntityToTargetAttachment(slot_owner, item);
+			}
+			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			{
+				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
+			}
+		}
+		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
+		{
+			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			{
+				player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
+			}
+			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			{
+				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
+			}
+		}
 		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
 		}
-		else if( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item ) )
+		/*else if( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item ) )
 		{
 			SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
-		}
+		}*/
 		
 		ItemManager.GetInstance().HideDropzones();
 		ItemManager.GetInstance().SetIsDragging( false );

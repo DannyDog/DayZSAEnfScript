@@ -239,7 +239,7 @@ class InventoryQuickbar extends InventoryGridController
 		EntityAI itemInHand = player.GetHumanInventory().GetEntityInHands();
 		if( player && itemInHand == item )
 		{
-			if(player.GetInventory().CanAddEntityToInventory(item))
+			if( player.GetHumanInventory().FindUserReservedLocationIndex(item) != -1 || player.GetInventory().CanAddEntityToInventory(item))
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_H_GOOD;
 			else
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_H_BAD;

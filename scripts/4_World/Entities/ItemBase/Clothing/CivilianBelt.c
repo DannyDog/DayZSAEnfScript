@@ -6,6 +6,7 @@ class CivilianBelt: Clothing
 		{
 			return false;
 		}
-		return true;
+		
+		return IsEmpty();
 	}
 };

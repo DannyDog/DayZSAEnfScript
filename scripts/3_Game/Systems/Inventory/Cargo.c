@@ -111,7 +111,8 @@ class CargoBase : Managed
 		 **/
 		override bool CanReceiveItemIntoCargo (EntityAI item)
 		{
-			return CanFitItemIntoCargo(item);
+			return true;
+			//return CanFitItemIntoCargo(item);
 		}
 	
 		/**@fn			CanFitSwappedItemInCargo
@@ -149,7 +150,8 @@ class CargoBase : Managed
 		 **/
 		override bool CanReceiveItemIntoCargo (EntityAI item)
 		{
-			return CanFitItemIntoCargo(item);
+			return true; 
+			//return CanFitItemIntoCargo(item);
 		}
 	
 		/**@fn			CanFitSwappedItemInCargo

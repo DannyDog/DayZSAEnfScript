@@ -593,7 +593,7 @@ class CfgVehicles
 		weight = 100;
 		itemSize[] = {2,2};
 		itemsCargoSize[] = {2,2};
-		lootTag[] = {"Civilian"};
+		allowOwnedCargoManipulation = 1;
 		absorbency = 0;
 		reversed = 1;
 		hiddenSelections[] = {"ChristmasBox1","ChristmasBox1_ribbon"};

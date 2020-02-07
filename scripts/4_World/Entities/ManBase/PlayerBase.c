@@ -1703,7 +1703,7 @@ class PlayerBase extends ManBase
 	{		
 		if ( IsPlacingLocal() )
 		{
-			if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT && GetGame().IsMultiplayer() )
+			/*if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT && GetGame().IsMultiplayer() )
 			{
 				if (ScriptInputUserData.CanStoreInputUserData())
 				{
@@ -1711,7 +1711,7 @@ class PlayerBase extends ManBase
 					ctx.Write(INPUT_UDT_ADVANCED_PLACEMENT);
 					ctx.Send();
 				}
-			}
+			}*/
 			
 			PlacingCancelLocal();
 		}

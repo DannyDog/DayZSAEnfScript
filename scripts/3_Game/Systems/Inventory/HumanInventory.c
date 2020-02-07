@@ -179,8 +179,26 @@ class HumanInventory : GameInventory
 			hndDebugPrint("[inv] HI::RedirectToHandEvent - source location == HANDS, player has to handle this");
 			
 			EntityAI item = src.GetItem();
-			ClearUserReservedLocation(item);
-			item.GetOnReleaseLock().Invoke(item);
+			
+			int r_index = FindUserReservedLocationIndex(item);
+
+			if(r_index >= 0)
+			{
+				InventoryLocation r_il = new InventoryLocation;
+				GetUserReservedLocation(r_index,r_il);
+
+				ClearUserReservedLocationAtIndex(r_index);
+				int r_type = r_il.GetType();
+				if( r_type == InventoryLocationType.CARGO || r_type == InventoryLocationType.PROXYCARGO )
+				{
+					r_il.GetParent().GetOnReleaseLock().Invoke( item );
+				}
+				else if( r_type == InventoryLocationType.ATTACHMENT )
+				{
+					r_il.GetParent().GetOnAttachmentReleaseLock().Invoke( item, r_il.GetSlot() );
+				}
+			}
+
 			AddInventoryReservation(item, dst, GameInventory.c_InventoryReservationTimeoutShortMS);
 	
 			man_src.GetHumanInventory().HandEvent(mode, new HandEventMoveTo(man_src, src, dst));

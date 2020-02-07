@@ -240,9 +240,10 @@ class ContainerWithCargo: ClosableContainer
 		#ifdef PLATFORM_CONSOLE
 		x = 0;
 		y = cargo.GetItemCount();
-		#endif
-		
+		m_Entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.CARGO, dst );
+		#else
 		dst.SetCargoAuto(cargo, item, x, y, item.GetInventory().GetFlipCargo());
+		#endif
 		
 		#ifdef PLATFORM_CONSOLE
 		if( dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntity(dst))
@@ -324,11 +325,17 @@ class ContainerWithCargo: ClosableContainer
 		
 		InventoryLocation dst = new InventoryLocation;
 		#ifdef PLATFORM_CONSOLE
+		x = 0;
 		y = cargo.GetItemCount();
 		m_Entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.CARGO, dst );
 		#else
 		dst.SetCargoAuto(cargo, item, x, y, item.GetInventory().GetFlipCargo());
 		#endif
+		
+		InventoryLocation src = new InventoryLocation;
+		item.GetInventory().GetCurrentInventoryLocation(src);
+		if(src.CompareLocationOnly(dst))
+			return;
 		
 		#ifdef PLATFORM_CONSOLE
 		if(dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntity(dst))

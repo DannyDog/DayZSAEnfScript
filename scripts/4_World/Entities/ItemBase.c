@@ -548,8 +548,28 @@ class ItemBase extends InventoryItem
 	{
 		if( GetGame() && GetGame().GetPlayer() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
 		{
-			GetGame().GetPlayer().GetHumanInventory().ClearUserReservedLocation( this );
-			GetOnReleaseLock().Invoke( this );
+			PlayerBase player = GetGame().GetPlayer();
+			int r_index = player.GetHumanInventory().FindUserReservedLocationIndex(this);
+
+			if(r_index >= 0)
+			{
+					InventoryLocation r_il = new InventoryLocation;
+					player.GetHumanInventory().GetUserReservedLocation(r_index,r_il);
+
+					player.GetHumanInventory().ClearUserReservedLocationAtIndex(r_index);
+					int r_type = r_il.GetType();
+					if( r_type == InventoryLocationType.CARGO || r_type == InventoryLocationType.PROXYCARGO )
+					{
+						r_il.GetParent().GetOnReleaseLock().Invoke( this );
+					}
+					else if( r_type == InventoryLocationType.ATTACHMENT )
+					{
+						r_il.GetParent().GetOnAttachmentReleaseLock().Invoke( this, r_il.GetSlot() );
+					}
+			
+			}
+			
+			player.GetHumanInventory().ClearUserReservedLocation( this );
 		}
 	}
 

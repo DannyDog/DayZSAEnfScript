@@ -6,6 +6,7 @@ class MilitaryBelt: Clothing
 		{
 			return false;
 		}
-		return true;
+		
+		return IsEmpty();
 	}
 };
