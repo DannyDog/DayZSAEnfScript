@@ -855,7 +855,6 @@ class CfgVehicles
 	class WorkingBoots_Beige: WorkingBoots_ColorBase
 	{
 		scope = 2;
-		descriptionShort = "$STR_CfgVehicles_WorkingBoots_Beige0";
 		visibilityModifier = 0.95;
 		hiddenSelectionsTextures[] = {"\DZ\characters\shoes\data\WorkingBoots_beige_co.paa","\DZ\characters\shoes\data\WorkingBoots_beige_co.paa","\DZ\characters\shoes\data\WorkingBoots_beige_co.paa"};
 	};

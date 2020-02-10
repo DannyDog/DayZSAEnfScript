@@ -960,9 +960,25 @@ class ItemBase extends InventoryItem
 		PlayerBase player = PlayerBase.Cast( GetHierarchyRootPlayer() );
 		if(player)
 		{
-			int index = player.GetHumanInventory().FindUserReservedLocationIndex(this);
-			if(index >= 0 )
-				player.GetHumanInventory().ClearUserReservedLocationAtIndex(index);
+			int r_index = player.GetHumanInventory().FindUserReservedLocationIndex(this);
+			if(r_index >= 0 )
+			{			
+				InventoryLocation r_il = new InventoryLocation;
+				player.GetHumanInventory().GetUserReservedLocation(r_index,r_il);
+
+				player.GetHumanInventory().ClearUserReservedLocationAtIndex(r_index);
+				int r_type = r_il.GetType();
+				if( r_type == InventoryLocationType.CARGO || r_type == InventoryLocationType.PROXYCARGO )
+				{
+					r_il.GetParent().GetOnReleaseLock().Invoke( this );
+				}
+				else if( r_type == InventoryLocationType.ATTACHMENT )
+				{
+					r_il.GetParent().GetOnAttachmentReleaseLock().Invoke( this, r_il.GetSlot() );
+				}
+			
+			}
+			
 			player.RemoveQuickBarEntityShortcut(this);
 			OnInventoryExit(player);
 		}
