@@ -597,7 +597,8 @@ class Icon: LayoutHolder
 
 		ref TSelectableActionInfoArray customActions = new TSelectableActionInfoArray;
 		ItemBase itemBase = ItemBase.Cast( item );
-		itemBase.GetRecipesActions(m_player, customActions);
+		
+		///itemBase.GetRecipesActions(m_player, customActions);
 
 		if( ItemBase.GetDebugActionsMask() & DebugActionType.GENERIC_ACTIONS )
 		{

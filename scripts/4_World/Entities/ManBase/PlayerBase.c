@@ -10,6 +10,7 @@ class PlayerBase extends ManBase
 	private bool					m_LiquidTendencyDrain;
 	private bool					m_HasBloodyHandsVisible;
 	protected bool 					m_PlayerLoaded;
+	protected bool 					m_PlayerDisconnectProcessed;
 	protected int 					m_LocalRefreshAnimStateIdx;
 	protected int 					m_RefreshAnimStateIdx;
 	private int 					m_StoreLoadVersion;
@@ -1571,6 +1572,16 @@ class PlayerBase extends ManBase
 		PreloadDecayTexture();
 		
 		m_PlayerLoaded = true;
+	}
+	
+	void SetPlayerDisconnected(bool state)
+	{
+		m_PlayerDisconnectProcessed = state;
+	}
+	
+	bool IsPlayerDisconnected()
+	{
+		return m_PlayerDisconnectProcessed;
 	}
 
 	// --------------------------------------------------
@@ -5131,6 +5142,8 @@ class PlayerBase extends ManBase
 		if( m_AnalyticsTimer )
 			m_AnalyticsTimer.Stop();
 		UpdatePlayerMeasures();
+		
+		SetPlayerDisconnected(true);
 	}
 
 	void SetModifiers(bool enable)

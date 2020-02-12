@@ -43,6 +43,15 @@ class Torch : ItemBase
 		StopAllParticles();
 	}
 	
+	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
+	{
+		ItemBase att = ItemBase.Cast(GetInventory().FindAttachment(slotId));
+		if (att && att.IsFullQuantity())
+			return false;
+		
+		return true;
+	}
+	
 	override bool CanPutInCargo( EntityAI parent )
 	{
 		if( !super.CanPutInCargo(parent) ) {return false;}
@@ -396,6 +405,11 @@ class Torch : ItemBase
 		CalculateQuantity();
 		UpdateCheckForReceivingUpgrade();
 		
+		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
+		if( player && player.IsPlayerDisconnected() )
+		{
+			return;
+		}
 		TryTransformIntoStick();
 	}
 	

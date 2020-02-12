@@ -31,6 +31,12 @@ class WatchtowerKit extends ItemBase
 	
 	override void EEItemDetached(EntityAI item, string slot_name)
 	{
+		super.EEItemDetached( item, slot_name );
+		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
+		if( player && player.IsPlayerDisconnected() )
+		{
+			return;
+		}
 		if (item && slot_name == "Rope")
 		{
 			if ((GetGame().IsServer() || !GetGame().IsMultiplayer()) && !m_DeployedRegularly)
@@ -56,6 +62,15 @@ class WatchtowerKit extends ItemBase
 	
 	override bool HasProxyParts()
 	{
+		return true;
+	}
+	
+	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
+	{
+		ItemBase att = ItemBase.Cast(GetInventory().FindAttachment(slotId));
+		if (att)
+			return false;
+		
 		return true;
 	}
 	
