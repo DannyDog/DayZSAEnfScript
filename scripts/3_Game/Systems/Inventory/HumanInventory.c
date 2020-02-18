@@ -7,7 +7,7 @@
  * Animations are added on higher level of hierarchy (DayZPlayerInventory for example)
  **/
 class HumanInventory : GameInventory
-{
+{	
 	/**@fn			GetEntityInHands
 	 * @return		entity in hands
 	 **/
@@ -96,32 +96,6 @@ class HumanInventory : GameInventory
 
 	void HandEvent (InventoryMode mode, HandEventBase e)
 	{
-		hndDebugPrint("[inv] HumanInventory::HandEvent(" + typename.EnumToString(InventoryMode, mode) + ") ev=" + e.DumpToString());
-
-		switch (mode)
-		{
-			case InventoryMode.PREDICTIVE:
-				InventoryInputUserData.SendInputUserDataHandEvent(e);
-				PostHandEvent(e);
-				break;
-
-			case InventoryMode.JUNCTURE:
-				InventoryInputUserData.SendInputUserDataHandEvent(e);
-				break;
-
-			case InventoryMode.LOCAL:
-				PostHandEvent(e);
-				break;
-			
-			case InventoryMode.SERVER:
-				if (!e.IsServerSideOnly())
-                	InventoryInputUserData.SendServerHandEventViaInventoryCommand(GetManOwner(), e);
-                PostHandEvent(e);
-                break;
-
-			default:
-				Error("HumanInventory::HandEvent - Invalid mode");
-		}
 	}
 	
 	override bool DropEntity (InventoryMode mode, EntityAI owner, notnull EntityAI item)
@@ -560,6 +534,14 @@ class HumanInventory : GameInventory
 		}
 		
 		return false;
+	}
+	
+	void HandleInventoryManipulation()
+	{}
+	
+	void Update(float delta_time)
+	{
+		HandleInventoryManipulation();
 	}
 };
 

@@ -357,7 +357,6 @@ class PlayerBase extends ManBase
 		RegisterNetSyncVariableBool("m_HasBloodTypeVisible");
 		RegisterNetSyncVariableBool("m_LiquidTendencyDrain");
 		RegisterNetSyncVariableBool("m_IsRestrainStarted");
-		//RegisterNetSyncVariableBool("m_LiftWeapon_player");
 		
 		m_OriginalSlidePoseAngle = GetSlidePoseAngle();
 		
@@ -2197,6 +2196,8 @@ class PlayerBase extends ManBase
 				m_Environment.Update(pDt);
 			}
 		}
+		
+		GetHumanInventory().Update(pDt);
 		//PrintString(pCurrentCommandID.ToString());
 		//PrintString(m_IsUnconscious.ToString());
 		//PrintString("currentCommand:" +pCurrentCommandID.ToString());
@@ -4252,7 +4253,7 @@ class PlayerBase extends ManBase
 		//if( m_hac ) 	return EndMapAnim(userDataType, ctx);
 		
 		if( userDataType == INPUT_UDT_WEAPON_LIFT_EVENT )
-			return ReadSetLiftWeapon(userDataType, ctx);
+			return ReadLiftWeaponRequest(userDataType, ctx);
 		
 		if( m_ActionManager )
 			return m_ActionManager.OnInputUserDataProcess(userDataType, ctx);
@@ -5835,7 +5836,10 @@ class PlayerBase extends ManBase
 				break;*/
 			case DayZPlayerSyncJunctures.SJ_GESTURE_REQUEST :
 				m_EmoteManager.OnSyncJuncture(pJunctureID, pCtx);
-			break;
+				break;
+			case DayZPlayerSyncJunctures.SJ_WEAPON_LIFT :
+				SetLiftWeapon(pJunctureID, pCtx);
+				break;
 		}
 	}
 	
@@ -5898,26 +5902,32 @@ class PlayerBase extends ManBase
 		return m_LiftWeapon_player;
 	}
 	
-	bool ReadSetLiftWeapon(int userDataType, ParamsReadContext ctx)
+	//Server
+	bool ReadLiftWeaponRequest(int userDataType, ParamsReadContext ctx)
 	{
-		if (userDataType != INPUT_UDT_WEAPON_LIFT_EVENT)
-			return false;
-		//m_LiftWeapon_player = state;
-		//SetSynchDirty();
 		bool state;
 		ctx.Read(state);
 		
-		m_LiftWeapon_player = state;
-		m_ProcessLiftWeapon = true;
+		ScriptJunctureData pCtx = new ScriptJunctureData;
+		pCtx.Write(state);
 		
-		/*HumanCommandWeapons	hcw = GetCommandModifier_Weapons();
-		if( hcw )
-			hcw.LiftWeapon(state);
+		SendSyncJuncture(DayZPlayerSyncJunctures.SJ_WEAPON_LIFT, pCtx);
 		
-		Debug.Log("SimulationStamp_server: " + this.GetSimulationTimeStamp());*/
 		return true;
 	}
 	
+	void SetLiftWeapon(int pJunctureID, ParamsReadContext ctx)
+	{
+		bool state;
+		ctx.Read(state);
+		
+		m_ProcessLiftWeaponState = state;
+		m_ProcessLiftWeapon = true;
+		
+		//Print("SetLiftWeapon | STS: " + GetSimulationTimeStamp());
+	}
+	
+	//! Client-side only
 	void SendLiftWeaponSync(bool state)
 	{
 		HumanCommandWeapons	hcw;
@@ -5946,13 +5956,6 @@ class PlayerBase extends ManBase
 			ctx.Write(INPUT_UDT_WEAPON_LIFT_EVENT);
 			ctx.Write(state);
 			ctx.Send();
-			
-			//Debug.Log("SimulationStamp_client: " + this.GetSimulationTimeStamp());
-			m_LiftWeapon_player = state; //on client only, for now
-			
-			hcw = GetCommandModifier_Weapons();
-			if( hcw )
-				hcw.LiftWeapon(state);
 		}
 	}
 	
@@ -5983,7 +5986,8 @@ class PlayerBase extends ManBase
 		{
 			HumanCommandWeapons	hcw = GetCommandModifier_Weapons();
 			if( hcw )
-				hcw.LiftWeapon(m_LiftWeapon_player);
+				hcw.LiftWeapon(m_ProcessLiftWeaponState);
+			m_LiftWeapon_player = m_ProcessLiftWeaponState;
 			m_ProcessLiftWeapon = false;
 			
 			//Debug.Log("SimulationStamp_server: " + this.GetSimulationTimeStamp());
@@ -6501,7 +6505,7 @@ class PlayerBase extends ManBase
 		m_WorkingNVGHeadset = state;
 		if (state)
 		{
-			Print("NVG working by player: " + state);
+			//Print("NVG working by player: " + state);
 		}
 	}
 	
@@ -6690,6 +6694,9 @@ class PlayerBase extends ManBase
 		
 		if (GetItemInHands() == item) //from hands
 		{
+			//HOTFIX
+			return PredictiveDropEntity(item);
+			
 			if (entity.ConfigGetString("physLayer") != "item_large" && heavy_item_only)
 			{
 				return PredictiveDropEntity(item);

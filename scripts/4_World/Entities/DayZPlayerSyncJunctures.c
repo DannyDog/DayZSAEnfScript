@@ -21,6 +21,8 @@ class DayZPlayerSyncJunctures
 	static const int SJ_KURU_REQUEST					= 15;
 	static const int SJ_GESTURE_REQUEST					= 16;
 	static const int SJ_INVENTORY_REPAIR				= 17;
+	static const int SJ_WEAPON_LIFT						= 18;
+	static const int SJ_WEAPON_RAISE_COMPLETED			= 19;
 	
 	//-------------------------------------------------------------
 	//!

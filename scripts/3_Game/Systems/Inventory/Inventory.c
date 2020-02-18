@@ -1,4 +1,4 @@
-
+//-------------------------------------------------------
 enum InventoryCommandType
 {
 	MOVE,			///< generic move, may involve animations
@@ -27,7 +27,8 @@ enum InventoryMode
  * @brief		script counterpart to engine's class Inventory
  **/
 class GameInventory
-{
+{	
+//-------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///@{ Engine native functions
 
@@ -730,31 +731,14 @@ class GameInventory
 	 **/
 	bool TakeToDst (InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
-		inventoryDebugPrint("[inv] I::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
-
 		switch (mode)
 		{
-			case InventoryMode.PREDICTIVE:
-				InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);
-				ClearInventoryReservation(dst.GetItem(),dst);
-				return LocationSyncMoveEntity(src, dst);
-
-			case InventoryMode.JUNCTURE:
-				DayZPlayer player = GetGame().GetPlayer();
-				player.GetHumanInventory().AddInventoryReservation(dst.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS);
-			
-				InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);
-				return true;
-
-			case InventoryMode.LOCAL:
-				return LocationSyncMoveEntity(src, dst);
-
 			case InventoryMode.SERVER:
 				bool ret = LocationSyncMoveEntity(src, dst);
 				InventoryInputUserData.SendServerMove(null, InventoryCommandType.SYNC_MOVE, src, dst);
-				return ret;
+				return true;
 			default:
-				Error("HandEvent - Invalid mode");
+				return false;
 		}
 		return false;
 	}
@@ -901,67 +885,11 @@ class GameInventory
 
 	bool SwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
 	{
-		InventoryLocation src1, src2, dst1, dst2;
-		if (GameInventory.MakeSrcAndDstForSwap(item1, item2, src1, src2, dst1, dst2))
-		{
-			inventoryDebugPrint("[inv] I::Swap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
-
-			switch (mode)
-			{
-				case InventoryMode.PREDICTIVE:
-					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, dst2);
-					return LocationSwap(src1, src2, dst1, dst2);
-
-				case InventoryMode.JUNCTURE:
-					DayZPlayer player = GetGame().GetPlayer();
-					player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
-					player.GetHumanInventory().AddInventoryReservation(dst2.GetItem(), dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
-
-					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, dst2);
-					return true;
-
-				case InventoryMode.LOCAL:
-					return LocationSwap(src1, src2, dst1, dst2);
-
-				default:
-					Error("SwapEntities - HandEvent - Invalid mode");
-			}
-		}
-		else
-			Error("SwapEntities - MakeSrcAndDstForSwap - no inv loc");
 		return false;
 	}
 
 	bool ForceSwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
 	{
-		InventoryLocation src1, src2, dst1;
-		if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
-		{
-			inventoryDebugPrint("[inv] I::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(item2_dst));
-
-			switch (mode)
-			{
-				case InventoryMode.PREDICTIVE:
-					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, item2_dst);
-					return LocationSwap(src1, src2, dst1, item2_dst);
-
-				case InventoryMode.JUNCTURE:
-					DayZPlayer player = GetGame().GetPlayer();
-					player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
-					player.GetHumanInventory().AddInventoryReservation(item2_dst.GetItem(), item2_dst, GameInventory.c_InventoryReservationTimeoutShortMS);
-				
-					InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, item2_dst);
-					return true;
-
-				case InventoryMode.LOCAL:
-					return LocationSwap(src1, src2, dst1, item2_dst);
-
-				default:
-					Error("ForceSwapEntities - HandEvent - Invalid mode");
-			}
-		}
-		else
-			Error("ForceSwapEntities - MakeSrcAndDstForForceSwap - no inv loc");
 		return false;
 	}
 

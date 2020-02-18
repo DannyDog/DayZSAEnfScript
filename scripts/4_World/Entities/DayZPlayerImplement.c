@@ -55,6 +55,7 @@ class DayZPlayerImplement extends DayZPlayer
 	protected bool										m_Camera3rdPerson;
 	protected bool										m_CameraZoomToggle;
 	protected bool										m_bADS;
+	protected bool 										m_ProcessWeaponRaiseCompleted;
 	protected bool 										m_WeaponRaiseCompleted;
 	protected bool										m_CameraEyeZoom;
 	protected bool										m_WasIronsight; // tag of ironsight - if false - then optics
@@ -74,6 +75,7 @@ class DayZPlayerImplement extends DayZPlayer
 	ref WeaponDebug										m_WeaponDebug;
 	ref Timer 											m_DeathEffectTimer;
 	ref Timer 											m_ADSAutomationTimer;
+	protected bool 										m_ADSTimerLaunched; //Nescessary, timer tick may not correspond to command handler tick!
 	ref Timer 											m_FightEndBlendTimer;
 //	protected bool 										m_ShouldReturnToOptics;
 //	protected bool 										m_ShouldReturnToRegularIronsights;
@@ -83,6 +85,7 @@ class DayZPlayerImplement extends DayZPlayer
 	protected bool										m_ContinueFirearmMelee;
 	protected bool 										m_LiftWeapon_player;
 	protected bool 										m_ProcessLiftWeapon;
+	protected bool 										m_ProcessLiftWeaponState;
 	protected int										m_LastSurfaceUnderHash;
 	protected Transport									m_TransportCache;
 	protected string 									m_ClimbingLadderType;
@@ -484,16 +487,34 @@ class DayZPlayerImplement extends DayZPlayer
 	{
 		if (!m_ADSAutomationTimer)
 			m_ADSAutomationTimer = new Timer();
-		if (!m_ADSAutomationTimer.IsRunning())
+		if (!m_ADSAutomationTimer.IsRunning() && !m_ADSTimerLaunched)
 		{
-			m_ADSAutomationTimer.Run(PlayerConstants.WEAPON_RAISE_BLEND_DELAY,this,"CompleteWeaponRaise");
+			//Print("RunADSTimer | STS: " + GetSimulationTimeStamp());
+			m_ADSAutomationTimer.Run(PlayerConstants.WEAPON_RAISE_BLEND_DELAY,this,"SendCompleteWeaponRaiseJuncture");
+			m_ADSTimerLaunched = true;
 		}
+	}
+	
+	void StopADSTimer()
+	{
+		if (m_ADSAutomationTimer)
+			m_ADSAutomationTimer.Stop();
+		m_ADSTimerLaunched = false;
+		m_WeaponRaiseCompleted = false;
+	}
+	
+	void SendCompleteWeaponRaiseJuncture()
+	{
+		ScriptJunctureData pCtx = new ScriptJunctureData;
+		//pCtx.Write(state);
+		
+		SendSyncJuncture(DayZPlayerSyncJunctures.SJ_WEAPON_RAISE_COMPLETED, pCtx);
 	}
 	
 	void CompleteWeaponRaise()
 	{
 		m_WeaponRaiseCompleted = true;
-		//Print("");
+		//Print("m_WeaponRaiseCompleted | STS: " + GetSimulationTimeStamp());
 	}
 	
 	bool IsWeaponRaiseCompleted()
@@ -664,19 +685,22 @@ class DayZPlayerImplement extends DayZPlayer
 			if (weapon && weapon.IsInOptics())
 				weapon.ExitOptics();
 			
-			if (m_ADSAutomationTimer)
-				m_ADSAutomationTimer.Stop();
-			
-			m_WeaponRaiseCompleted = false;
+			StopADSTimer();
 
 			return; // if not raised => return
 		}
 		else
 		{
 			m_IsFireWeaponRaised = true;
-			if (!m_WeaponRaiseCompleted && (!m_ADSAutomationTimer || (m_ADSAutomationTimer && !m_ADSAutomationTimer.IsRunning())) )
+			if ( !m_WeaponRaiseCompleted && (!m_ADSAutomationTimer || (m_ADSAutomationTimer && !m_ADSAutomationTimer.IsRunning())) )
 			{
-				RunADSTimer();
+				if (GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer())
+					RunADSTimer();
+			}
+			if (m_ProcessWeaponRaiseCompleted)
+			{
+				CompleteWeaponRaise();
+				m_ProcessWeaponRaiseCompleted = false;
 			}
 		}
 		
@@ -1246,8 +1270,10 @@ class DayZPlayerImplement extends DayZPlayer
 		
 		if( (!m_IsFireWeaponRaised) || m_LiftWeapon_player )
 		{
-			if (m_ADSAutomationTimer && m_ADSAutomationTimer.IsRunning())
-				m_ADSAutomationTimer.Stop();
+			StopADSTimer();
+			if (m_ADSAutomationTimer)
+				m_ADSAutomationTimer = null;
+			
 			exitSights = true;
 		}
 		else
@@ -1980,7 +2006,6 @@ class DayZPlayerImplement extends DayZPlayer
 			optics = ItemOptics.Cast(entityInHands);
 		}
 		
-		//m_WeaponRaiseCompleted = false;
 		//Print("m_CameraOptics " + m_CameraOptics);
 		if ( m_CameraOptics )
 		{
@@ -2419,6 +2444,9 @@ class DayZPlayerImplement extends DayZPlayer
 			
 		case DayZPlayerSyncJunctures.SJ_DAMAGE_HIT:
 			DayZPlayerSyncJunctures.ReadDamageHitParams(pCtx, m_DamageHitAnimType, m_DamageHitDir, m_DamageHitFullbody);
+			break;
+		case DayZPlayerSyncJunctures.SJ_WEAPON_RAISE_COMPLETED:
+			m_ProcessWeaponRaiseCompleted = true;
 			break;
 		}
 	}

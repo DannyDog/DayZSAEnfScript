@@ -737,12 +737,8 @@ class MissionGameplay extends MissionBase
 			}
 			case INPUT_EXCLUDE_INVENTORY:
 			{
-#ifdef PLATOFRM_CONSOLE
-				GetUApi().ActivateExclude("inventory_console");
-#else
 				GetUApi().ActivateExclude("inventory");
 				GetUApi().GetInputByName("UAWalkRunTemp").ForceEnable(true); // force walk on!
-#endif
 				break;
 			}
 			case INPUT_EXCLUDE_MOUSE_ALL:

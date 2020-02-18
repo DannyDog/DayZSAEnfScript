@@ -307,7 +307,7 @@ class CfgVehicles
 		weight = 20000;
 		itemSize[] = {10,4};
 		itemsCargoSize[] = {10,40};
-		itemBehaviour = 2;
+		itemBehaviour = 0;
 		lootCategory = "Tents";
 		placement = "ForceSlopeOnTerrain";
 		physLayer = "item_large";
@@ -889,6 +889,7 @@ class CfgVehicles
 		weight = 10000;
 		itemSize[] = {9,4};
 		itemsCargoSize[] = {10,30};
+		itemBehaviour = 0;
 		lootCategory = "Tents";
 		placement = "ForceSlopeOnTerrain";
 		physLayer = "item_large";
@@ -4279,6 +4280,7 @@ class CfgVehicles
 		model = "\DZ\gear\camping\wooden_case.p3d";
 		weight = 10000;
 		itemSize[] = {10,5};
+		itemBehaviour = 0;
 		carveNavmesh = 1;
 		canBeDigged = 1;
 		rotationFlags = 2;

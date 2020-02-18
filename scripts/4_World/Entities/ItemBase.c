@@ -865,7 +865,7 @@ class ItemBase extends InventoryItem
 			else if (old_player && newLoc.GetType() == InventoryLocationType.GROUND && m_ThrowItemOnDrop)
 			{
 				//Print("---ThrowPhysically---");
-				ThrowPhysically(old_player, vector.Zero);
+				//ThrowPhysically(old_player, vector.Zero);
 				m_ThrowItemOnDrop = false;
 			}
 		
