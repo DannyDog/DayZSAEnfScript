@@ -323,7 +323,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	 **/
 	override bool OnInventoryJunctureRepairFromServer (ParamsReadContext ctx)
 	{
-		InventoryLocation il = new InventoryLocation;
+/*		InventoryLocation il = new InventoryLocation;
 		if (!il.ReadFromContext(ctx) )
 			return false;
 		
@@ -335,7 +335,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		if( !il_current.CompareLocationOnly(il))
 		{
 			LocationMoveEntity(il_current,il);
-		}
+		}*/
 		return true;
 	}
 	
@@ -734,6 +734,35 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	
 	override bool TakeToDst (InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
+		switch ( mode )
+		{
+			case InventoryMode.SERVER:
+				if (RedirectToHandEvent(mode, src, dst))
+					return true;
+
+				if (GetDayZPlayerOwner().NeedInventoryJunctureFromServer(src.GetItem(), src.GetParent(), dst.GetParent()))
+				{
+					syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") need juncture src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+					
+					if (GetGame().AddInventoryJuncture(GetDayZPlayerOwner(), src.GetItem(), dst, true, GameInventory.c_InventoryReservationTimeoutMS))
+						syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") got juncture");
+					else
+						syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") got juncture");
+				}
+
+				syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + " server sync move src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+				ScriptInputUserData ctx = new ScriptInputUserData;
+				InventoryInputUserData.SerializeMove(ctx, InventoryCommandType.SYNC_MOVE, src, dst);
+	
+				GetDayZPlayerOwner().SendSyncJuncture(DayZPlayerSyncJunctures.SJ_INVENTORY, ctx);
+				syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " store input for remote - DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, mode) + " server sync move src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+				GetDayZPlayerOwner().StoreInputForRemotes(ctx); // @TODO: is this right place? maybe in HandleInputData(server=true, ...)
+				return true;
+			
+			case InventoryMode.LOCAL:
+				LocationSyncMoveEntity(src, dst);
+				return true;
+		}
 		if(!super.TakeToDst(mode,src,dst))
 		{
 			m_postedTakeToDst = new PostedTakeToDst(mode,src,dst);
@@ -760,29 +789,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, m_postedTakeToDst.m_src, m_postedTakeToDst.m_dst);
 					break;
 				case InventoryMode.LOCAL:
-					LocationSyncMoveEntity(m_postedTakeToDst.m_src, m_postedTakeToDst.m_dst);
 					break;
 				case InventoryMode.SERVER:
-					if (RedirectToHandEvent(m_postedTakeToDst.m_mode, m_postedTakeToDst.m_src, m_postedTakeToDst.m_dst))
-						break;
+					break;
 
-					if (GetDayZPlayerOwner().NeedInventoryJunctureFromServer(m_postedTakeToDst.m_src.GetItem(), m_postedTakeToDst.m_src.GetParent(), m_postedTakeToDst.m_dst.GetParent()))
-					{
-						syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, m_postedTakeToDst.m_mode) + ") need juncture src=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_src) + " dst=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_dst));
-					
-						if (GetGame().AddInventoryJuncture(GetDayZPlayerOwner(), m_postedTakeToDst.m_src.GetItem(), m_postedTakeToDst.m_dst, true, GameInventory.c_InventoryReservationTimeoutMS))
-							syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, m_postedTakeToDst.m_mode) + ") got juncture");
-						else
-							syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, m_postedTakeToDst.m_mode) + ") got juncture");
-					}
-
-					syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, m_postedTakeToDst.m_mode) + " server sync move src=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_src) + " dst=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_dst));
-					ScriptInputUserData ctx = new ScriptInputUserData;
-					InventoryInputUserData.SerializeMove(ctx, InventoryCommandType.SYNC_MOVE, m_postedTakeToDst.m_src, m_postedTakeToDst.m_dst);
-	
-					GetDayZPlayerOwner().SendSyncJuncture(DayZPlayerSyncJunctures.SJ_INVENTORY, ctx);
-					syncDebugPrint("[syncinv] " + Object.GetDebugName(GetDayZPlayerOwner()) + " STS=" + GetDayZPlayerOwner().GetSimulationTimeStamp() + " store input for remote - DZPI::Take2Dst(" + typename.EnumToString(InventoryMode, m_postedTakeToDst.m_mode) + " server sync move src=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_src) + " dst=" + InventoryLocation.DumpToStringNullSafe(m_postedTakeToDst.m_dst));
-					GetDayZPlayerOwner().StoreInputForRemotes(ctx); // @TODO: is this right place? maybe in HandleInputData(server=true, ...)
 					break;
 				default:
 					Error("HandEvent - Invalid mode");
@@ -793,6 +803,16 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	
 	override bool SwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
 	{
+		if( mode == InventoryMode.LOCAL )
+		{
+			InventoryLocation src1, src2, dst1, dst2;
+			if (GameInventory.MakeSrcAndDstForSwap(item1, item2, src1, src2, dst1, dst2))
+			{
+				LocationSwap(src1, src2, dst1, dst2);
+				return true;
+			}
+		}
+		
 		if(!super.SwapEntities(mode,item1,item2))
 		{
 			m_postedSwapEntities = new PostedSwapEntities(mode,item1,item2);
@@ -825,7 +845,6 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 						break;
 
 					case InventoryMode.LOCAL:
-						LocationSwap(src1, src2, dst1, dst2);
 						break;
 
 					default:
@@ -841,6 +860,17 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	
 	override bool ForceSwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
 	{
+		if( mode == InventoryMode.LOCAL )
+		{
+			InventoryLocation src1, src2, dst1;
+			if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
+			{
+				LocationSwap(src1, src2, dst1, item2_dst);
+				return true;
+			}
+			
+		}
+		
 		if(!super.ForceSwapEntities(mode,item1,item2,item2_dst))
 		{
 			m_postedForceSwapEntities = new PostedForceSwapEntities(mode,item1,item2,item2_dst);
@@ -874,7 +904,6 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 						break;
 
 					case InventoryMode.LOCAL:
-						LocationSwap(src1, src2, dst1, m_postedForceSwapEntities.m_item2_dst);
 						break;
 
 					default:
