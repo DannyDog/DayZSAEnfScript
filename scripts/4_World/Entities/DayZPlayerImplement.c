@@ -1210,7 +1210,7 @@ class DayZPlayerImplement extends DayZPlayer
 		return true;
 	}
 
-	bool CanClimb( int climbType )
+	bool CanClimb( int climbType, SHumanCommandClimbResult climbRes )
 	{
 		if( IsFBSymptomPlaying() || IsRestrained() || IsUnconscious() || IsInFBEmoteState() )
 			return false;
@@ -1221,6 +1221,17 @@ class DayZPlayerImplement extends DayZPlayer
 		HumanItemBehaviorCfg hibcfg = GetItemAccessor().GetItemInHandsBehaviourCfg();
 		if( !hibcfg.m_bJumpAllowed )
 			return false;
+		
+		if(climbRes)
+		{
+			EntityAI entity;
+			if (Class.CastTo(entity,climbRes.m_GrabPointParent) && entity.IsHologram())
+				return false;
+			if (Class.CastTo(entity,climbRes.m_ClimbStandPointParent) && entity.IsHologram())
+				return false;
+			if (Class.CastTo(entity,climbRes.m_ClimbOverStandPointParent) && entity.IsHologram())
+				return false;
+		}
 
 		return true;
 	}
@@ -1693,14 +1704,11 @@ class DayZPlayerImplement extends DayZPlayer
 					StartCommand_Swim();
 					return;
 				}
-				if( m_LastCommandBeforeUnconscious == DayZPlayerConstants.COMMANDID_VEHICLE)
+				if( m_LastCommandBeforeUnconscious == DayZPlayerConstants.COMMANDID_VEHICLE && m_TransportCache)
 				{
-					if(m_TransportCache)
-					{
-						int crew_index = m_TransportCache.CrewMemberIndex(this);
-						int seat = m_TransportCache.GetSeatAnimationType(crew_index);
-						StartCommand_Vehicle(m_TransportCache,crew_index, seat );
-					}
+					int crew_index = m_TransportCache.CrewMemberIndex(this);
+					int seat = m_TransportCache.GetSeatAnimationType(crew_index);
+					StartCommand_Vehicle(m_TransportCache,crew_index, seat );
 					return;
 				}
 			}

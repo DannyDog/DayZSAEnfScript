@@ -9,7 +9,7 @@ class ActionPlaceObjectCB : ActiondeployObjectCB
 	{
 		EntityAI entity_for_placing = m_ActionData.m_MainItem;	
 		vector orientation = m_ActionData.m_Player.GetLocalProjectionOrientation();
-		vector 	position = m_ActionData.m_Player.GetPosition() + m_ActionData.m_Player.GetDirection();
+		vector position = m_ActionData.m_Player.GetLocalProjectionPosition();
 		vector rotation_matrix[3];
 		float direction[4];
 		InventoryLocation source = new InventoryLocation;

@@ -18,12 +18,16 @@ class PostedSwapEntities
 	InventoryMode m_mode;
 	EntityAI m_item1;
 	EntityAI m_item2;
+	ref InventoryLocation m_dst1;
+	ref InventoryLocation m_dst2;
 	
-	void PostedSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
+	void PostedSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation dst1, notnull InventoryLocation dst2)
 	{
 		m_mode = mode;
 		m_item1 = item1;
 		m_item2 = item2;
+		m_dst1 = dst1;
+		m_dst2 = dst2;
 	}
 }
 
@@ -32,14 +36,16 @@ class PostedForceSwapEntities
 	InventoryMode m_mode;
 	EntityAI m_item1;
 	EntityAI m_item2;
-	ref InventoryLocation m_item2_dst;
+	ref InventoryLocation m_dst1;
+	ref InventoryLocation m_dst2;
 	
-	void PostedForceSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
+	void PostedForceSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation dst1, notnull InventoryLocation dst2)
 	{
 		m_mode = mode;
 		m_item1 = item1;
 		m_item2 = item2;
-		m_item2_dst = item2_dst;
+		m_dst1 = dst1;
+		m_dst2 = dst2;
 	}
 }
 
@@ -803,9 +809,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	
 	override bool SwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
 	{
+		InventoryLocation src1, src2, dst1, dst2;
 		if( mode == InventoryMode.LOCAL )
 		{
-			InventoryLocation src1, src2, dst1, dst2;
 			if (GameInventory.MakeSrcAndDstForSwap(item1, item2, src1, src2, dst1, dst2))
 			{
 				LocationSwap(src1, src2, dst1, dst2);
@@ -815,7 +821,8 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		
 		if(!super.SwapEntities(mode,item1,item2))
 		{
-			m_postedSwapEntities = new PostedSwapEntities(mode,item1,item2);
+			GameInventory.MakeSrcAndDstForSwap(item1, item2, src1, src2, dst1, dst2);
+			m_postedSwapEntities = new PostedSwapEntities(mode, item1, item2, dst1, dst2);
 		}
 		return true;
 	}
@@ -827,21 +834,21 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 			InventoryLocation src1, src2, dst1, dst2;
 			if (GameInventory.MakeSrcAndDstForSwap(m_postedSwapEntities.m_item1, m_postedSwapEntities.m_item2, src1, src2, dst1, dst2))
 			{
-				inventoryDebugPrint("[inv] I::Swap(" + typename.EnumToString(InventoryMode, m_postedSwapEntities.m_mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
+				inventoryDebugPrint("[inv] I::Swap(" + typename.EnumToString(InventoryMode, m_postedSwapEntities.m_mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(m_postedSwapEntities.m_dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(m_postedSwapEntities.m_dst2));
 
 				switch (m_postedSwapEntities.m_mode)
 				{
 					case InventoryMode.PREDICTIVE:
-						InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, dst2);
-						LocationSwap(src1, src2, dst1, dst2);
+						InventoryInputUserData.SendInputUserDataSwap(src1, src2, m_postedSwapEntities.m_dst1, m_postedSwapEntities.m_dst2);
+						LocationSwap(src1, src2, m_postedSwapEntities.m_dst1, m_postedSwapEntities.m_dst2);
 						break;
 			
 					case InventoryMode.JUNCTURE:
 						DayZPlayer player = GetGame().GetPlayer();
-						player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
-						player.GetHumanInventory().AddInventoryReservation(dst2.GetItem(), dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
+						player.GetHumanInventory().AddInventoryReservation(m_postedSwapEntities.m_dst1.GetItem(), m_postedSwapEntities.m_dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
+						player.GetHumanInventory().AddInventoryReservation(m_postedSwapEntities.m_dst2.GetItem(), m_postedSwapEntities.m_dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
 
-						InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, dst2);
+						InventoryInputUserData.SendInputUserDataSwap(src1, src2, m_postedSwapEntities.m_dst1, m_postedSwapEntities.m_dst2);
 						break;
 
 					case InventoryMode.LOCAL:
@@ -873,7 +880,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		
 		if(!super.ForceSwapEntities(mode,item1,item2,item2_dst))
 		{
-			m_postedForceSwapEntities = new PostedForceSwapEntities(mode,item1,item2,item2_dst);
+			if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
+			{
+				m_postedForceSwapEntities = new PostedForceSwapEntities(mode,item1,item2, dst1, item2_dst);
+			}
 		}
 		
 		return true;
@@ -884,23 +894,23 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		if( m_postedForceSwapEntities )
 		{
 			InventoryLocation src1, src2, dst1;
-			if (GameInventory.MakeSrcAndDstForForceSwap(m_postedForceSwapEntities.m_item1, m_postedForceSwapEntities.m_item2, src1, src2, dst1, m_postedForceSwapEntities.m_item2_dst))
+			if (GameInventory.MakeSrcAndDstForForceSwap(m_postedForceSwapEntities.m_item1, m_postedForceSwapEntities.m_item2, src1, src2, dst1, m_postedForceSwapEntities.m_dst2))
 			{
-				inventoryDebugPrint("[inv] I::FSwap(" + typename.EnumToString(InventoryMode, m_postedForceSwapEntities.m_mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(m_postedForceSwapEntities.m_item2_dst));
+				inventoryDebugPrint("[inv] I::FSwap(" + typename.EnumToString(InventoryMode, m_postedForceSwapEntities.m_mode) + ") src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " src2=" + InventoryLocation.DumpToStringNullSafe(src2) +  " dst1=" + InventoryLocation.DumpToStringNullSafe(m_postedForceSwapEntities.m_dst1) + " dst2=" + InventoryLocation.DumpToStringNullSafe(m_postedForceSwapEntities.m_dst2));
 
 				switch (m_postedForceSwapEntities.m_mode)
 				{
 					case InventoryMode.PREDICTIVE:
-						InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, m_postedForceSwapEntities.m_item2_dst);
-						LocationSwap(src1, src2, dst1, m_postedForceSwapEntities.m_item2_dst);
+						InventoryInputUserData.SendInputUserDataSwap(src1, src2, m_postedForceSwapEntities.m_dst1, m_postedForceSwapEntities.m_dst2);
+						LocationSwap(src1, src2, m_postedForceSwapEntities.m_dst1, m_postedForceSwapEntities.m_dst2);
 						break;
 
 					case InventoryMode.JUNCTURE:
 						DayZPlayer player = GetGame().GetPlayer();
-						player.GetHumanInventory().AddInventoryReservation(dst1.GetItem(), dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
-						player.GetHumanInventory().AddInventoryReservation(m_postedForceSwapEntities.m_item2_dst.GetItem(), m_postedForceSwapEntities.m_item2_dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+						player.GetHumanInventory().AddInventoryReservation(m_postedForceSwapEntities.m_dst1.GetItem(), m_postedForceSwapEntities.m_dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
+						player.GetHumanInventory().AddInventoryReservation(m_postedForceSwapEntities.m_dst2.GetItem(), m_postedForceSwapEntities.m_dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
 				
-						InventoryInputUserData.SendInputUserDataSwap(src1, src2, dst1, m_postedForceSwapEntities.m_item2_dst);
+						InventoryInputUserData.SendInputUserDataSwap(src1, src2, m_postedForceSwapEntities.m_dst1, m_postedForceSwapEntities.m_dst2);
 						break;
 
 					case InventoryMode.LOCAL:

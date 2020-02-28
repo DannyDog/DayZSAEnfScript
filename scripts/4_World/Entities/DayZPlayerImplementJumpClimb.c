@@ -21,7 +21,7 @@ class DayZPlayerImplementJumpClimb
 		{
 			int climbType = GetClimbType(climbRes.m_fClimbHeight);
 
-			if ( !m_Player.CanClimb( climbType ) )
+			if ( !m_Player.CanClimb( climbType,climbRes ) )
 				return;
 
 			if( Climb(climbRes) )

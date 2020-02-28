@@ -569,7 +569,7 @@ class PlayerBase extends ManBase
 		{
 			m_AdminLog.PlayerHitBy( damageResult, damageType, this, source, component, dmgZone, ammo );
 		}
-		
+				
 		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
 		
 		if( damageResult != null && damageResult.GetDamage(dmgZone, "Shock") > 0)
@@ -1986,6 +1986,17 @@ class PlayerBase extends ManBase
 		if( m_TrasferValues ) m_TrasferValues.OnScheduledTick(deltaTime);
 		if( m_VirtualHud ) m_VirtualHud.OnScheduledTick();
 		if( GetBleedingManagerServer() ) GetBleedingManagerServer().OnTick(deltaTime);
+		
+		// Check if electric device needs to be unplugged
+		ItemBase heldItem = GetItemInHands();
+		if ( heldItem && heldItem.HasEnergyManager() && heldItem.GetCompEM().IsPlugged() )
+		{
+			// Now we know we are working with an electric device which is plugged into a power source.
+			EntityAI placed_entity = heldItem;
+					
+			// Unplug the device when the player is too far from the power source.
+			placed_entity.GetCompEM().UpdatePlugState();
+		}
 	}
 	
 	void OnCommandHandlerTick(float delta_time, int pCurrentCommandID)
@@ -2071,6 +2082,10 @@ class PlayerBase extends ManBase
 	override void EEItemOutOfHands(EntityAI item)
 	{
 		super.EEItemOutOfHands( item );
+		if ( IsPlacingLocal() )
+		{
+			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(TogglePlacingLocal);
+		}
 		
 		//SetOpticsPreload(false,item);
 	}
@@ -2229,12 +2244,21 @@ class PlayerBase extends ManBase
 			}
 			else
 			{
-				if( m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL && pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE)
-				{
+				if( m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL /*&& pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE*/)
+				{					
 					m_LastCommandBeforeUnconscious = pCurrentCommandID;
-					if( GetCommand_Vehicle() ) 
+					HumanCommandVehicle vehicleCommand = GetCommand_Vehicle();
+					if( vehicleCommand ) 
 					{
-						m_TransportCache = GetCommand_Vehicle().GetTransport();
+						if (vehicleCommand.ShouldBeKnockedOut())
+						{
+							m_TransportCache = null;
+							vehicleCommand.KnockedOutVehicle();
+						}
+						else
+						{
+							m_TransportCache = vehicleCommand.GetTransport();
+						}
 					}
 					StartCommand_Unconscious(0);	
 				}
@@ -2854,7 +2878,7 @@ class PlayerBase extends ManBase
 		return val;
 	}
 	
-	override bool CanClimb( int climbType )
+	override bool CanClimb( int climbType, SHumanCommandClimbResult climbRes )
 	{
 		
 		if ( climbType == 1 && !CanConsumeStamina(EStaminaConsumers.VAULT) )
@@ -2866,7 +2890,7 @@ class PlayerBase extends ManBase
 		if ( climbType > 0 && m_InjuryHandler && m_InjuryHandler.GetInjuryAnimValue() >= InjuryAnimValues.LVL3)
 			return false;
 
-		return super.CanClimb( climbType );
+		return super.CanClimb( climbType,climbRes );
 	}
 
 	override bool CanJump()

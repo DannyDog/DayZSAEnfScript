@@ -598,6 +598,8 @@ class HumanCommandVehicle
 	proto native int				GetVehicleType();
 	
 	proto native void				GetOutVehicle();
+	proto native void				KnockedOutVehicle();
+	proto native bool				ShouldBeKnockedOut();
 	proto native void				JumpOutVehicle();
 	proto native void				SwitchSeat(int pTransportPositionIndex, int pVehicleSeat);
 	proto native bool				IsGettingIn();

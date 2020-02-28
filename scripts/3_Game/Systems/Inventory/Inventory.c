@@ -138,6 +138,10 @@ class GameInventory
 	 * @brief	Returns attached entity in slot (you can use InventorySlots.GetSlotIdFromString(name) to get slot id)
 	 **/
 	proto native EntityAI FindAttachment (int slot);
+	/**
+	 * @brief	Returns attached entity in slot (you can use EntityAI.GetActionComponentName to get slot id)
+	 **/
+	proto native EntityAI FindAttachmentByName (string slotName);
 	/**@fn		HasAttachment
 	 * @brief	brief Returns True if entity is attached to this
 	 **/

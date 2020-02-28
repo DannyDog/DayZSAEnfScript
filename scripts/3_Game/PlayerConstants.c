@@ -1,6 +1,6 @@
 class PlayerConstants 
 {
-	static const float WEAPON_RAISE_BLEND_DELAY = 0.17;
+	static const float WEAPON_RAISE_BLEND_DELAY = 0.136;
 	static const float MELEE2_MOVEMENT_BLEND_DELAY = 0.35;
 	//----------------------------------------------------------
 	//				SHOES DAMAGE/FEET BLEEDING

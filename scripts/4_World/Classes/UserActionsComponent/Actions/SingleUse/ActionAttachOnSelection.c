@@ -118,11 +118,14 @@ class ActionAttachOnSelection: ActionSingleUseBase
 
 				int carId = InventorySlots.GetSlotIdFromString( selections[s] );
 				int slotsCnt = item_entity.GetInventory().GetSlotIdCount();
+				EntityAI currentAttachment = target_entity.GetInventory().FindAttachmentByName( selections[s] );
+				if (currentAttachment) 
+					continue;
 
 				for (int i=0; i < slotsCnt; i++ )
 				{
 					int itmSlotId = item_entity.GetInventory().GetSlotId(i);
-
+					
 					if ( carId == itmSlotId )
 					{
 						return true;
