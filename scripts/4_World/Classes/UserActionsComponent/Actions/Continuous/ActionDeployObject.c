@@ -201,7 +201,8 @@ class ActionDeployObject: ActionContinuousBase
 		
 		if ( !poActionData ) { return; }
 		
-		action_data.m_Player.PlacingCompleteLocal();
+		if (GetGame().IsMultiplayer())
+			action_data.m_Player.PlacingCompleteLocal();
 	}
 	
 	override void OnStartServer( ActionData action_data )
@@ -227,7 +228,8 @@ class ActionDeployObject: ActionContinuousBase
 		}
 		else
 		{
-			//local singleplayer
+			//local singleplayer			
+			action_data.m_Player.PlacingStartServer(action_data.m_MainItem);
 			action_data.m_Player.GetHologramLocal().SetUpdatePosition( false );
 			action_data.m_MainItem.SetIsBeingPlaced( true );
 		}
@@ -276,8 +278,8 @@ class ActionDeployObject: ActionContinuousBase
 			
 			MoveEntityToFinalPosition( action_data, position, orientation );
 			
-			action_data.m_Player.GetHologramLocal().PlaceEntity( entity_for_placing );
-			action_data.m_Player.PlacingCompleteLocal();
+			action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
+			action_data.m_Player.PlacingCompleteServer();
 			
 			entity_for_placing.OnPlacementComplete( action_data.m_Player );
 		}
@@ -323,8 +325,10 @@ class ActionDeployObject: ActionContinuousBase
 			{
 				//local singleplayer
 				action_data.m_Player.PlacingCancelLocal();
+				action_data.m_Player.PlacingCancelServer();
 				action_data.m_Player.LocalTakeEntityToHands( entity_for_placing );
 			}
+			GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
 		}
 		else
 		{
@@ -336,6 +340,10 @@ class ActionDeployObject: ActionContinuousBase
 			if ( action_data.m_MainItem.IsKindOf( "FenceKit" ) || action_data.m_MainItem.IsKindOf( "WatchtowerKit" ) )
 			{
 				action_data.m_MainItem.Delete();
+			}
+			else
+			{
+				GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
 			}
 		}
 	}

@@ -27,7 +27,8 @@ class Hologram
 	protected const float 		SMALL_PROJECTION_GROUND 		= 2;
 	protected const float		DISTANCE_SMALL_PROJECTION		= 1;
 	protected const float		LARGE_PROJECTION_DISTANCE_LIMIT	= 6;
-	protected const float 		PROJECTION_TRANSITION			= 0.25;
+	protected const float 		PROJECTION_TRANSITION_MIN		= 1;
+	protected const float 		PROJECTION_TRANSITION_MAX		= 0.25;
 	protected const float 		LOOKING_TO_SKY					= 0.75;
 	
 	protected float 			m_SlopeTolerance;
@@ -890,7 +891,11 @@ class Hologram
 		{
 			player_to_projection_vector = contact_pos - player.GetPosition();		  
 			player_to_projection_vector.Normalize();
-			contact_pos = player.GetPosition() + (player_to_projection_vector * min_projection_dist);
+			//prevents the hologram to go underground/floor while hologram exceeds min_projection_dist
+			player_to_projection_vector[1] = player_to_projection_vector[1] + PROJECTION_TRANSITION_MIN;
+			
+			contact_pos = player.GetPosition() + (player_to_projection_vector * min_projection_dist);			
+			SetIsFloating( true );
 		}
 		//hologram is at max distance from player
 		else if( player_to_projection_distance >= max_projection_dist )
@@ -898,7 +903,7 @@ class Hologram
 			player_to_projection_vector = contact_pos - player.GetPosition();	
 			player_to_projection_vector.Normalize();
 			//prevents the hologram to go underground/floor while hologram exceeds max_projection_dist
-			player_to_projection_vector[1] = player_to_projection_vector[1] + PROJECTION_TRANSITION;		
+			player_to_projection_vector[1] = player_to_projection_vector[1] + PROJECTION_TRANSITION_MAX;		
 			
 			contact_pos = player.GetPosition() + (player_to_projection_vector * max_projection_dist);
 			SetIsFloating( true );

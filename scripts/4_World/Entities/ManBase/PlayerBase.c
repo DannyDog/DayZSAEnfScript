@@ -3000,6 +3000,12 @@ class PlayerBase extends ManBase
 		if( IsRaised() || GetCommand_Melee() || IsSwimming() || IsClimbingLadder() || IsClimbing() || IsRestrained() )
 			return;
 		
+		if( GetDayZPlayerInventory().IsProcessing() )
+			return;
+		
+		if( GetActionManager().GetRunningAction() != null )
+			return;
+		
 		if (!ScriptInputUserData.CanStoreInputUserData())
 			return;
 		
