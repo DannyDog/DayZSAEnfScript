@@ -118,7 +118,7 @@ class ActionAttachOnSelection: ActionSingleUseBase
 
 				int carId = InventorySlots.GetSlotIdFromString( selections[s] );
 				int slotsCnt = item_entity.GetInventory().GetSlotIdCount();
-				EntityAI currentAttachment = target_entity.GetInventory().FindAttachmentByName( selections[s] );
+				EntityAI currentAttachment = target_entity.GetInventory().FindAttachment( carId );
 				if (currentAttachment) 
 					continue;
 

@@ -2216,6 +2216,7 @@ class PlayerBase extends ManBase
 		//PrintString(pCurrentCommandID.ToString());
 		//PrintString(m_IsUnconscious.ToString());
 		//PrintString("currentCommand:" +pCurrentCommandID.ToString());
+		
 		if (mngr && hic)
 		{
 			mngr.Update(pCurrentCommandID);
@@ -2244,7 +2245,7 @@ class PlayerBase extends ManBase
 			}
 			else
 			{
-				if( m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL /*&& pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE*/)
+				if( m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL && pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE)
 				{					
 					m_LastCommandBeforeUnconscious = pCurrentCommandID;
 					HumanCommandVehicle vehicleCommand = GetCommand_Vehicle();

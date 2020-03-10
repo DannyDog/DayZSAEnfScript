@@ -1704,11 +1704,12 @@ class DayZPlayerImplement extends DayZPlayer
 					StartCommand_Swim();
 					return;
 				}
-				if( m_LastCommandBeforeUnconscious == DayZPlayerConstants.COMMANDID_VEHICLE && m_TransportCache)
+				if( (m_LastCommandBeforeUnconscious == DayZPlayerConstants.COMMANDID_VEHICLE || m_LastCommandBeforeUnconscious == DayZPlayerConstants.COMMANDID_DAMAGE) && (m_TransportCache != null))
 				{
 					int crew_index = m_TransportCache.CrewMemberIndex(this);
 					int seat = m_TransportCache.GetSeatAnimationType(crew_index);
 					StartCommand_Vehicle(m_TransportCache,crew_index, seat );
+					m_TransportCache = null;
 					return;
 				}
 			}
