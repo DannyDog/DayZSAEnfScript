@@ -5,8 +5,8 @@ class Pliers extends ItemBase
 		super.SetActions();
 		
 		AddAction(ActionBuildPartSwitch);
-		AddAction(ActionBuildPart);
 		AddAction(ActionDismantlePart);
+		AddAction(ActionBuildPart);
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionMountBarbedWire);
 		AddAction(ActionUnmountBarbedWire);

@@ -153,8 +153,8 @@ EffectDef {
    StretchMultiplier 1
    VelAngle 1
    RandomAngle 0
-   Velocity 1
-   VelocityRND 2
+   Velocity 0.7
+   VelocityRND 0.6
    GravityMultiply 0
    Restitution 0
    Spring 0.0015

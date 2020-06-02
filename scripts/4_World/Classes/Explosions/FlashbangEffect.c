@@ -55,7 +55,8 @@ class FlashbangEffect
 		{
 			m_DeferAttenuation.Stop();
 		}
-
+		
+		StopSound();
 	}
 	
 	protected void PlaySound()
@@ -102,8 +103,11 @@ class FlashbangEffect
 		PPEffects.FlashbangEffect(0);
 		PPEffects.UpdateColor();
 		PPEffects.SetBlurFlashbang(0);
-
-		g_Game.SetEVValue(0);
+		
+		if(g_Game)
+		{
+			g_Game.SetEVValue(0);
+		}			
 	}
 	
 	protected void SetVisual(float val)

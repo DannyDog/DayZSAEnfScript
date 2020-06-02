@@ -2,13 +2,15 @@ class CarTent extends TentBase
 {
 	void CarTent()
 	{		
-		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC"), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC", OPENING_0), 0 );
 			
 		m_ShowAnimationsWhenPitched.Insert( "Body" );
-		m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
+		//m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
 		m_ShowAnimationsWhenPitched.Insert( "Pack" );
 		
 		m_ShowAnimationsWhenPacked.Insert( "Inventory" );
+		
+		m_HalfExtents = Vector(1.8, 0.33, 3.4);
 	}
 		
 	override void EEInit()

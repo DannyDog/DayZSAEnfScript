@@ -287,7 +287,7 @@ class CombinationLock extends ItemBase
 		//m_LockActionPerformed = LockAction.NONE;
 	}
 	
-	void UnlockServer( notnull EntityAI player, EntityAI parent )
+	void UnlockServer( EntityAI player, EntityAI parent )
 	{
 		bsbDebugPrint("[bsb] CombinationLock.UnlockServer " + " m_Combination=" + m_Combination + " m_CombinationLocked=" + m_CombinationLocked);
 		if ( IsLockAttached() )
@@ -300,7 +300,10 @@ class CombinationLock extends ItemBase
 			fence.GetInventory().SetSlotLock( inventory_location.GetSlot(), false );			
 	
 			//drop entity from attachment slot
-			player.ServerDropEntity( this );
+			if (player)
+				player.ServerDropEntity( this );
+			else
+				parent.GetInventory().DropEntity(InventoryMode.SERVER, parent, this);
 			SetPosition( fence.GetKitSpawnPosition() );
 			PlaceOnSurface();
 			
@@ -482,5 +485,7 @@ class CombinationLock extends ItemBase
 		AddAction(ActionAttachToConstruction);		
 		AddAction(ActionNextCombinationLockDial);
 		AddAction(ActionDialCombinationLock);
+		AddAction(ActionNextCombinationLockDialOnTarget);
+		AddAction(ActionDialCombinationLockOnTarget);
 	}
 }

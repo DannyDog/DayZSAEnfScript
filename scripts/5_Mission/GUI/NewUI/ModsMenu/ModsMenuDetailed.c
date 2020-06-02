@@ -39,16 +39,12 @@ class ModsMenuDetailed extends ScriptedWidgetEventHandler
 		if( !m_Root.IsVisible() )
 			m_Scroll.VScrollToPos( 0 );
 		m_Root.Show( true );
-		if( m_Menu )
-			m_Menu.HideNewsfeed();
 	}
 	
 	void Close()
 	{
 		Highlight( null );
 		m_Root.Show( false );
-		if( m_Menu )
-			m_Menu.ShowNewsfeed();
 	}
 	
 	bool IsOpen()

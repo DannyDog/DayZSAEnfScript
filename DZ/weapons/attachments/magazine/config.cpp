@@ -1458,15 +1458,116 @@ class CfgMagazines
 	class Mag_Ruger1022_10Rnd: Magazine_Base
 	{
 		scope = 2;
-		displayName = "$STR_CfgMagazines_Mag_Ruger1022_10Rnd0";
-		descriptionShort = "$STR_CfgMagazines_Mag_Ruger1022_10Rnd1";
+		displayName = "$STR_cfgmagazines_mag_ruger1022_10rnd0";
+		descriptionShort = "$STR_cfgmagazines_mag_ruger1022_10rnd1";
 		model = "\DZ\weapons\attachments\magazine\magazine_ruger1022_10.p3d";
-		weight = 80;
-		itemSize[] = {1,2};
+		weight = 50;
+		itemSize[] = {1,1};
 		count = 10;
 		ammo = "Bullet_22";
 		ammoItems[] = {"Ammo_22"};
 		tracersEvery = 0;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\data\ruger_mag2.rvmat"}},{0.7,{"DZ\weapons\attachments\data\ruger_mag2.rvmat"}},{0.5,{"DZ\weapons\attachments\data\ruger_mag2_damage.rvmat"}},{0.3,{"DZ\weapons\attachments\data\ruger_mag2_damage.rvmat"}},{0.0,{"DZ\weapons\attachments\data\ruger_mag2_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class MagRifle_fill_in
+				{
+					soundSet = "MagRifle_fill_in_SoundSet";
+					id = 1;
+				};
+				class MagRifle_fill_loop
+				{
+					soundSet = "MagRifle_fill_loop_SoundSet";
+					id = 2;
+				};
+				class MagRifle_fill_out
+				{
+					soundSet = "MagRifle_fill_out_SoundSet";
+					id = 3;
+				};
+				class MagRifle_empty_in
+				{
+					soundSet = "MagRifle_empty_in_SoundSet";
+					id = 4;
+				};
+				class MagRifle_empty_loop
+				{
+					soundSet = "MagRifle_empty_loop_SoundSet";
+					id = 5;
+				};
+				class MagRifle_empty_out
+				{
+					soundSet = "MagRifle_empty_out_SoundSet";
+					id = 6;
+				};
+				class MagPistol_fill_in
+				{
+					soundSet = "MagPistol_fill_in_SoundSet";
+					id = 7;
+				};
+				class MagPistol_fill_loop
+				{
+					soundSet = "MagPistol_fill_loop_SoundSet";
+					id = 8;
+				};
+				class MagPistol_fill_out
+				{
+					soundSet = "MagPistol_fill_out_SoundSet";
+					id = 9;
+				};
+				class MagPistol_empty_in
+				{
+					soundSet = "MagPistol_empty_in_SoundSet";
+					id = 10;
+				};
+				class MagPistol_empty_loop
+				{
+					soundSet = "MagPistol_empty_loop_SoundSet";
+					id = 11;
+				};
+				class MagPistol_empty_out
+				{
+					soundSet = "MagPistol_empty_out_SoundSet";
+					id = 12;
+				};
+			};
+		};
+	};
+	class Mag_Ruger1022_15Rnd: Magazine_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgMagazines_Mag_Ruger1022_15Rnd0";
+		descriptionShort = "$STR_CfgMagazines_Mag_Ruger1022_15Rnd1";
+		model = "\DZ\weapons\attachments\magazine\magazine_ruger1022_15.p3d";
+		weight = 80;
+		itemSize[] = {1,2};
+		count = 15;
+		ammo = "Bullet_22";
+		ammoItems[] = {"Ammo_22"};
+		tracersEvery = 0;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\data\ruger_mag2.rvmat"}},{0.7,{"DZ\weapons\attachments\data\ruger_mag2.rvmat"}},{0.5,{"DZ\weapons\attachments\data\ruger_mag2_damage.rvmat"}},{0.3,{"DZ\weapons\attachments\data\ruger_mag2_damage.rvmat"}},{0.0,{"DZ\weapons\attachments\data\ruger_mag2_destruct.rvmat"}}};
+				};
+			};
+		};
 		class AnimEvents
 		{
 			class SoundWeapon
@@ -1540,7 +1641,7 @@ class CfgMagazines
 		displayName = "$STR_CfgMagazines_Mag_Ruger1022_30Rnd0";
 		descriptionShort = "$STR_CfgMagazines_Mag_Ruger1022_30Rnd1";
 		model = "\DZ\weapons\attachments\magazine\magazine_ruger1022_30.p3d";
-		weight = 80;
+		weight = 110;
 		itemSize[] = {1,3};
 		count = 30;
 		ammo = "Bullet_22";
@@ -4801,6 +4902,12 @@ class CfgNonAIVehicles
 		scope = 2;
 		inventorySlot = "magazine";
 		model = "\dz\weapons\attachments\magazine\magazine_ruger1022_10.p3d";
+	};
+	class Proxymagazine_ruger1022_15: ProxyAttachment
+	{
+		scope = 2;
+		inventorySlot = "magazine";
+		model = "\dz\weapons\attachments\magazine\magazine_ruger1022_15.p3d";
 	};
 	class ProxyMagazine_ruger1022_30: ProxyAttachment
 	{

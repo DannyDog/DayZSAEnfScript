@@ -130,13 +130,37 @@ class FirearmActionLoadMultiBulletQuick : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
-		return player.GetWeaponManager().GetPreparedMagazine()!=null;
+		Weapon_Base weapon = Weapon_Base.Cast( item );
+		return player.GetWeaponManager().CanLoadBullet(weapon ,player.GetWeaponManager().GetPreparedMagazine());
 	}
 	
 	override void Start( ActionData action_data )
 	{
 		super.Start( action_data );
-		Magazine mag = Magazine.Cast(action_data.m_Player.GetWeaponManager().GetPreparedMagazine());	
+		
+		WeaponManager weaponManager = action_data.m_Player.GetWeaponManager();
+		int idx = 0;
+		Magazine mag = weaponManager.GetNextPreparedMagazine(idx);
+		Weapon weapon = Weapon.Cast(action_data.m_Player.GetItemInHands());
+		
+		int internalCount = weapon.GetInternalMagazineCartridgeCount(0);
+		int maxCount = weapon.GetInternalMagazineMaxCartridgeCount(0) + 1;
+		int total = mag.GetAmmoCount() + internalCount;
+		
+		if (total < maxCount)
+		{	
+			//Increment index for the first additional mag find, since GetNextPreparedMagazine does not do that
+			//Normally the mag at found index is combined right after, removing it from the suitable magazine array	
+			++idx;
+			Magazine additionalMag = weaponManager.GetNextPreparedMagazine(idx);
+
+			while ((additionalMag != null) && (total < maxCount))
+			{
+				total += additionalMag.GetAmmoCount();
+				mag.CombineItems(additionalMag);
+			 	additionalMag = weaponManager.GetNextPreparedMagazine(idx);
+			}
+		}
 
 		action_data.m_Player.GetWeaponManager().LoadMultiBullet(mag, this);
 	}

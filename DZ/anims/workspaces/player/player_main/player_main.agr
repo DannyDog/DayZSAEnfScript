@@ -69,6 +69,7 @@ $AnimGraph 7 {
 			 CMD_Unconscious -1
 			 CMD_Unconscious_Exit -1
 			 CMD_PulledOut -1
+			 CMD_TRAILER_WALK_AWAY -1
 		}
 		$Vars {
 			#Var MovementSpeed float 0.0 0.0 3.0 ""

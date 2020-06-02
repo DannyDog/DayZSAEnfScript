@@ -45,7 +45,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_22"};
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {1,1,0.7};
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\MkII\MkII_reload",0.7,1,20};
 		reloadAction = "ReloadRugerMK2";
@@ -68,7 +68,7 @@ class cfgWeapons
 		};
 		class NoiseShoot
 		{
-			strength = 8.0;
+			strength = 3.0;
 			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol

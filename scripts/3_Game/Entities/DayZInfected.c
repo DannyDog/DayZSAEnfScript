@@ -7,6 +7,7 @@ enum DayZInfectedConstants
 	COMMANDID_HIT,
 	COMMANDID_ATTACK,
 	COMMANDID_CRAWL,
+	COMMANDID_SCRIPT,
 	
 	//! mind states
 	MINDSTATE_CALM,
@@ -42,6 +43,72 @@ class DayZInfectedCommandAttack
 	proto native bool WasHit();
 }
 
+class DayZInfectedCommandScript
+{
+	//! constructor must have 1st parameter to be DayZInfected
+	// DayZInfectedCommandScript(DayZInfected pInfected);
+
+	//! virtual to be overridden
+	//! called when command starts
+	void 	OnActivate()	{ };
+
+	//! called when command ends
+	void 	OnDeactivate()	{ };
+
+
+	//---------------------------------------------------------------
+	// usable everywhere
+
+	//! this terminates command script and shows CommandHandler(  ... pCurrentCommandFinished == true );
+	proto native void 	SetFlagFinished(bool pFinished);
+
+
+	//---------------------------------------------------------------
+	// PreAnim Update 
+
+	//! override this !
+	//! called before any animation is processed
+	//! here change animation values, add animation commands	
+	void 	PreAnimUpdate(float pDt);
+
+	//! function usable in PreAnimUpdate or in !!! OnActivate !!!
+	proto native 	void	PreAnim_CallCommand(int pCommand, int pParamInt, float pParamFloat);
+	proto native 	void	PreAnim_SetFloat(int pVar, float pFlt);
+	proto native 	void	PreAnim_SetInt(int pVar, int pInt);
+	proto native 	void	PreAnim_SetBool(int pVar, bool pBool);
+
+	//---------------------------------------------------------------
+	// PrePhys Update 
+
+	//! override this !
+	//! after animation is processed, before physics is processed
+	void 	PrePhysUpdate(float pDt);
+
+	//! script function usable in PrePhysUpdate
+	proto native 	bool	PrePhys_IsEvent(int pEvent);
+	proto native 	bool	PrePhys_IsTag(int pTag);
+	proto native 	bool	PrePhys_GetTranslation(out vector pOutTransl);		// vec3 in local space !
+	proto native 	bool	PrePhys_GetRotation(out float pOutRot[4]);         	// quaternion in local space !
+	proto native 	void	PrePhys_SetTranslation(vector pInTransl); 			// vec3 in local space !
+	proto native 	void	PrePhys_SetRotation(float pInRot[4]);				// quaternion in local space !
+
+	//---------------------------------------------------------------
+	// PostPhys Update 
+
+	//! override this !
+	//! final adjustment of physics state (after physics was applied)
+	//! returns true if command continues running / false if command should end (or you can use SetFlagFinished(true))
+	bool	PostPhysUpdate(float pDt);
+
+	//! script function usable in PostPhysUpdate
+	proto native 	void	PostPhys_GetPosition(out vector pOutTransl);		//! vec3 in world space
+	proto native 	void	PostPhys_GetRotation(out float pOutRot[4]);        	//! quaternion in world space
+	proto native 	void	PostPhys_SetPosition(vector pInTransl);				//! vec3 in world space
+	proto native 	void	PostPhys_SetRotation(float pInRot[4]);				//! quaternion in world space
+	proto native 	void	PostPhys_LockRotation();							//! do not process rotations !
+}
+
+
 class DayZInfected extends DayZCreatureAI
 {	
 	proto native DayZInfectedType GetDayZInfectedType();
@@ -58,6 +125,12 @@ class DayZInfected extends DayZCreatureAI
 	proto native DayZInfectedCommandMove GetCommand_Move();
 	proto native DayZInfectedCommandVault GetCommand_Vault();
 	proto native DayZInfectedCommandAttack GetCommand_Attack();
+	
+	//! scripted commands
+	proto native DayZInfectedCommandScript StartCommand_Script(DayZInfectedCommandScript pInfectedCommand);
+	proto native DayZInfectedCommandScript StartCommand_ScriptInst(typename pCallbackClass);
+	proto native DayZInfectedCommandScript GetCommand_Script();
+
 	
 	const float LEG_CRIPPLE_THRESHOLD = 74.0;
 	bool 		m_HeavyHitOverride;
@@ -134,7 +207,7 @@ class DayZInfected extends DayZCreatureAI
 	
 	void HandleSpecialZoneDamage(string dmgZone, float damage)
 	{
-		if ( damage < LEG_CRIPPLE_THRESHOLD ) //TODO insert dynamically from specific ammo damage (finding from config too slow here!)
+		if ( damage < LEG_CRIPPLE_THRESHOLD )
 			return;
 		
 		if (dmgZone == "LeftLeg" || dmgZone == "RightLeg")

@@ -31,7 +31,7 @@ class ServerBrowserFilterContainer extends ScriptedWidgetEventHandler
 		
 		ref array<string> character_name_options ={ "#server_browser_disabled", player_name };
 		ref array<string> region_options = { "#server_browser_all", "#server_browser_americas", "#server_browser_europe", "#server_browser_asia" };
-		ref array<string> sort_options = { "#server_browser_column_host A-Z", "#server_browser_column_host Z-A", "#server_browser_entry_empty - #server_details_popularity_full", "#server_details_popularity_full - #server_browser_entry_empty" };
+		ref array<string> sort_options = { "#server_browser_column_host A-Z", "#server_browser_column_host Z-A", "#players_title >", "#players_title <" };
 		ref array<string> ping_options = { "#server_browser_disabled", "<30", "<50", "<100", "<200", "<300", "<500" };
 		ref array<string> two_options = { "#server_browser_disabled", "#server_browser_show" };
 		
@@ -366,12 +366,12 @@ class ServerBrowserFilterContainer extends ScriptedWidgetEventHandler
 			}
 			case 2:
 			{
-				m_Tab.SetSort( ESortType.SLOTS, ESortOrder.DESCENDING );
+				m_Tab.SetSort( ESortType.POPULATION, ESortOrder.DESCENDING );
 				break;
 			}
 			case 3:
 			{
-				m_Tab.SetSort( ESortType.SLOTS, ESortOrder.ASCENDING );
+				m_Tab.SetSort( ESortType.POPULATION, ESortOrder.ASCENDING );
 				break;
 			}
 		}

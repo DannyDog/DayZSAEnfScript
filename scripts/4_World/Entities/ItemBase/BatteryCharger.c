@@ -237,6 +237,9 @@ class BatteryCharger extends ItemBase
 
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId ) 
 	{
+		if ( !super.CanReceiveAttachment(attachment, slotId) )
+			return false;
+		
 		ItemBase ibase;
 		Class.CastTo(ibase, attachment);
 		

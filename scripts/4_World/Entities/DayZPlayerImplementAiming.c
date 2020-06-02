@@ -7,15 +7,34 @@ this file is implemenation of dayzPlayer in script
 
 */
 
+enum eSwayStates
+{
+	DEFAULT,
+	HOLDBREATH_IN,
+	HOLDBREATH_STABLE,
+	HOLDBREATH_EXHAUSTED,
+	MAX
+}
+
+class PlayerSwayConstants
+{
+	static const float SWAY_MULTIPLIER_DEFAULT = 1.0;
+	static const float SWAY_MULTIPLIER_STABLE = 0.05;
+	static const float SWAY_MULTIPLIER_EXHAUSTED = 0.6;
+	static const float SWAY_TIME_IN = 1.5;
+	static const float SWAY_TIME_STABLE = 3.0;
+	static const float SWAY_TIME_EXHAUSTED = 1.5;
+	static const float SWAY_TIME_OUT = 0.5;
+}
+
 class DayZPlayerImplementAiming
 {
 
 	//-------------------------------------------------------------
 	//!
 	//! This HeadingModel - Clamps heading
-	//! 
-
-
+	//!
+	
 	protected const float SWAY_WEIGHT_SCALER = 1;//use this to scale the sway effect up/down
 	protected float m_HorizontalNoise;
 	protected float m_HorizontalTargetValue;
@@ -23,6 +42,15 @@ class DayZPlayerImplementAiming
 	protected DayZPlayerImplement	m_PlayerDpi;
 	protected PlayerBase m_PlayerPb;
 	protected float m_TotalTime;
+	protected float m_ReferenceTime = 0;
+	protected float m_SwayStateStartTime;
+	//protected float m_SwayStateStartTime[eSwayStates.MAX];
+	protected float m_LastSwayMultiplier = PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT;
+	protected float m_StateStartSwayMultiplier;
+	protected float m_HorizontalNoiseXAxisOffset = 0;
+	protected float m_BreathingXAxisOffset = 0;
+	protected float m_BreathingYAxisOffset = 0;
+	protected bool m_HoldingBreathSet;
 	protected bool	m_AimNoiseAllowed = true;	
 	protected bool	m_ProceduralRecoilEnabled = true;	
 	protected ref RecoilBase m_CurrentRecoil;
@@ -33,14 +61,15 @@ class DayZPlayerImplementAiming
 	protected float m_CamShakeX;
 	protected float m_CamShakeY;
 	protected vector m_SwayModifier = "1 1 1";//"max_speed_noise radius_noise overall_speed"
+	protected int m_SwayState = -1;
 
 	protected static float	m_AimXClampRanges[] = { -180, -20, 90, 	0, -50, 90,  180, -20, 90 };
-
 	
 	void DayZPlayerImplementAiming(DayZPlayerImplement player)
 	{
 		m_PlayerDpi = player;
 		Class.CastTo(m_PlayerPb, player);
+		UpdateSwayState(eSwayStates.DEFAULT);
 	}
 
 	void SetRecoil( Weapon_Base weapon )
@@ -63,6 +92,19 @@ class DayZPlayerImplementAiming
 		if(weapon)
 		{
 			m_SwayModifier = weapon.GetPropertyModifierObject().m_SwayModifiers;
+		}
+	}
+	
+	void OnSwayStateChange(int state)
+	{
+		switch (state)
+		{
+			case eSwayStates.HOLDBREATH_EXHAUSTED:
+				m_PlayerPb.OnHoldBreathExhausted();
+			break;
+			
+			default:
+			break;
 		}
 	}
 	
@@ -106,17 +148,34 @@ class DayZPlayerImplementAiming
 		
 		float kuru_offset_x;
 		float kuru_offset_y;
-	
+		
 		float player_stamina = m_PlayerPb.GetStaminaHandler().GetStaminaNormalized();
-		float speed = ((1.0 - player_stamina) * 4.0) + 1.0 * m_SwayModifier[2];
+		float adjusted_sway_multiplier = PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT;
+		float speed;
+		
+		//negates stamina effect during hold breath
 		if( m_PlayerPb.IsHoldingBreath() )
 		{
-			speed *= 0.1;
+			player_stamina = 1;
 		}
+		speed = (((1.0 - player_stamina) * 3.0) + 1.0) * m_SwayModifier[2];
 		m_TotalTime += pDt * speed;
-		m_SwayWeight = CalculateWeight(	stance_index, player_stamina, m_PlayerPb.m_CameraSwayModifier );
 		
-
+		if( m_PlayerPb.IsHoldingBreath() && !m_HoldingBreathSet)
+		{
+			//m_HoldingBreathSet = true;
+			m_ReferenceTime = m_TotalTime;
+		}
+		else if(!m_PlayerPb.IsHoldingBreath() && m_HoldingBreathSet)
+		{
+			//m_HoldingBreathSet = false;
+			m_ReferenceTime = m_TotalTime;
+		}
+		
+		adjusted_sway_multiplier = CalculateSwayMultiplier();
+		m_LastSwayMultiplier = adjusted_sway_multiplier;
+		
+		m_SwayWeight = CalculateWeight(	stance_index, player_stamina, m_PlayerPb.m_CameraSwayModifier, m_PlayerPb.IsHoldingBreath() ) * adjusted_sway_multiplier;
 		
 		//! get sway
 		ApplyBreathingPattern(breathing_offset_x, breathing_offset_y, 3.0, m_TotalTime, m_SwayWeight);
@@ -142,10 +201,14 @@ class DayZPlayerImplementAiming
 		//! hands offset
 		pModel.m_fAimXHandsOffset = breathing_offset_x + noise_offset_x + recoil_offset_hands_x + shake_offset_x + kuru_offset_x;
 		pModel.m_fAimYHandsOffset = breathing_offset_y + noise_offset_y + recoil_offset_hands_y + shake_offset_y + kuru_offset_y;
-
+		//Print(pModel.m_fAimXHandsOffset);
+		//Print(pModel.m_fAimYHandsOffset);
+		
 		//! cam offset
 		pModel.m_fAimXCamOffset = -shake_offset_x - recoil_offset_hands_x - kuru_offset_x + m_CamShakeX;
 		pModel.m_fAimYCamOffset	= -shake_offset_y - recoil_offset_hands_y - kuru_offset_y + m_CamShakeY;
+		//Print(pModel.m_fAimXCamOffset);
+		//Print(pModel.m_fAimYCamOffset);
 		
 		/*
 		if( m_CamShakeX != 0 ) Print(m_CamShakeX);
@@ -170,16 +233,103 @@ class DayZPlayerImplementAiming
 		//! mouse offset
 		pModel.m_fAimXMouseShift = recoil_offset_mouse_x -kuru_offset_x / 10;
 		pModel.m_fAimYMouseShift = recoil_offset_mouse_y + kuru_offset_y / 10;
+		//Print(pModel.m_fAimXMouseShift);
+		//Print(pModel.m_fAimYMouseShift);
+		
 		//Debug.ClearCanvas();
-		//Debug.CanvasDrawPoint(pModel.m_fAimXHandsOffset * 100 + 250 ,pModel.m_fAimYHandsOffset * 100 + 300, ARGBF( 1, 0, 1, 1 ));
+		//Debug.CanvasDrawPoint(pModel.m_fAimXHandsOffset * 100 + 250 ,-pModel.m_fAimYHandsOffset * 100 + 300, ARGBF( 1, 0, 1, 1 ));
+		if( m_PlayerPb.IsHoldingBreath() && !m_HoldingBreathSet)
+		{
+			m_HoldingBreathSet = true;
+			m_HorizontalNoiseXAxisOffset = noise_offset_x;
+			m_BreathingXAxisOffset = breathing_offset_x;
+			m_BreathingYAxisOffset = breathing_offset_y;
+			//Print("Sway Offsets Set");
+			
+		}
+		else if(!m_PlayerPb.IsHoldingBreath() && m_HoldingBreathSet)
+		{
+			m_HoldingBreathSet = false;
+		}
+		
+		if(!m_PlayerPb.IsHoldingBreath() && m_LastSwayMultiplier == PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT && m_HorizontalNoiseXAxisOffset != 0)
+		{
+			m_HorizontalNoiseXAxisOffset = 0;
+			m_BreathingXAxisOffset = 0;
+			m_BreathingYAxisOffset = 0;
+			//Print("Sway Offsets Reset");
+		}
 		
 		return true;
+	}
+	
+	protected float CalculateSwayMultiplier()
+	{
+		float max;
+		float time;
+		float time_clamped;
+		float ret;
+		
+		if( m_PlayerPb.IsHoldingBreath() )
+		{
+			time = m_TotalTime - m_ReferenceTime;
+			
+			if (time < PlayerSwayConstants.SWAY_TIME_IN)
+			{
+				UpdateSwayState(eSwayStates.HOLDBREATH_IN);
+				max = PlayerSwayConstants.SWAY_TIME_IN;
+				time_clamped = Math.Clamp((m_TotalTime - m_SwayStateStartTime),0,max);
+				ret = Math.Lerp(m_LastSwayMultiplier,PlayerSwayConstants.SWAY_MULTIPLIER_STABLE,time_clamped/max);
+			}
+			else if (time >= PlayerSwayConstants.SWAY_TIME_IN && time < (PlayerSwayConstants.SWAY_TIME_IN + PlayerSwayConstants.SWAY_TIME_STABLE))
+			{
+				UpdateSwayState(eSwayStates.HOLDBREATH_STABLE);
+				ret = PlayerSwayConstants.SWAY_MULTIPLIER_STABLE;
+			}
+			else
+			{
+				UpdateSwayState(eSwayStates.HOLDBREATH_EXHAUSTED);
+				max = PlayerSwayConstants.SWAY_TIME_EXHAUSTED;
+				time_clamped = Math.Clamp((m_TotalTime - m_SwayStateStartTime),0,max);
+				ret = Math.Lerp(PlayerSwayConstants.SWAY_MULTIPLIER_STABLE,PlayerSwayConstants.SWAY_MULTIPLIER_EXHAUSTED,(time_clamped/max));
+			}
+		}
+		else
+		{
+			UpdateSwayState(eSwayStates.DEFAULT);
+			max = PlayerSwayConstants.SWAY_TIME_OUT;
+			time_clamped = Math.Clamp((m_TotalTime - m_SwayStateStartTime),0,max);
+			ret = Math.Lerp(m_LastSwayMultiplier,1,time_clamped/max);
+		}
+		return ret;
+	}
+	
+	protected bool UpdateSwayState(int state)
+	{
+		if (state != m_SwayState)
+		{
+			m_SwayState = state;
+			m_SwayStateStartTime = m_TotalTime;
+			m_StateStartSwayMultiplier = m_LastSwayMultiplier;
+			OnSwayStateChange(state);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	int GetCurrentSwayState()
+	{
+		return m_SwayState;
 	}
 
 	protected void ApplyBreathingPattern(out float x_axis, out float y_axis, float pAmplitude, out float pTotalTime, float weight)
 	{
+		float multiplier = Math.Lerp(PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT,0,m_LastSwayMultiplier); //TODO revise
 		x_axis = (Math.Sin(pTotalTime) * pAmplitude / 4) * weight;
-		y_axis = (Math.Sin(pTotalTime * 0.8 + 0.6 ) * pAmplitude) * weight;
+		y_axis = (Math.Sin((pTotalTime) * 0.8 + 0.6 ) * pAmplitude) * weight;
+		x_axis += m_BreathingXAxisOffset * multiplier;
+		y_axis += m_BreathingYAxisOffset * multiplier;
 	}
 
 	protected void ApplyHorizontalNoise(out float x_axis, out float y_axis, float smooth_time,float max_velocity_low, float max_velocity_high, float velocity_modifier,  float max_distance, float weight, float pDt)
@@ -197,6 +347,8 @@ class DayZPlayerImplementAiming
 		*/
 		m_HorizontalNoise = Math.SmoothCD( m_HorizontalNoise, m_HorizontalTargetValue, m_HorizontalNoiseVelocity, smooth_time, m_MaxVelocity * velocity_modifier, pDt);
 		x_axis = m_HorizontalNoise * weight;
+		float multiplier = Math.Lerp(PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT,0,m_LastSwayMultiplier); //TODO revise
+		x_axis += m_HorizontalNoiseXAxisOffset * multiplier;
 	}
 	
 	protected void ApplyShakes(out float x_axis, out float y_axis, int level)
@@ -214,9 +366,10 @@ class DayZPlayerImplementAiming
 		}
 	}
 
-	protected float CalculateWeight(int stance_index, float current_stamina, float camera_sway_modifier)
+	protected float CalculateWeight(int stance_index, float current_stamina, float camera_sway_modifier, bool holding_breath)
 	{
 		float stance_modifier;
+		float scale = SWAY_WEIGHT_SCALER;
 		switch( stance_index )
 		{
 			case DayZPlayerConstants.STANCEIDX_RAISEDERECT:
@@ -233,11 +386,12 @@ class DayZPlayerImplementAiming
 				//Debug.LogError("stance mask out of definition");
 			break;
 		}
-
+		
 		//is_holding_breath = !is_holding_breath;
 		//return (1 - current_stamina * stance_modifier) * m_AimNoiseAllowed;
 		//PrintString(camera_sway_modifier.ToString());
-		return (1 - stance_modifier) * m_AimNoiseAllowed * camera_sway_modifier * SWAY_WEIGHT_SCALER;
+		
+		return (1 - stance_modifier) * m_AimNoiseAllowed * camera_sway_modifier * scale;
 	}
 }
 

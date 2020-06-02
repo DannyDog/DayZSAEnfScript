@@ -33,6 +33,7 @@ enum DiagMenuIDs
 	DM_BLOODY_HANDS,
 	DM_LIFESPAN_PLAYTIME_UPDATE,
 	DM_PERMANENT_CROSSHAIR,
+	DM_SHOW_VEHICLE_GETOUT_BOX,
 	DM_TOGGLE_HUD,
 	DM_MISC_MENU,
 	DM_MISC_SIMULATE,
@@ -71,7 +72,6 @@ enum DiagMenuIDs
 	DM_HAIR_LEVEL_HIDE,
 	DM_HAIR_HIDE_ALL,
 	DM_CAM_SHAKE,
-	
 };
 
 enum DebugActionType
@@ -120,6 +120,7 @@ class PluginDiagMenu extends PluginBase
 	//string m_HairSelections 		= "Clipping_GhillieHood, Clipping_grathelm, Clipping_ConstructionHelmet, Clipping_Hockey_hekmet, Clipping_Maska, Clipping_ProtecSkateHelmet2, Clipping_BandanaFace, Clipping_NioshFaceMask, Clipping_NBC_Hood, Clipping_MotoHelmet, Clipping_FireHelmet, Clipping_ushanka, Clipping_TankerHelmet, Clipping_SantasBeard, Clipping_Surgical_mask, Clipping_PumpkinHelmet, Clipping_Balaclava_3holes, Clipping_Balaclava, Clipping_GP5GasMask, Clipping_BoonieHat, Clipping_prison_cap, Clipping_MilitaryBeret_xx, Clipping_Policecap, Clipping_OfficerHat, Clipping_Hat_leather, Clipping_CowboyHat, Clipping_BandanaHead, Clipping_SantasHat, Clipping_FlatCap, Clipping_MxHelmet, Clipping_baseballcap, Clipping_BeanieHat, Clipping_MedicalScrubs_Hat, Clipping_RadarCap, Clipping_ZmijovkaCap, Clipping_HeadTorch, Clipping_pilotka, Clipping_MxHelmet, Clipping_HelmetMich, Clipping_Ssh68Helmet, Clipping_Mich2001, Clipping_Welding_Mask, Clipping_VintageHockeyMask, Clipping_mouth_rags, Clipping_Gasmask";
 	ref map<int,bool> m_HairHidingStateMap;
 	ref TStringArray m_HairSelectionArray;
+	Shape m_VehicleFreeAreaBox;
 	
 	override void OnInit()
 	{
@@ -128,6 +129,7 @@ class PluginDiagMenu extends PluginBase
 		//----------------------
 		m_HairHidingStateMap = new map<int,bool>;
 		m_HairSelectionArray = new TStringArray;
+		m_VehicleFreeAreaBox = Debug.DrawBox(Vector(0,0,0), Vector(0,0,0), 0xffffffff);
 		
 		g_Game.ConfigGetTextArray("cfgVehicles Head_Default simpleHiddenSelections",m_HairSelectionArray);
 		m_TotalHairLevelsAdjusted = m_HairSelectionArray.Count() - 1;
@@ -253,6 +255,7 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterMenu(DiagMenuIDs.DM_ACTION_TARGETS_MENU, "Action Targets", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_XBOX_CURSOR, "", "XboxCursor", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_PERMANENT_CROSSHAIR, "", "Enable permanent crosshair", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_SHOW_VEHICLE_GETOUT_BOX, "", "Debug transport freespace", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_TOGGLE_HUD, "", "Toggle HUD on/off", "Misc", true);
 				DiagMenu.RegisterRange(DiagMenuIDs.DM_DISPLAY_PLAYER_INFO, "", "Display Player Info", "Misc", "0,2,0,1");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_ENVIRONMENT_DEBUG_ENABLE, "", "Show Environment stats", "Misc");
@@ -356,6 +359,7 @@ class PluginDiagMenu extends PluginBase
 		CheckHairHide();
 		CheckPersonalLight();
 		CheckCamShake();
+		CheckVehicleGetOutBox();
 
 	}
 	//---------------------------------------------
@@ -896,7 +900,30 @@ class PluginDiagMenu extends PluginBase
 			}
 		}
 	}
-
+	
+	//---------------------------------------------		
+	void CheckVehicleGetOutBox()
+	{
+		if ( DiagMenu.GetBool(DiagMenuIDs.DM_SHOW_VEHICLE_GETOUT_BOX ) )
+		{
+			if (m_VehicleFreeAreaBox)
+			{
+				m_VehicleFreeAreaBox.Destroy();
+				m_VehicleFreeAreaBox = null;
+			}
+			
+			HumanCommandVehicle hcv = GetGame().GetPlayer().GetCommand_Vehicle();
+			if (!hcv)
+				return;
+			m_VehicleFreeAreaBox = hcv.GetTransport().DebugFreeAreaAtDoor( hcv.GetVehicleSeat() );
+		}
+		else if (m_VehicleFreeAreaBox)
+		{
+			m_VehicleFreeAreaBox.Destroy();
+			m_VehicleFreeAreaBox = null;
+		}
+	}
+	
 	//---------------------------------------------	
 	void CheckToggleHud()
 	{

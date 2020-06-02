@@ -49,7 +49,7 @@ class Torch : ItemBase
 		if (att && att.IsFullQuantity())
 			return false;
 		
-		return true;
+		return super.CanReceiveAttachment(attachment, slotId);
 	}
 	
 	override bool CanPutInCargo( EntityAI parent )
@@ -383,7 +383,7 @@ class Torch : ItemBase
 				if ( GetType() == "WoodenStick" )
 					ori = ori + Vector(0,90,0);
 				
-				ItemBase stick = ItemBase.Cast( GetGame().CreateObject(m_DecraftResult, pos) );
+				ItemBase stick = ItemBase.Cast( GetGame().CreateObjectEx(m_DecraftResult, pos, ECE_PLACE_ON_SURFACE) );
 				stick.SetPosition(pos);
 				stick.PlaceOnSurface();
 				

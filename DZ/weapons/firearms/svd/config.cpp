@@ -47,7 +47,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.25;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.3,2.3,1.3};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\svd\svd_reload",1,1,30};

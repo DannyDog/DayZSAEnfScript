@@ -22,6 +22,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	protected ref OptionSelectorMultistate	m_ShowGameSelector;
 	protected ref OptionSelectorMultistate	m_ShowAdminSelector;
 	protected ref OptionSelectorMultistate	m_ShowPlayerSelector;
+	protected ref OptionSelectorMultistate 	m_ShowServerInfoSelector;
 	
 	protected GameOptions					m_Options;
 	protected OptionsMenu					m_Menu;
@@ -50,6 +51,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "admin_setting_option" ).SetUserID( 5 );
 		m_Root.FindAnyWidget( "player_setting_option" ).SetUserID( 6 );
 		m_Root.FindAnyWidget( "language_setting_option" ).SetUserID( AT_OPTIONS_LANGUAGE );
+		m_Root.FindAnyWidget( "serverinfo_setting_option" ).SetUserID( 7 );
 		
 		#ifdef PLATFORM_CONSOLE
 		m_Root.FindAnyWidget( "brightness_setting_option" ).SetUserID( AT_OPTIONS_BRIGHT_SLIDER );
@@ -71,13 +73,13 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 			opt3.Insert( text );
 		}
 		
-		m_LanugageSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "language_setting_option" ), m_LanguageOption.GetIndex(), this, false, opt3 );
-		m_FOVSelector			= new OptionSelectorSlider( m_Root.FindAnyWidget( "fov_setting_option" ), m_FOVOption.ReadValue(), this, false, m_FOVOption.GetMin(), m_FOVOption.GetMax() );
-		m_ShowHUDSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "hud_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.HUD ), this, false, opt );
-		m_ShowCrosshairSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "crosshair_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.CROSSHAIR ), this, false, opt );
-		m_ShowGameSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "game_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.GAME_MESSAGES ), this, false, opt2 );
-		m_ShowAdminSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "admin_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.ADMIN_MESSAGES ), this, false, opt2 );
-		m_ShowPlayerSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "player_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ), this, false, opt2 );
+		m_LanugageSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "language_setting_option" ), m_LanguageOption.GetIndex(), this, false, opt3 );
+		m_FOVSelector				= new OptionSelectorSlider( m_Root.FindAnyWidget( "fov_setting_option" ), m_FOVOption.ReadValue(), this, false, m_FOVOption.GetMin(), m_FOVOption.GetMax() );
+		m_ShowHUDSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "hud_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.HUD ), this, false, opt );
+		m_ShowCrosshairSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "crosshair_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.CROSSHAIR ), this, false, opt );
+		m_ShowGameSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "game_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.GAME_MESSAGES ), this, false, opt2 );
+		m_ShowAdminSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "admin_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.ADMIN_MESSAGES ), this, false, opt2 );
+		m_ShowPlayerSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "player_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ), this, false, opt2 );
 		
 		m_LanugageSelector.m_OptionChanged.Insert( UpdateLanguageOption );
 		m_FOVSelector.m_OptionChanged.Insert( UpdateFOVOption );
@@ -94,7 +96,9 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		#else
 		#ifdef PLATFORM_WINDOWS
 			m_ShowQuickbarSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "quickbar_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ), this, false, opt );
+			m_ShowServerInfoSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "serverinfo_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ), this, false, opt );
 			m_ShowQuickbarSelector.m_OptionChanged.Insert( UpdateQuickbarOption );
+			m_ShowServerInfoSelector.m_OptionChanged.Insert( UpdateServerInfoOption );
 		#endif
 		#endif
 		
@@ -143,19 +147,23 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		#ifdef PLATFORM_CONSOLE
 		return universal;
 		#else
-		return ( universal || m_ShowQuickbarSelector.GetValue() != g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ) );
+		return ( universal || m_ShowQuickbarSelector.GetValue() != g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ) || m_ShowServerInfoSelector.GetValue() != g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ) );
 		#endif
 	}
 	
 	void Apply()
 	{
 		IngameHud hud = GetHud();
+		InGameMenu menu = InGameMenu.Cast(GetGame().GetUIManager().FindMenu(MENU_INGAME));
 		
 		g_Game.SetProfileOption( EDayZProfilesOptions.HUD, m_ShowHUDSelector.GetValue() );
 		g_Game.SetProfileOption( EDayZProfilesOptions.CROSSHAIR, m_ShowCrosshairSelector.GetValue() );
 		g_Game.SetProfileOption( EDayZProfilesOptions.GAME_MESSAGES, m_ShowGameSelector.GetValue() );
 		g_Game.SetProfileOption( EDayZProfilesOptions.ADMIN_MESSAGES, m_ShowAdminSelector.GetValue() );
 		g_Game.SetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES, m_ShowPlayerSelector.GetValue() );
+		#ifndef PLATFORM_CONSOLE
+			g_Game.SetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY, m_ShowServerInfoSelector.GetValue() );
+		#endif
 		
 		if( hud )
 		{
@@ -166,6 +174,13 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 			
 			hud.ShowHud( m_ShowHUDSelector.GetValue() );
 		}
+		
+		#ifndef PLATFORM_CONSOLE
+		if( menu )
+		{
+			menu.SetServerInfoVisibility(m_ShowServerInfoSelector.GetValue());
+		}
+		#endif
 	}
 	
 	void Revert()
@@ -188,11 +203,11 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		if( m_ShowPlayerSelector )
 			m_ShowPlayerSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ), false );
 		
-		
-		
 		#ifdef PLATFORM_WINDOWS
 			if( m_ShowQuickbarSelector )
 				m_ShowQuickbarSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ), false );
+			if( m_ShowServerInfoSelector )
+				m_ShowServerInfoSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ), false );
 		#else
 		#ifdef PLATFORM_CONSOLE
 			if( m_BrightnessSelector )
@@ -266,6 +281,11 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	}
 	
 	void UpdatePlayerOption( int new_index )
+	{
+		m_Menu.OnChanged();
+	}
+	
+	void UpdateServerInfoOption( int new_index )
 	{
 		m_Menu.OnChanged();
 	}
@@ -363,6 +383,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_TextMap.Insert( AT_OPTIONS_FIELD_OF_VIEW, new Param2<string, string>( "#options_game_field_of_view", "#options_game_field_of_view_desc" ) );
 		m_TextMap.Insert( 1, new Param2<string, string>( "#options_game_show_HUD", "#options_game_show_HUD_desc" ) );
 		m_TextMap.Insert( 2, new Param2<string, string>( "#options_game_show_crosshair", "#options_game_show_crosshair_desc" ) );
+		m_TextMap.Insert( 7, new Param2<string, string>( "#options_game_show_serverinfo", "#options_game_show_serverinfo_desc" ) );
 	
 		#ifdef PLATFORM_WINDOWS
 		m_TextMap.Insert( 3, new Param2<string, string>( "#options_game_show_quickbar",	"#options_game_show_quickbar_desc" ) );

@@ -39,20 +39,6 @@ class ActionCookOnStick: ActionContinuousBase
 		Edible_Base item_on_stick = Edible_Base.Cast( item.GetAttachmentByType( Edible_Base ) );
 		if ( fireplace_target && item_on_stick && item_on_stick.CanBeCookedOnStick() )
 		{
-			BarrelHoles_ColorBase barrel = BarrelHoles_ColorBase.Cast( fireplace_target );
-			//barrel with holes
-			if ( barrel )
-			{
-				if ( barrel.IsOpen() && fireplace_target.CanCookOnStick() )
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			
 			//fireplace
 			if ( fireplace_target.IsBaseFireplace() )
 			{
@@ -75,11 +61,48 @@ class ActionCookOnStick: ActionContinuousBase
 		
 		return false;
 	}
-	
+
+	/*override void OnEndServer( ActionData action_data )
+	{
+		super.OnEndServer( action_data );
+		
+		ItemBase stick = action_data.m_MainItem;
+		Edible_Base item_on_stick = Edible_Base.Cast( stick.GetAttachmentByType( Edible_Base ) );
+
+		if ( item_on_stick )
+			item_on_stick.MakeSoundsOnClient( false );
+	}
+
+	override void OnEndClient( ActionData action_data )
+	{
+		super.OnEndClient( action_data );
+		
+		ItemBase stick = action_data.m_MainItem;
+		Edible_Base item_on_stick = Edible_Base.Cast( stick.GetAttachmentByType( Edible_Base ) );
+
+		if ( item_on_stick )
+			item_on_stick.MakeSoundsOnClient( false );
+	}
+
+	override void OnFinishProgressServer( ActionData action_data )
+	{
+		super.OnFinishProgressServer( action_data );
+
+		ItemBase stick = action_data.m_MainItem;
+		Edible_Base item_on_stick = Edible_Base.Cast( stick.GetAttachmentByType( Edible_Base ) );
+
+		if ( item_on_stick )
+			item_on_stick.MakeSoundsOnClient( false );
+	}
+
 	override void OnFinishProgressClient( ActionData action_data )
 	{
 		super.OnFinishProgressClient( action_data );
-		
-		Print("OnFinishProgressClient Coock on stick");
-	}
+
+		ItemBase stick = action_data.m_MainItem;
+		Edible_Base item_on_stick = Edible_Base.Cast( stick.GetAttachmentByType( Edible_Base ) );
+
+		if ( item_on_stick )
+			item_on_stick.MakeSoundsOnClient( false );
+	}*/
 };

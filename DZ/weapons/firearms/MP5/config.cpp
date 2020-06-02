@@ -47,7 +47,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.5;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.25,1.25,1};
+		swayModifier[] = {1.2,1.2,1};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\m4a1\m4_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_reload",0.8,1,20};

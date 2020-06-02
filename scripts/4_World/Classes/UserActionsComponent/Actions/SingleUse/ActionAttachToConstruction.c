@@ -30,13 +30,33 @@ class ActionAttachToConstruction: ActionSingleUseBase
 			string selection = target_entity.GetActionComponentName( target.GetComponentIndex() );
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
 			int slot_id  = construction_action_data.GetAttachmentSlotFromSelection( player, target_entity, item, selection );
+			BaseBuildingBase base_building;
 			
 			if ( slot_id != -1 )
 			{
-				BaseBuildingBase base_building = BaseBuildingBase.Cast( target_entity );
-				if (  base_building.CheckSlotVerticalDistance( slot_id, player ) )
+				base_building = BaseBuildingBase.Cast( target_entity );
+				if ( base_building.CheckSlotVerticalDistance( slot_id, player ) && base_building.IsPlayerInside(player,"") )
 				{
 					construction_action_data.SetSlotId( slot_id );
+					
+					return true;
+				}
+			}
+			else if ( item.IsKindOf("CombinationLock") )
+			{
+				base_building = BaseBuildingBase.Cast( target_entity );
+				
+				//simpler hack
+				/*construction_action_data.SetSlotId( InventorySlots.GetSlotIdFromString("Att_CombinationLock") );
+				return true;*/
+				
+				InventoryLocation loc = new InventoryLocation;
+				bool found = base_building.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,loc);
+				
+				if (found)
+				{
+					//Print("slot name: " + InventorySlots.GetSlotName(loc.GetSlot()) );
+					construction_action_data.SetSlotId( loc.GetSlot() );
 					
 					return true;
 				}

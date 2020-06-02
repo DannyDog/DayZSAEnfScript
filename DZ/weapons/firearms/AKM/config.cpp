@@ -47,7 +47,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.2;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2,2,1.1};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};
 		reloadAction = "ReloadAKM";

@@ -1,10 +1,11 @@
 MetaFileClass {
  Name "{F2CEA7E35B785FB7}Gui/textures/loading_screens/loading_screen_3_mask.tga"
- Author "3672"
- ChangeDate 716908380
+ Author "namalsk"
+ ChangeDate 979511447
  Configurations {
   TGAResourceClass PC {
    SourceFile "loading_screen_3_mask.tga"
+   Conversion ColorHQCompression
   }
   TGAResourceClass XBOX_ONE : PC {
   }

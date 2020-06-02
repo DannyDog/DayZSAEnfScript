@@ -394,6 +394,34 @@ class vector
 		@endcode
 	*/
 	proto static native vector Lerp(vector v1, vector v2, float t);
+	
+	/**
+	\brief Rotate a vector around 0,0,0
+		\param pos \p vector to rotate
+		\param axis \p axis to rotate around
+		\param cosAngle \p cos of angle
+		\param sinAngle \p sin of angle
+		\return \p vector transformed vector
+	*/
+	static vector RotateAroundZero(vector pos, vector axis, float cosAngle, float sinAngle)
+	{
+		return (pos * cosAngle) + ((axis * pos) * sinAngle) + (axis * vector.Dot(axis, pos)) * (1 - cosAngle);
+	}
+	
+	/**
+	\brief Rotate a vector around point
+		\param point \p point to rotate around
+		\param pos \p vector to rotate
+		\param axis \p axis to rotate around
+		\param cosAngle \p cos of angle
+		\param sinAngle \p sin of angle
+		\return \p vector transformed vector
+	*/
+	static vector RotateAroundPoint(vector point, vector pos, vector axis, float cosAngle, float sinAngle)
+	{
+		vector offsetPos = pos - point;
+		return RotateAroundZero(offsetPos, axis, cosAngle, sinAngle) + pos;
+	}
 };
 
 class typename

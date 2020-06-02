@@ -8,6 +8,8 @@
  **/
 class HumanInventory : GameInventory
 {	
+	int m_syncClearUserReservationindex = -1;
+	//int m_UserReservationToClear = -1;
 	/**@fn			GetEntityInHands
 	 * @return		entity in hands
 	 **/
@@ -45,7 +47,8 @@ class HumanInventory : GameInventory
 	proto native int FindUserReservedLocationIndex (notnull EntityAI e);
 	proto native int FindCollidingUserReservedLocationIndex (notnull EntityAI e, notnull InventoryLocation dst);
 	proto native void GetUserReservedLocation (int index, out notnull InventoryLocation dst);
-	proto native void GetFirstUserReservedLocationForContainer (int index, out notnull InventoryLocation dst);
+	proto native int FindFirstUserReservedLocationIndexForContainer(notnull EntityAI e);
+	
 	proto native void SetUserReservedLocation (notnull EntityAI eai, notnull InventoryLocation dst);
 	proto native void ClearUserReservedLocation (notnull EntityAI eai);
 	proto native bool ClearUserReservedLocationAtIndex (int index);
@@ -65,6 +68,35 @@ class HumanInventory : GameInventory
 		if (newEntity == null)
 			newEntity = CreateInHands(type);
 		return newEntity;
+	}
+	
+	void ClearUserReservedLocationSynced (notnull EntityAI eai)
+	{
+		if( GetGame().IsClient() )
+			m_syncClearUserReservationindex = FindUserReservedLocationIndex(eai);
+		else if (!GetGame().IsMultiplayer())
+		{
+			ClearUserReservedLocation(eai);
+			eai.GetOnReleaseLock().Invoke(eai);
+		}
+			
+	}
+	
+	void ClearUserReservedLocationAtIndexSynced(int index)
+	{
+		if( GetGame().IsClient() )
+			m_syncClearUserReservationindex = index;
+		else if (!GetGame().IsMultiplayer())
+		{
+			ClearUserReservedLocationAtIndex(index);
+			
+			InventoryLocation il = new InventoryLocation;
+			
+			GetUserReservedLocation(index,il);
+			EntityAI item = il.GetItem();
+			item.GetOnReleaseLock().Invoke(item);
+		}
+			
 	}
 
 	Man GetManOwner () { return Man.Cast(GetInventoryOwner()); }
@@ -196,7 +228,7 @@ class HumanInventory : GameInventory
 	{
 		hndDebugPrint("[inv] Take2Dst(" + typename.EnumToString(InventoryMode, mode) + ") src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 
-		if (RedirectToHandEvent(mode, src, dst))
+		if (GetManOwner().IsAlive() && RedirectToHandEvent(mode, src, dst))
 			return true;
 
 		return super.TakeToDst(mode, src, dst);
@@ -542,6 +574,52 @@ class HumanInventory : GameInventory
 	void Update(float delta_time)
 	{
 		HandleInventoryManipulation();
+		if( m_syncClearUserReservationindex != -1 && ScriptInputUserData.CanStoreInputUserData())
+		{
+			ScriptInputUserData ctx = new ScriptInputUserData;
+			ctx.Write(INPUT_UDT_ITEM_MANIPULATION);
+			ctx.Write(InventoryCommandType.USER_RESERVATION_CANCEL);
+			ctx.Write(m_syncClearUserReservationindex);
+			ctx.Send();
+			
+			InventoryLocation il = new InventoryLocation;
+			
+			GetUserReservedLocation(m_syncClearUserReservationindex,il);
+			EntityAI item = il.GetItem();
+			item.GetOnReleaseLock().Invoke(item);
+			m_syncClearUserReservationindex = -1;
+		}
+		
+		/*if( m_UserReservationToClear != -1 )
+		{
+			ClearUserReservedLocationAtIndex(m_UserReservationToClear);
+			m_UserReservationToClear = -1;
+		}*/
 	}
-};
+	
+	
+	
+	bool ProccessInputData(int type, bool handling_juncture, bool remote, ParamsReadContext ctx)
+	{
+		InventoryLocation correct_il;
+		ScriptJunctureData ctx_repair;
+
+		switch (type)
+		{
+			case InventoryCommandType.USER_RESERVATION_CANCEL:
+			{
+				int index = -1;
+				
+				if(!ctx.Read(index))
+					return true;
+				
+				ClearUserReservedLocationAtIndex(index);
+				//m_UserReservationToClear = index;
+				
+				return true;
+			}
+		}
+		return false;
+	}
+}
 

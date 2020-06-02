@@ -29,16 +29,32 @@ class ActionPlaceFireplaceIndoor: ActionSingleUseBase
 		
 		if ( target_object && building && action_selection.Contains( FireplaceIndoor.FIREPOINT_ACTION_SELECTION ) )
 		{
-			vector fire_point_pos_world;
+			vector fire_point_pos_world, fire_point_rot_world;
 			int fire_point_index = FireplaceIndoor.GetFirePointIndex( action_selection );
-			if ( FireplaceIndoor.CanPlaceFireplaceInSelectedSpot( building, fire_point_index, fire_point_pos_world ) )
+			if ( FireplaceIndoor.CanPlaceFireplaceInSelectedSpot( building, fire_point_index, fire_point_pos_world, fire_point_rot_world ) )
 			{
+				float rot_deg = 0.0;
+				if ( building.HasSelection( FireplaceIndoor.FIREPOINT_PLACE_ROT + fire_point_index.ToString() ) )
+				{
+					vector diff = fire_point_rot_world - fire_point_pos_world;
+					diff[1] = 0.0;
+					diff.Normalize();
+					float dotp = vector.Dot( "0 0 1" , diff );
+					rot_deg = Math.Acos( dotp ) * Math.RAD2DEG;
+					if ( ( diff[0] < 0 ) && ( diff[2] < 0 ) )
+						rot_deg = 360.0 - rot_deg;
+					else if ( ( diff[0] < 0 ) && ( diff[2] > 0 ) )
+						rot_deg = 360.0 - rot_deg;
+
+					//Debug.DrawArrow( fire_point_pos_world, fire_point_pos_world + diff );
+				}
+				
 				float fire_point_dist = vector.Distance( fire_point_pos_world, player.GetPosition() );
 				if ( fire_point_dist <= 2 )
 				{
 					player.SetLastFirePoint( fire_point_pos_world );
 					player.SetLastFirePointIndex( fire_point_index );
-					
+					player.SetLastFirePointRot( rot_deg );
 					return true;
 				}
 			}
@@ -65,6 +81,7 @@ class ActionPlaceFireplaceIndoor: ActionSingleUseBase
 class FireplaceToIndoorsLambda : TurnItemIntoItemLambda
 {
 	int 		m_FirePointIndex;
+	float		m_FireplaceRot;
 	vector 		m_SmokePosition;
 	
 	void FireplaceToIndoorsLambda( EntityAI old_item, string new_item_type, PlayerBase player, vector pos, Object target )
@@ -78,6 +95,7 @@ class FireplaceToIndoorsLambda : TurnItemIntoItemLambda
 		
 		//set fire point index and smoke point position in world
 		m_FirePointIndex = player.GetLastFirePointIndex();
+		m_FireplaceRot = player.GetLastFirePointRot();
 		
 		vector smoke_point_pos = target.GetSelectionPositionMS( FireplaceIndoor.FIREPOINT_SMOKE_POSITION + m_FirePointIndex.ToString() );
 		vector smoke_point_pos_world = target.ModelToWorld( smoke_point_pos );		
@@ -96,7 +114,11 @@ class FireplaceToIndoorsLambda : TurnItemIntoItemLambda
 			
 			//get fire and smoke position
 			fireplace_indoor.SetSmokePointPosition( m_SmokePosition );
-			
+
+			vector fprot = vector.Zero;
+			fprot[0] = m_FireplaceRot;
+			fireplace_indoor.SetOrientation( fprot );
+
 			//synchronize
 			fireplace_indoor.Synchronize();
 		}

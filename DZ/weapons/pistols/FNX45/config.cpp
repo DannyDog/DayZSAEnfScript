@@ -46,7 +46,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_45ACP"};
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.2,1.2,1};
+		swayModifier[] = {1.3,1.3,0.8};
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX45_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\FNX45\FNX45_reload",0.8,1,20};
 		modes[] = {"SemiAuto"};

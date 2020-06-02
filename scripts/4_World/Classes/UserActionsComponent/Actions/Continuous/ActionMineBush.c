@@ -21,7 +21,7 @@ class ActionMineBush: ActionContinuousBase
 	
 	override void CreateConditionComponents()  
 	{
-		m_ConditionTarget = new CCTCursor(1);
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.DEFAULT);
 		m_ConditionItem = new CCINonRuined;
 	}
 	
@@ -33,14 +33,10 @@ class ActionMineBush: ActionContinuousBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				return true;
+			return true;
 		
 		Object targetObject = target.GetObject();
-		if ( targetObject.IsBush() && targetObject.IsCuttable() ) 
-		{
-			return true;
-		}
-		return false;
+		return targetObject.IsBush() && targetObject.IsCuttable();
 	}
 
 	override void OnFinishProgressServer( ActionData action_data )

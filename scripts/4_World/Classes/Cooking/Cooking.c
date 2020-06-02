@@ -19,6 +19,7 @@ class Cooking
 	static const float PARAM_BURN_DAMAGE_COEF			= 0.05;		//value for calculating damage on items located in fireplace cargo
 	//
 	typename COOKING_EQUIPMENT_POT	 					= Pot;
+	typename COOKING_EQUIPMENT_FRYINGPAN				= FryingPan;
 	typename COOKING_INGREDIENT_LARD 					= Lard;
 	//
 	static const float LIQUID_BOILING_POINT 			= 150;	//boiling point for liquids
@@ -107,17 +108,14 @@ class Cooking
 			}
 			
 			//handle audio visuals
-			if ( is_empty )
-			{
-				if ( is_water_boiling )
-				{
-					bottle_base.RefreshAudioVisualsOnClient( cooking_method, is_done, is_empty, is_burned );		//if empty, refresh audio and visuals only on boiling point
-				}				
-			}
-			else
-			{
-				bottle_base.RefreshAudioVisualsOnClient( cooking_method, is_done, is_empty, is_burned );			//if not empty, refresh audio and visuals
-			}
+			bottle_base.RefreshAudioVisualsOnClient( cooking_method, is_done, is_empty, is_burned );
+		}
+
+		FryingPan frying_pan = FryingPan.Cast( cooking_equipment );
+		if ( frying_pan && !bottle_base )
+		{
+			//handle audio visuals
+			frying_pan.RefreshAudioVisualsOnClient( cooking_method, is_done, is_empty, is_burned );
 		}
 		
 		return cooking_state_update;
@@ -229,26 +227,42 @@ class Cooking
 		float food_min_temp = 0;
 		float food_time_to_cook = 0;
 		float food_max_temp = -1;
-		
+		bool is_done = false;	// baked
+		bool is_burned = false;	// burned
+
 		//Set next stage cooking properties if next stage possible
 		if ( item_to_cook.CanChangeToNewStage ( CookingMethodType.BAKING ) )
 		{
 			ref array<float> next_stage_cooking_properties = new array<float>;
-			
+
 			string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
 			GetGame().ConfigGetFloatArray ( config_path + " " + item_to_cook.GetFoodStageName( new_stage_type ) + " " + "cooking_properties", next_stage_cooking_properties );
-			
+
 			food_min_temp = next_stage_cooking_properties.Get( 0 );
 			food_time_to_cook = next_stage_cooking_properties.Get( 1 );
-			
+
 			if ( next_stage_cooking_properties.Count() > 2)
 			{
 				food_max_temp = next_stage_cooking_properties.Get( 2 );
-			}	
+			}
 		}
 		
 		//add temperature
 		AddTemperatureToItem( item_to_cook, NULL, food_min_temp );
+		
+		// refresh audio
+		if ( item_to_cook.GetInventory().IsAttachment() )
+		{
+			InventoryLocation invloc = new InventoryLocation;
+			item_to_cook.GetInventory().GetCurrentInventoryLocation( invloc );
+			if ( invloc )
+			{
+				if ( InventorySlots.GetSlotName( invloc.GetSlot() ) != "Ingredient" )
+				{
+					item_to_cook.MakeSoundsOnClient( true );
+				}
+			}
+		}
 		
 		//add cooking time if the food can be cooked by this method
 		if ( food_min_temp > 0 && food_temperature >= food_min_temp )
@@ -276,7 +290,6 @@ class Cooking
 
 				//reset cooking time
 				item_to_cook.SetCookingTime( 0 );
-				
 				return 1;
 			}
 		}
@@ -322,7 +335,17 @@ class Cooking
 			
 			return CookingMethodType.DRYING;
 		}
-			
+		
+		if (cooking_equipment.Type() == COOKING_EQUIPMENT_FRYINGPAN )
+		{
+			if ( GetItemTypeFromCargo( COOKING_INGREDIENT_LARD, cooking_equipment ) )
+			{
+				return CookingMethodType.BAKING;
+			}
+
+			return CookingMethodType.DRYING;
+		}
+
 		return CookingMethodType.NONE;
 	}
 	

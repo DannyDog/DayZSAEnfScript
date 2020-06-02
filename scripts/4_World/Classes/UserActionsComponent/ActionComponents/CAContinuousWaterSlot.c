@@ -69,14 +69,16 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			
 			if ( slot  &&  m_SpentQuantity < m_ItemQuantity )
 			{
+				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
+				float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
+				slot.GiveWater( water );
+							
 				if ( GetGame().IsServer() )
 				{
-					m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
-					float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
-					slot.GiveWater( water );
 					action_data.m_MainItem.AddQuantity(- m_SpentQuantity);
-					m_SpentQuantity = 0;
 				}
+				
+				m_SpentQuantity = 0;
 				
 				return UA_PROCESSING;
 			}

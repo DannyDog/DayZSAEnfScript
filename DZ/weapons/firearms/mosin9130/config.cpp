@@ -49,7 +49,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_762x54","Ammo_762x54Tracer","Mag_CLIP762x54_5Rnd"};
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.5,2.5,1.3};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\mosin9130\mosin_dry",0.5,1,20};
 		reloadSkips[] = {0.32,0.41,0.5,0.59,0.69,0.77};
@@ -150,6 +150,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_762x54","Ammo_762x54Tracer","Mag_CLIP762x54_5Rnd"};
 		ejectType = 0;
 		recoilModifier[] = {2,2,1};
+		swayModifier[] = {1.5,1.5,1};
 		DisplayMagazine = 0;
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\mosin9130\mosin_dry",0.5,1};

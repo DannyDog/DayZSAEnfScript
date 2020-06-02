@@ -262,21 +262,6 @@ class BushHard_t_FagusSylvatica_1fb: BushHard
 		m_SecondaryOutput = "WoodenStick";
 	}
 };
-class BushHard_t_FraxinusExcelsior_2w: BushHard
-{
-	override void InitMiningValues()
-	{
-		super.InitMiningValues();
-		m_IsCuttable = true;
-		
-		m_PrimaryDropsAmount = 3;
-		m_SecondaryDropsAmount = 1;
-		m_ToolDamage = 1.0;
-		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
-		m_PrimaryOutput = "FireWood";
-		m_SecondaryOutput = "LongWoodenStick";
-	}
-};
 class BushHard_t_PiceaAbies_1s: BushHard
 {
 	override void InitMiningValues()

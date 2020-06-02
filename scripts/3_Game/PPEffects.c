@@ -106,11 +106,14 @@ class PPEffects
 	//! sets blur effect to an absolute value between 0..1
 	static void SetBlur(float value)
 	{
-		Material mat_blur = GetGame().GetWorld().GetMaterial("graphics/materials/postprocess/gauss");
-		
-		if (mat_blur)
+		if (GetGame())
 		{
-			mat_blur.SetParam("Intensity", value);
+			Material mat_blur = GetGame().GetWorld().GetMaterial("graphics/materials/postprocess/gauss");
+		
+			if (mat_blur)
+			{
+				mat_blur.SetParam("Intensity", value);
+			}
 		}
 	}
 	//-------------------------------------------------------

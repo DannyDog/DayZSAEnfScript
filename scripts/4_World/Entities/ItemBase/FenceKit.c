@@ -52,6 +52,12 @@ class FenceKit extends ItemBase
 		m_DeployedRegularly = true;
 	}
 	
+	override void OnPlacementCancelled( Man player )
+	{
+		super.OnPlacementCancelled(player);
+		m_DeployedRegularly = false;
+	}
+	
 	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged( old_owner, new_owner );
@@ -67,6 +73,9 @@ class FenceKit extends ItemBase
 	
 	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
 	{
+		if ( !super.CanReceiveAttachment(attachment, slotId) )
+			return false;
+		
 		ItemBase att = ItemBase.Cast(GetInventory().FindAttachment(slotId));
 		if (att)
 			return false;
@@ -125,7 +134,7 @@ class FenceKit extends ItemBase
 			vector position = player_base.GetLocalProjectionPosition();
 			vector orientation = player_base.GetLocalProjectionOrientation();
 			
-			Fence fence = Fence.Cast( GetGame().CreateObject( "Fence", GetPosition() ) );
+			Fence fence = Fence.Cast( GetGame().CreateObjectEx( "Fence", GetPosition(), ECE_PLACE_ON_SURFACE ) );
 			fence.SetPosition( position );
 			fence.SetOrientation( orientation );
 			
@@ -191,7 +200,7 @@ class FenceKit extends ItemBase
 	{
 		if (!IsHologram())
 		{
-			ItemBase stick = ItemBase.Cast(GetGame().CreateObject("WoodenStick",GetPosition()));
+			ItemBase stick = ItemBase.Cast(GetGame().CreateObjectEx("WoodenStick",GetPosition(),ECE_PLACE_ON_SURFACE));
 			stick.SetQuantity(2);
 		}
 	}

@@ -7,10 +7,6 @@ class CCIBase
 	
 	bool CanContinue( PlayerBase player, ItemBase item )
 	{
-		if ( Can(player,item) && item && item == player.GetItemInHands() )
-		{
-			return true;
-		}
-		return false;
+		return ( Can(player,item) && item && item == player.GetItemInHands() );
 	}
 };

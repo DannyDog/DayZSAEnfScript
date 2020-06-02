@@ -36,8 +36,9 @@ class DayZPlayerImplementThrowing
 		//! handle action
 		if( m_bThrowingModeEnabled )
 		{
-			//! cancel throwing in case of raising hands
-			if( pHic.IsWeaponRaised() )
+			//! cancel throwing in case of raising hands or heavy item in hands
+			
+			if( !CanContinueThrowing(pHic) )
 			{
 				m_bThrowingModeEnabled = false;
 				ResetState();
@@ -153,15 +154,35 @@ class DayZPlayerImplementThrowing
 			return false;*/
 		
 		PlayerBase playerPB = PlayerBase.Cast(m_Player);
-		if( playerPB && playerPB.GetEmoteManager().IsEmotePlaying() )
-			return false;
+		if( playerPB )
+		{
+			if( playerPB.GetEmoteManager().IsEmotePlaying() )
+				return false;
 		
-		if( playerPB && playerPB.GetActionManager().GetRunningAction() != NULL )
-			return false;
+			if( playerPB.GetActionManager().GetRunningAction() != NULL )
+				return false;
 		
-		if( playerPB && playerPB.IsRestrained() )
-			return false;
+			if( playerPB.IsRestrained() || playerPB.IsItemsToDelete())
+				return false;
 		
+			if( playerPB.GetDayZPlayerInventory().IsProcessing() )
+				return false;
+		
+			if( playerPB.GetWeaponManager().IsRunning() )
+				return false;
+		}
+		return true;
+	}
+	
+	bool CanContinueThrowing(HumanInputController pHic)
+	{
+		HumanItemBehaviorCfg itemInHandsCfg = m_Player.GetItemAccessor().GetItemInHandsBehaviourCfg();
+		Input input = GetGame().GetInput();
+		
+		if( input.LocalPress("UAGear") || pHic.IsWeaponRaised() || (itemInHandsCfg && itemInHandsCfg.m_iType == ItemBehaviorType.HEAVY) )
+		{
+			return false;
+		}
 		return true;
 	}
 	

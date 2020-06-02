@@ -1,9 +1,0 @@
-Particle {
- AlbedoMap "{E12D6AC5690C7745}Graphics/Particles/sprites/ceramic_01.edds" 
- Color 0 0 0 1
- Ambient 0 0 0 1
- Emissive 1 1 1 0
- Sort translucent
- TileU 4
- TileV 2
-}

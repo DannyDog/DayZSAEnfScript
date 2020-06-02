@@ -10,7 +10,7 @@ class WoodAxe extends ToolBase
 		super.SetActions();
 		AddAction(ActionMineTree);
 		AddAction(ActionMineBush);
-		AddAction(ActionDestroyPart);
+		//AddAction(ActionDestroyPart);
 		//AddAction(ActionSawPlanks);
 		AddAction(ActionUnrestrainTarget);
 	}

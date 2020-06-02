@@ -24,8 +24,6 @@ class Bottle_Base extends Edible_Base
 	protected int PARTICLE_BURNING_DONE		= ParticleList.COOKING_BURNING_DONE;
 	
 	//Sounds
-	protected SoundOnVehicle	m_SoundCooking;
-	protected string			m_SoundPlaying = "";
 	ref protected EffectSound 	m_PouringLoopSound;
 	ref protected EffectSound 	m_EmptyingLoopSound;
 	
@@ -40,13 +38,12 @@ class Bottle_Base extends Edible_Base
 	const string SOUND_BOILING_START 		= "boilingWater";
 	const string SOUND_BOILING_DONE 		= "boilingWaterDone";
 	//Baking
-	const string SOUND_BAKING_START 		= "bake";
-	const string SOUND_BAKING_DONE 			= "bakeDone";
+	// defined in Edible_Base
 	//Drying
 	const string SOUND_DRYING_START 		= "dry";
 	const string SOUND_DRYING_DONE 			= "dryDone";	
 	//Burning
-	const string SOUND_BURNING_DONE 		= "burned";
+	//defined in Edible_Base
 	
 	float m_LiquidEmptyRate;
 	private const float QUANTITY_EMPTIED_PER_SEC_DEFAULT = 200; //default
@@ -139,7 +136,7 @@ class Bottle_Base extends Edible_Base
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-		
+
 		//refresh audio visuals
 		if ( m_CookingMethod != CookingMethodType.NONE )
 		{
@@ -165,7 +162,7 @@ class Bottle_Base extends Edible_Base
 		m_CookingIsDone 	= is_done;
 		m_CookingIsEmpty	= is_empty;
 		m_CookingIsBurned	= is_burned;
-		
+
 		//synchronize
 		Synchronize();
 	}
@@ -255,7 +252,7 @@ class Bottle_Base extends Edible_Base
 			//create new
 			if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
 			{
-				vector local_pos = GetSteamPosition();
+				vector local_pos = MiscGameplayFunctions.GetSteamPosition( GetHierarchyParent() );
 				//TODO set steam position to pot (proxy) memory point (new hierarchy needed)
 				//m_ParticleCooking = Particle.Create( particle_id, this, local_pos );
 				m_ParticleCooking = Particle.PlayInWorld( particle_id, local_pos );
@@ -273,72 +270,6 @@ class Bottle_Base extends Edible_Base
 			m_ParticlePlaying = ParticleList.INVALID;
 		}
 	}
-	
-	//get position for steam particle
-	protected vector GetSteamPosition()
-	{
-		EntityAI parent = GetHierarchyParent();
-		vector particle_pos;
-		float steam_offset = 0;
-		
-		if ( parent )
-		{
-			particle_pos = parent.GetPosition();
-			
-			if ( parent.IsInherited( PortableGasStove ) )
-			{
-				steam_offset = 0.2;
-			}
-			else if ( parent.IsInherited( FireplaceBase ) )
-			{
-				FireplaceBase fireplace = FireplaceBase.Cast( parent );
-				
-				if ( fireplace.IsBaseFireplace() )
-				{
-					steam_offset = 0.8;
-				}
-				else if ( fireplace.IsBarrelWithHoles() )
-				{
-					steam_offset = 1.1;
-				}
-				else if ( fireplace.IsFireplaceIndoor() )
-				{
-					steam_offset = 0.45;
-				}		
-			}
-		}
-		
-		particle_pos[1] = particle_pos[1] + steam_offset;
-		
-		return particle_pos;
-	}
-
-	//sounds
-	protected void SoundCookingStart( string sound_name )
-	{
-		if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
-		{	
-			if ( m_SoundPlaying != sound_name )
-			{
-				//stop previous sound
-				SoundCookingStop();
-				
-				//create new
-				m_SoundCooking = PlaySoundLoop( sound_name, 50 );
-				m_SoundPlaying = sound_name;
-			}
-		}
-	}
-	
-	protected void SoundCookingStop()
-	{
-		if ( m_SoundCooking )
-		{
-			GetGame().ObjectDelete( m_SoundCooking );
-			m_SoundCooking = NULL;
-			m_SoundPlaying = "";
-		}
-	}	
 		
 	void PlayPouringLoopSound()
 	{

@@ -510,6 +510,7 @@ class CfgVehicles
 				turboCoef = 4.0;
 				gentleCoef = 0.75;
 			};
+			braking[] = {0.0,0.1,1.0,0.8,2.5,0.9,3.0,1.0};
 			class Engine
 			{
 				inertia = 0.15;
@@ -1690,6 +1691,7 @@ class CfgVehicles
 				turboCoef = 5.0;
 				gentleCoef = 0.7;
 			};
+			braking[] = {0.0,0.1,1.0,0.8,3.0,0.9,3.5,1.0};
 			class Engine
 			{
 				inertia = 0.45;
@@ -1717,7 +1719,7 @@ class CfgVehicles
 				{
 					maxSteeringAngle = 35;
 					brakeBias = 0.7;
-					brakeForce = 4500;
+					brakeForce = 4250;
 					wheelHubMass = 10;
 					wheelHubRadius = 0.15;
 					class Suspension
@@ -1747,7 +1749,7 @@ class CfgVehicles
 				{
 					maxSteeringAngle = 0;
 					brakeBias = 0.3;
-					brakeForce = 3500;
+					brakeForce = 4500;
 					finalRatio = 4.1;
 					wheelHubMass = 10;
 					wheelHubRadius = 0.15;
@@ -2039,7 +2041,7 @@ class CfgVehicles
 				name = "$STR_attachment_Chassis0";
 				description = "";
 				icon = "cat_vehicle_chassis";
-				attachmentSlots[] = {"CivSedanWheel_1_1","CivSedanWheel_1_2","CivSedanWheel_2_1","CivSedanWheel_2_2","CivSedanWheel_Spare_1"};
+				attachmentSlots[] = {"CivSedanWheel_1_1","CivSedanWheel_1_2","CivSedanWheel_2_1","CivSedanWheel_2_2"};
 			};
 		};
 	};
@@ -3024,6 +3026,7 @@ class CfgVehicles
 				turboCoef = 2.2;
 				gentleCoef = 0.5;
 			};
+			braking[] = {0.0,0.1,0.5,0.3,2.5,0.4,3.0,1.0};
 			class Engine
 			{
 				inertia = 0.27;
@@ -3052,13 +3055,13 @@ class CfgVehicles
 					maxSteeringAngle = 35;
 					finalRatio = 3.667;
 					brakeBias = 0.75;
-					brakeForce = 5000;
+					brakeForce = 4000;
 					wheelHubMass = 5;
 					wheelHubRadius = 0.125;
 					class Suspension
 					{
-						swayBar = 2000;
-						stiffness = 27000;
+						swayBar = 1850;
+						stiffness = 30000;
 						compression = 1650;
 						damping = 6000;
 						travelMaxUp = 0.16;
@@ -3082,15 +3085,15 @@ class CfgVehicles
 				{
 					maxSteeringAngle = 0;
 					brakeBias = 0.45;
-					brakeForce = 4000;
+					brakeForce = 3500;
 					wheelHubMass = 5;
 					wheelHubRadius = 0.125;
 					class Suspension
 					{
-						swayBar = 2000;
+						swayBar = 1850;
 						stiffness = 27000;
-						compression = 1650;
-						damping = 6000;
+						compression = 1700;
+						damping = 7000;
 						travelMaxUp = 0.16;
 						travelMaxDown = 0.16;
 					};
@@ -4433,6 +4436,7 @@ class CfgVehicles
 				turboCoef = 2.8;
 				gentleCoef = 0.5;
 			};
+			braking[] = {0.0,0.2,0.5,0.4,2.5,0.6,3.0,1.0};
 			class Engine
 			{
 				inertia = 0.23;
@@ -4461,7 +4465,7 @@ class CfgVehicles
 					maxSteeringAngle = 30;
 					finalRatio = 4.1;
 					brakeBias = 0.6;
-					brakeForce = 3400;
+					brakeForce = 3800;
 					wheelHubMass = 5;
 					wheelHubRadius = 0.17;
 					class Suspension
@@ -4492,7 +4496,7 @@ class CfgVehicles
 					maxSteeringAngle = 0;
 					finalRatio = 4.22;
 					brakeBias = 0.4;
-					brakeForce = 3200;
+					brakeForce = 3600;
 					wheelHubMass = 5;
 					wheelHubRadius = 0.17;
 					class Suspension

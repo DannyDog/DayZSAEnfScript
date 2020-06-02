@@ -46,7 +46,7 @@ class ActionBuildPart: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTNonRuined( UAMaxDistances.BASEBUILDING );
+		m_ConditionTarget = new CCTNone;
 	}
 	
 	override string GetText()
@@ -68,6 +68,10 @@ class ActionBuildPart: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		//hack - gate
+		if(target.GetObject() && !target.GetObject().CanUseConstructionBuild())
+			return false;
+		
 		if( (!GetGame().IsMultiplayer() || GetGame().IsClient()) )
 		{
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();

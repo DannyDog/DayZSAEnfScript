@@ -61,7 +61,7 @@ class CAContinuousTimeCooking : CAContinuousBase
 			if ( m_TimeElapsedRepeat >= m_AdjustedCookingUpdateTime )
 			{
 				cooking_state_update = m_CookingProcess.CookOnStick( m_ItemToCook, m_CookingUpdateTime );
-				Print("cooking_state_update: "+ cooking_state_update);
+				//Print("cooking_state_update: "+ cooking_state_update);
 				//refresh action when food changed state
 				if ( cooking_state_update == 1 )
 				{

@@ -79,5 +79,10 @@ class Paper extends ItemBase
 		
 		AddAction(ActionReadPaper);
 		AddAction(ActionWritePaper);
+
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
 	}
 }

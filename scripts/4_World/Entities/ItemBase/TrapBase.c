@@ -244,10 +244,10 @@ class TrapBase extends ItemBase
 					if ( victim.IsInherited(SurvivorBase) )
 					{
 						victim.DecreaseHealth( "", "", m_DamagePlayers );
-						PlayerBase player = PlayerBase.Cast( victim );
+						//PlayerBase player = PlayerBase.Cast( victim );
 						//player.MessageStatus( m_InfoDamage );
 					}
-					else if(victim.IsInherited(ZombieBase) )
+					else if(victim.IsInherited(DayZCreatureAI) )
 					{
 						victim.DecreaseHealth( "", "", m_DamageOthers );
 					}

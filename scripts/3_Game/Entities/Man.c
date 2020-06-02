@@ -22,7 +22,7 @@ class Man extends EntityAI
 	proto native bool IsSoundInsideBuilding();
 	proto native bool IsCameraInsideVehicle();
 
-	proto native string GetMasterAttenuation();
+	proto native owned string GetMasterAttenuation();
 	proto native void SetMasterAttenuation(string masterAttenuation);
 
 	void Man()
@@ -39,6 +39,8 @@ class Man extends EntityAI
 		if( IsAlive() ) return EPlayerStates.ALIVE;
 		else return EPlayerStates.DEAD;
 	}
+	
+	void AddItemToDelete( EntityAI item ){}
 
 	///@{ inventory
 	HumanInventory GetHumanInventory ()
@@ -805,6 +807,11 @@ class Man extends EntityAI
 	}
 	///@} to dst juncture
 	///@} inventory
+	
+	void JunctureDeleteItem(EntityAI item)
+	{
+		
+	} 
 
 	override bool CanBeSkinned()
 	{

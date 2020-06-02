@@ -99,19 +99,20 @@ class ActionFishingNewCB : ActionContinuousBaseCB
 			if (rnd > m_ActionDataFishing.FISHING_GARBAGE_CHANCE)
 			{
 				if (m_ActionDataFishing.m_IsSurfaceSea)
-					fish = ItemBase.Cast(GetGame().CreateObject("Mackerel",m_ActionDataFishing.m_Player.GetPosition(), false));
+					fish = ItemBase.Cast(GetGame().CreateObjectEx("Mackerel",m_ActionDataFishing.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 				else
-					fish = ItemBase.Cast(GetGame().CreateObject("Carp",m_ActionDataFishing.m_Player.GetPosition(), false));
+					fish = ItemBase.Cast(GetGame().CreateObjectEx("Carp",m_ActionDataFishing.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 			}
 			else
 			{
 				string junk_type = m_JunkTypes.Get(Math.RandomInt(0,m_JunkTypes.Count()));
-				fish = ItemBase.Cast(GetGame().CreateObject(junk_type,m_ActionDataFishing.m_Player.GetPosition(), false));
+				fish = ItemBase.Cast(GetGame().CreateObjectEx(junk_type,m_ActionDataFishing.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 				fish.SetHealth("","Health",fish.GetMaxHealth("","Health") * 0.1);
 			}
 			
 			if (fish)
 			{
+				//Print("---Caught something: " + fish + "---");
 				fish.SetWet(0.3);
 				fish.PlaceOnSurface();
 				if (fish.HasQuantity())

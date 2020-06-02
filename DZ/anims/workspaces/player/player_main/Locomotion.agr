@@ -2422,7 +2422,7 @@ chainAxis = -x"
 					 "WeaponChangeStanceSTM" "IsCommand(CMD_Weapon_Hide) || IsCommand(CMD_Weapon_Show)" "" "" 0.1 0.35 1 0
 				}
 				$item {
-					 "ActionMaster" "IsCommand(CMD_Action)" "GetCommandI(CMD_InternalAction) == -2" "" 0.2 0.4 1 1
+					 "ActionMaster" "IsCommand(CMD_Action) || IsCommand(CMD_TRAILER_WALK_AWAY) " "GetCommandI(CMD_InternalAction) == -2" "" 0.2 0.4 1 1
 				}
 				$item {
 					 "ReloadStanceChange" "IsCommand(CMD_Reload_Magazine) || IsCommand(CMD_Reload_BoltAction) || IsCommand(CMD_Reload_Chambering) || IsCommand(CMD_Reload_ChamberingFast) || IsCommand(CMD_Weapon_Jam) || IsCommand(CMD_Reload_Clip)" "IsCommand(CMD_Weapon_Interrupt)
@@ -7141,7 +7141,7 @@ Y(90): X(-180) = 10, X(-90) = 11, X(0) = 12, X(90) = 13, X(180) = 14"
 					 "IdleL" "Up" "LadderMovement == 1" "0.2" "0.5" 0 "S"
 				}
 				$Transition {
-					 "Up" "IdleL" "LadderMovement != 1 && (GetLowerTime() > 0.35 && GetLowerTime() < 0.60)" "0.3" "" 0 "S"
+					 "Up" "IdleL" "LadderMovement != 1 && (GetLowerTime() > 0.35 && GetLowerTime() < 0.60)" "0.2" "" 1 "S"
 				}
 				$Transition {
 					 "IdleL" "DownFast" "LadderMovement == -2" "0.2" "" 6 "S"
@@ -7159,7 +7159,7 @@ Y(90): X(-180) = 10, X(-90) = 11, X(0) = 12, X(90) = 13, X(180) = 14"
 					 "Up" "DownFast" "LadderMovement == -2" "0.2" "0.0" 6 "S"
 				}
 				$Transition {
-					 "Up" "IdleR" "LadderMovement != 1 && (GetLowerTime() <= 0.15 || GetLowerTime() >= 0.85)" "0.3" "" 1 "S"
+					 "Up" "IdleR" "LadderMovement != 1 && (GetLowerTime() <= 0.15 || GetLowerTime() >= 0.85)" "0.2" "" 1 "S"
 				}
 				$Transition {
 					 "IdleR" "Up" "LadderMovement == 1" "0.2" "0.0" 6 "S"

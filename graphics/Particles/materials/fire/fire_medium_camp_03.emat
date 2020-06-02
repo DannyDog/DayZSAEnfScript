@@ -1,9 +1,0 @@
-material "Graphics/Particles/materials/fire/fire_medium_camp_03.emat": ParticleSprite
-{
-	AlbedoMap "{A5DD77B572C2EC49}Graphics/Particles/sprites/fire_anim_03.edds"
-	BlendMode 2
-	TileU 8
-	TileV 8
-	Softness 1
-}
-

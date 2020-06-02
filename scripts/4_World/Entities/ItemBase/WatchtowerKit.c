@@ -52,6 +52,12 @@ class WatchtowerKit extends ItemBase
 		m_DeployedRegularly = true;
 	}
 	
+	override void OnPlacementCancelled( Man player )
+	{
+		super.OnPlacementCancelled(player);
+		m_DeployedRegularly = false;
+	}
+	
 	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged( old_owner, new_owner );
@@ -70,8 +76,8 @@ class WatchtowerKit extends ItemBase
 		ItemBase att = ItemBase.Cast(GetInventory().FindAttachment(slotId));
 		if (att)
 			return false;
-		
-		return true;
+
+		return super.CanReceiveAttachment(attachment, slotId);
 	}
 	
 	//Update visuals and physics
@@ -125,7 +131,7 @@ class WatchtowerKit extends ItemBase
 			vector position = player_base.GetLocalProjectionPosition();
 			vector orientation = player_base.GetLocalProjectionOrientation();
 			
-			Watchtower watchtower = Watchtower.Cast( GetGame().CreateObject( "Watchtower", GetPosition() ) );
+			Watchtower watchtower = Watchtower.Cast( GetGame().CreateObjectEx( "Watchtower", GetPosition(), ECE_PLACE_ON_SURFACE ) );
 			watchtower.SetPosition( position );
 			watchtower.SetOrientation( orientation );
 			
@@ -191,7 +197,7 @@ class WatchtowerKit extends ItemBase
 	{
 		if (!IsHologram())
 		{
-			ItemBase stick = ItemBase.Cast(GetGame().CreateObject("WoodenStick",GetPosition()));
+			ItemBase stick = ItemBase.Cast(GetGame().CreateObjectEx("WoodenStick",GetPosition(),ECE_PLACE_ON_SURFACE));
 			stick.SetQuantity(4);
 		}
 	}

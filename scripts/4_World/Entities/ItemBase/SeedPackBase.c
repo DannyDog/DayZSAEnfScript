@@ -32,7 +32,7 @@ class SeedPackBase extends Inventory_Base
 		else
 		{
 			vector pos = GetPosition();
-			GetGame().CreateObject(seeds_type, pos);
+			GetGame().CreateObjectEx(seeds_type, pos, ECE_PLACE_ON_SURFACE);
 			GetGame().ObjectDelete( this );
 		}
 	}

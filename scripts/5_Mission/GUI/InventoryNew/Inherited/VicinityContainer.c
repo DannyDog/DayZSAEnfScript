@@ -388,6 +388,10 @@ class VicinityContainer: CollapsibleContainer
 			eai = objects.Get( i );			
 			if ( eai == null || game_inventory.IsPlaceholderEntity( eai ) )
 				continue; // noproxy: ignore body placeholder
+			
+			BaseBuildingBase base_building = BaseBuildingBase.Cast(eai);
+			if(base_building && !base_building.IsPlayerInside(player,""))
+				continue;
 
 			if( eai.IsInventoryVisible() )
 			{
@@ -494,6 +498,14 @@ class VicinityContainer: CollapsibleContainer
 								continue;
 							}
 						}
+						
+						if ( entity.IsInherited( BaseBuildingBase ) )
+						{	
+							if ( !BaseBuildingBase.Cast(entity).IsPlayerInside(player,""))
+								continue;
+						
+						}
+						
 						new_showed_items.Insert( entity, m_ShowedItems.Get( entity ) );
 						showed_items_IDs.Insert( entity.GetID(), m_ShowedItemsIDs.Get( entity.GetID() ) );
 					}

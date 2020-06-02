@@ -193,7 +193,7 @@ $animsettemplate {
   }
  }
  $groupType "ActionOnce" {
-  #ngroupnames 83
+  #ngroupnames 91
   #nanims 2
   $groupnames {
     "AttachItemCro"
@@ -260,10 +260,12 @@ $animsettemplate {
     "PickUpHandsCro"
     "PickUpHandsErc"
     "PickUpHandsPne"
+    "PickUpHandsPneB"
     "PickUpHeavyErc"
     "PickUpInventoryCro"
     "PickUpInventoryErc"
     "PickUpInventoryPne"
+    "PickUpInventoryPneB"
     "PokeCro"
     "PullOut"
     "RestrainedCro"
@@ -279,6 +281,12 @@ $animsettemplate {
     "WpnAttachBarrelPne"
     "WpnAttachScopeErc"
     "WpnAttachScopePne"
+    "dz_xbox_dead"
+    "dz_xbox_dead_body"
+    "dz_xbox_wake_up"
+    "dz_xbox_walk_away"
+    "dz_xbox_walkie_talkie"
+    "dz_xbox_wounded"
    
   }
   $anims {

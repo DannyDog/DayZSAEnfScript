@@ -1,7 +1,0 @@
-ParticleSprite {
- AlbedoMap "{00DB5AFE43BFC32C}Graphics/Particles/sprites/steam_cloud.edds" 
- Emissive 1 1 1 0
- SortBias -1
- NormalMap "{EA4F90A4D51C0EB9}Graphics/Particles/sprites/cloud_01_g_nm.edds" 
- Softness 2
-}

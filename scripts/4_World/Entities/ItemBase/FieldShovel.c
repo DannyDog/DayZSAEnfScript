@@ -13,8 +13,8 @@ class FieldShovel extends ItemBase
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
-		AddAction(ActionBuildPart);
 		AddAction(ActionDismantlePart);
+		AddAction(ActionBuildPart);
 		AddAction(ActionBuryBody);
 		AddAction(ActionBuryAshes);
 		AddAction(ActionDigGardenPlot);

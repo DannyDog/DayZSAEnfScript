@@ -9,6 +9,7 @@ class Hammer extends Inventory_Base
 	{
 		super.SetActions();
 		
+		AddAction(ActionRepairPart);
 		AddAction(ActionBuildPartSwitch);
 		AddAction(ActionMineRock1H);
 		AddAction(ActionBuildPart);

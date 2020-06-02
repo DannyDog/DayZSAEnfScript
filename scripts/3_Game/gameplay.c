@@ -706,6 +706,7 @@ class MenuData: Managed
 	
 	proto void 			GetLastServerAddress(int index, out string address);
 	proto native int 	GetLastServerPort(int index);
+	proto void 			GetLastServerName(int index, out string address);
 	
 	proto void 			GetCharacterName(int index, out string name);
 	proto native void 	SetCharacterName(int index, string newName);

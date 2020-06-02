@@ -277,6 +277,7 @@ const int ID_EMOTE_DEBUG 		= 1000;
  */
 const int EMOTE_SUICIDE_DEATH 	= 1;
 const int EMOTE_SUICIDE_BLEED 	= 2;
+const int EMOTE_SUICIDE_SIMULATION_END = 3;
 
 
 /**
@@ -417,6 +418,7 @@ const string SHOW_QUICKBAR 		= "show_quickbar";
 const string SHOW_HUD 			= "show_hud";
 //const string SHOW_HUD_AUTOHIDE 	= "hud_autohide";
 const string SHOW_CROSSHAIR 	= "show_crosshair";
+const string SHOW_SERVERINFO 	= "show_serverinfo";
 /** @}*/
 
 /**
@@ -477,14 +479,18 @@ class GameConstants
 	const int	STAMINA_DRAIN_SWIM_FAST_PER_SEC = 5; //in units (how much fast swimming depletes stamina)
 	const int	STAMINA_DRAIN_LADDER_FAST_PER_SEC = 8; //in units (how much fast ladder climb depletes stamina)
 	
-	const float	STAMINA_DRAIN_HOLD_BREATH = 0.2; //in units (how much holding breath depletes stamina)
+	const float	STAMINA_DRAIN_HOLD_BREATH_START = 0.2; //in units (how much holding breath depletes stamina at the start)
+	const float	STAMINA_DRAIN_HOLD_BREATH_END = 1.0; //in units (how much holding breath depletes stamina at the end)
 	const float	STAMINA_DRAIN_JUMP = 25;		// in units (how much jumping depletes stamina)
 	const float	STAMINA_DRAIN_VAULT = 20;		// in units (how much jumping depletes stamina)
 	const float	STAMINA_DRAIN_CLIMB = 42;		// in units (how much jumping depletes stamina)
 	const float	STAMINA_DRAIN_MELEE_LIGHT = 5; //in units (how much light melee punch depletes stamina)
 	const float	STAMINA_DRAIN_MELEE_HEAVY = 25; //in units (how much heavy melee punch depletes stamina)
 	const float	STAMINA_DRAIN_MELEE_EVADE = 8; // in units (how much evade depletes stamina)
-		
+	
+	const float STAMINA_DRAIN_HOLD_BREATH_DURATION = 5.0; //in seconds, time it takes to increase stamina drain from STAMINA_DRAIN_HOLD_BREATH_START to STAMINA_DRAIN_HOLD_BREATH_END
+	const float	STAMINA_DRAIN_HOLD_BREATH_EXPONENT = 4.0; //holding breath exponent
+	
 	const int 	STAMINA_GAIN_JOG_PER_SEC = 2; //in units (how much of stamina units is gained while jogging)
 	const int 	STAMINA_GAIN_WALK_PER_SEC = 4; //in units (how much of stamina units is gained while walking)
 	const int 	STAMINA_GAIN_IDLE_PER_SEC = 5; //in units (how much of stamina units is gained while iddling)
@@ -494,7 +500,8 @@ class GameConstants
 	
 	const float STAMINA_KG_TO_STAMINAPERCENT_PENALTY = 1.75; //in units (by how many  units is max stamina bar reduced for each 1 kg of load weight)
 	const float STAMINA_MIN_CAP = 5; //in units (overload won't reduce max stamina bar under this value)
-	const float STAMINA_HOLD_BREATH_THRESHOLD = 10; // in units
+	const float STAMINA_HOLD_BREATH_THRESHOLD_ACTIVATE = 10; // in units
+	const float STAMINA_HOLD_BREATH_THRESHOLD_DRAIN = 0; // in units
 	const float STAMINA_JUMP_THRESHOLD = 25; // in units
 	const float STAMINA_VAULT_THRESHOLD = 20; // in units
 	const float STAMINA_CLIMB_THRESHOLD = 42; // in units
@@ -634,4 +641,6 @@ class GameConstants
 	const float PROJECTILE_CONVERSION_ANIMALS 	= 0.1;
 	const float PROJECTILE_CONVERSION_INFECTED 	= 0.44;
 	const float PROJECTILE_CONVERSION_PLAYERS 	= 0.1;
+	
+	const float ROOF_CHECK_RAYCAST_DIST = 20.0;
 }

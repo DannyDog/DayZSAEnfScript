@@ -20,6 +20,7 @@ const int ECE_EQUIP_ATTACHMENTS				= 8192;		// equip with configured ATTACHMENTS
 const int ECE_EQUIP_CARGO					= 16384;	// equip with configured CARGO
 const int ECE_EQUIP							= 24576;	// equip with configured (ATTACHMENTS + CARGO)
 const int ECE_EQUIP_CONTAINER				= 2097152;	// populate DE/ group CONTAINER during spawn
+const int ECE_LOCAL							= 1073741824; // create object locally
 
 const int ECE_NOSURFACEALIGN				= 262144;	// do not align object on surface/ terrain
 const int ECE_KEEPHEIGHT					= 524288;	// keep height when creating object (do not use trace or placement on surface)

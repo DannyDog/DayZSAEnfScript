@@ -65,6 +65,37 @@ class Sedan_02 extends CarScript
 
 		return true;
 	}
+	
+
+	override bool CanDisplayAttachmentCategory( string category_name )
+	{
+		//super
+		if ( !super.CanDisplayAttachmentCategory( category_name ) )
+		return false;
+		//
+	
+		category_name.ToLower();
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		
+		if ( category_name.Contains( "engine" ) )
+		{
+			if ( GetCarDoorsState("Sedan_02_Hood") == CarDoorState.DOORS_CLOSED )
+				return false;
+		}
+				
+		return true;
+	}
+	
+	override bool CanDisplayCargo()
+	{
+		if ( !super.CanDisplayCargo() )
+			return false;
+		
+		if ( GetCarDoorsState("Sedan_02_Trunk") == CarDoorState.DOORS_CLOSED )
+			return false;
+		
+		return true;
+	}
 
 	override int GetCarDoorsState( string slotType )
 	{

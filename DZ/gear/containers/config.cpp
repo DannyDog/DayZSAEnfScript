@@ -54,8 +54,35 @@ class CfgVehicles
 		absorbency = 0.1;
 		physLayer = "item_large";
 		allowOwnedCargoManipulation = 1;
-		lootTag[] = {"Work"};
 		hiddenSelections[] = {"camoGround"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 3500;
+				};
+			};
+			class GlobalArmor
+			{
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 30.0;
+					};
+					class Blood
+					{
+						damage = 30.0;
+					};
+					class Shock
+					{
+						damage = 30.0;
+					};
+				};
+			};
+		};
 		class Cargo
 		{
 			itemsCargoSize[] = {10,15};
@@ -111,32 +138,14 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"\dz\gear\containers\data\barrel_green_co.paa"};
 		hologramMaterial = "barrel";
 		hologramMaterialPath = "dz\gear\containers\data";
-		class DamageSystem
+		class DamageSystem: DamageSystem
 		{
-			class GlobalHealth
+			class GlobalHealth: GlobalHealth
 			{
-				class Health
+				class Health: Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Barrel_green.rvmat"}},{0.7,{"DZ\gear\containers\data\Barrel_green.rvmat"}},{0.5,{"DZ\gear\containers\data\Barrel_green_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Barrel_green_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Barrel_green_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
+					RefTexsMats[] = {"dz\gear\containers\data\barrel_green.rvmat"};
+					healthLevels[] = {{1.0,{"dz\gear\containers\data\barrel_green.rvmat"}},{0.7,{"dz\gear\containers\data\barrel_green.rvmat"}},{0.5,{"dz\gear\containers\data\barrel_green_damage.rvmat"}},{0.3,{"dz\gear\containers\data\barrel_green_damage.rvmat"}},{0.0,{"dz\gear\containers\data\barrel_green_destruct.rvmat"}}};
 				};
 			};
 		};
@@ -148,32 +157,14 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"\dz\gear\containers\data\barrel_blue_co.paa"};
 		hologramMaterial = "barrel";
 		hologramMaterialPath = "dz\gear\containers\data";
-		class DamageSystem
+		class DamageSystem: DamageSystem
 		{
-			class GlobalHealth
+			class GlobalHealth: GlobalHealth
 			{
-				class Health
+				class Health: Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Barrel_blue.rvmat"}},{0.7,{"DZ\gear\containers\data\Barrel_blue.rvmat"}},{0.5,{"DZ\gear\containers\data\Barrel_blue_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Barrel_blue_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Barrel_blue_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
+					RefTexsMats[] = {"dz\gear\containers\data\barrel_green.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\containers\data\barrel_blue.rvmat"}},{0.7,{"DZ\gear\containers\data\barrel_blue.rvmat"}},{0.5,{"DZ\gear\containers\data\barrel_blue_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\barrel_blue_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\barrel_blue_destruct.rvmat"}}};
 				};
 			};
 		};
@@ -185,32 +176,14 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"\dz\gear\containers\data\barrel_red_co.paa"};
 		hologramMaterial = "barrel";
 		hologramMaterialPath = "dz\gear\containers\data";
-		class DamageSystem
+		class DamageSystem: DamageSystem
 		{
-			class GlobalHealth
+			class GlobalHealth: GlobalHealth
 			{
-				class Health
+				class Health: Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Barrel_red.rvmat"}},{0.7,{"DZ\gear\containers\data\Barrel_red.rvmat"}},{0.5,{"DZ\gear\containers\data\Barrel_red_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Barrel_red_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Barrel_red_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
+					RefTexsMats[] = {"dz\gear\containers\data\barrel_green.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\containers\data\barrel_red.rvmat"}},{0.7,{"DZ\gear\containers\data\barrel_red.rvmat"}},{0.5,{"DZ\gear\containers\data\barrel_red_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\barrel_red_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\barrel_red_destruct.rvmat"}}};
 				};
 			};
 		};
@@ -222,32 +195,14 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"\dz\gear\containers\data\barrel_yellow_co.paa"};
 		hologramMaterial = "barrel";
 		hologramMaterialPath = "dz\gear\containers\data";
-		class DamageSystem
+		class DamageSystem: DamageSystem
 		{
-			class GlobalHealth
+			class GlobalHealth: GlobalHealth
 			{
-				class Health
+				class Health: Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Barrel_yellow.rvmat"}},{0.7,{"DZ\gear\containers\data\Barrel_yellow.rvmat"}},{0.5,{"DZ\gear\containers\data\Barrel_yellow_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Barrel_yellow_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Barrel_yellow_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
+					RefTexsMats[] = {"dz\gear\containers\data\barrel_green.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\containers\data\barrel_yellow.rvmat"}},{0.7,{"DZ\gear\containers\data\barrel_yellow.rvmat"}},{0.5,{"DZ\gear\containers\data\barrel_yellow_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\barrel_yellow_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\barrel_yellow_destruct.rvmat"}}};
 				};
 			};
 		};
@@ -316,7 +271,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\FirsAidKit.rvmat"}},{0.7,{"DZ\gear\containers\data\FirsAidKit.rvmat"}},{0.5,{"DZ\gear\containers\data\FirsAidKit_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\FirsAidKit_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\FirsAidKit_destruct.rvmat"}}};
 				};
 			};
@@ -352,15 +307,32 @@ class CfgVehicles
 		isMeleeWeapon = 1;
 		allowOwnedCargoManipulation = 1;
 		randomQuantity = 2;
-		lootTag[] = {"Medic","Work","Camping"};
 		class DamageSystem
 		{
 			class GlobalHealth
 			{
 				class Health
 				{
-					hitpoints = 200;
+					hitpoints = 1200;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Protector_Case.rvmat"}},{0.7,{"DZ\gear\containers\data\Protector_Case.rvmat"}},{0.5,{"DZ\gear\containers\data\Protector_Case_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Protector_Case_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Protector_Case_destruct.rvmat"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 35.0;
+					};
+					class Blood
+					{
+						damage = 35.0;
+					};
+					class Shock
+					{
+						damage = 35.0;
+					};
 				};
 			};
 		};
@@ -395,7 +367,6 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		allowOwnedCargoManipulation = 1;
 		randomQuantity = 2;
-		lootTag[] = {"Military_east","Military_west"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -436,7 +407,6 @@ class CfgVehicles
 		allowOwnedCargoManipulation = 1;
 		randomQuantity = 4;
 		canBeDigged = 1;
-		lootTag[] = {"Military_east","Military_west"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -535,7 +505,6 @@ class CfgVehicles
 		itemsCargoSize[] = {4,5};
 		allowOwnedCargoManipulation = 1;
 		canBeDigged = 1;
-		lootTag[] = {"Civilian"};
 		absorbency = 0;
 		heatIsolation = 1;
 		repairableWithKits[] = {5,6};
@@ -547,7 +516,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 300;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\WaterproofBag.rvmat"}},{0.7,{"DZ\gear\containers\data\WaterproofBag.rvmat"}},{0.5,{"DZ\gear\containers\data\WaterproofBag_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\WaterproofBag_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\WaterproofBag_destruct.rvmat"}}};
 				};
 			};
@@ -604,7 +573,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_destruct.rvmat"}}};
 				};
 			};
@@ -643,7 +612,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_destruct.rvmat"}}};
 				};
 			};
@@ -660,7 +629,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_destruct.rvmat"}}};
 				};
 			};
@@ -677,7 +646,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_RED.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_destruct.rvmat"}}};
 				};
 			};
@@ -694,7 +663,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_destruct.rvmat"}}};
 				};
 			};
@@ -711,7 +680,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_destruct.rvmat"}}};
 				};
 			};
@@ -728,7 +697,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_RED.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_destruct.rvmat"}}};
 				};
 			};
@@ -745,7 +714,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_destruct.rvmat"}}};
 				};
 			};
@@ -762,7 +731,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_destruct.rvmat"}}};
 				};
 			};
@@ -779,7 +748,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_RED.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_RED_destruct.rvmat"}}};
 				};
 			};
@@ -796,7 +765,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_SILVER_destruct.rvmat"}}};
 				};
 			};
@@ -813,7 +782,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD.rvmat"}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GOLD_destruct.rvmat"}}};
 				};
 			};
@@ -830,7 +799,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\christmas_paper1.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN.rvmat"}},{0.7,{}},{0.5,{"DZ\gear\containers\data\christmas_paper1_damage.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\gear\containers\data\christmas_paper1_destruct.rvmat","DZ\gear\containers\data\christmas_ribbon_GREEN_destruct.rvmat"}}};
 				};
 			};

@@ -434,121 +434,140 @@ class CfgVehicles
 	class Land_Wreck_hb01_aban1_blue: HouseNoDestruct
 	{
 		scope = 1;
-		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban1_blue";
+		model = "\DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban1_blue.p3d";
+		class Doors
+		{
+			class Doors1
+			{
+				displayName = "door 1";
+				component = "Doors1";
+				soundPos = "doors1_action";
+				animPeriod = 1.0;
+				initPhase = 0;
+				initOpened = 0.3;
+				soundOpen = "doorCarSmallOpen";
+				soundClose = "doorCarSmallClose";
+				soundLocked = "doorCarSmallRattle";
+				soundOpenABit = "doorCarSmallOpenABit";
+			};
+			class Doors2
+			{
+				displayName = "door 2";
+				component = "Doors2";
+				soundPos = "doors2_action";
+				animPeriod = 1.0;
+				initPhase = 0;
+				initOpened = 0.2;
+				soundOpen = "doorCarSmallOpen";
+				soundClose = "doorCarSmallClose";
+				soundLocked = "doorCarSmallRattle";
+				soundOpenABit = "doorCarSmallOpenABit";
+			};
+			class Doors3
+			{
+				displayName = "door 3";
+				component = "Doors3";
+				soundPos = "doors3_action";
+				animPeriod = 1.0;
+				initPhase = 0;
+				initOpened = 0.3;
+				soundOpen = "doorCarSmallOpen";
+				soundClose = "doorCarSmallClose";
+				soundLocked = "doorCarSmallRattle";
+				soundOpenABit = "doorCarSmallOpenABit";
+			};
+		};
 	};
-	class Land_Wreck_hb01_aban1_green: HouseNoDestruct
+	class Land_Wreck_hb01_aban1_green: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban1_green";
 	};
-	class Land_Wreck_hb01_aban1_white: HouseNoDestruct
+	class Land_Wreck_hb01_aban1_white: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban1_white";
 	};
-	class Land_Wreck_hb01_aban2_blue: HouseNoDestruct
+	class Land_Wreck_hb01_aban2_blue: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban2_blue";
 	};
-	class Land_Wreck_hb01_aban2_green: HouseNoDestruct
+	class Land_Wreck_hb01_aban2_green: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban2_green";
 	};
-	class Land_Wreck_hb01_aban2_white: HouseNoDestruct
+	class Land_Wreck_hb01_aban2_white: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb01_aban2_white";
 	};
-	class Land_Wreck_hb02_aban1_black: HouseNoDestruct
+	class Land_Wreck_hb02_aban1_black: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban1_black";
 	};
-	class Land_Wreck_hb02_aban1_blue: HouseNoDestruct
+	class Land_Wreck_hb02_aban1_blue: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban1_blue";
 	};
-	class Land_Wreck_hb02_aban1_red: HouseNoDestruct
+	class Land_Wreck_hb02_aban1_red: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban1_red";
 	};
-	class Land_Wreck_hb02_aban2_black: HouseNoDestruct
+	class Land_Wreck_hb02_aban2_black: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban2_black";
 	};
-	class Land_Wreck_hb02_aban2_blue: HouseNoDestruct
+	class Land_Wreck_hb02_aban2_blue: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban2_blue";
 	};
-	class Land_Wreck_hb02_aban2_red: HouseNoDestruct
+	class Land_Wreck_hb02_aban2_red: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_hb02_aban2_red";
 	};
-	class Land_Wreck_sed01_aban1_black: HouseNoDestruct
+	class Land_Wreck_sed01_aban1_black: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban1_black";
 	};
-	class Land_Wreck_sed01_aban1_white: HouseNoDestruct
+	class Land_Wreck_sed01_aban1_white: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban1_white";
 	};
-	class Land_Wreck_sed01_aban1_wine: HouseNoDestruct
+	class Land_Wreck_sed01_aban1_wine: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban1_wine";
 	};
-	class Land_Wreck_sed01_aban2_black: HouseNoDestruct
+	class Land_Wreck_sed01_aban2_black: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban2_black";
 	};
-	class Land_Wreck_sed01_aban2_white: HouseNoDestruct
+	class Land_Wreck_sed01_aban2_white: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban2_white";
 	};
-	class Land_Wreck_sed01_aban2_wine: HouseNoDestruct
+	class Land_Wreck_sed01_aban2_wine: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed01_aban2_wine";
 	};
-	class Land_Wreck_sed02_aban1_grey: HouseNoDestruct
+	class Land_Wreck_sed02_aban1_grey: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban1_grey";
 	};
-	class Land_Wreck_sed02_aban1_red: HouseNoDestruct
+	class Land_Wreck_sed02_aban1_red: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban1_red";
 	};
-	class Land_Wreck_sed02_aban1_yellow: HouseNoDestruct
+	class Land_Wreck_sed02_aban1_yellow: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban1_yellow";
 	};
-	class Land_Wreck_sed02_aban2_grey: HouseNoDestruct
+	class Land_Wreck_sed02_aban2_grey: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban2_grey";
 	};
-	class Land_Wreck_sed02_aban2_red: HouseNoDestruct
+	class Land_Wreck_sed02_aban2_red: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban2_red";
 	};
-	class Land_Wreck_sed02_aban2_yellow: HouseNoDestruct
+	class Land_Wreck_sed02_aban2_yellow: Land_Wreck_hb01_aban1_blue
 	{
-		scope = 1;
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban2_yellow";
 	};
 };

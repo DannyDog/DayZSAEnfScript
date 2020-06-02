@@ -3,6 +3,7 @@ class PortableGasStove extends ItemBase
 	protected const string FLAME_BUTANE_ON 			= "dz\\gear\\cooking\\data\\flame_butane_ca.paa";
 	protected const string FLAME_BUTANE_OFF 		= "";
 	typename ATTACHMENT_COOKING_POT 				= Pot;
+	typename ATTACHMENT_FRYING_PAN 					= FryingPan;
 	
 	//cooking
 	protected const float PARAM_COOKING_TEMP_THRESHOLD			= 100;		//temperature threshold for starting coooking process (degree Celsius)
@@ -52,7 +53,7 @@ class PortableGasStove extends ItemBase
 		super.EEItemAttached( item, slot_name );
 		
 		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
 		{
 			ItemBase item_base = ItemBase.Cast( item );
 			SetCookingEquipment( item_base );
@@ -64,14 +65,14 @@ class PortableGasStove extends ItemBase
 		super.EEItemDetached( item, slot_name );
 		
 		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
 		{
 			//stop steam particle
 			RemoveCookingAudioVisuals();
-			
+
 			//remove cooking equipment reference
 			ClearCookingEquipment();
-		}	
+		}
 	}
 	
 	//--- POWER EVENTS
@@ -154,8 +155,17 @@ class PortableGasStove extends ItemBase
 	{
 		if ( GetCookingEquipment() )
 		{
-			Bottle_Base cooking_pot = Bottle_Base.Cast( GetCookingEquipment() );
-			cooking_pot.RemoveAudioVisualsOnClient();
+			if ( ( GetCookingEquipment().Type() == ATTACHMENT_COOKING_POT ) )
+			{
+				Bottle_Base cooking_pot = Bottle_Base.Cast( GetCookingEquipment() );
+				cooking_pot.RemoveAudioVisualsOnClient();
+			}
+
+			if ( GetCookingEquipment().Type() == ATTACHMENT_FRYING_PAN ) 
+			{
+				FryingPan frying_pan = FryingPan.Cast( GetCookingEquipment() );
+				frying_pan.RemoveAudioVisualsOnClient();
+			}
 		}
 	}	
 	

@@ -4,6 +4,7 @@ class DayZPlayerCameraIronsights extends DayZPlayerCameraBase
 {
 	static const float 	CONST_UD_MIN	= -85.0;		//!< down limit
 	static const float 	CONST_UD_MAX	= 85.0;			//!< up limit
+	static const float 	CONST_UD_MIN_BACK = -25.0;		//!< down limit on back
 
 	static const float 	CONST_LR_MIN	= -160.0;		//!< down limit
 	static const float 	CONST_LR_MAX	= 160.0;			//!< up limit
@@ -116,7 +117,14 @@ class DayZPlayerCameraIronsights extends DayZPlayerCameraBase
 	override void 		OnUpdate(float pDt, out DayZPlayerCameraResult pOutResult)
 	{
 		//! update angles from input 
-		float 	udAngle 	= UpdateUDAngle(m_fUpDownAngle, m_fUpDownAngleAdd, CONST_UD_MIN, CONST_UD_MAX, pDt);
+		float min;
+		DayZPlayerImplement player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
+		if (player && player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_RAISEDPRONE))
+			min = CONST_UD_MIN_BACK;
+		else
+			min = CONST_UD_MIN;
+		
+		float 	udAngle 	= UpdateUDAngle(m_fUpDownAngle, m_fUpDownAngleAdd, min, CONST_UD_MAX, pDt);
 		m_CurrentCameraPitch = udAngle;
 		m_fLeftRightAngle	= UpdateLRAngle(m_fLeftRightAngle, CONST_LR_MIN, CONST_LR_MAX, pDt);
 

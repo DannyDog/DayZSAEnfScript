@@ -39,33 +39,16 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if( target.GetObject() && target.GetObject().IsWell() )
-		{
-			return true;
-		}	
-			
-		return false;
+		return target.GetObject() && target.GetObject().IsWell();
 	}
 
-	override void OnStartClient(ActionData action_data)
-	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
-	}
-	
-	override void OnStartServer(ActionData action_data)
+	override void OnStart(ActionData action_data)
 	{
 		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
 	}
 
-	override void OnEndClient(ActionData action_data)
+	override void OnEnd(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
-	}
-	
-	override void OnEndServer( ActionData action_data )
-	{
-		//Print("OnEndServer");
-		//OnFinishProgressServer(action_data);
 		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
 	}
 

@@ -33,7 +33,7 @@ class cfgWeapons
 	class AK74_Base: Rifle_Base
 	{
 		scope = 0;
-		weight = 1990;
+		weight = 3070;
 		absorbency = 0.0;
 		repairableWithKits[] = {5,1};
 		repairCosts[] = {30.0,25.0};
@@ -46,7 +46,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.2;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.2,2.2,1.2};
 		simpleHiddenSelections[] = {"hide_barrel","magazine"};
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};
 		reloadAction = "ReloadAKM";
@@ -206,11 +206,12 @@ class cfgWeapons
 		descriptionShort = "$STR_cfgWeapons_AKS74U1";
 		model = "\dz\weapons\firearms\AK74\aks74u.p3d";
 		attachments[] = {"weaponButtstockAK","weaponWrap","weaponMuzzleAK"};
+		weight = 2700;
 		itemSize[] = {6,3};
 		PPDOFProperties[] = {1,0.5,50,175,4,10};
 		WeaponLength = 0.476735;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.5,1.5,1};
+		swayModifier[] = {1.8,1.8,1};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK74\data\aks74u_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK74\data\aks74u.rvmat"};
 		class FullAuto: Mode_FullAuto

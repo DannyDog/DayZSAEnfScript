@@ -373,7 +373,8 @@ class cfgVehicles
 				class Health
 				{
 					hitpoints = 300;
-					healthLevels[] = {{1.0,{"DZ\Characters\backpacks\data\bp_improvised_fur.rvmat"}},{0.7,{"DZ\Characters\backpacks\data\bp_improvised_fur.rvmat"}},{0.5,{"DZ\Characters\backpacks\data\bp_improvised_fur_damage.rvmat"}},{0.3,{"DZ\Characters\backpacks\data\bp_improvised_fur_damage.rvmat"}},{0.0,{"DZ\Characters\backpacks\data\bp_improvised_fur_destruct.rvmat"}}};
+					RefTexsMats[] = {"dz\characters\backpacks\data\bp_improvised.rvmat"};
+					healthLevels[] = {{1.0,{"dz\Characters\backpacks\data\bp_improvised_fur.rvmat"}},{0.7,{"dz\Characters\backpacks\data\bp_improvised_fur.rvmat"}},{0.5,{"dz\Characters\backpacks\data\bp_improvised_fur_damage.rvmat"}},{0.3,{"dz\Characters\backpacks\data\bp_improvised_fur_damage.rvmat"}},{0.0,{"dz\Characters\backpacks\data\bp_improvised_fur_destruct.rvmat"}}};
 				};
 			};
 		};

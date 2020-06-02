@@ -441,6 +441,7 @@ class AnimatedActionBase : ActionBase
 			{
 				OnEndClient(action_data);
 			}
+			OnEnd(action_data);
 			
 			// Xbox Achievemnts
 			if ( action_data.m_WasActionStarted )

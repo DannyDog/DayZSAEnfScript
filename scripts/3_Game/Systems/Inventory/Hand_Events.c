@@ -62,6 +62,7 @@ class HandEventBase
 			return m_Src.GetItem();
 		return null;
 	}
+	EntityAI GetSecondSrcEntity () { return null; }
 	InventoryLocation GetDst () { return null; }
 	int GetAnimationID () { return m_AnimationID; }
 	bool AcquireInventoryJunctureFromServer (notnull Man player) { return false; }
@@ -407,6 +408,11 @@ class HandEventSwap extends HandEventBase
 		return m_Dst;
 	}
 	
+	override EntityAI GetSecondSrcEntity()
+	{
+		return m_Src2.GetItem();
+	}
+	
 	override bool CheckRequestSrc ()
 	{
 		if (false == GameInventory.CheckRequestSrc(m_Player, GetSrc(), GameInventory.c_MaxItemDistanceRadius))
@@ -424,23 +430,28 @@ class HandEventSwap extends HandEventBase
 				
 	override bool CheckRequest ()
 	{
-		bool test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
-		if (!test1)
+		if (!GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius))
 			hndDebugPrint("Warning: HandEventSwap.CheckRequest failed");
-		bool test2 = m_Player.GetHumanInventory().CanAddSwappedEntity(m_Src, m_Src2, m_Dst, m_Dst2);
-  		if (!test2)
+
+  		else if (!m_Player.GetHumanInventory().CanAddSwappedEntity(m_Src, m_Src2, m_Dst, m_Dst2))
 			hndDebugPrint("Warning: HandEventSwap.CheckRequest test2 failed");
-		return test1 && test2;
+		
+		else
+		{
+			CheckAndExecuteForceStandUp();
+			return true;
+		}
+
+		return false;
 	}
 	
 	override bool CanPerformEvent ()
 	{
-		if (false == GameInventory.CanForceSwapEntities(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
-		{
-			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
-			return false;
-		}
-		return true;
+		if (GameInventory.CanForceSwapEntities(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
+			return true;
+		
+		hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+		return false;
 	}
 
 	override bool AcquireInventoryJunctureFromServer (notnull Man player)
@@ -451,6 +462,12 @@ class HandEventSwap extends HandEventBase
 	override string DumpToString ()
 	{
 		return "{ HandEventSwap id=" + typename.EnumToString(HandEventID, GetEventID()) + " pl=" + Object.GetDebugName(m_Player) + " src1=" + InventoryLocation.DumpToStringNullSafe(m_Src) + " src2=" + InventoryLocation.DumpToStringNullSafe(m_Src2) + " dst1=" + InventoryLocation.DumpToStringNullSafe(m_Dst) + " dst2=" + InventoryLocation.DumpToStringNullSafe(m_Dst2) + " }";
+	}
+	
+	void CheckAndExecuteForceStandUp()
+	{
+		DayZPlayer player = DayZPlayer.Cast(m_Player);
+		player.ForceStandUpForHeavyItemsSwap( m_Src.GetItem(), m_Src2.GetItem() );
 	}
 };
 
@@ -467,6 +484,8 @@ class HandEventForceSwap extends HandEventSwap
 			test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
 			if (!test1)
 				hndDebugPrint("Warning: HandEventForceSwap.CheckRequest test1 failed");
+			else
+				CheckAndExecuteForceStandUp();
 		}
 		return test1;
 	}

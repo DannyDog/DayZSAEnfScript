@@ -90,6 +90,10 @@ class AnalyticsManagerClient
 	//===================================
 	void OnItemAttachedAtPlayer(EntityAI item, string slot_name)
 	{
+		bool weapon_present;
+		bool melee_present;
+		bool backpack_present;
+		HumanInventory inventory;
 		//#ifdef PLATFORM_XBOX
 			if ( GetDayZGame().GetGameState() != DayZGameState.IN_GAME )
 			{
@@ -97,23 +101,56 @@ class AnalyticsManagerClient
 			}
 		
 			Man player = GetGame().GetPlayer();
+			if (!player)
+			return;
+		
+			inventory = player.GetHumanInventory();
 			
-			if ( player && player.GetInventory() )
+			if ( player && inventory )
 			{
 				for ( int i = 0; i < GEAR_COUNT; ++i )
 				{
 					int slot_id = InventorySlots.GetSlotIdFromString(m_FullGear[i]);
-					EntityAI att_item = player.GetInventory().FindAttachment( slot_id ); // Boris V [27.2.2019]: Consider using player.GetItemOnSlot(m_FullGear[i]) instead.
+					EntityAI att_item = inventory.FindAttachment( slot_id ); // Boris V [27.2.2019]: Consider using player.GetItemOnSlot(m_FullGear[i]) instead.
 					
 					if ( !att_item )
 					{
 						//Print("index: "+ i +" slot_id: "+ slot_id +" = "+ att_item + " EMPTY");
-						return;
+						continue;
 					}
+				
+					//checks for firearm
+					if (att_item.IsWeapon())
+						weapon_present = true;
+					//checks for melee weapon
+					else if (!att_item.IsWeapon() && att_item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Melee")))
+						melee_present = true;
+					//checks for backpack
+					else if (!att_item.IsWeapon() && att_item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Back")))
+						backpack_present = true;
 					//Print("index: "+ i +" slot_id: "+ slot_id +" = "+ att_item + " ATTACHED");
 				}
-			
-				AchievementsXbox.OnEquippedFullGear();
+				
+				//separate check for hand slot; TODO remove duplicates
+				att_item = inventory.GetEntityInHands();
+				if ( att_item )
+				{
+					//checks for firearm
+					if (att_item.IsWeapon())
+						weapon_present = true;
+					//checks for melee weapon
+					else if (!att_item.IsWeapon() && att_item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Melee")) )
+						melee_present = true;
+					//checks for backpack
+					else if (!att_item.IsWeapon() && att_item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Back")))
+						backpack_present = true;
+				}
+				
+				if (weapon_present && melee_present && backpack_present)
+				{
+					//Print("---EAchievementActionId.ACTION_EQUIP_GEAR");
+					AchievementsXbox.OnEquippedFullGear();
+				}
 			}
 		//#endif
 	}

@@ -53,14 +53,14 @@ class XmasLights extends Inventory_Base
 		{
 			if ( GetCompEM().IsWorking() )
 			{
-				item.SetObjectMaterial( 0, "dz\\gear\\camping\\data\\christmas_lights_red_on.rvmat" );
-				item.SetObjectMaterial( 1, "dz\\gear\\camping\\data\\christmas_lights_green_on.rvmat" );
-				item.SetObjectMaterial( 2, "dz\\gear\\camping\\data\\christmas_lights_blue_on.rvmat" );
-				item.SetObjectMaterial( 3, "dz\\gear\\camping\\data\\christmas_lights_yellow_on.rvmat" );
-				item.SetObjectTexture( 0, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-				item.SetObjectTexture( 1, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-				item.SetObjectTexture( 2, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-				item.SetObjectTexture( 3, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+				item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_r"), "dz\\gear\\camping\\data\\christmas_lights_red_on.rvmat" );
+				item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmas_lights_green_on.rvmat" );
+				item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmas_lights_blue_on.rvmat" );
+				item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmas_lights_yellow_on.rvmat" );
+				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_r"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 				item.SetPilotLight(true);	
 			}
 			else
@@ -74,28 +74,28 @@ class XmasLights extends Inventory_Base
 	{
 		if ( item != NULL )
 		{
-			item.SetObjectMaterial( 0, "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
-			item.SetObjectMaterial( 1, "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
-			item.SetObjectMaterial( 2, "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
-			item.SetObjectMaterial( 3, "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
-			item.SetObjectTexture( 0, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-			item.SetObjectTexture( 1, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-			item.SetObjectTexture( 2, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-			item.SetObjectTexture( 3, "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+			item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_r"), "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
+			item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
+			item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
+			item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmass_ligths_string.rvmat" );
+			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_r"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
+			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 			item.SetPilotLight(false);
 		}
 	}
 
 	void HideOnItem(ItemBase item)
 	{
-		item.SetObjectMaterial( 0, "" );
-		item.SetObjectMaterial( 1, "" );
-		item.SetObjectMaterial( 2, "" );
-		item.SetObjectMaterial( 3, "" );
-		item.SetObjectTexture( 0, "" );
-		item.SetObjectTexture( 1, "" );
-		item.SetObjectTexture( 2, "" );
-		item.SetObjectTexture( 3, "" );
+		item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_r"), "" );
+		item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_g"), "" );
+		item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_b"), "" );
+		item.SetObjectMaterial( item.GetHiddenSelectionIndex("xlights_glass_y"), "" );
+		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_r"), "" );
+		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "" );
+		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "" );
+		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "" );
 		item.SetPilotLight(false);
 		item.SetAnimationPhase( "Cord_plugged", 1);
 		item.SetAnimationPhase( "Cord_folded", 1);

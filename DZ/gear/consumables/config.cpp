@@ -278,13 +278,14 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Stone1";
 		model = "\dz\gear\consumables\Stone.p3d";
 		animClass = "NoFireClass";
-		weight = 1000;
+		weight = 1500;
 		itemSize[] = {3,3};
 		canBeSplit = 1;
 		varQuantityDestroyOnMin = 1;
-		varQuantityInit = 8.0;
+		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 8.0;
+		varQuantityMax = 16.0;
+		varStackMax = 1.0;
 		inventorySlot[] = {"Stones"};
 		isMeleeWeapon = 1;
 		class DamageSystem
@@ -325,11 +326,7 @@ class CfgVehicles
 		model = "\dz\gear\consumables\SmallStone.p3d";
 		animClass = "NoFireClass";
 		weight = 500;
-		itemSize[] = {1,2};
-		canBeSplit = 1;
-		varQuantityInit = 8.0;
-		varQuantityMin = 0.0;
-		varQuantityMax = 8.0;
+		itemSize[] = {1,1};
 		rotationFlags = 17;
 		class DamageSystem
 		{
@@ -1220,7 +1217,7 @@ class CfgVehicles
 		model = "\dz\gear\consumables\oak_bark.p3d";
 		weight = 20;
 		absorbency = 0.3;
-		itemSize[] = {1,4};
+		itemSize[] = {1,3};
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
@@ -1249,7 +1246,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_bark_oak0";
 		descriptionShort = "$STR_CfgVehicles_Bark_Oak1";
 		model = "\dz\gear\consumables\oak_bark.p3d";
-		inventorySlot[] = {"OakBark"};
+		inventorySlot[] = {"Bark","OakBark"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1268,7 +1265,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Bark_Birch0";
 		descriptionShort = "$STR_CfgVehicles_Bark_Birch1";
 		model = "\dz\gear\consumables\birch_bark.p3d";
-		inventorySlot[] = {"BirchBark"};
+		inventorySlot[] = {"Bark","BirchBark"};
 		class DamageSystem
 		{
 			class GlobalHealth

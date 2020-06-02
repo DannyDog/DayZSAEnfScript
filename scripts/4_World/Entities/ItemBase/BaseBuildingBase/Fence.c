@@ -1,17 +1,13 @@
 class Fence extends BaseBuildingBase
-{	
-	protected bool m_HasGate		= false;
-	protected bool m_IsOpened 		= false;
-	protected bool m_IsOpenedClient	= false;
+{
+	const int GATE_STATE_NONE 				= 0;
+	const int GATE_STATE_PARTIAL 			= 1;
+	const int GATE_STATE_FULL 				= 2;
 	
-	typename ATTACHMENT_WOODEN_LOG			= WoodenLog;
-	typename ATTACHMENT_COMBINATION_LOCK	= CombinationLock;
-	
-	const string ATTACHMENT_SLOT_COMBINATION_LOCK = "Att_CombinationLock";
-	
-	const string SOUND_GATE_OPEN_START			= "DoorWoodTowerOpen_SoundSet";
-	const string SOUND_GATE_CLOSE_START			= "DoorWoodTowerClose_start_SoundSet";
-	const string SOUND_GATE_CLOSE_END			= "DoorWoodTowerClose_end_SoundSet";
+	const string ATTACHMENT_SLOT_COMBINATION_LOCK 	= "Att_CombinationLock";
+	const string SOUND_GATE_OPEN_START				= "DoorWoodTowerOpen_SoundSet";
+	const string SOUND_GATE_CLOSE_START				= "DoorWoodTowerClose_start_SoundSet";
+	const string SOUND_GATE_CLOSE_END				= "DoorWoodTowerClose_end_SoundSet";
 
 	//gate openining
 	const float GATE_ROTATION_ANGLE_DEG 			= 100;
@@ -20,38 +16,98 @@ class Fence extends BaseBuildingBase
 	const float MAX_ACTION_DETECTION_ANGLE_RAD 		= 1.3;		//1.3 RAD = ~75 DEG
 	const float MAX_ACTION_DETECTION_DISTANCE 		= 2.0;		//meters
 	
+	typename ATTACHMENT_WOODEN_LOG			= WoodenLog;
+	typename ATTACHMENT_COMBINATION_LOCK	= CombinationLock;
+	
+	string ATTSLOT_CAMONET				= "Wall_Camonet";
+	string ATTSLOT_BARBEDWIRE_DOWN		= "Wall_Barbedwire_1";
+	string ATTSLOT_BARBEDWIRE_UP		= "Wall_Barbedwire_2";
+	
+	//protected bool m_HasHinges				= false;
+	//protected bool m_GateFullyConstructed 	= false;
+	protected bool m_ToDiscard 				= false; //for legacy OnStoreLoad handling
+	protected bool m_IsOpened 				= false;
+	protected bool m_IsOpenedClient			= false;
+	protected int m_GateState 				= 0;
+	
 	protected EffectSound m_SoundGate_Start;
 	protected EffectSound m_SoundGate_End;
 	
 	void Fence()
 	{
 		//synchronized variables
-		RegisterNetSyncVariableBool( "m_HasGate" );
+		//RegisterNetSyncVariableBool( "m_HasHinges" );
+		//RegisterNetSyncVariableBool( "m_GateFullyConstructed" );
 		RegisterNetSyncVariableBool( "m_IsOpened" );
+		RegisterNetSyncVariableInt( "m_GateState" );
 	}
-		
+	
 	override string GetConstructionKitType()
 	{
 		return "FenceKit";
 	}
 	
-	//Gate
-	bool HasGate()
+	override int GetMeleeTargetType()
 	{
-		return m_HasGate;
+		return EMeleeTargetType.NONALIGNABLE;
 	}
 	
-	void SetGateState( bool has_gate )
+	//Gate
+	bool HasHinges()
 	{
-		m_HasGate = has_gate;
-	}	
+		return m_GateState > GATE_STATE_NONE;
+	}
+	
+	bool HasFullyConstructedGate()
+	{
+		return m_GateState == GATE_STATE_FULL;
+	}
+	
+	void SetGateState( int state )
+	{
+		m_GateState = state;
+		SetSynchDirty();
+	}
+	
+	int GetGateState()
+	{
+		return m_GateState;
+	}
+	
+	int CheckGateState()
+	{
+		ConstructionPart gate_part = GetConstruction().GetGateConstructionPart();
+		int state = GATE_STATE_NONE;
+		if( gate_part.IsBuilt() )
+		{
+			ConstructionPart req_part;
+			array<string> req_parts = gate_part.GetRequiredParts();
+			for (int i = 0; i < req_parts.Count(); i++)
+			{
+				req_part = GetConstruction().GetConstructionPart(req_parts.Get(i));
+				if(!req_part.IsBuilt())
+					break;
+			}
+			
+			if( i != req_parts.Count() )
+			{
+				state = GATE_STATE_PARTIAL;
+			}
+			else
+			{
+				state = GATE_STATE_FULL;
+			}
+			
+		}
+		return state;
+	}
 	
 	void SetOpenedState( bool state )
 	{
 		m_IsOpened = state;
 	}
 	
-	bool IsOpened()
+	override bool IsOpened()
 	{
 		return m_IsOpened;
 	}
@@ -66,11 +122,40 @@ class Fence extends BaseBuildingBase
 		
 		return false;
 	}
-		
+	
+	override bool NameOverride(out string output)
+	{
+		if ( m_GateState != GATE_STATE_NONE )
+		{
+			output = "#str_cfgvehicles_construction_part_gate";  //changes object displayed name if in 'gate' state
+			output.ToUpper();
+			return true;
+		}
+		return false;
+	}
+//
 	CombinationLock GetCombinationLock()
 	{
 		CombinationLock combination_lock = CombinationLock.Cast( FindAttachmentBySlotName( ATTACHMENT_SLOT_COMBINATION_LOCK ) );
 		return combination_lock;
+	}
+	
+	CamoNet GetCamoNet()
+	{
+		CamoNet camonet = CamoNet.Cast( FindAttachmentBySlotName( "Wall_Camonet" ) );
+		return camonet;
+	}
+	
+	BarbedWire GetBarbedWire1()
+	{
+		BarbedWire barbedwire = BarbedWire.Cast( FindAttachmentBySlotName( "Wall_Barbedwire_1" ) );
+		return barbedwire;
+	}
+	
+	BarbedWire GetBarbedWire2()
+	{
+		BarbedWire barbedwire = BarbedWire.Cast( FindAttachmentBySlotName( "Wall_Barbedwire_2" ) );
+		return barbedwire;
 	}
 	
 	//--- CONSTRUCTION KIT
@@ -82,7 +167,7 @@ class Fence extends BaseBuildingBase
 			position = GetMemoryPointPos( "kit_spawn_position" );
 			
 			return ModelToWorld( position );
-		}		
+		}
 		
 		return GetPosition();
 	}	
@@ -92,11 +177,14 @@ class Fence extends BaseBuildingBase
 	{
 		if ( slot_name == "Att_CombinationLock" )
 		{
-			if ( !HasGate() )
+			if ( !HasFullyConstructedGate() )
 			{
 				return false;
 			}
 		}
+		
+		if ( !GateAttachmentConditions(InventorySlots.GetSlotIdFromString(slot_name)) )
+			return false;
 		
 		return true;
 	}
@@ -108,7 +196,7 @@ class Fence extends BaseBuildingBase
 			if ( !HasBase() )
 			{
 				return false;
-			}			
+			}
 		}
 		
 		return true;
@@ -121,9 +209,9 @@ class Fence extends BaseBuildingBase
 		super.OnStoreSave( ctx );
 		
 		//write
-		ctx.Write( m_HasGate );
+		ctx.Write( m_GateState );
 		ctx.Write( m_IsOpened );
-		bsbDebugPrint("[bsb] OnStoreSave - build=" + m_HasGate + " opened=" + m_IsOpened);
+		bsbDebugPrint("[bsb] OnStoreSave - build=" + m_GateState + " opened=" + m_IsOpened);
 	}
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
@@ -133,9 +221,18 @@ class Fence extends BaseBuildingBase
 
 		//--- Fence data ---
 		//has gate
-		if ( !ctx.Read( m_HasGate ) )
+		if (version < 110)
 		{
-			m_HasGate = false;
+			if ( !ctx.Read( m_ToDiscard ) )
+			{
+				m_ToDiscard = false;
+				return false;
+			}
+			m_GateState = GATE_STATE_NONE;
+		}
+		else if ( !ctx.Read( m_GateState ) )
+		{
+			m_GateState = GATE_STATE_NONE;
 			return false;
 		}
 		
@@ -146,7 +243,7 @@ class Fence extends BaseBuildingBase
 			return false;
 		}
 		
-		bsbDebugPrint("[bsb] OnStoreLoad - build=" + m_HasGate + " opened=" + m_IsOpened);
+		bsbDebugPrint("[bsb] OnStoreLoad - build=" + m_GateState + " opened=" + m_IsOpened);
 		//---
 		
 		return true;
@@ -158,7 +255,7 @@ class Fence extends BaseBuildingBase
 		
 		//set gate state
 		ConstructionPart gate_part = GetConstruction().GetGateConstructionPart();
-		SetGateState( gate_part.IsBuilt() );
+		SetGateState( CheckGateState() );
 		
 		//update gate state visual
 		if ( IsOpened() )
@@ -188,8 +285,7 @@ class Fence extends BaseBuildingBase
 				CloseFence();
 			}
 		}
-	}	
-
+	}
 	
 	//--- BUILD EVENTS
 	//CONSTRUCTION EVENTS
@@ -197,13 +293,14 @@ class Fence extends BaseBuildingBase
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
-		//check gate state
-		if ( constrution_part.IsGate() )
-		{
-			SetGateState( true );
-		}
-		
 		super.OnPartBuiltServer( part_name, action_id );
+		
+		SetGateState( CheckGateState() );
+		
+		//drop attachments without carrier part
+		if (constrution_part.IsGate())
+			//GateAttachmentsSanityCheck();
+		
 		//update visuals (server)
 		UpdateVisuals();
 	}
@@ -211,12 +308,6 @@ class Fence extends BaseBuildingBase
 	override void OnPartDismantledServer( notnull Man player, string part_name, int action_id )
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
-
-		//check gate state
-		if ( constrution_part.IsGate() )
-		{
-			SetGateState( false );
-		}
 		
 		//check gate state
 		if ( constrution_part.IsGate() )
@@ -229,24 +320,54 @@ class Fence extends BaseBuildingBase
 		}
 		
 		super.OnPartDismantledServer( player, part_name, action_id );
+		
+		SetGateState( CheckGateState() );
+		
+		//update visuals (server)
+		UpdateVisuals();
 	}
 	
-	override void OnPartDestroyedServer( notnull Man player, string part_name, int action_id )
+	override void OnPartDestroyedServer( Man player, string part_name, int action_id, bool destroyed_by_connected_part = false )
 	{
-		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
-
-		//check gate state
-		if ( constrution_part.IsGate() )
-		{
-			SetGateState( false );
-		}
-
 		super.OnPartDestroyedServer( player, part_name, action_id );
-	}	
+		
+		//check gate state
+		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
+		if ( constrution_part.IsGate() && destroyed_by_connected_part ) //avoids attachment dropping on regular hinges destruction
+		{
+			//drop regular attachments
+			HandleDropAttachment(GetBarbedWire1());
+			HandleDropAttachment(GetBarbedWire2());
+			HandleDropAttachment(GetCamoNet());
+			HandleDropAttachment(GetCombinationLock());
+			
+			//rotate back to place
+			if ( IsOpened() )
+				CloseFence();
+		}
+		if ( part_name == "wall_base_down" )
+		{
+			HandleDropAttachment(GetBarbedWire1());
+			HandleDropAttachment(GetCombinationLock());
+		}
+		if ( part_name == "wall_base_up" )
+		{
+			HandleDropAttachment(GetBarbedWire2());
+			HandleDropAttachment(GetCamoNet());
+			HandleDropAttachment(GetCombinationLock());
+		}
+		
+		SetGateState( CheckGateState() );
+		//update visuals (server)
+		UpdateVisuals();
+	}
 
 	//--- ATTACHMENT & CONDITIONS
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
+		if ( !super.CanReceiveAttachment(attachment, slotId) )
+			return false;
+		
 		//manage action initiator (AT_ATTACH_TO_CONSTRUCTION)
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
@@ -259,7 +380,6 @@ class Fence extends BaseBuildingBase
 				construction_action_data.SetActionInitiator( NULL );				
 			}
 		}
-		//			
 		
 		//conditions
 		if ( attachment.Type() != ATTACHMENT_WOODEN_LOG )
@@ -272,12 +392,15 @@ class Fence extends BaseBuildingBase
 		
 		if ( attachment.IsInherited( ATTACHMENT_COMBINATION_LOCK ) )
 		{
-			return ( HasGate() && !IsOpened() );
+			return ( HasFullyConstructedGate() && !IsOpened() );
 		}
-			
+		
+		if ( !GateAttachmentConditions(slotId) )
+			return false;
+		
 		return true;
 	}
-		
+	
 	//hands
 	override bool CanPutIntoHands( EntityAI parent )
 	{
@@ -292,12 +415,17 @@ class Fence extends BaseBuildingBase
 		}
 		
 		return true;
-	}	
+	}
+	
+	override bool CanBeRepairedToPristine()
+	{
+		return true;
+	}
 	
 	//--- OPEN/CLOSE ACTIONS
 	bool CanOpenFence()
 	{
-		if ( HasGate() && !IsOpened() && !IsLocked() )
+		if ( HasHinges() && !IsOpened() && !IsLocked() )
 		{
 			return true;
 		}
@@ -307,7 +435,7 @@ class Fence extends BaseBuildingBase
 	
 	bool CanCloseFence()
 	{
-		if ( HasGate() && IsOpened() )
+		if ( HasHinges() && IsOpened() )
 		{
 			return true;
 		}
@@ -348,13 +476,20 @@ class Fence extends BaseBuildingBase
 			//play sound
 			SoundGateOpenStart();
 		}
+		
+		//remove BarbedWire AreaDamageTrigger
+		UpdateBarbedWireAreaDamagePos(0,true);
+		
+		//add check
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Remove(CheckFenceClosed);
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( CheckFenceOpened, 0, true );
 	}
 	
 	void CloseFence()
 	{
 		//server or single player
 		if ( GetGame().IsServer() )
-		{		
+		{
 			float value = 0;
 			SetAnimationPhase( "Wall_Interact_Rotate", 				value );
 			SetAnimationPhase( "Wall_Barbedwire_1_Mounted_Rotate", 	value );
@@ -382,19 +517,37 @@ class Fence extends BaseBuildingBase
 		{
 			//play sound
 			SoundGateCloseStart();
-			
-			//add check
-			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( CheckFenceClosed, 0, true );
+		}
+		
+		//remove BarbedWire AreaDamageTrigger
+		UpdateBarbedWireAreaDamagePos(0,true);
+		
+		//add check
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Remove(CheckFenceOpened);
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( CheckFenceClosed, 0, true );
+	}
+	
+	protected void CheckFenceOpened()
+	{
+		if ( GetAnimationPhase( "Wall_Gate_Rotate" ) == GATE_ROTATION_ANGLE_DEG )			//animation finished - open
+		{
+			UpdateBarbedWireAreaDamagePos(GetAnimationPhase( "Wall_Gate_Rotate" ));
+			//remove check
+			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Remove( CheckFenceOpened );
 		}
 	}
 	
 	protected void CheckFenceClosed()
 	{
-		if ( GetAnimationPhase( "Wall_Gate_Rotate" ) == 0 )			//animation closed
+		if ( GetAnimationPhase( "Wall_Gate_Rotate" ) == 0 )			//animation finished - closed
 		{
-			//play sound
-			if ( this ) SoundGateCloseEnd();
-			
+			//client or single player
+			if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+			{
+				//play sound
+				if ( this ) SoundGateCloseEnd();
+			}
+			UpdateBarbedWireAreaDamagePos(GetAnimationPhase( "Wall_Gate_Rotate" ));
 			//remove check
 			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Remove( CheckFenceClosed );
 		}
@@ -409,9 +562,79 @@ class Fence extends BaseBuildingBase
 		}
 		
 		super.CreateAreaDamage( slot_name, rotation_angle );
-	}	
+	}
+	
+	//BarbedWire update
+	void UpdateBarbedWireAreaDamagePos(float rotation_angle = 0, bool to_delete = false )
+	{
+		int slot_id;
+		string slot_name;
+		string slot_name_mounted;
+		if ( GetBarbedWire1() )
+		{
+			GetBarbedWire1().GetInventory().GetCurrentAttachmentSlotInfo(slot_id,slot_name);
+			slot_name_mounted = slot_name + "_Mounted";
+			if (to_delete)
+			{
+				DestroyAreaDamage( slot_name_mounted );
+			}
+			else
+			{
+				super.CreateAreaDamage( slot_name_mounted, rotation_angle );
+			}
+		}
+		if ( GetBarbedWire2() )
+		{
+			GetBarbedWire2().GetInventory().GetCurrentAttachmentSlotInfo(slot_id,slot_name);
+			slot_name_mounted = slot_name + "_Mounted";
+			if (to_delete)
+			{
+				DestroyAreaDamage( slot_name_mounted );
+			}
+			else
+			{
+				super.CreateAreaDamage( slot_name_mounted, rotation_angle );
+			}
+		}
+	}
 	
 	//--- ACTION CONDITIONS
+	override bool IsPlayerInside( PlayerBase player, string selection )
+	{
+		vector player_pos = player.GetPosition();
+		vector fence_pos = GetPosition();
+		vector ref_dir = GetDirection();
+		ref_dir[1] = 0;
+		ref_dir.Normalize();
+		 
+		vector x[2];
+		vector b1,b2;
+		GetCollisionBox(x);
+		b1 = x[0];
+		b2 = x[1];
+
+		vector dir_to_fence = fence_pos - player_pos;
+		dir_to_fence[1] = 0;
+		float len = dir_to_fence.Length();
+
+		dir_to_fence.Normalize();
+		
+		vector ref_dir_angle = ref_dir.VectorToAngles();
+		vector dir_to_fence_angle = dir_to_fence.VectorToAngles();
+		vector test_angles = dir_to_fence_angle - ref_dir_angle;
+		
+		vector test_position = test_angles.AnglesToVector() * len;
+		
+		if(test_position[0] < b1[0] || test_position[0] > b2[0] || test_position[2] < 0.2 || test_position[2] > 2.2 )
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
 	override bool IsFacingPlayer( PlayerBase player, string selection )
 	{
 		vector fence_pos = GetPosition();
@@ -479,22 +702,100 @@ class Fence extends BaseBuildingBase
 		return true;
 	}
 	
+	override bool CanUseConstructionBuild()
+	{
+		return !IsOpened();
+	}
+	
 	//================================================================
 	// SOUNDS
 	//================================================================
 	protected void SoundGateOpenStart()
 	{
-		PlaySoundSet( m_SoundGate_Start, SOUND_GATE_OPEN_START, 0.1, 0.1 );
+		//client or single player
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			PlaySoundSet( m_SoundGate_Start, SOUND_GATE_OPEN_START, 0.1, 0.1 );
+		}
 	}
 
 	protected void SoundGateCloseStart()
 	{
-		PlaySoundSet( m_SoundGate_Start, SOUND_GATE_CLOSE_START, 0.1, 0.1 );
+		//client or single player
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			PlaySoundSet( m_SoundGate_Start, SOUND_GATE_CLOSE_START, 0.1, 0.1 );
+		}
 	}
 
 	protected void SoundGateCloseEnd()
 	{
-		PlaySoundSet( m_SoundGate_End, SOUND_GATE_CLOSE_END, 0.1, 0.1 );
+		//client or single player
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			PlaySoundSet( m_SoundGate_End, SOUND_GATE_CLOSE_END, 0.1, 0.1 );
+		}
+	}
+	
+	void GateAttachmentsSanityCheck()
+	{
+		ConstructionPart wall_base_down = GetConstruction().GetConstructionPart("wall_base_down");
+		ConstructionPart wall_base_up = GetConstruction().GetConstructionPart("wall_base_up");
+		if(GetBarbedWire1() && !wall_base_down.IsBuilt())
+		{
+			HandleDropAttachment(GetBarbedWire1());
+			HandleDropAttachment(GetCombinationLock());
+		}
+		if( ( GetCamoNet() || GetBarbedWire2() ) && !wall_base_up.IsBuilt() )
+		{
+			HandleDropAttachment(GetBarbedWire2());
+			HandleDropAttachment(GetCamoNet());
+			HandleDropAttachment(GetCombinationLock());
+		}
+	}
+	
+	void HandleDropAttachment(ItemBase item)
+	{
+		BarbedWire wire;
+		CombinationLock lock;
+		if (Class.CastTo(wire,item)) //special barbed wire beh.
+		{
+			wire.SetMountedState( false );
+			GetInventory().DropEntity(InventoryMode.SERVER, this, wire);
+		}
+		else if (Class.CastTo(lock,item))
+		{
+			lock.UnlockServer(null,this);
+		}
+		else if (item)//generic behaviour
+		{
+			GetInventory().DropEntity(InventoryMode.SERVER, this, item);
+		}
+	}
+	
+	bool GateAttachmentConditions(int slotId)
+	{
+		if ( GetGateState() == GATE_STATE_PARTIAL )
+		{
+			ConstructionPart wall_base_down = GetConstruction().GetConstructionPart("wall_base_down");
+			ConstructionPart wall_base_up = GetConstruction().GetConstructionPart("wall_base_up");
+			string slot_name = InventorySlots.GetSlotName(slotId);
+			if ( !wall_base_up.IsBuilt() )
+			{
+				if ( slot_name == ATTSLOT_CAMONET || slot_name == ATTSLOT_BARBEDWIRE_UP )
+				{
+					return false;
+				}
+			}
+			if ( !wall_base_down.IsBuilt() )
+			{
+				if ( slot_name == ATTSLOT_BARBEDWIRE_DOWN )
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	override void SetActions()
@@ -504,8 +805,8 @@ class Fence extends BaseBuildingBase
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionPlaceObject);
 		AddAction(ActionFoldBaseBuildingObject);
-		AddAction(ActionDialCombinationLockOnTarget);
-		AddAction(ActionNextCombinationLockDialOnTarget);
+		//AddAction(ActionDialCombinationLockOnTarget);
+		//AddAction(ActionNextCombinationLockDialOnTarget);
 		AddAction(ActionOpenFence);
 		AddAction(ActionCloseFence);
 	}
@@ -518,7 +819,7 @@ class Fence extends BaseBuildingBase
 	{
 		//debug
 		m_SyncParts01 = 881;		//full fence with gate
-		m_HasGate = true;
+		m_HasHinges = true;
 		m_HasBase = true;
 		
 		OnVariablesSynchronized();

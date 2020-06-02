@@ -1,54 +1,45 @@
 class PluginRepairing extends PluginBase
-{	
-	static protected const int HEALTH_UP_ONE_LVL = 25;
-	static protected const int PRISTINE_STATE = 0;
-	static protected const int WORN_STATE = 1;
-	static protected const int DAMAGED_STATE = 2;
-	static protected const int BADLY_DAMAGED_STATE = 3;
-	static protected const int RUINED_STATE = 4;
-
-	bool Repair(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight)
+{
+	bool Repair(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight, string damage_zone = "")
 	{	
-		switch ( item.GetHealthLevel() ) 
+		switch ( item.GetHealthLevel(damage_zone) ) 
 		{
-			case PRISTINE_STATE:
+			case GameConstants.STATE_PRISTINE:
 				break;
 				
-			case WORN_STATE:
-				if( CanRepairToPristine( player ) )
+			case GameConstants.STATE_WORN:
+				if( CanRepairToPristine( player ) || CanBeRepairedToPristine( item ) )
 				{
-					CalculateHealth( player, repair_kit, item, specialty_weight );
+					CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
 				}
 				break;
 				
-			case DAMAGED_STATE:
-				CalculateHealth( player, repair_kit, item, specialty_weight );
+			case GameConstants.STATE_DAMAGED:
+				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
 				break;
 				
-			case BADLY_DAMAGED_STATE:
-				CalculateHealth( player, repair_kit, item, specialty_weight );
+			case GameConstants.STATE_BADLY_DAMAGED:
+				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
 				break;
 			
-			case RUINED_STATE:
+			case GameConstants.STATE_RUINED:
 				break;
 		}
 
 		return true;
 	}
 
-	void CalculateHealth( PlayerBase player, ItemBase kit, ItemBase item, float specialty_weight )
+	void CalculateHealth( PlayerBase player, ItemBase kit, ItemBase item, float specialty_weight, string damage_zone = "" )
 	{
+		bool kit_has_quantity = kit.HasQuantity();
 		float cur_kit_quantity = kit.GetQuantity();
 		float kit_repair_cost = GetKitRepairCost( kit, item );
 		float kit_repair_cost_adjusted;
 		float new_quantity;
-		float item_max_health = item.GetMaxHealth( "", "" );
-		float health_up_one_level = HEALTH_UP_ONE_LVL;
+		float item_max_health = item.GetMaxHealth( damage_zone, "" );
+		float health_up_one_level;
 		
-		if ( item_max_health > 100 )
-		{
-			health_up_one_level = item_max_health / 4;
-		}
+		health_up_one_level = item_max_health / 4;
 		
 		if ( cur_kit_quantity > health_up_one_level )
 		{
@@ -57,46 +48,49 @@ class PluginRepairing extends PluginBase
 			new_quantity = kit.GetQuantity() - kit_repair_cost_adjusted;
 			kit.SetQuantity( new_quantity );
 			
-			item.AddHealth( "", "", health_up_one_level );
+			item.AddHealth( damage_zone, "", health_up_one_level );
+		}
+		else if (!kit_has_quantity) //"kit" without quantity (hammers and such) for your every day repairing needs
+		{
+			item.AddHealth( damage_zone, "", health_up_one_level );
 		}
 		else
 		{
 			new_quantity = kit.GetQuantity() - cur_kit_quantity;
 			kit.SetQuantity( new_quantity );
 			
-			item.AddHealth( "", "", cur_kit_quantity );
+			item.AddHealth( damage_zone, "", cur_kit_quantity );
 		}
-				
-		if ( !CanRepairToPristine( player ) )
+		
+		if ( !CanRepairToPristine( player ) && !CanBeRepairedToPristine( item ) )
 		{
-			float item_health = item.GetHealth( "", "" );
+			float item_health = item.GetHealth( damage_zone, "" );
 			float clamp_health = Math.Clamp( item_health, 0, ( item_max_health * 0.7 ) );
-			item.SetHealth( "", "", clamp_health );
+			item.SetHealth( damage_zone, "", clamp_health );
 		}		
 	}
 
-	bool CanRepair( ItemBase repair_kit, ItemBase item )
+	bool CanRepair( ItemBase repair_kit, ItemBase item, string damage_zone = "" )
 	{
-		if ( item.GetHealthLevel() <= WORN_STATE)
-		{
-			return false;
-		}
-				
-		int repair_kit_type = repair_kit.ConfigGetInt( "repairKitType" );
+		int state = item.GetHealthLevel(damage_zone);
 		
-		ref array<int> repairable_with_types = new array<int>;
-		item.ConfigGetIntArray( "repairableWithKits", repairable_with_types );	
-					
-		for ( int i = 0; i < repairable_with_types.Count(); i++ )
+		if ( (item.CanBeRepairedToPristine() && state >= GameConstants.STATE_WORN) || (!item.CanBeRepairedToPristine() && state >= GameConstants.STATE_DAMAGED ) )
 		{
-			int repairable_with_type = repairable_with_types.Get(i);
+			int repair_kit_type = repair_kit.ConfigGetInt( "repairKitType" );
 			
-			if ( IsRepairValid( repair_kit_type, repairable_with_type ) )
+			ref array<int> repairable_with_types = new array<int>;
+			item.ConfigGetIntArray( "repairableWithKits", repairable_with_types );	
+						
+			for ( int i = 0; i < repairable_with_types.Count(); i++ )
 			{
-				return true;
+				int repairable_with_type = repairable_with_types.Get(i);
+				
+				if ( IsRepairValid( repair_kit_type, repairable_with_type ) )
+				{
+					return true;
+				}
 			}
 		}
-
 		return false;
 		
 	}
@@ -114,6 +108,7 @@ class PluginRepairing extends PluginBase
 		return false;
 	}
 
+	//! Player can repair items to 100%; currently unused
 	private bool CanRepairToPristine( PlayerBase player )
 	{
 // temporary disabled
@@ -130,6 +125,12 @@ class PluginRepairing extends PluginBase
 		}
 */
 		return false; 
+	}
+	
+	//! Item can be repaired to 100%
+	private bool CanBeRepairedToPristine( ItemBase item )
+	{
+		return item.CanBeRepairedToPristine();
 	}
 	
 	private float GetKitRepairCost( ItemBase repair_kit, ItemBase item )

@@ -97,11 +97,11 @@ class ConstructionActionData
 	
 	void RefreshPartsToBuild( string main_part_name, ItemBase tool )
 	{
-		m_MainPartName = main_part_name;
+		//m_MainPartName = main_part_name;
 		BaseBuildingBase base_building_object = BaseBuildingBase.Cast( m_Target );
 		if ( base_building_object )
 		{
-			base_building_object.GetConstruction().GetConstructionPartsToBuild( m_MainPartName, m_BuildParts, tool );
+			base_building_object.GetConstruction().GetConstructionPartsToBuild( main_part_name, m_BuildParts, tool, m_MainPartName );
 		}
 	}
 	
@@ -130,6 +130,11 @@ class ConstructionActionData
 		}
 		
 		return NULL;
+	}
+	
+	ConstructionPart GetBuildPartAtIndex(int idx)
+	{
+		return m_BuildParts.Get( idx );
 	}
 
 	//************************************************/
@@ -213,9 +218,12 @@ class ConstructionActionData
 							
 							if ( target_slot_id == item_slot_id )
 							{
-								if (  target.GetInventory().CanAddAttachmentEx( item_to_attach, item_slot_id ) && target.CanReceiveAttachment( item_to_attach, item_slot_id ) || attachment_item && attachment_item.CanBeCombined( item_to_attach, player ) )
+								if (  target.GetInventory().CanAddAttachmentEx( item_to_attach, item_slot_id ) && target.CanReceiveAttachment( item_to_attach, item_slot_id ) || attachment_item && attachment_item.CanBeCombined( item_to_attach ) )
 								{
-									return item_slot_id;
+									if(target.CanDisplayAttachmentSlot(attachment_slots.Get( j )))
+										return item_slot_id;
+									else
+										return -1;
 								}								
 							}
 						}

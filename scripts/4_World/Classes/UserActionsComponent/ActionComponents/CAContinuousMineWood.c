@@ -173,7 +173,7 @@ class CAContinuousMineWood : CAContinuousBase
 				
 				if ( !m_MinedItem[i] )
 				{
-					m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObject(material,action_data.m_Player.GetPosition(), false));
+					m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObjectEx(material,action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 					m_MinedItem[i].SetQuantity(increment);
 					//Print("CreateItems | first stack");
 				}
@@ -195,7 +195,7 @@ class CAContinuousMineWood : CAContinuousBase
 						if (increment >= 1.0)
 						{
 							//m_MinedItem[i].SetQuantity(stack_max);
-							m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObject(material,action_data.m_Player.GetPosition(), false));
+							m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObjectEx(material,action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 							m_MinedItem[i].SetQuantity(increment,false);
 						}
 					}
@@ -207,7 +207,7 @@ class CAContinuousMineWood : CAContinuousBase
 				}
 				else
 				{
-					m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObject(material,action_data.m_Player.GetPosition(), false));
+					m_MinedItem[i] = ItemBase.Cast(GetGame().CreateObjectEx(material,action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 				}
 			}
 		}
@@ -220,7 +220,7 @@ class CAContinuousMineWood : CAContinuousBase
 			return;
 		}
 		
-		m_SecondaryItem = ItemBase.Cast(GetGame().CreateObject(material_secondary,action_data.m_Player.GetPosition(), false));
+		m_SecondaryItem = ItemBase.Cast(GetGame().CreateObjectEx(material_secondary,action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 		if ( !m_SecondaryItem.HasQuantity() )
 		{
 			CreateSecondaryItems(action_data,material_secondary,quantity_secondary - 1);
@@ -247,7 +247,7 @@ class CAContinuousMineWood : CAContinuousBase
 			{
 				m_SecondaryItem.SetQuantity(stack_max);
 				increment -= stack_max;
-				m_SecondaryItem = ItemBase.Cast(GetGame().CreateObject(material_secondary,action_data.m_Player.GetPosition(), false));
+				m_SecondaryItem = ItemBase.Cast(GetGame().CreateObjectEx(material_secondary,action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
 			}
 			else
 			{

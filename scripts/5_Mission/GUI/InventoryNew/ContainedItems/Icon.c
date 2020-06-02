@@ -132,7 +132,7 @@ class Icon: LayoutHolder
 		if( button == MouseState.LEFT )
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-			if( player.GetInventory().HasInventoryReservation( m_Obj, null ) || player.GetInventory().IsInventoryLocked() )
+			if( player.GetInventory().HasInventoryReservation( m_Obj, null ) || player.GetInventory().IsInventoryLocked() || player.IsItemsToDelete() )
 			{
 				return;
 			}
@@ -673,7 +673,7 @@ class Icon: LayoutHolder
 			cmenu.Add("#inv_context_attach_magazine", this, "OnPerformCombination", new Param1<int>( current_flag ) );
 		}
 
-		if( combinationFlags & InventoryCombinationFlags.ADD_AS_CARGO )
+		if( combinationFlags & InventoryCombinationFlags.ADD_AS_CARGO && !(combinationFlags & InventoryCombinationFlags.SET_ACTION) )
 		{
 			current_flag = InventoryCombinationFlags.ADD_AS_CARGO;
 			cmenu.Add( "#inv_context_add_as_cargo", this, "OnPerformCombination", new Param1<int>( current_flag ) );
@@ -896,8 +896,7 @@ class Icon: LayoutHolder
 		{
 			if( m_Lock )
 			{
-				GetGame().GetPlayer().GetHumanInventory().ClearUserReservedLocation( m_Item );
-				m_Item.GetOnReleaseLock().Invoke(m_Item);
+				GetGame().GetPlayer().GetHumanInventory().ClearUserReservedLocationSynced( m_Item );
 			}
 			else
 			{
@@ -935,7 +934,7 @@ class Icon: LayoutHolder
 					InventoryLocation il = new InventoryLocation;
 					m_Obj.GetInventory().GetCurrentInventoryLocation( il );
 	
-					bool draggable = !player.GetInventory().HasInventoryReservation( m_Obj, null ) && !player.GetInventory().IsInventoryLocked();
+					bool draggable = !player.GetInventory().HasInventoryReservation( m_Obj, null ) && !player.GetInventory().IsInventoryLocked() && !player.IsItemsToDelete();
 					draggable = draggable && ( m_Obj.GetHierarchyRoot() && m_Obj.GetInventory().CanRemoveEntity() || !m_Obj.GetHierarchyRoot() && AttachmentsOutOfReach.IsAttachmentReachable( m_Obj, "", il.GetSlot() ) );
 			
 					ItemManager.GetInstance().SetWidgetDraggable( w, draggable );				
@@ -1134,7 +1133,7 @@ class Icon: LayoutHolder
 		
 			if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, il_fswap ))
 			{
-				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) )
+				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{
 					GetGame().GetPlayer().PredictiveForceSwapEntities( w_entity, receiver_entity, il_fswap );
 				}
@@ -1143,7 +1142,7 @@ class Icon: LayoutHolder
 			{
 				if( GameInventory.CanSwapEntities( w_entity, receiver_entity  ) )
 				{
-					if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) )
+					if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 					{
 						GetGame().GetPlayer().PredictiveSwapEntities( w_entity, receiver_entity );
 				
@@ -1159,7 +1158,7 @@ class Icon: LayoutHolder
 		{
 			if( GameInventory.CanSwapEntities( w_entity, receiver_entity  ) )
 			{
-				if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) )
+				if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{
 					GetGame().GetPlayer().PredictiveSwapEntities( w_entity, receiver_entity );
 				
@@ -1171,7 +1170,7 @@ class Icon: LayoutHolder
 			}
 			else if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, il_fswap ))
 			{
-				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) )
+				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{
 					GetGame().GetPlayer().PredictiveForceSwapEntities( w_entity, receiver_entity, il_fswap );
 				}

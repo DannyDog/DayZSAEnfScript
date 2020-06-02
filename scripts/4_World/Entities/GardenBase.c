@@ -249,8 +249,6 @@ class GardenBase extends BuildingSuper
 	{
 		super.EEItemAttached(item, slot_name);
 		
-		if ( !g_Game.IsServer() ) return;
-		
 		string path = "CfgVehicles " + item.GetType() + " Horticulture" + " PlantType";
 		bool IsItemSeed = GetGame().ConfigIsExisting(path); // Is this item a seed?
 		int slot_id = InventorySlots.GetSlotIdFromString(slot_name);
@@ -273,30 +271,41 @@ class GardenBase extends BuildingSuper
 			
 			PlantSeed( ItemBase.Cast( item ), converted_slot_name);
 		}
+		else if (g_Game.IsClient())
+		{
+			Slot slot = GetSlotByIndex(GetSlotIndexByAttachmentSlot( slot_name) - 1);
+			if (slot)
+			{
+				slot.SetPlant(PlantBase.Cast( item ));
+				slot.m_State = Slot.STATE_PLANTED;
+			}
+		}
 	}
 	
 	override void EEItemDetached(EntityAI item, string slot_name)
 	{
 		super.EEItemDetached(item, slot_name);
 		
-		if ( !g_Game.IsServer() ) return;
-		
 		slot_name.ToLower();
 
 		string path = "CfgVehicles " + item.GetType() + " Horticulture " + "PlantType";
 		bool IsItemSeed = GetGame().ConfigIsExisting(path); // Is this item a seed?
+		string converted_slot_name = ConvertAttSlotToPlantSlot(slot_name);
+		Slot slot = GetSlotBySelection(converted_slot_name);
 		
-		if ( IsItemSeed ) 
+		if (slot)
 		{
-			string converted_slot_name = ConvertAttSlotToPlantSlot(slot_name);
-			Slot slot = GetSlotBySelection(converted_slot_name);
-			
-			if (slot)
+			if (IsItemSeed)
 			{
-				slot.m_State = Slot.STATE_DIGGED;
-				slot.SetSeed(NULL);
+				slot.SetSeed(NULL);				
 			}
-		}
+			else if (g_Game.IsClient())
+			{
+				slot.Init( GetBaseFertility() );
+			}	
+			
+			slot.SetState(Slot.STATE_DIGGED);		
+		}		
 	}
 	
 	// Plants the seed into slot (selection_component)
@@ -310,7 +319,7 @@ class GardenBase extends BuildingSuper
 			string plant_type = module_horticulture.GetPlantType( seed );
 			
 			Slot slot = m_Slots.Get( slot_index );
-			slot.m_State = Slot.STATE_PLANTED;
+			slot.SetState(Slot.STATE_PLANTED);
 			slot.m_PlantType = plant_type;
 			slot.SetSeed(seed);
 			slot.SetSlotComponent(selection_component);
@@ -325,18 +334,20 @@ class GardenBase extends BuildingSuper
 	// Creates a plant
 	void CreatePlant(Slot slot )
 	{
-		ItemBase seed = slot.GetSeed();
-		GetGame().ObjectDelete(seed);
+		if (g_Game.IsServer())
+		{
+			ItemBase seed = slot.GetSeed();
+			GetGame().ObjectDelete(seed);
 
-		PlantBase plant = PlantBase.Cast( GetInventory().CreateAttachmentEx( slot.m_PlantType, slot.GetSlotId()) );
+			PlantBase plant = PlantBase.Cast( GetInventory().CreateAttachmentEx( slot.m_PlantType, slot.GetSlotId()) );
 		
-		int slot_index = slot.GetSlotIndex();
-		slot.SetPlant(plant);
-		slot.m_State = Slot.STATE_PLANTED;
-		plant.Init( this, slot.GetFertility(), slot.m_HarvestingEfficiency, slot.GetWater() );
-		ShowSelection(SLOT_SELECTION_COVERED_PREFIX + (slot_index + 1).ToStringLen(2));
+			int slot_index = slot.GetSlotIndex();
+			slot.SetPlant(plant);						
+			plant.Init( this, slot.GetFertility(), slot.m_HarvestingEfficiency, slot.GetWater() );
+			ShowSelection(SLOT_SELECTION_COVERED_PREFIX + (slot_index + 1).ToStringLen(2));
 				
-		plant.LockToParent();
+			plant.LockToParent();
+		}
 	}
 		
 	void Fertilize( PlayerBase player, ItemBase item, float consumed_quantity, string selection_component )

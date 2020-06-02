@@ -10,6 +10,7 @@ enum ConstructionMaterialType
 
 class Construction
 {
+	const float REPAIR_MATERIAL_PERCENTAGE = 0.15;
 	protected ref map<string, ref ConstructionPart> m_ConstructionParts;	//string - part name; int - 0-not constructed, 1-constructed
 	protected BaseBuildingBase 	m_Parent;
 	
@@ -72,6 +73,14 @@ class Construction
 	//BuildPart
 	void BuildPartServer( string part_name, int action_id )
 	{
+		bsbDebugPrint("[bsb] Construction BuildPartServer | " + part_name);
+		//reset DamageZone health
+		string damage_zone;
+		if (DamageSystem.GetDamageZoneFromComponentName(GetParent(),part_name,damage_zone))
+		{
+			GetParent().SetHealthMax(damage_zone);
+		}
+		
 		//on action
 		TakeMaterialsServer( part_name );
 
@@ -85,6 +94,7 @@ class Construction
 	//DismantlePart
 	void DismantlePartServer( notnull Man player, string part_name, int action_id )
 	{
+		bsbDebugPrint("[bsb] Construction DismantlePartServer | " + part_name);
 		//receive materials
 		ReceiveMaterialsServer( player, part_name );
 			
@@ -93,11 +103,19 @@ class Construction
 		
 		//call event
 		GetParent().OnPartDismantledServer( player, part_name, action_id );
+		
+		//set DamageZone health to zero (redundant?)
+		string damage_zone;
+		if ( DamageSystem.GetDamageZoneFromComponentName(GetParent(),part_name,damage_zone) && GetParent().GetHealth(damage_zone,"Health") > 0 )
+		{
+			GetParent().SetHealth(damage_zone,"Health",0);
+		}
 	}
 	
 	//DestroyPart
-	void DestroyPartServer( notnull Man player, string part_name, int action_id )
+	void DestroyPartServer( Man player, string part_name, int action_id, bool destroyed_by_connected_part = false )
 	{
+		bsbDebugPrint("[bsb] Construction DestroyPartServer | " + part_name);
 		//destroy attached materials (if locked)
 		DestroyMaterialsServer( player, part_name );
 		
@@ -105,7 +123,42 @@ class Construction
 		DropNonUsableMaterialsServer( player, part_name );			
 		
 		//call event
-		GetParent().OnPartDestroyedServer( player, part_name, action_id );
+		GetParent().OnPartDestroyedServer( player, part_name, action_id, destroyed_by_connected_part );
+		
+		//set DamageZone health to zero (redundant?)
+		string damage_zone;
+		if ( DamageSystem.GetDamageZoneFromComponentName(GetParent(),part_name,damage_zone) && GetParent().GetHealth(damage_zone,"Health") > 0 )
+		{
+			GetParent().SetHealth(damage_zone,"Health",0);
+		}
+	}
+	
+	void DestroyConnectedParts(string part_name)
+	{
+		array<string> parts;// = new array<string>;
+		parts = GetValidDepenentPartsArray(part_name);
+		if (parts)
+		{
+			for (int i = 0; i < parts.Count(); i++)
+			{
+				bsbDebugPrint("[bsb] Construction DestroyConnectedParts | " + parts.Get(i));
+				if (!ExceptionCheck(parts.Get(i)))
+					DestroyPartServer(null,parts.Get(i),AT_DESTROY_PART,true);
+			}
+		}
+	}
+	
+	//!Exceptions from 'dependent parts' hierarchy are handled here
+	bool ExceptionCheck(string part_name)
+	{
+		//gate hack
+		ConstructionPart part = GetConstructionPart(part_name);
+		if( /*Fence.Cast(m_Parent) && */part.IsGate() )
+		{
+			if( GetConstructionPart("wall_base_down").IsBuilt() || GetConstructionPart("wall_base_up").IsBuilt() )
+				return true;
+		}
+		return false;
 	}
 	
 	//============================================
@@ -134,7 +187,6 @@ class Construction
 		{
 			string key = m_ConstructionParts.GetKey( i );
 			ConstructionPart value = m_ConstructionParts.Get( key );
-		
 			if ( value.IsBuilt() )
 			{
 				ShowConstructionPart( value.GetPartName() );
@@ -201,7 +253,7 @@ class Construction
 					bool is_base = GetGame().ConfigGetInt( part_path + " " + part_name + " " + "is_base" );					//is base (part)
 					bool is_gate = GetGame().ConfigGetInt( part_path + " " + part_name + " " + "is_gate" );					//is gate (part)
 					
-					m_ConstructionParts.Insert( part_name, new ConstructionPart( name, part_name, main_part_name, id, show_on_init, is_base, is_gate ) );
+					m_ConstructionParts.Insert( part_name, new ConstructionPart( name, part_name, main_part_name, id, show_on_init, is_base, is_gate, GetRequiredParts(part_name,main_part_name) ) );
 					
 					bsbDebugPrint("[bsb] Construction name=" + name + " part_name=" + part_name + " show=" + show_on_init + " base=" + is_base + " gate=" + is_gate);
 				}
@@ -244,20 +296,45 @@ class Construction
 	}
 	
 	//Get all construction parts that can be build (at that current time)
-	void GetConstructionPartsToBuild( string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool )
+	void GetConstructionPartsToBuild( string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool, out string real_constructionTarget )
 	{
 		construction_parts.Clear();
+		string part_name;
+		ConstructionPart value;
+		string key;
 		
 		for ( int i = 0; i < m_ConstructionParts.Count(); ++i )
 		{
-			string key = m_ConstructionParts.GetKey( i );
-			ConstructionPart value = m_ConstructionParts.Get( key );
+			key = m_ConstructionParts.GetKey( i );
+			value = m_ConstructionParts.Get( key );
 		
 			if ( main_part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool ) )
 			{
 				construction_parts.Insert( value );
 			}
+			
+			if ( main_part_name == value.GetPartName() )
+			{
+				part_name = value.GetMainPartName();
+			}
+			
 		}
+		
+		if( construction_parts.Count() == 0 && part_name )
+		{
+			for ( i = 0; i < m_ConstructionParts.Count(); ++i )
+			{
+				key = m_ConstructionParts.GetKey( i );
+				value = m_ConstructionParts.Get( key );
+		
+				if ( part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool ) )
+				{
+					construction_parts.Insert( value );
+				}
+			}
+		
+		}
+		
 	}
 	
 	//Returns (first found) base construction part
@@ -292,7 +369,7 @@ class Construction
 		}
 		
 		return NULL;
-	}	
+	}
 	
 	//checks if construction part has required part already built
 	protected bool HasRequiredPart( string part_name )
@@ -310,6 +387,11 @@ class Construction
 			{
 				return false;
 			}
+			//hack - gate
+			/*else if (part_name == "wall_gate" && (IsPartConstructed("wall_base_down") || IsPartConstructed("wall_base_up")))
+			{
+				return true;
+			}*/
 		}
 		
 		return true;
@@ -333,7 +415,7 @@ class Construction
 		}
 		
 		return false;
-	}	
+	}
 	
 	//DECONSTRUCTION
 	ConstructionPart GetConstructionPartToDismantle( string part_name, ItemBase tool )
@@ -344,7 +426,7 @@ class Construction
 		}
 		
 		return NULL;
-	}	
+	}
 
 	bool CanDismantlePart( string part_name, ItemBase tool )
 	{
@@ -357,6 +439,7 @@ class Construction
 	}
 	
 	//checks if construction part has dependent part (that is already built) because of which it cannot be deconstruct
+	//TODO return whole array of dependent parts/dependencies (one or the other), should be used to eventually destroy all dependent parts instead
 	bool HasDependentPart( string part_name )
 	{
 		for ( int i = 0; i < m_ConstructionParts.Count(); ++i )
@@ -366,11 +449,7 @@ class Construction
 			
 			if ( construction_part.IsBuilt() )
 			{
-				string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " " + "Construction" + " " + construction_part.GetMainPartName() + " " + construction_part.GetPartName() + " " + "required_parts";
-				ref array<string> required_parts = new array<string>;
-				GetGame().ConfigGetTextArray( cfg_path, required_parts );
-				
-				if ( required_parts.Find( part_name ) > -1 )
+				if ( construction_part.GetRequiredParts().Find( part_name ) > -1 )
 				{
 					return true;
 				}
@@ -378,6 +457,63 @@ class Construction
 		}
 		
 		return false;
+	}
+	
+	//returns array of BUILT parts that directly depend on 'part_name'
+	protected array<string> GetValidDepenentPartsArray( string part_name, array<string> recurs = null )
+	{
+		string name;
+		string cfg_path;
+		ref array<string> dependent_parts;
+		
+		for ( int i = 0; i < m_ConstructionParts.Count(); ++i )
+		{
+			name = m_ConstructionParts.GetKey( i );
+			ConstructionPart construction_part = m_ConstructionParts.Get( name );
+			
+			if ( construction_part.IsBuilt() && construction_part.GetRequiredParts() && construction_part.GetRequiredParts().Find( part_name ) > -1 ) //does the construction part need 'part_name' to exist?
+			{
+				if ( !dependent_parts )
+				{
+					dependent_parts = new array<string>;
+				}
+				
+				if ( !recurs || (recurs.Find(name) == -1 ) )
+				{
+					dependent_parts.Insert(name);
+				}
+//				Print("part #" + i + ": " + name);
+			}
+		}
+		
+		//fully recursive search, disconnected (unnescessary)
+		/*if (dependent_parts)
+		{
+			if ( dependent_parts.Count() > 0 )
+			{
+				ref array<string> temp = new array<string>;
+				for ( i = 0; i < dependent_parts.Count(); i++ )
+				{
+					temp = GetValidDepenentPartsArray(dependent_parts.Get(i),dependent_parts);
+					if (temp.Count() > 0)
+					{
+						dependent_parts.InsertAll(temp);
+					}
+				}
+			}
+			Print("dependent_parts.Count(): " + dependent_parts.Count());
+		}*/
+		return dependent_parts;
+	}
+	
+	//gets all required parts of a construction part; fills into ConstructionPart on init
+	array<string> GetRequiredParts( string part_name, string main_part_name )
+	{
+		string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " " + "Construction" + " " + main_part_name + " " + part_name + " " + "required_parts";
+		ref array<string> required_parts = new array<string>;
+		GetGame().ConfigGetTextArray( cfg_path, required_parts );
+		
+		return required_parts;
 	}
 	
 	//DESTROY
@@ -405,11 +541,13 @@ class Construction
 	//show/hide construction part
 	protected void ShowConstructionPart( string part_name )
 	{
+		bsbDebugPrint("[bsb] Construction ShowConstructionPart - " + part_name);
 		GetParent().SetAnimationPhase( part_name, 0 );
 	}
 	
 	protected void HideConstructionPart( string part_name )
 	{
+		bsbDebugPrint("[bsb] Construction HideConstructionPart - " + part_name);
 		GetParent().SetAnimationPhase( part_name, 1 );
 	}
 	
@@ -440,7 +578,7 @@ class Construction
 	// Materials for construction
 	//============================================
 	//has materials
-	bool HasMaterials( string part_name )
+	bool HasMaterials( string part_name, bool repairing = false )
 	{
 		string main_part_name = GetConstructionPart( part_name ).GetMainPartName();
 		string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " "+ "Construction" + " " + main_part_name + " " + part_name + " " + "Materials";
@@ -462,6 +600,12 @@ class Construction
 				GetGame().ConfigGetText( material_path, slot_name );
 				material_path = cfg_path + " " + child_name + " " + "quantity";
 				quantity = GetGame().ConfigGetFloat( material_path );
+				
+				if (repairing)
+				{
+					quantity *= REPAIR_MATERIAL_PERCENTAGE;
+					quantity = Math.Max(Math.Floor(quantity),1);
+				}
 				
 				//if the selected material (or its quantity) is not available
 				if ( !HasMaterialWithQuantityAttached( slot_name, quantity ) )
@@ -488,7 +632,7 @@ class Construction
 	}
 	
 	//take materials when building
-	protected void TakeMaterialsServer( string part_name )
+	void TakeMaterialsServer( string part_name, bool repairing = false )
 	{
 		string main_part_name = GetConstructionPart( part_name ).GetMainPartName();
 		string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " "+ "Construction" + " " + main_part_name + " " + part_name + " " + "Materials";
@@ -525,6 +669,11 @@ class Construction
 				{
 					if ( quantity > -1 )						//0 - ignores quantity
 					{
+						if (repairing)
+						{
+							quantity *= REPAIR_MATERIAL_PERCENTAGE;
+							quantity = Math.Max(Math.Floor(quantity),1);
+						}
 						//subtract quantity
 						attachment.AddQuantity( -quantity );
 					}
@@ -614,7 +763,7 @@ class Construction
 							while ( quantity > 0 )
 							{
 								//create material on ground if quantity exceeds max quantity
-								ItemBase received_material = ItemBase.Cast( GetGame().CreateObject( attachment.GetType(), GetParent().GetPosition() ) );
+								ItemBase received_material = ItemBase.Cast( GetGame().CreateObjectEx( attachment.GetType(), GetParent().GetPosition(), ECE_PLACE_ON_SURFACE ) );
 								if ( quantity > att_max_quantity )
 								{
 									received_material.SetQuantity( att_max_quantity );
@@ -651,7 +800,7 @@ class Construction
 	}
 	
 	//destroy lockable materials when destroying
-	protected void DestroyMaterialsServer( notnull Man player, string part_name )
+	protected void DestroyMaterialsServer( Man player, string part_name )
 	{
 		ConstructionPart cPart = GetConstructionPart( part_name );
 		string main_part_name = cPart.GetMainPartName();
@@ -699,7 +848,7 @@ class Construction
 		}
 	}
 		
-	protected void DropNonUsableMaterialsServer( notnull Man player, string part_name )
+	protected void DropNonUsableMaterialsServer( Man player, string part_name )
 	{
 		ConstructionPart construction_part = GetConstructionPart( part_name );
 		
@@ -749,8 +898,17 @@ class Construction
 								if ( GetGame().IsMultiplayer() )
 								{
 									InventoryLocation dst = new InventoryLocation;
-									GameInventory.SetGroundPosByOwner( player, inventory_location.GetItem(), dst );
-									player.ServerTakeToDst( inventory_location, dst );
+									if (player)
+									{
+										GameInventory.SetGroundPosByOwner( player, inventory_location.GetItem(), dst );
+										player.ServerTakeToDst( inventory_location, dst );
+									}
+									else
+									{
+										GameInventory.SetGroundPosByOwner( GetParent(), inventory_location.GetItem(), dst );
+										GetParent().ServerTakeToDst( inventory_location, dst );
+									}
+									
 								}
 								else
 								{
@@ -910,18 +1068,13 @@ class Construction
 				for (int i = 0; i < collided_objects.Count(); i++)
 				{
 					//Print(collided_objects.Get(i).GetType());
-					EntityAI e = EntityAI.Cast(collided_objects.Get(i));
-					if ( e && !e.IsBuilding() && !e.IsTree() && (!e.IsRuined() || e.IsTransport()) && !BaseBuildingBase.Cast(e) ) //TODO add some sort of size check?
-					{
+					EntityAI entity = EntityAI.Cast(collided_objects.Get(i));
+					if ( entity && !entity.IsIgnoredByConstruction() )
 						return true;
-					}
 				}
-				return false;
 			}
-			
 			//Debug
 			//DrawDebugCollisionBox( min_max, ARGB( 255, 255, 255, 255 ) );
-			//
 		}
 		return false;
 	}

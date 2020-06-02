@@ -145,6 +145,7 @@ class cfgVehicles
 		weight = 265;
 		itemSize[] = {2,1};
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
 		hiddenSelectionsTextures[] = {""};
 		class DamageSystem
@@ -206,6 +207,7 @@ class cfgVehicles
 		weight = 265;
 		itemSize[] = {2,1};
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
 		hiddenSelectionsTextures[] = {""};
 		class DamageSystem
@@ -267,6 +269,7 @@ class cfgVehicles
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","blue"};
 		hiddenSelectionsTextures[] = {""};
 		class DamageSystem
@@ -328,6 +331,7 @@ class cfgVehicles
 		itemSize[] = {2,1};
 		dispersionModifier = -0.009;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","blue"};
 		hiddenSelectionsTextures[] = {""};
 		memoryPointCamera = "eyeScope";
@@ -393,6 +397,7 @@ class cfgVehicles
 		dispersionModifier = -0.009;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
 		hiddenSelectionsTextures[] = {""};
 		class DamageSystem
@@ -453,6 +458,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -518,6 +524,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -567,6 +574,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -616,6 +624,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope_temp";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -669,6 +678,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope_temp";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -755,6 +765,7 @@ class cfgVehicles
 		dispersionModifier = -0.048;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -809,6 +820,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","reticle_nonglow"};
 		hiddenSelectionsTextures[] = {"","dz\weapons\attachments\optics\data\reticle_pso1_ca.paa"};
 		hiddenSelectionsMaterials[] = {"","dz\weapons\attachments\optics\data\lensglass_noreflect.rvmat"};
@@ -873,6 +885,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","reticle_nonglow"};
 		hiddenSelectionsTextures[] = {"","dz\weapons\attachments\optics\data\Reticle_Pso11_ca.paa"};
 		hiddenSelectionsMaterials[] = {"","dz\weapons\attachments\optics\data\lensglass_noreflect.rvmat"};
@@ -934,6 +947,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
 		class DamageSystem
@@ -1001,6 +1015,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
 		hiddenSelectionsTextures[] = {""};
 		memoryPointCamera = "eyeScope";
@@ -1063,6 +1078,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		memoryPointCamera = "eyeScope_temp";
 		cameraDir = "cameraDir";
 		NVOptic = 1;

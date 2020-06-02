@@ -41,6 +41,26 @@ class HoldBreathSoundEvent extends HoldBreathSoundEventBase
 	}
 }
 
+class ExhaustedBreathSoundEvent extends HoldBreathSoundEventBase
+{
+	void ExhaustedBreathSoundEvent()
+	{
+		m_Type = EPlayerSoundEventType.GENERAL;
+		m_ID = EPlayerSoundEventID.EXHAUSTED_BREATH;
+		m_SoundVoiceAnimEventClassID = 22;
+	}
+	
+	override bool HasPriorityOverCurrent(PlayerBase player, EPlayerSoundEventID other_state_id, EPlayerSoundEventType type_other)
+	{
+		return false;
+		/*if( other_state_id == EPlayerSoundEventID.RELEASE_BREATH)
+		{
+			return false;
+		}
+		return true;*/
+	}
+}
+
 class ReleaseBreathSoundEvent extends HoldBreathSoundEventBase
 {
 	void ReleaseBreathSoundEvent()

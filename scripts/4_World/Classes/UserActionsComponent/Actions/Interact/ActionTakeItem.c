@@ -57,6 +57,11 @@ class ActionTakeItem: ActionInteractBase
 		return false;
 	}
 	
+	override bool CanBeUsedOnBack()
+	{
+		return true;
+	}
+	
 	/*override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
 	{
 		super.WriteToContext(ctx, action_data);

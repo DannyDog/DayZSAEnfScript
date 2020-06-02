@@ -890,7 +890,7 @@ class CfgWorlds
 					speed = 0.3;
 					size = 0.55;
 					height = 0.9;
-					through = 1.0;
+					through = 0.7;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -907,7 +907,7 @@ class CfgWorlds
 					speed = 0.5;
 					size = 0.65;
 					height = 0.85;
-					through = 0.1;
+					through = 0.5;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -924,7 +924,7 @@ class CfgWorlds
 					speed = 0.75;
 					size = 0.85;
 					height = 0.8;
-					through = 0.1;
+					through = 0.2;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -941,7 +941,7 @@ class CfgWorlds
 					speed = 0.8;
 					size = 1.0;
 					height = 0.75;
-					through = 0.1;
+					through = 0.0;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -2046,6 +2046,7 @@ class CfgVehicles
 		simulation = "clothing";
 		itemInfo[] = {"Clothing"};
 		visibilityModifier = 1.0;
+		allowOwnedCargoManipulation = 1;
 		soundVoiceType = "none";
 		class DamageSystem
 		{
@@ -2272,6 +2273,21 @@ class CfgNonAIVehicles
 			class GlobalArmor
 			{
 				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
 				{
 					class Health
 					{

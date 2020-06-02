@@ -202,6 +202,8 @@ class CarDoor extends InventoryItemSuper
 	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
 		if ( newLevel ==  GameConstants.STATE_RUINED )
 		{
 			EffectSound sound_plug;

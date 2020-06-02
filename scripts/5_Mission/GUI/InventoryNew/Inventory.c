@@ -656,7 +656,7 @@ class Inventory: LayoutHolder
 		{
 			if( m_HandsArea.IsActive() )
 			{
-				item = m_HandsArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					if( m_HandsArea.TransferItemToVicinity() )
@@ -670,7 +670,7 @@ class Inventory: LayoutHolder
 			}
 			else if( m_RightArea.IsActive() )
 			{
-				item = m_RightArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					if( m_RightArea.TransferItemToVicinity() )
@@ -684,7 +684,7 @@ class Inventory: LayoutHolder
 			}
 			else if( m_LeftArea.IsActive() )
 			{
-				item = m_LeftArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					m_LeftArea.TransferItemToVicinity();
@@ -738,7 +738,7 @@ class Inventory: LayoutHolder
 			
 			if( m_RightArea.IsActive() )
 			{
-				item = m_RightArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					m_RightArea.TransferItem();
@@ -746,7 +746,7 @@ class Inventory: LayoutHolder
 			}
 			else if( m_LeftArea.IsActive() )
 			{
-				item = m_LeftArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					if( m_LeftArea.TransferItem() )
@@ -759,7 +759,7 @@ class Inventory: LayoutHolder
 			}
 			else if( m_HandsArea.IsActive() )
 			{
-				item = m_HandsArea.GetFocusedItem();
+				item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
 				if ( item && item.GetInventory().CanRemoveEntity() )
 				{
 					if( m_HandsArea.TransferItem() )

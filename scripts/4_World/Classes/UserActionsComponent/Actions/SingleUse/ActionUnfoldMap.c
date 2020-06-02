@@ -18,7 +18,7 @@ class ActionUnfoldMapCB : HumanCommandActionCallback //ActionSingleUseBaseCB
 	{
 		if (GetGame().IsClient() && !GetGame().GetUIManager().GetMenu())
 		{
-			GetGame().GetMission().PlayerControlEnable(true);
+			GetGame().GetMission().PlayerControlEnable(false);
 		}
 		
 		if (!m_ActionData || !m_ActionData.m_Player )

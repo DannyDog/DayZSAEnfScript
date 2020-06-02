@@ -241,10 +241,11 @@ class IntroSceneCharacter extends Managed
 		}
 	}
 	
-	void GetLastPlayedServer(int characterID, out string address, out int port)
+	void GetLastPlayedServer(int characterID, out string address, out string name, out int port)
 	{
 		m_CharacterDta.GetLastServerAddress(characterID,address);
 		port = m_CharacterDta.GetLastServerPort(characterID);
+		m_CharacterDta.GetLastServerName(characterID,name);
 	}
 	//==============================================
 	// CreateNewCharacter
@@ -255,7 +256,7 @@ class IntroSceneCharacter extends Managed
 		CharacterUnload();
 				
 		// Create Character
-		m_CharacterObj = PlayerBase.Cast(g_Game.CreateObject(m_CharacterNam, m_CharacterPos, true));
+		m_CharacterObj = PlayerBase.Cast(g_Game.CreateObjectEx(m_CharacterNam, m_CharacterPos, ECE_PLACE_ON_SURFACE));
 		
 		if (m_CharacterObj)
 		{
@@ -401,7 +402,7 @@ class IntroSceneCharacter extends Managed
 		
 		g_Game.ObjectDelete(m_CharacterObj.GetInventory().FindAttachment(slot));
 		
-		EntityAI entity = EntityAI.Cast( g_Game.CreateObject(type, m_CharacterObj.GetPosition(), true) );
+		EntityAI entity = EntityAI.Cast( g_Game.CreateObjectEx(type, m_CharacterObj.GetPosition(), ECE_PLACE_ON_SURFACE) );
 		
 		if (entity)
 		{

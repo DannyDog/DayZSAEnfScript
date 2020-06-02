@@ -208,7 +208,21 @@ class Truck_02 extends CarScript
 		
 		return false;		
 	}
-
+	
+	override int GetSeatIndexFromDoor( string pDoorSelection )
+	{
+		switch (pDoorSelection)
+		{
+			case "DoorsDriver":
+				return 0;
+				break;
+			case "DoorsCoDriver":
+				return 1;
+				break;
+		}
+		return -1;
+	}
+	
 	override void OnDebugSpawn()
 	{
 		EntityAI entity;

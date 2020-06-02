@@ -29,15 +29,7 @@ class ActionWashHandsWell: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( player.HasBloodyHands() && !player.GetItemInHands() )
-		{
-			if (target.GetObject() && target.GetObject().IsWell() )
-			{
-				return true;
-			}
-		}
-		
-		return false;
+		return player.HasBloodyHands() && !player.GetItemInHands() && target.GetObject() && target.GetObject().IsWell();
 	}
 
 	override void OnFinishProgressServer( ActionData action_data )

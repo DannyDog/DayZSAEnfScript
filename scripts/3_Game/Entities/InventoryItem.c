@@ -118,7 +118,7 @@ class InventoryItem extends EntityAI
 	{
 		string surface;
 		if(DayZPhysics.GetHitSurface(
-			other,
+			Object.Cast(other),
 			impact.Position + impact.RelativeVelocityBefore * 5,
 			impact.Position - impact.RelativeVelocityBefore * 5,
 			surface))

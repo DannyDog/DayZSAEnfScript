@@ -1,6 +1,5 @@
 class PlayerBase extends ManBase
 {
-	static ref ScriptInvoker Event_OnPlayerDeath = new ScriptInvoker();
 	const int 						SIMPLIFIED_SHOCK_CAP = 63;
 	const int 						SHAKE_LEVEL_MAX = 7;					
 	private int						m_LifeSpanState;
@@ -74,7 +73,6 @@ class PlayerBase extends ManBase
 	protected bool					m_IsHoldingBreath;
 	protected bool					m_IsInWater;
 	float							m_LastPostFrameTickTime;
-	int m_Time;
 	//AbstractWave 					m_SaySoundWave;
 	ref Timer						m_DeathCheckTimer;
 	bool 							m_CorpseProcessing;
@@ -87,6 +85,7 @@ class PlayerBase extends ManBase
 	bool							m_IsRestrained;
 	bool 							m_IsRestrainStarted;
 	bool							m_ImmunityBoosted;
+	bool							m_AreHandsLocked; //Currently only used to block quickbar usage after canceling placement
 	float							m_UnconsciousVignetteTarget = 2;
 	float							m_CameraSwayModifier = 0.2;
 	float 							m_LastShockHitTime;
@@ -111,6 +110,7 @@ class PlayerBase extends ManBase
 	//string 						m_sOpticsType;
 	bool 							m_HideHairAnimated;
 	string 							m_DecayedTexture;
+	protected ref array<EntityAI>	m_ItemsToDelete;
 	
 	ref protected RandomGeneratorSyncManager m_RGSManager;
 	
@@ -154,6 +154,7 @@ class PlayerBase extends ManBase
 	ref ConstructionActionData m_ConstructionActionData;
 	//Action data for fireplace (indoor)
 	vector m_LastFirePoint;
+	float m_LastFirePointRot;
 	int m_LastFirePointIndex;
 	
 	bool ItemToInventory;
@@ -231,6 +232,8 @@ class PlayerBase extends ManBase
 		m_HideHairAnimated = true;
 		m_WorkingNVGHeadset = false;
 		m_LoweredNVGHeadset = false;
+		m_AreHandsLocked = false;
+		m_ItemsToDelete = new array<EntityAI>;
 		
 		m_AnalyticsTimer = new Timer( CALL_CATEGORY_SYSTEM );
 
@@ -522,6 +525,11 @@ class PlayerBase extends ManBase
 	
 	void SpawnFlashbangEffect(PlayerBase player, bool visual)
 	{
+		if (m_FlashbangEffect)
+		{
+			delete m_FlashbangEffect;
+		}
+		
 		m_FlashbangEffect = new FlashbangEffect(player, visual);
 	}
 	
@@ -559,11 +567,7 @@ class PlayerBase extends ManBase
 
 	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
 	{
-		/*
-		Print("ProjectileDebugging | Damage Health: " + damageResult.GetDamage(dmgZone,"Health") + " | Zone: " + dmgZone);
-		Print("ProjectileDebugging | Damage Blood: " + damageResult.GetDamage(dmgZone,"Blood") + " | Zone: " + dmgZone);
-		Print("ProjectileDebugging | speedCoef: " + speedCoef);
-		Print("-----------------------------------------------");*/
+		dmgDebugPrint(damageResult,damageType,source,component,dmgZone,ammo,modelPos,speedCoef);	
 		
 		if( m_AdminLog )
 		{
@@ -1070,7 +1074,7 @@ class PlayerBase extends ManBase
 	{
 		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer() )
 		{
-			if(pState.m_iMovement == -2)
+			if(pState.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_SLIDE)
 			{
 				//Print("sliding down");
 				EntityAI gloves = GetInventory().FindAttachment(InventorySlots.GLOVES);
@@ -1373,21 +1377,28 @@ class PlayerBase extends ManBase
 	{
 		return m_LastFirePoint;
 	}	
-	
+	float GetLastFirePointRot()
+	{
+		return m_LastFirePointRot;
+	}	
+	int GetLastFirePointIndex()
+	{
+		return m_LastFirePointIndex;
+	}
+
 	void SetLastFirePoint( vector last_fire_point )
 	{
 		m_LastFirePoint = last_fire_point;
 	}
-
-	int GetLastFirePointIndex()
+	void SetLastFirePointRot( float last_fire_point_rot )
 	{
-		return m_LastFirePointIndex;
-	}	
-	
+		m_LastFirePointRot = last_fire_point_rot;
+	}
 	void SetLastFirePointIndex( int last_fire_point_index )
 	{
 		m_LastFirePointIndex = last_fire_point_index;
-	}	
+	}
+
 	// --------------------------------------------------
 	// QuickBar
 	//---------------------------------------------------
@@ -1459,18 +1470,25 @@ class PlayerBase extends ManBase
 		AddHealth("RightLeg",	"Health",	( GetMaxHealth("RightLeg", "Health") - GetHealth("RightLeg", "Health") ) * add_health_coef 	);
 	}
 	
-	void ProcessHoldBreath()
+	void ProcessHoldBreath(float dT)
 	{
-		if(IsTryingHoldBreath() && CanConsumeStamina(EStaminaConsumers.HOLD_BREATH) )
+		if( IsTryingHoldBreath() && CanStartConsumingStamina(EStaminaConsumers.HOLD_BREATH) )
 		{
-			DepleteStamina(EStaminaModifiers.HOLD_BREATH);
-			if( !m_IsHoldingBreath ) OnHoldBreathStart();
-			m_IsHoldingBreath = true;
+			DepleteStamina(EStaminaModifiers.HOLD_BREATH,dT);
+			if( !m_IsHoldingBreath )
+			{
+				OnHoldBreathStart();
+				m_IsHoldingBreath = true;
+			}
+		}
+		else if( IsTryingHoldBreath() && m_IsHoldingBreath && CanConsumeStamina(EStaminaConsumers.HOLD_BREATH) )
+		{
+			DepleteStamina(EStaminaModifiers.HOLD_BREATH,dT);
 		}
 		else
 		{
 			if( m_IsHoldingBreath ) OnHoldBreathEnd();
-			m_IsHoldingBreath = false;			
+			m_IsHoldingBreath = false;
 		}
 	}
 	
@@ -1478,6 +1496,11 @@ class PlayerBase extends ManBase
 	{
 		//SendSoundEvent(SoundSetMap.GetSoundSetID("holdBreath_male_Char_SoundSet"));
 		RequestSoundEvent(EPlayerSoundEventID.HOLD_BREATH, true);
+	}
+	
+	void OnHoldBreathExhausted()
+	{
+		RequestSoundEvent(EPlayerSoundEventID.EXHAUSTED_BREATH, true);
 	}
 	
 	void OnHoldBreathEnd()
@@ -1634,6 +1657,12 @@ class PlayerBase extends ManBase
 		}
 	}
 	
+	//Called when item placement is canceled, will prevent quickbar usage until the item the player was placing is back in hands
+	void LockHandsUntilItemHeld()
+	{
+		m_AreHandsLocked = true;
+	}
+	
 	void PlacingCancelLocal()
 	{
 		delete m_HologramLocal;
@@ -1710,7 +1739,7 @@ class PlayerBase extends ManBase
 	}
 	
 	void TogglePlacingLocal()
-	{		
+	{	
 		if ( IsPlacingLocal() )
 		{
 			/*if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT && GetGame().IsMultiplayer() )
@@ -2065,7 +2094,8 @@ class PlayerBase extends ManBase
 	override void EEItemIntoHands(EntityAI item)
 	{
 		super.EEItemIntoHands( item );
-		if ( IsPlacingLocal() )
+		
+		if ( IsPlacingLocal() && Hologram.DoesHaveProjection( ItemBase.Cast(item) ) )
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(TogglePlacingLocal);
 		}
@@ -2086,6 +2116,9 @@ class PlayerBase extends ManBase
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(TogglePlacingLocal);
 		}
+		
+		if ( !IsAlive() )
+			OnItemInHandsChanged();
 		
 		//SetOpticsPreload(false,item);
 	}
@@ -2153,9 +2186,14 @@ class PlayerBase extends ManBase
 		*/
 				
 		GetDayZPlayerInventory().HandleInventory(pDt);
-		ProcessHoldBreath();
+		ProcessHoldBreath(pDt);
 		ActionManagerBase		mngr = GetActionManager();
 		HumanInputController hic = GetInputController();
+		
+		if (m_AreHandsLocked && GetHumanInventory().GetEntityInHands())
+		{
+			m_AreHandsLocked = false;
+		}
 		
 		// freelook camera memory for weapon raycast
 		if (hic.CameraIsFreeLook() && m_DirectionToCursor == vector.Zero)
@@ -2213,6 +2251,8 @@ class PlayerBase extends ManBase
 		}
 		
 		GetHumanInventory().Update(pDt);
+		
+		UpdateDelete();
 		//PrintString(pCurrentCommandID.ToString());
 		//PrintString(m_IsUnconscious.ToString());
 		//PrintString("currentCommand:" +pCurrentCommandID.ToString());
@@ -2245,8 +2285,8 @@ class PlayerBase extends ManBase
 			}
 			else
 			{
-				if( m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL && pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE)
-				{					
+				if(m_ShouldBeUnconscious && pCurrentCommandID != DayZPlayerConstants.COMMANDID_UNCONSCIOUS && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH && pCurrentCommandID != DayZPlayerConstants.COMMANDID_FALL && pCurrentCommandID != DayZPlayerConstants.COMMANDID_MOD_DAMAGE && pCurrentCommandID != DayZPlayerConstants.COMMANDID_DAMAGE)
+				{			
 					m_LastCommandBeforeUnconscious = pCurrentCommandID;
 					HumanCommandVehicle vehicleCommand = GetCommand_Vehicle();
 					if( vehicleCommand ) 
@@ -2255,10 +2295,14 @@ class PlayerBase extends ManBase
 						{
 							m_TransportCache = null;
 							vehicleCommand.KnockedOutVehicle();
+							int damageHitAnim = 1;
+							float damageHitDir = 0;
+							StartCommand_Damage(damageHitAnim, m_DamageHitDir);
+							GetItemAccessor().HideItemInHands(false);
 						}
 						else
 						{
-							m_TransportCache = vehicleCommand.GetTransport();
+							m_TransportCache = vehicleCommand.GetTransport();	
 						}
 					}
 					StartCommand_Unconscious(0);	
@@ -2268,7 +2312,6 @@ class PlayerBase extends ManBase
 					m_IsUnconscious = false;
 					OnUnconsciousStop(pCurrentCommandID);
 				}
-				
 			}
 			
 			// quickbar use
@@ -2861,10 +2904,10 @@ class PlayerBase extends ManBase
 			m_Hud.SetStaminaBarVisibility( show );
 	}
 	
-	override void DepleteStamina(EStaminaModifiers modifier)
+	override void DepleteStamina(EStaminaModifiers modifier, float dT = -1)
 	{
 		if( GetStaminaHandler() )
-			GetStaminaHandler().DepleteStamina(modifier);		
+			GetStaminaHandler().DepleteStamina(modifier,dT);		
 	}
 
 	override bool CanConsumeStamina(EStaminaConsumers consumer)
@@ -2877,6 +2920,25 @@ class PlayerBase extends ManBase
 			StaminaHUDNotifier( false );
 
 		return val;
+	}
+	
+	override bool CanStartConsumingStamina(EStaminaConsumers consumer)
+	{
+		if(!GetStaminaHandler()) return false;
+		
+		bool val = (GetStaminaHandler().HasEnoughStaminaToStart(consumer) && !IsRestrained() && !IsInFBEmoteState());
+		
+		if (!val)
+			StaminaHUDNotifier( false );
+
+		return val;
+	}
+	
+	bool HasStaminaRemaining()
+	{
+		if(!GetStaminaHandler()) return false;
+		
+		return GetStaminaHandler().GetStamina() > 0;
 	}
 	
 	override bool CanClimb( int climbType, SHumanCommandClimbResult climbRes )
@@ -2994,17 +3056,26 @@ class PlayerBase extends ManBase
 	{
 		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
 			return;
+		
+		if (m_AreHandsLocked)
+			return; //Player is in the short window of time after interrupting placement of an item and before getting it back in hands
 
 		if( GetInventory().IsInventoryLocked() || IsEmotePlaying() )
+			return;
+		
+		if( GetThrowing().IsThrowingModeEnabled() || GetThrowing().IsThrowingAnimationPlaying() )
 			return;
 		
 		if( IsRaised() || GetCommand_Melee() || IsSwimming() || IsClimbingLadder() || IsClimbing() || IsRestrained() )
 			return;
 		
-		if( GetDayZPlayerInventory().IsProcessing() )
+		if( GetDayZPlayerInventory().IsProcessing() || IsItemsToDelete() )
 			return;
 		
 		if( GetActionManager().GetRunningAction() != null )
+			return;
+		
+		if( GetWeaponManager() && GetWeaponManager().IsRunning() )
 			return;
 		
 		if (!ScriptInputUserData.CanStoreInputUserData())
@@ -3026,7 +3097,7 @@ class PlayerBase extends ManBase
 			return;
 
 		EntityAI inHandEntity = GetHumanInventory().GetEntityInHands();
-		
+				
 		if (!GetDayZPlayerInventory().IsIdle())
 			return; // player is already performing some animation
 
@@ -3409,7 +3480,7 @@ class PlayerBase extends ManBase
 		return false;
 	}
 	
-	override void UpdateWeight()
+	override void UpdateWeight(WeightUpdateType updateType = WeightUpdateType.FULL, float weightAdjustment = 0)
 	{
 		//Print("CalculatePlayerLoad | timestamp: " + GetSimulationTimeStamp());
 		EntityAI attachment;
@@ -3673,8 +3744,7 @@ class PlayerBase extends ManBase
 	
 	bool IsSprinting()
 	{
-		if (m_MovementState.m_iMovement == 3) return true;	//  jtomasik - DayZPlayerConstants.MOVEMENT_SPRINT ?
-		return false;
+		return m_MovementState.m_iMovement == DayZPlayerConstants.MOVEMENT_SPRINT);
 	}
 
 	bool CanSprint()
@@ -4381,7 +4451,8 @@ class PlayerBase extends ManBase
 				Math3D.MatrixIdentity4(mtx);
 				mtx[3] = pos;
 				inv_loc.SetGround(NULL, mtx);
-				return GetGame().SpawnEntity(object_name, inv_loc, ECE_PLACE_ON_SURFACE, RF_DEFAULT);
+				//return GetGame().SpawnEntity(object_name, inv_loc, ECE_PLACE_ON_SURFACE, RF_DEFAULT);
+				return EntityAI.Cast(GetGame().CreateObjectEx(object_name, inv_loc.GetPos(), ECE_PLACE_ON_SURFACE));
 			}
 		}
 		return null;
@@ -4909,8 +4980,6 @@ class PlayerBase extends ManBase
 		if( IsPlayerSelected() && !IsAlive() )
 		{
 			SimulateDeath(true);
-			if(GetIdentity() && !m_IsUnconscious)
-				Event_OnPlayerDeath.Invoke( this );
 			m_DeathCheckTimer.Stop();
 		}
 	}
@@ -5871,6 +5940,81 @@ class PlayerBase extends ManBase
 			case DayZPlayerSyncJunctures.SJ_WEAPON_LIFT :
 				SetLiftWeapon(pJunctureID, pCtx);
 				break;
+			
+			case DayZPlayerSyncJunctures.SJ_DELETE_ITEM :
+
+				SetToDelete(pCtx);
+				break;
+		}
+	}
+	
+	bool IsItemsToDelete()
+	{
+		return m_ItemsToDelete.Count()>0;
+	}
+	
+	void SetToDelete(ParamsReadContext pCtx)
+	{
+		EntityAI item; 
+		pCtx.Read(item);
+		AddItemToDelete(item);
+	}
+	
+	override void AddItemToDelete( EntityAI item )
+	{
+		item.SetPrepareToDelete();
+		m_ItemsToDelete.Insert(item);
+	}
+	
+	bool CanDeleteItems()
+	{
+		if( IsEmotePlaying() || GetThrowing().IsThrowingAnimationPlaying() || GetDayZPlayerInventory().IsProcessing() || GetActionManager().GetRunningAction() )
+			return false;
+		
+		return true;
+	}
+	
+	override void JunctureDeleteItem(EntityAI item)
+	{
+		DayZPlayerSyncJunctures.SendDeleteItem( this, item );
+	} 
+	
+	void UpdateDelete()
+	{
+		if (m_ItemsToDelete.Count() > 0)
+		{
+			if(CanDeleteItems())
+			{
+				if(GetGame().IsClient() && GetGame().IsMultiplayer())
+				{
+					for(int i = m_ItemsToDelete.Count() - 1; i >= 0 ; i--)
+					{
+						if(m_ItemsToDelete.Get(i) == NULL)
+						{
+							
+							m_ItemsToDelete.Remove(i);
+						}
+					}
+				}
+				else
+				{
+					for(int j = m_ItemsToDelete.Count() - 1; j >= 0 ; j--)
+					{
+						EntityAI item_to_delete = m_ItemsToDelete.Get(j);
+						if( item_to_delete == NULL)
+						{
+							m_ItemsToDelete.Remove(j);
+						}
+						else
+						{
+							item_to_delete.Delete();
+							m_ItemsToDelete.Remove(j);
+						}
+					}
+				}
+			
+			
+			}
 		}
 	}
 	
@@ -6249,6 +6393,7 @@ class PlayerBase extends ManBase
 	
 	override bool PredictiveSwapEntities (notnull EntityAI item1, notnull EntityAI item2)
 	{
+		ForceStandUpForHeavyItemsSwap(item1, item2);
 		//Print("PlayerBase | PredictiveSwapEntities");
 		Magazine swapmag1 = Magazine.Cast(item1);
 		Magazine swapmag2 = Magazine.Cast(item2);
@@ -6307,9 +6452,11 @@ class PlayerBase extends ManBase
 	
 	override bool PredictiveForceSwapEntities (notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
 	{
-		InventoryLocation il = new InventoryLocation;
+		ForceStandUpForHeavyItemsSwap(item1, item2);
+
+		InventoryLocation il = new InventoryLocation;	
 		if ( item1.IsHeavyBehaviour() && item1.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND && !m_ActionManager.GetRunningAction() )
-		{
+		{		
 			//Print("override bool PredictiveForceSwapEntities (notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)");
 			ActionManagerClient mngr_client;
 			CastTo(mngr_client,m_ActionManager);
@@ -6379,7 +6526,7 @@ class PlayerBase extends ManBase
 		if (item2.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND)
 			item_ground = item2;
 		
-		return item_hands && item_ground && (item_hands.ConfigGetString("physLayer") == "item_large" || item_ground.ConfigGetString("physLayer") == "item_large");
+		return item_hands && item_ground && ( item_ground.IsHeavyBehaviour() || item_ground.ConfigGetString("physLayer") == "item_large" || item_hands.IsHeavyBehaviour() || item_hands.ConfigGetString("physLayer") == "item_large" );
 	}
 	
 	//! Dynamic hair hiding
@@ -6678,7 +6825,10 @@ class PlayerBase extends ManBase
 				if ( m_FliesEff )
 				{
 					m_FliesEff.Stop();
-					SEffectManager.Stop(m_FliesIndex);
+					if (SEffectManager.IsEffectExist(m_FliesIndex))
+					{
+						SEffectManager.Stop(m_FliesIndex);
+					}
 				}
 				if ( m_SoundFliesEffect )
 				{
@@ -6757,5 +6907,13 @@ class PlayerBase extends ManBase
 			else
 				return true;
 		}
+	}
+	
+	void dmgDebugPrint(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
+	{
+		/*Print("ProjectileDebugging | Damage Health: " + damageResult.GetDamage(dmgZone,"Health") + " | Component: " + component + " | Zone: " + dmgZone + "| Timestamp: " + GetSimulationTimeStamp());
+		Print("ProjectileDebugging | speedCoef: " + speedCoef);
+		Print("ProjectileDebugging | GetWorldTime(): " + GetWorldTime());
+		Print("-----------------------------------------------");*/
 	}
 }

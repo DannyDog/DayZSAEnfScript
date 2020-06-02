@@ -6,33 +6,35 @@ enum SoundTypeTent
 
 class LargeTent extends TentBase
 {
-	ref protected EffectSound 	m_RepackingLoopSound;	
+	ref protected EffectSound 	m_RepackingLoopSound;
 	
 	void LargeTent()
 	{		
-		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window1O", "Window1C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window2O", "Window2C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window3O", "Window3C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window4O", "Window4C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window5O", "Window5C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window6O", "Window6C"), 0 );
-		m_ToggleAnimations.Insert( new ToggleAnimations("Window7O", "Window7C"), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC", OPENING_0), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window1O", "Window1C", OPENING_1), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window2O", "Window2C", OPENING_2), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window3O", "Window3C", OPENING_3), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window4O", "Window4C", OPENING_4), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window5O", "Window5C", OPENING_5), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window6O", "Window6C", OPENING_6), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("Window7O", "Window7C", OPENING_7), 0 );
 			
 		m_ShowAnimationsWhenPitched.Insert( "Body" );
-		m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
+		/*m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
 		m_ShowAnimationsWhenPitched.Insert( "Window1O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window2O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window3O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window4O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window5O" );
 		m_ShowAnimationsWhenPitched.Insert( "Window6O" );
-		m_ShowAnimationsWhenPitched.Insert( "Window7O" );
+		m_ShowAnimationsWhenPitched.Insert( "Window7O" );*/
 		m_ShowAnimationsWhenPitched.Insert( "Pack" );
 		
 		m_ShowAnimationsWhenPacked.Insert( "Inventory" );
 		
-		m_RepackingLoopSound  = new EffectSound;	
+		m_RepackingLoopSound  = new EffectSound;
+		
+		m_HalfExtents = Vector(2.2, 0.3, 1.9);
 	}
 	
 	void ~LargeTent()
@@ -137,7 +139,7 @@ class LargeTent extends TentBase
 		{
 			if ( !m_ClutterCutter )
 			{
-				m_ClutterCutter = GetGame().CreateObject( "LargeTentClutterCutter", pb.GetLocalProjectionPosition(), false );
+				m_ClutterCutter = GetGame().CreateObjectEx( "LargeTentClutterCutter", pb.GetLocalProjectionPosition(), ECE_PLACE_ON_SURFACE );
 				m_ClutterCutter.SetOrientation( pb.GetLocalProjectionOrientation() );	
 			}
 		}	

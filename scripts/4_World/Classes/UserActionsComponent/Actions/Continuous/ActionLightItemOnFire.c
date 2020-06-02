@@ -63,11 +63,37 @@ class ActionLightItemOnFire: ActionContinuousBase
 		
 		if ( target_item && item )
 		{
+			// when igniting item on the ground with igniter in hands
 			if ( !target_item.IsIgnited()  &&  !IsItemInCargoOfSomething(target_item)  &&  item.CanIgniteItem( target_item )  &&  target_item.CanBeIgnitedBy( item ) )
 			{
-				return true;
+				if ( Fireplace.CanIgniteEntityAsFireplace( target_item ) )
+				{
+					return true;
+				}
+				else
+				{
+					// special cases of fireplaces (interior)
+					if ( target_item.IsKindOf( "FireplaceIndoor" ) || target_item.IsKindOf( "OvenIndoor" ) )
+					{
+						return true;
+					}
+					// oven stage of standard fireplace
+					if ( target_item.IsKindOf( "Fireplace" ) ) 
+					{
+						if ( Fireplace.Cast( target_item ).IsOven() )
+						{
+							return true;
+						}
+					}
+					// barrel fireplace
+					if ( target_item.IsKindOf( "BarrelHoles_ColorBase" ) )
+					{
+						return true;
+					}
+					return false;
+				}
 			}
-			
+			// when igniting item in hands from something on ground
 			else if ( !item.IsIgnited()  &&  !IsItemInCargoOfSomething(item)  &&  target_item.CanIgniteItem( item )  &&  item.CanBeIgnitedBy( target_item ) )
 			{
 				return true;		
@@ -88,13 +114,13 @@ class ActionLightItemOnFire: ActionContinuousBase
 		
 		if ( item.CanIgniteItem( target_item ) )
 		{
-			is_ignition_successful = target_item.IsTargetIgnitionSuccessful( item );
+			is_ignition_successful = target_item.IsThisIgnitionSuccessful( item );
 			ignited_item = target_item;
 			fire_source_item = item;
 		}
 		else if ( item.CanBeIgnitedBy( target_item ) )
 		{
-			is_ignition_successful = item.IsThisIgnitionSuccessful( target_item );
+			is_ignition_successful = target_item.IsTargetIgnitionSuccessful( item );
 			ignited_item = item;
 			fire_source_item = target_item;			
 		}
@@ -113,7 +139,7 @@ class ActionLightItemOnFire: ActionContinuousBase
 	
 	override void OnFinishProgressClient( ActionData action_data )
 	{
-		Print("Ignite client");
+		//Print("Ignite client");
 	}
 	
 	//setup

@@ -14,5 +14,10 @@ class Firewood extends ItemBase
 		super.SetActions();
 		
 		AddAction(ActionClapBearTrapWithThisItem);
+
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
 	}
 }

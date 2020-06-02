@@ -402,7 +402,7 @@ class TrapSpawnBase extends ItemBase
 							{			
 								if ( catches != m_CatchesGroundAnimal )
 								{
-									m_Catch = ItemBase.Cast( g_Game.CreateObject( catches.GetKeyByIndex(randomCatchIndex), this.GetPosition(), false ) );
+									m_Catch = ItemBase.Cast( g_Game.CreateObjectEx( catches.GetKeyByIndex(randomCatchIndex), this.GetPosition(), ECE_PLACE_ON_SURFACE ) );
 									m_Catch.SetQuantity( m_Catch.GetQuantityMax() );
 									Error("Mojmir - TODO");
 									//this.SynchronizedTakeEntityToCargo( true, m_Catch );

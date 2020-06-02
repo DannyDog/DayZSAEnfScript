@@ -65,6 +65,7 @@ class ActionDismantleOven: ActionContinuousBase
 		{
 			ItemBase attached_item = ItemBase.Cast( fireplace_target.GetAttachmentByType( fireplace_target.ATTACHMENT_STONES ) );
 			
+			// for backward compatibility - for the cases built before slot locking was commented out for the stone att slot
 			InventoryLocation inventory_location = new InventoryLocation;
 			attached_item.GetInventory().GetCurrentInventoryLocation( inventory_location );			
 			fireplace_target.GetInventory().SetSlotLock( inventory_location.GetSlot(), false );
@@ -72,15 +73,18 @@ class ActionDismantleOven: ActionContinuousBase
 			//set oven state
 			fireplace_target.SetOvenState( false );
 			
-			// extend lifetime
-			fireplace_target.IncreaseLifetime();
+			// extend lifetime (either back to stone circle lifetime or standard fireplace one)
+			if ( fireplace_target.HasStoneCircle() )
+			{
+				fireplace_target.SetLifetime( FireplaceBase.LIFETIME_FIREPLACE_STONE_CIRCLE );
+			}
+			else
+			{
+				fireplace_target.IncreaseLifetime();
+			}
 			
 			//add specialty to soft skills
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		}
-		else
-		{
-			SendMessageToClient( action_data.m_Player, fireplace_target.MESSAGE_CANNOT_DISMANTLE_OVEN );
 		}
 	}
 }

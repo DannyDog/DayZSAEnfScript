@@ -1,6 +1,7 @@
 enum EPlayerSoundEventID
 {
 	HOLD_BREATH = 1,
+	EXHAUSTED_BREATH,
 	RELEASE_BREATH,
 	STAMINA_DOWN_LIGHT,
 	STAMINA_DOWN_HEAVY,
@@ -41,6 +42,7 @@ class PlayerSoundEventHandler extends SoundEventHandler
 		m_Player = player;
 		
 		RegisterState(new HoldBreathSoundEvent());
+		RegisterState(new ExhaustedBreathSoundEvent());
 		RegisterState(new ReleaseBreathSoundEvent());
 		RegisterState(new StaminaDownLight());
 		RegisterState(new StaminaDownHeavy());

@@ -696,15 +696,15 @@ class ZombieContainer: CollapsibleContainer
 				return;
 			}
 			
-			if( GetGame().GetPlayer().GetInventory().HasInventoryReservation( item, null ) )
+			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+			
+			if( player.GetInventory().HasInventoryReservation( item, null ) || player.IsItemsToDelete() )
 			{
 				return;
 			}
 			
 			if( !item.GetInventory().CanRemoveEntity() )
 				return;
-			
-			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 					
 			if ( player.GetInventory().HasEntityInInventory( item ) && GetGame().GetPlayer().GetHumanInventory().CanAddEntityInHands( item ) )
 			{

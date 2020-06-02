@@ -1,4 +1,4 @@
-class Barrel_ColorBase : Container_Base
+class Barrel_ColorBase : DeployableContainer_Base
 {
 	private bool m_IsLocked = false;
 	private ref Timer m_BarrelOpener;
@@ -11,6 +11,9 @@ class Barrel_ColorBase : Container_Base
 		m_BarrelOpener = new Timer();
 
 		m_Openable = new OpenableBehaviour(false);
+		m_RainProcurement = new RainProcurementManager( this );
+		
+		m_HalfExtents = Vector(0.30,0.85,0.30);
 
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
@@ -28,6 +31,36 @@ class Barrel_ColorBase : Container_Base
 		return true;
 	}*/
 	
+	override void OnStoreSave( ParamsWriteContext ctx )
+	{   
+		super.OnStoreSave( ctx );
+		
+		ctx.Write( m_Openable.IsOpened() );
+	}
+	
+	override bool OnStoreLoad( ParamsReadContext ctx, int version )
+	{
+		if ( !super.OnStoreLoad( ctx, version ) )
+			return false;
+		
+		bool opened;
+		if ( version >= 110 && !ctx.Read( opened ) )
+		{
+			return false;
+		}
+		
+		if ( opened )
+		{
+			Open();
+		}
+		else
+		{
+			Close();
+		}
+		
+		return true;
+	}
+	
 	bool IsLocked()
 	{
 		return m_IsLocked;
@@ -36,7 +69,6 @@ class Barrel_ColorBase : Container_Base
 	override void Open()
 	{
 		m_Openable.Open();
-		m_RainProcurement = new RainProcurementManager( this );
 		m_RainProcurement.InitRainProcurement();
 		GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
 		SoundSynchRemote();
@@ -49,7 +81,8 @@ class Barrel_ColorBase : Container_Base
 	override void Close()
 	{
 		m_Openable.Close();
-		m_RainProcurement.StopRainProcurement();
+		if (m_RainProcurement.IsRunning())
+			m_RainProcurement.StopRainProcurement();
 		GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
 		SoundSynchRemote();
 
@@ -463,7 +496,10 @@ class Barrel_ColorBase : Container_Base
 	
 	override bool CanReceiveItemIntoCargo(EntityAI cargo)
 	{
-		return IsOpen();
+		if ( IsOpen() )
+			return super.CanReceiveItemIntoCargo( cargo );
+		
+		return false;
 	}
 	
 	override bool CanReleaseCargo(EntityAI attachment)
@@ -491,10 +527,8 @@ class Barrel_ColorBase : Container_Base
 	{
 		super.SetActions();
 		
-		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionOpenBarrel);
 		AddAction(ActionCloseBarrel);
-		AddAction(ActionPlaceObject);
 	}
 };
 

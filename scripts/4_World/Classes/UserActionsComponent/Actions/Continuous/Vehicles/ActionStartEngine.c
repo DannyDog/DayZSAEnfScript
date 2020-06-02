@@ -9,7 +9,8 @@ class ActionStartCarCB : ActionContinuousBaseCB
 class ActionStartEngine: ActionContinuousBase
 {
 	private const float ROUGH_SPECIALTY_WEIGHT = 0.5;
-
+	static const float MINIMUM_BATTERY_ENERGY = 5.0;
+	
 	bool m_BatteryCon = false;
 	bool m_SparkCon = false;
 	bool m_BeltCon = false;
@@ -82,7 +83,7 @@ class ActionStartEngine: ActionContinuousBase
 						
 						if ( car.IsVitalCarBattery() ) item = car.FindAttachmentBySlotName("CarBattery");
 						if ( car.IsVitalTruckBattery() ) item = car.FindAttachmentBySlotName("TruckBattery");
-						if ( item && !item.IsRuined() )
+						if ( item && !item.IsRuined() && item.GetCompEM().GetEnergy() > MINIMUM_BATTERY_ENERGY )
 							m_BatteryCon = true;
 					}
 					else

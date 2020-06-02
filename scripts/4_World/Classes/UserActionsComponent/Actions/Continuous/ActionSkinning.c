@@ -103,14 +103,23 @@ class ActionSkinning: ActionContinuousBase
 				*/
 			}
 				
-			
+			/*
 			DropEquipAndDestroyRootLambda lambda(body_PB, "", action_data.m_Player);
 			action_data.m_Player.ServerReplaceItemWithNew(lambda);
+			*/
+			
+			array<EntityAI> children = new array<EntityAI>;
+			body_PB.GetInventory().EnumerateInventory(InventoryTraversalType.LEVELORDER, children);
+			int count = children.Count();
+			for (int i = 0; i < count; ++i)
+			{
+				EntityAI child = children.Get(i);
+				if (child)
+					body_PB.GetInventory().DropEntity(InventoryMode.SERVER, body_PB, child);
+			}
 		}
-		else
-		{
-			GetGame().ObjectDelete(body); // Temporal deletion of the body
-		}
+		
+		GetGame().ObjectDelete(body); // Temporal deletion of the body
 
 		// clutter cutter removed due to issues with audio it causes when players steps on it.
 		//Object cutter = GetGame().CreateObject( "ClutterCutter2x2", body_pos, false ); // clutter cutter to free space on ground for organs.
@@ -180,7 +189,7 @@ class ActionSkinning: ActionContinuousBase
 		// Create item from config
 		ItemBase added_item;
 		vector pos_rnd = body_pos + Vector(Math.RandomFloat01() - 0.5, 0, Math.RandomFloat01() - 0.5);
-		Class.CastTo(added_item,  GetGame().CreateObject( item_to_spawn, pos_rnd, false ) );
+		Class.CastTo(added_item,  GetGame().CreateObjectEx( item_to_spawn, pos_rnd, ECE_PLACE_ON_SURFACE ) );
 		
 		// Check if skinning is configured for this body
 		if (!added_item)

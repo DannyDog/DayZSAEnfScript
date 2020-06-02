@@ -98,7 +98,7 @@ class ActionDigWorms: ActionContinuousBase
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
 		ItemBase worms;
-		Class.CastTo(worms,  GetGame().CreateObject("Worm", action_data.m_Player.GetPosition()) );
+		Class.CastTo(worms,  GetGame().CreateObjectEx("Worm", action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE) );
 		worms.SetQuantity(10,false);
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

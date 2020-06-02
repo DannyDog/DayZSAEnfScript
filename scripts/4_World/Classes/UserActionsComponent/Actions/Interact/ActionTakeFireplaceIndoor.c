@@ -22,7 +22,7 @@ class ActionTakeFireplaceIndoor: ActionInteractBase
 		{
 			FireplaceIndoor fireplace_indoor = FireplaceIndoor.Cast( target_object );
 	
-			if ( fireplace_indoor && !fireplace_indoor.HasAshes() && !fireplace_indoor.IsBurning() && fireplace_indoor.IsCargoEmpty() && !fireplace_indoor.GetCookingEquipment() )
+			if ( fireplace_indoor && !fireplace_indoor.HasAshes() && !fireplace_indoor.IsBurning() && fireplace_indoor.IsCargoEmpty() && !fireplace_indoor.DirectCookingSlotsInUse() )
 			{
 				InventoryLocation targetIL = new InventoryLocation;
 				bool found = player.GetInventory().FindFirstFreeLocationForNewEntity( m_NewItemTypeName, FindInventoryLocationType.ANY, targetIL );

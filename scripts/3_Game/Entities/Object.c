@@ -128,6 +128,9 @@ class Object extends IEntity
 	
 	//! returns action component name by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
 	proto native owned string GetActionComponentName(int componentIndex, string geometry = "");
+	
+	//! returns action component position by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
+	proto native owned vector GetActionComponentPosition(int componentIndex, string geometry = "");
 
 	//! returns action component name list by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
 	proto native owned void GetActionComponentNameList(int componentIndex, TStringArray nameList, string geometry = "");
@@ -497,6 +500,12 @@ class Object extends IEntity
 		return false;
 	}
 	
+	//! Returns if this entity can be built, specifically.
+	bool CanUseConstructionBuild()
+	{
+		return false;
+	}
+	
 	//! Returns if this entity if a food item
 	bool IsFood()
 	{
@@ -700,6 +709,12 @@ class Object extends IEntity
 	proto native bool   IsDamageDestroyed();
 	
 	/**
+	\brief Sets the time over which to perform DestructTent/DestructTree
+	@param time time over which to perform DestructTent/DestructTree
+	*/
+	proto native void  SetDestructTime(float time);
+	
+	/**
 	\brief Returns current state of health.
 	@param zoneName if empty string, returns state of global health
 	@param healthType if empty string, returns state of main health
@@ -777,6 +792,11 @@ class Object extends IEntity
 	void SetHealth(float health)
 	{
 		SetHealth("", "", health);
+	}
+	//! Sets health to its maximum (zone or global)
+	void SetHealthMax(string zoneName = "", string healthType = "")
+	{
+		SetHealth(zoneName,healthType,GetMaxHealth(zoneName,healthType));
 	}
 	//! Equivalent of AddHealth("", "", float value);
 	void AddHealth( float add_health)

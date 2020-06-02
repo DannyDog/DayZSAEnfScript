@@ -47,7 +47,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.2,2.2,1.2};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\mosin9130\mosin_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\winchester70\winchester70_reload",0.8,1,20};

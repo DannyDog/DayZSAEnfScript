@@ -221,6 +221,23 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		pos_x = Math.Ceil(pos_x);
 		pos_y = Math.Ceil(pos_y);
 
+		Widget parentWdg = m_Root.GetParent();
+		
+		float screen_w = 0;
+		float screen_h = 0;
+		
+		float wdg_w = 0;
+		float wdg_h = 0; 
+		
+		parentWdg.GetScreenSize( screen_w, screen_h );
+		m_Root.GetSize( wdg_w, wdg_h );
+
+		if ( pos_x + wdg_w > screen_w )
+			pos_x = screen_w - wdg_w;
+
+		if ( pos_y + wdg_h > screen_h )
+			pos_y = screen_h - wdg_h;
+				
 		m_Root.SetPos(pos_x, pos_y);
 	}
 	
@@ -270,11 +287,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		GetTarget();
 		GetActions();
 
-#ifdef PLATFORM_CONSOLE
-		if((m_Target && !m_Hidden) && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
-#else
 		if((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
-#endif
 		{
 			//! cursor with fixed position (environment interaction mainly)
 			if ( m_Target.GetObject() == null && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous))
@@ -471,6 +484,9 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 								worldPos = object.ModelToWorld( modelPos );
 
 								m_FixedOnPosition = false;
+								if ( object.GetType() == "Fence" || object.GetType() == "Watchttower" )
+									m_FixedOnPosition = true;
+								
 								if ( memOffset != 0.0 )
 								{
 									worldPos[1] = worldPos[1] + memOffset;

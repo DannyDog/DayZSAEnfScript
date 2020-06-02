@@ -49,7 +49,7 @@ class ActionGetOutTransport: ActionInteractBase
 						return false;
 				}
 				
-				if ( crew_index >= 0 && trans.CrewCanGetThrough( crew_index ) )
+				if ( crew_index >= 0 && trans.CrewCanGetThrough( crew_index ) && trans.IsAreaAtDoorFree( crew_index ) )
 					return true;
 			}
 		}

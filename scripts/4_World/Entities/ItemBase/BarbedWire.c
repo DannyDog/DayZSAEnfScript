@@ -110,9 +110,9 @@ class BarbedWire extends ItemBase
 			InventoryLocation inventory_location = new InventoryLocation;
 			GetInventory().GetCurrentInventoryLocation( inventory_location );			
 			base_building.GetInventory().SetSlotLock( inventory_location.GetSlot(), lock_state );
-			string slot_name = InventorySlots.GetSlotName( inventory_location.GetSlot() );
-			base_building.UpdateAttachmentVisuals( slot_name, lock_state );
-			base_building.UpdateAttachmentPhysics( slot_name, lock_state );
+			//string slot_name = InventorySlots.GetSlotName( inventory_location.GetSlot() );
+			//base_building.UpdateAttachmentVisuals( slot_name, lock_state );
+			//base_building.UpdateAttachmentPhysics( slot_name, lock_state );
 		}
 	}
 		

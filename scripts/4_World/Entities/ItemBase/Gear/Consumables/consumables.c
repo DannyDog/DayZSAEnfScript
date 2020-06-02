@@ -41,6 +41,8 @@ class DuctTape: ItemBase
 	{
 		super.SetActions();
 		
+		AddAction(ActionRepairTent);
+		//AddAction(ActionRepairPart);
 		AddAction(ActionRestrainTarget);
 		AddAction(ActionRestrainSelf);
 	}

@@ -6,20 +6,25 @@
  */
 class StaminaConsumer
 {
-	protected float m_Threshold;
+	protected float m_ActivationThreshold;
+	protected float m_DrainThreshold
 	protected bool m_State;
 	
-	void StaminaConsumer(float threshold, bool state)
+	void StaminaConsumer(float threshold, float threshold2, bool state)
 	{
-		m_Threshold = threshold;
+		m_ActivationThreshold = threshold; //can be activated if above this threshold
+		m_DrainThreshold = threshold2; //can continually drain until it reaches this threshold
 		m_State = state;
 	}
 	
 	bool GetState() { return m_State; }
 	void SetState(bool state) { m_State = state; }
 	
-	float GetThreshold() { return m_Threshold; }
-	void SetThreshold(float threshold) { m_Threshold = threshold; }	
+	float GetActivationThreshold() { return m_ActivationThreshold; }
+	void SetActivationThreshold(float threshold) { m_ActivationThreshold = threshold; }
+	
+	float GetDrainThreshold() { return m_DrainThreshold; }
+	void SetDrainThreshold(float threshold) { m_DrainThreshold = threshold; }	
 }
 
 class StaminaConsumers
@@ -31,12 +36,17 @@ class StaminaConsumers
 		m_StaminaConsumers = new map<EStaminaConsumers, ref StaminaConsumer>;
 	}
 
-	void RegisterConsumer(EStaminaConsumers consumer, float threshold)
+	void RegisterConsumer(EStaminaConsumers consumer, float threshold, float depletion_threshold = -1)
 	{
+		if (depletion_threshold == -1)
+		{
+			depletion_threshold = threshold;
+		}
+		
 		if ( !m_StaminaConsumers.Contains(consumer) )
 		{
 			//! init of StaminaConsumer - threshold, state
-			StaminaConsumer sc = new StaminaConsumer(threshold, true);
+			StaminaConsumer sc = new StaminaConsumer(threshold, depletion_threshold, true);
 			m_StaminaConsumers.Set(consumer, sc);
 		}
 	}
@@ -49,7 +59,7 @@ class StaminaConsumers
 			
 			if ( consumer != EStaminaConsumers.SPRINT )
 			{
-				if( (isDepleted || curStamina < sc.GetThreshold()) )
+				if( (isDepleted || curStamina < sc.GetDrainThreshold()) )
 				{
 					sc.SetState(false);
 					return false;
@@ -72,13 +82,34 @@ class StaminaConsumers
 				}
 			}
 
-			if( curStamina > sc.GetThreshold() )
+			if( curStamina > sc.GetDrainThreshold() )
 			{
 				sc.SetState(true);
 				return true;
 			}
 		}
 
+		return false;
+	}
+	
+	bool HasEnoughStaminaToStart(EStaminaConsumers consumer, float curStamina, bool isDepleted)
+	{
+		if ( m_StaminaConsumers && m_StaminaConsumers.Contains(consumer) )
+		{
+			StaminaConsumer sc = m_StaminaConsumers.Get(consumer);
+			
+			if( (isDepleted || curStamina < sc.GetActivationThreshold()) )
+			{
+				sc.SetState(false);
+				return false;
+			}
+			else
+			{
+				sc.SetState(true);
+				return true;
+			}
+		}
+		
 		return false;
 	}
 }
@@ -94,15 +125,19 @@ class StaminaConsumers
  */
 class StaminaModifier
 {
+	bool m_InUse = false;
 	int m_Type;
-	float m_MinValue, m_MaxValue, m_Cooldown;
+	float m_MinValue, m_MaxValue, m_Cooldown, m_StartTime, m_Duration, m_ProgressTime, m_Tick;
 
-	void StaminaModifier(int type, float min, float max, float cooldown)
+	void StaminaModifier(int type, float min, float max, float cooldown, float startTime = 0, float duration = 0)
 	{
 		m_Type = type;
 		m_MinValue = min;
 		m_MaxValue = max;
 		m_Cooldown = cooldown;
+		m_StartTime = startTime;
+		m_Duration = duration;
+		m_Tick = 1;
 	}
 	
 	int GetType() { return m_Type; }
@@ -115,12 +150,28 @@ class StaminaModifier
 
 	float GetCooldown() { return m_Cooldown; }
 	void SetCooldown(float val) { m_Cooldown = val; }
+	
+	float GetStartTime() { return m_StartTime; }
+	void SetStartTime(float val) { m_StartTime = val; }
+	
+	float GetDuration() { return m_Duration; }
+	float GetDurationAdjusted() { return m_Duration / m_Tick; }
+	
+	bool IsInUse() { return m_InUse; }
+	void SetInUse(bool val) { m_InUse = val; }
+	
+	float GetRunTime() { return m_ProgressTime; }
+	void AddRunTime(float val) { m_ProgressTime += val; }
+	void SetRunTimeTick(float val) { m_Tick = val; }
+	void ResetRunTime() { m_ProgressTime = 0 }
 }
 
 class StaminaModifiers
 {
 	const int FIXED 		= 0;
 	const int RANDOMIZED 	= 1;
+	const int LINEAR 		= 2; //Useful ONLY for regular, over-time stamina drain
+	const int EXPONENTIAL 	= 3; //Useful ONLY for regular, over-time stamina drain
 
 	protected ref map<EStaminaModifiers, ref StaminaModifier> m_StaminaModifiers;
 
@@ -149,6 +200,20 @@ class StaminaModifiers
 			StaminaModifier sm = new StaminaModifier(RANDOMIZED, minValue, maxValue, cooldown);
 			m_StaminaModifiers.Set(modifier, sm);
 		}
+	}
+	
+	//! register lerped modifier - depletes stamina for startValue, and, after a startTime, lerps to endValue over duration
+	void RegisterLinear(EStaminaModifiers modifier, float startValue, float endValue, float startTime, float duration, float cooldown = GameConstants.STAMINA_REGEN_COOLDOWN_DEPLETION)
+	{
+		StaminaModifier sm = new StaminaModifier(LINEAR, startValue, endValue, cooldown, startTime, duration);
+		m_StaminaModifiers.Set(modifier, sm);
+	}
+	
+	//! register exponential modifier - depletes stamina for startValue, and, after a startTime, lerps from 0 to exponent over duration
+	void RegisterExponential(EStaminaModifiers modifier, float startValue, float exponent, float startTime, float duration, float cooldown = GameConstants.STAMINA_REGEN_COOLDOWN_DEPLETION)
+	{
+		StaminaModifier sm = new StaminaModifier(EXPONENTIAL, startValue, exponent, cooldown, startTime, duration);
+		m_StaminaModifiers.Set(modifier, sm);
 	}
 	
 	StaminaModifier GetModifierData(EStaminaModifiers modifier)
@@ -437,7 +502,7 @@ class StaminaHandler
 	{
 		//! stamina consumers registration
 		m_StaminaConsumers = new StaminaConsumers;
-		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.HOLD_BREATH, GameConstants.STAMINA_HOLD_BREATH_THRESHOLD);
+		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.HOLD_BREATH, GameConstants.STAMINA_HOLD_BREATH_THRESHOLD_ACTIVATE,GameConstants.STAMINA_HOLD_BREATH_THRESHOLD_DRAIN);
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.SPRINT, GameConstants.STAMINA_MIN_CAP + 15);
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.JUMP, GameConstants.STAMINA_JUMP_THRESHOLD);
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.VAULT, GameConstants.STAMINA_VAULT_THRESHOLD);
@@ -450,7 +515,8 @@ class StaminaHandler
 	{
 		//! stamina modifiers registration
 		m_StaminaModifiers = new StaminaModifiers;
-		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.HOLD_BREATH, GameConstants.STAMINA_DRAIN_HOLD_BREATH);
+		//m_StaminaModifiers.RegisterLinear(EStaminaModifiers.HOLD_BREATH, GameConstants.STAMINA_DRAIN_HOLD_BREATH_START, GameConstants.STAMINA_DRAIN_HOLD_BREATH_END,0,GameConstants.STAMINA_DRAIN_HOLD_BREATH_DURATION);
+		m_StaminaModifiers.RegisterExponential(EStaminaModifiers.HOLD_BREATH, GameConstants.STAMINA_DRAIN_HOLD_BREATH_START, GameConstants.STAMINA_DRAIN_HOLD_BREATH_EXPONENT,0,GameConstants.STAMINA_DRAIN_HOLD_BREATH_DURATION);
 		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.JUMP, GameConstants.STAMINA_DRAIN_JUMP);
 		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.VAULT, GameConstants.STAMINA_DRAIN_VAULT);
 		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.CLIMB, GameConstants.STAMINA_DRAIN_CLIMB);
@@ -486,18 +552,31 @@ class StaminaHandler
 	}
 
 	//! set cooldown timer between each consume of stamina	
-	protected void SetCooldown(float time)
+	protected void SetCooldown(float time, int modifier = -1)
 	{
-		if( m_StaminaDepleted || m_Stamina <= 0.0 ) return;
+		//StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
+		if( m_StaminaDepleted || m_Stamina <= 0.0 )
+		{
+			ResetCooldown(modifier);
+			return;
+		}
 
 		m_IsInCooldown = true;
 		if( m_CooldownTimer.IsRunning() )
 			m_CooldownTimer.Stop();
-		m_CooldownTimer.Run(time, this, "ResetCooldown", null);
+		m_CooldownTimer.Run(time, this, "ResetCooldown",  new Param1<int>( modifier ));
 	}
 	
-	protected void ResetCooldown()
+	protected void ResetCooldown(int modifier = -1)
 	{
+		StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
+		if (sm)
+		{
+			//Error("Error: No StaminaModifier found! | StaminaHandler | ResetCooldown");
+			sm.SetStartTime(-1);
+			sm.ResetRunTime();
+			sm.SetInUse(false);
+		}
 		m_IsInCooldown = false;
 	}
 	
@@ -505,6 +584,11 @@ class StaminaHandler
 	bool HasEnoughStaminaFor(EStaminaConsumers consumer)
 	{
 		return m_StaminaConsumers.HasEnoughStaminaFor(consumer, m_Stamina, m_StaminaDepleted);
+	}
+	
+	bool HasEnoughStaminaToStart(EStaminaConsumers consumer)
+	{
+		return m_StaminaConsumers.HasEnoughStaminaToStart(consumer, m_Stamina, m_StaminaDepleted);
 	}
 
 	void SetStamina(float stamina_value)
@@ -533,9 +617,11 @@ class StaminaHandler
 		return m_Stamina / GameConstants.STAMINA_MAX;
 	}
 	
-	void DepleteStamina(EStaminaModifiers modifier)
+	void DepleteStamina(EStaminaModifiers modifier, float dT = -1)
 	{
 		float val = 0.0;
+		float current_time = m_Player.GetSimulationTimeStamp();
+		float time;
 		StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
 
 		//! select by modifier type and drain stamina
@@ -549,10 +635,60 @@ class StaminaHandler
 				val = Math.RandomFloat(sm.GetMinValue(), sm.GetMaxValue());
 				m_StaminaDepletion = m_StaminaDepletion + val;
 			break;
+			
+			case m_StaminaModifiers.LINEAR:
+				if (!sm.IsInUse())
+				{
+				//Print("m_StaminaModifiers.LINEAR");
+					sm.SetStartTime(current_time + ( (PlayerSwayConstants.SWAY_TIME_IN + PlayerSwayConstants.SWAY_TIME_STABLE) / dT ) );
+					sm.SetRunTimeTick(dT);
+					sm.SetInUse(true);
+				//Print("GetStartTime" + sm.GetStartTime());
+				//Print("GetDurationAdjusted" + sm.GetDurationAdjusted());
+				}
+				time = Math.Clamp( ((current_time - sm.GetStartTime()) / sm.GetDurationAdjusted()), 0, 1 );
+				val = Math.Lerp(sm.GetMinValue(), sm.GetMaxValue(), time);
+				m_StaminaDepletion = m_StaminaDepletion + val;
+				/*Print(current_time);
+				Print(time);
+				Print(val);
+				Print("-------------");*/
+			
+			break;
+			
+			case m_StaminaModifiers.EXPONENTIAL:
+				if (!sm.IsInUse())
+				{
+				//Print("m_StaminaModifiers.EXPONENTIAL");
+					sm.SetStartTime(current_time + ( (PlayerSwayConstants.SWAY_TIME_IN + PlayerSwayConstants.SWAY_TIME_STABLE) / dT ) );
+					sm.SetRunTimeTick(dT);
+					sm.SetInUse(true);
+				//Print("GetStartTime" + sm.GetStartTime());
+				//Print("GetDurationAdjusted" + sm.GetDurationAdjusted());
+				}
+				time = Math.Clamp( ((current_time - sm.GetStartTime()) / sm.GetDurationAdjusted()), 0, 1 );
+				float exp;
+				if (sm.GetMinValue() < 1)
+				{
+					exp = 1 - Math.Lerp(0, sm.GetMaxValue(), time);
+				}
+				else
+				{
+					exp = Math.Lerp(0, sm.GetMaxValue(), time);
+				}
+				val = Math.Pow(sm.GetMinValue(),exp);
+				m_StaminaDepletion = m_StaminaDepletion + val;
+				/*Print(exp);
+				Print(current_time);
+				Print(time);
+				Print(val);
+				Print("-------------");*/
+			
+			break;
 		}
 
 		//! run cooldown right after depletion
-		SetCooldown(sm.GetCooldown());
+		SetCooldown(sm.GetCooldown(),modifier);
 		m_StaminaDepletion = Math.Clamp(m_StaminaDepletion, 0, GameConstants.STAMINA_MAX);
 	}
 };

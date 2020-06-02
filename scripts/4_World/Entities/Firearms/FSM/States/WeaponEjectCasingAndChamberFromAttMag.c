@@ -37,6 +37,11 @@ class WeaponEjectCasingMultiMuzzle extends WeaponStateBase
 			}
 		}
 	}
+	
+	override bool IsWaitingForActionFinish()
+	{
+		return true;
+	}
 };
 
 class WeaponEjectCasing_W4T extends WeaponEjectCasingMultiMuzzle
@@ -85,6 +90,10 @@ class WeaponEjectAllMuzzles extends WeaponStateBase
 		//m_weapon.SelectionBulletHide();
 	}
 	
+	override bool IsWaitingForActionFinish () 
+	{ 
+		return true; 
+	}
 };
 
 // eject casing and load bullet from att mag (no anim)

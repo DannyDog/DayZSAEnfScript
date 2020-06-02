@@ -47,7 +47,7 @@ EffectDef {
    Size {
     0 0.76101 1 1
    }
-   EffectTime 10
+   EffectTime 30
    Repeat 0
    ColorMast {
     0 1 1 1
@@ -97,7 +97,7 @@ EffectDef {
    Size {
     0 0.576 0.7473 0.832 1 1
    }
-   EffectTime 10
+   EffectTime 30
    Repeat 0
    SizeMast {
     0 0.55 1 1
@@ -136,7 +136,7 @@ EffectDef {
    Size {
     0 0.21384 0.50786 0.76101 1 1
    }
-   EffectTime 10
+   EffectTime 30
    Repeat 0
    SizeMast {
     0 0.5 1 1
@@ -181,6 +181,7 @@ EffectDef {
    Size {
     0 0 0.49312 0.46541 1 0.18868
    }
+   EffectTime 30
    Repeat 0
    SizeMast {
     0 0.5 1 1
@@ -218,6 +219,7 @@ EffectDef {
    Alpha {
     0 1 0.49705 0.30818 1 0
    }
+   EffectTime 30
    Repeat 0
    BRateMast {
     0 0.05 1 1

@@ -62,9 +62,9 @@ FrameWidgetClass FrameWidget {
    visible 1
    ignorepointer 1
    color 0 0 0 0.7843
-   position 2.8169 0
+   position 0.688 -0.688
    size 1.6 0.9
-   halign center_ref
+   valign center_ref
    hexactpos 1
    vexactpos 1
    hexactsize 0
@@ -373,8 +373,8 @@ FrameWidgetClass FrameWidget {
   MultilineTextWidgetClass ModdedWarning {
    visible 1
    inheritalpha 1
-   position 100 286
-   size 444 30
+   position 100 364
+   size 444 100
    hexactpos 1
    vexactpos 1
    hexactsize 1
@@ -382,7 +382,8 @@ FrameWidgetClass FrameWidget {
    fixaspect outside
    text "#str_modded_version_warning0"
    font "gui/fonts/sdf_MetronLight24"
-   "exact text" 1
+   "exact text" 0
+   text_proportion 0.5
    "size to text h" 1
    "size to text v" 1
    wrap 1
@@ -401,6 +402,232 @@ FrameWidgetClass FrameWidget {
    mode additive
    "src alpha" 1
    stretch 0
+  }
+  FrameWidgetClass server_info {
+   clipchildren 1
+   ignorepointer 1
+   position 100 287
+   size 460 65
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   fixaspect fixwidth
+   {
+    WrapSpacerWidgetClass server_infoText {
+     ignorepointer 1
+     color 0 0 0 0.549
+     position 0 0
+     size 444 0.45
+     hexactpos 1
+     vexactpos 0
+     hexactsize 1
+     vexactsize 0
+     style DayZDefaultPanelTop
+     "no focus" 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     content_valign center
+     {
+      FrameWidgetClass separator1 {
+       visible 1
+       ignorepointer 1
+       position 0 0
+       size 1 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scaled 0
+      }
+      TextWidgetClass server_name {
+       clipchildren 1
+       ignorepointer 1
+       keepsafezone 0
+       position 0 0
+       size 444 0.5
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 0
+       hexactsize 1
+       vexactsize 0
+       text "DayZ BR 4-002 - Hosted by Fragnet.net - Persistence Enabled"
+       font "gui/fonts/sdf_MetronLight72"
+       "exact text" 0
+       "size to text h" 0
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+      }
+      FrameWidgetClass separator2 {
+       visible 1
+       ignorepointer 1
+       position 0 0
+       size 1 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       scaled 0
+      }
+      TextWidgetClass server_ip {
+       clipchildren 0
+       ignorepointer 1
+       keepsafezone 0
+       position 0 0
+       size 220 0.5
+       valign center_ref
+       hexactpos 1
+       vexactpos 0
+       hexactsize 1
+       vexactsize 0
+       text "129.168.0.127"
+       font "gui/fonts/sdf_MetronLight72"
+       "text halign" right
+       "text valign" center
+      }
+      TextWidgetClass double_dot {
+       clipchildren 0
+       ignorepointer 1
+       size 4 0.5
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 0
+       hexactsize 1
+       vexactsize 0
+       text ":"
+       font "gui/fonts/sdf_MetronLight72"
+       "text halign" center
+       "text valign" center
+      }
+      TextWidgetClass server_port {
+       clipchildren 0
+       ignorepointer 1
+       size 210 0.5
+       halign right_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 0
+       hexactsize 1
+       vexactsize 0
+       text "0000"
+       font "gui/fonts/sdf_MetronLight72"
+       "text valign" center
+      }
+      FrameWidgetClass separator3 {
+       visible 1
+       ignorepointer 1
+       position 0 0
+       size 1 0.2
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+      }
+     }
+    }
+    WrapSpacerWidgetClass server_infoButtons {
+     ignorepointer 1
+     color 0 0 0 0
+     position 0.85 0.32
+     size 0.1 0.3
+     valign bottom_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     style DayZDefaultPanelLeft
+     "no focus" 1
+     Padding 0
+     Margin 0
+     "Size To Content V" 1
+     content_halign right
+     {
+      PanelWidgetClass favorite_button {
+       visible 0
+       ignorepointer 0
+       position 0 0
+       size 30 27
+       valign center_ref
+       hexactpos 0
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       {
+        ImageWidgetClass favorite_image {
+         visible 1
+         clipchildren 0
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_favourite_off"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+        }
+        ImageWidgetClass unfavorite_image {
+         visible 0
+         clipchildren 0
+         ignorepointer 1
+         size 20 20
+         halign center_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         image0 "set:dayz_gui image:icon_favourite_on"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+         filter 1
+        }
+       }
+      }
+      ButtonWidgetClass copy_button {
+       ignorepointer 0
+       size 0.5 1
+       halign right_ref
+       valign center_ref
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 0
+       {
+        ImageWidgetClass ImageWidget1 {
+         visible 1
+         ignorepointer 1
+         position 0 0
+         size 1 1
+         halign center_ref
+         valign center_ref
+         hexactpos 0
+         vexactpos 0
+         hexactsize 0
+         vexactsize 0
+         image0 "set:dayz_gui image:icon_copy"
+         mode additive
+         "src alpha" 1
+         "no wrap" 1
+         stretch 1
+        }
+       }
+      }
+     }
+    }
+   }
   }
  }
 }

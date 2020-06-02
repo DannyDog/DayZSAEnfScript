@@ -1,12 +1,22 @@
 class InGameMenu extends UIScriptedMenu
 {
+	string m_ServerInfoText;
+	
 	protected Widget			m_ContinueButton;
 	protected Widget			m_ExitButton;
 	protected Widget			m_RestartButton;
 	protected Widget			m_RestartDeadButton;
 	protected Widget			m_OptionsButton;
+	protected Widget 			m_ServerInfoPanel;
+	protected Widget 			m_FavoriteButton;
+	protected Widget 			m_FavoriteImage;
+	protected Widget 			m_UnfavoriteImage;
+	protected Widget 			m_CopyInfoButton;
 	
 	protected ref TextWidget	m_ModdedWarning;
+	protected ref TextWidget 	m_ServerIP;
+	protected ref TextWidget 	m_ServerPort;
+	protected ref TextWidget 	m_ServerName;
 	
 	protected ref UiHintPanel m_HintPanel;
 	
@@ -26,7 +36,14 @@ class InGameMenu extends UIScriptedMenu
 		m_OptionsButton		= layoutRoot.FindAnyWidget( "optionsbtn" );
 		m_ModdedWarning		= TextWidget.Cast( layoutRoot.FindAnyWidget( "ModdedWarning" ) );
 		m_HintPanel			= new UiHintPanel(layoutRoot.FindAnyWidget( "hint_frame" ));
-		
+		m_ServerInfoPanel 	= layoutRoot.FindAnyWidget( "server_info" );
+		m_ServerIP 			= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_ip" ) );
+		m_ServerPort 		= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_port" ) );
+		m_ServerName 		= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_name" ) );
+		//m_FavoriteButton 	= layoutRoot.FindAnyWidget( "favorite_button" );
+		m_FavoriteImage 	= layoutRoot.FindAnyWidget( "favorite_image" );
+		m_UnfavoriteImage 	= layoutRoot.FindAnyWidget( "unfavorite_image" );
+		m_CopyInfoButton 	= layoutRoot.FindAnyWidget( "copy_button" );
 		
 		if (GetGame().IsMultiplayer())
 		{
@@ -42,9 +59,8 @@ class InGameMenu extends UIScriptedMenu
 	#endif
 		
 		HudShow( false );
-		
 		SetGameVersion();
-		
+		SetServerInfoVisibility(SetServerInfo() && g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ));
 		m_ModdedWarning.Show( g_Game.ReportModded() );
 		
 		return layoutRoot;
@@ -60,6 +76,59 @@ class InGameMenu extends UIScriptedMenu
 		#ifdef PREVIEW_BUILD
 			version_widget.SetText("THIS IS PREVIEW");
 		#endif
+	}
+	
+	protected bool SetServerInfo()
+	{
+		if (GetGame().IsMultiplayer())
+		{
+			//PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+			MenuData menu_data = g_Game.GetMenuData();
+			GetServersResultRow info = OnlineServices.GetCurrentServerInfo();
+			
+			if (info)
+			{
+				//text
+				m_ServerPort.SetText(info.m_HostPort.ToString());
+				m_ServerIP.SetText(info.m_HostIp);
+				m_ServerName.SetText(info.m_Name);
+				//favorite
+				m_UnfavoriteImage.Show( info.m_Favorite );
+				m_FavoriteImage.Show( !info.m_Favorite );
+				
+				//m_ServerInfoText = "" + info.m_Name + " " + info.m_HostIp + ":" + info.m_HostPort.ToString();
+				m_ServerInfoText = "" + info.m_HostIp + ":" + info.m_HostPort.ToString();
+				
+				return true;
+			}
+			//temporary, incomplete solution, OnlineServices.GetCurrentServerInfo() should be working!
+			else if (menu_data && menu_data.GetLastPlayedCharacter() != GameConstants.DEFAULT_CHARACTER_MENU_ID)
+			{
+				int char_id = menu_data.GetLastPlayedCharacter();
+				int port;
+				string address,name;
+				
+				menu_data.GetLastServerAddress(char_id,address);
+				port = menu_data.GetLastServerPort(char_id);
+				menu_data.GetLastServerName(char_id,name);
+				//text
+				m_ServerPort.SetText(port.ToString());
+				m_ServerIP.SetText(address);
+				m_ServerName.SetText(name);
+				//favorite
+				//m_FavoriteButton.Show( false ); // buton should be non-functional in this case!
+				
+				//m_ServerInfoText = "" + name + " " + address + ":" + port;
+				m_ServerInfoText = "" + address + ":" + port;
+				
+				return true;
+			}
+			else
+			{
+				g_Game.RefreshCurrentServerInfo();
+			}
+		}
+		return false;
 	}
 	
 	protected void HudShow( bool show )
@@ -111,6 +180,14 @@ class InGameMenu extends UIScriptedMenu
 		{
 			OnClick_Exit();
 			return true;
+		}
+		/*else if ( w == m_FavoriteButton )
+		{
+			ToggleFavoriteServer();
+		}*/
+		else if ( w == m_CopyInfoButton )
+		{
+			GetGame().CopyToClipboard(m_ServerInfoText);
 		}
 
 		return false;
@@ -298,5 +375,26 @@ class InGameMenu extends UIScriptedMenu
 		{
 			label.SetColor( color );
 		}
+	}
+	
+	void SetServerInfoVisibility(bool show)
+	{
+		m_ServerInfoPanel.Show(show);
+	}
+	
+	void ToggleFavoriteServer()
+	{
+		//TODO insert favorite mechanism here
+		bool favorite;
+		TStringArray server_id = new TStringArray;
+		GetServersResultRow info = OnlineServices.GetCurrentServerInfo();
+		
+		favorite = !info.m_Favorite;
+		
+		info.m_Id.Split(":", server_id);
+		OnlineServices.SetServerFavorited(server_id[0], info.m_HostPort, info.m_SteamQueryPort, favorite);
+		
+		m_UnfavoriteImage.Show( !favorite );
+		m_FavoriteImage.Show( favorite );
 	}
 }

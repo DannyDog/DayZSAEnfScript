@@ -142,6 +142,12 @@ class ZombieBase extends DayZInfected
 
 	void CommandHandler(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
 	{
+		//! for mods
+		if( ModCommandHandlerBefore(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		{
+			return;
+		}
+
 		//! handle death
 		if( HandleDeath(pCurrentCommandID) )
 		{
@@ -160,6 +166,13 @@ class ZombieBase extends DayZInfected
 			
 			return;
 		}
+		
+		//! for mods
+		if( ModCommandHandlerInside(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		{
+			return;
+		}
+
 		
 		//! crawl transition
 		if( HandleCrawlTransition(pCurrentCommandID) )
@@ -191,6 +204,33 @@ class ZombieBase extends DayZInfected
 				return;
 			}
 		}		
+		
+		//!
+		if( ModCommandHandlerAfter(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		{
+			return;
+		}
+	}
+
+	//-------------------------------------------------------------
+	//!
+	//! ModOverrides
+	//! 
+	// these functions are for modded overide in script command mods 
+
+	bool	ModCommandHandlerBefore(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
+	}
+
+	bool	ModCommandHandlerInside(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
+	}
+	
+	bool	ModCommandHandlerAfter(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
 	}
 
 	//-------------------------------------------------------------

@@ -1,14 +1,17 @@
 MetaFileClass {
- Name "{39FF9F43D3AD13F}Graphics/Particles/sprites/_test_orientation.edds"
- Author "ferko"
- ChangeDate 1887183234
+ Name "{039FF9F43D3AD13F}Graphics/Particles/sprites/_test_orientation.tga"
+ Author "namalsk"
+ ChangeDate 116631700
  Configurations {
   TGAResourceClass PC {
    SourceFile "_test_orientation.tga"
+   Conversion DXTCompression
   }
   TGAResourceClass XBOX_ONE : PC {
   }
   TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
   }
  }
 }

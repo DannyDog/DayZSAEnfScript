@@ -15,6 +15,11 @@ class SurrenderDummyItem extends DummyItem
 	{
 		super.OnItemLocationChanged(old_owner,new_owner);
 		
+		//Player somehow got a hold of the item (can be done by quickly pressing tab after F5), item should not exist outside of surrender
+		if (old_owner)
+			Delete();
+		
+		/*
 		//enters player's inventory
 		if (new_owner)
 		{
@@ -27,5 +32,6 @@ class SurrenderDummyItem extends DummyItem
 			Delete();
 			//PlayerBase.Cast(old_owner).m_EmoteManager.PlaySurrenderInOut(false);
 		}
+		*/
 	}
 }

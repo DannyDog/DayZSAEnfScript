@@ -29,7 +29,11 @@ class CfgVehicles
 	class WorldContainer_Base;
 	class HouseNoDestruct;
 	class Static;
-	class MediumTent: Container_Base
+	class TentBase: Container_Base
+	{
+		destrType = "DestructTent";
+	};
+	class MediumTent: TentBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_MediumTent0";
@@ -39,9 +43,9 @@ class CfgVehicles
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
 		slopeTolerance = 0.3;
-		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
-		hiddenSelectionsTextures[] = {};
-		hiddenSelectionsMaterials[] = {};
+		hiddenSelections[] = {"bags","camo","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.470588,0.470588,0.470588,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_packed.rvmat","dz\gear\camping\data\tent_medium_pitched.rvmat"};
 		openable = 0;
 		carveNavmesh = 1;
 		weight = 10000;
@@ -61,41 +65,120 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_pitched.rvmat"}},{0.7,{"DZ\gear\camping\data\tent_medium_pitched.rvmat"}},{0.5,{"DZ\gear\camping\data\tent_medium_pitched_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\tent_medium_pitched_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\tent_medium_pitched_destruct.rvmat"}}};
+					hitpoints = 500;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
-			class GlobalArmor
+			class DamageZones
 			{
-				class Projectile
+				class Body
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 500;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_packed.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_medium_packed.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_medium_packed_destruct.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
-					{
-						damage = 0;
-					};
+					componentNames[] = {"body"};
+					transferToZonesNames[] = {"Inventory"};
+					transferToZonesCoefs[] = {1.0};
+					fatalInjuryCoef = -1;
 				};
-				class FragGrenade
+				class Inventory
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 500;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\tent_medium_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\tent_medium_packed_destruct.rvmat"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
+					componentNames[] = {"inventory"};
+					transferToZonesNames[] = {"Body","Entrance"};
+					transferToZonesCoefs[] = {1.0,1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Entrance
+				{
+					class Health
 					{
-						damage = 0;
+						hitpoints = 500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.1;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.5;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 30;
+							};
+						};
+					};
+					componentNames[] = {"entranceo","entrancec"};
+					fatalInjuryCoef = -1;
 				};
 			};
 		};
@@ -257,8 +340,20 @@ class CfgVehicles
 			};
 		};
 	};
+	class MediumTent_Green: MediumTent
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.152941,0.176471,0.101961,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_packed.rvmat","dz\gear\camping\data\tent_medium_pitched_g.rvmat"};
+	};
+	class MediumTent_Orange: MediumTent
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.152941,0.145098,0.203922,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_packed.rvmat","dz\gear\camping\data\tent_medium_pitched_o.rvmat"};
+	};
 	class MediumTentPlacing: MediumTent
 	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
 		model = "\DZ\gear\camping\MediumTentPlacing.p3d";
 		storageCategory = 10;
 		hiddenSelections[] = {"placing"};
@@ -276,6 +371,8 @@ class CfgVehicles
 			};
 		};
 	};
+	class MediumTent_GreenPlacing: MediumTentPlacing{};
+	class MediumTent_OrangePlacing: MediumTentPlacing{};
 	class MediumTentClutterCutter: Static
 	{
 		scope = 1;
@@ -289,7 +386,7 @@ class CfgVehicles
 		accuracy = 0.2;
 		destrType = "DestructNo";
 	};
-	class LargeTent: Container_Base
+	class LargeTent: TentBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_LargeTent0";
@@ -299,9 +396,9 @@ class CfgVehicles
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
 		slopeTolerance = 0.35;
-		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
-		hiddenSelectionsTextures[] = {};
-		hiddenSelectionsMaterials[] = {};
+		hiddenSelections[] = {"entrancec","camo","bags","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
+		hiddenSelectionsTextures[] = {"dz\gear\camping\data\tent_door_co.paa","","dz\gear\camping\data\bagpack_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_door.rvmat","dz\gear\camping\data\large_tent.rvmat","dz\gear\camping\data\bagpack.rvmat"};
 		openable = 0;
 		carveNavmesh = 1;
 		weight = 20000;
@@ -323,40 +420,182 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\large_tent.rvmat"}},{0.7,{"DZ\gear\camping\data\large_tent.rvmat"}},{0.5,{"DZ\gear\camping\data\large_tent_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\large_tent_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\large_tent_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
-			class GlobalArmor
+			class DamageZones
 			{
-				class Projectile
+				class Body
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 1000;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"dz\gear\camping\Data\tent_pristine_co.paa","DZ\gear\camping\data\bagpack.rvmat"}},{0.7,{"dz\gear\camping\data\tent_worn_co.paa","DZ\gear\camping\data\bagpack.rvmat"}},{0.5,{"dz\gear\camping\data\tent_damage_co.paa","DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.3,{"dz\gear\camping\data\tent_destruct_co.paa","DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.0,{"dz\gear\camping\data\tent_destruct_co.paa","DZ\gear\camping\data\bagpack_destruct.rvmat"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
-					{
-						damage = 0;
-					};
+					componentNames[] = {"body"};
+					transferToZonesNames[] = {"Inventory"};
+					transferToZonesCoefs[] = {1.0};
+					fatalInjuryCoef = -1;
 				};
-				class FragGrenade
+				class Inventory
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 1000;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\bagpack.rvmat"}},{0.7,{"DZ\gear\camping\data\bagpack.rvmat"}},{0.5,{"DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\bagpack_destruct.rvmat"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
+					componentNames[] = {"inventory"};
+					transferToZonesNames[] = {"Body","Entrance","Window1","Window2","Window3","Window4","Window5","Window6","Window7"};
+					transferToZonesCoefs[] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Entrance
+				{
+					class Health
 					{
-						damage = 0;
+						hitpoints = 1000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden","hidden"}};
 					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1.0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5.0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 50;
+							};
+						};
+					};
+					componentNames[] = {"entranceo","entrancec"};
+					fatalInjuryCoef = -1;
+				};
+				class Window_Base
+				{
+					class Health
+					{
+						hitpoints = 1000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1.0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5.0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 50;
+							};
+						};
+					};
+					componentNames[] = {""};
+					fatalInjuryCoef = -1;
+				};
+				class Window1: Window_Base
+				{
+					componentNames[] = {"window1o","window1c"};
+				};
+				class Window2: Window_Base
+				{
+					componentNames[] = {"window2o","window2c"};
+				};
+				class Window3: Window_Base
+				{
+					componentNames[] = {"window3o","window3c"};
+				};
+				class Window4: Window_Base
+				{
+					componentNames[] = {"window4o","window4c"};
+				};
+				class Window5: Window_Base
+				{
+					componentNames[] = {"window5o","window5c"};
+				};
+				class Window6: Window_Base
+				{
+					componentNames[] = {"window6o","window6c"};
+				};
+				class Window7: Window_Base
+				{
+					componentNames[] = {"window7o","window7c"};
 				};
 			};
 		};
@@ -604,6 +843,8 @@ class CfgVehicles
 	};
 	class LargeTentPlacing: LargeTent
 	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
 		model = "\DZ\gear\camping\LargeTentPlacing.p3d";
 		storageCategory = 10;
 		hiddenSelections[] = {"placing"};
@@ -634,7 +875,7 @@ class CfgVehicles
 		accuracy = 0.2;
 		destrType = "DestructNo";
 	};
-	class CarTent: Container_Base
+	class CarTent: TentBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_CarTent0";
@@ -644,9 +885,9 @@ class CfgVehicles
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
 		slopeTolerance = 0.45;
-		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
-		hiddenSelectionsTextures[] = {};
-		hiddenSelectionsMaterials[] = {};
+		hiddenSelections[] = {"bags","camo","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
+		hiddenSelectionsTextures[] = {"dz\gear\camping\data\car_tent_packed_co.paa","dz\gear\camping\data\tent_pristine_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\car_tent_packed.rvmat","dz\gear\camping\data\car_tent.rvmat"};
 		openable = 0;
 		carveNavmesh = 1;
 		weight = 20000;
@@ -667,41 +908,120 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat"}}};
+					hitpoints = 850;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
-			class GlobalArmor
+			class DamageZones
 			{
-				class Projectile
+				class Body
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 850;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
-					{
-						damage = 0;
-					};
+					componentNames[] = {"body"};
+					transferToZonesNames[] = {"Inventory"};
+					transferToZonesCoefs[] = {1.0};
+					fatalInjuryCoef = -1;
 				};
-				class FragGrenade
+				class Inventory
 				{
 					class Health
 					{
-						damage = 0;
+						hitpoints = 850;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat"}}};
 					};
-					class Blood
+					class ArmorType
 					{
-						damage = 0;
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
 					};
-					class Shock
+					componentNames[] = {"inventory"};
+					transferToZonesNames[] = {"Body","Entrance"};
+					transferToZonesCoefs[] = {1.0,1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Entrance
+				{
+					class Health
 					{
-						damage = 0;
+						hitpoints = 850;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.1;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.5;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 50;
+							};
+						};
+					};
+					componentNames[] = {"entranceo","entrancec"};
+					fatalInjuryCoef = -1;
 				};
 			};
 		};
@@ -855,6 +1175,8 @@ class CfgVehicles
 	};
 	class CarTentPlacing: CarTent
 	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
 		model = "\DZ\gear\camping\CarTentPlacing.p3d";
 		storageCategory = 10;
 		hiddenSelections[] = {"placing"};
@@ -872,95 +1194,429 @@ class CfgVehicles
 			};
 		};
 	};
-	class PartyTent: Container_Base
+	class PartyTent: TentBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_PartyTent0";
 		descriptionShort = "$STR_CfgVehicles_PartyTent1";
 		model = "\DZ\gear\camping\party_tent.p3d";
+		bounding = "BSphere";
 		overrideDrawArea = "3.0";
-		hiddenSelections[] = {"placing"};
-		hiddenSelectionsTextures[] = {""};
-		hiddenSelectionsMaterials[] = {""};
-		hologramMaterial = "party_tent";
-		hologramMaterialPath = "dz\gear\camping\data";
-		openable = 0;
-		carveNavmesh = 1;
+		forceFarBubble = "true";
+		slopeTolerance = 0.35;
 		weight = 10000;
 		itemSize[] = {9,4};
-		itemsCargoSize[] = {10,30};
+		itemsCargoSize[] = {10,15};
+		minPlacingDist = 10;
+		openable = 0;
+		carveNavmesh = 1;
 		itemBehaviour = 0;
 		lootCategory = "Tents";
 		placement = "ForceSlopeOnTerrain";
 		physLayer = "item_large";
+		rotationFlags = 2;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
-		attachments[] = {"CamoNet"};
-		minPlacingDist = 10;
-		rotationFlags = 2;
-		class DamageSystem
+		hiddenSelections[] = {"bags","camo","party_tent_pieces","party_tent_tubes_cables","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.619608,0.603922,0.505882,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa","dz\gear\camping\data\party_tent_pieces_co.paa","dz\gear\camping\data\party_tent_tubes_cables_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_bag.rvmat","dz\gear\camping\data\party_tent_cloth.rvmat","dz\gear\camping\data\party_tent_pieces.rvmat","dz\gear\camping\data\party_tent_tubes_cables.rvmat"};
+		attachments[] = {"CamoNet","Lights"};
+		class Door_Base
 		{
-			class GlobalHealth
+			class Health
 			{
-				class Health
-				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_pitched.rvmat"}},{0.7,{"DZ\gear\camping\data\tent_medium_pitched.rvmat"}},{0.5,{"DZ\gear\camping\data\tent_medium_pitched_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\tent_medium_pitched_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\tent_medium_pitched_destruct.rvmat"}}};
-				};
+				hitpoints = 650;
+				transferToGlobalCoef = 0;
+				healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 			};
-			class GlobalArmor
+			class ArmorType
 			{
 				class Projectile
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 0.1;
 					};
-					class Blood
+				};
+				class Melee
+				{
+					class Health
 					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
+						damage = 0.5;
 					};
 				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
+						damage = 50;
 					};
 				};
+			};
+			componentNames[] = {""};
+			fatalInjuryCoef = -1;
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 650;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+			};
+			class DamageZones
+			{
+				class Body
+				{
+					class Health
+					{
+						hitpoints = 650;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"dz\gear\camping\Data\party_tent_bag.rvmat","dz\gear\camping\Data\tent_pristine_co.paa"}},{0.7,{"dz\gear\camping\Data\party_tent_bag.rvmat","dz\gear\camping\data\tent_worn_co.paa"}},{0.5,{"dz\gear\camping\Data\party_tent_bag_damage.rvmat","dz\gear\camping\data\tent_damage_co.paa"}},{0.3,{"dz\gear\camping\Data\party_tent_bag_damage.rvmat","dz\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"dz\gear\camping\Data\party_tent_bag_destruct.rvmat","dz\gear\camping\data\tent_destruct_co.paa"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
+					};
+					componentNames[] = {"body"};
+					transferToZonesNames[] = {"Inventory"};
+					transferToZonesCoefs[] = {1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Inventory
+				{
+					class Health
+					{
+						hitpoints = 650;
+						transferToGlobalCoef = 0.5;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\party_tent_bag.rvmat"}},{0.7,{"DZ\gear\camping\data\party_tent_bag.rvmat"}},{0.5,{"DZ\gear\camping\data\party_tent_bag_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\party_tent_bag_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\party_tent_bag_destruct.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.05;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.25;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 25;
+							};
+						};
+					};
+					componentNames[] = {"inventory"};
+					transferToZonesNames[] = {"Body","Door1","Door2","Door3","Door4","Door5","Door6"};
+					transferToZonesCoefs[] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Door1: Door_Base
+				{
+					componentNames[] = {"door1c","door1o"};
+				};
+				class Door2: Door_Base
+				{
+					componentNames[] = {"door2c","door2o"};
+				};
+				class Door3: Door_Base
+				{
+					componentNames[] = {"door3c","door3o"};
+				};
+				class Door4: Door_Base
+				{
+					componentNames[] = {"door4c","door4o"};
+				};
+				class Door5: Door_Base
+				{
+					componentNames[] = {"door5c","door5o"};
+				};
+				class Door6: Door_Base
+				{
+					componentNames[] = {"door6c","door6o"};
+				};
+			};
+		};
+		class PointLights
+		{
+			class PointLight
+			{
+				color[] = {1.0,1.0,1.0,0.05};
+				ambient[] = {0.01,0.01,0.01,0.01};
+				position = "light";
+				hitpoint = "bulb";
+				selection = "bulb";
+				size = 0;
+				radius = 5;
+				brightness = 0.001;
+				dayLight = 1;
+				heatHazeRadius = 0.0;
+				heatHazePower = 0.0;
+				fireEffect = 0;
+				fireEffectOctaves = 0;
+				fireEffectPersistence = 0;
+				fireEffectFract = 0;
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class CamoNet
+			{
+				name = "$STR_attachment_camonet0";
+				description = "";
+				attachmentSlots[] = {"CamoNet"};
+				icon = "cat_camonet";
+				view_index = 1;
 			};
 		};
 		class AnimationSources
 		{
-			class camonet
+			class Body
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class CamoNet
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Inventory
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door1c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door1o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door2c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door2o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door3c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door3o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door4c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door4o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door5c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door5o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door6c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Door6o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo1c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo1o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo2c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo2o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo3c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo3o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo4c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo4o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo5c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo5o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo6c
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo6o
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Camo_Roof
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Xlights
 			{
 				source = "user";
 				initPhase = 1;
 				animPeriod = 0.01;
 			};
-			class inventory
+			class Xlights_glass_r
 			{
 				source = "user";
-				animPeriod = 0.01;
-				initPhase = 0;
-			};
-			class placing
-			{
-				source = "user";
-				animPeriod = 0.01;
 				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_g
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_b
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_y
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Cord_folded
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Cord_plugged
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Pack
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
 			};
 		};
 		class AnimEvents
@@ -1000,6 +1656,45 @@ class CfgVehicles
 			};
 		};
 	};
+	class PartyTent_Blue: PartyTent
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.0862745,0.180392,0.537255,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa","dz\gear\camping\data\party_tent_pieces_co.paa","dz\gear\camping\data\party_tent_tubes_cables_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_bag.rvmat","dz\gear\camping\data\party_tent_cloth_blue.rvmat","dz\gear\camping\data\party_tent_pieces.rvmat","dz\gear\camping\data\party_tent_tubes_cables.rvmat"};
+	};
+	class PartyTent_Brown: PartyTent
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.196078,0,0.0980392,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa","dz\gear\camping\data\party_tent_pieces_co.paa","dz\gear\camping\data\party_tent_tubes_cables_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_bag.rvmat","dz\gear\camping\data\party_tent_cloth_brown.rvmat","dz\gear\camping\data\party_tent_pieces.rvmat","dz\gear\camping\data\party_tent_tubes_cables.rvmat"};
+	};
+	class PartyTent_Lunapark: PartyTent
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.611765,0.584314,0.054902,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa","dz\gear\camping\data\party_tent_pieces_co.paa","dz\gear\camping\data\party_tent_tubes_cables_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_bag.rvmat","dz\gear\camping\data\party_tent_cloth_lunapark.rvmat","dz\gear\camping\data\party_tent_pieces.rvmat","dz\gear\camping\data\party_tent_tubes_cables.rvmat"};
+	};
+	class PartyTentPlacing: PartyTent
+	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
+		model = "\DZ\gear\camping\party_tentPlacing.p3d";
+		storageCategory = 10;
+		hiddenSelections[] = {"placing"};
+		hiddenSelectionsTextures[] = {"dz\gear\camping\data\tent_pristine_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_cloth.rvmat"};
+		hologramMaterial = "party_tent";
+		hologramMaterialPath = "dz\gear\camping\data";
+		class AnimationSources
+		{
+			class Placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
+	};
+	class PartyTent_BluePlacing: PartyTentPlacing{};
+	class PartyTent_BrownPlacing: PartyTentPlacing{};
+	class PartyTent_LunaparkPlacing: PartyTentPlacing{};
 	class ImprovisedShelterPitched: WorldContainer_Base
 	{
 		scope = 2;
@@ -1348,7 +2043,8 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 				class GlobalArmor
 				{
@@ -1436,6 +2132,8 @@ class CfgVehicles
 	};
 	class FenceKitPlacing: FenceKit
 	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
 		scope = 2;
 		model = "\DZ\gear\camping\fence_kit_placing.p3d";
 		storageCategory = 10;
@@ -1464,7 +2162,8 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 				class GlobalArmor
 				{
@@ -1521,6 +2220,8 @@ class CfgVehicles
 	};
 	class WatchtowerKitPlacing: WatchtowerKit
 	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
 		scope = 2;
 		model = "\DZ\gear\camping\watchtower_kit_placing.p3d";
 		storageCategory = 10;
@@ -1549,6 +2250,7 @@ class CfgVehicles
 		physLayer = "item_large";
 		createProxyPhysicsOnInit = "false";
 		createdProxiesOnInit[] = {"Deployed"};
+		hybridAttachments[] = {"Material_WoodenLogs","Material_MetalWire","Wall_Barbedwire_1","Wall_Barbedwire_2"};
 		rotationFlags = 2;
 		class DamageSystem
 		{
@@ -1557,25 +2259,11 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 100;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
 				class FragGrenade
 				{
 					class Health
@@ -1590,6 +2278,568 @@ class CfgVehicles
 					{
 						damage = 0;
 					};
+				};
+			};
+			class DamageZones
+			{
+				class Body
+				{
+					class Health
+					{
+						hitpoints = 100;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_destruct.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"body"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Base_Down
+				{
+					class Health
+					{
+						hitpoints = 10000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_base_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Base_Up: Wall_Base_Down
+				{
+					componentNames[] = {"wall_base_up"};
+				};
+				class Wall_Wood_Down
+				{
+					class Health
+					{
+						hitpoints = 15500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_wood_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Wood_Up: Wall_Wood_Down
+				{
+					componentNames[] = {"wall_wood_up"};
+				};
+				class Wall_Metal_Down
+				{
+					class Health
+					{
+						hitpoints = 18000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 60;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_metal_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Metal_Up: Wall_Metal_Down
+				{
+					componentNames[] = {"wall_metal_up"};
+				};
+				class Wall_Platform
+				{
+					class Health
+					{
+						hitpoints = 17500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_platform"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Platform_Stairs_Left: Wall_Platform
+				{
+					componentNames[] = {"wall_platform_stairs_left"};
+				};
+				class Wall_Platform_Stairs_Right: Wall_Platform
+				{
+					componentNames[] = {"wall_platform_stairs_right"};
+				};
+				class Wall_Barbedwire_1
+				{
+					class Health
+					{
+						hitpoints = 300;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.7,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.5,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.3,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.0,{"DZ\gear\camping\data\barbed_wire.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.01;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 40;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_barbedwire_1","wall_barbedwire_1_mounted"};
+					inventorySlots[] = {"Wall_Barbedwire_1"};
+					fatalInjuryCoef = -1;
+				};
+				class Wall_Barbedwire_2: Wall_Barbedwire_1
+				{
+					componentNames[] = {"wall_barbedwire_2","wall_barbedwire_2_mounted"};
+					inventorySlots[] = {"Wall_Barbedwire_2"};
+				};
+				class Wall_Gate
+				{
+					class Health
+					{
+						hitpoints = 100;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalwire.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalwire.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalwire.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalwire.rvmat"}},{0.0,"hidden"}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"wall_gate"};
+					fatalInjuryCoef = -1;
+				};
+				class Material_WoodenLogs
+				{
+					class Health
+					{
+						hitpoints = 500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"Material_WoodenLogs"};
+					inventorySlots[] = {"Material_WoodenLogs"};
+					fatalInjuryCoef = -1;
+				};
+				class Material_MetalWire
+				{
+					class Health
+					{
+						hitpoints = 200;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\crafting\data\string_metalwire.rvmat"}},{0.7,{"DZ\gear\crafting\data\string_metalwire.rvmat"}},{0.5,{"DZ\gear\crafting\data\string_metalwire_damage.rvmat"}},{0.3,{"DZ\gear\crafting\data\string_metalwire_damage.rvmat"}},{0.0,{"DZ\gear\crafting\data\string_metalwire_destruct.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 60;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"Material_MetalWire"};
+					inventorySlots[] = {"Material_MetalWire"};
+					fatalInjuryCoef = -1;
 				};
 			};
 		};
@@ -1726,7 +2976,7 @@ class CfgVehicles
 				};
 				class wall_platform_stairs_left
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Left";
+					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Right";
 					id = 3;
 					required_parts[] = {"wall_platform"};
 					conflicted_parts[] = {};
@@ -1752,7 +3002,7 @@ class CfgVehicles
 				};
 				class wall_platform_stairs_right
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Right";
+					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Left";
 					id = 4;
 					required_parts[] = {"wall_platform"};
 					conflicted_parts[] = {};
@@ -2001,25 +3251,11 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 100;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
 				class FragGrenade
 				{
 					class Health
@@ -2034,6 +3270,656 @@ class CfgVehicles
 					{
 						damage = 0;
 					};
+				};
+			};
+			class DamageZones
+			{
+				class Body
+				{
+					class Health
+					{
+						hitpoints = 100;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_destruct.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 0;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"body"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Stairs
+				{
+					class Health
+					{
+						hitpoints = 7500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_1_stairs"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Wall_1_Base_Down
+				{
+					class Health
+					{
+						hitpoints = 10000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_1_wall_1_base_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_1_wall_1_base_up"};
+				};
+				class Level_1_Wall_1_Wood_Down
+				{
+					class Health
+					{
+						hitpoints = 15500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 70;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_1_wall_1_wood_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_1_wall_1_wood_up"};
+				};
+				class Level_1_Wall_1_Metal_Down
+				{
+					class Health
+					{
+						hitpoints = 18000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 60;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_1_wall_1_metal_down"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_1_wall_1_metal_up"};
+				};
+				class Level_1_Wall_1_Barbedwire_1
+				{
+					class Health
+					{
+						hitpoints = 300;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\barbed_wire.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\barbed_wire.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\barbed_wire_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\barbed_wire_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\barbed_wire_destruct.rvmat","DZ\gear\camping\data\fence_pile_of_planks_destruct.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 0.01;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 40;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_1_wall_1_barbedwire_1","level_1_wall_1_barbedwire_1_mounted"};
+					inventorySlots[] = {"Level_1_Wall_1_Barbedwire_1"};
+					fatalInjuryCoef = -1;
+				};
+				class Level_1_Wall_1_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
+				{
+					componentNames[] = {"level_1_wall_1_barbedwire_2","level_1_wall_1_barbedwire_2_mounted"};
+					inventorySlots[] = {"Level_1_Wall_1_Barbedwire_2"};
+				};
+				class Level_1_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_1_wall_2_base_down"};
+				};
+				class Level_1_Wall_2_Base_Up: Level_1_Wall_1_Base_Up
+				{
+					componentNames[] = {"level_1_wall_2_base_up"};
+				};
+				class Level_1_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_1_wall_2_wood_down"};
+				};
+				class Level_1_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_1_wall_2_wood_up"};
+				};
+				class Level_1_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_1_wall_2_metal_down"};
+				};
+				class Level_1_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_1_wall_2_metal_up"};
+				};
+				class Level_1_Wall_2_Barbedwire_1: Level_1_Wall_1_Barbedwire_1
+				{
+					componentNames[] = {"level_1_wall_2_barbedwire_1","level_1_wall_2_barbedwire_1_mounted"};
+					inventorySlots[] = {"Level_1_Wall_2_Barbedwire_1"};
+				};
+				class Level_1_Wall_2_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
+				{
+					componentNames[] = {"level_1_wall_2_barbedwire_2","level_1_wall_2_barbedwire_2_mounted"};
+					inventorySlots[] = {"Level_1_Wall_2_Barbedwire_2"};
+				};
+				class Level_1_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_1_wall_3_base_down"};
+				};
+				class Level_1_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_1_wall_3_base_up"};
+				};
+				class Level_1_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_1_wall_3_wood_down"};
+				};
+				class Level_1_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_1_wall_3_wood_up"};
+				};
+				class Level_1_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_1_wall_3_metal_down"};
+				};
+				class Level_1_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_1_wall_3_metal_up"};
+				};
+				class Level_1_Wall_3_Barbedwire_1: Level_1_Wall_1_Barbedwire_1
+				{
+					componentNames[] = {"level_1_wall_3_barbedwire_1","level_1_wall_3_barbedwire_1_mounted"};
+					inventorySlots[] = {"Level_1_Wall_3_Barbedwire_1"};
+				};
+				class Level_1_Wall_3_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
+				{
+					componentNames[] = {"level_1_wall_3_barbedwire_2","level_1_wall_3_barbedwire_2_mounted"};
+					inventorySlots[] = {"Level_1_Wall_3_Barbedwire_2"};
+				};
+				class Level_2_Stairs: Level_1_Stairs
+				{
+					componentNames[] = {"level_2_stairs"};
+				};
+				class Level_2_Wall_1_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_1_base_down"};
+				};
+				class Level_2_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_1_base_up"};
+				};
+				class Level_2_Wall_1_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_1_wood_down"};
+				};
+				class Level_2_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_1_wood_up"};
+				};
+				class Level_2_Wall_1_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_1_metal_down"};
+				};
+				class Level_2_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_1_metal_up"};
+				};
+				class Level_2_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_2_base_down"};
+				};
+				class Level_2_Wall_2_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_2_base_up"};
+				};
+				class Level_2_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_2_wood_down"};
+				};
+				class Level_2_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_2_wood_up"};
+				};
+				class Level_2_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_2_metal_down"};
+				};
+				class Level_2_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_2_metal_up"};
+				};
+				class Level_2_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_3_base_down"};
+				};
+				class Level_2_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_2_wall_3_base_up"};
+				};
+				class Level_2_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_3_wood_down"};
+				};
+				class Level_2_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_2_wall_3_wood_up"};
+				};
+				class Level_2_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_3_metal_down"};
+				};
+				class Level_2_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_2_wall_3_metal_up"};
+				};
+				class Level_3_Wall_1_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_1_base_down"};
+				};
+				class Level_3_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_1_base_up"};
+				};
+				class Level_3_Wall_1_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_1_wood_down"};
+				};
+				class Level_3_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_1_wood_up"};
+				};
+				class Level_3_Wall_1_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_1_metal_down"};
+				};
+				class Level_3_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_1_metal_up"};
+				};
+				class Level_3_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_2_base_down"};
+				};
+				class Level_3_Wall_2_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_2_base_up"};
+				};
+				class Level_3_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_2_wood_down"};
+				};
+				class Level_3_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_2_wood_up"};
+				};
+				class Level_3_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_2_metal_down"};
+				};
+				class Level_3_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_2_metal_up"};
+				};
+				class Level_3_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_3_base_down"};
+				};
+				class Level_3_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
+				{
+					componentNames[] = {"level_3_wall_3_base_up"};
+				};
+				class Level_3_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_3_wood_down"};
+				};
+				class Level_3_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
+				{
+					componentNames[] = {"level_3_wall_3_wood_up"};
+				};
+				class Level_3_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_3_metal_down"};
+				};
+				class Level_3_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
+				{
+					componentNames[] = {"level_3_wall_3_metal_up"};
+				};
+				class Level_3_Roof
+				{
+					class Health
+					{
+						hitpoints = 19000;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat","DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.75;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 60;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"level_3_roof"};
+					fatalInjuryCoef = -1;
 				};
 			};
 		};
@@ -3906,7 +5792,6 @@ class CfgVehicles
 		itemSize[] = {2,4};
 		weight = 400;
 		inventorySlot[] = {"Wall_Barbedwire_1","Wall_Barbedwire_2","Level_1_Wall_1_Barbedwire_1","Level_1_Wall_1_Barbedwire_2","Level_1_Wall_2_Barbedwire_1","Level_1_Wall_2_Barbedwire_2","Level_1_Wall_3_Barbedwire_1","Level_1_Wall_3_Barbedwire_2"};
-		lootTag[] = {"Farm","Work"};
 		physLayer = "item_large";
 		rotationFlags = 2;
 		class DamageSystem
@@ -3915,7 +5800,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 300;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\Barbed_wire.rvmat"}},{0.7,{"DZ\gear\camping\data\Barbed_wire.rvmat"}},{0.5,{"DZ\gear\camping\data\Barbed_wire_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\Barbed_wire_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\Barbed_wire_destruct.rvmat"}}};
 				};
 			};
@@ -4006,7 +5891,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 1500;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\combilock3_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.7,{"DZ\gear\camping\data\combilock3_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.5,{"DZ\gear\camping\data\combilock3_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\combilock3_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\combilock3_metal_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_destruct.rvmat"}}};
 				};
 			};
@@ -4057,7 +5942,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 1500;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\combilock4_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.7,{"DZ\gear\camping\data\combilock4_metal.rvmat","DZ\gear\camping\data\combination_lock_chain.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1.rvmat"}},{0.5,{"DZ\gear\camping\data\combilock4_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\combilock4_metal_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_damage.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\combilock4_metal_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber_destruct.rvmat","DZ\gear\camping\data\combination_lock_chain_rubber1_destruct.rvmat"}}};
 				};
 			};
@@ -4111,7 +5996,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 300;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\Barbed_wire.rvmat"}},{0.7,{"DZ\gear\camping\data\Barbed_wire.rvmat"}},{0.5,{"DZ\gear\camping\data\Barbed_wire_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\Barbed_wire_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\Barbed_wire_destruct.rvmat"}}};
 				};
 			};
@@ -4151,7 +6036,6 @@ class CfgVehicles
 		model = "\dz\gear\camping\camo_net_p.p3d";
 		itemSize[] = {7,3};
 		weight = 400;
-		lootTag[] = {"Police","Military_east"};
 		inventorySlot[] = {"CamoNet","Wall_Camonet","Level_1_Wall_1_Camonet","Level_1_Wall_2_Camonet","Level_1_Wall_3_Camonet","Level_2_Wall_1_Camonet","Level_2_Wall_2_Camonet","Level_2_Wall_3_Camonet","Level_3_Wall_1_Camonet","Level_3_Wall_2_Camonet","Level_3_Wall_3_Camonet"};
 		physLayer = "item_large";
 		rotationFlags = 2;
@@ -4161,7 +6045,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 200;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\camo_net_p.rvmat"}},{0.7,{"DZ\gear\camping\data\camo_net_p.rvmat"}},{0.5,{"DZ\gear\camping\data\camo_net_p_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\camo_net_p_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\camo_net_p_destruct.rvmat"}}};
 				};
 			};
@@ -4189,52 +6073,42 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SeaChest0";
 		descriptionShort = "$STR_CfgVehicles_SeaChest1";
 		model = "\DZ\gear\camping\sea_chest.p3d";
+		hologramMaterial = "sea_chest";
+		hologramMaterialPath = "dz\gear\camping\data";
 		weight = 10000;
 		itemBehaviour = 0;
 		itemSize[] = {10,10};
 		carveNavmesh = 1;
 		canBeDigged = 1;
 		rotationFlags = 2;
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\data\sea_chest_co.paa"};
+		hiddenSelectionsMaterials[] = {"\dz\gear\camping\data\sea_chest.rvmat"};
 		class DamageSystem
 		{
 			class GlobalHealth
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 1500;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\sea_chest.rvmat"}},{0.7,{"DZ\gear\camping\data\sea_chest.rvmat"}},{0.5,{"DZ\gear\camping\data\sea_chest_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\sea_chest_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\sea_chest_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 				};
 			};
@@ -4278,52 +6152,41 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Wooden_Case0";
 		descriptionShort = "$STR_CfgVehicles_Wooden_Case1";
 		model = "\DZ\gear\camping\wooden_case.p3d";
+		hologramMaterial = "wooden_case";
+		hologramMaterialPath = "dz\gear\camping\data";
 		weight = 10000;
 		itemSize[] = {10,5};
 		itemBehaviour = 0;
 		carveNavmesh = 1;
 		canBeDigged = 1;
 		rotationFlags = 2;
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\data\wooden_case_co.paa"};
 		class DamageSystem
 		{
 			class GlobalHealth
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 1000;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\wooden_case.rvmat"}},{0.7,{"DZ\gear\camping\data\wooden_case.rvmat"}},{0.5,{"DZ\gear\camping\data\wooden_case_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\wooden_case_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\wooden_case_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 35.0;
 					};
 				};
 			};
@@ -4373,7 +6236,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 500;
 				};
 			};
 			class GlobalArmor
@@ -4439,7 +6302,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\spotlight.rvmat"}},{0.7,{"DZ\gear\camping\data\spotlight.rvmat"}},{0.5,{"DZ\gear\camping\data\spotlight_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\spotlight_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\spotlight_destruct.rvmat"}}};
 				};
 			};
@@ -4571,7 +6434,6 @@ class CfgVehicles
 		hiddenSelections[] = {"glass_r","glass_g","glass_b","glass_y"};
 		hiddenSelectionsTextures[] = {};
 		hiddenSelectionsMaterials[] = {};
-		lootTag[] = {"Farm","Work"};
 		itemSize[] = {1,3};
 		weight = 150;
 		inventorySlot[] = {"Lights"};
@@ -4582,7 +6444,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\christmass_ligths.rvmat"}},{0.7,{"DZ\gear\camping\data\christmass_ligths.rvmat"}},{0.5,{"DZ\gear\camping\data\christmass_ligths_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\christmass_ligths_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\christmass_ligths_destruct.rvmat"}}};
 				};
 			};
@@ -4607,25 +6469,25 @@ class CfgVehicles
 				animPeriod = 0.01;
 				initPhase = 0;
 			};
-			class glass_r
+			class Xlights_glass_r
 			{
 				source = "user";
 				animPeriod = 0.01;
 				initPhase = 0;
 			};
-			class glass_g
+			class Xlights_glass_g
 			{
 				source = "user";
 				animPeriod = 0.01;
 				initPhase = 0;
 			};
-			class glass_b
+			class Xlights_glass_b
 			{
 				source = "user";
 				animPeriod = 0.01;
 				initPhase = 0;
 			};
-			class glass_y
+			class Xlights_glass_y
 			{
 				source = "user";
 				animPeriod = 0.01;
@@ -4817,7 +6679,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\cable_reel.rvmat"}},{0.7,{"DZ\gear\camping\data\cable_reel.rvmat"}},{0.5,{"DZ\gear\camping\data\cable_reel_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\cable_reel_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\cable_reel_destruct.rvmat"}}};
 				};
 			};
@@ -4908,7 +6770,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\battery_charger.rvmat"}},{0.7,{"DZ\gear\camping\data\battery_charger.rvmat"}},{0.5,{"DZ\gear\camping\data\battery_charger_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\battery_charger_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\battery_charger_destruct.rvmat"}}};
 				};
 			};
@@ -5041,7 +6903,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\hbox_empty.rvmat","DZ\gear\camping\data\hbox_filled.rvmat"}},{0.7,{"DZ\gear\camping\data\hbox_empty.rvmat","DZ\gear\camping\data\hbox_filled.rvmat"}},{0.5,{"DZ\gear\camping\data\hbox_empty_damage.rvmat","DZ\gear\camping\data\hbox_filled_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\hbox_empty_damage.rvmat","DZ\gear\camping\data\hbox_filled_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\hbox_empty_destruct.rvmat","DZ\gear\camping\data\hbox_filled_destruct.rvmat"}}};
 				};
 			};

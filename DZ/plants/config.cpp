@@ -47,7 +47,6 @@ class CfgNonAIVehicles
 	class BushHard_b_prunusSpinosa_2s: BushHard{};
 	class BushHard_b_sambucusNigra_2s: BushHard{};
 	class BushHard_t_FagusSylvatica_1fb: BushHard{};
-	class BushHard_t_FraxinusExcelsior_2w: BushHard{};
 	class BushHard_t_PiceaAbies_1s: BushHard{};
 	class BushHard_t_PiceaAbies_1sb: BushHard{};
 	class BushHard_t_PinusSylvestris_1f: BushHard{};
@@ -68,6 +67,7 @@ class CfgNonAIVehicles
 	class TreeSoft_t_FagusSylvatica_2sb_Trail_G: TreeSoft{};
 	class TreeSoft_t_FagusSylvatica_2sb_Trail_R: TreeSoft{};
 	class TreeSoft_t_FagusSylvatica_2sb_Trail_Y: TreeSoft{};
+	class TreeSoft_t_FraxinusExcelsior_2w: TreeSoft{};
 	class TreeSoft_t_malusDomestica_1s: TreeSoft{};
 	class TreeSoft_t_malusDomestica_2s: TreeSoft{};
 	class TreeSoft_t_malusDomestica_3s: TreeSoft{};

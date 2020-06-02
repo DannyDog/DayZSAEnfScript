@@ -14,6 +14,7 @@ class Mag_CZ61_20Rnd: MagazineStorage {};
 class Mag_MKII_10Rnd: MagazineStorage {};
 class Mag_ShockCartridge: MagazineStorage {};
 class Mag_Ruger1022_10Rnd: MagazineStorage {};
+class Mag_Ruger1022_15Rnd: MagazineStorage {};
 class Mag_Ruger1022_30Rnd: MagazineStorage {};
 class Mag_CLIP762x54_5Rnd: MagazineStorage {};
 class Mag_762x54Snaploader_2Rnd: MagazineStorage {};

@@ -107,17 +107,14 @@ class ActionManagerBase
 	
 	void Update(int pCurrentCommandID)
 	{
-		if(m_CurrentActionData)
+		if (m_CurrentActionData)
 		{
-			if(m_Interrupted)
+			if (m_Interrupted)
 			{
 				LocalInterrupt();
 				m_Interrupted = false;
 			}
-		}
-		if(m_CurrentActionData)
-		{
-			if(m_CurrentActionData.m_State != UA_AM_PENDING && m_CurrentActionData.m_State != UA_AM_REJECTED && m_CurrentActionData.m_State != UA_AM_ACCEPTED)
+			else if (m_CurrentActionData.m_State != UA_AM_PENDING && m_CurrentActionData.m_State != UA_AM_REJECTED && m_CurrentActionData.m_State != UA_AM_ACCEPTED)
 			{
 				m_CurrentActionData.m_Action.OnUpdate(m_CurrentActionData);
 			}
@@ -207,17 +204,14 @@ class ActionManagerBase
 	}
 	//------------------------------------------------------
 	bool ActionPossibilityCheck(int pCurrentCommandID)
-	{
-		if ( !m_ActionsEnabled )
+	{	
+		if ( !m_ActionsEnabled || m_Player.IsSprinting() || m_Player.IsUnconscious() || m_Player.GetCommandModifier_Action() || m_Player.GetCommand_Action() || m_Player.IsEmotePlaying() || m_Player.GetThrowing().IsThrowingAnimationPlaying() || m_Player.GetDayZPlayerInventory().IsProcessing() || m_Player.IsItemsToDelete() )
 			return false;
 		
-		if ( m_Player.IsSprinting() || m_Player.IsUnconscious() || m_Player.GetCommandModifier_Action() || m_Player.GetCommand_Action() || m_Player.IsEmotePlaying() || m_Player.GetThrowing().IsThrowingAnimationPlaying() ||  m_Player.GetDayZPlayerInventory().IsProcessing() )
+		if ( m_Player.GetWeaponManager().IsRunning() )
 			return false;
 		
-		if (pCurrentCommandID == DayZPlayerConstants.COMMANDID_ACTION || pCurrentCommandID == DayZPlayerConstants.COMMANDID_MOVE || pCurrentCommandID == DayZPlayerConstants.COMMANDID_SWIM || pCurrentCommandID == DayZPlayerConstants.COMMANDID_LADDER || pCurrentCommandID == DayZPlayerConstants.COMMANDID_VEHICLE)
-			return true;
-		
-		return false;
+		return (pCurrentCommandID == DayZPlayerConstants.COMMANDID_ACTION || pCurrentCommandID == DayZPlayerConstants.COMMANDID_MOVE || pCurrentCommandID == DayZPlayerConstants.COMMANDID_SWIM || pCurrentCommandID == DayZPlayerConstants.COMMANDID_LADDER || pCurrentCommandID == DayZPlayerConstants.COMMANDID_VEHICLE);
 	}	
 	//------------------------------------------------------
 	protected void SetActionContext( ActionTarget target, ItemBase item )

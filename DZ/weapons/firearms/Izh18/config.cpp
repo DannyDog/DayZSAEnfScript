@@ -47,7 +47,7 @@ class cfgWeapons
 		magazines[] = {};
 		ejectType = 3;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.25,2.25,1.2};
 		drySound[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\izh18\izh18_reload",0.8,1,20};
 		reloadSound[] = {"",0.05623413,1,20};
@@ -140,6 +140,7 @@ class cfgWeapons
 		weight = 2800;
 		attachments[] = {};
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1.5,1.5,1};
 		firespreadangle = 3;
 		class Single: Mode_SemiAuto
 		{

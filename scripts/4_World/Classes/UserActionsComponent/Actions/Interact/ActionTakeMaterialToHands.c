@@ -50,6 +50,10 @@ class ActionTakeMaterialToHands: ActionInteractBase
 		EntityAI target_entity = EntityAI.Cast( target.GetObject() );
 		if ( target_entity && target_entity.CanUseConstruction() )
 		{
+			BaseBuildingBase base_building = BaseBuildingBase.Cast( target_entity );
+			if(!base_building.IsPlayerInside(player,""))
+				return false;
+			
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
 			string main_part_name = target_entity.GetActionComponentName( target.GetComponentIndex() );
 			

@@ -112,13 +112,14 @@ class DayZPlayerUtils
 			float  cDistSq 		= diff.LengthSq();
 			if (cDistSq > dist*dist)	// out of distance
 			{
+				//Print("out of distance");
 				continue;
 			}
-
 
 			float  frontDist 	= diff[0]*dir[0] + diff[2]*dir[2];
 			if (frontDist < 0.1) 	// behind the pos/dist half plane or further than dist
 			{
+				//Print("behind the pos/dist half plane or further than dist");
 				continue;
 			}
 		
@@ -128,6 +129,7 @@ class DayZPlayerUtils
 
 			if (sideDist > tgAngle)	// out of cone
 			{
+				//Print("out of cone");
 				continue;
 			}
 
@@ -136,6 +138,10 @@ class DayZPlayerUtils
 			{
 				ret 	= ent;
 				retVal 	= sum;
+			}
+			else
+			{
+				//Print("sum !< retVal");
 			}
 
 			// string txt 		= project.ToString() + ": " + sum.ToString(); 

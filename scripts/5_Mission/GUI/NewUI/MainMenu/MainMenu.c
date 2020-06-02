@@ -1,6 +1,5 @@
 class MainMenu extends UIScriptedMenu
 {
-	protected ref MainMenuNewsfeed	m_Newsfeed;
 	protected ref MainMenuStats		m_Stats;
 	protected ref MainMenuVideo		m_Video;
 	
@@ -21,7 +20,6 @@ class MainMenu extends UIScriptedMenu
 	protected Widget				m_MessageButton;
 	protected Widget				m_SettingsButton;
 	protected Widget				m_Exit;
-	protected Widget				m_NewsFeedClose;
 	protected Widget				m_NewsMain;
 	protected Widget				m_NewsSec1;
 	protected Widget				m_NewsSec2;
@@ -30,6 +28,7 @@ class MainMenu extends UIScriptedMenu
 	
 	protected Widget				m_LastPlayedTooltip;
 	protected Widget				m_LastPlayedTooltipLabel;
+	protected TextWidget 			m_LastPlayedTooltipName;
 	protected TextWidget			m_LastPlayedTooltipIP;
 	protected TextWidget			m_LastPlayedTooltipPort;
 	
@@ -54,7 +53,6 @@ class MainMenu extends UIScriptedMenu
 		m_MessageButton				= layoutRoot.FindAnyWidget( "message_button" );
 		m_SettingsButton			= layoutRoot.FindAnyWidget( "settings_button" );
 		m_Exit						= layoutRoot.FindAnyWidget( "exit_button" );
-		m_NewsFeedClose				= layoutRoot.FindAnyWidget( "news_feed_close" );
 		m_PrevCharacter				= layoutRoot.FindAnyWidget( "prev_character" );
 		m_NextCharacter				= layoutRoot.FindAnyWidget( "next_character" );
 
@@ -65,12 +63,12 @@ class MainMenu extends UIScriptedMenu
 		m_LastPlayedTooltip			= layoutRoot.FindAnyWidget( "last_server_info" );
 		m_LastPlayedTooltip.Show(false);
 		m_LastPlayedTooltipLabel	= m_LastPlayedTooltip.FindAnyWidget( "last_server_info_label" );
+		m_LastPlayedTooltipName 	= TextWidget.Cast( m_LastPlayedTooltip.FindAnyWidget( "last_server_info_name" ) );
 		m_LastPlayedTooltipIP		= TextWidget.Cast( m_LastPlayedTooltip.FindAnyWidget( "last_server_info_ip" ) );
 		m_LastPlayedTooltipPort		= TextWidget.Cast( m_LastPlayedTooltip.FindAnyWidget( "last_server_info_port" ) );
 		
 		m_LastPlayedTooltipTimer	= new WidgetFadeTimer();
 		
-		m_Newsfeed					= new MainMenuNewsfeed( layoutRoot.FindAnyWidget( "news_feed_root" ) );
 		m_Stats						= new MainMenuStats( layoutRoot.FindAnyWidget( "character_stats_root" ) );
 		
 		m_Mission					= MissionMainMenu.Cast( GetGame().GetMission() );
@@ -104,8 +102,6 @@ class MainMenu extends UIScriptedMenu
 		GetDayZGame().GetBacklit().MainMenu_OnShow();
 	
 		g_Game.SetLoadState( DayZLoadState.MAIN_MENU_CONTROLLER_SELECT );
-		
-		HideNewsfeed();
 		
 		return layoutRoot;
 	}
@@ -226,11 +222,6 @@ class MainMenu extends UIScriptedMenu
 				NextCharacter();
 				return true;
 			}
-			else if ( w == m_NewsFeedClose )
-			{
-				HideNewsfeed();
-				return true;
-			}
 			else if ( w == m_PlayVideo )
 			{
 				m_LastFocusedButton = m_PlayVideo;
@@ -252,13 +243,15 @@ class MainMenu extends UIScriptedMenu
 		if( w == m_Play )
 		{
 			string ip = "";
+			string name = "";
 			int port = 0;
 			 
 			if(m_ScenePC && !m_ScenePC.GetIntroCharacter().IsDefaultCharacter())
 			{
 				int charID = m_ScenePC.GetIntroCharacter().GetCharacterID();
-				m_ScenePC.GetIntroCharacter().GetLastPlayedServer(charID, ip, port);
+				m_ScenePC.GetIntroCharacter().GetLastPlayedServer(charID, ip, name, port);
 				
+				m_LastPlayedTooltipName.SetText( "#server_details_name " + name );
 				m_LastPlayedTooltipIP.SetText( "#main_menu_IP " + ip );
 				m_LastPlayedTooltipPort.SetText( "#main_menu_port " + port );
 				
@@ -318,7 +311,7 @@ class MainMenu extends UIScriptedMenu
 				return true;
 			}
 			
-			if( w == m_Exit || w == m_NewsFeedClose || w == m_PlayVideo );
+			if( w == m_Exit || w == m_PlayVideo );
 			{
 				return true;
 			}
@@ -351,7 +344,6 @@ class MainMenu extends UIScriptedMenu
 		SetFocus( null );
 		OnChangeCharacter();
 		LoadMods();
-		ShowNewsfeed();
 		return;
 		/*
 		GetDayZGame().GetBacklit().MainMenu_OnShow();
@@ -514,16 +506,6 @@ class MainMenu extends UIScriptedMenu
 		
 	}
 	
-	void ShowNewsfeed()
-	{
-		//m_Newsfeed.ShowNewsfeed();
-	}
-	
-	void HideNewsfeed()
-	{
-		m_Newsfeed.HideNewsfeed();
-	}
-	
 	void OpenSettings()
 	{
 		EnterScriptedMenu(MENU_OPTIONS);
@@ -566,12 +548,13 @@ class MainMenu extends UIScriptedMenu
 	void ConnectLastSession()
 	{
 		string ip = "";
+		string name = "";
 		int port = 0;
 			 
 		if(!m_ScenePC.GetIntroCharacter().IsDefaultCharacter())
 		{
 			int charID = m_ScenePC.GetIntroCharacter().GetCharacterID();
-			m_ScenePC.GetIntroCharacter().GetLastPlayedServer(charID,ip,port);
+			m_ScenePC.GetIntroCharacter().GetLastPlayedServer(charID,ip,name,port);
 		}
 		
 		if( ip.Length() > 0 )

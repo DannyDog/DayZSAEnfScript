@@ -36,44 +36,22 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTSurface(1.5);
+		m_ConditionTarget = new CCTWaterSurface(UAMaxDistances.DEFAULT, UAWaterType.FRESH);
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		vector pos_cursor = target.GetCursorHitPos();
-		string surfType;
-		int liquidType;
-
-		g_Game.SurfaceUnderObject(player, surfType, liquidType);
-
-		if ( g_Game.SurfaceIsPond(pos_cursor[0],pos_cursor[2]) || liquidType == LIQUID_WATER )
-		{
-			/*pos_cursor[1] = g_Game.SurfaceY(pos_cursor[0],pos_cursor[2]);
-			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT )
-			{*/
-				return true;
-			//}
-		}
-		return false;
+		// Other conditions are in CCTWaterSurface
+		// Note: using SurfaceIsPond makes you unable to drink under bridges
+		return true /*g_Game.SurfaceIsPond(pos_cursor[0], pos_cursor[2])*/;
 	}
 
-	override void OnStartClient(ActionData action_data)
-	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
-	}
-	
-	override void OnStartServer(ActionData action_data)
+	override void OnStart(ActionData action_data)
 	{
 		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
 	}
 
-	override void OnEndClient(ActionData action_data)
-	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
-	}
-	
-	override void OnEndServer(ActionData action_data)
+	override void OnEnd(ActionData action_data)
 	{
 		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
 	}
@@ -83,7 +61,7 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 		//Print("OnFinishProgressServer");
 		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
 		float amount = UAQuantityConsumed.DRINK;
-		action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_POND);
+		action_data.m_Player.Consume(NULL, amount, EConsumeType.ENVIRO_POND);
 	}
 
 	override void OnEndAnimationLoopServer( ActionData action_data )

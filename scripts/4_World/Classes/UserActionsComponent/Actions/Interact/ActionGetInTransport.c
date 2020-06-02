@@ -52,9 +52,9 @@ class ActionGetInTransport: ActionBase
 		if ( crew )
 			return false;
 		
-		if ( !trans.CrewCanGetThrough( crew_index ) )
+		if ( !trans.CrewCanGetThrough( crew_index ) || !trans.IsAreaAtDoorFree( crew_index ) )
 			return false;
-
+		
 		array<string> selections = new array<string>();
 
 		trans.GetActionComponentNameList( componentIndex, selections );

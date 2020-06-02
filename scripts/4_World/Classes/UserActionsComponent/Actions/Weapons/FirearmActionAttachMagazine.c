@@ -93,14 +93,40 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
 		MagazineStorage mag = MagazineStorage.Cast(player.GetWeaponManager().GetPreparedMagazine());
-		return mag != null;
+		
+		if (!mag)
+			return false;
+		
+		Weapon weapon = Weapon.Cast(item);
+		bool isLoadedMag = false;
+		if (weapon)
+		{
+			for (int i = 0, count = weapon.GetMuzzleCount(); i < count; ++i)
+				isLoadedMag |= (mag == weapon.GetMagazine(i);
+		}
+		
+		return !isLoadedMag;
+	}
+	
+	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
+	{
+		if( super.SetupAction( player, target, item, action_data, extra_data))
+		{
+			if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+			{
+				ActionTarget newTarget = new ActionTarget(player.GetWeaponManager().GetPreparedMagazine(), null, -1, vector.Zero, -1);
+				action_data.m_Target = newTarget;
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	override void Start( ActionData action_data )
 	{
 		super.Start( action_data );
 		Weapon_Base wpn = Weapon_Base.Cast(action_data.m_MainItem);
-		Magazine mag = Magazine.Cast(action_data.m_Player.GetWeaponManager().GetPreparedMagazine());	
+		Magazine mag = Magazine.Cast(action_data.m_Target.GetObject());	
 		if ( action_data.m_Player.GetWeaponManager().CanAttachMagazine(wpn,mag,false) )
 			action_data.m_Player.GetWeaponManager().AttachMagazine(mag, this);
 		else
@@ -109,7 +135,7 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 	
 	override bool HasTarget()
 	{
-		return false;
+		return true;
 	}
 	
 	override bool HasProgress()

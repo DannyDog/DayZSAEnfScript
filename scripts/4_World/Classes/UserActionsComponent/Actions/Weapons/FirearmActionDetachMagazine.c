@@ -291,7 +291,7 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 		Magazine mag;
 		//InventoryLocation il = new InventoryLocation();
 		AdvDetachMagActionData action_data_dm = AdvDetachMagActionData.Cast(action_data);
-		
+
 		switch (action_data.m_Stage)
 		{
 			case 0:
@@ -335,7 +335,7 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 				case 0:
 					Weapon_Base wpn = Weapon_Base.Cast(action_data.m_MainItem);
 		
-					if ( !wpn || ad.m_Player.GetItemInHands()!=wpn || !ad.m_Player.GetWeaponManager().IsRunning() )
+					if ( (!wpn || ad.m_Player.GetItemInHands()!=wpn || !ad.m_Player.GetWeaponManager().IsRunning()) && !ad.m_Player.IsJumpInProgress() )
 					{
 						SetStage(1, ad);
 					}

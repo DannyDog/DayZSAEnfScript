@@ -709,7 +709,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					{
 						PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 						
-						bool draggable = !player.GetInventory().HasInventoryReservation( item, null ) && !player.GetInventory().IsInventoryLocked() && item.GetInventory().CanRemoveEntity();
+						bool draggable = !player.GetInventory().HasInventoryReservation( item, null ) && !player.GetInventory().IsInventoryLocked() && item.GetInventory().CanRemoveEntity() && !player.IsItemsToDelete();
 						ItemManager.GetInstance().SetWidgetDraggable( w, draggable );
 					}
 				}

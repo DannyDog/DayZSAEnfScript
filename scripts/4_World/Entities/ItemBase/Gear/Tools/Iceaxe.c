@@ -9,7 +9,7 @@ class Iceaxe: Inventory_Base
 		AddAction(ActionDigGardenPlot);
 		AddAction(ActionMineRock1H);
 		AddAction(ActionDigWorms);
-		AddAction(ActionBuildPart);
 		AddAction(ActionDismantlePart);
+		AddAction(ActionBuildPart);
 	}
 };

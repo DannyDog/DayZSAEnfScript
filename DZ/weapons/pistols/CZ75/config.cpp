@@ -45,7 +45,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_9x19"};
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.1,1.1,1};
+		swayModifier[] = {1.2,1.2,0.8};
 		drySound[] = {"DZ\sounds\weapons\firearms\CZ75\CZ75_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\FNX45\FNX45_reload",0.8,1,20};
 		modes[] = {"SemiAuto"};

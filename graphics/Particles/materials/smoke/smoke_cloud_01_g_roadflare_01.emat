@@ -1,9 +1,0 @@
-Particle {
- AlbedoMap "{A51820F344645D6E}Graphics/Particles/sprites/cloud_01_g_df.edds" 
- Diffuse 0.7216 0.7216 0.7216 1
- Ambient 0.3922 0.3922 0.3922 1
- NormalMap "{EA4F90A4D51C0EB9}Graphics/Particles/sprites/cloud_01_g_nm.edds" 
- TileU 2
- TileV 2
- Softness 2
-}

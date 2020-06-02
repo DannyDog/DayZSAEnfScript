@@ -24,6 +24,7 @@ class ItemBase extends InventoryItem
 	float	m_HeatIsolation;
 	float 	m_Absorbency; 
 	float 	m_ItemModelLength;
+	float 	m_ConfigWeight = -1;
 	int 	m_VarLiquidType;
 	int 	m_ItemBehaviour = -1; // -1 = not specified; 0 = heavy item; 1= onehanded item; 2 = twohanded item
 	bool	m_IsBeingPlaced;
@@ -33,7 +34,8 @@ class ItemBase extends InventoryItem
 	bool	m_IsTakeable;
 	bool	m_IsSoundSynchRemote;
 	bool 	m_ThrowItemOnDrop;
-	//bool 	m_ItemBeingDropped;
+	bool 	m_ItemBeingDroppedPhys;
+	bool    m_CanBeMovedOverride;
 	string	m_SoundAttType;
 	// items color variables
 	int 	m_ColorComponentR;
@@ -75,6 +77,9 @@ class ItemBase extends InventoryItem
 	// Admin Log
 	PluginAdminLog			m_AdminLog;
 	
+	// misc
+	ref Timer 				m_PhysDropTimer;
+	
 	// -------------------------------------------------------------------------
 	void ItemBase()
 	{
@@ -112,6 +117,8 @@ class ItemBase extends InventoryItem
 			m_HeadHidingSelections = new TStringArray;
 			ConfigGetTextArray("headSelectionsToHide",m_HeadHidingSelections);
 		}
+		
+		m_ConfigWeight = ConfigGetInt("weight");
 	}
 	
 	void InitItemVariables()
@@ -126,6 +133,7 @@ class ItemBase extends InventoryItem
 		m_IsDeploySound = false;
 		m_IsTakeable = true;
 		m_IsSoundSynchRemote = false;
+		m_CanBeMovedOverride = false;
 		m_HeatIsolation = GetHeatIsolationInit();
 		m_Absorbency = GetAbsorbencyInit();
 		m_ItemModelLength = GetItemModelLength();
@@ -548,7 +556,7 @@ class ItemBase extends InventoryItem
 	{
 		if( GetGame() && GetGame().GetPlayer() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
 		{
-			PlayerBase player = GetGame().GetPlayer();
+			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 			int r_index = player.GetHumanInventory().FindUserReservedLocationIndex(this);
 
 			if(r_index >= 0)
@@ -625,12 +633,13 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	void CombineItemsClient(ItemBase entity2, bool use_stack_max = false )
+	override void CombineItemsClient(EntityAI entity2, bool use_stack_max = false )
 	{
 		/*
 		ref Param1<EntityAI> item = new Param1<EntityAI>(entity2);
 		RPCSingleParam( ERPCs.RPC_ITEM_COMBINE, item, GetGame().GetPlayer() );
 		*/
+		ItemBase item2 = ItemBase.Cast(entity2);
 		
 		if( GetGame().IsClient() )
 		{
@@ -641,23 +650,23 @@ class ItemBase extends InventoryItem
 				ctx.Write(-1);
 				ItemBase i1 = this; // @NOTE: workaround for correct serialization
 				ctx.Write(i1);
-				ctx.Write(entity2);
+				ctx.Write(item2);
 				ctx.Write(use_stack_max);
 				ctx.Write(-1);
 				ctx.Send();
 				
-				if( IsCombineAll(entity2, use_stack_max) )
+				if( IsCombineAll(item2, use_stack_max) )
 				{
 					InventoryLocation il = new InventoryLocation;
-					entity2.GetInventory().GetCurrentInventoryLocation(il);
-					GetGame().GetPlayer().GetInventory().AddInventoryReservation(entity2,il,GameInventory.c_InventoryReservationTimeoutShortMS);
+					item2.GetInventory().GetCurrentInventoryLocation(il);
+					GetGame().GetPlayer().GetInventory().AddInventoryReservation(item2,il,GameInventory.c_InventoryReservationTimeoutShortMS);
 					//entity2.GetInventory().GetCurrentInventoryLocation
 				}
 			}
 		}
 		else if( !GetGame().IsMultiplayer() )
 		{
-			CombineItems(entity2, use_stack_max);
+			CombineItems(item2, use_stack_max);
 		}
 	}
 	
@@ -690,6 +699,11 @@ class ItemBase extends InventoryItem
 	}
 	
 	bool IsLightSource()
+	{
+		return false;
+	}
+	
+	bool CanBeRepairedToPristine()
 	{
 		return false;
 	}
@@ -809,7 +823,7 @@ class ItemBase extends InventoryItem
 			{
 				if(new_player.GetHumanInventory().LocationGetEntity(oldLoc) == NULL )
 				{
-					if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+					//if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 						new_player.GetHumanInventory().SetUserReservedLocation(this,oldLoc);
 				}
 				
@@ -838,6 +852,8 @@ class ItemBase extends InventoryItem
 					m_OldLocation.Reset();
 				}
 			}
+			
+			GetGame().GetAnalyticsClient().OnItemAttachedAtPlayer(this,"Hands");	
 		}
 		else
 		{
@@ -876,15 +892,50 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	/*override void EOnContact(IEntity other, Contact extra)
+	override void EOnContact(IEntity other, Contact extra)
 	{
-		if (m_ItemBeingDropped && extra.Normal[1] == 1.0 || (Math.AbsFloat(extra.RelativeNormalVelocityAfter) < 0.03 && extra.Normal[1] > 0.9))
+		/*if (m_ItemBeingDroppedPhys)
 		{
 			Print("ItemBase | EOnContact");
-			SetDynamicPhysicsLifeTime(0.01);
-			m_ItemBeingDropped = false;
+			SetDynamicPhysicsLifeTime(0.5);
+			m_ItemBeingDroppedPhys = false;
 		}
-	}*/
+		return;
+		
+		//--------------------------------
+		
+		if (m_ItemBeingDroppedPhys && extra.Normal[1] == 1.0 || (Math.AbsFloat(extra.RelativeNormalVelocityAfter) < 0.03 && extra.Normal[1] > 0.9))
+		{
+			Print("ItemBase | EOnContact");
+			SetDynamicPhysicsLifeTime(0.5);
+			m_ItemBeingDroppedPhys = false;
+		}*/
+	}
+	
+	override void OnCreatePhysics()
+	{
+		if ( m_ItemBeingDroppedPhys )
+		{
+			//GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(StopItemDynamicPhysics,3000);
+			
+			//--------------------------------
+			
+			/*
+			if (!m_PhysDropTimer)
+			{
+				m_PhysDropTimer = new Timer;
+			}
+			else
+			{
+				m_PhysDropTimer.Stop()
+			}
+			
+			m_PhysDropTimer.Run(GameConstants.ITEM_DROP_TIMER,this,"StopItemDynamicPhysics");
+			*/
+			
+			//Print("++++dropping item phys");
+		}
+	}
 	
 	override void OnItemAttachmentSlotChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
 	{
@@ -1149,6 +1200,8 @@ class ItemBase extends InventoryItem
 	// -------------------------------------------------------------------------------
 	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
 	{
+		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
+		
 		const int CHANCE_DAMAGE_CARGO = 4;
 		const int CHANCE_DAMAGE_ATTACHMENT = 1;
 		const int CHANCE_DAMAGE_NOTHING = 2;
@@ -1332,7 +1385,7 @@ class ItemBase extends InventoryItem
 					new_item.PlaceOnSurface();
 				}
 				else
-					new_item = ItemBase.Cast( GetGame().CreateObject( GetType(), player.GetWorldPosition() ) );
+					new_item = ItemBase.Cast( GetGame().CreateObjectEx( GetType(), player.GetWorldPosition(), ECE_PLACE_ON_SURFACE ) );
 				
 				if( new_item )
 				{
@@ -1563,34 +1616,46 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	bool CanBeCombined( EntityAI other_item, PlayerBase player = null )
+	override bool CanBeCombined( EntityAI other_item, bool reservation_check = true )
 	{
+		if ( !other_item || GetType() != other_item.GetType() || IsFullQuantity() )
+			return false;
+
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED || other_item.GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
 		bool can_this_be_combined = ConfigGetBool("canBeSplit");
-		
-		if ( GetInventory().HasInventoryReservation( this, null ) || other_item.GetInventory().HasInventoryReservation( other_item, null ))
+		if ( !can_this_be_combined )
 			return false;
-		
-		if( CastTo( player, GetHierarchyRootPlayer() ) ) //false when attached to player's attachment slot
+
+		int slot_ID = -1;
+		string slot_name = "";
+		if ( GetInventory().GetCurrentAttachmentSlotInfo( slot_ID, slot_name ) )
 		{
-			if( player.GetInventory().HasAttachment( this ) )
-			{
+			int slotMax = g_Game.ConfigGetInt( "CfgSlots " + "Slot_" + slot_name + " stackMax" );
+			if ( ItemBase.Cast(other_item).GetQuantity() >= slotMax )
 				return false;
-			}
 		}
-		
-		if( !can_this_be_combined || !other_item ) 
+		else
 		{
-			return false;
+			if ( ItemBase.Cast(other_item).IsFullQuantity() )
+				return false;
 		}
-		
-		if( IsFullQuantity() )
+
+		PlayerBase player = null;
+		if ( CastTo( player, GetHierarchyRootPlayer() ) ) //false when attached to player's attachment slot
 		{
-			return false;
+			if ( player.GetInventory().HasAttachment( this ) )
+				return false;
+			
+			if ( player.IsItemsToDelete())
+				return false;
 		}
-		
-		//if( player && (player.GetHumanInventory().GetEntityInHands() == this || player.GetHumanInventory().GetEntityInHands() == other_item )) return false;
-		
-		return ( this.GetType() == other_item.GetType() );
+
+		if ( reservation_check && (GetInventory().HasInventoryReservation( this, null ) || other_item.GetInventory().HasInventoryReservation( other_item, null )))
+			return false;
+
+		return true;
 	}
 	
 	bool IsCombineAll( ItemBase other_item, bool use_stack_max = false )
@@ -1632,7 +1697,7 @@ class ItemBase extends InventoryItem
 	
 	void CombineItems( ItemBase other_item, bool use_stack_max = false )
 	{
-		if( !CanBeCombined(other_item) )
+		if( !CanBeCombined(other_item, false) )
 			return;
 		
 		if( !IsMagazine() && other_item )
@@ -1640,7 +1705,16 @@ class ItemBase extends InventoryItem
 			int quantity_used = ComputeQuantityUsed(other_item,use_stack_max);
 			if( quantity_used != 0 )
 			{
-				this.AddQuantity(quantity_used);
+				float hp1 = GetHealth01("","");
+				float hp2 = other_item.GetHealth01("","");
+				float hpResult = ((hp1*GetQuantity()) + (hp2*quantity_used));
+				hpResult = hpResult / ( GetQuantity() + quantity_used );
+
+				hpResult *= GetMaxHealth();
+				Math.Round( hpResult );
+				SetHealth("", "Health", hpResult );
+
+				AddQuantity(quantity_used);
 				other_item.AddQuantity(-quantity_used);
 			}
 		}
@@ -1899,6 +1973,12 @@ class ItemBase extends InventoryItem
 	}
 	
 	//----------------------------------------------------------------
+	override bool IsIgnoredByConstruction()
+	{
+		return true;
+	}
+	
+	//----------------------------------------------------------------
 	//has FoodStages in config?
 	bool HasFoodStage()
 	{
@@ -1943,7 +2023,21 @@ class ItemBase extends InventoryItem
 		
 		return 1;
 	}
-
+	
+	//----------------------------------------------------------------
+	//Override for allowing seemingly unallowed moves when two clients send a conflicting message simultaneously
+	bool CanBeMovedOverride()
+	{
+		return m_CanBeMovedOverride;
+	}
+	
+	//----------------------------------------------------------------
+	//Override for allowing seemingly unallowed moves when two clients send a conflicting message simultaneously
+	void SetCanBeMovedOverride(bool setting)
+	{
+		m_CanBeMovedOverride = setting;
+	}
+	
 	//----------------------------------------------------------------
 	/**
 	\brief Send message to owner player in grey color
@@ -2106,9 +2200,13 @@ class ItemBase extends InventoryItem
 		//Debug.Log("OnSyncVariables called for item:  "+ ToString(this.GetType()),"varSync");
 		//read the flags
 		//ref Param1<int> pflags = new Param1<int>(0);
-		ctx.Read(CachedObjectsParams.PARAM1_INT);
+		int varFlags;
+		if( !ctx.Read(varFlags) )
+			return;
 		
-		int varFlags = CachedObjectsParams.PARAM1_INT.param1;
+		//ctx.Read(CachedObjectsParams.PARAM1_INT);
+		
+		//int varFlags = CachedObjectsParams.PARAM1_INT.param1;
 		//--------------
 		
 		
@@ -2217,34 +2315,63 @@ class ItemBase extends InventoryItem
 		int array_size = CachedObjectsArrays.ARRAY_FLOAT.Count();
 		
 		CachedObjectsParams.PARAM1_INT.param1 = array_size;
-		ctx.Write(CachedObjectsParams.PARAM1_INT);
+		//ctx.Write(CachedObjectsParams.PARAM1_INT);
+		ctx.Write(array_size);
 		
 		for(int i = 0; i < array_size; i++)
 		{
-			CachedObjectsParams.PARAM1_FLOAT.param1 = CachedObjectsArrays.ARRAY_FLOAT.Get(i);
-			ctx.Write(CachedObjectsParams.PARAM1_FLOAT);
+			//CachedObjectsParams.PARAM1_FLOAT.param1 = CachedObjectsArrays.ARRAY_FLOAT.Get(i);
+			float param = CachedObjectsArrays.ARRAY_FLOAT.Get(i);
+			ctx.Write(param);
+			//ctx.Write(CachedObjectsParams.PARAM1_FLOAT);
 		}
 	}
 	
-	bool ReadVarsFromCTX(ParamsReadContext ctx)//with ID optimization
+	bool ReadVarsFromCTX(ParamsReadContext ctx, int version = -1)//with ID optimization
 	{
-		if(!ctx.Read(CachedObjectsParams.PARAM1_INT))
-			return false;
-		
-		int numOfItems = CachedObjectsParams.PARAM1_INT.param1;
-		CachedObjectsArrays.ARRAY_FLOAT.Clear();
-		
-		for(int i = 0; i < numOfItems; i++)
+		int numOfItems;
+		float value;
+		if( version <= 108 && version!= -1 )
 		{
-			if(!ctx.Read(CachedObjectsParams.PARAM1_FLOAT))
+			if(!ctx.Read(CachedObjectsParams.PARAM1_INT))
 				return false;
-			float value = CachedObjectsParams.PARAM1_FLOAT.param1;
-			
-			CachedObjectsArrays.ARRAY_FLOAT.Insert(value);
-		}
 		
-		DeSerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
-		return true;
+			numOfItems = CachedObjectsParams.PARAM1_INT.param1;
+			CachedObjectsArrays.ARRAY_FLOAT.Clear();
+		
+			for(int i = 0; i < numOfItems; i++)
+			{
+				if(!ctx.Read(CachedObjectsParams.PARAM1_FLOAT))
+					return false;
+				value = CachedObjectsParams.PARAM1_FLOAT.param1;
+			
+				CachedObjectsArrays.ARRAY_FLOAT.Insert(value);
+			}
+		
+			DeSerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
+			return true;
+		}
+		else
+		{
+			if(!ctx.Read(numOfItems))
+				return false;
+		
+			CachedObjectsArrays.ARRAY_FLOAT.Clear();
+		
+			for(int j = 0; j < numOfItems; j++)
+			{
+				if(!ctx.Read(value))
+					return false;
+				CachedObjectsArrays.ARRAY_FLOAT.Insert(value);
+			}
+		
+			DeSerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
+			return true;		
+		
+		
+		
+		}
+		return false;
 	}
 	
 	void SaveVariables(ParamsWriteContext ctx)
@@ -2261,8 +2388,8 @@ class ItemBase extends InventoryItem
 		}
 
 		//ref Param1<int> pflags = new Param1<int>( varFlags );
-		CachedObjectsParams.PARAM1_INT.param1 = varFlags;
-		ctx.Write(CachedObjectsParams.PARAM1_INT);
+		//CachedObjectsParams.PARAM1_INT.param1 = varFlags;
+		ctx.Write(varFlags);
 		//-------------------
 			
 		//now serialize the variables
@@ -2277,22 +2404,43 @@ class ItemBase extends InventoryItem
 
 		
 	//----------------------------------------------------------------
-	bool LoadVariables(ParamsReadContext ctx, int version)
+	bool LoadVariables(ParamsReadContext ctx, int version = -1)
 	{
-		//read the flags
-		if(!ctx.Read(CachedObjectsParams.PARAM1_INT))
+		int varFlags;
+		if( version <= 108 && version != -1 )
 		{
-			return false;
+			//read the flags
+			if(!ctx.Read(CachedObjectsParams.PARAM1_INT))
+			{
+				return false;
+			}
+			else
+			{
+				varFlags = CachedObjectsParams.PARAM1_INT.param1;
+				//--------------
+				if( varFlags & ItemVariableFlags.FLOAT )
+				{
+					if(!ReadVarsFromCTX(ctx, version))
+						return false;
+				}
+			}
 		}
 		else
 		{
-			int varFlags = CachedObjectsParams.PARAM1_INT.param1;
-			//--------------
-			if( varFlags & ItemVariableFlags.FLOAT )
+			//read the flags
+			if(!ctx.Read(varFlags))
 			{
-				if(!ReadVarsFromCTX(ctx))
-					return false;
+				return false;
 			}
+			else
+			{
+				//--------------
+				if( varFlags & ItemVariableFlags.FLOAT )
+				{
+					if(!ReadVarsFromCTX(ctx, version))
+						return false;
+				}
+			}		
 		}
 		return true;
 	}
@@ -2521,7 +2669,6 @@ class ItemBase extends InventoryItem
 	//Calculates weight of single item without attachments
 	float GetSingleInventoryItemWeight()
 	{
-		int ConfWeight = ConfigGetInt("weight");
 		float item_wetness = GetWet();
 		float itemQuantity = 0;
 		float Weight = 0;
@@ -2532,85 +2679,98 @@ class ItemBase extends InventoryItem
 
 		if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
 		{
-			Weight = ((item_wetness + 1) * ConfWeight * itemQuantity);
+			Weight = ((item_wetness + 1) * m_ConfigWeight * itemQuantity);
 		}
 		else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 		{
 			int MaxLength = ConfigGetInt("varQuantityMax");
-			Weight = ((item_wetness + 1) * ConfWeight * itemQuantity/MaxLength);
+			Weight = ((item_wetness + 1) * m_ConfigWeight * itemQuantity/MaxLength);
 		}
 		else if (itemQuantity != 1) //quantity determines weight of item without container (i.e. sardines in a can)
 		{
-			Weight = ((item_wetness + 1) * (ConfWeight + itemQuantity));
+			Weight = ((item_wetness + 1) * (m_ConfigWeight + itemQuantity));
 		}
 		else
 		{
-			Weight = ((item_wetness + 1) * ConfWeight);
+			Weight = ((item_wetness + 1) * m_ConfigWeight);
 		}
 		return Math.Round(Weight);
 	}
 	
-	override void UpdateWeight()
+	override void UpdateWeight(WeightUpdateType updateType = WeightUpdateType.FULL, float weightAdjustment = 0)
 	{
-		int i = 0;
-		float totalWeight;
-		float item_wetness = this.GetWet();
-		int ConfWeight;
-		
-		int AttachmentsCount = 0;
-		CargoBase cargo;
-		
-		/*Print("this: " + this);
-		Print("GetInventory() " + GetInventory());		
-		Print("-----------------------------");*/
-		if (GetInventory())
+		switch (updateType)
 		{
-			AttachmentsCount = GetInventory().AttachmentCount();
-			cargo = GetInventory().GetCargo();
-		}
+			case WeightUpdateType.FULL:
+				{
+					int i = 0;
+					float totalWeight;
+					float item_wetness = this.GetWet();
 		
-		ConfWeight = this.ConfigGetInt("weight");
+					int AttachmentsCount = 0;
+					CargoBase cargo;
 		
-		//attachments?
-		if (AttachmentsCount > 0)
-		{
-			for (i = 0; i < AttachmentsCount; i++)
-			{
-				totalWeight += GetInventory().GetAttachmentFromIndex(i).GetWeight();
-			}
-		}
+					/*Print("this: " + this);
+					Print("GetInventory() " + GetInventory());		
+					Print("-----------------------------");*/
+					if (GetInventory())
+					{
+						AttachmentsCount = GetInventory().AttachmentCount();
+						cargo = GetInventory().GetCargo();
+					}
 		
-		//cargo?
-		if (cargo != NULL )
-		{
-			for (i = 0; i < cargo.GetItemCount(); i++)
-			{
-				totalWeight += cargo.GetItem(i).GetWeight();
-			}
-		}
+					//attachments?
+					if (AttachmentsCount > 0)
+					{
+						for (i = 0; i < AttachmentsCount; i++)
+						{
+							totalWeight += GetInventory().GetAttachmentFromIndex(i).GetWeight();
+						}
+					}
+		
+					//cargo?
+					if (cargo != NULL )
+					{
+						for (i = 0; i < cargo.GetItemCount(); i++)
+						{
+							totalWeight += cargo.GetItem(i).GetWeight();
+						}
+					}
 
-		//other
-		{
-			if (this.ConfigGetBool("canBeSplit")) //quantity determines size of the stack
-			{
-				totalWeight += Math.Round((item_wetness + 1) * this.GetQuantity() * ConfWeight);
-				/*Print("this: " + this);
-				Print("this.GetQuantity(): " + this.GetQuantity());
-				Print("totalWeight: " + totalWeight);
-				Print("-----------------------------");*/
-			}
-			else if (this.ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
-			{
-				int MaxLength = this.ConfigGetInt("varQuantityMax");
-				totalWeight += Math.Round(((item_wetness + 1) * ConfWeight * (this.GetQuantity()/MaxLength)));
-			}
-			else //quantity determines weight of item without container (i.e. sardines in a can)
-			{
-				totalWeight += Math.Round((item_wetness + 1) * (this.GetQuantity() + ConfWeight));
-			}
+					//other
+					{
+						if (this.ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						{
+							totalWeight += Math.Round((item_wetness + 1) * this.GetQuantity() * m_ConfigWeight);
+							/*Print("this: " + this);
+							Print("this.GetQuantity(): " + this.GetQuantity());
+							Print("totalWeight: " + totalWeight);
+							Print("-----------------------------");*/
+						}
+						else if (this.ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
+						{
+							int MaxLength = GetQuantityMax();
+							totalWeight += Math.Round(((item_wetness + 1) * m_ConfigWeight * (this.GetQuantity()/MaxLength)));
+						}
+						else //quantity determines weight of item without container (i.e. sardines in a can)
+						{
+							totalWeight += Math.Round((item_wetness + 1) * (this.GetQuantity() + m_ConfigWeight));
+						}
+					}
+		
+					m_Weight = Math.Round(totalWeight);
+				}
+				break;
+			case WeightUpdateType.ADD:
+				m_Weight += weightAdjustment;
+				break;
+			case WeightUpdateType.REMOVE:
+				m_Weight -= weightAdjustment;
+				break;
+			default:
+				break;
 		}
 		
-		m_Weight = Math.Round(totalWeight);
 	}
 
 	//! Returns the number of items in cargo, otherwise returns 0(non-cargo objects). Recursive.
@@ -2906,8 +3066,8 @@ class ItemBase extends InventoryItem
 
 		}
 		
-		if(GetGame().IsClient() || !GetGame().IsMultiplayer())
-			player.GetHumanInventory().ClearUserReservedLocationForContainer(this);
+		//if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+		player.GetHumanInventory().ClearUserReservedLocationForContainer(this);
 		
 		
 		if ( HasEnergyManager() )
@@ -3088,7 +3248,30 @@ class ItemBase extends InventoryItem
 			return true;
 		return false;
 	}
-	
+
+	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanReceiveItemIntoCargo( cargo );
+	}
+
+	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		GameInventory attachmentInv = attachment.GetInventory();
+		if (attachmentInv && attachmentInv.GetCargo() && attachmentInv.GetCargo().GetItemCount() > 0)
+		{
+			if (GetHierarchyParent() && !GetHierarchyParent().IsInherited(PlayerBase))
+				return false;
+		}
+		
+		return super.CanReceiveAttachment( attachment, slotId );
+	}
+
 	// Plays muzzle flash particle effects
 	static void PlayFireParticles(ItemBase weapon, int muzzle_index, string ammoType, ItemBase muzzle_owner, ItemBase suppressor, string config_to_search)
 	{
@@ -3355,6 +3538,22 @@ class ItemBase extends InventoryItem
 	{
 		return false;
 	};
+	
+	void StopItemDynamicPhysics()
+	{
+		SetDynamicPhysicsLifeTime(0.01);
+		m_ItemBeingDroppedPhys = false;
+	}
+	
+	void FixDamageSystemInit()
+	{
+		array<string> zone_names = new array<string>;
+		GetDamageZones(zone_names);
+		for (int i = 0; i < zone_names.Count(); i++)
+		{
+			SetHealthMax(zone_names.Get(i),"Health");
+		}
+	}
 }
 
 EntityAI SpawnItemOnLocation (string object_name, notnull InventoryLocation loc, bool full_quantity)
@@ -3391,7 +3590,7 @@ void SetupSpawnedItem (ItemBase item, float health, float quantity)
 
 		if ( quantity > 0 )
 		{
-			item.SetQuantity(quantity);
+				item.SetQuantity(quantity);
 		}
 	}
 }

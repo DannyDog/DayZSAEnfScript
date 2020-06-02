@@ -1,13 +1,14 @@
 //-------------------------------------------------------
 enum InventoryCommandType
 {
-	MOVE,			///< generic move, may involve animations
-	SYNC_MOVE,		///< synchronous move. action is finished immeadiately, no animations involved
-	HAND_EVENT,		///< event for hands
-	SWAP,			///< swap two entities (simple swap of compatible objects)
-	FORCESWAP,		///< Forced swap two entities. First goes to second's place, second goes "somewhere else"
-	DESTROY,		///< destroy of entity right in inventory
-	REPLACE			///< replace of entity in inventory (@NOTE: hands goes through HAND_EVENT)
+	MOVE,					///< generic move, may involve animations
+	SYNC_MOVE,				///< synchronous move. action is finished immeadiately, no animations involved
+	HAND_EVENT,				///< event for hands
+	SWAP,					///< swap two entities (simple swap of compatible objects)
+	FORCESWAP,				///< Forced swap two entities. First goes to second's place, second goes "somewhere else"
+	DESTROY,				///< destroy of entity right in inventory
+	REPLACE,				///< replace of entity in inventory (@NOTE: hands goes through HAND_EVENT)
+	USER_RESERVATION_CANCEL	///< Clear user reserved inventory space
 };
 enum InventoryJunctureType
 {
@@ -315,6 +316,22 @@ class GameInventory
 		return false;
 	}
 	
+	//! Returns true if the item is currently attached and outputs attachment slot id and name
+	bool GetCurrentAttachmentSlotInfo(out int slot_id, out string slot_name)
+	{
+		slot_id = -1;
+		slot_name = "";
+		InventoryLocation lcn = new InventoryLocation;
+		GetCurrentInventoryLocation(lcn);
+		if ( lcn.GetType() == InventoryLocationType.ATTACHMENT)
+		{
+			slot_id = lcn.GetSlot();
+			slot_name = InventorySlots.GetSlotName(slot_id);
+			return true;
+		}
+		return false;
+	}
+	
 	static void OnServerInventoryCommandStatic (ParamsReadContext ctx)
 	{
 		int tmp = -1;
@@ -450,7 +467,7 @@ class GameInventory
 	 **/
 	static proto native bool ServerHandEvent (notnull Man player, notnull EntityAI item, ParamsWriteContext ctx);
 
-	static proto native void PrepareDropEntityPos (EntityAI owner, notnull EntityAI item, out vector mat[4]);
+	static proto native void PrepareDropEntityPos (EntityAI owner, notnull EntityAI item, out vector mat[4], bool useValuesInMatrix = false);
 
 	/**@fn      CanSwapEntities
 	 * @brief   test if ordinary swap can be performed.
@@ -735,12 +752,18 @@ class GameInventory
 	 **/
 	bool TakeToDst (InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
+		bool ret;
 		switch (mode)
 		{
 			case InventoryMode.SERVER:
-				bool ret = LocationSyncMoveEntity(src, dst);
+				ret = LocationSyncMoveEntity(src, dst);
 				InventoryInputUserData.SendServerMove(null, InventoryCommandType.SYNC_MOVE, src, dst);
 				return true;
+			case InventoryMode.LOCAL:
+				ret = LocationSyncMoveEntity(src, dst);
+				//InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);
+				//Print(ret);
+				return ret;
 			default:
 				return false;
 		}
@@ -814,10 +837,20 @@ class GameInventory
 		InventoryLocation src = new InventoryLocation;
 		if (item.GetInventory().GetCurrentInventoryLocation(src))
 		{
-			InventoryLocation dst = new InventoryLocation;
-			dst.SetAttachment(target, item, slot);
-
-			return TakeToDst(mode, src, dst);
+			
+			EntityAI att = target.GetInventory().FindAttachment(slot);
+			
+			if(att)
+			{
+				att.CombineItemsClient(item, true );
+				return true;
+			}
+			else
+			{
+				InventoryLocation dst = new InventoryLocation;
+				dst.SetAttachment(target, item, slot);
+				return TakeToDst(mode, src, dst);
+			}
 		}
 		Error("[inv] I::Take2AttEx(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item + " Error - src has no inventory location");
 		return false;
@@ -901,7 +934,7 @@ class GameInventory
 	{
 		vector m4[4];
 		Math3D.MatrixIdentity4(m4);
-		GameInventory.PrepareDropEntityPos(owner, item, m4);
+		GameInventory.PrepareDropEntityPos(owner, item, m4, false);
 		ground.SetGround(item, m4);
 	}
 
@@ -918,6 +951,65 @@ class GameInventory
 		}
 
 		Error("DropEntity - No inventory location");
+		return false;
+	}
+	
+	static void SetGroundPosByTransform (EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector transform[4])
+	{
+		GameInventory.PrepareDropEntityPos(owner, item, transform, true);
+		ground.SetGround(item, transform);
+	}
+	
+	bool DropEntityWithTransform (InventoryMode mode, EntityAI owner, notnull EntityAI item, vector transform[4])
+	{
+		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		InventoryLocation src = new InventoryLocation;
+		if (item.GetInventory().GetCurrentInventoryLocation(src))
+		{
+			InventoryLocation dst = new InventoryLocation;
+			SetGroundPosByTransform(owner, item, dst, transform);
+
+			return TakeToDst(mode, src, dst);
+		}
+
+		Error("DropEntity - No inventory location");
+		return false;
+	}
+	
+	static void SetGroundPosByOwnerBounds (EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector halfExtents, float angle, float cosAngle, float sinAngle)
+	{
+		vector m4[4];
+		owner.GetTransform(m4);
+			
+		vector randomPos = Vector(Math.RandomFloat(-halfExtents[0], halfExtents[0]), 0, Math.RandomFloat(-halfExtents[2], halfExtents[2]));
+		randomPos = vector.RotateAroundZero(randomPos, vector.Up, cosAngle, sinAngle);
+		
+		float dist = randomPos[0] * m4[1][0] + randomPos[1] * m4[1][1] + randomPos[2] * m4[1][2];
+
+		m4[3][0] = m4[3][0] + randomPos[0];
+		m4[3][1] = m4[3][1] - dist + halfExtents[1];
+		m4[3][2] = m4[3][2] + randomPos[2];
+		
+		item.PlaceOnSurfaceRotated(m4, Vector(m4[3][0], m4[3][1], m4[3][2]));
+		
+		ground.SetGround(item, m4);
+	}
+	
+	bool DropEntityInBounds (InventoryMode mode, EntityAI owner, notnull EntityAI item, vector halfExtents, float angle, float cosAngle, float sinAngle)
+	{
+		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
+		
+		InventoryLocation src = new InventoryLocation;
+		if (item.GetInventory().GetCurrentInventoryLocation(src))
+		{
+			InventoryLocation dst = new InventoryLocation;	
+
+			SetGroundPosByOwnerBounds(owner, item, dst, halfExtents, angle, cosAngle, sinAngle);
+
+			return TakeToDst(mode, src, dst);
+		}
+
+		Error("DropEntityInBounds - No inventory location");
 		return false;
 	}
 

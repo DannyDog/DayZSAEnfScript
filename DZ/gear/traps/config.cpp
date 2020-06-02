@@ -43,18 +43,19 @@ class CfgAmmo
 		soundEngine[] = {"",9.999998e-05,4};
 		class DamageApplied
 		{
-			type = "Projectile";
+			type = "FragGrenade";
+			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 99;
+				damage = 50;
 			};
 			class Blood
 			{
-				damage = 500;
+				damage = 100;
 			};
 			class Shock
 			{
-				damage = 500;
+				damage = 99;
 			};
 		};
 		class NoiseExplosion

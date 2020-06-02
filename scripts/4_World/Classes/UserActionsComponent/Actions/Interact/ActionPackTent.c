@@ -50,8 +50,13 @@ class ActionPackTent: ActionInteractBase
 			{
 				max_action_distance = 3.0;
 			}
-			float distance = Math.AbsInt(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
-			if (  distance <= max_action_distance )	
+			else if ( targetParent.IsInherited(PartyTent) )
+			{
+				max_action_distance = 5.0;
+			}
+
+			float distance = vector.DistanceSq(targetParent.GetPosition(),player.GetPosition());
+			if (  distance <= max_action_distance * max_action_distance )	
 			{
 				TentBase tent = TentBase.Cast( targetParent );
 				if ( tent.CanBePacked() )

@@ -1,5 +1,0 @@
-Particle {
- AlbedoMap "{46E50C71B2547E58}Graphics/Particles/sprites/fire_anim_06.edds" 
- TileU 8
- TileV 2
-}

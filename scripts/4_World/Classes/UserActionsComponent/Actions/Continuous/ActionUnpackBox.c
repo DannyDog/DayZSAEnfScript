@@ -68,7 +68,7 @@ class ActionUnpackBox: ActionContinuousBase
 				action_data.m_Player.ServerReplaceItemInHandsWithNew(lambda);
 				
 				//spawns wrapping Paper
-				ItemBase paper = ItemBase.Cast( GetGame().CreateObject("Paper", action_data.m_Player.GetPosition(), false) );
+				ItemBase paper = ItemBase.Cast( GetGame().CreateObjectEx("Paper", action_data.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE) );
 				
 				action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 			}

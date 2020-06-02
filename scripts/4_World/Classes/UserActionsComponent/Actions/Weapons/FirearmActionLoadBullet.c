@@ -108,7 +108,8 @@ class FirearmActionLoadBulletQuick : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
-		return player.GetWeaponManager().GetPreparedMagazine()!=null;
+		Weapon_Base weapon = Weapon_Base.Cast( item );
+		return (weapon.IsChamberEmpty(0) || weapon.IsChamberFiredOut(0)) && player.GetWeaponManager().GetPreparedMagazine()!= null;
 	}
 	
 	override void Start( ActionData action_data )

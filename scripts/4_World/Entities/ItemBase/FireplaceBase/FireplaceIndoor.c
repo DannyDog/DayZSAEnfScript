@@ -7,6 +7,7 @@ class FireplaceIndoor extends FireplaceBase
 	
 	static const string FIREPOINT_ACTION_SELECTION	= "fireplace_action";
 	static const string FIREPOINT_FIRE_POSITION 	= "fireplace_point";
+	static const string FIREPOINT_PLACE_ROT 		= "fireplace_rot";
 	static const string FIREPOINT_SMOKE_POSITION 	= "fireplace_smoke";
 	
 	void FireplaceIndoor()
@@ -92,11 +93,13 @@ class FireplaceIndoor extends FireplaceBase
 		m_FirePointIndex = fire_point_index;
 	}
 	
-	static bool CanPlaceFireplaceInSelectedSpot( Object building, int fire_point_index, out vector fire_point_pos_world )
+	static bool CanPlaceFireplaceInSelectedSpot( Object building, int fire_point_index, out vector fire_point_pos_world, out vector fire_point_rot_world )
 	{
 		//Get fire point index position
 		vector fire_point_pos = building.GetSelectionPositionMS( FIREPOINT_FIRE_POSITION + fire_point_index.ToString() );
+		vector fire_point_rot = building.GetSelectionPositionMS( FIREPOINT_PLACE_ROT + fire_point_index.ToString() );
 		fire_point_pos_world = building.ModelToWorld( fire_point_pos );
+		fire_point_rot_world = building.ModelToWorld( fire_point_rot );
 		
 		//check if there is any FireplaceIndoor objects near selected fire point
 		ref array<Object> nearest_objects = new array<Object>;
@@ -131,24 +134,16 @@ class FireplaceIndoor extends FireplaceBase
 		return Vector( m_SmokePosX, m_SmokePosY, m_SmokePosZ );
 	}
 	
-	protected vector GetSmokeRelativePosition()
-	{
-		vector fire_position = GetPosition();
-		vector smoke_position = GetSmokeEffectPosition();
-		
-		return Vector( smoke_position[0] - fire_position[0], smoke_position[1] - fire_position[1], smoke_position[2] - fire_position[2] );
-	}
-	
 	//small smoke
 	override void ParticleSmallSmokeStart()
 	{
-		PlayParticle( m_ParticleSmallSmoke, PARTICLE_SMALL_SMOKE, GetSmokeRelativePosition() );
+		PlayParticle( m_ParticleSmallSmoke, PARTICLE_SMALL_SMOKE, GetSmokeEffectPosition(), true );
 	}
 	
 	//normal smoke
 	override void ParticleNormalSmokeStart()
 	{
-		PlayParticle( m_ParticleNormalSmoke, PARTICLE_NORMAL_SMOKE, GetSmokeRelativePosition() );
+		PlayParticle( m_ParticleNormalSmoke, PARTICLE_NORMAL_SMOKE, GetSmokeEffectPosition(), true );
 	}	
 
 	//================================================================
@@ -164,6 +159,9 @@ class FireplaceIndoor extends FireplaceBase
 	//================================================================	
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
+		if ( !super.CanReceiveAttachment(attachment, slotId) )
+		return false;	
+		
 		ItemBase item = ItemBase.Cast( attachment );
 		
 		//kindling items
@@ -178,8 +176,8 @@ class FireplaceIndoor extends FireplaceBase
 			return true;
 		}
 		
-		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT || item.Type() == ATTACHMENT_FRYING_PAN )
+		//direct cooking slots
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 		{
 			return true;
 		}
@@ -240,8 +238,8 @@ class FireplaceIndoor extends FireplaceBase
 			}
 		}
 		
-		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT || item.Type() == ATTACHMENT_FRYING_PAN )
+		//direct cooking slots
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 		{
 			return true;
 		}
@@ -262,22 +260,22 @@ class FireplaceIndoor extends FireplaceBase
 			AddToFireConsumables ( item_base );
 		}
 		
-		//cookware
-		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
+		// direct cooking slots
+		switch ( slot_name )
 		{
-			SetCookingEquipment( item_base );
-			
-			//rotate handle
-			item_base.SetAnimationPhase( ANIMATION_COOKWARE_HANDLE, 1 );
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = item_base;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = item_base;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = item_base;
+				break;
 		}
-		//TODO
-		//frying pan 
-		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
-		{
-			SetCookingEquipment( item_base );
-		}
-		
-		
+
 		//refresh fireplace visuals
 		RefreshFireplaceVisuals();
 	}
@@ -293,45 +291,61 @@ class FireplaceIndoor extends FireplaceBase
 		{
 			//remove from consumables
 			RemoveFromFireConsumables( GetFireConsumableByItem( item_base ) );
-			
-			//no attachments left & no ashes are present
-			if ( GetInventory().AttachmentCount() == 0 && !HasAshes() )
+		}
+		
+		//no attachments left & no ashes are present
+		if ( GetInventory().AttachmentCount() == 0 && !HasAshes() )
+		{
+			//TODO
+			//Clear point
+			/*
+			if ( GetGame().IsServer() )
 			{
-				//TODO
-				//Clear point
-				/*
-				if ( GetGame().IsServer() )
+				if ( GetFireplacePoint() )
 				{
-					if ( GetFireplacePoint() )
-					{
-						GetFireplacePoint().ClearObject();
-						ClearFireplacePoint();						
-					}
+					GetFireplacePoint().ClearObject();
+					ClearFireplacePoint();						
 				}
-				*/
-
-				//destroy fireplace
-				DestroyFireplace();
 			}
+			*/
+
+			//destroy fireplace
+			DestroyFireplace();
 		}
 
-		//cookware
+		// direct cooking slots
+		switch ( slot_name )
+		{
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = NULL;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = NULL;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = NULL;
+				break;
+		}
+
+		// food on direct cooking slots (removal of sound effects)
+		if ( item_base.IsKindOf( "Edible_Base" ) )
+		{
+			Edible_Base food_on_dcs = Edible_Base.Cast( item_base );
+			food_on_dcs.MakeSoundsOnClient( false );
+		}
+		
+		// cookware-specifics (remove audio visuals)
 		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
-		{
-			ClearCookingEquipment();
-			
-			//rotate handle
-			item_base.SetAnimationPhase( ANIMATION_COOKWARE_HANDLE, 1 );
-			
-			//remove audio visuals
+		{	
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
-			cooking_pot.RemoveAudioVisualsOnClient();
-		}	
-		//TODO
-		//frying pan		
+			cooking_pot.RemoveAudioVisualsOnClient();	
+		}
 		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
-		{
-			ClearCookingEquipment();
+		{	
+			FryingPan frying_pan = FryingPan.Cast( item );
+			frying_pan.RemoveAudioVisualsOnClient();
 		}
 		
 		//refresh fireplace visuals
@@ -344,7 +358,6 @@ class FireplaceIndoor extends FireplaceBase
 	//this into/outo parent.Cargo
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
 		return false;
 	}
 
@@ -356,26 +369,22 @@ class FireplaceIndoor extends FireplaceBase
 	//cargo item into/outo this.Cargo
 	override bool CanReceiveItemIntoCargo( EntityAI cargo )
 	{
-		return true;
+		return super.CanReceiveItemIntoCargo( cargo );
 	}
-
+/*
 	override bool CanReleaseCargo( EntityAI cargo )
 	{
 		if ( IsBurning() )
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+*/	
 	//hands
 	override bool CanPutIntoHands( EntityAI parent )
 	{
-		if( !super.CanPutIntoHands( parent ) )
-		{
-			return false;
-		}
 		return false;
 	}
 	
@@ -446,7 +455,7 @@ class FireplaceIndoor extends FireplaceBase
 	{
 		super.SetActions();
 		
-		AddAction(ActionTakeFireplaceIndoor);
+		//AddAction(ActionTakeFireplaceIndoor);
 		//AddAction(ActionLightItemOnFire);
 	}
 }

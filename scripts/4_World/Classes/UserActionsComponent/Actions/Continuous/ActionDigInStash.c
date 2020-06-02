@@ -131,7 +131,7 @@ class ActionDigInStash: ActionContinuousBase
 		vector pos = targetEntity.GetPosition();
 					
 		Class.CastTo(stashed_item,  targetEntity );
-		Class.CastTo(stash,  GetGame().CreateObject("UndergroundStash", pos, false) );
+		Class.CastTo(stash,  GetGame().CreateObjectEx("UndergroundStash", pos, ECE_PLACE_ON_SURFACE) );
 		  
 		if ( stash )
 		{

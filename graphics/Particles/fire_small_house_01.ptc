@@ -1,4 +1,4 @@
-EffectDef  {
+EffectDef {
  Emitors {
   EmitorDef glows {
    ShapeType Point
@@ -71,8 +71,9 @@ EffectDef  {
    ConeAngle 360 0 60
    MaxNum 4
    BirthRate 0.35
-   Offset 0 0.3 0
+   Offset 0 0.15 0
    Material "{3E6CE4D61F8AC71F}Graphics/Particles/materials/fire/fire_medium_camp_02.emat"
+   ScaleY 0.808
    SizeMultiplier 0.8
    SizeRND 0.2
    RandomRotDir 0
@@ -167,7 +168,7 @@ EffectDef  {
     0 0.8627 0.8471 0.3451 1 0.502 0.0745 0.0431
    }
    Alpha {
-    0 0 0.34055 0.208 0.65354 0.44 1 0
+    0 0 0.34055 0.208 0.64732 0 1 0
    }
    Size {
     0 0 0.49312 0.46541 1 0.18868
@@ -197,7 +198,7 @@ EffectDef  {
     0 0.9922 1 0.4471 1 1 0.4392 0.2157
    }
    Alpha {
-    0 1 0.49705 0.30818 1 0
+    0 1 0.47247 0 1 0
    }
   }
  }

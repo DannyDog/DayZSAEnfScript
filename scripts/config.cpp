@@ -562,6 +562,7 @@ class CfgSlots
 		name = "Stones";
 		displayName = "Stones";
 		ghostIcon = "stones";
+		stackMax = 16;
 	};
 	class Slot_WoodenStick
 	{
@@ -629,6 +630,30 @@ class CfgSlots
 		name = "Lime";
 		displayName = "Lime";
 		ghostIcon = "lime";
+	};
+	class Slot_Bark
+	{
+		name = "Bark";
+		displayName = "Bark";
+		ghostIcon = "bark";
+	};
+	class Slot_DirectCookingA
+	{
+		name = "DirectCookingA";
+		displayName = "DirectCookingA";
+		ghostIcon = "directcooking";
+	};
+	class Slot_DirectCookingB
+	{
+		name = "DirectCookingB";
+		displayName = "DirectCookingB";
+		ghostIcon = "directcooking";
+	};
+	class Slot_DirectCookingC
+	{
+		name = "DirectCookingC";
+		displayName = "DirectCookingC";
+		ghostIcon = "directcooking";
 	};
 	class Slot_SeedBase_1
 	{

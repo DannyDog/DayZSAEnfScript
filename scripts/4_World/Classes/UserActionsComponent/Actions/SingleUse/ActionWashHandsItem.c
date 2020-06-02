@@ -32,14 +32,7 @@ class ActionWashHandsItem: ActionSingleUseBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( player.HasBloodyHands() && item.GetQuantity() >= WASH_HANDS_AMOUNT )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return player.HasBloodyHands() && item.GetQuantity() >= WASH_HANDS_AMOUNT );
 	}
 
 	override void OnExecuteServer( ActionData action_data )

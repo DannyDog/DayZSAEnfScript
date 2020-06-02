@@ -133,6 +133,66 @@ class CfgVehicles
 				};
 			};
 		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLabels[] = {1.0,0.7,0.5,0.3,0.0};
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\FireplaceKit.rvmat","DZ\gear\cooking\data\FireplaceKit.rvmat"}},{0.7,{"DZ\gear\cooking\data\FireplaceKit.rvmat","DZ\gear\cooking\data\FireplaceKit.rvmat"}},{0.5,{"DZ\gear\cooking\data\FireplaceKit.rvmat","DZ\gear\cooking\data\FireplaceKit.rvmat"}},{0.3,{"DZ\gear\cooking\data\FireplaceKit.rvmat","DZ\gear\cooking\data\FireplaceKit.rvmat"}},{0.0,{"DZ\gear\cooking\data\FireplaceKit.rvmat","DZ\gear\cooking\data\FireplaceKit.rvmat"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
+		};
 	};
 	class Fireplace: FireplaceBase
 	{
@@ -148,7 +208,7 @@ class CfgVehicles
 		itemSize[] = {4,4};
 		itemsCargoSize[] = {10,4};
 		useEntityHierarchy = "true";
-		attachments[] = {"Firewood","WoodenStick","CookingTripod","CookingEquipment","Stones","Rags","MedicalBandage","Paper","Book","OakBark","BirchBark"};
+		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Bark","CookingTripod","Stones","DirectCookingA","DirectCookingB","DirectCookingC"};
 		class GUIInventoryAttachmentsProps
 		{
 			class CookingEquipment
@@ -159,13 +219,21 @@ class CfgVehicles
 				icon = "cat_fp_cooking";
 				view_index = 1;
 			};
+			class DirectCooking
+			{
+				name = "$STR_attachment_CookingEquipment0";
+				description = "";
+				attachmentSlots[] = {"DirectCookingA","DirectCookingB","DirectCookingC"};
+				icon = "cookingequipment";
+				view_index = 2;
+			};
 			class Upgrade
 			{
 				name = "$STR_attachment_Upgrade0";
 				description = "";
 				attachmentSlots[] = {"Stones"};
 				icon = "cat_fp_upgrade";
-				view_index = 2;
+				view_index = 3;
 			};
 			class Fuel
 			{
@@ -179,9 +247,9 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
-				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Book","OakBark","BirchBark"};
+				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
 				icon = "cat_fp_kindling";
-				view_index = 3;
+				view_index = 5;
 			};
 		};
 		hiddenSelections[] = {"ashes","inventory"};
@@ -202,15 +270,15 @@ class CfgVehicles
 		lootCategory = "Crafted";
 		itemSize[] = {4,4};
 		itemsCargoSize[] = {10,4};
-		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Book","OakBark","BirchBark"};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB"};
 		class GUIInventoryAttachmentsProps
 		{
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
-				attachmentSlots[] = {"CookingEquipment"};
-				icon = "cat_fp_cooking";
+				attachmentSlots[] = {"DirectCookingA","DirectCookingB"};
+				icon = "cookingequipment";
 			};
 			class Fuel
 			{
@@ -223,7 +291,46 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
-				attachmentSlots[] = {"Rags","MedicalBandage","Paper","OakBark","BirchBark","Book"};
+				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
+				icon = "cat_fp_kindling";
+			};
+		};
+		hiddenSelections[] = {"ashes"};
+	};
+	class OvenIndoor: FireplaceBase
+	{
+		scope = 2;
+		displayName = "$STR_cfgvehicles_fireplace0";
+		descriptionShort = "$STR_cfgvehicles_fireplace1";
+		model = "\dz\gear\cooking\OvenIndoor.p3d";
+		overrideDrawArea = "8.0";
+		rotationFlags = 64;
+		openable = 0;
+		lootCategory = "Crafted";
+		itemSize[] = {4,4};
+		itemsCargoSize[] = {10,4};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA"};
+		class GUIInventoryAttachmentsProps
+		{
+			class CookingEquipment
+			{
+				name = "$STR_attachment_CookingEquipment0";
+				description = "";
+				attachmentSlots[] = {"DirectCookingA"};
+				icon = "cookingequipment";
+			};
+			class Fuel
+			{
+				name = "$STR_attachment_Fuel0";
+				description = "";
+				attachmentSlots[] = {"Firewood","WoodenStick"};
+				icon = "cat_fp_fuel";
+			};
+			class Kindling
+			{
+				name = "$STR_attachment_Kindling0";
+				description = "";
+				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
 				icon = "cat_fp_kindling";
 			};
 		};
@@ -245,7 +352,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 0.0;
 		stackedUnit = "";
-		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Book","OakBark","BirchBark"};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB","DirectCookingC"};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
 		canBeDigged = 0;
@@ -256,8 +363,8 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
-				attachmentSlots[] = {"CookingEquipment"};
-				icon = "cat_fp_cooking";
+				attachmentSlots[] = {"DirectCookingA","DirectCookingB","DirectCookingC"};
+				icon = "cookingequipment";
 			};
 			class Fuel
 			{
@@ -270,7 +377,7 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
-				attachmentSlots[] = {"Rags","MedicalBandage","Paper","OakBark","BirchBark","Book"};
+				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
 				icon = "cat_fp_kindling";
 			};
 		};
@@ -321,25 +428,26 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 2500;
+					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_green_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_green_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_green_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_green_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_green_holes_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
+				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 				};
 			};
@@ -358,25 +466,26 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\Barrel_blue_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\Barrel_blue_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\Barrel_blue_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\Barrel_blue_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\Barrel_blue_holes_destruct.rvmat"}}};
+					hitpoints = 2500;
+					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_blue_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_blue_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_blue_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_blue_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_blue_holes_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
+				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 				};
 			};
@@ -395,25 +504,26 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\Barrel_red_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\Barrel_red_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\Barrel_red_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\Barrel_red_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\Barrel_red_holes_destruct.rvmat"}}};
+					hitpoints = 2500;
+					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_red_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_red_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_red_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_red_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_red_holes_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
+				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 				};
 			};
@@ -432,25 +542,26 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\Barrel_yellow_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\Barrel_yellow_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\Barrel_yellow_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\Barrel_yellow_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\Barrel_yellow_holes_destruct.rvmat"}}};
+					hitpoints = 2500;
+					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_yellow_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_yellow_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_yellow_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_yellow_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_yellow_holes_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
+				class FragGrenade
 				{
 					class Health
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 					class Shock
 					{
-						damage = 0;
+						damage = 30.0;
 					};
 				};
 			};
@@ -465,9 +576,7 @@ class CfgVehicles
 		weight = 440;
 		itemSize[] = {4,3};
 		itemsCargoSize[] = {4,3};
-		inventorySlot[] = {"CookingEquipment"};
-		lootTag[] = {"Kitchen"};
-		lootCategory = "Tools";
+		inventorySlot[] = {"CookingEquipment","DirectCookingA","DirectCookingB","DirectCookingC"};
 		stackedRandom = 0;
 		canBeDigged = 1;
 		allowOwnedCargoManipulation = 1;
@@ -527,17 +636,16 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_FryingPan0";
 		descriptionShort = "$STR_CfgVehicles_FryingPan1";
 		model = "\dz\gear\cooking\FryingPan.p3d";
-		rotationFlags = 8;
+		rotationFlags = 2;
 		openable = 0;
 		weight = 750;
-		itemSize[] = {4,3};
+		itemSize[] = {5,3};
 		itemsCargoSize[] = {4,3};
 		fragility = 0.01;
-		lootTag[] = {"Kitchen"};
-		lootCategory = "Tools";
 		allowOwnedCargoManipulation = 1;
 		volume = 1000;
-		inventorySlot[] = {"CookingEquipment"};
+		varTemperatureMax = 200;
+		inventorySlot[] = {"CookingEquipment","DirectCookingA","DirectCookingB","DirectCookingC"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -612,8 +720,6 @@ class CfgVehicles
 		overrideDrawArea = "8.0";
 		weight = 330;
 		itemSize[] = {4,3};
-		lootTag[] = {"Camping"};
-		lootCategory = "Tools";
 		attachments[] = {"GasCanister"};
 		containerSlot = "GasCanister";
 		hiddenSelections[] = {"glow","zbytek","glow_on","glow_off"};
@@ -652,8 +758,6 @@ class CfgVehicles
 		rotationFlags = 12;
 		weight = 60;
 		itemSize[] = {1,2};
-		lootTag[] = {"Civilian","Farm"};
-		lootCategory = "Tools";
 		attachments[] = {"GasCanister"};
 		hiddenSelections[] = {"flame"};
 		containerSlot = "GasCanister";
@@ -681,12 +785,19 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_PetrolLighter0";
-		descriptionShort = "$STR_ITEMS_ROADFLARE_DESC";
+		descriptionShort = "$STR_CfgVehicles_PetrolLighter1";
 		model = "\dz\gear\cooking\petrol_lighter.p3d";
 		rotationFlags = 12;
 		absorbency = 0;
 		weight = 50;
-		itemSize[] = {1,2};
+		itemSize[] = {1,1};
+		stackedUnit = "ml";
+		quantityBar = 1;
+		varQuantityInit = 20.0;
+		varQuantityMin = 0.0;
+		varQuantityMax = 20.0;
+		varQuantityDestroyOnMin = 0;
+		destroyOnEmpty = 0;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -696,19 +807,6 @@ class CfgVehicles
 					hitpoints = 20;
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\petrol_lighter.rvmat"}},{0.7,{"DZ\gear\cooking\data\petrol_lighter.rvmat"}},{0.5,{"DZ\gear\cooking\data\petrol_lighter_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\petrol_lighter_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\petrol_lighter_destruct.rvmat"}}};
 				};
-			};
-		};
-		class PointLights
-		{
-			class PointLight
-			{
-				color[] = {1.0,0.6,0.5,1.0};
-				brightness = 1.0;
-				radius = 2;
-				dayLight = 0;
-				position = "light";
-				hitpoint = "bulb";
-				selection = "bulb";
 			};
 		};
 		class AnimEvents
@@ -732,10 +830,8 @@ class CfgVehicles
 		rotationFlags = 17;
 		physLayer = "item_large";
 		weight = 660;
-		itemSize[] = {1,9};
+		itemSize[] = {1,6};
 		suicideAnim = "pitchfork";
-		lootCategory = "Tools";
-		lootTag[] = {"Camping"};
 		inventorySlot[] = {"CookingTripod"};
 		class DamageSystem
 		{
@@ -778,6 +874,24 @@ class CfgNonAIVehicles
 				initPhase = 1;
 			};
 		};
+	};
+	class Proxydirect_cooking_a: ProxyAttachment
+	{
+		scope = 2;
+		inventorySlot[] = {"DirectCookingA"};
+		model = "\dz\gear\cooking\proxy\direct_cooking_a.p3d";
+	};
+	class Proxydirect_cooking_b: ProxyAttachment
+	{
+		scope = 2;
+		inventorySlot[] = {"DirectCookingB"};
+		model = "\dz\gear\cooking\proxy\direct_cooking_b.p3d";
+	};
+	class Proxydirect_cooking_c: ProxyAttachment
+	{
+		scope = 2;
+		inventorySlot[] = {"DirectCookingC"};
+		model = "\dz\gear\cooking\proxy\direct_cooking_c.p3d";
 	};
 	class ProxyBook_kniga: ProxyAttachment
 	{

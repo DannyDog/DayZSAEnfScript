@@ -91,6 +91,35 @@ class OffroadHatchback extends CarScript
 		return true;
 	}
 
+	override bool CanDisplayAttachmentCategory( string category_name )
+	{
+		//super
+		if ( !super.CanDisplayAttachmentCategory( category_name ) )
+		return false;
+		//
+	
+		category_name.ToLower();
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		
+		if ( category_name.Contains( "engine" ) )
+		{
+			if ( GetCarDoorsState("NivaHood") == CarDoorState.DOORS_CLOSED )
+				return false;
+		}
+				
+		return true;
+	}
+	
+	override bool CanDisplayCargo()
+	{
+		if ( !super.CanDisplayCargo() )
+			return false;
+		
+		if ( GetCarDoorsState("NivaTrunk") == CarDoorState.DOORS_CLOSED )
+			return false;
+		
+		return false;
+	}
 /*
 	int GetAnimationPhaseBySlot( string slotType )
 	{
@@ -411,6 +440,20 @@ class OffroadHatchback extends CarScript
 		}
 		
 		return false;		
+	}
+	
+	override int GetSeatIndexFromDoor( string pDoorSelection )
+	{
+		switch (pDoorSelection)
+		{
+			case "DoorsDriver":
+				return 0;
+				break;
+			case "DoorsCoDriver":
+				return 1;
+				break;
+		}
+		return -1;
 	}
 	
 	override void OnDebugSpawn()

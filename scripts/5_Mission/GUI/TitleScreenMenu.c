@@ -54,6 +54,11 @@ class TitleScreenMenu extends UIScriptedMenu
 		if( g_Game.GetGameState() != DayZGameState.CONNECTING )
 		{
 			#ifdef PLATFORM_CONSOLE
+			#ifdef PLATFORM_XBOX
+			#ifdef BUILD_EXPERIMENTAL
+				layoutRoot.FindAnyWidget("notification_root").Show(true);
+			#endif
+			#endif
 				g_Game.GamepadCheck();
 			#endif
 		}
@@ -63,6 +68,7 @@ class TitleScreenMenu extends UIScriptedMenu
 	
 	override void OnHide()
 	{
+		layoutRoot.FindAnyWidget("notification_root").Show(false);
 	}
 	
 	override void Update(float timeslice)

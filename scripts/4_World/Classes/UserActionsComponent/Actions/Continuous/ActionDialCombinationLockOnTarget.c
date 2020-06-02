@@ -14,12 +14,12 @@ class ActionDialCombinationLockOnTarget: ActionContinuousBase
 	{
 		m_CallbackClass = ActionDialCombinationLockOnTargetCB;
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_OPENITEM;
-		m_CommandUIDProne = DayZPlayerConstants.CMD_ACTIONMOD_OPENITEM;		
+		m_CommandUIDProne = DayZPlayerConstants.CMD_ACTIONMOD_OPENITEM;
 		m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_LOW;
 	}
 	
 	override void CreateConditionComponents()  
-	{	
+	{
 		m_ConditionItem = new CCINotPresent;
 		m_ConditionTarget = new CCTNonRuined( UAMaxDistances.DEFAULT );
 	}
@@ -38,7 +38,7 @@ class ActionDialCombinationLockOnTarget: ActionContinuousBase
 		{
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
 			combination_lock_text = construction_action_data.GetDialNumberText();
-		}		
+		}
 
 		return "#dial_combination_lock" + " " + combination_lock_text;	
 	}
@@ -49,24 +49,17 @@ class ActionDialCombinationLockOnTarget: ActionContinuousBase
 	}
 
 	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
-		Object targetObject = target.GetObject();
-		if ( targetObject && targetObject.CanUseConstruction() )
+	{
+		if (!target.GetObject())
+			return false;
+		
+		CombinationLock lock = CombinationLock.Cast( target.GetObject() );
+		if ( lock && lock.GetHierarchyParent() && Fence.Cast(lock.GetHierarchyParent()) )
 		{
-			Fence fence = Fence.Cast( targetObject );
+			ConstructionActionData construction_action_data = player.GetConstructionActionData();
+			construction_action_data.SetCombinationLock( lock );
 			
-			if ( fence && fence.IsLocked() )
-			{
-				string selection = fence.GetActionComponentName( target.GetComponentIndex() );
-				
-				if ( selection == "wall_interact" )
-				{
-					ConstructionActionData construction_action_data = player.GetConstructionActionData();
-					construction_action_data.SetCombinationLock( fence.GetCombinationLock() );
-					
-					return true;
-				}
-			}
+			return true;
 		}
 		
 		return false;
@@ -79,13 +72,13 @@ class ActionDialCombinationLockOnTarget: ActionContinuousBase
 		CombinationLock combination_lock =  construction_action_data.GetCombinationLock();
 		if ( combination_lock )
 		{
-			combination_lock.DialNextNumber();		
+			combination_lock.DialNextNumber();
 	
 			//check for unlock state
 			if ( !combination_lock.IsLockedOnGate() )
 			{
 				EntityAI target_entity = EntityAI.Cast( action_data.m_Target.GetObject() );
-				combination_lock.UnlockServer( action_data.m_Player, target_entity );
+				combination_lock.UnlockServer( action_data.m_Player, target_entity.GetHierarchyParent() );
 			}
 		}
 	}

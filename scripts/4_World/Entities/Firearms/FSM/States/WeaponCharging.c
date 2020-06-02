@@ -58,6 +58,10 @@ class WeaponCharging extends WeaponStateBase
 
 class WeaponCharging_Start extends WeaponStartAction
 {
+	override bool IsWaitingForActionFinish () 
+	{
+		return true; 
+	}
 };
 
 class WeaponCharging_BE extends WeaponStateBase

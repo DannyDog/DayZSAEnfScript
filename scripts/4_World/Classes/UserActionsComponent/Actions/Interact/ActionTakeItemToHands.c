@@ -128,6 +128,12 @@ class ActionTakeItemToHands: ActionInteractBase
 		callback.InitActionComponent();
 		action_data.m_Callback = callback;
 	}
+	
+		
+	override bool CanBeUsedOnBack()
+	{
+		return true;
+	}
 };
 
 class ActionSwapItemToHands: ActionTakeItemToHands
@@ -183,8 +189,8 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 	{
 		super.Start( action_data );
 		
-		Print("action_data.m_Target.GetObject() + " + action_data.m_Target.GetObject());
-		Print("action_data.m_MainItem + " + action_data.m_MainItem);
+		//Print("action_data.m_Target.GetObject() + " + action_data.m_Target.GetObject());
+		//Print("action_data.m_MainItem + " + action_data.m_MainItem);
 		
 		bool b1 = action_data.m_MainItem.ConfigGetString("physLayer") == "item_large";
 		action_data.m_MainItem.m_ThrowItemOnDrop = b1; //hack, should be redundant anyway

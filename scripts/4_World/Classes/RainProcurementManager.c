@@ -13,7 +13,7 @@ class RainProcurementManager
 	// ----------------------------------------------------------------------------------------
 	void InitRainProcurement()
 	{
-		m_IsUnderRoof = IsUnderRoof();
+		m_IsUnderRoof = MiscGameplayFunctions.IsUnderRoof(m_ProcuringItem);
 
 		//m_ProcuringItem.SetQuantity(0); /*set to 0 for debug purposses*/
 
@@ -47,7 +47,7 @@ class RainProcurementManager
 	}
 
 	// ----------------------------------------------------------------------------------------
-	bool IsUnderRoof() 
+	/*bool IsUnderRoof() 
 	{
 		vector minMax[2];
 		m_ProcuringItem.GetCollisionBox(minMax);
@@ -64,9 +64,14 @@ class RainProcurementManager
 		int contact_component;	
 	
 		return DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, NULL, NULL, m_ProcuringItem );	
-	}
+	}*/
 
 	// ----------------------------------------------------------------------------------------
+	bool IsRunning()
+	{
+		return m_UpdateTimer != null;
+	}
+	
 	void StopRainProcurement()
 	{
 		if( !m_IsUnderRoof )

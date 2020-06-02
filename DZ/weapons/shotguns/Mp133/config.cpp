@@ -45,7 +45,7 @@ class cfgWeapons
 		WeaponLength = 1.03525;
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.3,2.3,1.2};
 		cartridgeCreateTime[] = {0.55,0.82};
 		reloadSkips[] = {0.26,0.4,0.53,0.64,0.735};
 		drySound[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_dry",0.5,1,20};
@@ -178,6 +178,7 @@ class cfgWeapons
 		reloadAction = "ReloadMP133_grip";
 		shotAction = "ReloadMP133_grip_shot";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1.5,1.5,1};
 		class DamageSystem
 		{
 			class GlobalHealth

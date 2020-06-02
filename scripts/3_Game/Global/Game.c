@@ -28,7 +28,7 @@ class CGame
 		m_AnalyticsManagerClient = new AnalyticsManagerClient;
 		
 		// actual script version - increase by one when you make changes
-		StorageVersion(108);
+		StorageVersion(110);
 	}
 	
 	private void ~CGame();
@@ -572,9 +572,10 @@ class CGame
 	@param type of objects to create
 	@param pos position where to create object
 	@param iFlags are used to setup object and/ or spawn behavior
+	@param iRotation are used to setup object rotation on spawn (or default if not specified)
 	\return new Object
 	*/
-	proto native Object CreateObject_WIP( string type, vector pos, int iFlags );
+	proto native Object CreateObjectEx( string type, vector pos, int iFlags, int iRotation = RF_DEFAULT );
 	
 	proto native void   ObjectDelete( Object obj );
 	proto native void   ObjectDeleteOnClient( Object obj );
@@ -642,7 +643,7 @@ class CGame
 	
 	/**
 	\brief Returns current time from start of the game
-	@return time in milliseconds
+	@return time in seconds
 	*/
 	proto native float		GetTickTime();
 

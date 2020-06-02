@@ -234,14 +234,25 @@ class HandSelectAnimationOfForceSwapInHandsEvent extends HandGuardBase
 		{
 			hndDebugPrint("[hndfsm] HandSelectAnimationOfForceSwapInHandsEvent FSwap e=" + e.DumpToString());
 			
+			if( !es.m_Src2.IsValid() || !es.m_Src.IsValid() )
+			{
+				Error("[hndfsm] HandSelectAnimationOfForceSwapInHandsEvent - invalid item source");
+				return false;
+			}
+			
 			bool allow = false;
 			if (GameInventory.CanSwapEntities(es.GetSrc().GetItem(), es.m_Src2.GetItem()))
 				allow = true; // allow if ordinary swap
 			else if (es.m_Dst2)
 			{
 				if (!GameInventory.CanForceSwapEntities(es.GetSrc().GetItem(), null, es.m_Src2.GetItem(), es.m_Dst2))
+				{
 					Error("[hndfsm] HandSelectAnimationOfForceSwapInHandsEvent - no room at dst=" + InventoryLocation.DumpToStringNullSafe(es.m_Dst2));
-				allow = true;
+				}
+				else
+				{
+					allow = true;
+				}
 			}
 			
 			if (allow)

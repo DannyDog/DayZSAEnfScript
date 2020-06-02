@@ -271,18 +271,6 @@ class HumanAnimInterface
 
 	//!
 	proto native TAnimGraphEvent		BindEvent(string pEventName);
-
-
-	//-----------------------------------------------------
-	// Sets 
-	
-	//! call command
-	proto native void 					CallCommand(TAnimGraphCommand pCmd, int pUserInt, float pUserFloat);
-
-	//! set variable
-	proto native void 					SetFloat(TAnimGraphVariable pVar, float pValue);
-	proto native void 					SetInt(TAnimGraphVariable pVar, int pValue);
-	proto native void 					SetBool(TAnimGraphVariable pVar, bool pValue);
 }
 
 
@@ -1092,7 +1080,7 @@ class HumanCommandScript
 	proto native 	void	PostPhys_GetRotation(out float pOutRot[4]);        	//! quaternion in world space
 	proto native 	void	PostPhys_SetPosition(vector pInTransl);				//! vec3 in world space
 	proto native 	void	PostPhys_SetRotation(float pInRot[4]);				//! quaternion in world space
-	// native 	void	PostPhys_LockRotation();							//! do not process rotations !
+	proto native 	void	PostPhys_LockRotation();							//! do not process rotations !
 }
 
 
@@ -1217,7 +1205,7 @@ class Human extends Man
 	//!----- VEHICLE -----
 
 	//! starts command - vehicle
-	proto native 	HumanCommandVehicle			StartCommand_Vehicle(Transport pTransport, int pTransportPositionIndex, int pVehicleSeat);
+	proto native 	HumanCommandVehicle			StartCommand_Vehicle(Transport pTransport, int pTransportPositionIndex, int pVehicleSeat, bool fromUnconscious = false);
 
 	proto native 	HumanCommandVehicle			GetCommand_Vehicle();
 

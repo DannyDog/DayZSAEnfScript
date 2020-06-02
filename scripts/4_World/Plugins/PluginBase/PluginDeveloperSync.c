@@ -697,7 +697,7 @@ class PluginDeveloperSync extends PluginBase
 	void SendRPCAgents( PlayerBase player )
 	{
 		//write and send values
-		if ( player )
+		if ( ( player && player.GetIdentity() ) || ( player && !GetGame().IsMultiplayer() ) )
 		{
 			
 			//get agent pool data

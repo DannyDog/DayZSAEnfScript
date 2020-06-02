@@ -55,9 +55,12 @@ class DayZPlayerCamera3rdPersonVehicle extends DayZPlayerCameraBase
 		vector playerTransformWS[4];
 		m_pPlayer.GetTransform(playerTransformWS);
 
+		//! get vehicle and set it as ignore entity for camera collision solver
+		IEntity vehicle = m_pPlayer.GetParent();
+		pOutResult.m_CollisionIgnoreEntity = vehicle;
+		
 		//! update camera offset
 		vector cameraPosition = vector.Zero;
-		IEntity vehicle = m_pPlayer.GetParent();
 		if( vehicle )
 		{
 			vector vehiclePositionWS = vehicle.GetOrigin();

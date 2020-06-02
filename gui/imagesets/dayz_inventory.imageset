@@ -344,6 +344,12 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass directcooking {
+   Name "directcooking"
+   Pos 853 512
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass barbedwire {
    Name "barbedwire"
    Pos 343 1366

@@ -1,14 +1,17 @@
 MetaFileClass {
- Name "{1392F222D3EC22}Graphics/Textures/Water/envForest_co.edds"
- Author "fido"
- ChangeDate -154918362
+ Name "{001392F222D3EC22}Graphics/Textures/Water/envForest_co.dds"
+ Author "namalsk"
+ ChangeDate 876816533
  Configurations {
   DDSResourceClass PC {
    SourceFile "envForest_co.dds"
+   Conversion DXTCompression
   }
   DDSResourceClass XBOX_ONE : PC {
   }
   DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
   }
  }
 }

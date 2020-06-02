@@ -22,23 +22,16 @@ class ActionNextCombinationLockDialOnTarget: ActionInteractBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		Object targetObject = target.GetObject();
-		if ( targetObject && targetObject.CanUseConstruction() )
+		if (!target.GetObject())
+			return false;
+		
+		CombinationLock lock = CombinationLock.Cast( target.GetObject() );
+		if ( lock && lock.GetHierarchyParent() && Fence.Cast(lock.GetHierarchyParent()) )
 		{
-			Fence fence = Fence.Cast( targetObject );
+			ConstructionActionData construction_action_data = player.GetConstructionActionData();
+			construction_action_data.SetCombinationLock( lock );
 			
-			if ( fence && fence.IsLocked() && !player.GetItemInHands() )
-			{
-				string selection = fence.GetActionComponentName( target.GetComponentIndex() );
-				
-				if ( selection == "wall_interact" )
-				{
-					ConstructionActionData construction_action_data = player.GetConstructionActionData();
-					construction_action_data.SetCombinationLock( fence.GetCombinationLock() );
-					
-					return true;
-				}
-			}
+			return true;
 		}
 		
 		return false;

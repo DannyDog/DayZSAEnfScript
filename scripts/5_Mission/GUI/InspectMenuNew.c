@@ -317,9 +317,17 @@ class InspectMenuNew extends UIScriptedMenu
 			temperature = item_base.GetTemperature();
 		}
 		
-		if( temperature != 0)
+		if( temperature > 30 )
 		{
-			WidgetTrySetText(root_widget, "ItemTemperatureWidget",  "~ " + temperature.ToString() +  " " + "#inv_inspect_celsius", GetTemperatureColor( temperature ) );
+			if ( temperature > 100 )
+			{
+				temperature = 100 * Math.Floor( temperature / 100.0 );
+			}
+			else
+			{
+				temperature = 10 * Math.Floor( temperature / 10.0 );
+			}
+			WidgetTrySetText(root_widget, "ItemTemperatureWidget",  "#inv_inspect_about " + temperature.ToString() +  " " + "#inv_inspect_celsius", GetTemperatureColor( temperature ) );
 		}	
 		else
 		{

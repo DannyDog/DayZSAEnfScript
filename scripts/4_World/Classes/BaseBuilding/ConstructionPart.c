@@ -7,8 +7,9 @@ class ConstructionPart
 	bool 	m_IsBuilt;			//defines part build state
 	bool 	m_IsBase;			//defines if this part is the foundation of the whole construction
 	bool 	m_IsGate;			//defines part gate state
+	ref array<string> m_RequiredParts; //list of parts required by this part
 	
-	void ConstructionPart( string name, string part_name, string main_part_name, int id, bool is_built, bool is_base, bool is_gate )
+	void ConstructionPart( string name, string part_name, string main_part_name, int id, bool is_built, bool is_base, bool is_gate, array<string> required_parts )
 	{
 		m_Name = name;
 		m_PartName = part_name;
@@ -17,6 +18,7 @@ class ConstructionPart
 		m_IsBuilt = is_built;
 		m_IsBase = is_base;
 		m_IsGate = is_gate;
+		m_RequiredParts = required_parts;
 	}
 	
 	string GetName()
@@ -67,5 +69,10 @@ class ConstructionPart
 	bool IsGate()
 	{
 		return m_IsGate;
+	}
+	
+	array<string> GetRequiredParts()
+	{
+		return m_RequiredParts;
 	}
 }

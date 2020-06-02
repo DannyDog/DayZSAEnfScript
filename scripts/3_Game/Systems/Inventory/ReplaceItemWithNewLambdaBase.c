@@ -113,7 +113,16 @@ class ReplaceItemWithNewLambdaBase
 		if (WantCreateNewEntity())
 		{
 			VerifyItemTypeBySlotType(); //TODO move to child class just to be safe?
-			EntityAI new_item = GameInventory.LocationCreateLocalEntity(m_NewLocation, m_NewItemType,ECE_OBJECT_SWAP,RF_NONE); // create LOCAL new one in the place of old one
+			EntityAI new_item;
+			if (m_NewLocation.GetType() == InventoryLocationType.GROUND)
+			{
+				new_item = EntityAI.Cast(GetGame().CreateObjectEx(m_NewItemType,m_NewLocation.GetPos(),ECE_PLACE_ON_SURFACE|ECE_LOCAL));
+			}
+			else
+			{
+				new_item = GameInventory.LocationCreateLocalEntity(m_NewLocation, m_NewItemType,ECE_OBJECT_SWAP,RF_NONE); // create LOCAL new one in the place of old one
+			}
+			
 			hndDebugPrint("[inv] ReplaceItemWithNewLambdaBase Step D) Created new new_item=" + new_item);
 			if (new_item)
 			{

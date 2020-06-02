@@ -47,7 +47,7 @@ class CfgWeapons
 		barrelArmor = 800;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {1.1,1.1,1};
 		drySound[] = {"dz\sounds\weapons\firearms\m4a1\m4_dry",0.5,1,20};
 		reloadAction = "ReloadCZ61";
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\pm63rak\pm63rak_reload_0mod",0.8,1,20};

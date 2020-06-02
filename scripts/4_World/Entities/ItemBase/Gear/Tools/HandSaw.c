@@ -8,6 +8,6 @@ class HandSaw: Inventory_Base
 		AddAction(ActionMineBush);
 		AddAction(ActionSawPlanks);
 		//AddAction(ActionDestroyCombinationLock);
-		AddAction(ActionDestroyPart);
+		//AddAction(ActionDestroyPart);
 	}
 };

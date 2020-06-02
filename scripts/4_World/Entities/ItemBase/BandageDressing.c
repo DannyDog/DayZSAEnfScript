@@ -40,6 +40,11 @@ class BandageDressing extends ItemBase
 		
 		AddAction(ActionBandageTarget);
 		AddAction(ActionBandageSelf);
+		
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
 	}
 	
 	override float GetBandagingEffectivity()

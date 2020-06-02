@@ -16,9 +16,9 @@ EffectDef {
    RandomAngle 1
    Sort 0
    Velocity 0.3
-   VelocityRND 0.8
-   AirResistance 0.2
-   AirResistanceRND 1
+   VelocityRND 0
+   AirResistance 2
+   AirResistanceRND 0
    Wind 1
    AnimOnce 0
    AnimFPS 30
@@ -30,7 +30,7 @@ EffectDef {
     0 0.5961 0.5961 0.5961 1 0.2374 0.2471 0.2432
    }
    Alpha {
-    0 0 0.225 0.4 1 0
+    0 0 0.22693 0.18354 1 0
    }
    RotationSpeed {
     0 0 1 1

@@ -2,12 +2,14 @@ class ActionDestroyPartCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTime( UATimeSpent.DEFAULT_DESTROY );
+		m_ActionData.m_ActionComponent = new CAContinuousRepeat( UATimeSpent.DEFAULT_DESTROY/ActionDestroyPart.Cast(m_ActionData.m_Action).CYCLES );
 	}
 };
 
 class ActionDestroyPart: ActionContinuousBase
 {
+	static int CYCLES = 4;
+	
 	void ActionDestroyPart()
 	{
 		m_CallbackClass = ActionDestroyPartCB;
@@ -21,7 +23,7 @@ class ActionDestroyPart: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{	
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTNonRuined( UAMaxDistances.BASEBUILDING );
+		m_ConditionTarget = new CCTNone;
 	}
 		
 	override string GetText()
@@ -49,7 +51,7 @@ class ActionDestroyPart: ActionContinuousBase
 	override bool ActionConditionContinue( ActionData action_data )
 	{	
 		return DestroyCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
-	}	
+	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
@@ -61,7 +63,20 @@ class ActionDestroyPart: ActionContinuousBase
 		if ( construction.CanDestroyPart( construction_part.GetPartName() ) )
 		{
 			//build
-			construction.DestroyPartServer( action_data.m_Player, construction_part.GetPartName(), AT_DESTROY_PART );
+			string part_name = construction_part.GetPartName();
+			string zone_name;
+			DamageSystem.GetDamageZoneFromComponentName(base_building,part_name,zone_name);
+			
+			if (zone_name != "")
+			{
+				base_building.AddHealth(zone_name,"Health",-(base_building.GetMaxHealth(zone_name,"")/CYCLES));
+				if ( base_building.GetHealth(zone_name,"Health") < 1 )
+					construction.DestroyPartServer( action_data.m_Player, construction_part.GetPartName(), AT_DESTROY_PART );
+			}
+			else
+			{
+				construction.DestroyPartServer( action_data.m_Player, construction_part.GetPartName(), AT_DESTROY_PART );
+			}
 			
 			//add damage to tool
 			action_data.m_MainItem.DecreaseHealth( UADamageApplied.DESTROY, false );
@@ -86,7 +101,7 @@ class ActionDestroyPart: ActionContinuousBase
 				if ( construction_part )
 				{
 					//camera and position checks
-					if ( base_building.IsFacingPlayer( player, part_name ) && !player.GetInputController().CameraIsFreeLook() )
+					if ( !player.GetInputController().CameraIsFreeLook() && IsInReach(player, target, UAMaxDistances.DEFAULT) && !player.GetInputController().CameraIsFreeLook() )
 					{
 						//Camera check (client-only)
 						if ( camera_check )
@@ -99,7 +114,7 @@ class ActionDestroyPart: ActionContinuousBase
 								}
 							}
 						}
-
+						
 						ConstructionActionData construction_action_data = player.GetConstructionActionData();
 						construction_action_data.SetTargetPart( construction_part );
 						

@@ -78,4 +78,10 @@ class VehicleBattery : ItemBase
 		AddAction(ActionAttachPowerSourceToPanel);
 		AddAction(ActionPlugTargetIntoThis);
 	}
+	
+	override void OnQuantityChanged()
+	{
+		super.OnQuantityChanged();
+		m_EM.SetEnergy(m_VarQuantity / GetQuantityMax() * m_EM.GetEnergyMax());
+	}
 }

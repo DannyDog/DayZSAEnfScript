@@ -45,13 +45,18 @@ class ActionManagerClient: ActionManagerBase
 			m_CurrentActionData = m_PendingActionData;
 			
 			m_CurrentActionData.m_Action.Start(m_CurrentActionData);
-				if( m_CurrentActionData.m_Action.IsInstant() )
-					OnActionEnd();
+			
+			if ( m_CurrentActionData.m_Action.IsInstant() )
+				OnActionEnd();
+			
 			m_PendingActionData = null;
 		}
 		
 		if (m_CurrentActionData)
 		{
+			if (m_CurrentActionData.m_State != UA_AM_PENDING && m_CurrentActionData.m_State != UA_AM_REJECTED && m_CurrentActionData.m_State != UA_AM_ACCEPTED)
+				m_CurrentActionData.m_Action.OnUpdateClient(m_CurrentActionData);
+			
 			switch (m_CurrentActionData.m_State)
 			{
 				case UA_AM_PENDING:
@@ -59,19 +64,13 @@ class ActionManagerClient: ActionManagerBase
 			
 				case UA_AM_ACCEPTED:
 					// check pCurrentCommandID before start or reject 
-					if( m_ActionPossible && pCurrentCommandID != DayZPlayerConstants.COMMANDID_SWIM && pCurrentCommandID != DayZPlayerConstants.COMMANDID_LADDER )
+					if ( m_ActionPossible && pCurrentCommandID != DayZPlayerConstants.COMMANDID_SWIM && pCurrentCommandID != DayZPlayerConstants.COMMANDID_LADDER && ( !m_Player.IsRestrained() || m_CurrentActionData.m_Action.CanBeUsedInRestrain() ) )
 					{
-						if(!m_Player.IsRestrained() || m_CurrentActionData.m_Action.CanBeUsedInRestrain() )
-						{
-							m_CurrentActionData.m_State = UA_START;
-							m_CurrentActionData.m_Action.Start(m_CurrentActionData);
-							if( m_CurrentActionData.m_Action.IsInstant() )
-								OnActionEnd();
-						}
-						else
-						{
+						m_CurrentActionData.m_State = UA_START;
+						m_CurrentActionData.m_Action.Start(m_CurrentActionData);
+						
+						if ( m_CurrentActionData.m_Action.IsInstant() )
 							OnActionEnd();
-						}
 					}
 					else
 					{
@@ -92,19 +91,17 @@ class ActionManagerClient: ActionManagerBase
 					{
 						if ( GetGame().IsMultiplayer() && !m_CurrentActionData.m_Action.IsLocal() )
 						{
-							if ( !m_ActionWantEndRequest_Send )
+							if ( !m_ActionWantEndRequest_Send && ScriptInputUserData.CanStoreInputUserData() )
 							{
-								if (ScriptInputUserData.CanStoreInputUserData())
-								{
-									Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " ended, STS=" + m_Player.GetSimulationTimeStamp());
-									ScriptInputUserData ctx = new ScriptInputUserData;
-									ctx.Write(INPUT_UDT_STANDARD_ACTION_END_REQUEST);
-									ctx.Send();
-									m_ActionWantEndRequest_Send = true;
+								Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " ended, STS=" + m_Player.GetSimulationTimeStamp());
+								ScriptInputUserData ctx = new ScriptInputUserData;
+								ctx.Write(INPUT_UDT_STANDARD_ACTION_END_REQUEST);
+								ctx.Send();
+								
+								m_ActionWantEndRequest_Send = true;
 									
-									m_ActionWantEndRequest = false;
-									m_CurrentActionData.m_Action.EndRequest(m_CurrentActionData);
-								}
+								m_ActionWantEndRequest = false;
+								m_CurrentActionData.m_Action.EndRequest(m_CurrentActionData);
 							}
 						}
 						else
@@ -118,20 +115,17 @@ class ActionManagerClient: ActionManagerBase
 					{
 						if ( GetGame().IsMultiplayer() && !m_CurrentActionData.m_Action.IsLocal() )
 						{
-							if ( !m_ActionInputWantEnd_Send )
+							if ( !m_ActionInputWantEnd_Send && ScriptInputUserData.CanStoreInputUserData() )
 							{
-								if (ScriptInputUserData.CanStoreInputUserData())
-								{
-									Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " input ended, STS=" + m_Player.GetSimulationTimeStamp());
-									ScriptInputUserData ctxi = new ScriptInputUserData;
-									ctxi.Write(INPUT_UDT_STANDARD_ACTION_INPUT_END);
-									ctxi.Send();
+								Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " input ended, STS=" + m_Player.GetSimulationTimeStamp());
+								ScriptInputUserData ctxi = new ScriptInputUserData;
+								ctxi.Write(INPUT_UDT_STANDARD_ACTION_INPUT_END);
+								ctxi.Send();
 								
-									m_ActionInputWantEnd_Send = true;
+								m_ActionInputWantEnd_Send = true;
 									
-									m_ActionInputWantEnd = false;
-									m_CurrentActionData.m_Action.EndInput(m_CurrentActionData);
-								}
+								m_ActionInputWantEnd = false;
+								m_CurrentActionData.m_Action.EndInput(m_CurrentActionData);
 							}
 						}
 						else
@@ -147,8 +141,9 @@ class ActionManagerClient: ActionManagerBase
 				break;
 			}
 		}
+		
 #ifdef DEVELOPER
-		if( DeveloperFreeCamera.IsFreeCameraEnabled() )
+		if ( DeveloperFreeCamera.IsFreeCameraEnabled() )
 		{
 			m_ActionPossible = false;
 			ResetInputsActions();
@@ -156,7 +151,7 @@ class ActionManagerClient: ActionManagerBase
 		else
 		{
 #endif
-			if(!m_CurrentActionData)
+			if (!m_CurrentActionData)
 			{
 				if ( m_Player.IsRaised() )
 				{
@@ -222,42 +217,39 @@ class ActionManagerClient: ActionManagerBase
 	
 	void InputsUpdate()
 	{
-		if(m_CurrentActionData)
+		if (m_CurrentActionData)
 		{
-			if(!m_ActionInputWantEnd)
+			if (!m_ActionInputWantEnd)
 			{
 				ActionInput ai = m_CurrentActionData.m_Action.GetInput();
 				ai.Update();
-				if(m_Player.IsQBControl())
+				if (m_Player.IsQBControl())
 				{
-					if( ai.JustActivate() )
+					if ( ai.JustActivate() )
 						m_Player.SetActionEndInput(m_CurrentActionData.m_Action);
 				}
 				else
 				{
-					if( ai.WasEnded() )
+					if ( ai.WasEnded() && ( ai.GetInputType() == ActionInputType.AIT_CONTINUOUS || ai.GetInputType() == ActionInputType.AIT_CLICKCONTINUOUS ) )
 					{
-						if( ai.GetInputType() == ActionInputType.AIT_CONTINUOUS || ai.GetInputType() == ActionInputType.AIT_CLICKCONTINUOUS )
-						{
-							EndActionInput();
-						}
+						EndActionInput();
 					}
 				}
 			}
 		}
 		else
 		{
-			if( m_ActionsAvaibale )
+			if ( m_ActionsAvaibale )
 			{
 				for (int i = 0; i < m_RegistredInputsMap.Count();i++)
 				{
 					ActionInput ain = m_RegistredInputsMap.GetElement(i);
 					ain.Update();
 				
-					if( ain.JustActivate() )
+					if ( ain.JustActivate() )
 					{
 						ActionBase action = ain.GetAction();
-						if( action )
+						if ( action )
 						{
 							ActionStart(action, ain.GetUsedActionTarget(), ain.GetUsedMainItem());
 							break;

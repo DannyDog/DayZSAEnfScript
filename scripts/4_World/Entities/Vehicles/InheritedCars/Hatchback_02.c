@@ -38,7 +38,53 @@ class Hatchback_02 extends CarScript
 	{
 		return CarLightBase.Cast( ScriptedLightBase.CreateLight(Hatchback_02FrontLight) );
 	}
+
+	override bool CanReleaseAttachment( EntityAI attachment )
+	{
+		if( !super.CanReleaseAttachment( attachment ) )
+			return false;
+		
+		string attType = attachment.GetType();
+		
+		if ( EngineIsOn() || GetCarDoorsState("Hatchback_02_Hood") == CarDoorState.DOORS_CLOSED )
+		{
+			if ( attType == "CarRadiator" || attType == "CarBattery" || attType == "SparkPlug" )
+				return false;
+		}
+
+		return true;
+	}
+
+	override bool CanDisplayAttachmentCategory( string category_name )
+	{
+		//super
+		if ( !super.CanDisplayAttachmentCategory( category_name ) )
+		return false;
+		//
 	
+		category_name.ToLower();
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		
+		if ( category_name.Contains( "engine" ) )
+		{
+			if ( GetCarDoorsState("Hatchback_02_Hood") == CarDoorState.DOORS_CLOSED )
+				return false;
+		}
+				
+		return true;
+	}
+
+	override bool CanDisplayCargo()
+	{
+		if ( !super.CanDisplayCargo() )
+			return false;
+		
+		if ( GetCarDoorsState("Hatchback_02_Trunk") == CarDoorState.DOORS_CLOSED )
+			return false;
+		
+		return false;
+	}
+
 	override int GetCarDoorsState( string slotType )
 	{
 		CarDoor carDoor;

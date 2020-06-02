@@ -8,6 +8,11 @@ class Watchtower extends BaseBuildingBase
 	const float MIN_ACTION_DETECTION_ANGLE_RAD 		= 0.35;		//0.35 RAD = 20 DEG
 	const float MAX_ACTION_DETECTION_DISTANCE 		= 2.0;		//meters
 	
+	static const string BASE_VIEW_NAME				= "level_";
+	static const string BASE_WALL_NAME				= "_wall_";
+	static const int	MAX_WATCHTOWER_FLOORS		= 3;
+	static const int	MAX_WATCHTOWER_WALLS		= 3;
+	
 	void Watchtower()
 	{
 	}
@@ -16,6 +21,23 @@ class Watchtower extends BaseBuildingBase
 	{
 		return "WatchtowerKit";
 	}		
+	
+	override int GetMeleeTargetType()
+	{
+		return EMeleeTargetType.NONALIGNABLE;
+	}
+	
+	/*override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
+	{
+		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
+		
+		if (component == -1)
+		{
+			Print("EEHitBy: " + this + "; damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
+			Print("GetDamage " + damageResult.GetDamage("","Health"));
+			Print("GetHighestDamage " + damageResult.GetHighestDamage("Health"));
+		}
+	}*/
 	
 	//--- ATTACHMENT & CONDITIONS
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
@@ -54,6 +76,11 @@ class Watchtower extends BaseBuildingBase
 	override bool CanPutIntoHands( EntityAI parent )
 	{
 		return false;
+	}
+	
+	override bool CanBeRepairedToPristine()
+	{
+		return true;
 	}
 	
 	// --- INVENTORY
@@ -241,7 +268,50 @@ class Watchtower extends BaseBuildingBase
 
 		return true;
 	}	
+	
+	override bool CheckLevelVerticalDistance( float max_dist, string selection, PlayerBase player )
+	{
+		if ( player )
+		{
+			if ( selection.Contains( "level_1_" ) )
+				return CheckMemoryPointVerticalDistance( max_dist, "level_1", player );
+			
+			if ( selection.Contains( "level_2_" ) )
+				return CheckMemoryPointVerticalDistance( max_dist, "level_2", player );
+			
+			if ( selection.Contains( "level_3_" ) )
+				return CheckMemoryPointVerticalDistance( max_dist, "level_3", player );
+		}
+		return false;
+	}
 	// ---	
+	override void AfterStoreLoad()
+	{
+		super.AfterStoreLoad();
+		
+		UpdateVisuals();
+	}
+	
+	override void OnPartBuiltServer( string part_name, int action_id )
+	{
+		super.OnPartBuiltServer( part_name, action_id );
+		//update visuals (server)
+		UpdateVisuals();
+	}
+	
+	override void OnPartDismantledServer( notnull Man player, string part_name, int action_id )
+	{
+		super.OnPartDismantledServer( player, part_name, action_id );
+		//update visuals (server)
+		UpdateVisuals();
+	}
+	
+	override void OnPartDestroyedServer( Man player, string part_name, int action_id, bool destroyed_by_connected_part = false )
+	{
+		super.OnPartDestroyedServer( player, part_name, action_id );
+		//update visuals (server)
+		UpdateVisuals();
+	}
 	
 	//--- ACTION CONDITIONS
 	//returns dot product of player->construction direction based on existing/non-existing reference point
@@ -322,6 +392,44 @@ class Watchtower extends BaseBuildingBase
 		}
 
 		return false;
+	}
+	
+	override bool IsPlayerInside( PlayerBase player, string selection )
+	{
+		if ( selection != "")
+		{
+			CheckLevelVerticalDistance( MAX_FLOOR_VERTICAL_DISTANCE, selection, player );
+		}
+		vector player_pos = player.GetPosition();
+		vector tower_pos = GetPosition();
+		vector ref_dir = GetDirection();
+		ref_dir[1] = 0;
+		ref_dir.Normalize();
+		
+		vector min,max;
+		
+		min = -GetMemoryPointPos( "interact_min" );
+		max = -GetMemoryPointPos( "interact_max" );
+		
+		vector dir_to_tower = tower_pos - player_pos;
+		dir_to_tower[1] = 0;
+		float len = dir_to_tower.Length();
+		
+
+		dir_to_tower.Normalize();
+		
+		vector ref_dir_angle = ref_dir.VectorToAngles();
+		vector dir_to_tower_angle = dir_to_tower.VectorToAngles();
+		vector test_angles = dir_to_tower_angle - ref_dir_angle;
+		
+		vector test_position = test_angles.AnglesToVector() * len;
+		
+		if(test_position[0] > max[0] || test_position[0] < min[0] || test_position[2] > max[2] || test_position[2] < min[2] )
+		{
+			return false;
+		}
+
+		return true;
 	}
 	
 	override bool HasProperDistance( string selection, PlayerBase player )

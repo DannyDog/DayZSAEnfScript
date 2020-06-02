@@ -272,7 +272,6 @@ class Magazine : InventoryItemSuper
 	override int GetWeight()
 	{
 		float item_wetness = GetWet();
-		int ConfWeight = ConfigGetInt("weight");
 		int AmmoWeight = 0;
 		int AmmoTypeWeight = 0;
 		array<string> ammo_array = new array<string>;
@@ -285,7 +284,7 @@ class Magazine : InventoryItemSuper
 			AmmoTypeWeight = GetGame().ConfigGetInt("cfgMagazines " + AmmoType + " weight");
 			AmmoWeight = GetAmmoCount() * AmmoTypeWeight;
 		}
-		return Math.Round((item_wetness + 1) * ConfWeight + AmmoWeight);
+		return Math.Round((item_wetness + 1) * m_ConfigWeight + AmmoWeight);
 	}
 
 	/*

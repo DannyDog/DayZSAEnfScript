@@ -16,21 +16,21 @@ EffectDef {
    RandomAngle 1
    Sort 0
    Velocity 0.3
-   VelocityRND 0.8
-   AirResistance 0.2
-   AirResistanceRND 1
+   VelocityRND 0.1
+   AirResistance 1
+   AirResistanceRND 0.2
    Wind 1
    AnimOnce 0
    AnimFPS 30
    LifetimeByAnim 0
    RandomFrame 1
-   LifeTime 1
+   LifeTime 0.5
    LifeTimeRND 1
    Color {
     0 0.1647 0.1165 0.0865 1 0.2374 0.2471 0.2432
    }
    Alpha {
-    0 0 0.225 0.4 1 0
+    0 0 0.2247 0.13291 1 0
    }
    RotationSpeed {
     0 0 1 1

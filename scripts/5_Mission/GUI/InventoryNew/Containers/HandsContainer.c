@@ -987,7 +987,7 @@ class HandsContainer: Container
 		if ( entity1.IsInherited( ItemBase) && entity2.IsInherited( ItemBase ) )
 		{
 			ItemBase ent1 = ItemBase.Cast( entity1 );
-			if ( ent1.CanBeCombined( ItemBase.Cast( entity2 ), PlayerBase.Cast( m_player ) ) ) flags = flags | InventoryCombinationFlags.COMBINE_QUANTITY2;
+			if ( ent1.CanBeCombined( ItemBase.Cast( entity2 ) ) ) flags = flags | InventoryCombinationFlags.COMBINE_QUANTITY2;
 		}
 
 		Weapon_Base wpn;

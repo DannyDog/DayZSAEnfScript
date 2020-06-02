@@ -33,7 +33,7 @@ class cfgWeapons
 	class VSS_Base: Rifle_Base
 	{
 		scope = 0;
-		weight = 1990;
+		weight = 2600;
 		absorbency = 0.0;
 		repairableWithKits[] = {5,1};
 		repairCosts[] = {30.0,25.0};
@@ -46,7 +46,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.38;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.2,2.2,1.2};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\AK74\ak74_reload",0.8,1,20};

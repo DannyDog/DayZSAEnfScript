@@ -187,7 +187,12 @@ class HandGuardHasRoomForItem extends HandGuardBase
 			}
 
 			if (!GameInventory.LocationTestAddEntity(e.GetDst(), false, true, true, true, true))
-				Error("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + InventoryLocation.DumpToStringNullSafe(e.GetDst()));
+			{
+				hndDebugPrint("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + InventoryLocation.DumpToStringNullSafe(e.GetDst()));
+				//Error("[hndfsm] HandGuardHasRoomForItem - no room at dst=" + InventoryLocation.DumpToStringNullSafe(e.GetDst()));
+				return false;
+			}
+				
 			
 			if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 			{

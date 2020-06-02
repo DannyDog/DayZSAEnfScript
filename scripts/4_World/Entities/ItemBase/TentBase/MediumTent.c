@@ -2,13 +2,15 @@ class MediumTent extends TentBase
 {
 	void MediumTent()
 	{		
-		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC"), 0 );
+		m_ToggleAnimations.Insert( new ToggleAnimations("EntranceO", "EntranceC", OPENING_0), 0 );
 			
 		m_ShowAnimationsWhenPitched.Insert( "Body" );
-		m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
+		//m_ShowAnimationsWhenPitched.Insert( "EntranceO" );
 		m_ShowAnimationsWhenPitched.Insert( "Pack" );
 
 		m_ShowAnimationsWhenPacked.Insert( "Inventory" );
+		
+		m_HalfExtents = Vector(0.8, 0.15, 1.3);
 	}
 		
 	override void EEInit()
@@ -55,7 +57,7 @@ class MediumTent extends TentBase
 		{
 			if ( !m_ClutterCutter )
 			{
-				m_ClutterCutter = GetGame().CreateObject( "MediumTentClutterCutter", pb.GetLocalProjectionPosition(), false );	
+				m_ClutterCutter = GetGame().CreateObjectEx( "MediumTentClutterCutter", pb.GetLocalProjectionPosition(), ECE_PLACE_ON_SURFACE );	
 				m_ClutterCutter.SetOrientation( pb.GetLocalProjectionOrientation() );
 			}
 		}	
@@ -71,3 +73,11 @@ class MediumTent extends TentBase
 		return "mediumtent_deploy_SoundSet";
 	}	
 };
+
+class MediumTent_Green extends MediumTent {};
+class MediumTent_Orange extends MediumTent {};
+
+//placing classes
+class MediumTentPlacing extends MediumTent {};
+class MediumTent_GreenPlacing extends MediumTentPlacing {};
+class MediumTent_OrangePlacing extends MediumTentPlacing {};

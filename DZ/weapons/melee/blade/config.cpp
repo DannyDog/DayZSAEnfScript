@@ -1002,6 +1002,31 @@ class CfgVehicles
 		{
 			class SoundWeapon
 			{
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
+				class CutTies_end
+				{
+					soundSet = "CutTies_end_SoundSet";
+					id = 519;
+				};
+				class CutTies_loop
+				{
+					soundSet = "CutTies_loop_SoundSet";
+					id = 520;
+				};
 				class pickup
 				{
 					soundSet = "hatchet_pickup_SoundSet";

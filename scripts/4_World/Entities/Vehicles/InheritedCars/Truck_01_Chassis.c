@@ -26,7 +26,8 @@ class Truck_01_Chassis extends CarScript
 
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
-		Print( zone );
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		//Print( zone );
 	}
 
 	override bool CrewCanGetThrough( int posIdx )
@@ -169,6 +170,21 @@ class Truck_01_Chassis extends CarScript
 		
 		return false;		
 	}
+		
+	override int GetSeatIndexFromDoor( string pDoorSelection )
+	{
+		switch (pDoorSelection)
+		{
+			case "DoorsDriver":
+				return 0;
+				break;
+			case "DoorsCoDriver":
+				return 1;
+				break;
+		}
+		return -1;
+	}
+	
 
 	override bool IsVitalCarBattery()
 	{

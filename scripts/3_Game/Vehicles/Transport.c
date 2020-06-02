@@ -53,11 +53,19 @@ class Transport extends EntityAI
 
 	//! Performs transfer of player from vehicle into world from given position.
 	proto native Human CrewGetOut( int posIdx );
+	
+	//! Handles death of player in vehicle and awakes its physics if needed
+	proto native void CrewDeath( int posIdx );
 
 
 	override bool IsTransport()
 	{
 		return true;
+	}
+	
+	override bool IsIgnoredByConstruction()
+	{
+		return false;
 	}
 	
 	override bool IsHealthVisible()
@@ -102,5 +110,70 @@ class Transport extends EntityAI
 	bool CanReachDoorsFromSeat( string pDoorsSelection, int pCurrentSeat )
 	{
 		return false;
+	}
+	
+	int GetSeatIndexFromDoor( string pDoorSelection )
+	{
+		//Potientially could be fixed some other way, currently follows the unfortunate pattern that CanReachDoorsFromSeat has created
+		switch (pDoorSelection)
+		{
+			case "DoorsDriver":
+				return 0;
+				break;
+			case "DoorsCoDriver":
+				return 1;
+				break;
+			case "DoorsCargo1":
+				return 2;
+				break;
+			case "DoorsCargo2":
+				return 3;
+				break;
+		}
+		return -1;
+	}
+	
+	bool IsAreaAtDoorFree( int currentSeat, float maxAllowedObjHeight = 0.5, float horizontalExtents = 0.5, float playerHeight = 1.7 )
+	{
+		vector crewPos;
+		vector crewDir;
+		CrewEntryWS( currentSeat, crewPos, crewDir );
+		crewPos[1] = crewPos[1] + maxAllowedObjHeight + playerHeight * 0.5;
+		array<Object> excluded = new array<Object>;
+		array<Object> collided = new array<Object>;
+		excluded.Insert(this);
+		excluded.Insert(GetGame().GetPlayer());
+		GetGame().IsBoxColliding(crewPos, crewDir, Vector(horizontalExtents, playerHeight, horizontalExtents), excluded, collided); 
+		foreach (Object o : collided)
+		{
+			vector minmax[2];
+			if (o.GetCollisionBox(minmax))
+				return false;
+		}
+		return true;
+	}
+	
+	Shape DebugFreeAreaAtDoor( int currentSeat, float maxAllowedObjHeight = 0.5, float horizontalExtents = 0.5, float playerHeight = 1.7 )
+	{
+		vector crewPos;
+		vector crewDir;
+		CrewEntryWS( currentSeat, crewPos, crewDir );
+		crewPos[1] = crewPos[1] + maxAllowedObjHeight + playerHeight * 0.5;
+		array<Object> excluded = new array<Object>;
+		array<Object> collided = new array<Object>;
+		excluded.Insert(this);
+		excluded.Insert(GetGame().GetPlayer());
+		GetGame().IsBoxColliding(crewPos, crewDir, Vector(horizontalExtents, playerHeight, horizontalExtents), excluded, collided); 
+		int color = ARGB(100, 0, 255, 0);
+		foreach (Object o : collided)
+		{
+			vector minmax[2];
+			if (o.GetCollisionBox(minmax))
+			{
+				color = ARGB(100, 255, 0, 0);
+			}
+		}
+
+		return Debug.DrawCylinder(crewPos, horizontalExtents, playerHeight, color);
 	}
 };

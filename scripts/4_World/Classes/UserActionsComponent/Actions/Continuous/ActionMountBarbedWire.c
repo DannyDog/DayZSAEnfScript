@@ -37,7 +37,7 @@ class ActionMountBarbedWire: ActionContinuousBase
 	{	
 		Object targetObject = target.GetObject();
 		
-		if ( targetObject && targetObject.CanUseConstruction() )
+		if ( targetObject && targetObject.CanUseConstruction() && targetObject.CanUseConstructionBuild() )
 		{
 			BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
 			
@@ -46,7 +46,7 @@ class ActionMountBarbedWire: ActionContinuousBase
 			if ( selection.Length() > 0 )
 			{
 				BarbedWire barbed_wire = BarbedWire.Cast( base_building.FindAttachmentBySlotName( selection ) );
-				if ( barbed_wire && !barbed_wire.IsMounted() )
+				if ( barbed_wire && !barbed_wire.IsMounted() && !barbed_wire.IsRuined() )
 				{
 					m_SlotName = selection;
 					
@@ -65,6 +65,7 @@ class ActionMountBarbedWire: ActionContinuousBase
 		
 		//mount and refresh parent
 		barbed_wire.SetMountedState( true );
+		base_building.SetHealth(m_SlotName,"Health",barbed_wire.GetHealth("","Health")); //attachment slot names and damagezone names must match
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

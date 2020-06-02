@@ -257,5 +257,8 @@ class SmokeGrenadeBase extends Grenade_Base
 		RegisterNetSyncVariableInt("m_SmokeGrenadeState", ESmokeGrenadeState.NO_SMOKE, ESmokeGrenadeState.COUNT);
 	}
 	
+	override void OnExplode()
+	{}
+	
 	void ~SmokeGrenadeBase();
 }

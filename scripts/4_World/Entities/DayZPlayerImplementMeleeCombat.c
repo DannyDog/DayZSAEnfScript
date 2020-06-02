@@ -72,16 +72,18 @@ class DayZPlayerImplementMeleeCombat
 		m_TargetType		= EMeleeTargetType.ALIGNABLE;
 		m_AllTargetObjects 	= new array<Object>;
 
-		m_TargetableObjects = new array<typename>;
+		m_TargetableObjects = new array<typename>; //checks against CONFIG hierarchy
 		m_TargetableObjects.Insert(DayZPlayer);
 		m_TargetableObjects.Insert(DayZInfected);
 		m_TargetableObjects.Insert(DayZAnimal);
 
-		m_NonAlignableObjects = new array<typename>;		
+		m_NonAlignableObjects = new array<typename>;
 		m_NonAlignableObjects.Insert(Building);
 		m_NonAlignableObjects.Insert(Car);
 		m_NonAlignableObjects.Insert(CarWheel);
 		m_NonAlignableObjects.Insert(CarDoor);
+		m_NonAlignableObjects.Insert(TentBase);
+		m_NonAlignableObjects.Insert(BaseBuildingBase);
 	}
 
 	void ~DayZPlayerImplementMeleeCombat() {}
@@ -318,12 +320,14 @@ class DayZPlayerImplementMeleeCombat
 				if ( cursorTarget == m_TargetObject )
 				{
 					m_HitZoneName = cursorTarget.GetDamageZoneNameByComponentIndex(m_HitZoneIdx);
+					//Print("hit object: " + m_TargetObject + " | component idx: " + m_HitZoneIdx + " | hitzone name: " + m_HitZoneName);
 				}
 			}
 		}
 		else
 		{
 			m_HitZoneIdx = -1;
+			//Print("HitZoneSelection failed");
 		}
 	}
 

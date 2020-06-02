@@ -71,9 +71,10 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 				
 				if (GetGame().IsServer())
 				{
-					action_data.m_MainItem.AddQuantity( -m_SpentQuantity );
-					garden_base.Fertilize( action_data.m_Player, action_data.m_MainItem, val, selection );
+					action_data.m_MainItem.AddQuantity( -m_SpentQuantity );					
 				}
+				
+				garden_base.Fertilize( action_data.m_Player, action_data.m_MainItem, val, selection );
 
 				return UA_PROCESSING;
 			}

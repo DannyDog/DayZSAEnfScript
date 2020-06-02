@@ -16,3 +16,41 @@ class Container_Base extends ItemBase
 		return false;
 	}
 }
+
+class DeployableContainer_Base extends Container_Base
+{
+	protected vector m_HalfExtents; // The Y value contains a heightoffset and not the halfextent !!!
+	
+	void DeployableContainer_Base()
+	{
+		m_HalfExtents = vector.Zero;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTogglePlaceObject);
+		AddAction(ActionPlaceObject);
+	}
+	
+	/*
+	override bool CanReceiveItemIntoCargo (EntityAI cargo)
+	{
+		super.CanReceiveItemIntoCargo( cargo );
+		
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return true;
+	}
+	*/
+	
+	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
+	{
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
+		if ( newLevel == GameConstants.STATE_RUINED )
+			MiscGameplayFunctions.DropAllItemsInInventoryInBounds(this, m_HalfExtents);
+	}
+}

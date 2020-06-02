@@ -68,6 +68,8 @@ class WaterBottle extends Bottle_Base
 	
 	override void EEOnCECreate()
 	{
+		super.EEOnCECreate();
+
 		int rand = Math.RandomInt(0, 10);
 		if (rand > 5)
 		{

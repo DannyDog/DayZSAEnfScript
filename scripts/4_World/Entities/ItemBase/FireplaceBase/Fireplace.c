@@ -20,8 +20,11 @@ class Fireplace extends FireplaceBase
 	//attachments
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
+		if ( !super.CanReceiveAttachment(attachment, slotId) )
+			return false;
+
 		ItemBase item = ItemBase.Cast( attachment );
-		
+
 		//kindling items
 		if ( IsKindling ( item ) )
 		{
@@ -42,7 +45,22 @@ class Fireplace extends FireplaceBase
 				return true;
 			}
 		}
-		
+		if ( item.Type() == ATTACHMENT_FRYING_PAN )
+		{
+			if ( IsOven() ) 
+			{
+				return true;
+			}
+		}
+
+		// food on direct cooking slots
+		if ( IsOven() )
+		{
+			if ( item.IsKindOf( "Edible_Base" ) )
+			{
+				return true;
+			}
+		}
 		//tripod
 		if ( item.Type() == ATTACHMENT_TRIPOD )
 		{
@@ -124,7 +142,15 @@ class Fireplace extends FireplaceBase
 		{
 			return true;
 		}
-		
+		if ( item.Type() == ATTACHMENT_FRYING_PAN )
+		{
+			return true;
+		}
+
+		// food on direct cooking slots
+		if ( item.IsKindOf("Edible_Base") )
+			return true;
+
 		//tripod
 		if ( item.Type() == ATTACHMENT_TRIPOD && !GetCookingEquipment() )
 		{
@@ -134,7 +160,15 @@ class Fireplace extends FireplaceBase
 		//stones
 		if ( item.Type() == ATTACHMENT_STONES )
 		{
-			if ( IsOven() || IsBurning() )
+			if ( IsBurning() )
+				return false;
+
+			int stone_quantity = item.GetQuantity();
+			if ( HasStoneCircle() && ( stone_quantity <= 8 ) )
+			{
+				return false;
+			}
+			if ( IsOven() )
 			{
 				return false;
 			}
@@ -170,6 +204,22 @@ class Fireplace extends FireplaceBase
 			}
 		}
 		
+		// direct cooking slots
+		switch ( slot_name )
+		{
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = item_base;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = item_base;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = item_base;
+				break;
+		}
+
 		//TODO
 		//add SetViewIndex when attaching various attachments
 		
@@ -209,7 +259,36 @@ class Fireplace extends FireplaceBase
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
 			cooking_pot.RemoveAudioVisualsOnClient();
 		}
-		
+		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
+		{
+			//remove audio visuals
+			FryingPan frying_pan = FryingPan.Cast( item );
+			frying_pan.RemoveAudioVisualsOnClient();
+		}
+
+		// direct cooking slots
+		switch ( slot_name )
+		{
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = NULL;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = NULL;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = NULL;
+				break;
+		}
+
+		// food on direct cooking slots (removal of sound effects)
+		if ( item_base.IsKindOf( "Edible_Base" ) )
+		{
+			Edible_Base food_on_dcs = Edible_Base.Cast( item_base );
+			food_on_dcs.MakeSoundsOnClient( false );
+		}
+
 		//TODO
 		//add SetViewIndex when detaching various attachments
 		
@@ -226,7 +305,7 @@ class Fireplace extends FireplaceBase
 			return false;
 		}
 		
-		if ( HasAshes() || IsBurning() || IsOven() || IsInAnimPhase( ANIMATION_TRIPOD ) || IsInAnimPhase( ANIMATION_STONES ) || !IsCargoEmpty() )
+		if ( HasAshes() || IsBurning() || HasStones() || HasStoneCircle() || IsOven() || IsInAnimPhase( ANIMATION_TRIPOD ) || !IsCargoEmpty() )
 		{
 			return false;
 		}
@@ -247,18 +326,20 @@ class Fireplace extends FireplaceBase
 			return false;
 		}
 		
-		return true;
+		return super.CanReceiveItemIntoCargo( cargo );
 	}
-
+/*
 	override bool CanReleaseCargo( EntityAI cargo )
 	{
+
 		if ( IsBurning() )
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
+*/
 	
 	//hands
 	override bool CanPutIntoHands( EntityAI parent )
@@ -268,11 +349,35 @@ class Fireplace extends FireplaceBase
 			return false;
 		}
 		
-		if ( HasAshes() || IsBurning() || IsOven() || IsInAnimPhase( ANIMATION_TRIPOD ) || IsInAnimPhase( ANIMATION_STONES ) || !IsCargoEmpty() )
+		if ( HasAshes() || IsBurning() || HasStones() || HasStoneCircle() || IsOven() || IsInAnimPhase( ANIMATION_TRIPOD ) || !IsCargoEmpty() )
 		{
 			return false;
 		}
 		
+		return true;
+	}
+	
+	override bool CanDisplayAttachmentCategory( string category_name )
+	{
+		if( !super.CanDisplayAttachmentCategory( category_name ) )
+		{
+			return false;
+		}
+		
+		if ( IsOven() )
+		{
+			if ( category_name == "CookingEquipment" )
+				return false;
+			if ( category_name == "DirectCooking" )
+				return true;
+		}
+		else
+		{
+			if ( category_name == "CookingEquipment" )
+				return true;
+			if ( category_name == "DirectCooking" )
+				return false;
+		}
 		return true;
 	}
 	
@@ -287,6 +392,81 @@ class Fireplace extends FireplaceBase
 	{
 		GetGame().ObjectDelete( clutter_cutter );
 	}	
+	
+	override void RefreshFireplacePhysics()
+	{
+		//Oven
+		if ( IsOven() )
+		{
+			AddProxyPhysics( ANIMATION_OVEN );
+		}
+		else
+		{
+			RemoveProxyPhysics( ANIMATION_OVEN );
+		}
+		
+		//Tripod
+		if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) )
+		{
+			AddProxyPhysics( ANIMATION_TRIPOD );
+		}
+		else
+		{
+			RemoveProxyPhysics( ANIMATION_TRIPOD );
+		}	
+	}
+
+	//on store save/load
+	override void OnStoreSave( ParamsWriteContext ctx )
+	{   
+		super.OnStoreSave(ctx);
+		
+		if( GetGame().SaveVersion() >= 110 )
+		{
+			// save stone circle state
+			ctx.Write( m_HasStoneCircle );
+			
+			// save stone oven state
+			ctx.Write( m_IsOven );
+		}
+	}
+	
+	override bool OnStoreLoad( ParamsReadContext ctx, int version )
+	{
+		if ( !super.OnStoreLoad(ctx, version) )
+			return false;
+
+		if( version >= 110 )
+		{
+			// read stone circle state
+			if( !ctx.Read( m_HasStoneCircle ) )
+			{
+				m_HasStoneCircle = false;
+				return false;
+			}
+			// read stone oven state
+			if( !ctx.Read( m_IsOven ) )
+			{
+				m_IsOven = false;
+				return false;
+			}
+		}		
+		return true;
+	}
+	
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();
+		
+		if ( IsBurning() )
+		{
+			if ( !m_ClutterCutter )
+			{
+				m_ClutterCutter = GetGame().CreateObjectEx( OBJECT_CLUTTER_CUTTER, GetPosition(), ECE_PLACE_ON_SURFACE );
+				m_ClutterCutter.SetOrientation( GetOrientation() );
+			}
+		}
+	}
 	
 	//================================================================
 	// IGNITION ACTION
@@ -330,7 +510,7 @@ class Fireplace extends FireplaceBase
 	override void OnIgnitedThis( EntityAI fire_source )
 	{	
 		//remove grass
-		Object cc_object = GetGame().CreateObject ( OBJECT_CLUTTER_CUTTER , GetPosition() );
+		Object cc_object = GetGame().CreateObjectEx( OBJECT_CLUTTER_CUTTER , GetPosition(), ECE_PLACE_ON_SURFACE );
 		cc_object.SetOrientation ( GetOrientation() );
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( DestroyClutterCutter, 200, false, cc_object );
 		
@@ -373,7 +553,7 @@ class Fireplace extends FireplaceBase
 		}
 		
 		//check roof
-		if ( !HasEnoughRoomForFireAbove() )
+		if ( !IsCeilingHighEnoughForSmoke() && IsOnInteriorSurface() )
 		{
 			return false;
 		}
@@ -384,10 +564,21 @@ class Fireplace extends FireplaceBase
 			return false;
 		}
 
-		//check wetness/rain/wind
-		if ( IsWet() || IsRainingAbove() || IsWindy() )
+		//check wetness
+		if ( IsWet() )
 		{
 			return false;
+		}
+
+		// check if the fireplace isnt below a roof
+		//  excluding this check whein oven stage
+		if ( !MiscGameplayFunctions.IsUnderRoof( this ) && !IsOven() )
+		{
+			// if not, check if there is strong rain or wind
+			if ( IsRainingAbove() || IsWindy() )
+			{
+				return false;
+			}
 		}
 		
 		return true;	
@@ -396,13 +587,13 @@ class Fireplace extends FireplaceBase
 	//================================================================
 	// FIREPLACE ENTITY
 	//================================================================	
-	static Fireplace IgniteEntityAsFireplace( notnull EntityAI entity,notnull EntityAI fire_source )
+	static Fireplace IgniteEntityAsFireplace( notnull EntityAI entity, notnull EntityAI fire_source )
 	{
 		//get player
 		PlayerBase player = PlayerBase.Cast( fire_source.GetHierarchyRootPlayer() );
 		
 		//create fireplace
-		Fireplace fireplace = Fireplace.Cast( GetGame().CreateObject ( "Fireplace" , player.GetPosition() ) );
+		Fireplace fireplace = Fireplace.Cast( GetGame().CreateObjectEx( "Fireplace" , entity.GetPosition(), ECE_PLACE_ON_SURFACE ) );
 		
 		//attach
 		if ( !GetGame().IsMultiplayer() )		//clear inventory reservation (single player)
@@ -432,8 +623,8 @@ class Fireplace extends FireplaceBase
 	
 	static bool CanIgniteEntityAsFireplace( notnull EntityAI entity )
 	{
-		//check roof
-		if ( !FireplaceBase.HasEntityEnoughRoomForFireAbove( entity ) )
+		//check ceiling (enough space for smoke)
+		if ( MiscGameplayFunctions.IsUnderRoof( entity, FireplaceBase.MIN_CEILING_HEIGHT ) && IsEntityOnInteriorSurface( entity ) )
 		{
 			return false;
 		}
@@ -445,9 +636,19 @@ class Fireplace extends FireplaceBase
 		}
 
 		//check wetness/rain/wind
-		if ( FireplaceBase.IsEntityWet( entity ) || FireplaceBase.IsRainingAboveEntity( entity ) || FireplaceBase.IsWindy() )
+		if ( FireplaceBase.IsEntityWet( entity ) )
 		{
 			return false;
+		}
+
+		// check if the fireplace isnt below a roof
+		if ( !MiscGameplayFunctions.IsUnderRoof( entity ) )
+		{
+			// if not, check if there is strong rain or wind
+			if ( FireplaceBase.IsRainingAboveEntity( entity ) || FireplaceBase.IsWindy() )
+			{
+				return false;
+			}
 		}
 
 		return true;	
@@ -468,10 +669,13 @@ class Fireplace extends FireplaceBase
 		
 		AddAction(ActionPlaceFireplaceIntoBarrel);
 		AddAction(ActionPlaceFireplaceIndoor);
+		AddAction(ActionPlaceOvenIndoor);
 		//AddAction(ActionLightItemOnFire);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionPlaceObject);
 		AddAction(ActionBuildOven);
 		AddAction(ActionDismantleOven);
+		AddAction(ActionBuildStoneCircle);
+		AddAction(ActionDismantleStoneCircle);
 	}
 }

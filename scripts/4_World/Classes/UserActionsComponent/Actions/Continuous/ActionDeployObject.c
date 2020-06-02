@@ -174,12 +174,14 @@ class ActionDeployObject: ActionContinuousBase
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
+	{
+		//Print("XXXXXX");
 		//Client
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
 			if ( player.IsPlacingLocal() )
-			{		
+			{
+				//Print("------");
 				if ( !player.GetHologramLocal().IsColliding() )
 				{
 					if ( item.CanBePlaced(player, player.GetHologramLocal().GetProjectionEntity().GetPosition()) )
@@ -193,7 +195,28 @@ class ActionDeployObject: ActionContinuousBase
 		//Server
 		return true; 
 	}
-			
+	
+	/*override bool ActionConditionContinue( ActionData action_data )
+	{
+		//Client
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			if ( player.IsPlacingLocal() )
+			{
+				if ( !player.GetHologramLocal().IsColliding() )
+				{
+					if ( item.CanBePlaced(player, player.GetHologramLocal().GetProjectionEntity().GetPosition()) )
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		//Server
+		return true; 
+	}*/
+	
 	override void OnStartClient( ActionData action_data )
 	{		
 		PlaceObjectActionData poActionData;
@@ -262,7 +285,15 @@ class ActionDeployObject: ActionContinuousBase
 		EntityAI entity_for_placing = action_data.m_MainItem;
 		vector position = action_data.m_Player.GetLocalProjectionPosition();
 		vector orientation = action_data.m_Player.GetLocalProjectionOrientation();
-				
+		
+		action_data.m_Player.GetHologramServer().EvaluateCollision(action_data.m_MainItem);
+		//action_data.m_Player.GetHologramServer().SetIsColliding(true); //REMOVE
+		if (action_data.m_Player.GetHologramServer().IsColliding())
+		{
+			//Print("!!!IsColliding");
+			//return;
+		}
+		
 		if ( GetGame().IsMultiplayer() )
 		{
 			action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
@@ -271,11 +302,10 @@ class ActionDeployObject: ActionContinuousBase
 			
 			entity_for_placing.OnPlacementComplete( action_data.m_Player );
 		}
-			
+		
 		//local singleplayer
 		if ( !GetGame().IsMultiplayer())
-		{			
-			
+		{
 			MoveEntityToFinalPosition( action_data, position, orientation );
 			
 			action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
@@ -298,7 +328,10 @@ class ActionDeployObject: ActionContinuousBase
 		poActionData = PlaceObjectActionData.Cast(action_data);
 		if ( !poActionData.m_AlreadyPlaced )
 		{
+			EntityAI entity_for_placing = action_data.m_MainItem;
 			action_data.m_Player.PlacingCancelLocal();
+			action_data.m_Player.PredictiveTakeEntityToHands( entity_for_placing );
+			action_data.m_Player.LockHandsUntilItemHeld();
 		}
 	}
 	
@@ -318,7 +351,7 @@ class ActionDeployObject: ActionContinuousBase
 			if ( GetGame().IsMultiplayer() )
 			{	
 				action_data.m_Player.PlacingCancelServer();
-				action_data.m_Player.ServerTakeEntityToHands( entity_for_placing );
+				//action_data.m_Player.ServerTakeEntityToHands( entity_for_placing );
 				action_data.m_MainItem.SoundSynchRemoteReset();
 			}
 			else

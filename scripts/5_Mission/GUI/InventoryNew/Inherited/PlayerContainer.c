@@ -305,7 +305,7 @@ class PlayerContainer: CollapsibleContainer
 					}
 					else
 					{
-						bool draggable = !m_Player.GetInventory().HasInventoryReservation( item, null ) && !m_Player.GetInventory().IsInventoryLocked() && item.GetInventory().CanRemoveEntity();
+						bool draggable = !m_Player.GetInventory().HasInventoryReservation( item, null ) && !m_Player.GetInventory().IsInventoryLocked() && item.GetInventory().CanRemoveEntity() && !m_Player.IsItemsToDelete();
 						ItemManager.GetInstance().SetWidgetDraggable( w, draggable );
 					}
 				}

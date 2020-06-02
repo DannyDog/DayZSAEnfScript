@@ -58,13 +58,11 @@ class MissionGameplay extends MissionBase
 		m_ToggleHudTimer			= new Timer(CALL_CATEGORY_GUI);
 		
 		SyncEvents.RegisterEvents();
-		PlayerBase.Event_OnPlayerDeath.Insert( Pause );
 	}
 	
 	void ~MissionGameplay()
 	{
 		DestroyInventory();
-		PlayerBase.Event_OnPlayerDeath.Remove( Pause );
 		PPEffects.ResetAll();
 		//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(this.UpdateDebugMonitor);
 	#ifndef NO_GUI

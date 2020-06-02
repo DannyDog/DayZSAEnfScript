@@ -83,6 +83,7 @@ class UATimeSpent
  */
 class UAMaxDistances
 {
+	const float SMALL = 1.0;
 	const float DEFAULT = 2.0;
 	const float LADDERS = 1.3;
 	const float BASEBUILDING = 20;
@@ -110,3 +111,11 @@ class UADamageApplied
 	const float SAW_LOCK 	= 34;
 	const float SKINNING 	= 1;
 };
+
+/**@class	Constants for water type
+ */
+class UAWaterType
+{
+	const string ALL = "water";
+	const string FRESH = "fresh_water";
+}

@@ -10727,4 +10727,19 @@ class CfgVehicles
 		scope = 1;
 		model = "\dz\structures\specific\towers\Tower_TC4_Top.p3d";
 	};
+	class Land_Cableway_Cart: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\dz\structures\Specific\Cableway\Cableway_Cart.p3d";
+	};
+	class Land_Cableway_Cart2: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\dz\structures\Specific\Cableway\Cableway_Cart2.p3d";
+	};
+	class Land_Cableway_Cart3: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\dz\structures\Specific\Cableway\Cableway_Cart3.p3d";
+	};
 };

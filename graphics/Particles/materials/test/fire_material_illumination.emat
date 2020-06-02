@@ -1,9 +1,0 @@
-material "Graphics/Particles/materials/test/fire_material_illumination.emat": ParticleSprite
-{
-	AlbedoMap "{51D532D7F1F843D}Graphics/Particles/sprites/fire_anim_02.edds"
-	Emissive "1 1 1 1"
-	BlendMode 2
-	TileU 16
-	TileV 2
-}
-

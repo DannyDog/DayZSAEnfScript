@@ -52,8 +52,12 @@ class Pot extends Bottle_Base
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}	
-		if ( !parent.IsKindOf("Pot") )
+		if( !super.CanPutInCargo( parent ) )
+		{
+			return false;
+		}	
+		
+		if ( !parent.IsKindOf( "FryingPan" ) || !parent.IsKindOf( this.GetType() ) )
 		{
 			return true;
 		}
@@ -63,11 +67,16 @@ class Pot extends Bottle_Base
 	
 	override bool CanReceiveItemIntoCargo (EntityAI cargo)
 	{
-		if( !super.CanReceiveItemIntoCargo(cargo) ) {return false;}	
-		if ( cargo.IsKindOf(this.GetType()) || cargo.FindAttachmentBySlotName("CookingEquipment"))
+		if( !super.CanReceiveItemIntoCargo( cargo ) )
 		{
 			return false;
 		}
+
+		if ( cargo.IsKindOf( "FryingPan" ) || cargo.IsKindOf( this.GetType() ) )
+		{
+			return false;
+		}
+
 		return true;
 	}
 	

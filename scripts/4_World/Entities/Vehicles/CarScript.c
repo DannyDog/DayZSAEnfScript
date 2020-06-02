@@ -363,32 +363,17 @@ class CarScript extends Car
 		
 		UpdateHeadlightState();
 		UpdateLights();
+
 	}
-	
+
 	override bool CanReleaseAttachment( EntityAI attachment )
 	{
-		if( !super.CanReleaseAttachment( attachment ) )
+		if ( !super.CanReleaseAttachment( attachment ) )
 			return false;
-		
+
 		if ( IsMoving() )
 			return false;
 
-		//GetInventoryOwner()
-				
-		//if ( !GetGame().IsServer() || !GetGame().IsMultiplayer() )
-		//{
-			for( int i =0; i < CrewSize(); i++ )
-			{
-				Human crew = CrewMember( i );
-				if ( !crew )
-					continue;
-
-				PlayerBase player;
-				if ( Class.CastTo(player, crew ) )
-					return false;
-			}
-		//}
-		
 		return true;
 	}
 
@@ -1650,6 +1635,8 @@ class CarScript extends Car
 	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
 		if ( newLevel ==  GameConstants.STATE_RUINED )
 		{
 			EffectSound sound_plug;

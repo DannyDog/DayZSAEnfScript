@@ -19,7 +19,7 @@ class GardenPlot extends GardenBase
 
 		if ( !m_ClutterCutter )
 		{		
-			m_ClutterCutter = GetGame().CreateObject( "ClutterCutter6x6", GetPosition(), false );
+			m_ClutterCutter = GetGame().CreateObjectEx( "ClutterCutter6x6", GetPosition(), ECE_PLACE_ON_SURFACE );
 			m_ClutterCutter.SetOrientation( GetOrientation() );
 		}
 
@@ -93,7 +93,7 @@ class GardenPlot extends GardenBase
 			
 			if (!m_ClutterCutter)
 			{		
-				m_ClutterCutter = GetGame().CreateObject( "ClutterCutter6x6", GetPosition(), false );
+				m_ClutterCutter = GetGame().CreateObjectEx( "ClutterCutter6x6", GetPosition(), ECE_PLACE_ON_SURFACE );
 				m_ClutterCutter.SetOrientation( orientation );
 			}
 		}

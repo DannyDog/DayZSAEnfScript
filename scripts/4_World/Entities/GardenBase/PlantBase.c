@@ -666,7 +666,7 @@ class PlantBase extends ItemBase
 			if ( m_CurrentPlantMaterialQuantity > 0.0 )
 			{
 				vector pos = GetPosition();
-				ItemBase item = ItemBase.Cast( GetGame().CreateObject( "PlantMaterial", pos ) );
+				ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( "PlantMaterial", pos, ECE_PLACE_ON_SURFACE ) );
 				item.SetQuantity( m_CurrentPlantMaterialQuantity * 1000.0 );
 			}
 			
@@ -685,7 +685,7 @@ class PlantBase extends ItemBase
 		for ( int i = 0; i < m_CropsCount; i++ )
 		{
 			vector pos = player.GetPosition();
-			ItemBase item = ItemBase.Cast( GetGame().CreateObject( m_CropsType, pos ) );
+			ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( m_CropsType, pos, ECE_PLACE_ON_SURFACE ) );
 			item.SetQuantity( item.GetQuantityMax() );
 			
 			if ( IsSpoiled() )

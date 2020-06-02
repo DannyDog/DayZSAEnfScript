@@ -46,7 +46,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.24;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.2,1.2,1};
+		swayModifier[] = {1.3,1.3,0.8};
 		drySound[] = {"dz\sounds\weapons\firearms\colt1911\Colt1911_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\colt1911\Colt1911_reload",0.8,1,20};
 		hiddenSelections[] = {"camoGround"};

@@ -1,8 +1,7 @@
 class Hologram
 {
-	protected ItemBase 			m_Parent; 		
-	protected EntityAI 			m_Projection; 	
-	protected ItemBase 			m_ProjectionIB; 	
+	protected ItemBase 			m_Parent;
+	protected EntityAI 			m_Projection;
 	protected PlayerBase 		m_Player;
 	protected ProjectionTrigger m_ProjectionTrigger;
 
@@ -34,8 +33,16 @@ class Hologram
 	protected float 			m_SlopeTolerance;
 	protected bool				m_AlignToTerrain;
 	protected vector 			m_YawPitchRollLimit;
+	protected int				m_ContactComponent;
 	
 	protected ref set<string> 	m_SelectionsToRefresh 			= new set<string>;
+	
+	// Watchtower correction variables	
+	// These watchtower component names should be corrected when colliding with them as they are supposed to be "trigger boxes", not colliders
+	static const protected ref array<string>	m_WatchtowerIgnoreComponentNames	= new array<string>;
+	
+	// These watchtower components are supposed to be trigger boxes, but should block placement on them (currently only the boxes above the stairs)
+	static const protected ref array<string>	m_WatchtowerBlockedComponentNames	= new array<string>;
 
 	/*
 	Shape m_DebugPlugArrowLeftClose;
@@ -49,32 +56,55 @@ class Hologram
 		m_Player = player;
 		m_Parent = item;
 		m_Projection = NULL;
-		m_ProjectionIB = NULL;
 		m_ProjectionTrigger = NULL;
 		m_UpdatePosition = true;
 		m_Rotation = "0 0 0";
+		m_ContactComponent = -1;
 		
+		// If the static names are empty, generate the needed names
+		// Refer to their definitions to see why these are required
+		if (m_WatchtowerIgnoreComponentNames.Count() == 0)
+		{
+			string baseStringBegin = Watchtower.BASE_VIEW_NAME;
+			string baseIgnoreStringEnd = Watchtower.BASE_WALL_NAME;
+			int floors = Watchtower.MAX_WATCHTOWER_FLOORS;
+			int walls = Watchtower.MAX_WATCHTOWER_WALLS;
+			string compName;
+			
+			for (int i = 1; i < floors + 1; ++i)
+			{
+				compName = baseStringBegin + i.ToString();
+				for (int j = 1; j < walls + 1; ++j)
+					m_WatchtowerIgnoreComponentNames.Insert(compName + baseIgnoreStringEnd + j.ToString());
+				
+				if (i != 1)
+					m_WatchtowerBlockedComponentNames.Insert(compName);
+				else
+					m_WatchtowerIgnoreComponentNames.Insert(compName);
+
+			}
+		}
+
 		EntityAI projection_entity;
 		
 		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{	
-			projection_entity = EntityAI.Cast( GetGame().CreateObject( ProjectionBasedOnParent(), pos ) );
+			projection_entity = EntityAI.Cast( GetGame().CreateObjectEx( ProjectionBasedOnParent(), pos, ECE_PLACE_ON_SURFACE ) );
 			SetProjectionEntity( projection_entity );
-			SetProjectionIB( projection_entity );
 			SetAnimations();
 		}
 		else
 		{
-			projection_entity = EntityAI.Cast( GetGame().CreateObject( ProjectionBasedOnParent(), pos, true, false, false ) );
-			SetProjectionEntity( projection_entity );	
-			SetProjectionIB( projection_entity );	
+			projection_entity = EntityAI.Cast( GetGame().CreateObjectEx( ProjectionBasedOnParent(), pos, ECE_TRACE|ECE_LOCAL ) );
+			SetProjectionEntity( projection_entity );
 			SetAnimations();
 			CreateTrigger();
 		}
+		//Print(ProjectionBasedOnParent());
 		
-		if ( !projection_entity.IsInherited(GardenBase)) // Garden plot is a special case
+		if ( !projection_entity.IsInherited(GardenBase) && ItemBase.Cast(projection_entity) ) // Garden plot is a special case
 		{
-			GetProjectionIB().SetIsHologram( true );
+			ItemBase.Cast(GetProjectionEntity()).SetIsHologram( true );
 		}
 		
 		string config_path_slope = "CfgVehicles" + " " + GetProjectionEntity().GetType() + " " + "slopeTolerance";
@@ -153,25 +183,33 @@ class Hologram
 
 	string ProjectionBasedOnParent()
 	{
-		ItemBase item_in_hands = m_Parent;
-
-		if( !item_in_hands )
+		return GetProjectionName(m_Parent);
+	}
+	
+	string GetProjectionName(ItemBase item)
+	{
+		if( !item )
 			return "";
 		
-		if ( item_in_hands && item_in_hands.CanMakeGardenplot() )
+		if ( item.CanMakeGardenplot() )
 		{
 			return "GardenPlot";
 		}
 		
 		//Camping & Base building
-		if ( item_in_hands.IsInherited( TentBase ) || item_in_hands.IsInherited( FenceKit ) || item_in_hands.IsInherited( WatchtowerKit ) )
+		if ( item.IsInherited( TentBase ) || item.IsInherited( FenceKit ) || item.IsInherited( WatchtowerKit ) )
 		{
-			return item_in_hands.GetType() + "Placing";
+			return item.GetType() + "Placing";
 		}
 		
-		return item_in_hands.GetType();
+		return item.GetType();
 	}
-		
+	
+	static bool DoesHaveProjection(ItemBase item)
+	{
+		return item && (item.IsDeployable() || item.CanMakeGardenplot() || item.IsInherited(DeployableContainer_Base));
+	}
+	
 	// update loop for visuals and collisions of the hologram
 	void UpdateHologram( float timeslice )
 	{		
@@ -299,65 +337,65 @@ class Hologram
 	void RefreshTrigger()
 	{
 		vector min_max[2];
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 
 		m_ProjectionTrigger.SetPosition( GetProjectionPosition() );
 		m_ProjectionTrigger.SetOrientation( GetProjectionOrientation() );
 		m_ProjectionTrigger.SetExtents(min_max[0], min_max[1]);	
 	}
 
-	void EvaluateCollision()
+	void EvaluateCollision(ItemBase action_item = null)
 	{	
-		if ( IsHidden() || IsCollidingBBox() || IsCollidingPlayer() || IsCollidingBase() || IsCollidingGPlot() || IsCollidingZeroPos() || IsBehindObstacle() || IsCollidingAngle() )
+		//if ( IsHidden() || IsCollidingBBox() || IsCollidingPlayer() || IsCollidingBase() || IsCollidingGPlot() || IsCollidingZeroPos() || IsBehindObstacle() || IsCollidingAngle() )
+		if ( IsHidden() || IsCollidingBBox(action_item) || IsCollidingPlayer() || IsClippingRoof() || !IsBaseViable() || IsCollidingGPlot() || IsCollidingZeroPos() || IsCollidingAngle() )
 		{
 			SetIsColliding( true );							
 		}	
+		else if ( m_Projection.IsInherited( TrapSpawnBase ))
+		{
+			TrapSpawnBase trap_spawn_base;
+			Class.CastTo( trap_spawn_base,  m_Projection );
+			SetIsColliding( !trap_spawn_base.IsPlaceableAtPosition( m_Projection.GetPosition() ) );
+		}
+		else if ( m_Projection.IsInherited( TrapBase ))
+		{
+			TrapBase trap_base;
+			Class.CastTo(trap_base,  m_Projection);
+			SetIsColliding( !trap_base.IsPlaceableAtPosition( m_Projection.GetPosition() ) );
+		}
 		else
 		{
-			if( IsProjectionTrap() )
-			{
-				if( m_Projection.IsInherited( TrapSpawnBase ) )
-				{
-					TrapSpawnBase trap_spawn_base;
-					Class.CastTo(trap_spawn_base,  m_Projection );
-					SetIsColliding( !trap_spawn_base.IsPlaceableAtPosition( m_Projection.GetPosition() ) );
-				}
-				else
-				{
-					TrapBase trap_base;
-					Class.CastTo(trap_base,  m_Projection );
-					SetIsColliding( !trap_base.IsPlaceableAtPosition( m_Projection.GetPosition() ) );
-				}
-			}
-			else
-			{
-				if( IsSurfaceWater( m_Projection.GetPosition() ) )
-				{
-					SetIsColliding( true );
-				}
-				else
-				{
-					SetIsColliding( false );
-				}				
-			}
+			SetIsColliding( IsSurfaceWater( m_Projection.GetPosition() ) );		
 		}
+	}
+	
+	bool IsClippingRoof()
+	{
+		//Some locations allow you to look up and attempt placing the hologram on the bottom side of a floor - most notably the floors of a watchtower
+		//This check also prevents some very unnatural placements
+		return !GetGame().IsServer() && m_Projection.GetPosition()[1] > GetGame().GetCurrentCameraPosition()[1];
 	}
 	
 	bool IsCollidingAngle()
 	{
 		vector projection_orientation = m_Projection.GetOrientation();
 		
+		return Math.AbsFloat( projection_orientation[1] ) > m_YawPitchRollLimit[1] || Math.AbsFloat( projection_orientation[2] ) > m_YawPitchRollLimit[2];
+		
+		/*
 		if ( Math.AbsFloat( projection_orientation[1] ) > m_YawPitchRollLimit[1] || Math.AbsFloat(  projection_orientation[2] ) > m_YawPitchRollLimit[2] )
 		{
+			Print("IsCollidingAngle");
 			return true;
 		}
 		else
 		{
 			return false;
 		}
+		*/
 	}
 	
-	bool IsCollidingBBox()
+	bool IsCollidingBBox(ItemBase action_item = null)
 	{
 		vector center;
 		vector relative_ofset; //we need to lift BBox, because it is calculated from the bottom of projection, and not from the middle
@@ -368,32 +406,41 @@ class Hologram
 		ref array<Object> excluded_objects = new array<Object>;
 		ref array<Object> collided_objects = new array<Object>;
 		
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		relative_ofset[1] = ( min_max[1][1] - min_max[0][1] ) / 2;
 		center = m_Projection.GetPosition() + relative_ofset + absolute_ofset;
 		edge_length = GetCollisionBoxSize( min_max );
 		excluded_objects.Insert( m_Projection );
+		if (action_item)
+		{
+			excluded_objects.Insert( action_item );
+		}
 
-		if ( GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) )
+		//add is construction check
+		// Base building objects behave in a way that causes this test to generate false positives
+		return GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && (!collided_objects[0].IsInherited(BaseBuildingBase) || IsFenceOrWatchtowerKit()));
+		
+		/*
+		if ( GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && !collided_objects[0].IsInherited(BaseBuildingBase) )
 		{	
-			/*
 			for( int i = 0; i < collided_objects.Count(); i++ )
 			{
 				Object obj_collided = collided_objects[i];
 				Print("obj_collided with: " + obj_collided );
 			}
-			*/
-			
+								
 			return true;	
 		}
-		else
-		{
-			return false;			
-		}
+		return false;
+		*/			
 	}
 
-	bool IsCollidingBase()
+	bool IsBaseViable()
 	{
+		//This function is not required to solve server-side fixes for clipping, saves calculations and potential false negatives
+		if (GetGame().IsServer())
+			return true;
+		
 		/*
 		if(m_DebugPlugArrowLeftClose)
 		{
@@ -451,85 +498,63 @@ class Hologram
 		Object obj_left_far;
 		Object obj_right_far;
 
+		//Not sure what the intention here was before, but it boiled down to a very bloated version of what you see here right now
 		DayZPhysics.RaycastRV( from_left_close, to_left_close_down, contact_pos_left_close, contact_dir_left_close, contact_component_left_close, results_left_close, m_Projection, m_Projection, false, false );
+		if (results_left_close.Count() > 0)
+			obj_left_close = results_left_close[results_left_close.Count() - 1];
+
 		DayZPhysics.RaycastRV( from_right_close, to_right_close_down, contact_pos_right_close, contact_dir_right_close, contact_component_right_close, results_right_close,m_Projection, m_Projection, false, false );
+		if (results_right_close.Count() > 0)	
+			obj_right_close = results_right_close[results_right_close.Count() - 1];
+
 		DayZPhysics.RaycastRV( from_left_far, to_left_far_down, contact_pos_left_far, contact_dir_left_far, contact_component_left_far, results_left_far, m_Projection, m_Projection, false, false );
+		if (results_left_far.Count() > 0) 
+			obj_left_far = results_left_far[results_left_far.Count() - 1];
+
 		DayZPhysics.RaycastRV( from_right_far, to_right_far_down, contact_pos_right_far, contact_dir_right_far, contact_component_right_far, results_right_far, m_Projection, m_Projection, false, false );
-
-		//Print("results_left_close.Count(): " + results_left_close.Count() );
-		for( int j = 0; j < results_left_close.Count(); j++ )
-		{
-			obj_left_close = results_left_close[j];
-			//Print("obj_left_close hit: " + obj_left_close );
-		}
-
-		//Print("results_right_close.Count(): " + results_right_close.Count() );
-		for( int k = 0; k < results_right_close.Count(); k++ )
-		{
-			obj_right_close = results_right_close[k];
-			//Print("obj_right_close hit: " + obj_right_close );
-		}
-	
-		//Print("results_left_far.Count(): " + results_left_far.Count() );
-		for( int l = 0; l < results_left_far.Count(); l++ )
-		{
-			obj_left_far = results_left_far[l];
-			//Print("obj_left_far hit: " + obj_left_far );
-		}
-
-		//Print("results_right_far.Count(): " + results_right_far.Count() );
-		for( int m = 0; m < results_right_far.Count(); m++ )
-		{
-			obj_right_far = results_right_far[m];
-			//Print("obj_right_far hit: " + obj_right_far );
-		}
-			
-		if ( IsBaseStatic( obj_left_close, obj_right_close, obj_left_far, obj_right_far ) )
-		{
-			if ( IsBaseIntact( obj_left_close, obj_right_close, obj_left_far, obj_right_far ) )
-			{
-				if ( IsBaseFlat( contact_pos_left_close, contact_pos_right_close, contact_pos_left_far, contact_pos_right_far ) )
-				{ 	
-					//Print("The base is static object and the base is intact and the base is flat");	
-					return false;	
-				}
-			}
-		}
+		if (results_right_far.Count() > 0)
+			obj_right_far = results_right_far[results_right_far.Count() - 1];
 		
-		//Print("The base is either not static object or the base is not intact or the base is not flat");
-		return true;
+		return IsBaseIntact( obj_left_close, obj_right_close, obj_left_far, obj_right_far ) && IsBaseStatic( obj_left_close ) &&  IsBaseFlat( contact_pos_left_close, contact_pos_right_close, contact_pos_left_far, contact_pos_right_far );
 	}
 
 	bool IsCollidingGPlot()
 	{
+		return m_IsCollidingGPlot;
+		/*
 		if ( m_IsCollidingGPlot )
 		{
-			//Print("NOT suitable terrain for garden plot");
+			Print("NOT suitable terrain for garden plot");
 			return true; 
 		}
 		else
 		{
-			//Print("Suitable terrain for garden plot");
+			Print("Suitable terrain for garden plot");
 			return false;
 		}
+		*/
 	}
 
 	bool IsCollidingZeroPos()
 	{
 		vector origin = Vector(0, 0, 0,);
-
+		return GetProjectionPosition() == origin;
+		
+		/*
 		if ( GetProjectionPosition() == origin )
 		{
-			//Print("NOT able to place, projection in origin");
+			Print("NOT able to place, projection in origin");
 			return true; 
 		}
 		else
 		{
-			//Print("Projection not in origin");
+			Print("Projection not in origin");
 			return false;
 		}
+		*/
 	}
 	
+	//This check is currently not in use
 	bool IsBehindObstacle()
 	{			
 		vector starting_pos = GetParentEntity().GetPosition();
@@ -648,49 +673,24 @@ class Hologram
 		}
 	}
 	*/
-	bool IsBaseStatic( Object under_left_close, Object under_right_close, Object under_left_far, Object under_right_far )
+	
+	//This function only takes one of the found objects since IsBaseIntact already verifies that all of them are either null or the same object
+	bool IsBaseStatic( Object objectToCheck )
 	{	
 		//check if the object below hologram is dynamic object. Dynamic objects like barrels can be taken to hands 
-		//and item which had been placed on top of them, would stay floating in the air	
-		if( under_left_close != NULL )
-		{
-			if( !under_left_close.IsBuilding() && !under_left_close.IsPlainObject() )
-			{
-				//Print("base is NOT static under_left_close");
-				return false;
-			}
-		}
-		else if( under_right_close != NULL )
-		{
-			if( !under_right_close.IsBuilding() && !under_right_close.IsPlainObject() )
-			{
-				//Print("base is NOT static under_right_close");
-				return false;
-			}
-		}
-		else if( under_left_far != NULL )
-		{
-			if( !under_left_far.IsBuilding() && !under_left_far.IsPlainObject() )
-			{
-				//Print("base is NOT static under_left_far");
-				return false;
-			}
-		}
-		else if( under_right_far != NULL )
-		{
-			if( !under_right_far.IsBuilding() && !under_right_far.IsPlainObject() )
-			{
-				//Print("base is NOT static under_right_far");
-				return false;
-			}
-		}
-
-		//Print("base is static");
-		return true;
+		//and item which had been placed on top of them, would stay floating in the air			
+		return objectToCheck == null || IsObjectStatic(objectToCheck);
+	}
+	
+	bool IsObjectStatic( Object obj )
+	{
+		return obj.IsBuilding() || obj.IsPlainObject() || (obj.IsInherited(BaseBuildingBase) && (m_WatchtowerBlockedComponentNames.Find(obj.GetActionComponentName(m_ContactComponent, "view")) == -1));
 	}
 
 	bool IsBaseIntact( Object under_left_close, Object under_right_close, Object under_left_far, Object under_right_far )
 	{
+		return (under_left_close == under_right_close && under_right_close == under_left_far && under_left_far == under_right_far);
+		/*
 		if( under_left_close == under_right_close && under_right_close == under_left_far && under_left_far == under_right_far )
 		{
 			//Print("base is intact");
@@ -701,10 +701,11 @@ class Hologram
 			//Print("base is NOT intact");
 			return false;			
 		}
+		*/
 	}
 
 	bool IsBaseFlat( vector contact_pos_left_close, vector contact_pos_right_close, vector contact_pos_left_far, vector contact_pos_right_far )
-	{
+	{		
 		vector projection_pos = GetProjectionPosition();
 		float slope_pos_left_close = projection_pos[1] - contact_pos_left_close[1];
 		float slope_pos_right_close = projection_pos[1] - contact_pos_right_close[1];
@@ -712,29 +713,26 @@ class Hologram
 		float slope_pos_right_far = projection_pos[1] - contact_pos_right_far[1];
 		
 		/*
-		Print(slope_pos_left_close);
-		Print(slope_pos_right_close);
-		Print(slope_pos_left_far);
-		Print(slope_pos_right_far);
+		Print(GetProjectionPosition());
+				
+		Print(contact_pos_left_close);
+		Print(contact_pos_right_close);
+		Print(contact_pos_left_far);
+		Print(contact_pos_right_far);
 		*/
 		
-		if( slope_pos_left_close < m_SlopeTolerance )
+		return slope_pos_left_close < m_SlopeTolerance && slope_pos_right_close < m_SlopeTolerance && slope_pos_left_far < m_SlopeTolerance && slope_pos_right_far < m_SlopeTolerance;
+		
+		/*
+		if( slope_pos_left_close < m_SlopeTolerance && slope_pos_right_close < m_SlopeTolerance && slope_pos_left_far < m_SlopeTolerance && slope_pos_right_far < m_SlopeTolerance )
 		{
-			if( slope_pos_right_close < m_SlopeTolerance )
-			{
-				if( slope_pos_left_far < m_SlopeTolerance )
-				{
-					if(  slope_pos_right_far < m_SlopeTolerance )
-					{
-						//Print("base is flat");
-						return true;	
-					}					
-				}				
-			}			
+			Print("base is flat");
+			return true;	
 		}
-
-		//Print("base is NOT flat");
-		return false;			
+		
+		Print("base is NOT flat");
+		return false;	
+		*/		
 	}
 	
 	/*
@@ -782,16 +780,44 @@ class Hologram
 			}
 		}				
 	}
-		
+	
 	EntityAI PlaceEntity( EntityAI entity_for_placing )
-	{	
+	{
+		//string-based comparison
+		if ( entity_for_placing.IsInherited( TentBase ) || entity_for_placing.IsInherited( FenceKit ) || entity_for_placing.IsInherited( WatchtowerKit ) ) //special little snowflakes
+		{
+			//condition redundant, return if you want
+			/*
+			string type_string = GetProjectionEntity().GetType();
+			type_string = type_string.Substring(0,type_string.IndexOf("Placing"));
+			if( type_string == entity_for_placing.GetType() ) //done via string matching, not inheritence. Consistent with previous implementation (...)
+			*/
+				return entity_for_placing;
+		}
+		//inheritance comparison
 		if( !GetProjectionEntity().IsKindOf( m_Parent.GetType() ))
 		{
-			Class.CastTo(entity_for_placing, GetGame().CreateObject( m_Projection.GetType(), m_Projection.GetPosition() ));
+			Class.CastTo(entity_for_placing, GetGame().CreateObjectEx( m_Projection.GetType(), m_Projection.GetPosition(), ECE_PLACE_ON_SURFACE ));
 		}
-					
+		
 		return entity_for_placing;
-	}		
+	}
+	
+	protected void GetProjectionCollisionBox( out vector min_max[2] )
+	{
+		if (!m_Projection.GetCollisionBox( min_max ) && m_Projection.MemoryPointExists("box_placing_min"))
+		{
+			min_max[0] = m_Projection.GetMemoryPointPos( "box_placing_min" );
+			min_max[1] = m_Projection.GetMemoryPointPos( "box_placing_max" );
+			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[0]) , 0.8,Colors.RED, ShapeFlags.ONCE);
+			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[1]), 0.8,Colors.RED, ShapeFlags.ONCE);
+		}
+		else
+		{
+			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[0]) , 0.8,Colors.GREEN, ShapeFlags.ONCE);
+			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[1]), 0.8,Colors.GREEN, ShapeFlags.ONCE);
+		}
+	}	
 		
 	protected vector GetCollisionBoxSize( vector min_max[2] )
 	{
@@ -807,7 +833,7 @@ class Hologram
 	vector GetLeftCloseProjectionVector()
 	{
 		vector min_max[2];
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 
 		return min_max[0];
 	}
@@ -815,7 +841,7 @@ class Hologram
 	vector GetRightCloseProjectionVector()
 	{
 		vector min_max[2];
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		min_max[1][1] = min_max[0][1];
 		min_max[1][2] = min_max[0][2];
 
@@ -825,7 +851,7 @@ class Hologram
 	vector GetLeftFarProjectionVector()
 	{
 		vector min_max[2];
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		min_max[0][2] = min_max[1][2];
 
 		return min_max[0];
@@ -834,7 +860,7 @@ class Hologram
 	vector GetRightFarProjectionVector()
 	{
 		vector min_max[2];
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		min_max[1][1] = min_max[0][1]; 
 
 		return min_max[1];
@@ -842,16 +868,8 @@ class Hologram
 
 	bool IsSurfaceWater( vector position )
 	{
-		if( GetGame().SurfaceIsSea( position[0], position[2] ) )
-		{
-			return true;
-		}
-		else if( GetGame().SurfaceIsPond( position[0], position[2] ) )
-		{
-			return true;
-		}
-		
-		return false;
+		CGame game = GetGame();
+		return game.SurfaceIsSea( position[0], position[2] ) || game.SurfaceIsPond( position[0], position[2] );
 	}
 
 	protected vector GetProjectionEntityPosition( PlayerBase player )
@@ -878,10 +896,22 @@ class Hologram
 		vector from = GetGame().GetCurrentCameraPosition();
 		vector to = from + ( GetGame().GetCurrentCameraDirection() * ( max_projection_dist + camera_to_player_distance ) );
 		vector contact_pos;
-		int contact_component;
 		set<Object> hit_object = new set<Object>;
+		
+		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, m_ContactComponent, hit_object, player, m_Projection, false, false );
+		
+		static const float raycastOriginOffsetOnFail = 0.25;
+		static const float minDistFromStart = 0.01;
+		// Camera isn't correctly positioned in some cases, leading to raycasts hitting the object directly behind the camera
+		if ((hit_object.Count() > 0) && (vector.DistanceSq(from, contact_pos) < minDistFromStart))
+		{
+			from = contact_pos + GetGame().GetCurrentCameraDirection() * raycastOriginOffsetOnFail;
+			DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, m_ContactComponent, hit_object, player, m_Projection, false, false );
+		}
+		
+		if ((hit_object.Count() > 0) && hit_object[0].IsInherited(Watchtower))
+			contact_pos = CorrectForWatchtower( m_ContactComponent, contact_pos, player, hit_object[0] );
 
-		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, hit_object, player, m_Projection, false, false );
 
 		float player_to_projection_distance = vector.Distance( player.GetPosition(), contact_pos );
 		vector player_to_projection_vector;
@@ -916,17 +946,40 @@ class Hologram
 			
 		return contact_pos;
 	}
+	
+	bool IsFenceOrWatchtowerKit()
+	{
+		return m_Parent.IsInherited(FenceKit) || m_Parent.IsInherited(WatchtowerKit) || m_Parent.IsInherited(TentBase);
+	}
+	
+	vector CorrectForWatchtower( int contactComponent, vector contactPos, PlayerBase player, Object hitObject )
+	{
+		// Raycast has hit one of the trigger boxes that show construction prompts, so projection would be floating in the air without this correction
+		if ( m_WatchtowerIgnoreComponentNames.Find(hitObject.GetActionComponentName( contactComponent, "view" )) != -1 )
+			contactPos[1] = hitObject.GetActionComponentPosition(contactComponent, "view")[1];
+		
+		return contactPos;
+	}
+	
+	/*
+	bool ShouldContinueRaycasting( vector from, vector contactPos, set<Object> hitObjects, PlayerBase player, int contactComponent )
+	{		
+		static const float minDistFromStart = 0.01;
+		
+		Print((hitObjects.Count() > 0));
+		Print(vector.DistanceSq(from, contactPos) < minDistFromStart);
+		if (hitObjects.Count() > 0)
+			Print(hitObjects[0].IsInherited( Watchtower ));
+		Print( m_BaseBuildingIgnoreComponents.Find(contactComponent) != -1 );
+		
+		return (hitObjects.Count() > 0) && (vector.DistanceSq(from, contactPos) > 1.0) && ((vector.DistanceSq(from, contactPos) < minDistFromStart) || (hitObjects[0].IsInherited( Watchtower ) && m_BaseBuildingIgnoreComponents.Find(contactComponent) != -1));
+	}
+	*/
 
+	//This function is currently unused
 	bool IsProjectionTrap()
 	{
-		if( m_Projection.IsInherited( TrapBase ) || m_Projection.IsInherited( TrapSpawnBase ) )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return m_Projection.IsInherited( TrapBase ) || m_Projection.IsInherited( TrapSpawnBase );
 	}
 
 	float GetProjectionDiameter()
@@ -936,7 +989,7 @@ class Hologram
 		vector diagonal;
 		vector min_max[2];
 
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		diagonal = GetCollisionBoxSize( min_max );
 		diameter = diagonal.Length();
 
@@ -950,7 +1003,7 @@ class Hologram
 		vector diagonal;
 		vector min_max[2];
 
-		m_Projection.GetCollisionBox( min_max );
+		GetProjectionCollisionBox( min_max );
 		diagonal = GetCollisionBoxSize( min_max );
 		diameter = diagonal.Length();
 		radius = diameter / 2;
@@ -981,16 +1034,6 @@ class Hologram
 	EntityAI GetProjectionEntity()
 	{
 		return m_Projection;
-	}
-	
-	void SetProjectionIB( EntityAI projection )
-	{
-		m_ProjectionIB = ItemBase.Cast( projection );
-	}
-
-	ItemBase GetProjectionIB()
-	{
-		return m_ProjectionIB;
 	}
 	
 	void SetIsFloating( bool is_floating )
@@ -1074,7 +1117,9 @@ class Hologram
 		vector ground;
 		vector player_to_projection_vector;
 		float projection_diameter = GetProjectionDiameter();
-				
+			
+		ground = Vector(0, - Math.Max( projection_diameter, SMALL_PROJECTION_GROUND ), 0);	
+		/*
 		if( projection_diameter < SMALL_PROJECTION_GROUND )
 		{
 			ground = Vector(0, - SMALL_PROJECTION_GROUND, 0);
@@ -1083,6 +1128,7 @@ class Hologram
 		{
 			ground = Vector(0, - projection_diameter, 0);
 		}
+		*/
 
 		vector to = from + ground;
 		vector contact_pos;
@@ -1129,7 +1175,7 @@ class Hologram
 
 	int GetHiddenSelection( string selection )
 	{
-		string config_path = "CfgVehicles" + " " + m_Projection.GetType() + " " + "hiddenSelections";
+		string config_path = "CfgVehicles " + m_Projection.GetType() + " hiddenSelections";
 		ref array<string> hidden_selection_array = new array<string>;
 
 		GetGame().ConfigGetTextArray( config_path, hidden_selection_array );	
@@ -1167,79 +1213,48 @@ class Hologram
 			string config_material = "CfgVehicles" + " " + m_Projection.GetType() + " " + "hologramMaterial";
 			string hologram_material = GetGame().ConfigGetTextOut( config_material );
 			string config_model = "CfgVehicles" + " " + m_Projection.GetType() + " " + "hologramMaterialPath";
-			string hologram_material_path = GetGame().ConfigGetTextOut( config_model );
+			string hologram_material_path = GetGame().ConfigGetTextOut( config_model ) + "\\" + hologram_material;
+			string selection_to_refresh;
+			int hidden_selection = 0;
+			static const string textureName = "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)";
+			
+			hologram_material_path += CorrectMaterialPathName();
+				
+			for (int i = 0; i < m_SelectionsToRefresh.Count(); ++i)
+			{
+				selection_to_refresh = m_SelectionsToRefresh.Get(i);
+				hidden_selection = GetHiddenSelection( selection_to_refresh );
+				m_Projection.SetObjectTexture( hidden_selection, textureName );
+				m_Projection.SetObjectMaterial( hidden_selection, hologram_material_path );
+			}
+		}
+	}
+	
+	// Returns correct string to append to material path name
+	string CorrectMaterialPathName()
+	{
+		if (IsColliding())
+			return "_undeployable.rvmat";
+		
+		else if (m_Parent.HasEnergyManager())
+		{
+			ComponentEnergyManager comp_em = m_Parent.GetCompEM();
 			string SEL_CORD_PLUGGED = m_Parent.GetCompEM().SEL_CORD_PLUGGED;
 			string SEL_CORD_FOLDED = m_Parent.GetCompEM().SEL_CORD_FOLDED;
-			string selection_to_refresh;
-
-			if ( !IsColliding() )
+			
+			if (comp_em.IsPlugged() && comp_em.IsEnergySourceAtReach( GetProjectionPosition() ))
 			{
-				if ( m_Parent.HasEnergyManager() )
-				{
-					if ( m_Parent.GetCompEM().IsPlugged() )
-					{
-						if ( m_Parent.GetCompEM().IsEnergySourceAtReach( GetProjectionPosition() ) )
-						{
-							for( int i = 0; i < m_SelectionsToRefresh.Count(); i++ )
-							{
-								selection_to_refresh = m_SelectionsToRefresh.Get(i);
-								m_Projection.SetObjectTexture( GetHiddenSelection( selection_to_refresh ), "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)" );
-								m_Projection.SetObjectMaterial( GetHiddenSelection( selection_to_refresh ), hologram_material_path + "\\" + hologram_material + "_powered.rvmat" );
-								//Print("s komponentom, zapojeny, nekoliduje, v dosahu");
-							}
-							
-							m_Projection.SetAnimationPhase( SEL_CORD_PLUGGED, 0);
-							m_Projection.SetAnimationPhase( SEL_CORD_FOLDED, 1);	
-						}							
-						else
-						{
-							for( int j = 0; j < m_SelectionsToRefresh.Count(); j++ )
-							{
-								selection_to_refresh = m_SelectionsToRefresh.Get(j);
-								m_Projection.SetObjectTexture( GetHiddenSelection( selection_to_refresh ), "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)" );
-								m_Projection.SetObjectMaterial( GetHiddenSelection( selection_to_refresh ), hologram_material_path + "\\" + hologram_material + "_deployable.rvmat" );
-								//Print("s komponentom, zapojeny, nekoliduje, nie v dosahu");
-							}
-							
-							m_Projection.SetAnimationPhase( SEL_CORD_PLUGGED, 1);
-							m_Projection.SetAnimationPhase( SEL_CORD_FOLDED, 0);
-						}
-					}
-					else
-					{
-						for( int k = 0; k < m_SelectionsToRefresh.Count(); k++ )
-						{
-							selection_to_refresh = m_SelectionsToRefresh.Get(k);
-							m_Projection.SetObjectTexture( GetHiddenSelection( selection_to_refresh ), "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)" );
-							m_Projection.SetObjectMaterial( GetHiddenSelection( selection_to_refresh ), hologram_material_path + "\\" + hologram_material + "_deployable.rvmat" );
-							//Print("s komponentom, nekoliduje");
-						}
-							m_Projection.SetAnimationPhase( SEL_CORD_PLUGGED, 1);
-							m_Projection.SetAnimationPhase( SEL_CORD_FOLDED, 0);
-					}			
-				}
-				else
-				{
-					for( int l = 0; l < m_SelectionsToRefresh.Count(); l++ )
-					{
-						selection_to_refresh = m_SelectionsToRefresh.Get(l);
-						m_Projection.SetObjectTexture( GetHiddenSelection( selection_to_refresh ), "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)" );
-						m_Projection.SetObjectMaterial( GetHiddenSelection( selection_to_refresh ), hologram_material_path + "\\" + hologram_material + "_deployable.rvmat" );
-						//Print("bez komponentu, nekoliduje");
-					}
-				}
+				m_Projection.SetAnimationPhase( SEL_CORD_PLUGGED, 0);
+				m_Projection.SetAnimationPhase( SEL_CORD_FOLDED, 1);	
+				return "_powered.rvmat";
 			}
 			else
 			{
-				for( int m = 0; m < m_SelectionsToRefresh.Count(); m++ )
-				{
-					selection_to_refresh = m_SelectionsToRefresh.Get(m);
-					m_Projection.SetObjectTexture( GetHiddenSelection( selection_to_refresh ), "#(argb,8,8,3)color(0.5,0.5,0.5,0.75,ca)" );
-					m_Projection.SetObjectMaterial( GetHiddenSelection( selection_to_refresh ), hologram_material_path + "\\" + hologram_material + "_undeployable.rvmat" );
-					//Print("koliduje");
-				}
+				m_Projection.SetAnimationPhase( SEL_CORD_PLUGGED, 1);
+				m_Projection.SetAnimationPhase( SEL_CORD_FOLDED, 0);
 			}
 		}
+		return "_deployable.rvmat";
 	}
 };
 

@@ -33,16 +33,10 @@ class ActionMineTree: ActionContinuousBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				return true;
+			return true;
 		
 		Object targetObject = target.GetObject();
-		
-		if ( targetObject.IsTree() && targetObject.IsCuttable() )
-		{ 
-			return true;
-		}
-		
-		return false;
+		return targetObject.IsTree() && targetObject.IsCuttable();
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )

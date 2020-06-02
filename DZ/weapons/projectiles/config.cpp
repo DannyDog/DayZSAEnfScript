@@ -703,6 +703,7 @@ class CfgAmmo
 	{
 		scope = 2;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_rubber.p3d";
+		model = "\dz\weapons\projectiles\tracer_rubberslug.p3d";
 		casing = "FxCartridge_12RubberSlug";
 		round = "FxRound_12RubberSlug";
 		spawnPileType = "Ammo_12gaRubberSlug";
@@ -741,6 +742,7 @@ class CfgAmmo
 	{
 		scope = 2;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_beanbag.p3d";
+		model = "\dz\weapons\projectiles\tracer_beanbag.p3d";
 		casing = "FxCartridge_12Beanbag";
 		round = "FxRound_12Beanbag";
 		spawnPileType = "Ammo_12gaBeanbag";
@@ -1225,7 +1227,7 @@ class CfgAmmo
 		caliber = 0.7;
 		airFriction = -0.000769;
 		typicalSpeed = 380;
-		initSpeed = 380;
+		initSpeed = 330;
 		weight = 0.0025;
 		soundFly[] = {};
 		supersonicCrackNear[] = {};
@@ -1235,7 +1237,7 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.5,1.0}};
+			defaultDamageOverride[] = {{0.8,1.0}};
 			class Health
 			{
 				damage = 18;

@@ -24,26 +24,13 @@ class ActionWashHandsWaterOne extends ActionInteractLoopBase
 	override void CreateConditionComponents()  
 	{		
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTWaterSurface(UAMaxDistances.DEFAULT, UAWaterType.ALL);
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-		{
-			return true;
-		}
-		
-		if ( player.HasBloodyHands() && !player.GetItemInHands() )
-		{	
-			vector pos_cursor = target.GetCursorHitPos();
-			if( (vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT) && (GetGame().SurfaceIsPond(pos_cursor[0], pos_cursor[2]) || GetGame().SurfaceIsSea(pos_cursor[0], pos_cursor[2])))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		// Other conditions are in CCTWaterSurface
+		return ( GetGame().IsMultiplayer() && GetGame().IsServer() ) || ( player.HasBloodyHands() && !player.GetItemInHands() );
 	}
 
 	override void OnEndServer( ActionData action_data )

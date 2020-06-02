@@ -1,8 +1,16 @@
-class ActionIgniteFireplaceByAir: ActionIgniteFireplace
+class ActionIgniteFireplaceByAirCB : ActionContinuousBaseCB
+{
+	override void CreateActionComponent()
+	{
+		m_ActionData.m_ActionComponent = new CAContinuousTime( UATimeSpent.FIREPLACE_IGNITE );
+	}
+};
+
+class ActionIgniteFireplaceByAir: ActionContinuousBase
 {	
 	void ActionIgniteFireplaceByAir()
 	{
-		m_CallbackClass = ActionIgniteFireplaceCB;
+		m_CallbackClass = ActionIgniteFireplaceByAirCB;
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_BLOWFIREPLACE;
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
@@ -54,7 +62,7 @@ class ActionIgniteFireplaceByAir: ActionIgniteFireplace
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
 	
-	override bool SkipKindlingCheck()
+	bool SkipKindlingCheck()
 	{
 		return false;
 	}

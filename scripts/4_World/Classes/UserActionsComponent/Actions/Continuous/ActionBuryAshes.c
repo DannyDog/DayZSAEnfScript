@@ -1,22 +1,13 @@
 class ActionBuryAshesCB : ActionContinuousBaseCB
 {
-	private const float TIME_TO_REPEAT_CHECK = 1;
-	
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTimeBuryAshes( UATimeSpent.BURY_ASHES, TIME_TO_REPEAT_CHECK );
+		m_ActionData.m_ActionComponent = new CAContinuousTime( UATimeSpent.BURY_ASHES );
 	}
-}
-
-class BuryAshesActionData : ActionData
-{
-	string 	m_ReasonToCancel;
 }
 
 class ActionBuryAshes: ActionContinuousBase
 {
-	string 	m_ReasonToCancel;
-	
 	void ActionBuryAshes()
 	{
 		m_CallbackClass = ActionBuryAshesCB;
@@ -24,12 +15,6 @@ class ActionBuryAshes: ActionContinuousBase
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
 		m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_LOW;
-	}
-	
-	override ActionData CreateActionData()
-	{
-		ActionData action_data = new BuryAshesActionData;
-		return action_data;
 	}
 	
 	override void CreateConditionComponents()  
@@ -45,11 +30,20 @@ class ActionBuryAshes: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		FireplaceBase fireplace_target = FireplaceBase.Cast( target.GetObject() );
+		Fireplace fireplace_target = Fireplace.Cast( target.GetObject() );
 		
-		if ( fireplace_target && fireplace_target.HasAshes() )
+		if ( fireplace_target )
 		{
-			return true;
+			if ( fireplace_target.HasAshes() && !fireplace_target.IsBurning() && fireplace_target.IsEmpty() )
+			{
+				string surface_type;
+				vector position = fireplace_target.GetPosition();
+				GetGame().SurfaceGetType ( position[0], position[2], surface_type );
+				if ( GetGame().IsSurfaceDigable( surface_type ) )
+				{
+					return true;
+				}
+			}
 		}
 		
 		return false;
@@ -63,11 +57,4 @@ class ActionBuryAshes: ActionContinuousBase
 		//add soft skill specialty
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( UASoftSkillsWeight.ROUGH_LOW );	
 	}
-	
-	override void OnEndServer( ActionData action_data  )
-	{
-		BuryAshesActionData ba_action_data = BuryAshesActionData.Cast(action_data);
-		if ( ba_action_data.m_ReasonToCancel != "" )
-			SendMessageToClient( ba_action_data.m_Player, ba_action_data.m_ReasonToCancel );
-	}	
 }

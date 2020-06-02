@@ -382,13 +382,13 @@ class MiscGameplayFunctions
 		
 		for ( int i = 0; i < piles_count; i++ )
 		{
-			pile = ItemBase.Cast(GetGame().CreateObject(item_name, ground_position, false));
+			pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 			pile.SetQuantity(stack_size);
 			items.Insert(pile);
 		}
 		if ( rest > 0)
 		{
-			pile = ItemBase.Cast(GetGame().CreateObject(item_name, ground_position, false));
+			pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 			pile.SetQuantity(rest);
 			items.Insert(pile);
 		}
@@ -409,13 +409,13 @@ class MiscGameplayFunctions
 		
 		for ( int i = 0; i < piles_count; i++ )
 		{
-			pile = Magazine.Cast(GetGame().CreateObject(item_name, ground_position, false));
+			pile = Magazine.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 			pile.ServerSetAmmoCount(stack_size);
 			items.Insert(pile);
 		}
 		if ( rest > 0)
 		{
-			pile = Magazine.Cast(GetGame().CreateObject(item_name, ground_position, false));
+			pile = Magazine.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 			pile.ServerSetAmmoCount(rest);
 			items.Insert(pile);
 		}
@@ -441,13 +441,13 @@ class MiscGameplayFunctions
 		
 			for ( int i = 0; i < piles_count; i++ )
 			{
-				pile = Magazine.Cast(GetGame().CreateObject(item_name, ground_position, false));
+				pile = Magazine.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 				pile.ServerSetAmmoCount(stack_size);
 				items.Insert(pile);
 			}
 			if ( rest > 0)
 			{
-				pile = Magazine.Cast(GetGame().CreateObject(item_name, ground_position, false));
+				pile = Magazine.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 				pile.ServerSetAmmoCount(rest);
 				items.Insert(pile);
 			}
@@ -661,24 +661,21 @@ class MiscGameplayFunctions
 		return output;
 	}
 	
-	static bool ComplexBuildCollideCheckClient( PlayerBase player, ActionTarget target, ItemBase item )
+	static bool ComplexBuildCollideCheckClient( PlayerBase player, ActionTarget target, ItemBase item, string partName = "" )
 	{
-		bool b1,b2;
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( target.GetObject() );
 		if (base_building)
 		{
 			Construction construction = base_building.GetConstruction();
-			Construction construction2 = base_building.m_Construction;
-			
-			ConstructionActionData construction_action_data = player.GetConstructionActionData();
-			string part_name = construction_action_data.GetCurrentBuildPart().GetPartName();
-			
-			if (base_building.m_Construction)
-				b1 = !base_building.m_Construction.IsColliding( part_name );
-			b2 = BuildCondition( player, target, item, true );
-			
+			if (construction && BuildCondition( player, target, item, false ))
+			{
+				ConstructionActionData construction_action_data = player.GetConstructionActionData();
+				if (partName == "")
+					partName = construction_action_data.GetCurrentBuildPart().GetPartName();
+				return !construction.IsColliding( partName );
+			}
 		}
-		return b1 && b2;
+		return false;
 	}
 	
 	static bool BuildCondition( PlayerBase player, ActionTarget target, ItemBase item, bool camera_check )
@@ -712,7 +709,7 @@ class MiscGameplayFunctions
 				if ( constrution_part )
 				{
 					//camera and position checks
-					if ( !base_building.IsFacingPlayer( player, constrution_part.GetMainPartName() ) && !player.GetInputController().CameraIsFreeLook() && base_building.HasProperDistance( main_part_name, player ) )
+					if ( base_building.IsPlayerInside( player, constrution_part.GetMainPartName() ) && !player.GetInputController().CameraIsFreeLook() )
 					{
 						//Camera check (client-only)
 						if ( camera_check )
@@ -730,6 +727,93 @@ class MiscGameplayFunctions
 		}
 		
 		return false;
+	}
+	
+	static bool IsUnderRoof(Object object, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST) 
+	{
+		vector minMax[2];
+		object.GetCollisionBox(minMax);
+
+		vector size = Vector(0,0,0);
+		size[1] = minMax[1][1] - minMax[0][1];
+
+		vector from = object.GetPosition() + size;  
+		vector ceiling = "0 0 0";
+		ceiling[1] = height;
+		vector to = from + ceiling;
+		vector contact_pos;
+		vector contact_dir;
+
+		int contact_component;	
+	
+		return DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, NULL, NULL, object );	
+	}
+
+	// cooking equipment effects (get position for steam particle)
+	static vector GetSteamPosition( EntityAI parent )
+	{
+		vector particle_pos;
+		float steam_offset = 0;
+		
+		if ( parent )
+		{
+			particle_pos = parent.GetPosition();
+			
+			if ( parent.IsInherited( PortableGasStove ) )
+			{
+				steam_offset = 0.2;
+			}
+			else if ( parent.IsInherited( FireplaceBase ) )
+			{
+				FireplaceBase fireplace = FireplaceBase.Cast( parent );
+				
+				if ( fireplace.IsBaseFireplace() )
+				{
+					steam_offset = 0.8;
+				}
+				else if ( fireplace.IsBarrelWithHoles() )
+				{
+					steam_offset = 1.1;
+				}
+				else if ( fireplace.IsFireplaceIndoor() )
+				{
+					steam_offset = 0.45;
+				}
+				else if ( fireplace.IsIndoorOven() )
+				{
+					steam_offset = 0.9;
+				}
+			}
+		}
+		
+		particle_pos[1] = particle_pos[1] + steam_offset;
+		
+		return particle_pos;
+	}
+	
+	static void DropAllItemsInInventoryInBounds(ItemBase ib, vector halfExtents)
+	{
+		array<EntityAI> items = new array<EntityAI>;
+		ib.GetInventory().EnumerateInventory(InventoryTraversalType.LEVELORDER, items);
+		
+		vector direction = ib.GetDirection();
+		float dot = vector.Dot(direction, vector.Forward);
+		
+		float angle = Math.Acos(dot);	
+		if (direction[0] < 0)
+			angle = -angle;	
+
+		float cos = Math.Cos(angle);
+		float sin = Math.Sin(angle);
+		
+		EntityAI item;
+		int count = items.Count();
+		for ( int i = 0; i < count; ++i )
+		{
+			item = items.Get(i);
+			if ( item )
+				ib.GetInventory().DropEntityInBounds(InventoryMode.SERVER, ib, item, halfExtents, angle, cos, sin);					
+		}
 	}
 };
 

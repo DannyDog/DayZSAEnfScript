@@ -23,6 +23,7 @@ class DayZPlayerSyncJunctures
 	static const int SJ_INVENTORY_REPAIR				= 17;
 	static const int SJ_WEAPON_LIFT						= 18;
 	static const int SJ_WEAPON_RAISE_COMPLETED			= 19;
+	static const int SJ_DELETE_ITEM						= 20;
 	
 	//-------------------------------------------------------------
 	//!
@@ -290,4 +291,12 @@ class DayZPlayerSyncJunctures
 
 		return false;
 	}*/
+	
+	static void SendDeleteItem( DayZPlayer pPlayer, EntityAI item )
+	{
+		ScriptJunctureData ctx = new ScriptJunctureData;
+		ctx.Write(item);
+
+		pPlayer.SendSyncJuncture(SJ_DELETE_ITEM, ctx);
+	}
 }

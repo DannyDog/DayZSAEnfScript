@@ -47,7 +47,7 @@ class cfgWeapons
 		barrelArmor = 2200;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.4,2.4,1.3};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		cursor = "aimBowGhost";
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};

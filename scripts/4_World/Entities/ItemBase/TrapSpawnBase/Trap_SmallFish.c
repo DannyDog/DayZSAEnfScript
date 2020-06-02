@@ -57,14 +57,10 @@ class Trap_SmallFish extends TrapSpawnBase
 
 	override bool CanReceiveItemIntoCargo( EntityAI child )
 	{
-		if ( GetHierarchyRootPlayer() == NULL )
-		{
-			return true;
-		}
-		else
-		{
+		if ( GetHierarchyRootPlayer() != NULL )
 			return false;
-		}
+
+		return super.CanReceiveItemIntoCargo( cargo );
 	}
 
 	override bool CanReleaseCargo( EntityAI child )

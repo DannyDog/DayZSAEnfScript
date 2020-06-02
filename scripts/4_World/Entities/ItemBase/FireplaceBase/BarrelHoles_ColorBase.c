@@ -33,6 +33,36 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		//GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
 	}
 	
+	override void OnStoreSave( ParamsWriteContext ctx )
+	{   
+		super.OnStoreSave( ctx );
+		
+		ctx.Write( m_Openable.IsOpened() );
+	}
+	
+	override bool OnStoreLoad( ParamsReadContext ctx, int version )
+	{
+		if ( !super.OnStoreLoad( ctx, version ) )
+			return false;
+		
+		bool opened;
+		if ( version >= 110 && !ctx.Read( opened ) )
+		{
+			return false;
+		}
+		
+		if ( opened )
+		{
+			Open();
+		}
+		else
+		{
+			Close();
+		}
+		
+		return true;
+	}
+	
 	override bool IsBarrelWithHoles()
 	{
 		return true;
@@ -45,8 +75,8 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		if ( !IsBeingPlaced() )
 		{
 			//Refresh particles and sounds
-			RefreshFireParticlesAndSounds( true );
-			
+			RefreshFireParticlesAndSounds( false );
+						
 			//sound sync
 			if ( IsOpen() && IsSoundSynchRemote() )
 			{
@@ -66,25 +96,23 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
 		ItemBase item = ItemBase.Cast( attachment );
-		
-		//kindling items
-		if ( IsKindling ( item ) && IsOpen() )
+
+		//direct cooking slots
+		if ( !IsOpen() )
 		{
-			return true;
+			if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+			{
+				return super.CanReceiveAttachment(attachment, slotId);
+			}
 		}
-		
-		//fuel items
-		if ( IsFuel ( item ) && IsOpen() )
+		else
 		{
-			return true;
+			if ( IsKindling( item ) || IsFuel( item ) )
+			{
+				return super.CanReceiveAttachment(attachment, slotId);
+			}
 		}
-		
-		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT && !IsOpen() )
-		{
-			return true;
-		}
-		
+
 		return false;
 	}
 
@@ -134,12 +162,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			}
 		}
 		
-		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		//direct cooking slots
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 		{
 			return true;
 		}
-
 		
 		return false;
 	}
@@ -157,15 +184,22 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			AddToFireConsumables ( item_base );
 		}
 		
-		//cookware
-		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
+		// direct cooking slots
+		switch ( slot_name )
 		{
-			SetCookingEquipment( item_base );
-			
-			//rotate handle
-			item_base.SetAnimationPhase ( ANIMATION_COOKWARE_HANDLE, 0 );
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = item_base;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = item_base;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = item_base;
+				break;
 		}
-		
+
 		//refresh fireplace visuals
 		RefreshFireplaceVisuals();
 	}
@@ -182,20 +216,42 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			//remove from consumables
 			RemoveFromFireConsumables ( GetFireConsumableByItem( item_base ) );
 		}
-
-		//cookware
-		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
+		
+		// direct cooking slots
+		switch ( slot_name )
 		{
-			ClearCookingEquipment();
-			
-			//rotate handle
-			item_base.SetAnimationPhase ( ANIMATION_COOKWARE_HANDLE, 1 );
-			
-			//remove audio visuals
+			case "DirectCookingA":
+				m_DirectCookingSlots[0] = NULL;
+				break;
+
+			case "DirectCookingB":
+				m_DirectCookingSlots[1] = NULL;
+				break;
+
+			case "DirectCookingC":
+				m_DirectCookingSlots[2] = NULL;
+				break;
+		}
+		
+		// food on direct cooking slots (removal of sound effects)
+		if ( item_base.IsKindOf( "Edible_Base" ) )
+		{
+			Edible_Base food_on_dcs = Edible_Base.Cast( item_base );
+			food_on_dcs.MakeSoundsOnClient( false );
+		}
+
+		// cookware-specifics (remove audio visuals)
+		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
+		{	
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
 			cooking_pot.RemoveAudioVisualsOnClient();	
 		}
-		
+		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
+		{	
+			FryingPan frying_pan = FryingPan.Cast( item );
+			frying_pan.RemoveAudioVisualsOnClient();
+		}
+
 		//refresh fireplace visuals
 		RefreshFireplaceVisuals();
 	}
@@ -204,7 +260,10 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//this into/outo parent.Cargo
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
+		if( !super.CanPutInCargo( parent ) )
+		{
+			return false;
+		}
 		return false;
 	}
 
@@ -221,21 +280,12 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			return false;
 		}
 		
-		return true;
+		return super.CanReceiveItemIntoCargo( cargo );
 	}
 
 	override bool CanReleaseCargo( EntityAI cargo )
 	{
-		if ( IsBurning() && IsOpen() )
-		{
-			return false;
-		}
-		else if ( !IsOpen() )
-		{
-			return false;
-		}
-		
-		return true;
+		return IsOpen();
 	}
 	
 	//hands
@@ -245,7 +295,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		{
 			return false;
 		}
-		if ( HasAshes() || IsBurning() || !IsCargoEmpty() || IsItemTypeAttached( ATTACHMENT_COOKING_POT ) || IsOpen() )
+		if ( IsBurning() || !IsCargoEmpty() || DirectCookingSlotsInUse() || IsOpen() )
 		{
 			return false;
 		}
@@ -264,23 +314,6 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		//
 		
 		return IsOpen();
-	}
-	
-	override bool CanDisplayAttachmentSlot( string slot_name )
-	{
-		//super
-		if( !super.CanDisplayAttachmentSlot( slot_name ) )
-		{
-			return false;
-		}
-		//
-		
-		if ( slot_name == "CookingEquipment" )
-		{
-			return !IsOpen();
-		}
-		
-		return true;
 	}
 
 	override bool CanDisplayAttachmentCategory( string category_name )
@@ -310,7 +343,9 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		m_Openable.Open();
 		//GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
-
+		
+		m_RoofAbove = false;
+		
 		SoundSynchRemote();
 		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
 		UpdateVisualState();
@@ -320,6 +355,8 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		m_Openable.Close();
 		//GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
+		
+		m_RoofAbove = true;
 		
 		SoundSynchRemote();
 		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
@@ -335,13 +372,13 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		if ( IsOpen() )
 		{
-			SetAnimationPhase(ANIMATION_OPENED, 0);
-			SetAnimationPhase(ANIMATION_CLOSED, 1);
+			SetAnimationPhase( ANIMATION_OPENED, 0 );
+			SetAnimationPhase( ANIMATION_CLOSED, 1 );
 		}
 		else
 		{
-			SetAnimationPhase(ANIMATION_OPENED, 1);
-			SetAnimationPhase(ANIMATION_CLOSED, 0);
+			SetAnimationPhase( ANIMATION_OPENED, 1 );
+			SetAnimationPhase( ANIMATION_CLOSED, 0 );
 		}
 	}
 	
@@ -400,7 +437,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override void OnIgnitedThis( EntityAI fire_source )
 	{	
 		//remove grass
-		Object cc_object = GetGame().CreateObject ( OBJECT_CLUTTER_CUTTER , GetPosition() );
+		Object cc_object = GetGame().CreateObjectEx( OBJECT_CLUTTER_CUTTER , GetPosition(), ECE_PLACE_ON_SURFACE );
 		cc_object.SetOrientation ( GetOrientation() );
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( DestroyClutterCutter, 0.2, false, cc_object );
 		
@@ -434,10 +471,10 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		
 		//check roof
-		if ( !HasEnoughRoomForFireAbove() )
+		/*if ( !IsCeilingHighEnoughForSmoke() && IsOnInteriorSurface() )
 		{
 			return false;
-		}
+		}*/
 		
 		//check surface
 		if ( IsOnWaterSurface() )
@@ -445,12 +482,6 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			return false;
 		}
 
-		//check wetness/rain/wind
-		if ( IsWet() || IsRainingAbove() || FireplaceBase.IsWindy() )
-		{
-			return false;
-		}
-		
 		return true;	
 	}
 	

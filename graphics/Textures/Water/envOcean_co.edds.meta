@@ -1,14 +1,17 @@
 MetaFileClass {
- Name "{C458941836528F9F}Graphics/Textures/Water/envOcean_co.edds"
- Author "fido"
- ChangeDate -154918362
+ Name "{C458941836528F9F}Graphics/Textures/Water/envOcean_co.dds"
+ Author "namalsk"
+ ChangeDate 1950034069
  Configurations {
   DDSResourceClass PC {
    SourceFile "envOcean_co.dds"
+   Conversion DXTCompression
   }
   DDSResourceClass XBOX_ONE : PC {
   }
   DDSResourceClass PS4 : PC {
+  }
+  DDSResourceClass LINUX : PC {
   }
  }
 }

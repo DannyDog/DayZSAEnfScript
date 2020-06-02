@@ -7,10 +7,6 @@ class CCTBase
 	
 	bool CanContinue( PlayerBase player, ActionTarget target )
 	{
-		if( Can(player,target) )
-		{
-			return true;
-		}
-		return false;
+		return Can(player, target);
 	}
 };

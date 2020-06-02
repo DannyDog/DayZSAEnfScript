@@ -1,7 +1,0 @@
-ParticleSprite {
- AlbedoMap "{75379F96E58C5C4A}Graphics/Particles/sprites/dust_01.edds" 
- Color 0.6078 0.6078 0.6078 1
- Diffuse 0.6078 0.6078 0.6078 1
- Ambient 0.5882 0.5882 0.5882 1
- Softness 2
-}

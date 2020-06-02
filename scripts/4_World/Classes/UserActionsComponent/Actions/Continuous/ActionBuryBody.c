@@ -34,7 +34,7 @@ class ActionBuryBody: ActionContinuousBase
 		EntityAI body_EAI;
 		Class.CastTo(body_EAI, target.GetObject());
 		
-		if ( body_EAI  &&  !body_EAI.IsAlive()  &&  (body_EAI.IsInherited(DayZCreature )  ||  body_EAI.IsInherited(Man)) )
+		if ( body_EAI  &&  !body_EAI.IsAlive()  &&  (body_EAI.IsInherited(DayZCreature )  ||  body_EAI.IsInherited(Man)) && !body_EAI.GetParent() )
 		{
 			string surface_type;
 			vector position = body_EAI.GetPosition();

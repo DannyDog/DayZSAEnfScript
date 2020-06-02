@@ -47,7 +47,7 @@ EffectDef {
    Size {
     0 0.76101 1 1
    }
-   EffectTime 10
+   EffectTime 30
    Repeat 0
    ColorMast {
     0 1 1 1

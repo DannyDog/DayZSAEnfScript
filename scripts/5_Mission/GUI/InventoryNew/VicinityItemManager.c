@@ -369,7 +369,7 @@ class VicinityItemManager
 							if ( hit_proxy_objects[0].parent )
 							{
 								EntityAI parent_entity = EntityAI.Cast( hit_proxy_objects[0].parent );
-								if ( parent_entity.GetInventory().GetCargo() )
+								if ( parent_entity.GetInventory() && parent_entity.GetInventory().GetCargo() )
 								{	
 									is_obstructed = true;
 								}

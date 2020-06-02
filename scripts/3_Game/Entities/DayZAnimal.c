@@ -1,3 +1,23 @@
+class DayZCreatureAnimInterface
+{	
+	//-----------------------------------------------------
+	// Binds, returns -1 when error, otherwise if ok
+
+	//! returns command index - 	
+	proto native TAnimGraphCommand		BindCommand(string pCommandName);
+
+	//!
+	proto native TAnimGraphVariable 	BindVariableFloat(string pVariable);
+	proto native TAnimGraphVariable 	BindVariableInt(string pVariable);
+	proto native TAnimGraphVariable 	BindVariableBool(string pVariable);
+
+	//!
+	proto native TAnimGraphTag 			BindTag(string pTagName);
+
+	//!
+	proto native TAnimGraphEvent		BindEvent(string pEventName);
+}
+
 class DayZCreature extends EntityAI 
 {
 	#ifdef _DAYZ_CREATURE_DEBUG_SHADOW
@@ -9,6 +29,9 @@ class DayZCreature extends EntityAI
 	proto native void SetAnimationInstanceByName(string animation_instance_name, int instance_uuid, float duration);
 	proto native int GetCurrentAnimationInstanceUUID();
 	
+	proto native DayZCreatureAnimInterface GetAnimInterface();
+
+	
 	proto native void UpdateSimulationPrecision(int simLOD);
 	
 	override bool IsDayZCreature()
@@ -17,6 +40,11 @@ class DayZCreature extends EntityAI
 	}
 	
 	override bool CanBeSkinned()
+	{
+		return true;
+	}
+	
+	override bool IsIgnoredByConstruction()
 	{
 		return true;
 	}
@@ -44,6 +72,7 @@ class DayZCreatureAI extends DayZCreature
 	void DayZCreatureAI()
 	{
 		RegisterAnimEvents();
+		SetFlags(EntityFlags.TOUCHTRIGGERS, false);
 	}
 	
 	void AddDamageSphere(AnimDamageParams damage_params)
@@ -216,6 +245,7 @@ enum DayZAnimalConstants
 	COMMANDID_DEATH,
 	COMMANDID_HIT,
 	COMMANDID_ATTACK,
+	COMMANDID_SCRIPT,
 };
 
 class DayZAnimalInputController
@@ -237,6 +267,71 @@ class DayZAnimalInputController
 	}	
 };
 
+class DayZAnimalCommandScript
+{
+	//! constructor must have 1st parameter to be DayZAnimal
+	// DayZAnimalCommandScript(DayZAnimal pInfected);
+
+	//! virtual to be overridden
+	//! called when command starts
+	void 	OnActivate()	{ };
+
+	//! called when command ends
+	void 	OnDeactivate()	{ };
+
+
+	//---------------------------------------------------------------
+	// usable everywhere
+
+	//! this terminates command script and shows CommandHandler(  ... pCurrentCommandFinished == true );
+	proto native void 	SetFlagFinished(bool pFinished);
+
+
+	//---------------------------------------------------------------
+	// PreAnim Update 
+
+	//! override this !
+	//! called before any animation is processed
+	//! here change animation values, add animation commands	
+	void 	PreAnimUpdate(float pDt);
+
+	//! function usable in PreAnimUpdate or in !!! OnActivate !!!
+	proto native 	void	PreAnim_CallCommand(int pCommand, int pParamInt, float pParamFloat);
+	proto native 	void	PreAnim_SetFloat(int pVar, float pFlt);
+	proto native 	void	PreAnim_SetInt(int pVar, int pInt);
+	proto native 	void	PreAnim_SetBool(int pVar, bool pBool);
+
+	//---------------------------------------------------------------
+	// PrePhys Update 
+
+	//! override this !
+	//! after animation is processed, before physics is processed
+	void 	PrePhysUpdate(float pDt);
+
+	//! script function usable in PrePhysUpdate
+	proto native 	bool	PrePhys_IsEvent(int pEvent);
+	proto native 	bool	PrePhys_IsTag(int pTag);
+	proto native 	bool	PrePhys_GetTranslation(out vector pOutTransl);		// vec3 in local space !
+	proto native 	bool	PrePhys_GetRotation(out float pOutRot[4]);         	// quaternion in local space !
+	proto native 	void	PrePhys_SetTranslation(vector pInTransl); 			// vec3 in local space !
+	proto native 	void	PrePhys_SetRotation(float pInRot[4]);				// quaternion in local space !
+
+	//---------------------------------------------------------------
+	// PostPhys Update 
+
+	//! override this !
+	//! final adjustment of physics state (after physics was applied)
+	//! returns true if command continues running / false if command should end (or you can use SetFlagFinished(true))
+	bool	PostPhysUpdate(float pDt);
+
+	//! script function usable in PostPhysUpdate
+	proto native 	void	PostPhys_GetPosition(out vector pOutTransl);		//! vec3 in world space
+	proto native 	void	PostPhys_GetRotation(out float pOutRot[4]);        	//! quaternion in world space
+	proto native 	void	PostPhys_SetPosition(vector pInTransl);				//! vec3 in world space
+	proto native 	void	PostPhys_SetRotation(float pInRot[4]);				//! quaternion in world space
+	proto native 	void	PostPhys_LockRotation();							//! do not process rotations !
+}
+
 class DayZAnimal extends DayZCreatureAI
 {
 
@@ -253,6 +348,11 @@ class DayZAnimal extends DayZCreatureAI
 	proto native void StartCommand_Jump();
 	proto native void StartCommand_Attack();
 	proto native void StartCommand_Hit(int pType, int pDirection);
+	
+	//! scripted commands
+	proto native DayZAnimalCommandScript StartCommand_Script(DayZAnimalCommandScript pInfectedCommand);
+	proto native DayZAnimalCommandScript StartCommand_ScriptInst(typename pCallbackClass);
+	proto native DayZAnimalCommandScript GetCommand_Script();
 	
 	proto native void SignalAIAttackStarted();
 	proto native void SignalAIAttackEnded();
@@ -289,6 +389,12 @@ class DayZAnimal extends DayZCreatureAI
 	{
 		DayZAnimalInputController inputController = GetInputController();
 		
+		//! for mods
+		if( ModCommandHandlerBefore(dt, currentCommandID, currentCommandFinished) )
+		{
+			return;
+		}
+
 		if (HandleDeath(currentCommandID, inputController))
 		{
 			return;
@@ -303,6 +409,12 @@ class DayZAnimal extends DayZCreatureAI
 	
 			StartCommand_Move();
 	
+			return;
+		}
+		
+		//! for mods
+		if( ModCommandHandlerInside(dt, currentCommandID, currentCommandFinished) )
+		{
 			return;
 		}
 	
@@ -330,6 +442,33 @@ class DayZAnimal extends DayZCreatureAI
 				return;
 			}
 		}
+		
+		//!
+		if( ModCommandHandlerAfter(dt, currentCommandID, currentCommandFinished) )
+		{
+			return;
+		}
+	}
+	
+	//-------------------------------------------------------------
+	//!
+	//! ModOverrides
+	//! 
+	// these functions are for modded overide in script command mods 
+
+	bool ModCommandHandlerBefore(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
+	}
+
+	bool ModCommandHandlerInside(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
+	}
+	
+	bool ModCommandHandlerAfter(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
+	{
+		return false;
 	}
 	
 	bool m_DamageHitToProcess = false;

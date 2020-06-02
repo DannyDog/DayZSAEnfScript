@@ -2,7 +2,7 @@ $AnimGraph 7 {
 	$Sheet "Actions" {
 		$Node AnimNodeStateMachine {
 			 "ActionMaster" "TagActions"
-			$States 158 {
+			$States 164 {
 				$State {
 					 "CodriverDoorOpen" "" "CodriverDoorOpenSrc" "GetCommandI(CMD_Action) == 402" "realtime" 1
 					$EditorData {
@@ -84,7 +84,7 @@ $AnimGraph 7 {
 				$State {
 					 "RPS" "" "RPSMaster" "GetCommandI(CMD_Action) == 10000" "notime" 1
 					$EditorData {
-						#EditorPos 160.8000031 0.3
+						#EditorPos 168.4000092 0.6
 					}
 				}
 				$State {
@@ -949,6 +949,42 @@ $AnimGraph 7 {
 					 "OpenItemOncePne" "" "OpenItemOncePne0" "Stance == 2 && GetCommandI(CMD_Action) == 517" "notime" 1
 					$EditorData {
 						#EditorPos 40.6000023 -1.2
+					}
+				}
+				$State {
+					 "dz_xbox_dead" "" "dz_xbox_deadAnim" "" "notime" 1
+					$EditorData {
+						#EditorPos 151.6000061 0.7
+					}
+				}
+				$State {
+					 "dz_xbox_dead_body" "" "dz_xbox_dead_bodyAnim" "" "notime" 1
+					$EditorData {
+						#EditorPos 154.0 0.7
+					}
+				}
+				$State {
+					 "dz_xbox_wake_up" "" "dz_xbox_wake_upAnim" "" "notime" 1
+					$EditorData {
+						#EditorPos 156.4000092 0.7
+					}
+				}
+				$State {
+					 "dz_xbox_walk_away" "" "dz_xbox_walk_awayanim" "GetCommandI(CMD_TRAILER_WALK_AWAY) == 3004" "notime" 1
+					$EditorData {
+						#EditorPos 158.6999969 0.7
+					}
+				}
+				$State {
+					 "dz_xbox_walkie_talkie" "" "dz_xbox_walkie_talkieAnim" "" "notime" 1
+					$EditorData {
+						#EditorPos 161.0 0.7
+					}
+				}
+				$State {
+					 "dz_xbox_wounded" "" "dz_xbox_woundedAnim" "" "notime" 1
+					$EditorData {
+						#EditorPos 163.4000092 0.7
 					}
 				}
 			}
@@ -4497,7 +4533,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			}
 		}
 		$Node AnimNodeGroupSelect {
-			 "PickUpHandsPneBack" "" "RArmPneBFix" "ActionOnce" "PickUpHandsErc"
+			 "PickUpHandsPneBack" "" "ActionOncePneBT" "ActionOnce" "PickUpHandsPneB"
 			$EditorData {
 				#EditorPos 48.6000023 18.5
 			}
@@ -4527,7 +4563,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			}
 		}
 		$Node AnimNodeGroupSelect {
-			 "PickUpInventoryPneBack" "" "ActionOncePneBT" "ActionOnce" "PickUpInventoryErc"
+			 "PickUpInventoryPneBack" "" "ActionOncePneBT" "ActionOnce" "PickUpInventoryPneB"
 			$EditorData {
 				#EditorPos 50.7999992 18.5
 			}
@@ -4736,7 +4772,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 163.1000061 -9.1999998
+				#EditorPos 170.6000061 -9.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -4744,7 +4780,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 160.9000092 -9.1999998
+				#EditorPos 168.4000092 -9.5
 			}
 		}
 		$Node AnimNodeStateMachine {
@@ -4753,55 +4789,55 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 				$State {
 					 "In" "" "RPSIn" "true" "realtime" 0
 					$EditorData {
-						#EditorPos 160.9000092 -5.5
+						#EditorPos 168.4000092 -5.8000002
 					}
 				}
 				$State {
 					 "Rock" "" "RPSRock" "false" "notime" 0
 					$EditorData {
-						#EditorPos 167.5 -4.7000003
+						#EditorPos 175.0 -5.0
 					}
 				}
 				$State {
 					 "Paper" "" "RPSPaper" "false" "notime" 0
 					$EditorData {
-						#EditorPos 167.5 -6.5
+						#EditorPos 175.0 -6.8000002
 					}
 				}
 				$State {
 					 "Scissors" "" "RPSScissors" "false" "notime" 0
 					$EditorData {
-						#EditorPos 167.5 -7.4000001
+						#EditorPos 175.0 -7.7000003
 					}
 				}
 				$State {
 					 "PumpRock" "" "RPSPump" "false" "realtime" 0
 					$EditorData {
-						#EditorPos 165.3000031 -4.7000003
+						#EditorPos 172.8000031 -5.0
 					}
 				}
 				$State {
 					 "Out" "" "RPSOut" "false" "realtime" 1
 					$EditorData {
-						#EditorPos 169.6999969 -5.5
+						#EditorPos 177.1999969 -5.8000002
 					}
 				}
 				$State {
 					 "RPSIdle" "" "RPSIdle" "false" "notime" 0
 					$EditorData {
-						#EditorPos 163.1000061 -6.2000003
+						#EditorPos 170.6000061 -6.5
 					}
 				}
 				$State {
 					 "PumpPaper" "" "RPSPump" "false" "realtime" 0
 					$EditorData {
-						#EditorPos 165.3000031 -6.4000001
+						#EditorPos 172.8000031 -6.7000003
 					}
 				}
 				$State {
 					 "PumpScissors" "" "RPSPump" "false" "realtime" 0
 					$EditorData {
-						#EditorPos 165.3000031 -7.4000001
+						#EditorPos 172.8000031 -7.7000003
 					}
 				}
 			}
@@ -4844,7 +4880,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 				}
 			}
 			$EditorData {
-				#EditorPos 160.8000031 -3.6000001
+				#EditorPos 168.3000031 -3.9000001
 			}
 		}
 		$Node AnimNodeSource {
@@ -4852,7 +4888,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 169.6999969 -9.1999998
+				#EditorPos 177.1999969 -9.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -4860,7 +4896,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 167.5 -9.1999998
+				#EditorPos 175.0 -9.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -4868,7 +4904,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 165.3000031 -9.1999998
+				#EditorPos 172.8000031 -9.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -4876,7 +4912,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 167.5 -9.9000006
+				#EditorPos 175.0 -10.1999998
 			}
 		}
 		$Node AnimNodeSource {
@@ -4884,7 +4920,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 167.5 -10.6000004
+				#EditorPos 175.0 -10.9000006
 			}
 		}
 		$Node AnimNodeGroupSelect {
@@ -5709,6 +5745,54 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			 "WpnAttachScopePneBack" "" "ActionOncePneBT" "ActionOnce" "WpnAttachScopeErc"
 			$EditorData {
 				#EditorPos 83.8000031 18.3999996
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_deadAnim" "" "ActionOnce.dz_xbox_dead.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 151.6000061 -3.1000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_dead_bodyAnim" "" "ActionOnce.dz_xbox_dead_body.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 154.0 -3.1000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_wake_upAnim" "" "ActionOnce.dz_xbox_wake_up.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 156.4000092 -3.1000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_walk_awayanim" "" "ActionOnce.dz_xbox_walk_away.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 158.6999969 -3.1000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_walkie_talkieAnim" "" "ActionOnce.dz_xbox_walkie_talkie.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 161.0 -3.1000001
+			}
+		}
+		$Node AnimNodeSource {
+			 "dz_xbox_woundedAnim" "" "ActionOnce.dz_xbox_wounded.Once" "noloop"
+			$Predictions {
+			}
+			$EditorData {
+				#EditorPos 163.4000092 -3.1000001
 			}
 		}
 	}

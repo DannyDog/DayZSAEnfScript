@@ -1,10 +1,11 @@
 MetaFileClass {
- Name "{C0641DC4133AFA10}Graphics/Textures/Water/envForest_stream_co.edds"
- Author "prague-pc"
- ChangeDate 1628038409
+ Name "{C0641DC4133AFA10}Graphics/Textures/Water/envForest_stream_co.tga"
+ Author "namalsk"
+ ChangeDate 474163349
  Configurations {
   TGAResourceClass PC {
    SourceFile "envForest_stream_co.tga"
+   Conversion DXTCompression
   }
   TGAResourceClass XBOX_ONE : PC {
   }

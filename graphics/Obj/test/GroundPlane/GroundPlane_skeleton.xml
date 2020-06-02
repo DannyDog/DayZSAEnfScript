@@ -1,6 +1,0 @@
-	<skeleton name="GroundPlane.xob">
-		<bone name="Scene_Root"/>
-		<bone name="Physics"/>
-		<bone name="centerofMass"/>
-		<bone name="collider"/>
-	</skeleton>

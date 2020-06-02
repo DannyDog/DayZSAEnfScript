@@ -1,6 +1,0 @@
-material "obj/test/GroundPlane/GroundPlane": MatBasic
-{
-	Cull none
-	AlbedoMap "obj/test/GroundPlane/co"
-}
-

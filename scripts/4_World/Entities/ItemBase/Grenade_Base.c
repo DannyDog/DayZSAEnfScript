@@ -221,7 +221,7 @@ class Grenade_Base extends InventoryItemSuper
 		if( GetGame().IsServer() )
 		{
 			SetHealth("", "", 0.0);
-			m_DeleteTimer.Run(10, this, "Delete");
+			m_DeleteTimer.Run(10, this, "DeleteSave");
 		}
 	}
 	

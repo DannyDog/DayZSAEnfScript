@@ -25,6 +25,7 @@ class DayZPlayerCameraResult
 	bool		m_bUpdateWhenBlendOut;	//!< true - camera is updated when blending to new camera (Ironsights == false)
 	float 		m_fShootFromCamera;		//!< 1(default) - uses shoot from camera (+aiming sway), 0 pure weapon shoot (ironsights == 0)
 	float		m_fIgnoreParentRoll;	//!< 1 - resets base transforms roll
+	IEntity		m_CollisionIgnoreEntity;//!< ignore entity in 3rd person camera collision solver
 
 	//! cannot be instanced from script (always created from C++)
 	private void DayZPlayerCameraResult()
@@ -244,6 +245,9 @@ class DayZPlayerType
 
 	//! sets aim limits for a player
 	proto native 	void SetAimLimits(float pDown, float pUp, float pLeft, float pRight);
+	
+	//! sets vertical minimum aim limit for a player
+	proto native 	void SetVerticalMinimumAimLimit(float value);
 
 	//! sets aim limits for a player
 	proto native 	void SetCameraShootParams(float pRayDistance, float pRayRadius, float pMaxAngleCos);
@@ -611,6 +615,7 @@ enum DayZPlayerConstants
 	ROTATION_ENABLE,			//!
 	
 	//! movement idx
+	MOVEMENTIDX_SLIDE	= -2,
 	MOVEMENTIDX_IDLE	= 0,
 	MOVEMENTIDX_WALK	= 1,
 	MOVEMENTIDX_RUN		= 2,
@@ -1174,6 +1179,26 @@ class DayZPlayer extends Human
 			SetSimpleHiddenSelectionState(SIMPLE_SELECTION_SHOULDER_RIFLE,boo);
 			SetSimpleHiddenSelectionState(SIMPLE_SELECTION_SHOULDER_MELEE,!boo);
 		}
+	}
+	
+	//! ---------------- Forces player to stand up when swapping to heavy item -------------------------
+	void ForceStandUpForHeavyItemsSwap (notnull EntityAI item)
+	{
+		InventoryLocation il = new InventoryLocation;
+		if ( item.IsHeavyBehaviour() && item.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.CARGO && IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_CROUCH))
+		{
+			HumanCommandMove cm = GetCommand_Move();
+			if (cm)
+			{
+				cm.ForceStance(DayZPlayerConstants.STANCEIDX_ERECT);
+			}
+		}
+	}
+	
+	void ForceStandUpForHeavyItemsSwap (notnull EntityAI item1, notnull EntityAI item2)
+	{
+		ForceStandUpForHeavyItemsSwap(item1);
+		ForceStandUpForHeavyItemsSwap(item2);
 	}
 }
 

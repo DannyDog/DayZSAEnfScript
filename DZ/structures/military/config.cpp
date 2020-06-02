@@ -2706,6 +2706,19 @@ class CfgVehicles
 				soundLocked = "doorWoodTwinRattle";
 				soundOpenABit = "doorWoodTwinOpenABit";
 			};
+			class Doors3
+			{
+				displayName = "door 3";
+				component = "Doors3";
+				soundPos = "doors3_action";
+				animPeriod = 1;
+				initPhase = 0;
+				initOpened = 0;
+				soundOpen = "doorMetalGateOpen";
+				soundClose = "doorMetalGateClose";
+				soundLocked = "doorMetalGateRattle";
+				soundOpenABit = "doorMetalGateOpenABit";
+			};
 		};
 		class DamageSystem
 		{
@@ -2774,6 +2787,64 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 					};
 					componentNames[] = {"doorsTwin1"};
+					fatalInjuryCoef = -1;
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+				};
+				class door3
+				{
+					class Health
+					{
+						hitpoints = 1000;
+						transferToGlobalCoef = 0;
+					};
+					componentNames[] = {"doors3"};
 					fatalInjuryCoef = -1;
 					class ArmorType
 					{
@@ -3464,6 +3535,19 @@ class CfgVehicles
 				soundLocked = "doorWoodSmallRattle";
 				soundOpenABit = "doorWoodSmallOpenABit";
 			};
+			class Doors7
+			{
+				displayName = "door 7";
+				component = "Doors7";
+				soundPos = "doors7_action";
+				animPeriod = 1;
+				initPhase = 0;
+				initOpened = 0.1;
+				soundOpen = "doorMetalGateOpen";
+				soundClose = "doorMetalGateClose";
+				soundLocked = "doorMetalGateRattle";
+				soundOpenABit = "doorMetalGateOpenABit";
+			};
 		};
 		class DamageSystem
 		{
@@ -3814,6 +3898,64 @@ class CfgVehicles
 						};
 					};
 				};
+				class door7
+				{
+					class Health
+					{
+						hitpoints = 1000;
+						transferToGlobalCoef = 0;
+					};
+					componentNames[] = {"doors7"};
+					fatalInjuryCoef = -1;
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+				};
 			};
 		};
 	};
@@ -3874,6 +4016,19 @@ class CfgVehicles
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
 				soundOpenABit = "doorWoodSmallOpenABit";
+			};
+			class Doors5
+			{
+				displayName = "door 5";
+				component = "Doors5";
+				soundPos = "doors5_action";
+				animPeriod = 1;
+				initPhase = 0;
+				initOpened = 0.1;
+				soundOpen = "doorMetalGateOpen";
+				soundClose = "doorMetalGateClose";
+				soundLocked = "doorMetalGateRattle";
+				soundOpenABit = "doorMetalGateOpenABit";
 			};
 		};
 		class DamageSystem
@@ -4117,6 +4272,64 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 					};
 					componentNames[] = {"doors4"};
+					fatalInjuryCoef = -1;
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 3;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+				};
+				class door5
+				{
+					class Health
+					{
+						hitpoints = 1000;
+						transferToGlobalCoef = 0;
+					};
+					componentNames[] = {"doors5"};
 					fatalInjuryCoef = -1;
 					class ArmorType
 					{

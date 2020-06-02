@@ -45,7 +45,7 @@ class ActionAttach: ActionSingleUseBase
 				target_entity = EntityAI.Cast( target.GetObject() );
 			}
 			
-			if(!target_entity.GetInventory().FindFirstFreeLocationForNewEntity( item.GetType(), FindInventoryLocationType.ATTACHMENT, il ))
+			if(!target_entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il ))
 				return false;
 		}
 			

@@ -406,17 +406,17 @@ class Environment
 		
 		if( IsWaterContact() ) 
 		{
-			temperature = temperature * GameConstants.ENVIRO_WATER_TEMPERATURE_COEF;
+			temperature -= Math.AbsFloat( temperature * GameConstants.ENVIRO_WATER_TEMPERATURE_COEF );
 		}
 		
 		if( IsInsideBuilding() )
 		{
-			temperature = temperature * GameConstants.ENVIRO_TEMPERATURE_INSIDE_COEF;
+			temperature += Math.AbsFloat( temperature * GameConstants.ENVIRO_TEMPERATURE_INSIDE_COEF );
 		}
 		
 		if( IsUnderRoof() )
 		{
-			temperature = temperature * GameConstants.ENVIRO_TEMPERATURE_UNDERROOF_COEF;
+			temperature += Math.AbsFloat( temperature * GameConstants.ENVIRO_TEMPERATURE_UNDERROOF_COEF );
 		}
 
 		float fog_effect  = m_Fog * GameConstants.ENVIRO_FOG_TEMP_EFFECT;

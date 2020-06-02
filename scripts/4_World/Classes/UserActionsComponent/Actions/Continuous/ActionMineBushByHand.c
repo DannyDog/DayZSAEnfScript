@@ -11,20 +11,15 @@ class ActionMineBushByHand: ActionMineBush
 	
 	override void CreateConditionComponents()  
 	{
-		m_ConditionTarget = new CCTCursor(1);
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.DEFAULT);
 		m_ConditionItem = new CCINone;
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				return true;
+			return true;
 		
-		if (super.ActionCondition(player, target, item))
-		{
-			if (!item)
-				return true;
-		}
-		return false;
+		return (super.ActionCondition(player, target, item) && !item);
 	}
 };

@@ -49,13 +49,11 @@ class cfgWeapons
 		muzzles[] = {"this","SecondMuzzle"};
 		ejectType = 3;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2.2,2.2,1.2};
 		drySound[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_dry",0.5,1,20};
 		reloadAction = "ReloadB95";
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\B95\b95_reload2",0.8,1,20};
 		reloadSound[] = {"",0.05623413,1,20};
-		shotAction = "";
-		tooltip = "_text = _this call fnc_generateTooltip;_text";
 		hiddenSelections[] = {"camoGround"};
 		simpleHiddenSelections[] = {"bullet","bullet2","hide_barrel"};
 		modes[] = {"Single","Burst"};

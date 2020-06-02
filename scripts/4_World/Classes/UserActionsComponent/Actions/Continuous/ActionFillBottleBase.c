@@ -61,11 +61,7 @@ class ActionFillBottleBase: ActionContinuousBase
 	
 	override bool ActionConditionContinue( ActionData action_data )
 	{
-		if (action_data.m_MainItem.GetQuantity() < action_data.m_MainItem.GetQuantityMax())
-		{
-			return true;
-		}
-		return false;
+		return ( action_data.m_MainItem.GetQuantity() < action_data.m_MainItem.GetQuantityMax() );
 	}
 	
 	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
@@ -141,16 +137,16 @@ class ActionFillBottleBase: ActionContinuousBase
 		int liquidType;
 		g_Game.SurfaceUnderObject(player, surfType, liquidType);
 		
-		if( g_Game.SurfaceIsPond(pos_cursor[0], pos_cursor[2]) || (target.GetObject() && target.GetObject().IsWell()) )
+		CCTWaterSurface waterCheck = new CCTWaterSurface(UAMaxDistances.DEFAULT, UAWaterType.FRESH);
+		
+		if ( waterCheck.Can(player, target) || (target.GetObject() && target.GetObject().IsWell()) )
 		{
 			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT && Liquid.CanFillContainer(item, LIQUID_WATER ) )
 			{
-				float dist = vector.Distance(player.GetPosition(), pos_cursor);
-				bool can = Liquid.CanFillContainer(item, LIQUID_WATER );
 				return LIQUID_WATER;
 			}
 		}
-		else if(target.GetObject() && target.GetObject().IsFuelStation())
+		else if (target.GetObject() && target.GetObject().IsFuelStation())
 		{
 			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT && Liquid.CanFillContainer(item, LIQUID_GASOLINE ) )
 			{
@@ -158,7 +154,7 @@ class ActionFillBottleBase: ActionContinuousBase
 			}
 		}
 		//if it does not return target on cursor, check under player for liquid type
-		else if(liquidType > 0)
+		else if (liquidType > 0)
 		{
 			return liquidType;
 		}

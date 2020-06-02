@@ -11,4 +11,12 @@ class Stone extends ItemBase
 			fireplace_base.RefreshFireplaceVisuals();
 		}
 	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
+	}
 }

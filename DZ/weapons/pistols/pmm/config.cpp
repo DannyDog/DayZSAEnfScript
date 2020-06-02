@@ -45,7 +45,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_380"};
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {1,1,0.7};
 		drySound[] = {"dz\sounds\weapons\firearms\ij70\Makarov_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\ij70\Makarov_reload",0.8,1,20};
 		reloadAction = "ReloadIJ70";

@@ -61,4 +61,20 @@ class ActionWaterPlant: ActionContinuousBase
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		}
 	}
+	
+	override void OnFinishProgressClient( ActionData action_data )
+	{
+		Object targetObject = action_data.m_Target.GetObject();
+		
+		if ( targetObject != NULL && targetObject.IsInherited(PlantBase) )
+		{
+			PlantBase plant = PlantBase.Cast( targetObject );
+			Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
+			float water = nacdata.param1;
+			Slot slot = plant.GetSlot();
+			water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( water, this.GetSpecialtyWeight() );
+			slot.GiveWater( water );
+			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+		}
+	}
 };

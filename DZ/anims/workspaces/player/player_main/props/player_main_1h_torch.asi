@@ -151,5 +151,6 @@ $animsetinstance {
    "LocomotionInjured.Pne.TurnL90" "{D4A6CECA76571C6B}DZ/anims/anm/player/moves/1handed/torch/injured/turns/p_1hd_torch_pne_inj_turnL_90_low.anm"
    "LocomotionInjured.Pne.TurnR180" "{A5C0C58E8DDE5FD9}DZ/anims/anm/player/moves/1handed/torch/injured/turns/p_1hd_torch_pne_inj_turnR_180_low.anm"
    "LocomotionInjured.Pne.TurnR90" "{19123B552D8C3F2E}DZ/anims/anm/player/moves/1handed/torch/injured/turns/p_1hd_torch_pne_inj_turnR_90_low.anm"
+   "WeaponOperations.ErcRas.Obstruction" "{D22A3787C4855105}DZ/anims/anm/player/layered/obstruction/p_rfl_erc_obstruction_ras.anm"
   
  }

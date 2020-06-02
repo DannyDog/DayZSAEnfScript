@@ -39,6 +39,7 @@ class cfgVehicles
 		muzzlePos = "usti hlavne";
 		barrelArmor = 600;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		isMeleeWeapon = 1;
 	};
 	class AK_Bayonet: Inventory_Base
@@ -64,6 +65,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
 		class DamageSystem
 		{
@@ -129,6 +131,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
 		class DamageSystem
 		{
@@ -194,6 +197,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
 		class DamageSystem
 		{
@@ -259,6 +263,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
 		class DamageSystem
 		{
@@ -319,6 +324,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.6,0.6,0.6};
+		swayModifier[] = {1,1,1};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -361,6 +367,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.6,0.6,0.6};
+		swayModifier[] = {1,1,1};
 		class Particles
 		{
 			class OnFire
@@ -401,6 +408,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		barrelArmor = 7;
 		recoilModifier[] = {0.9,0.9,0.9};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 2;
 		muzzlePos = "usti hlavne";
@@ -469,6 +477,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		muzzlePos = "usti hlavne";
@@ -538,6 +547,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		muzzlePos = "usti hlavne";
@@ -604,6 +614,7 @@ class cfgVehicles
 		noiseShootModifier = -0.9;
 		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		muzzlePos = "usti hlavne";
@@ -763,6 +774,7 @@ class cfgVehicles
 		noiseShootModifier = -0.9;
 		barrelArmor = 600;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		muzzlePos = "usti hlavne";
@@ -814,6 +826,7 @@ class cfgVehicles
 		dispersionCondition = "true";
 		barrelArmor = 600;
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		muzzlePos = "usti hlavne";

@@ -15,10 +15,10 @@ EffectDef {
    VelAngle 0
    RandomAngle 1
    Sort 0
-   Velocity 1
-   VelocityRND 0.8
-   AirResistance 0.2
-   AirResistanceRND 1
+   Velocity 0.2
+   VelocityRND 0.4
+   AirResistance 2
+   AirResistanceRND 0
    GravityMultiply 0
    GravityMultiplyRND 0
    Wind 1
@@ -32,7 +32,7 @@ EffectDef {
     0 0.3686 0.3657 0.3657 1 0.9529 1 0.9843
    }
    Alpha {
-    0 0 0.225 0.3 1 0
+    0 0 0.22396 0.10759 1 0
    }
    RotationSpeed {
     0 0 1 1

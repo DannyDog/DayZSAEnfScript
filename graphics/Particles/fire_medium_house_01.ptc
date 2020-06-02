@@ -1,4 +1,4 @@
-EffectDef  {
+EffectDef {
  Emitors {
   EmitorDef glows {
    ShapeType Point
@@ -71,10 +71,11 @@ EffectDef  {
    ConeAngle 360 0 60
    MaxNum 4
    BirthRate 0.5
-   Offset 0 0.3 0
+   Offset 0 0.15 0
    Material "{3E6CE4D61F8AC71F}Graphics/Particles/materials/fire/fire_medium_camp_02.emat"
-   SizeMultiplier 0.8
-   SizeRND 0.8
+   ScaleY 0.766
+   SizeMultiplier 1.2
+   SizeRND 0.2
    RandomRotDir 0
    RotMultiplier 0
    StretchMultiplier 1
@@ -102,7 +103,7 @@ EffectDef  {
   }
   EmitorDef fire_middle_burst {
    ShapeType Box
-   ShapeSize 0.5 0 0.5
+   ShapeSize 0.2 0 0.2
    ConeAngle 360 0 60
    MaxNum 1
    BirthRate 0
@@ -145,7 +146,7 @@ EffectDef  {
    BirthRateVel 0
    Offset 0 -0.2 0
    Material "{853257EDA4B1E35D}Graphics/Particles/materials/fire/fire_flame_01.emat"
-   SizeMultiplier 0.5
+   SizeMultiplier 0.25
    SizeRND 1
    RandomRotDir 0
    RotMultiplier 0
@@ -167,7 +168,7 @@ EffectDef  {
     0 0.8627 0.8471 0.3451 1 0.502 0.0745 0.0431
    }
    Alpha {
-    0 0 0.34055 0.208 0.65354 0.44 1 0
+    0 0 0.34055 0.208 0.52455 0 1 0
    }
    Size {
     0 0 0.49312 0.46541 1 0.18868
@@ -192,13 +193,13 @@ EffectDef  {
    GravityMultiply 0
    Spring 0.001
    Wind 0
-   LifeTime 1.5
+   LifeTime 1
    LifeTimeRND 0.5
    Color {
     0 0.9922 1 0.4471 1 1 0.4392 0.2157
    }
    Alpha {
-    0 1 0.49705 0.30818 1 0
+    0 1 0.39286 0.00633 1 0
    }
   }
  }

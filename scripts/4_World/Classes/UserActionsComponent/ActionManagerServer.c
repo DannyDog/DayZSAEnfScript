@@ -204,17 +204,14 @@ class ActionManagerServer: ActionManagerBase
 	override void OnActionEnd()
 	{
 		//Debug.Log("Action ended - hard, STS=" + m_Player.GetSimulationTimeStamp());
-		if(m_CurrentActionData)
+		if (m_CurrentActionData)
 		{
-			if( m_CurrentActionData.m_Target )
+			if ( m_CurrentActionData.m_Target )
 			{
 				EntityAI targetEntity;
-				if( targetEntity.CastTo(targetEntity,m_CurrentActionData.m_Target.GetObject()))
+				if ( targetEntity.CastTo(targetEntity, m_CurrentActionData.m_Target.GetObject()) && !Building.Cast(targetEntity) )
 				{
-					if( !Building.Cast(targetEntity))
-					{
-						GetGame().ClearJuncture(m_CurrentActionData.m_Player, targetEntity);
-					}
+					GetGame().ClearJuncture(m_CurrentActionData.m_Player, targetEntity);
 				}
 			}
 			super.OnActionEnd();
@@ -271,6 +268,9 @@ class ActionManagerServer: ActionManagerBase
 	
 		if (m_CurrentActionData)
 		{
+			if (m_CurrentActionData.m_State != UA_AM_PENDING && m_CurrentActionData.m_State != UA_AM_REJECTED && m_CurrentActionData.m_State != UA_AM_ACCEPTED)
+				m_CurrentActionData.m_Action.OnUpdateServer(m_CurrentActionData);
+			
 			//Debug.Log("m_CurrentActionData.m_State: " + m_CurrentActionData.m_State +" m_ActionWantEnd: " + m_ActionWantEndRequest );
 			switch (m_CurrentActionData.m_State)
 			{
@@ -279,11 +279,12 @@ class ActionManagerServer: ActionManagerBase
 			
 				case UA_AM_ACCEPTED:
 					// check pCurrentCommandID before start or reject 
-					if( ActionPossibilityCheck(pCurrentCommandID) )
+					if ( ActionPossibilityCheck(pCurrentCommandID) )
 					{
 						m_CurrentActionData.m_State = UA_START;
 						m_CurrentActionData.m_Action.Start(m_CurrentActionData);
-						if( m_CurrentActionData.m_Action && m_CurrentActionData.m_Action.IsInstant() )
+					
+						if ( m_CurrentActionData.m_Action && m_CurrentActionData.m_Action.IsInstant() )
 							OnActionEnd();
 					}
 					else
@@ -299,13 +300,13 @@ class ActionManagerServer: ActionManagerBase
 					break;
 			
 				default:
-					if(m_ActionInputWantEnd)
+					if (m_ActionInputWantEnd)
 					{
 						m_ActionInputWantEnd = false;
 						m_CurrentActionData.m_Action.EndInput(m_CurrentActionData);
 					}
 				
-					if(m_ActionWantEndRequest)
+					if (m_ActionWantEndRequest)
 					{
 						m_ActionWantEndRequest = false;
 						m_CurrentActionData.m_Action.EndRequest(m_CurrentActionData);

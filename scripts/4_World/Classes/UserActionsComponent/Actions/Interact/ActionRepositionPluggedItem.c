@@ -37,15 +37,7 @@ class ActionRepositionPluggedItem: ActionInteractBase
 		EntityAI replug_device = target_IB.GetCompEM().GetEnergySource();
 		m_SourceForReplug = ItemBase.Cast(replug_device);
 	
-		if ( target_IB.IsKindOf("CableReel") )
-		{
-			CableReel CR = CableReel.Cast( target_IB );
-			CR.ForceIntoHandsNow(action_data.m_Player);
-		}
-		else
-		{
-			action_data.m_Player.LocalTakeEntityToHands(target_IB);
-		}
+		action_data.m_Player.ServerTakeEntityToHands( target_IB );
 	}
 
 	override void OnStartClient( ActionData action_data )
@@ -54,16 +46,6 @@ class ActionRepositionPluggedItem: ActionInteractBase
 		ItemBase target_IB = ItemBase.Cast( targetObject );
 		EntityAI replug_device = target_IB.GetCompEM().GetEnergySource();
 		m_SourceForReplug = ItemBase.Cast(replug_device);
-		
-		if ( target_IB.IsKindOf("CableReel") )
-		{
-			CableReel CR = CableReel.Cast( target_IB );
-			CR.ForceIntoHandsNow(action_data.m_Player);
-		}
-		else
-		{
-			action_data.m_Player.LocalTakeEntityToHands(target_IB);
-		}
 	}
 	
 	override void OnExecuteServer( ActionData action_data )

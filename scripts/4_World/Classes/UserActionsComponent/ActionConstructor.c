@@ -52,6 +52,9 @@ class ActionConstructor
 		actions.Insert(ActionTakeABiteCan);
 		actions.Insert(ActionForceABiteCan);
 		actions.Insert(ActionPlaceFireplaceIndoor);
+		actions.Insert(ActionPlaceOvenIndoor);
+		actions.Insert(ActionCreateIndoorFireplace);
+		actions.Insert(ActionCreateIndoorOven);
 		actions.Insert(ActionAttach);
 		actions.Insert(ActionAttachOnProxy);
 		actions.Insert(ActionAttachWheels);
@@ -193,6 +196,8 @@ class ActionConstructor
 		actions.Insert(ActionStripCarrierVest);
 		actions.Insert(ActionBuildOven);
 		actions.Insert(ActionDismantleOven);
+		actions.Insert(ActionBuildStoneCircle);
+		actions.Insert(ActionDismantleStoneCircle);
 		//actions.Insert(ActionWritePaper);
 		//actions.Insert(ActionReadPaper);
 		actions.Insert(ActionFillFuel);
@@ -224,6 +229,8 @@ class ActionConstructor
 		actions.Insert(ActionMineBushByHand);
 		actions.Insert(ActionBreakLongWoodenStick);
 		actions.Insert(ActionFishingNew);
+		actions.Insert(ActionRepairTent);
+		actions.Insert(ActionRepairPart);
 		//actions.Insert(ActionEmptyBarrel);
 		
 		// Interact actions
@@ -252,6 +259,7 @@ class ActionConstructor
 		actions.Insert(ActionOpenBarrelHoles);
 		actions.Insert(ActionCloseBarrelHoles);
 		actions.Insert(ActionTakeFireplaceIndoor);
+		actions.Insert(ActionTakeOvenIndoor);
 		actions.Insert(ActionOpenDoors);
 		actions.Insert(ActionCloseDoors);
 		actions.Insert(ActionEnterLadder);

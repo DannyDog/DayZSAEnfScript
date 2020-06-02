@@ -1,10 +1,11 @@
 MetaFileClass {
- Name "{2F8BDD7FA4769A6D}Graphics/Textures/Water/algae_foam.edds"
- Author "prague-pc"
- ChangeDate 618833224
+ Name "{2F8BDD7FA4769A6D}Graphics/Textures/Water/algae_foam.tga"
+ Author "namalsk"
+ ChangeDate 1853040789
  Configurations {
   TGAResourceClass PC {
    SourceFile "algae_foam.tga"
+   Conversion DXTCompression
   }
   TGAResourceClass XBOX_ONE : PC {
   }

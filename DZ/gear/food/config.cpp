@@ -355,7 +355,6 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SmallGuts0";
 		descriptionShort = "$STR_CfgVehicles_SmallGuts1";
 		model = "\dz\gear\food\animal_smallguts.p3d";
-		lootCategory = "Crafted";
 		rotationFlags = 1;
 		weight = 0;
 		itemSize[] = {2,1};
@@ -446,7 +445,6 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Guts0";
 		descriptionShort = "$STR_CfgVehicles_Guts1";
 		model = "\dz\gear\food\animal_guts.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {3,2};
 		varQuantityInit = 500;
@@ -1602,7 +1600,6 @@ class CfgVehicles
 		displayName = "$STR_Apple0";
 		descriptionShort = "$STR_Apple1";
 		model = "\dz\gear\food\apple.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {1,1};
 		stackedUnit = "g";
@@ -1612,7 +1609,7 @@ class CfgVehicles
 		varQuantityMax = 125;
 		quantityBar = 1;
 		ammoType = "G_GrenadeHand";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_boiled","cs_dried"};
@@ -1717,7 +1714,7 @@ class CfgVehicles
 		descriptionShort = "$STR_Plum1";
 		model = "\dz\gear\food\plum.p3d";
 		rotationFlags = 12;
-		lootCategory = "Crafted";
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		absorbency = 0.4;
 		weight = 0;
 		itemSize[] = {1,1};
@@ -1828,7 +1825,7 @@ class CfgVehicles
 		descriptionShort = "$STR_Pear1";
 		model = "\dz\gear\food\pear.p3d";
 		rotationFlags = 12;
-		lootCategory = "Crafted";
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		absorbency = 0.2;
 		weight = 0;
 		itemSize[] = {1,2};
@@ -1938,8 +1935,7 @@ class CfgVehicles
 		displayName = "$STR_Banana0";
 		descriptionShort = "$STR_Banana1";
 		model = "\dz\gear\food\banana_fresh.p3d";
-		lootCategory = "Crafted";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		itemSize[] = {1,2};
 		stackedUnit = "g";
@@ -1948,7 +1944,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 130;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		class DamageSystem
@@ -2028,7 +2024,6 @@ class CfgVehicles
 		displayName = "$STR_Orange0";
 		descriptionShort = "$STR_Orange1";
 		model = "\dz\gear\food\orange_fresh.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {1,1};
 		stackedUnit = "g";
@@ -2037,7 +2032,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 110;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_rotten"};
@@ -2117,7 +2112,6 @@ class CfgVehicles
 		displayName = "$STR_Tomato0";
 		descriptionShort = "$STR_Tomato1";
 		model = "\dz\gear\food\tomato.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {1,1};
 		uantity = "";
@@ -2127,7 +2121,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 125;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "Cultivation_TomatoSeeds";
 		containsSeedsQuantity = "10";
 		hiddenSelections[] = {"cs_raw","cs_burned"};
@@ -2231,7 +2225,6 @@ class CfgVehicles
 		displayName = "$STR_GreenBellPepper0";
 		descriptionShort = "$STR_GreenBellPepper1";
 		model = "\dz\gear\food\pepper_green.p3d";
-		lootCategory = "Crafted";
 		rotationFlags = 12;
 		weight = 0;
 		itemSize[] = {1,2};
@@ -2241,7 +2234,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 125;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "Cultivation_PepperSeeds";
 		containsSeedsQuantity = "10";
 		hiddenSelections[] = {"cs_raw","cs_dried"};
@@ -2346,7 +2339,6 @@ class CfgVehicles
 		descriptionShort = "$STR_Zucchini1";
 		model = "\dz\gear\food\zucchini.p3d";
 		rotationFlags = 12;
-		lootCategory = "Crafted";
 		weight = 0;
 		stackedUnit = "g";
 		varQuantityInit = 200;
@@ -2355,10 +2347,10 @@ class CfgVehicles
 		quantityBar = 1;
 		itemSize[] = {1,3};
 		absorbency = 0.2;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "Cultivation_ZucchiniSeeds";
 		containsSeedsQuantity = "15";
-		hiddenSelections[] = {"cs_raw","cs_burned"};
+		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\zucchini_raw_CO.paa","dz\gear\food\data\zucchini_baked_CO.paa","dz\gear\food\data\zucchini_baked_CO.paa","dz\gear\food\data\zucchini_dried_CO.paa","dz\gear\food\data\zucchini_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\zucchini_raw.rvmat","dz\gear\food\data\zucchini_boiled.rvmat","dz\gear\food\data\zucchini_baked.rvmat","dz\gear\food\data\zucchini_dried.rvmat","dz\gear\food\data\zucchini_burnt.rvmat","dz\gear\food\data\zucchini_rotten.rvmat"};
 		class DamageSystem
@@ -2459,7 +2451,6 @@ class CfgVehicles
 		displayName = "$STR_Pumpkin0";
 		descriptionShort = "$STR_Pumpkin1";
 		model = "\dz\gear\food\Pumpkin_fresh.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {3,3};
 		stackedUnit = "g";
@@ -2548,7 +2539,7 @@ class CfgVehicles
 		displayName = "$STR_SlicedPumpkin0";
 		descriptionShort = "$STR_SlicedPumpkin1";
 		model = "\dz\gear\food\pumpkin_sliced.p3d";
-		lootCategory = "Crafted";
+		rotationFlags = 2;
 		weight = 0;
 		itemSize[] = {3,2};
 		stackedUnit = "g";
@@ -2557,7 +2548,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_baked","cs_dried"};
@@ -2663,14 +2654,14 @@ class CfgVehicles
 		model = "\dz\gear\food\potato.p3d";
 		rotationFlags = 12;
 		weight = 0;
-		itemSize[] = {1,2};
+		itemSize[] = {2,1};
 		stackedUnit = "g";
 		absorbency = 0.2;
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		isMeleeWeapon = 1;
@@ -2798,7 +2789,6 @@ class CfgVehicles
 		descriptionShort = "$STR_Kiwi1";
 		model = "\dz\gear\food\kiwi_fresh.p3d";
 		rotationFlags = 12;
-		lootCategory = "Crafted";
 		itemSize[] = {1,1};
 		weight = 0;
 		VarQuantityInit = 70;
@@ -2807,7 +2797,7 @@ class CfgVehicles
 		quantityBar = 1;
 		stackedUnit = "g";
 		absorbency = 0.2;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
 		hiddenSelections[] = {"cs_raw","cs_rotten"};
@@ -2887,7 +2877,6 @@ class CfgVehicles
 		displayName = "$STR_SambucusBerry0";
 		descriptionShort = "$STR_SambucusBerry1";
 		model = "\dz\gear\food\Sambucus_nigra.p3d";
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {1,1};
 		stackedUnit = "g";
@@ -3000,7 +2989,6 @@ class CfgVehicles
 		displayName = "$STR_CaninaBerry0";
 		descriptionShort = "$STR_CaninaBerry1";
 		model = "\dz\gear\food\canina_raw.p3d";
-		lootCategory = "Crafted";
 		itemSize[] = {1,1};
 		weight = 0;
 		stackedUnit = "g";
@@ -3114,7 +3102,6 @@ class CfgVehicles
 		descriptionShort = "$STR_Cannabis1";
 		model = "\dz\gear\food\cannabis_seedman.p3d";
 		rotationFlags = 34;
-		lootCategory = "Crafted";
 		weight = 0;
 		itemSize[] = {1,1};
 		stackedUnit = "g";
@@ -3235,7 +3222,7 @@ class CfgVehicles
 		varQuantityInit = 150;
 		varQuantityMin = 0;
 		varQuantityMax = 150;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3356,7 +3343,7 @@ class CfgVehicles
 		displayName = "$STR_GoatSteakMeat0";
 		descriptionShort = "$STR_GoatSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -3365,7 +3352,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3486,7 +3473,7 @@ class CfgVehicles
 		displayName = "$STR_MouflonSteakMeat0";
 		descriptionShort = "$STR_MouflonSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -3495,7 +3482,7 @@ class CfgVehicles
 		varQuantityMax = 230;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3616,7 +3603,7 @@ class CfgVehicles
 		displayName = "$STR_BoarSteakMeat0";
 		descriptionShort = "$STR_BoarSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -3625,7 +3612,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3746,7 +3733,7 @@ class CfgVehicles
 		displayName = "$STR_PigSteakMeat0";
 		descriptionShort = "$STR_PigSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -3755,7 +3742,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -3871,7 +3858,7 @@ class CfgVehicles
 		displayName = "$STR_DeerSteakMeat0";
 		descriptionShort = "$STR_DeerSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -3880,7 +3867,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4001,7 +3988,7 @@ class CfgVehicles
 		displayName = "$STR_WolfSteakMeat0";
 		descriptionShort = "$STR_WolfSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4010,7 +3997,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4131,7 +4118,7 @@ class CfgVehicles
 		displayName = "$STR_BearSteakMeat0";
 		descriptionShort = "$STR_BearSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4140,7 +4127,7 @@ class CfgVehicles
 		varQuantityMax = 180;
 		itemSize[] = {2,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4261,7 +4248,7 @@ class CfgVehicles
 		displayName = "$STR_CowSteakMeat0";
 		descriptionShort = "$STR_CowSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4270,7 +4257,7 @@ class CfgVehicles
 		varQuantityMax = 300;
 		itemSize[] = {2,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4391,7 +4378,7 @@ class CfgVehicles
 		displayName = "$STR_SheepSteakMeat0";
 		descriptionShort = "$STR_SheepSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4400,7 +4387,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4521,7 +4508,7 @@ class CfgVehicles
 		displayName = "$STR_FoxSteakMeat0";
 		descriptionShort = "$STR_FoxSteakMeat1";
 		model = "\dz\gear\food\meat_steak.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4530,7 +4517,7 @@ class CfgVehicles
 		varQuantityMax = 130;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4651,7 +4638,7 @@ class CfgVehicles
 		displayName = "$STR_ChickenBreastMeat0";
 		descriptionShort = "$STR_ChickenBreastMeat1";
 		model = "\dz\gear\food\meat_breast.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4660,7 +4647,7 @@ class CfgVehicles
 		varQuantityMax = 125;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4781,7 +4768,7 @@ class CfgVehicles
 		displayName = "$STR_RabbitLegMeat0";
 		descriptionShort = "$STR_RabbitLegMeat1";
 		model = "\dz\gear\food\meat_leg.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4790,7 +4777,7 @@ class CfgVehicles
 		varQuantityMax = 110;
 		itemSize[] = {1,2};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -4911,7 +4898,7 @@ class CfgVehicles
 		displayName = "$STR_CarpFilletMeat0";
 		descriptionShort = "$STR_CarpFilletMeat1";
 		model = "\dz\gear\food\carp_fillet.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -4920,7 +4907,7 @@ class CfgVehicles
 		varQuantityMax = 300;
 		itemSize[] = {2,3};
 		absorbency = 0.3;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -5041,7 +5028,7 @@ class CfgVehicles
 		displayName = "$STR_MackerelFilletMeat0";
 		descriptionShort = "$STR_MackerelFilletMeat1";
 		model = "\dz\gear\food\mackerel_fillet.p3d";
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
@@ -5050,7 +5037,7 @@ class CfgVehicles
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		class MeleeModes
 		{
@@ -5171,17 +5158,16 @@ class CfgVehicles
 		displayName = "$STR_Lard0";
 		descriptionShort = "$STR_Lard1";
 		model = "\dz\gear\food\lard.p3d";
-		rotationFlags = 17;
-		lootCategory = "Crafted";
+		rotationFlags = 34;
 		weight = 0;
 		interactionWeight = 1;
-		itemSize[] = {2,3};
+		itemSize[] = {2,2};
 		absorbency = 0.3;
 		varQuantityInit = 500;
 		varQuantityMin = 0;
 		varQuantityMax = 500;
 		quantityBar = 1;
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\lard_raw_CO.paa","dz\gear\food\data\lard_baked_CO.paa","dz\gear\food\data\lard_boiled_CO.paa","dz\gear\food\data\lard_dried_CO.paa","dz\gear\food\data\lard_burnt_CO.paa"};
@@ -5646,7 +5632,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 100;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_agaricus_raw_CO.paa","dz\gear\food\data\mushroom_agaricus_baked_CO.paa","dz\gear\food\data\mushroom_agaricus_baked_CO.paa","dz\gear\food\data\mushroom_agaricus_dried_CO.paa","dz\gear\food\data\mushroom_agaricus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_agaricus_raw.rvmat","dz\gear\food\data\mushroom_agaricus_baked.rvmat","dz\gear\food\data\mushroom_agaricus_boiled.rvmat","dz\gear\food\data\mushroom_agaricus_dried.rvmat","dz\gear\food\data\mushroom_agaricus_burnt.rvmat","dz\gear\food\data\mushroom_agaricus_rotten.rvmat"};
@@ -5852,7 +5838,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw","cs_baked","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_macrolepiota_raw_CO.paa","dz\gear\food\data\mushroom_macrolepiota_baked_CO.paa","dz\gear\food\data\mushroom_macrolepiota_baked_CO.paa","dz\gear\food\data\mushroom_macrolepiota_dried_CO.paa","dz\gear\food\data\mushroom_macrolepiota_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_macrolepiota_raw.rvmat","dz\gear\food\data\mushroom_macrolepiota_baked.rvmat","dz\gear\food\data\mushroom_macrolepiota_boiled.rvmat","dz\gear\food\data\mushroom_macrolepiota_dried.rvmat","dz\gear\food\data\mushroom_macrolepiota_burnt.rvmat","dz\gear\food\data\mushroom_macrolepiota_rotten.rvmat"};
@@ -5955,7 +5941,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_lactarius_raw_CO.paa","dz\gear\food\data\mushroom_lactarius_baked_CO.paa","dz\gear\food\data\mushroom_lactarius_baked_CO.paa","dz\gear\food\data\mushroom_lactarius_dried_CO.paa","dz\gear\food\data\mushroom_lactarius_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_lactarius_raw.rvmat","dz\gear\food\data\mushroom_lactarius_baked.rvmat","dz\gear\food\data\mushroom_lactarius_boiled.rvmat","dz\gear\food\data\mushroom_lactarius_dried.rvmat","dz\gear\food\data\mushroom_lactarius_burnt.rvmat","dz\gear\food\data\mushroom_lactarius_rotten.rvmat"};
@@ -6162,7 +6148,7 @@ class CfgVehicles
 		varQuantityMax = 150;
 		rotationFlags = 1;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_auricularia_raw_CO.paa","dz\gear\food\data\mushroom_auricularia_baked_CO.paa","dz\gear\food\data\mushroom_auricularia_boiled_CO.paa","dz\gear\food\data\mushroom_auricularia_dried_CO.paa","dz\gear\food\data\mushroom_auricularia_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_auricularia_raw.rvmat","dz\gear\food\data\mushroom_auricularia_baked.rvmat","dz\gear\food\data\mushroom_auricularia_boiled.rvmat","dz\gear\food\data\mushroom_auricularia_dried.rvmat","dz\gear\food\data\mushroom_auricularia_burnt.rvmat","dz\gear\food\data\mushroom_auricularia_rotten.rvmat"};
@@ -6265,7 +6251,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_boletus_raw_CO.paa","dz\gear\food\data\mushroom_boletus_baked_CO.paa","dz\gear\food\data\mushroom_boletus_boiled_CO.paa","dz\gear\food\data\mushroom_boletus_boiled_CO.paa","dz\gear\food\data\mushroom_boletus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_boletus_raw.rvmat","dz\gear\food\data\mushroom_boletus_baked.rvmat","dz\gear\food\data\mushroom_boletus_boiled.rvmat","dz\gear\food\data\mushroom_boletus_dried.rvmat","dz\gear\food\data\mushroom_boletus_burnt.rvmat","dz\gear\food\data\mushroom_boletus_rotten.rvmat"};
@@ -6369,7 +6355,7 @@ class CfgVehicles
 		varQuantityMax = 200;
 		rotationFlags = 1;
 		stackedUnit = "";
-		inventorySlot[] = {"Ingredient"};
+		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		hiddenSelections[] = {"cs_raw","cs_boiled","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mushroom_pleurotus_raw_CO.paa","dz\gear\food\data\mushroom_pleurotus_baked_CO.paa","dz\gear\food\data\mushroom_pleurotus_baked_CO.paa","dz\gear\food\data\mushroom_pleurotus_dried_CO.paa","dz\gear\food\data\mushroom_pleurotus_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mushroom_pleurotus_raw.rvmat","dz\gear\food\data\mushroom_pleurotus_baked.rvmat","dz\gear\food\data\mushroom_pleurotus_boiled.rvmat","dz\gear\food\data\mushroom_pleurotus_dried.rvmat","dz\gear\food\data\mushroom_pleurotus_burnt.rvmat","dz\gear\food\data\mushroom_pleurotus_rotten.rvmat"};

@@ -1,7 +1,0 @@
-Particle {
- AlbedoMap "{B6C9A3D2263E9667}Graphics/Particles/sprites/glow.edds" 
- Emissive 1 1 1 0
- BlendMode Additive_AlphaModulate
- CameraBlendNear 1
- CameraBlendFar 2
-}

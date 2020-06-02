@@ -48,7 +48,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.5;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {2,2,1};
+		swayModifier[] = {2,2,1.1};
 		simpleHiddenSelections[] = {"hide_barrel"};
 		drySound[] = {"dz\sounds\weapons\firearms\m4a1\m4_dry",0.5,1,20};
 		reloadAction = "ReloadM4";
@@ -223,11 +223,6 @@ class cfgWeapons
 		dispersionCondition = "true";
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\ots14\data\ots14_launcher_co.paa"};
-		class Damage
-		{
-			tex[] = {};
-			mat[] = {"DZ\weapons\firearms\data\ots14_launcher.rvmat","DZ\weapons\firearms\data\ots14_launcher_damage.rvmat","DZ\weapons\firearms\data\ots14_launcher_destruct.rvmat"};
-		};
 		class Melee
 		{
 			range = 1.0;

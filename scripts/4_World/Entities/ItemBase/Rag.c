@@ -61,6 +61,11 @@ class Rag extends ItemBase
 		AddAction(ActionBandageSelf);
 		AddAction(ActionGagTarget);
 		AddAction(ActionGagSelf);
+
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
 	}
 	
 	override float GetBandagingEffectivity()

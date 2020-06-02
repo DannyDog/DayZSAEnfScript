@@ -220,6 +220,22 @@ class TreeSoft_t_FagusSylvatica_2sb_Trail_B: TreeSoft_t_FagusSylvatica_2sb{};
 class TreeSoft_t_FagusSylvatica_2sb_Trail_G: TreeSoft_t_FagusSylvatica_2sb{};
 class TreeSoft_t_FagusSylvatica_2sb_Trail_R: TreeSoft_t_FagusSylvatica_2sb{};
 class TreeSoft_t_FagusSylvatica_2sb_Trail_Y: TreeSoft_t_FagusSylvatica_2sb{};
+
+class TreeSoft_t_FraxinusExcelsior_2w: TreeSoft
+{
+	override void InitMiningValues()
+	{
+		super.InitMiningValues();
+		m_IsCuttable = true;
+		
+		m_PrimaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
+		m_ToolDamage = 1.0;
+		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
+		m_PrimaryOutput = "FireWood";
+		m_SecondaryOutput = "LongWoodenStick";
+	}
+};
 class TreeSoft_t_malusDomestica_1s: TreeSoft
 {
 	override void InitMiningValues()

@@ -33,4 +33,14 @@ class Bark_ColorBase extends ItemBase
 	{
 		return Fireplace.CanIgniteEntityAsFireplace( this );
 	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
+	}
 }

@@ -97,6 +97,9 @@ class WeaponManager
 		if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
 			return false;
 		
+		if( m_player.IsItemsToDelete())
+			return false;
+		
 		if ( reservationCheck && (m_player.GetInventory().HasInventoryReservation(wpn, null) || m_player.GetInventory().HasInventoryReservation(mag, null)))
 			return false;
 		
@@ -133,6 +136,9 @@ class WeaponManager
 			return false;
 		
 		if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
+			return false;
+
+		if( m_player.IsItemsToDelete())
 			return false;
 		
 		if ( reservationCheck && (m_player.GetInventory().HasInventoryReservation(wpn, null) || m_player.GetInventory().HasInventoryReservation(mag, null)))
@@ -177,6 +183,9 @@ class WeaponManager
 		if ( mag.GetHierarchyParent() != wpn )
 			return false;
 		
+		if( m_player.IsItemsToDelete())
+			return false;
+		
 		if ( reservationCheck && (m_player.GetInventory().HasInventoryReservation(wpn, null) || m_player.GetInventory().HasInventoryReservation(mag, null)))
 			return false;
 		
@@ -198,6 +207,9 @@ class WeaponManager
 			return false;
 		
 		if( wpn.IsJammed(/*wpn.GetCurrentMuzzle()*/) )
+			return false;
+	
+		if( m_player.IsItemsToDelete())
 			return false;
 		
 		if ( reservationCheck && (m_player.GetInventory().HasInventoryReservation(wpn,null) || m_player.GetInventory().HasInventoryReservation(mag,null)))
@@ -223,6 +235,9 @@ class WeaponManager
 		if( wpn.IsDamageDestroyed())
 			return false;
 		
+		if( m_player.IsItemsToDelete())
+			return false;
+		
 		if ( reservationCheck && m_player.GetInventory().HasInventoryReservation(wpn, null))
 			return false;
 
@@ -239,6 +254,9 @@ class WeaponManager
 			return false;
 		 
 		if( m_player.GetHumanInventory().GetEntityInHands() != wpn)
+			return false;
+		
+		if( m_player.IsItemsToDelete())
 			return false;
 		
 		if( reservationCheck && m_player.GetInventory().HasInventoryReservation(wpn, null))
@@ -972,6 +990,19 @@ class WeaponManager
 			if(m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
 				return m_SuitableMagazines.Get(i);
 		
+		return null;
+	}
+	
+	Magazine GetNextPreparedMagazine ( out int startIdx )
+	{
+		for(int i = startIdx; i < m_SuitableMagazines.Count(); i++)
+		{
+			if(m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
+			{
+				startIdx = i;
+				return m_SuitableMagazines.Get(i);
+			}				
+		}
 		return null;
 	}
 	

@@ -75,6 +75,9 @@ class ActionCollectBloodTargetLambda : ReplaceItemWithNewLambda
 			quantitySet = m_percentFilled * maxQuantity;
 			ItemBase.Cast(new_item).SetQuantity(quantitySet);
 			m_Target.AddHealth("","Blood",-quantitySet);
+			
+			if ( m_Player.HasBloodTypeVisible() )
+				BloodContainerBase.Cast(new_item).SetBloodTypeVisible( true );
 		}
 		else
 		{

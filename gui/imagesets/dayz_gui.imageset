@@ -384,6 +384,12 @@ ImageSetClass {
    Size 20 20
    Flags 0
   }
+  ImageSetDefClass icon_copy {
+   Name "icon_copy"
+   Pos 858 265
+   Size 20 20
+   Flags 0
+  }
   ImageSetDefClass icon_locked_sb {
    Name "icon_locked_sb"
    Pos 779 286

@@ -263,7 +263,8 @@ class VicinitySlotsContainer: Container
 				bool draggable = false;
 				if( ItemBase.Cast( selected_item ) )
 				{
-					draggable = !GetGame().GetPlayer().GetInventory().HasInventoryReservation( selected_item, null );
+					PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+					draggable = !player.GetInventory().HasInventoryReservation( selected_item, null ) && !player.IsItemsToDelete();
 					draggable = draggable && selected_item.CanPutIntoHands( GetGame().GetPlayer() );
 					draggable = draggable && selected_item.GetInventory().CanRemoveEntity();
 				}
@@ -386,7 +387,8 @@ class VicinitySlotsContainer: Container
 			bool draggable = false;
 			if( ItemBase.Cast( item ) )
 			{
-				draggable = !GetGame().GetPlayer().GetInventory().HasInventoryReservation( item, null );
+				PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+				draggable = !player.GetInventory().HasInventoryReservation( item, null ) && !player.IsItemsToDelete();
 				draggable = draggable && item.CanPutIntoHands( GetGame().GetPlayer() );
 				draggable = draggable && item.GetInventory().CanRemoveEntity();
 			}
@@ -603,7 +605,8 @@ class VicinitySlotsContainer: Container
 		bool draggable = false;
 		if( item )
 		{
-			draggable = !GetGame().GetPlayer().GetInventory().HasInventoryReservation( item, null );
+			PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+			draggable = !player.GetInventory().HasInventoryReservation( item, null ) && !player.IsItemsToDelete();
 			draggable = draggable && item.CanPutIntoHands( GetGame().GetPlayer() );
 			draggable = draggable && item.GetInventory().CanRemoveEntity();
 		}

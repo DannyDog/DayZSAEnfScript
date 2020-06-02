@@ -2807,6 +2807,111 @@ class CfgWorlds
 					memPoint = "sound_WindObjectInner0SpotLadder_2";
 					soundSets[] = {"WindObjectInner1SpotMetalSqueak_SoundSet","WindObjectInner1Gust_SoundSet"};
 				};
+				class sound_WindObjectInner0SpotChains
+				{
+					memPoint = "sound_WindObjectInner0SpotChains";
+					soundSets[] = {"WindObjectInner0SpotChains_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotChain_1
+				{
+					memPoint = "sound_WindObjectInner0SpotChain_1";
+					soundSets[] = {"WindObjectInner0SpotChainSquek_SoundSet","WindObjectInner0SpotChain_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotChain_2
+				{
+					memPoint = "sound_WindObjectInner0SpotChain_2";
+					soundSets[] = {"WindObjectInner0SpotChainSquek_SoundSet","WindObjectInner0SpotChain_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotChain_3
+				{
+					memPoint = "sound_WindObjectInner0SpotChain_3";
+					soundSets[] = {"WindObjectInner0SpotChainSquek_SoundSet","WindObjectInner0SpotChain_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotChain_4
+				{
+					memPoint = "sound_WindObjectInner0SpotChain_4";
+					soundSets[] = {"WindObjectInner0SpotChainSquek_SoundSet","WindObjectInner0SpotChain_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotChain_5
+				{
+					memPoint = "sound_WindObjectInner0SpotChain_5";
+					soundSets[] = {"WindObjectInner0SpotChainSquek_SoundSet","WindObjectInner0SpotChain_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_1
+				{
+					memPoint = "sound_WindObjectAutodrome_1";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_2
+				{
+					memPoint = "sound_WindObjectAutodrome_2";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_3
+				{
+					memPoint = "sound_WindObjectAutodrome_3";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_4
+				{
+					memPoint = "sound_WindObjectAutodrome_4";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_5
+				{
+					memPoint = "sound_WindObjectAutodrome_5";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectAutodrome_6
+				{
+					memPoint = "sound_WindObjectAutodrome_6";
+					soundSets[] = {"WindObjectAutodrome_SoundSet","WindObjectAutodromeFence_SoundSet"};
+				};
+				class sound_WindObjectShootingGallery_1
+				{
+					memPoint = "sound_WindObjectShootingGallery_1";
+					soundSets[] = {"WindObjectShootingGallery_SoundSet","WindObjectInner0SpotGustWall_SoundSet"};
+				};
+				class sound_WindObjectShootingGallery_2
+				{
+					memPoint = "sound_WindObjectShootingGallery_2";
+					soundSets[] = {"WindObjectShootingGallery_SoundSet"};
+				};
+				class sound_WindObjectShootingGallery_3
+				{
+					memPoint = "sound_WindObjectShootingGallery_3";
+					soundSets[] = {"WindObjectShootingGallery_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_1
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_1";
+					soundSets[] = {"WindObjectInner0SpotMetalStress_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_2
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_2";
+					soundSets[] = {"WindObjectInner0SpotMetalStress2_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_3
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_3";
+					soundSets[] = {"WindObjectInner0SpotMetalStress3_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_4
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_4";
+					soundSets[] = {"WindObjectInner0SpotMetalStress4_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_5
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_5";
+					soundSets[] = {"WindObjectInner0SpotMetalStress5_SoundSet"};
+				};
+				class sound_WindObjectInner0SpotMetalStress_6
+				{
+					memPoint = "sound_WindObjectInner0SpotMetalStress_6";
+					soundSets[] = {"WindObjectInner0SpotMetalStress4_SoundSet"};
+				};
 				class sound_WindObjectInner0SpotMetalFence_1
 				{
 					memPoint = "sound_WindObjectInner0SpotMetalFence_1";

@@ -1,26 +1,20 @@
 class ActionPullBodyFromTransport: ActionInteractBase
 {
-	private Transport m_transport;
-	private int       m_crewIdx;
-
-
 	void ActionGetOutTransport()
 	{
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ALL;
 		m_HUDCursorIcon = "GetInDriver";
 	}
 
-
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
 		m_ConditionTarget = new CCTNone;
-		//m_ConditionTarget = new CCTMan(UAMaxDistances.DEFAULT,false);
 	}
 
 	override string GetText()
 	{
-		return "Pull out body - TEMP";
+		return "#pull_out_body";
 	}
 
 	override typename GetInputType()
@@ -35,96 +29,54 @@ class ActionPullBodyFromTransport: ActionInteractBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
- 		m_transport = null;
-		
-		
-		
-		
 		PlayerBase targetPlayer = PlayerBase.Cast(target.GetObject());
-		
-		Transport trans = Transport.Cast(target.GetObject());
-		
-		if(!trans)
+		if (!targetPlayer || targetPlayer.IsAlive() || !targetPlayer.GetParent() || !targetPlayer.GetParent().IsInherited(Transport) || !IsInReach(player, target, UAMaxDistances.DEFAULT))
 			return false;
 		
-		if ( player.GetCommand_Vehicle() )
-			return false;
-		
-		int componentIndex = target.GetComponentIndex();
-		
-		m_crewIdx = trans.CrewPositionIndex(componentIndex);
-		if ( m_crewIdx < 0 )
-			return false;
-
-		Human crew = trans.CrewMember( m_crewIdx );
-		if ( !crew )
-			return false;
-		
-		if ( crew.IsAlive() )
-			return false;
-		
-		//if ( !trans.CrewCanGetThrough( m_crewIdx ) )
-			//return false;
-
-		return true;
-	}
-
-	override void OnStartServer( ActionData action_data )
-	{
-		super.OnStartServer( action_data );
-		Transport trans = Transport.Cast(action_data.m_Target.GetObject());
-		
-		if( trans )
+		bool found = false;
+		Transport transportTarget = Transport.Cast(targetPlayer.GetParent());
+		for (int i = 0; i < transportTarget.CrewSize(); ++i)
 		{
-			int componentIndex = action_data.m_Target.GetComponentIndex();
-			
-			m_crewIdx = trans.CrewPositionIndex(componentIndex);
-			if ( m_crewIdx < 0 )
-				return;
-			
-			Human crew = trans.CrewMember( m_crewIdx );
-			if ( !crew )
-				return;
-			
-			trans.CrewGetOut( m_crewIdx );
-			
-		
-		
-		} 
-		
-		
-		
-		
-/*		PlayerBase targetPlayer = PlayerBase.Cast(action_data.m_Target.GetObject());
-		if(targetPlayer && !targetPlayer.IsAlive())
-		{
-			HumanCommandVehicle vehCommand = targetPlayer.GetCommand_Vehicle();
-			if( vehCommand )
+			if (transportTarget.CrewMember(i) == targetPlayer)
 			{
-				Transport trans = vehCommand.GetTransport();
-				if ( trans )
-				{
-					Print("JUUUUUU");
-					Car car;
-					/*if ( Class.CastTo(car, trans) )
-					{
-						float speed = car.GetSpeedometer();
-						if ( speed <= 8 )
-						{
-							vehCommand.GetOutVehicle();
-						}
-						else
-						{
-							vehCommand.JumpOutVehicle();
-						}
-					//action_data.m_Player.GetItemAccessor().HideItemInHands(false);
-					//action_data.m_Player.GetItemAccessor().OnItemInHandsChanged();
-					
-					//GetDayZGame().GetBacklit().OnLeaveCar();									
-					}
-				}
+				found = true;
+				break;
 			}
-		}*/
+		}
+		
+		CarScript car = CarScript.Cast(transportTarget);
+		return found && transportTarget.CrewCanGetThrough(i);
+	}
+	
+	/*
+	bool IsCarDoorClosed(CarScript car, int seatIdx)
+	{
+		if (car == null)
+			return false;
+		
+		string doorName = car.GetDoorInvSlotNameFromSeatPos(seatIdx);
+		return car.GetCarDoorsState( doorName ) == CarDoorState.DOORS_CLOSED;
+	}
+	*/
+	
+	override void OnStart( ActionData action_data )
+	{
+		super.OnStart( action_data );
+		
+		PlayerBase targetPlayer = PlayerBase.Cast(action_data.m_Target.GetObject());		
+		Transport transportTarget = Transport.Cast(targetPlayer.GetParent());
+			
+		for (int i = 0; i < transportTarget.CrewSize(); ++i)
+		{
+			if (transportTarget.CrewMember(i) == targetPlayer)
+				break;
+		}
+			
+		transportTarget.CrewGetOut(i);
+		targetPlayer.UnlinkFromLocalSpace();
+		targetPlayer.DisableSimulation(false);
+		targetPlayer.StartCommand_Death(-1, 0, HumanCommandDeathCallback);
+		targetPlayer.ResetDeathStartTime();
 	}
 	
 	/*override bool CanBeUsedInVehicle()

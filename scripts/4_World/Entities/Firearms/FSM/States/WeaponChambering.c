@@ -8,6 +8,11 @@ class WeaponChambering_Start extends WeaponStartAction
 		//m_weapon.HideBullet(m_weapon.GetCurrentMuzzle());
 		//m_weapon.SelectionBulletHide();
 	}
+	
+	override bool IsWaitingForActionFinish()
+	{
+		return true;
+	}
 };
 
 class WeaponChambering_Base extends WeaponStateBase
@@ -123,7 +128,7 @@ class WeaponChambering_Cartridge extends WeaponChambering_Base
 		m_type = string.Empty;
 		super.OnExit(e);
 	}
-
+	
 };
 
 class WeaponChambering_Cartridge_ChambToMag extends WeaponChambering_Cartridge

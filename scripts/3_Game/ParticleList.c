@@ -48,6 +48,11 @@ class ParticleList
 	static const int BARREL_NORMAL_SMOKE			= RegisterParticle("smoke_medium_barrel_01");
 	static const int BARREL_FIRE_END				= RegisterParticle("fire_small_barrel_01_end");
 	static const int BARREL_FIRE_STEAM_2END			= RegisterParticle("steam_medium_camp_2end");
+	// Fireplace in indoor oven
+	static const int OVEN_FIRE_START				= RegisterParticle("fire_small_oven_01_start");
+	static const int OVEN_SMALL_FIRE 				= RegisterParticle("fire_small_oven_01");
+	static const int OVEN_NORMAL_FIRE				= RegisterParticle("fire_medium_oven_01");
+	static const int OVEN_FIRE_END					= RegisterParticle("fire_small_ovenl_01_end");
 	
 	// COOKING
 	static const int COOKING_BOILING_EMPTY			= RegisterParticle("cooking_boiling_empty");

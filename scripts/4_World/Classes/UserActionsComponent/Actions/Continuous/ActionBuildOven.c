@@ -65,22 +65,19 @@ class ActionBuildOven: ActionContinuousBase
 		{
 			ItemBase attached_item = ItemBase.Cast( fireplace_target.GetAttachmentByType( fireplace_target.ATTACHMENT_STONES ) );
 			
-			InventoryLocation inventory_location = new InventoryLocation;
+			/*InventoryLocation inventory_location = new InventoryLocation;
 			attached_item.GetInventory().GetCurrentInventoryLocation( inventory_location );
-			fireplace_target.GetInventory().SetSlotLock( inventory_location.GetSlot(), true );
+			fireplace_target.GetInventory().SetSlotLock( inventory_location.GetSlot(), true );*/
 			
 			//set oven state
 			fireplace_target.SetOvenState( true );
+			fireplace_target.SetOrientation( action_data.m_Player.GetOrientation() - "180 0 0" );
 			
 			// extend lifetime
-			fireplace_target.SetLifetime(604800);
+			fireplace_target.SetLifetime( FireplaceBase.LIFETIME_FIREPLACE_STONE_OVEN );
 
 			//add specialty to soft skills
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		}
-		else
-		{
-			SendMessageToClient( action_data.m_Player, fireplace_target.MESSAGE_CANNOT_BUILD_OVEN );
 		}
 	}
 }

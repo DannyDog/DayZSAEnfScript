@@ -43,6 +43,19 @@ class EmoteCB : HumanCommandActionCallback
 				if (GetGame().IsServer())
 					m_Manager.CreateBleedingEffect(m_callbackID);
 			break;
+			
+			case EMOTE_SUICIDE_SIMULATION_END :
+				if (GetGame().IsServer())
+				{
+					EntityAI itemInHands = m_player.GetHumanInventory().GetEntityInHands();
+					if (itemInHands)
+					{
+						vector m4[4];
+						itemInHands.GetTransform(m4);
+						m_player.GetInventory().DropEntityWithTransform(InventoryMode.SERVER, m_player, itemInHands, m4);
+					}
+				}			
+			break;
 		}
 	}
 	
@@ -401,6 +414,7 @@ class EmoteManager
 	{
 		if (!CanPlayEmote(id))
 		{
+			m_Player.SetInventorySoftLock(false);
 			return false;
 		}
 		
@@ -920,6 +934,7 @@ class EmoteManager
 			//TODO : check multiple muzzles for shotguns, eventually
 			if (weapon.CanFire())
 			{
+				m_Callback.RegisterAnimationEvent("Simulation_End",EMOTE_SUICIDE_SIMULATION_END);
 				m_Player.SetSuicide(true);
 				weapon.ProcessWeaponEvent(weapon_event);
 				m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_FINISH);
@@ -949,6 +964,7 @@ class EmoteManager
 		{
 			m_Callback.RegisterAnimationEvent("Death",EMOTE_SUICIDE_DEATH);
 			m_Callback.RegisterAnimationEvent("Bleed",EMOTE_SUICIDE_BLEED);
+			m_Callback.RegisterAnimationEvent("Simulation_End",EMOTE_SUICIDE_SIMULATION_END);
 			m_Player.SetSuicide(true);
 			m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_FINISH);
 			
@@ -963,8 +979,10 @@ class EmoteManager
 	void KillPlayer()
 	{
 		if (GetGame().IsServer())
-		{
-			EntityAI itemInHands = m_Player.GetHumanInventory().GetEntityInHands();
+		{		
+			m_Player.SetHealth(0);
+			
+			/*EntityAI itemInHands = m_Player.GetHumanInventory().GetEntityInHands();
 			bool can_drop = itemInHands && m_Player.CanDropEntity(itemInHands);
 			if (!m_Player.IsAlive() && can_drop)
 			{
@@ -985,7 +1003,7 @@ class EmoteManager
 				{
 					m_Player.SetHealth(0);
 				}
-			}
+			}*/
 		}
 	}
 	
@@ -1065,6 +1083,7 @@ class EmoteManager
 				}
 				if (m_RPSOutcome != -1) 	ctx.Write(m_RPSOutcome);
 				ctx.Send();
+				m_Player.SetInventorySoftLock(true);
 				//m_DeferredEmoteExecution = m_MenuEmote.m_ID;
 				//PlayEmote(m_MenuEmote.m_ID);
 			}
@@ -1106,7 +1125,7 @@ class EmoteManager
 			return true;
 		}
 		
-		if ( !m_Player || (!IsEmotePlaying() && m_Player.GetCommand_Action() || m_Player.GetCommandModifier_Action()) || m_Player.GetThrowing().IsThrowingModeEnabled())
+		if ( !m_Player || (!IsEmotePlaying() && m_Player.GetCommand_Action() || m_Player.GetCommandModifier_Action()) || m_Player.GetThrowing().IsThrowingModeEnabled() || m_Player.IsItemsToDelete())
 		{	
 			return false;
 		}

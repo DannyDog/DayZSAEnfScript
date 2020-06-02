@@ -116,10 +116,10 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	}
 
 	bool HandleFightLogic(int pCurrentCommandID, HumanInputController pInputs, EntityAI pEntityInHands, HumanMovementState pMovementState, out bool pContinueAttack)
-	{
+	{		
 		InventoryItem itemInHands = InventoryItem.Cast(pEntityInHands);
 		HumanCommandMove hcm = m_DZPlayer.GetCommand_Move();
-
+				
 		bool isFireWeapon = itemInHands && itemInHands.IsWeapon();
 		bool isNotMeleeWeapon = itemInHands && !itemInHands.IsMeleeWeapon(); // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
 
@@ -146,8 +146,14 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				//! melee with firearm
 				if (isFireWeapon)
 				{
+					//! don't allow bash to interfere with actions like chambering or ejecting bullets
+					Weapon_Base weapon = Weapon_Base.Cast(itemInHands);
+					PlayerBase player = PlayerBase.Cast(m_DZPlayer);
+					if (weapon.IsWaitingForActionFinish() || player.GetActionManager().GetRunningAction())
+						return false;
+					
 					//! perform firearm melee from raised erect or continue with attack after character stand up from crouch
-					if (hcm.GetCurrentMovementSpeed() <= 2.05 && (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT || pContinueAttack))
+					else if (hcm.GetCurrentMovementSpeed() <= 2.05 && (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT || pContinueAttack) && !m_DZPlayer.IsFighting())
 					{
 						m_HitType = GetAttackTypeByWeaponAttachments(pEntityInHands);
 						if( m_HitType == EMeleeHitType.NONE )

@@ -46,29 +46,22 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 				
 				if ( construction_action_data.GetConstructionPartsCount() > 1 )
 				{
-					int valid_recipes;
-					//--------------------------------------------------
-					for(int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
-					{
-						if( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item ) )
-						{
-							valid_recipes++;
-						}
-					}
-					if (valid_recipes <= 1)
-						return false;
-					//--------------------------------------------------
-					
-					//camera and position checks
-					if ( !base_building.IsFacingPlayer( player, main_part_name ) && !player.GetInputController().CameraIsFreeLook() && base_building.HasProperDistance( main_part_name, player ) )
+					if ( base_building.IsPlayerInside( player, main_part_name ) && !player.GetInputController().CameraIsFreeLook() )
 					{
 						//Camera check (client-only)
-						if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
+						if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) && base_building.IsFacingCamera( main_part_name ))
+							return false;
+
+						//Check validity of recipes
+						int valid_recipes;
+						for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
 						{
-							return !base_building.IsFacingCamera( main_part_name );
+							string name = construction_action_data.GetBuildPartAtIndex(i).GetPartName();
+							if (MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item, name))
+								valid_recipes++;
 						}
-						
-						return true;
+						if (valid_recipes > 1)
+							return true;
 					}
 				}
 			}

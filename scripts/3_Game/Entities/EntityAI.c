@@ -14,14 +14,23 @@ enum PlantType
 	BUSH_SOFT		= 1003,
 }
 
+enum WeightUpdateType
+{
+	FULL = 0,
+	ADD,
+	REMOVE
+}
+
 class EntityAI extends Entity
 {
 	bool 					m_DeathSyncSent;
 	bool 					m_KilledByHeadshot;
+	bool 					m_PreparedToDelete = false;
 	ref KillerData 			m_KillerData;
 	
 	ref array<EntityAI> 	m_AttachmentsWithCargo;
 	ref array<EntityAI> 	m_AttachmentsWithAttachments;
+	protected ref DamageZoneMap m_DamageZoneMap;
 	ref InventoryLocation 	m_OldLocation;
 	
 	float					m_Weight;
@@ -74,6 +83,8 @@ class EntityAI extends Entity
 		m_AttachmentsWithAttachments	= new array<EntityAI>;
 		//m_NewLocation 					= new InventoryLocation;
 		//m_OldLocation 					= new InventoryLocation;
+		
+		InitDamageZoneMapping();
 	}
 	
 	void ~EntityAI()
@@ -112,6 +123,18 @@ class EntityAI extends Entity
 			return m_ComponentsBank.IsComponentAlreadyExist(comp_type);
 		
 		return false;
+	}
+	
+	//! Initializes script-side map of damage zones and their components (named selections in models)
+	void InitDamageZoneMapping()
+	{
+		m_DamageZoneMap = new DamageZoneMap;
+		DamageSystem.GetDamageZoneMap(this,m_DamageZoneMap);
+	}
+	
+	DamageZoneMap GetEntityDamageZoneMap()
+	{
+		return m_DamageZoneMap;
 	}
 
 	//! Log
@@ -308,6 +331,11 @@ class EntityAI extends Entity
 	{
 		return false;
 	}
+	
+	bool IsIgnoredByConstruction()
+	{
+		return IsDamageDestroyed();
+	}
 
 	/**@brief Delete this object in next frame
 	 * @return \p void
@@ -324,6 +352,32 @@ class EntityAI extends Entity
 	void DeleteOnClient()
 	{
 		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(GetGame().ObjectDeleteOnClient, this);
+	}
+	
+	void DeleteSave()
+	{
+		
+		if (GetHierarchyRootPlayer() == NULL)
+		{
+			Delete();
+		}
+		else
+		{
+			if ( GetGame().IsMultiplayer() )
+				GetHierarchyRootPlayer().JunctureDeleteItem(this);
+			else
+				GetHierarchyRootPlayer().AddItemToDelete( this );
+		}
+	}
+	
+	void SetPrepareToDelete()
+	{
+		m_PreparedToDelete = true;
+	}
+	
+	bool IsPreparedToDelete()
+	{
+		return m_PreparedToDelete;
 	}
 	
 	//! Returns root of current hierarchy (for example: if this entity is in Backpack on gnd, returns Backpack)
@@ -428,7 +482,7 @@ class EntityAI extends Entity
 		// Notify potential parent that this item was ruined
 		EntityAI parent = GetHierarchyParent();
 		
-		if (parent)
+		if (parent && newLevel == GameConstants.STATE_RUINED)
 		{
 			parent.OnAttachmentRuined(this);
 		}
@@ -448,7 +502,9 @@ class EntityAI extends Entity
 	
 	void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
 	{
-		//Print("EEHitByRemote: damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
+		#ifdef DEVELOPER
+			//Print("EEHitBy: " + this + "; damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
+		#endif
 	}
 	
 	// called only on the client who caused the hit
@@ -460,7 +516,7 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is attached to it.
 	void EEItemAttached(EntityAI item, string slot_name)
 	{
-		UpdateWeight();
+		UpdateWeight(WeightUpdateType.ADD, item.GetWeight());
 		
 		//Print (slot_name);
 		if ( m_ComponentsBank != NULL )
@@ -505,7 +561,7 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is detached from it.
 	void EEItemDetached(EntityAI item, string slot_name)
 	{
-		UpdateWeight();
+		UpdateWeight(WeightUpdateType.REMOVE, item.GetWeight());
 		
 		if ( m_ComponentsBank != NULL )
 		{
@@ -543,19 +599,21 @@ class EntityAI extends Entity
 
 	void EECargoIn(EntityAI item)
 	{
-		UpdateWeight();
+		UpdateWeight(WeightUpdateType.ADD, item.GetWeight());
 		
 		if( m_OnItemAddedIntoCargo )
 			m_OnItemAddedIntoCargo.Invoke( item, this );
+			
 		item.OnMovedInsideCargo(this);
 	}
 
 	void EECargoOut(EntityAI item)
 	{
-		UpdateWeight();
+		UpdateWeight(WeightUpdateType.REMOVE, item.GetWeight());
 		
 		if( m_OnItemRemovedFromCargo )
 			m_OnItemRemovedFromCargo.Invoke( item, this );
+			
 		item.OnRemovedFromCargo(this);
 	}
 
@@ -804,7 +862,23 @@ class EntityAI extends Entity
 	{
 		return true;
 	}
-
+	
+	bool CanCombineAttachment(notnull EntityAI e, int slot)
+	{
+		EntityAI att = GetInventory().FindAttachment(slot);
+		if(att)
+			return att.CanBeCombined(e);
+		return false;
+	}	
+	
+	bool CanBeCombined(EntityAI other_item, bool reservation_check = true )
+	{
+		return false;
+	}
+	
+	void CombineItemsClient(EntityAI entity2, bool use_stack_max = false )
+	{}
+	
 	/**@fn		CanReceiveItemIntoCargo
 	 * @brief	calls this->CanReceiveItemIntoCargo(cargo)
 	 * @return	true if action allowed
@@ -1255,6 +1329,19 @@ class EntityAI extends Entity
 		
 		return -1;
 	}
+	
+	/**
+	 * @fn		EntityPlaceOnSurfacePointWithRotation
+	 * @brief	applies correct rotation according to WRUtils::EntityPlacementRotation(type->GetRotationFlags())
+	 *
+	 * @param[out]	trans	\p		the transform to apply the correct rotation on
+	 * @param[in]	pos		\p		position to check
+	 * @param[in]	dx		\p		up vector x to align to
+	 * @param[in]	dz		\p		up vector z to align to
+	 * @param[in]	fAngle	\p		angle to position
+	 * @param[in]	align	\p		align to surface
+	 **/	
+	proto native void PlaceOnSurfaceRotated (out vector trans[4], vector pos, float dx = 0, float dz = 0, float fAngle = 0, bool align = false);
 
 	/**
 	 * @fn		RegisterNetSyncVariableBool
@@ -1678,7 +1765,7 @@ class EntityAI extends Entity
 		return m_Weight;
 	}
 	
-	void UpdateWeight();
+	void UpdateWeight(WeightUpdateType updateType = WeightUpdateType.FULL, float weightAdjustment = 0);
 	
 	///@{ view index
 	//! Item view index is used to setup which camera will be used in item view widget in inventory.

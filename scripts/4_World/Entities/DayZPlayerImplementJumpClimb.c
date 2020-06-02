@@ -55,7 +55,10 @@ class DayZPlayerImplementJumpClimb
 	{
 		int climbType = GetClimbType(pClimbRes.m_fClimbHeight);	
 		if( climbType != -1 )
+		{
 			m_Player.StartCommand_Climb(pClimbRes, climbType);
+			m_Player.StopHandEvent();
+		}
 		
 		return climbType != -1;
 	}
@@ -67,6 +70,7 @@ class DayZPlayerImplementJumpClimb
 
 		m_Player.OnJumpStart();
 		m_Player.StartCommand_Fall(2.6);
+		m_Player.StopHandEvent();
 	}
 	
 	private int GetClimbType(float pHeight)

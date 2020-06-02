@@ -365,7 +365,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 130;
 		itemSize[] = {2,2};
 		absorbency = 0.4;
@@ -437,6 +437,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
+		rotationFlags = 34;
 		weight = 454;
 		itemSize[] = {2,2};
 		absorbency = 0.4;
@@ -504,7 +505,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
-		rotationFlags = 17;
+		rotationFlags = 34;
 		weight = 454;
 		itemSize[] = {2,3};
 		absorbency = 0.0;
@@ -560,6 +561,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
+		rotationFlags = 34;
 		weight = 100;
 		itemSize[] = {1,1};
 		absorbency = 1;
@@ -629,6 +631,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
+		rotationFlags = 34;
 		weight = 200;
 		itemSize[] = {2,2};
 		absorbency = 1;
@@ -746,6 +749,7 @@ class CfgVehicles
 		inventorySlot[] = {"Gloves"};
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Gloves"};
+		rotationFlags = 34;
 		weight = 450;
 		itemSize[] = {2,2};
 		absorbency = 0.4;

@@ -1,6 +1,15 @@
 class Edible_Base extends ItemBase
 {
+	protected bool m_MakeCookingSounds;
+	protected SoundOnVehicle m_SoundCooking;
+	protected string m_SoundPlaying;
 	ref FoodStage m_FoodStage;
+
+	//Baking
+	const string SOUND_BAKING_START 		= "bake";		// raw stage
+	const string SOUND_BAKING_DONE 			= "bakeDone";	// baked stage
+	//Burning
+	const string SOUND_BURNING_DONE 		= "burned";		// burned stage
 	
 	void Edible_Base()
 	{
@@ -14,6 +23,9 @@ class Edible_Base extends ItemBase
 			RegisterNetSyncVariableInt( "m_FoodStage.m_TextureIndex", 	0, 6 );
 			RegisterNetSyncVariableInt( "m_FoodStage.m_MaterialIndex", 	0, 6 );
 			RegisterNetSyncVariableFloat( "m_FoodStage.m_CookingTime", 	0, 600, 0 );						//min = 0; max = 0; precision = 0;
+
+			m_SoundPlaying = "";
+			RegisterNetSyncVariableBool("m_MakeCookingSounds");
 		}
 	}
 	
@@ -24,7 +36,15 @@ class Edible_Base extends ItemBase
 		//update visual
 		UpdateVisuals();
 	}
-	
+
+	override void EEDelete( EntityAI parent )
+	{
+		super.EEDelete( parent );
+		
+		// remove audio
+		RemoveAudio();
+	}
+
 	void UpdateVisuals()
 	{
 		if ( GetFoodStage() )
@@ -75,8 +95,56 @@ class Edible_Base extends ItemBase
 		
 		//update visuals
 		UpdateVisuals();
-	}	
-	
+
+		//update audio
+		if ( m_MakeCookingSounds )
+		{
+			RefreshAudio();
+		}
+		else
+		{
+			RemoveAudio();
+		}
+	}
+
+	//================================================================
+	// AUDIO EFFECTS (WHEN ON DCS)
+	//================================================================	
+	void MakeSoundsOnClient( bool soundstate )
+	{
+		m_MakeCookingSounds = soundstate;
+
+		//synchronize
+		Synchronize();
+	}
+	protected void RefreshAudio()
+	{
+		string sound_name;
+		int particle_id;
+
+		switch ( GetFoodStageType() )
+		{
+			case FoodStageType.RAW:
+				sound_name = SOUND_BAKING_START;
+				break;
+			case FoodStageType.BAKED:
+				sound_name = SOUND_BAKING_DONE;
+				break;
+			case FoodStageType.BURNED:
+				sound_name = SOUND_BURNING_DONE;
+				break;
+			default:
+				sound_name = SOUND_BAKING_START;
+				break;
+		}
+		SoundCookingStart( sound_name );
+	}
+	protected void RemoveAudio()
+	{
+		m_MakeCookingSounds = false;
+		SoundCookingStop();
+	}
+
 	//================================================================
 	// SERIALIZATION
 	//================================================================	
@@ -368,6 +436,41 @@ class Edible_Base extends ItemBase
 		}
 		else
 			Error("ReplaceEdibleWithNew - cannot use edible without player");
+	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction(ActionCreateIndoorFireplace);
+		AddAction(ActionCreateIndoorOven);
+		AddAction(ActionAttach);
+		AddAction(ActionDetach);
+	}
+
+	protected void SoundCookingStart( string sound_name )
+	{
+		if ( GetGame() && ( !GetGame().IsMultiplayer() || GetGame().IsClient() ) )
+		{	
+			if ( m_SoundPlaying != sound_name )
+			{
+				//stop previous sound
+				SoundCookingStop();
+				
+				//create new
+				m_SoundCooking = PlaySoundLoop( sound_name, 50 );
+				m_SoundPlaying = sound_name;
+			}
+		}
+	}
+	protected void SoundCookingStop()
+	{
+		if ( m_SoundCooking )
+		{
+			GetGame().ObjectDelete( m_SoundCooking );
+			m_SoundCooking = NULL;
+			m_SoundPlaying = "";
+		}
 	}
 }
 

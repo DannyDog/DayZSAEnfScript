@@ -169,8 +169,7 @@ class ActionBase : ActionBase_Basic
 	
 	ActionData CreateActionData()
 	{
-		ActionData action_data = new ActionData;
-		return action_data;
+		return new ActionData;
 	}
 			
 	void CreateConditionComponents() //Instantiates components, called once from ActionManager on actions construction
@@ -480,10 +479,7 @@ class ActionBase : ActionBase_Basic
 	{
 		if ( HasProneException() )
 		{
-			if ( player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT))
-				return false;
-			else
-				return true;
+			return !( player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT) );
 		}
 		return m_FullBody;
 	}
@@ -499,7 +495,10 @@ class ActionBase : ActionBase_Basic
 	void Start( ActionData action_data ) //Setup on start of action
 	{
 		action_data.m_State = UA_START;
-		if( GetGame().IsServer() )
+		
+		OnStart(action_data);
+		
+		if ( GetGame().IsServer() )
 		{
 			OnStartServer(action_data);
 		}
@@ -507,6 +506,7 @@ class ActionBase : ActionBase_Basic
 		{
 			OnStartClient(action_data);
 		}	
+		
 		InformPlayers(action_data.m_Player,action_data.m_Target,UA_START);
 
 		actionDebugPrint("[action] " + Object.GetDebugName(action_data.m_Player) + " started " + ToString() + " item=" + Object.GetDebugName(action_data.m_MainItem));
@@ -514,8 +514,10 @@ class ActionBase : ActionBase_Basic
 	
 	void End( ActionData action_data )
 	{
-		if( action_data.m_Player )
+		if ( action_data.m_Player )
 		{
+			OnEnd(action_data);
+			
 			if ( GetGame().IsServer() )
 			{
 				OnEndServer(action_data);
@@ -592,13 +594,8 @@ class ActionBase : ActionBase_Basic
 
 	bool Can( PlayerBase player, ActionTarget target, ItemBase item, int condition_mask )
 	{
-		if ( (condition_mask & m_ConditionMask) != condition_mask )
+		if ( ( (condition_mask & m_ConditionMask) != condition_mask ) || ( !IsFullBody(player) && !player.IsPlayerInStance(GetStanceMask(player)) ) )
 			return false;
-		
-		if ( !IsFullBody(player) && !player.IsPlayerInStance(GetStanceMask(player)) )
-		{
-			return false;
-		}
 		
 		if ( HasTarget() )
 		{
@@ -606,29 +603,18 @@ class ActionBase : ActionBase_Basic
 			if ( entity && !target.GetObject().IsMan() )
 			{
 				Man man = entity.GetHierarchyRootPlayer();
-				if( man && man != player )
-				{
+				if ( man && man != player )
 					return false;
-				}
 			}
 			
 			if ( m_ConditionTarget && !m_ConditionTarget.Can(player, target))
-			{
 				return false;
-			}
 		}
 		
 		if ( m_ConditionItem && !m_ConditionItem.Can(player, item))
-		{
 			return false;
-		}
 		
-		
-		if ( ActionCondition(player, target, item) )
-		{
-			return true;
-		}
-		return false;
+		return ActionCondition(player, target, item);
 	}
 	
 	bool Can( PlayerBase player, ActionTarget target, ItemBase item )
@@ -640,32 +626,10 @@ class ActionBase : ActionBase_Basic
 	
 	protected bool CanContinue( ActionData action_data )
 	{
-		if ( !action_data.m_Player.IsPlayerInStance(action_data.m_PossibleStanceMask) )
-		{
+		if ( !action_data.m_Player.IsPlayerInStance(action_data.m_PossibleStanceMask) || !m_ConditionItem || !m_ConditionItem.CanContinue(action_data.m_Player,action_data.m_MainItem) || !m_ConditionTarget || !m_ConditionTarget.CanContinue(action_data.m_Player,action_data.m_Target) )
 			return false;
-		}
-		if ( !m_ConditionItem )
-		{
-			return false;
-		}
 
-		if ( !m_ConditionItem.CanContinue(action_data.m_Player,action_data.m_MainItem) )
-		{
-			return false;
-		}
-		if ( !m_ConditionTarget )
-		{
-			return false;
-		}
-		if ( !m_ConditionTarget.CanContinue(action_data.m_Player,action_data.m_Target) )
-		{
-			return false;
-		}
-		if ( ActionConditionContinue(action_data) )
-		{
-			return true;
-		}
-		return false;
+		return ActionConditionContinue(action_data);
 	}
 	
 	// call only on client side for lock inventory before action
@@ -891,32 +855,28 @@ class ActionBase : ActionBase_Basic
 	protected bool IsInReach(PlayerBase player, ActionTarget target, float maxDistance = 1.0 )
 	{
 		Object obj = target.GetObject();
-		if( obj )
-		{
-			string compName;
-			float distanceRoot, distanceHead;
-			vector modelPos, worldPos, playerRootPos, playerHeadPos;
+		if (!obj)
+			return false;
 			
-			// we're using sq distance in comparison
-			maxDistance = maxDistance * maxDistance;
-			playerRootPos = player.GetPosition();
-			
-			// get position of Head bone
-			MiscGameplayFunctions.GetHeadBonePos(player, playerHeadPos);
+		string compName;
+		float distanceRoot, distanceHead;
+		vector modelPos, worldPos, playerRootPos, playerHeadPos;
+		
+		// we're using sq distance in comparison
+		maxDistance = maxDistance * maxDistance;
+		playerRootPos = player.GetPosition();
+		
+		// get position of Head bone
+		MiscGameplayFunctions.GetHeadBonePos(player, playerHeadPos);
 
-			compName = obj.GetActionComponentName(target.GetComponentIndex());
-			modelPos = obj.GetSelectionPositionMS(compName);
-			worldPos = obj.ModelToWorld(modelPos);
+		compName = obj.GetActionComponentName(target.GetComponentIndex());
+		modelPos = obj.GetSelectionPositionMS(compName);
+		worldPos = obj.ModelToWorld(modelPos);
 
-			distanceRoot = Math.AbsFloat(vector.DistanceSq(worldPos, playerRootPos));
-			distanceHead = Math.AbsFloat(vector.DistanceSq(worldPos, playerHeadPos));
-			if ( distanceRoot <= maxDistance || distanceHead <= maxDistance )
-			{	
-				return true;			
-			}
-		}
-
-		return false;
+		distanceRoot = vector.DistanceSq(worldPos, playerRootPos);
+		distanceHead = vector.DistanceSq(worldPos, playerHeadPos);
+	
+		return distanceRoot <= maxDistance || distanceHead <= maxDistance;
 	}
 	// ------------------------------------------------------
 	
@@ -925,28 +885,29 @@ class ActionBase : ActionBase_Basic
 	// SOUNDS ------------------------------------------------------
 	SoundOnVehicle PlayActionSound( PlayerBase player )
 	{
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() && player )
 		{
-			if ( player ) 
+			if ( m_Sound != "" )
 			{
-				if ( m_Sound != "" )
-				{
-					return GetGame().CreateSoundOnObject(player, m_Sound, 6, false);
-				}
-				if ( m_Sounds && m_Sounds.Count() > 0 )
-				{
-					int rand_num =  Math.RandomInt(0, m_Sounds.Count());
-					return GetGame().CreateSoundOnObject(player, m_Sounds.Get(rand_num), 6, false);
-				}
+				return GetGame().CreateSoundOnObject(player, m_Sound, 6, false);
+			}
+			else if ( m_Sounds && m_Sounds.Count() > 0 )
+			{
+				int rand_num =  Math.RandomInt(0, m_Sounds.Count());
+				return GetGame().CreateSoundOnObject(player, m_Sounds.Get(rand_num), 6, false);
 			}
 		}
 
 		return NULL;
 	}
 	
+	// EVENTS ------------------------------------------------
 	void OnUpdate(ActionData action_data)
+	{}
+	
+	void OnUpdateClient(ActionData action_data)
 	{
-		if(!GetGame().IsMultiplayer() || GetGame().IsClient())
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			if(action_data.m_RefreshReservationTimer > 0)
 			{
@@ -960,10 +921,19 @@ class ActionBase : ActionBase_Basic
 		}
 	}
 	
+	void OnUpdateServer(ActionData action_data)
+	{}
+	
+	void OnStart(ActionData action_data)
+	{}
+	
 	void OnStartClient(ActionData action_data)
 	{}
 	
 	void OnStartServer(ActionData action_data)
+	{}
+	
+	void OnEnd(ActionData action_data)
 	{}
 	
 	void OnEndClient(ActionData action_data)

@@ -1,6 +1,7 @@
 //BASE BUILDING BASE
 class BaseBuildingBase extends ItemBase
 {
+	bool 				m_FixDamageSystemInit = false;
 	const string 		ANIMATION_DEPLOYED			= "Deployed";
 	
 	float 				m_ConstructionKitHealth;			//stored health value for used construction kit
@@ -32,6 +33,7 @@ class BaseBuildingBase extends ItemBase
 	protected EffectSound m_Sound;
 	
 	ref map<string, ref AreaDamageRegularDeferred> m_DamageTriggers;
+	ref array<string> m_HybridAttachments;
 	
 	// Constructor
 	void BaseBuildingBase() 
@@ -48,6 +50,12 @@ class BaseBuildingBase extends ItemBase
 		
 		//Construction init
 		ConstructionInit();
+		
+		if (ConfigIsExisting("hybridAttachments"))
+		{
+			m_HybridAttachments = new array<string>;
+			ConfigGetTextArray("hybridAttachments",m_HybridAttachments);
+		}
 	}
 
 	// --- SYNCHRONIZATION
@@ -296,16 +304,21 @@ class BaseBuildingBase extends ItemBase
 	{
 		m_HasBase = has_base;
 	}
-
+	
 	override bool IsDeployable()
 	{
 		return true;
 	}
 	
+	bool IsOpened()
+	{
+		return false;
+	}
+	
 	//--- CONSTRUCTION KIT
 	ItemBase CreateConstructionKit()
 	{
-		ItemBase construction_kit = ItemBase.Cast( GetGame().CreateObject( GetConstructionKitType(), GetKitSpawnPosition() ) );
+		ItemBase construction_kit = ItemBase.Cast( GetGame().CreateObjectEx( GetConstructionKitType(), GetKitSpawnPosition(), ECE_PLACE_ON_SURFACE ) );
 		if ( m_ConstructionKitHealth > 0 )
 		{
 			construction_kit.SetHealth( m_ConstructionKitHealth );
@@ -352,6 +365,11 @@ class BaseBuildingBase extends ItemBase
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
 	{
+		if (version < 110)
+		{
+			m_FixDamageSystemInit = true;
+		}
+		
 		if ( !super.OnStoreLoad( ctx, version ) )
 			return false;
 		
@@ -388,6 +406,19 @@ class BaseBuildingBase extends ItemBase
 	{	
 		super.AfterStoreLoad();		
 		
+		if (m_FixDamageSystemInit)
+		{
+			FixDamageSystemInit();
+			//actual parts sync done later in the process
+		}
+		else
+		{
+			SetPartsAfterStoreLoad();
+		}
+	}
+	
+	void SetPartsAfterStoreLoad()
+	{
 		//update server data
 		SetPartsFromSyncData();
 		
@@ -397,6 +428,51 @@ class BaseBuildingBase extends ItemBase
 			
 		//synchronize after load
 		SynchronizeBaseState();
+	}
+	
+	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
+	{
+		if(m_FixDamageSystemInit)
+			return;
+		
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
+		if(GetGame().IsMultiplayer() && !GetGame().IsServer())
+			return;
+		
+		Construction construction = GetConstruction();
+		string part_name = zone;
+		part_name.ToLower();
+		
+		if( newLevel == GameConstants.STATE_RUINED )
+		{
+			ConstructionPart construction_part = construction.GetConstructionPart( part_name );
+			
+			if ( construction_part && construction.IsPartConstructed( part_name ) )
+			{
+				construction.DestroyPartServer( null, part_name, AT_DESTROY_PART );
+				construction.DestroyConnectedParts(part_name);
+			}
+			
+			//barbed wire handling (hack-ish)
+			if( part_name.Contains("barbed") )
+			{
+				BarbedWire barbed_wire = BarbedWire.Cast( FindAttachmentBySlotName( zone ) );
+				if (barbed_wire)
+					barbed_wire.SetMountedState( false );
+			}
+		}
+	}
+	
+	override void EEOnAfterLoad()
+	{
+		super.EEOnAfterLoad();
+		
+		if (m_FixDamageSystemInit)
+		{
+			m_FixDamageSystemInit = false;
+			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( SetPartsAfterStoreLoad, 500, false, this );
+		}
 	}
 	
 	override void EEInit()
@@ -417,6 +493,7 @@ class BaseBuildingBase extends ItemBase
 	{
 		super.EEItemAttached ( item, slot_name );
 		
+		CheckForHybridAttachments( item, slot_name );
 		UpdateVisuals();
 		UpdateAttachmentPhysics( slot_name, false );
 	}
@@ -517,7 +594,7 @@ class BaseBuildingBase extends ItemBase
 	}	
 	
 	//Destroy
-	void OnPartDestroyedServer( notnull Man player, string part_name, int action_id )
+	void OnPartDestroyedServer( Man player, string part_name, int action_id, bool destroyed_by_connected_part = false )
 	{
 		bsbDebugPrint("[bsb] " + GetDebugName(this) + " OnPartDestroyedServer " + part_name);
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
@@ -620,6 +697,7 @@ class BaseBuildingBase extends ItemBase
 				{
 					DestroyAreaDamage( slot_name_mounted );			//destroy damage trigger if barbed wire is not mounted
 				}
+				//Print("attachment.IsInherited( BarbedWire ): " + slot_name_mounted);
 			}
 			
 			if ( is_locked )
@@ -631,7 +709,7 @@ class BaseBuildingBase extends ItemBase
 			{
 				SetAnimationPhase( slot_name_mounted, 1 );
 				SetAnimationPhase( slot_name, 0 );
-			}			
+			}
 		}
 		else
 		{
@@ -640,6 +718,7 @@ class BaseBuildingBase extends ItemBase
 			
 			//remove area damage trigger
 			DestroyAreaDamage( slot_name_mounted );			//try to destroy damage trigger if barbed wire is not present
+			//Print("DestroyAreaDamage(slot_name_mounted): " + slot_name_mounted);
 		}
 	}
 	
@@ -712,6 +791,11 @@ class BaseBuildingBase extends ItemBase
 	{
 		return true;
 	}
+	
+	override bool CanUseConstructionBuild()
+	{
+		return true;
+	}
 
 	protected bool IsAttachmentSlotLocked( EntityAI attachment )
 	{
@@ -751,6 +835,11 @@ class BaseBuildingBase extends ItemBase
 		return true;
 	}
 	
+	protected bool CheckLevelVerticalDistance( float max_dist, string selection, PlayerBase player )	
+	{
+		return true;
+	}
+	
 	// --- INIT
 	void ConstructionInit()
 	{
@@ -771,7 +860,7 @@ class BaseBuildingBase extends ItemBase
 	//attachments
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
-		return true;
+		return super.CanReceiveAttachment(attachment, slotId);
 	}
 	
 	bool HasAttachmentsBesidesBase()
@@ -810,6 +899,11 @@ class BaseBuildingBase extends ItemBase
 	//--- ACTION CONDITIONS
 	//direction
 	bool IsFacingPlayer( PlayerBase player, string selection )
+	{
+		return true;
+	}
+	
+	bool IsPlayerInside( PlayerBase player, string selection )
 	{
 		return true;
 	}
@@ -854,6 +948,8 @@ class BaseBuildingBase extends ItemBase
 			
 			//create new area damage
 			AreaDamageRegularDeferred area_damage = new AreaDamageRegularDeferred( this );
+			
+			//Print("BBB | area_damage: " + area_damage + " | slot_name: " + slot_name);
 			
 			vector min_max[2];
 			if ( MemoryPointExists( slot_name + "_min" ) )
@@ -920,12 +1016,18 @@ class BaseBuildingBase extends ItemBase
 			{
 				if ( area_damage )
 				{
+					//Print("DestroyAreaDamage: " + area_damage);
 					area_damage.Destroy();
 				}
 				
 				m_DamageTriggers.Remove( slot_name );
 			}
 		}
+	}
+	
+	override bool IsIgnoredByConstruction()
+	{
+		return false;
 	}
 	
 	//================================================================
@@ -976,14 +1078,27 @@ class BaseBuildingBase extends ItemBase
 		}
 		
 		return "";
-	}	
+	}
+	
+	//misc
+	void CheckForHybridAttachments ( EntityAI item, string slot_name )
+	{
+		if (!GetGame().IsMultiplayer() || GetGame().IsServer())
+		{
+			//if this is a hybrid attachment, set damage of appropriate damage zone. Zone name must match slot name...WIP
+			if (m_HybridAttachments && m_HybridAttachments.Find(slot_name) != -1)
+			{
+				SetHealth(slot_name,"Health",item.GetHealth());
+			}
+		}
+	}
 	
 	//================================================================
 	// DEBUG
 	//================================================================	
 	protected void DebugCustomState()
 	{
-	}	
+	}
 }
 
 void bsbDebugPrint (string s)

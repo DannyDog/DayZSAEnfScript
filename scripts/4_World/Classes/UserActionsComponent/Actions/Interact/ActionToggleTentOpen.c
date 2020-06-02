@@ -30,9 +30,11 @@ class ActionToggleTentOpen: ActionInteractBase
 		{
 			float max_action_distance = 1; //m_MaximalActionDistance;
 			
+			//TODO rework into someting less...special
 			if ( targetParent.IsInherited(CarTent) ) max_action_distance = 10.0;
 			else if ( targetParent.IsInherited(LargeTent) ) max_action_distance = 10.0;
 			else if ( targetParent.IsInherited(MediumTent) ) max_action_distance = 6.0;
+			else if ( targetParent.IsInherited(PartyTent) ) max_action_distance = 10.0;
 			
 			float distance = Math.AbsFloat(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
 			
@@ -77,7 +79,7 @@ class ActionToggleTentOpen: ActionInteractBase
 					tent.ToggleAnimation( selections[s] );
 				}
 			}
-								
+			
 			//regenerate pathgraph
 			tent.SetAffectPathgraph( true, false );
 			
@@ -85,7 +87,6 @@ class ActionToggleTentOpen: ActionInteractBase
 			{
 				//Start update
 				tent.RegenerateNavmesh();
-
 			}
 		}
 	}

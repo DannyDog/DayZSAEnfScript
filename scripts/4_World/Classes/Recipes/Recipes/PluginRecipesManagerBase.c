@@ -52,9 +52,9 @@ class PluginRecipesManagerBase extends PluginBase
 		//RegisterRecipe(new CraftSplint);
 		RegisterRecipe(new DeCraftSplint);
 		RegisterRecipe(new CraftHandDrillKit);
-		RegisterRecipe(new CraftSpear);
+		//RegisterRecipe(new CraftSpear);
 		RegisterRecipe(new DeCraftHandDrillKit);
-		RegisterRecipe(new DeCraftSpear);
+		//RegisterRecipe(new DeCraftSpear);
 		RegisterRecipe(new PatchItem);
 		RegisterRecipe(new CutOutZucchiniSeeds);
 		RegisterRecipe(new CutOutPepperSeeds);
@@ -97,7 +97,6 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new SplitStones);
 		RegisterRecipe(new UpgradeTorchWithLard);
 		RegisterRecipe(new UpgradeTorchWithLiquidFuel);
-		//RegisterRecipe(new LightItemOnFire);
 		RegisterRecipe(new CraftFenceKit);
 		RegisterRecipe(new CraftWatchtowerKit);
 		RegisterRecipe(new CraftWoodenPlank);
@@ -105,6 +104,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftWoodenCrate);
 		RegisterRecipe(new CraftFishingRod);
 		RegisterRecipe(new DeCraftFishingRod);
+		RegisterRecipe(new DeCraftWoodenCrate);
 		
 		//"paint" recipes
 		/*RegisterRecipe(new PaintFirefighterAxe);

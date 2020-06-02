@@ -33,7 +33,7 @@ class cfgWeapons
 	class UMP45_Base: Rifle_Base
 	{
 		scope = 0;
-		weight = 2200;
+		weight = 2500;
 		absorbency = 0.0;
 		repairableWithKits[] = {5,1};
 		repairCosts[] = {30.0,25.0};
@@ -47,7 +47,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.45;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
-		swayModifier[] = {1.25,1.25,1};
+		swayModifier[] = {1.3,1.3,1};
 		drySound[] = {"DZ\sounds\weapons\firearms\ump45\UMP45_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\ump45\ump45_reload",0.8,1,30};
 		reloadAction = "ReloadUMP";

@@ -97,7 +97,7 @@ class ActionSawPlanks: ActionContinuousBase
 		vector pos = action_data.m_Player.GetPosition();
 		if (!m_Planks)
 		{
-			m_Planks = ItemBase.Cast( GetGame().CreateObject("WoodenPlank", pos) );
+			m_Planks = ItemBase.Cast( GetGame().CreateObjectEx("WoodenPlank", pos, ECE_PLACE_ON_SURFACE) );
 			m_Planks.SetQuantity(YIELD);
 		}
 		else if ((m_Planks.GetQuantity() + YIELD) >= m_Planks.GetQuantityMax())
@@ -106,7 +106,7 @@ class ActionSawPlanks: ActionContinuousBase
 			m_Planks.SetQuantity(m_Planks.GetQuantityMax());
 			if (remnant > 0)
 			{
-				m_Planks = ItemBase.Cast( GetGame().CreateObject("WoodenPlank", pos) );
+				m_Planks = ItemBase.Cast( GetGame().CreateObjectEx("WoodenPlank", pos, ECE_PLACE_ON_SURFACE) );
 				m_Planks.SetQuantity(remnant);
 			}
 		}

@@ -1,7 +1,7 @@
 class PlayerBaseClient extends PlayerBase
 {	
 	static ScriptedLightBase 	m_PersonalLight;
-	static bool 				m_PersonalLightEnabledOnCurrentServer = true; // "disablePersonalLight" in server.cfg decides if this is true or false
+	static bool 				m_PersonalLightEnabledOnCurrentServer = false; // "disablePersonalLight" in server.cfg decides if this is true or false
 	static bool 				m_PersonalLightDisabledByDebug = false;
 	static bool 				m_PersonalLightIsSwitchedOn = true;
 	

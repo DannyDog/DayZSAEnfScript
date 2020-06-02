@@ -35,7 +35,7 @@ class ServerBrowserTabConsolePages extends ServerBrowserTab
 		m_EntriesSorted			= new map<ESortType, ref array<ref GetServersResultRow>>;
 		
 		m_EntriesSorted[ESortType.HOST] = new array<ref GetServersResultRow>;
-		m_EntriesSorted[ESortType.SLOTS] = new array<ref GetServersResultRow>;
+		m_EntriesSorted[ESortType.POPULATION] = new array<ref GetServersResultRow>;
 		
 		m_Menu					= menu;
 		m_TabType				= type;

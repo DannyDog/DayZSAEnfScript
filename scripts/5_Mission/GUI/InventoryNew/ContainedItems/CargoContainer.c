@@ -379,7 +379,13 @@ class CargoContainer extends Container
 	
 	Icon GetIcon( int index )
 	{
-		if( index >= 0 && m_Cargo.GetItemCount() > index )
+		if ( m_Cargo == null )
+		{
+			Print("Attempted to get icon on cargo container, but cargo was null!");
+			return null;
+		}
+
+		if ( index >= 0 && m_Cargo.GetItemCount() > index )
 			return GetIcon( m_Cargo.GetItem( index ) );
 		return null;
 	}
@@ -556,9 +562,10 @@ class CargoContainer extends Container
 	
 	void Unfocus()
 	{
-		if( GetFocusedItem() )
+		Icon icon = GetFocusedItem();
+		if ( icon )
 		{
-			GetFocusedItem().SetActive( false );
+			icon.SetActive( false );
 		}
 		m_FocusedItemPosition = 0;
 	}

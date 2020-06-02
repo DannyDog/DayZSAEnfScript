@@ -488,7 +488,7 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_lungs"};
+					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
 				class Spine
@@ -541,7 +541,7 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_spine"};
+					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
 				class Liver
@@ -594,7 +594,7 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_liver"};
+					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
 				class Heart
@@ -662,7 +662,7 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_heart"};
+					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
 				class Torso
@@ -700,7 +700,7 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_torso"};
+					componentNames[] = {"dmgZone_torso","dmgZone_lungs","dmgZone_spine","dmgZone_liver","dmgZone_heart"};
 					fatalInjuryCoef = -1;
 					inventorySlots[] = {"Vest","Body","Back","Hips"};
 					inventorySlotsCoefs[] = {1.0,1.0,0.5,0.35};
@@ -863,12 +863,12 @@ class CfgVehicles
 					fatalInjuryCoef = -1;
 					inventorySlots[] = {"Gloves"};
 				};
-				class LeftLeg
+				class Legs
 				{
 					class Health
 					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0.33;
+						hitpoints = 30;
+						transferToGlobalCoef = 0.7;
 					};
 					class Blood
 					{
@@ -898,130 +898,9 @@ class CfgVehicles
 							};
 						};
 					};
-					componentNames[] = {"dmgZone_leftLeg"};
 					fatalInjuryCoef = -1;
-					inventorySlots[] = {"Legs"};
-				};
-				class RightLeg
-				{
-					class Health
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0.33;
-					};
-					class Blood
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0;
-					};
-					class Shock
-					{
-						hitpoints = 0;
-						transferToGlobalCoef = 1;
-					};
-					class ArmorType
-					{
-						class Projectile
-						{
-							class Health
-							{
-								damage = 1;
-							};
-							class Blood
-							{
-								damage = 1;
-							};
-							class Shock
-							{
-								damage = 0.33;
-							};
-						};
-					};
-					componentNames[] = {"dmgZone_rightLeg"};
-					fatalInjuryCoef = -1;
-					inventorySlots[] = {"Legs"};
-				};
-				class LeftFoot
-				{
-					class Health
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0.1;
-					};
-					class Blood
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0;
-					};
-					class Shock
-					{
-						hitpoints = 0;
-						transferToGlobalCoef = 1;
-					};
-					class ArmorType
-					{
-						class Projectile
-						{
-							class Health
-							{
-								damage = 1;
-							};
-							class Blood
-							{
-								damage = 1;
-							};
-							class Shock
-							{
-								damage = 0.1;
-							};
-						};
-					};
-					transferToZonesNames[] = {"LeftLeg"};
-					transferToZonesCoefs[] = {0.2};
-					componentNames[] = {"dmgZone_leftFoot"};
-					fatalInjuryCoef = -1;
-					inventorySlots[] = {"Feet"};
-				};
-				class RightFoot
-				{
-					class Health
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0.1;
-					};
-					class Blood
-					{
-						hitpoints = 100;
-						transferToGlobalCoef = 0;
-					};
-					class Shock
-					{
-						hitpoints = 0;
-						transferToGlobalCoef = 1;
-					};
-					class ArmorType
-					{
-						class Projectile
-						{
-							class Health
-							{
-								damage = 1;
-							};
-							class Blood
-							{
-								damage = 1;
-							};
-							class Shock
-							{
-								damage = 0.1;
-							};
-						};
-					};
-					transferToZonesNames[] = {"RightLeg"};
-					transferToZonesCoefs[] = {0.2};
-					componentNames[] = {"dmgZone_rightFoot"};
-					fatalInjuryCoef = -1;
-					inventorySlots[] = {"Feet"};
+					componentNames[] = {"dmgZone_leftLeg","dmgZone_rightLeg","dmgZone_leftFoot","dmgZone_rightFoot"};
+					inventorySlots[] = {"Legs","Feet"};
 				};
 			};
 		};
@@ -4129,6 +4008,131 @@ class CfgVehicles
 					soundSet = "repeater_jamming10_SoundSet";
 					id = 1367;
 				};
+				class Ruger1022_charge_open
+				{
+					soundSet = "Ruger1022_charge_open_SoundSet";
+					id = 1373;
+				};
+				class Ruger1022_charge_open_release
+				{
+					soundSet = "Ruger1022_charge_open_release_SoundSet";
+					id = 1374;
+				};
+				class Ruger1022_charge_close
+				{
+					soundSet = "Ruger1022_charge_close_SoundSet";
+					id = 1375;
+				};
+				class Ruger1022_charge_close_release
+				{
+					soundSet = "Ruger1022_charge_close_release_SoundSet";
+					id = 1376;
+				};
+				class Ruger1022_chamber_load
+				{
+					soundSet = "Ruger1022_chamber_load_SoundSet";
+					id = 1377;
+				};
+				class Ruger1022_mag_in
+				{
+					soundSet = "Ruger1022_mag_in_SoundSet";
+					id = 1378;
+				};
+				class Ruger1022_mag_load
+				{
+					soundSet = "Ruger1022_mag_load_SoundSet";
+					id = 1379;
+				};
+				class Ruger1022_mag_out
+				{
+					soundSet = "Ruger1022_mag_out_SoundSet";
+					id = 1380;
+				};
+				class Ruger1022_mag_remove
+				{
+					soundSet = "Ruger1022_mag_remove_SoundSet";
+					id = 1381;
+				};
+				class Ruger1022_dry
+				{
+					soundSet = "Ruger1022SVD_dry_SoundSet";
+					id = 1382;
+				};
+				class Ruger1022_pullout
+				{
+					soundSet = "Ruger1022_pullout_SoundSet";
+					id = 1383;
+				};
+				class Ruger1022_chamber_load2
+				{
+					soundSet = "Ruger1022_chamber_load_SoundSet";
+					id = 1384;
+				};
+				class Ruger1022_hand
+				{
+					soundSet = "Ruger1022_hand_SoundSet";
+					id = 1385;
+				};
+				class Ruger1022_weapon_down
+				{
+					soundSet = "Ruger1022_weapon_down_SoundSet";
+					id = 1386;
+				};
+				class Ruger1022_jamming1
+				{
+					soundSet = "Ruger1022_jamming1_SoundSet";
+					id = 1387;
+				};
+				class Ruger1022_jamming2
+				{
+					soundSet = "Ruger1022_jamming2_SoundSet";
+					id = 1388;
+				};
+				class Ruger1022_jamming3
+				{
+					soundSet = "Ruger1022_jamming3_SoundSet";
+					id = 1389;
+				};
+				class Ruger1022_jamming4
+				{
+					soundSet = "Ruger1022_jamming4_SoundSet";
+					id = 1390;
+				};
+				class Ruger1022_jamming5
+				{
+					soundSet = "Ruger1022_jamming5_SoundSet";
+					id = 1391;
+				};
+				class Ruger1022_jamming6
+				{
+					soundSet = "Ruger1022_jamming6_SoundSet";
+					id = 1392;
+				};
+				class Ruger1022_jamming7
+				{
+					soundSet = "Ruger1022_jamming7_SoundSet";
+					id = 1393;
+				};
+				class Ruger1022_jamming8
+				{
+					soundSet = "Ruger1022_jamming8_SoundSet";
+					id = 1394;
+				};
+				class Ruger1022_jamming9
+				{
+					soundSet = "Ruger1022_jamming9_SoundSet";
+					id = 1395;
+				};
+				class Ruger1022_jamming10
+				{
+					soundSet = "Ruger1022_jamming10_SoundSet";
+					id = 1396;
+				};
+				class Ruger1022_jam
+				{
+					soundSet = "Ruger1022_jam_SoundSet";
+					id = 1397;
+				};
 				class MagRifle_fill_loop
 				{
 					soundSet = "MagRifle_fill_loop_SoundSet";
@@ -5390,6 +5394,11 @@ class CfgVehicles
 				{
 					soundLookupTable = "releaseBreath_SoundVoice_Char_LookupTable";
 					id = 21;
+				};
+				class exhaustedBreath_SoundVoice: SoundVoiceEvent
+				{
+					soundLookupTable = "exhaustedBreath_SoundVoice_Char_LookupTable";
+					id = 22;
 				};
 				class vomit_SoundVoice: SoundVoiceEvent
 				{

@@ -39,6 +39,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -99,6 +100,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -161,6 +163,7 @@ class cfgVehicles
 		dexterityModifier = 1;
 		dexterityCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -221,6 +224,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_wood_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\data\akm_wood.rvmat"};
@@ -283,6 +287,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\ak74_wood_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\data\ak74_wood.rvmat"};
@@ -345,6 +350,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_accessories_black_co.paa"};
 		class DamageSystem
@@ -405,6 +411,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK101\data\ak101_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK101\data\ak101.rvmat"};
@@ -467,6 +474,7 @@ class cfgVehicles
 		dispersionModifier = -5e-05;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK74\data\aks74u_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK74\data\aks74u.rvmat"};
@@ -528,6 +536,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_stock_CO.paa"};
 		class DamageSystem
@@ -575,6 +584,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\buttstock_red9_co.paa"};
 		class DamageSystem
@@ -620,6 +630,7 @@ class cfgVehicles
 		weight = 530;
 		itemSize[] = {3,1};
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		hiddenSelections[] = {"camo"};
@@ -668,6 +679,7 @@ class cfgVehicles
 		weight = 530;
 		itemSize[] = {3,1};
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		hiddenSelections[] = {"camo"};
@@ -718,6 +730,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\saiga_folding_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\support\data\saiga_folding.rvmat"};
@@ -766,6 +779,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\handguard_co.paa"};
 		class DamageSystem
@@ -826,6 +840,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -886,6 +901,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -946,6 +962,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_wood_co.paa"};
 		class DamageSystem
@@ -1007,6 +1024,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\ak74_wood_co.paa"};
 		class DamageSystem
@@ -1068,6 +1086,7 @@ class cfgVehicles
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_accessories_black_co.paa"};
 		class DamageSystem
@@ -1128,6 +1147,7 @@ class cfgVehicles
 		dispersionModifier = -0.00015;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK101\data\ak101_co.paa"};
 		class DamageSystem
@@ -1175,6 +1195,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_grip01_CO.paa"};
 		class DamageSystem
@@ -1222,6 +1243,7 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_grip_CO.paa"};
 		class DamageSystem
@@ -1269,6 +1291,7 @@ class cfgVehicles
 		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\m249_handguard_co.paa"};
 		class DamageSystem
@@ -1316,6 +1339,7 @@ class cfgVehicles
 		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\m249_handguard_ris_co.paa"};
 		class DamageSystem
@@ -1363,6 +1387,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dexterityModifier = -0.2;
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -1419,6 +1444,7 @@ class cfgVehicles
 		dispersionModifier = -0.00025;
 		dexterityModifier = -0.2;
 		recoilModifier[] = {0.8,0.8,0.8};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -1473,6 +1499,7 @@ class cfgVehicles
 		itemSize[] = {4,3};
 		lootCategory = "Crafted";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsMaterials[] = {"dz\characters\backpacks\data\ghillie.rvmat"};
 		isMeleeWeapon = 1;
@@ -1557,6 +1584,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\ots14\data\ots14_grip_co.paa"};
 		class DamageSystem
@@ -1604,6 +1632,7 @@ class cfgVehicles
 		dispersionModifier = -0.0002;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\ots14\data\ots14_launcher_co.paa"};
 		class DamageSystem
