@@ -21,7 +21,6 @@ class TentBase extends ItemBase
 	protected const int PITCHED = 1;
 	
 	bool m_DamageSystemStarted = false;
-	bool m_FixDamageSystemInit = false;
 	protected int m_State;
 	protected int m_StateLocal = -1;
 	protected bool m_IsEntrance;
@@ -96,11 +95,6 @@ class TentBase extends ItemBase
 		if ( !super.OnStoreLoad( ctx, version ) )
 			return false;
 		
-		if (version < 110)
-		{
-			m_FixDamageSystemInit = true;
-		}
-		
 		ctx.Read( m_State );
 		if (version >= 110)
 		{
@@ -129,16 +123,6 @@ class TentBase extends ItemBase
 		}
 		
 		return true;
-	}
-	
-	override void AfterStoreLoad()
-	{	
-		super.AfterStoreLoad();		
-		
-		if (m_FixDamageSystemInit)
-		{
-			FixDamageSystemInit();
-		}
 	}
 	
 	override void OnCreatePhysics()
@@ -249,7 +233,7 @@ class TentBase extends ItemBase
 		if(m_FixDamageSystemInit)
 			return;
 		
-		if ( zone == "Body" && newLevel == GameConstants.STATE_RUINED && GetGame().IsServer() )
+		if ( zone == "" && newLevel == GameConstants.STATE_RUINED && GetGame().IsServer() )
 			MiscGameplayFunctions.DropAllItemsInInventoryInBounds(this, m_HalfExtents);
 		
 		if( zone != "Body" && zone != "Inventory" && zone != "" && newLevel == GameConstants.STATE_RUINED )
@@ -958,5 +942,10 @@ class TentBase extends ItemBase
 				}
 			}
 		}
+	}
+	
+	override int GetDamageSystemVersionChange()
+	{
+		return 110;
 	}
 };

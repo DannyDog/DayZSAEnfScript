@@ -31,6 +31,11 @@ class Barrel_ColorBase : DeployableContainer_Base
 		return true;
 	}*/
 	
+	override int GetDamageSystemVersionChange()
+	{
+		return 110;
+	}
+	
 	override void OnStoreSave( ParamsWriteContext ctx )
 	{   
 		super.OnStoreSave( ctx );

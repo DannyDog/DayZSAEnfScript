@@ -615,6 +615,7 @@ class DayZPlayerImplement extends DayZPlayer
 	override void OnItemInHandsChanged ()
 	{
 		Print("inv: DayZPlayerImplement::OnItemInHandsChanged: "/* + GetHumanInventory().GetEntityInHands()*/);
+		StopWeaponEvent();
 		GetItemAccessor().OnItemInHandsChanged();
 		
 		if (!IsAlive())
@@ -1285,6 +1286,16 @@ class DayZPlayerImplement extends DayZPlayer
 	void StopHandEvent()
 	{
 		GetDayZPlayerInventory().CancelHandEvent();
+	}
+	
+	void StopWeaponEvent()
+	{
+		GetDayZPlayerInventory().CancelWeaponEvent();
+	}
+	
+	void AbortWeaponEvent()
+	{
+		GetDayZPlayerInventory().AbortWeaponEvent();
 	}
 
 	//-------------------------------------------------------------

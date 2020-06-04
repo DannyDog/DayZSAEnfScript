@@ -58,10 +58,10 @@ class WeaponRechamber extends WeaponStateBase
 
 	override void OnExit (WeaponEventBase e)
 	{
+		super.OnExit(e);
 		m_dstMagazine = NULL;
 		m_eje.m_dstMagazine = NULL;
 		m_loa.m_srcMagazine = NULL;
-		super.OnExit(e);
 	}
 
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)

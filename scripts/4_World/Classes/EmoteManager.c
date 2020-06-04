@@ -600,6 +600,8 @@ class EmoteManager
 					{
 						CreateEmoteCallback(EmoteCB, suicideID, m_StanceMask, true);
 					}
+					else
+						m_Player.SetInventorySoftLock(false);
 				break;
 			
 				case ID_EMOTE_DANCE:

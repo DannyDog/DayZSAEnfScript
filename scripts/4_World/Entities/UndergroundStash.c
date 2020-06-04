@@ -8,7 +8,8 @@ class UndergroundStash extends ItemBase
 	override void EOnInit(IEntity other, int extra) //!EntityEvent.INIT
 	{
 		vector pos = GetPosition();
-		this.SetOrientation( GetGame().GetSurfaceOrientation(pos[0], pos[2]) );
+		vector surfOrient = GetGame().GetSurfaceOrientation(pos[0], pos[2]);
+		SetOrientation(surfOrient);
 	}
 	
 	override bool CanDisplayCargo()

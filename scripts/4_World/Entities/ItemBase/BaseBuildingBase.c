@@ -1,7 +1,6 @@
 //BASE BUILDING BASE
 class BaseBuildingBase extends ItemBase
 {
-	bool 				m_FixDamageSystemInit = false;
 	const string 		ANIMATION_DEPLOYED			= "Deployed";
 	
 	float 				m_ConstructionKitHealth;			//stored health value for used construction kit
@@ -365,11 +364,6 @@ class BaseBuildingBase extends ItemBase
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
 	{
-		if (version < 110)
-		{
-			m_FixDamageSystemInit = true;
-		}
-		
 		if ( !super.OnStoreLoad( ctx, version ) )
 			return false;
 		
@@ -406,12 +400,7 @@ class BaseBuildingBase extends ItemBase
 	{	
 		super.AfterStoreLoad();		
 		
-		if (m_FixDamageSystemInit)
-		{
-			FixDamageSystemInit();
-			//actual parts sync done later in the process
-		}
-		else
+		if (!m_FixDamageSystemInit)
 		{
 			SetPartsAfterStoreLoad();
 		}
@@ -466,13 +455,12 @@ class BaseBuildingBase extends ItemBase
 	
 	override void EEOnAfterLoad()
 	{
-		super.EEOnAfterLoad();
-		
 		if (m_FixDamageSystemInit)
 		{
-			m_FixDamageSystemInit = false;
 			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( SetPartsAfterStoreLoad, 500, false, this );
 		}
+		
+		super.EEOnAfterLoad();
 	}
 	
 	override void EEInit()
@@ -1091,6 +1079,11 @@ class BaseBuildingBase extends ItemBase
 				SetHealth(slot_name,"Health",item.GetHealth());
 			}
 		}
+	}
+	
+	override int GetDamageSystemVersionChange()
+	{
+		return 110;
 	}
 	
 	//================================================================

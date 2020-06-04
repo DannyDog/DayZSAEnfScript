@@ -56,14 +56,14 @@ class RifleChambering extends WeaponStateBase
 
 	override void OnAbort (WeaponEventBase e)
 	{
-		m_srcMagazine = NULL;
 		super.OnAbort(e);
+		m_srcMagazine = NULL;
 	}
 
 	override void OnExit (WeaponEventBase e)
 	{
-		m_srcMagazine = NULL;
 		super.OnExit(e);
+		m_srcMagazine = NULL;
 	}
 
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)

@@ -903,6 +903,10 @@ class CGame
 		vector normal = GetGame().SurfaceGetNormal(x, z);
 		vector angles = normal.VectorToAngles();
 		angles[1] = angles[1]+270; // This fixes rotation of item so it stands vertically. Feel free to change, but fix existing use cases.
+		
+		//Hack because setorientation and similar functions break and flip stuff upside down when using exactly this vector ¯\_(ツ)_/¯ (note: happens when surface is flat)
+		if (angles == "0 540 0")
+			angles = "0 0 0";
 		return angles;
 	}
 	

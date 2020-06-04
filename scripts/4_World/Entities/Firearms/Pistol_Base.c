@@ -424,8 +424,10 @@ class Pistol_Base extends Weapon_Base
 
 		m_fsm.AddTransition(new WeaponTransition( CJF0,				__A__,	Attach_CJF0, NULL, new WeaponGuardCanAttachMag(this))); // attach from JAM/b1/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,	_fin_,	CJF1));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,	_abt_,  CJF1, NULL, new WeaponGuardHasMag(this)));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,	_abt_,  CJF0));
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,	_abt_,  CJF1, NULL, new WeaponGuardHasMag(this)));
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_CJF0,	_abt_,  CJF0));
+			Attach_CJF0.AddTransition(new WeaponTransition( Attach_CJF0.m_start,		_abt_,	CJF0));
+			Attach_CJF0.AddTransition(new WeaponTransition( Attach_CJF0.m_attach,		_abt_,	CJF0));
 
 // zdokumentovano az sem
 		// attach mag with no ammo
@@ -433,20 +435,20 @@ class Pistol_Base extends Weapon_Base
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CD00,		_fin_,	CC01, NULL, new WeaponGuardCurrentChamberEmpty(this)));
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CD00,		_fin_,	CC11));
 			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_start,		_abt_,	CD00));
-			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_attach,		_abt_,	CD01));
+			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_attach,		_abt_,	CD00));
 			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_onCK,			_abt_,	CC01));
 			Attach_CD00.AddTransition(new WeaponTransition( Attach_CD00.m_chamber,		_abt_,	CC11));
 		
 		m_fsm.AddTransition(new WeaponTransition( CC10,				__A__,	Attach_CC10, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b1/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CC10,		_fin_,	CC11));
 			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_start,		_abt_,	CC10));
-			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_attach,		_abt_,	CC11));
+			Attach_CC10.AddTransition(new WeaponTransition( Attach_CC10.m_attach,		_abt_,	CC10));
 		
 		m_fsm.AddTransition(new WeaponTransition( OD00,				__A__,	Attach_OD00, NULL, new WeaponGuardCanAttachMag(this))); // attach from OPE/b0/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_OD00,		_fin_,	CC01, NULL, new WeaponGuardCurrentChamberEmpty(this)));
 		m_fsm.AddTransition(new WeaponTransition(  Attach_OD00,		_fin_,	CC11));
 			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_start,		_abt_,	OD00));
-			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_attach,		_abt_,	OD01));
+			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_attach,		_abt_,	OD00));
 			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_onCK,			_abt_,	CC01));
 			Attach_OD00.AddTransition(new WeaponTransition( Attach_OD00.m_chamber,		_abt_,	CC11));
 
@@ -454,7 +456,7 @@ class Pistol_Base extends Weapon_Base
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CC00,	_fin_,	CC01, NULL, new WeaponGuardCurrentChamberEmpty(this)));
 		m_fsm.AddTransition(new WeaponTransition(  Attach_CC00,	_fin_,	CC11));
 			Attach_CC00.AddTransition(new WeaponTransition( Attach_CC00.m_start,		_abt_,	CC00));
-			Attach_CC00.AddTransition(new WeaponTransition( Attach_CC00.m_attach,		_abt_,	CC01));
+			Attach_CC00.AddTransition(new WeaponTransition( Attach_CC00.m_attach,		_abt_,	CC00));
 			Attach_CC00.AddTransition(new WeaponTransition( Attach_CC00.m_onCK,			_abt_,	CC01));
 			Attach_CC00.AddTransition(new WeaponTransition( Attach_CC00.m_chamber,		_abt_,	CC11));
 

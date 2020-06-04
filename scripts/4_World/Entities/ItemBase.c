@@ -36,6 +36,7 @@ class ItemBase extends InventoryItem
 	bool 	m_ThrowItemOnDrop;
 	bool 	m_ItemBeingDroppedPhys;
 	bool    m_CanBeMovedOverride;
+	bool 	m_FixDamageSystemInit = false; //can be changed on storage version check
 	string	m_SoundAttType;
 	// items color variables
 	int 	m_ColorComponentR;
@@ -549,6 +550,16 @@ class ItemBase extends InventoryItem
 		}
 		
 		return m_LastRegisteredWeaponID;
+	}
+	
+	/**
+	\brief Re-sets DamageSystem changes
+	\return storage version on which the config changes occured (default -1, to be overriden!)
+	\note Significant changes to DamageSystem in item configs have to be re-set by increasing the storage version and overriding this method. Default return is -1 (does nothing).
+	*/
+	int GetDamageSystemVersionChange()
+	{
+		return -1;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -2448,7 +2459,12 @@ class ItemBase extends InventoryItem
 
 	//----------------------------------------------------------------
 	override bool OnStoreLoad(ParamsReadContext ctx, int version)
-	{   
+	{
+		if (GetDamageSystemVersionChange() != -1 && version < GetDamageSystemVersionChange())
+		{
+			m_FixDamageSystemInit = true;
+		}
+		
 		if ( !super.OnStoreLoad(ctx, version) )
 			return false;
 
@@ -2499,6 +2515,26 @@ class ItemBase extends InventoryItem
 	}
 	//----------------------------------------------------------------
 
+	override void AfterStoreLoad()
+	{	
+		super.AfterStoreLoad();		
+		
+		if (m_FixDamageSystemInit)
+		{
+			PerformDamageSystemReinit();
+		}
+	}
+	
+	override void EEOnAfterLoad()
+	{
+		super.EEOnAfterLoad();
+		
+		if (m_FixDamageSystemInit)
+		{
+			m_FixDamageSystemInit = false;
+		}
+	}
+	//----------------------------------------------------------------
 	override void OnVariablesSynchronized()
 	{
 		/*
@@ -3545,7 +3581,7 @@ class ItemBase extends InventoryItem
 		m_ItemBeingDroppedPhys = false;
 	}
 	
-	void FixDamageSystemInit()
+	void PerformDamageSystemReinit()
 	{
 		array<string> zone_names = new array<string>;
 		GetDamageZones(zone_names);
@@ -3553,6 +3589,7 @@ class ItemBase extends InventoryItem
 		{
 			SetHealthMax(zone_names.Get(i),"Health");
 		}
+		SetHealthMax("","Health");
 	}
 }
 

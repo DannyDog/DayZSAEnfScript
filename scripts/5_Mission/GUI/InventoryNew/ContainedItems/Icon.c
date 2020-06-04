@@ -451,8 +451,9 @@ class Icon: LayoutHolder
 		{
 			Magazine mag = Magazine.Cast(w_entity);
 			Weapon_Base wpn = Weapon_Base.Cast(w_entity.GetHierarchyParent());
-				
-			if( wpn && mag )
+			EntityAI w_hierarchyParent = w_entity.GetHierarchyParent();
+			EntityAI receiver_hierarchyParent = w_entity.GetHierarchyParent();
+			if ( wpn && mag )
 			{
 				if( player.GetWeaponManager().CanSwapMagazine( wpn,  Magazine.Cast(receiver_entity) ) )
 				{
@@ -471,6 +472,11 @@ class Icon: LayoutHolder
 					ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
 					ItemManager.GetInstance().ShowSourceDropzone( w_entity );
 				}
+			}
+			else if ((w_hierarchyParent && (w_hierarchyParent.IsInherited(FenceKit) || w_hierarchyParent.IsInherited(WatchtowerKit))) || (receiver_hierarchyParent && (receiver_hierarchyParent.IsInherited(FenceKit) || receiver_hierarchyParent.IsInherited(WatchtowerKit))))
+			{
+				ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
+				ItemManager.GetInstance().ShowSourceDropzone( w_entity );
 			}
 			else
 			{
@@ -1071,6 +1077,9 @@ class Icon: LayoutHolder
 						loc_src.SetFlip(w_entity.GetInventory().GetFlipCargo());
 					
 						loc_dst.CopyLocationFrom(loc_temp,false);
+						
+						if (w_entity.IsInherited(Rope) && loc_dst.GetType() == InventoryLocationType.ATTACHMENT)
+							return;
 				
 				 		if( GameInventory.CanForceSwapEntities( w_entity, loc_src, receiver_entity, loc_dst ) )
 						{

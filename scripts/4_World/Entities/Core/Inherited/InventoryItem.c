@@ -518,8 +518,11 @@ class Clothing extends ItemBase
 		if ( parent.IsInherited( UndergroundStash ) )
 			is_hidden_stash_exception = true;
 		
-		if ( ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception ) && super.CanPutInCargo( parent ) )
-		{
+		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
+		{		
+			if (parent)
+				return !parent.GetHierarchyParent() || parent.GetHierarchyParent().IsMan();
+			
 			return true;
 		}
 		

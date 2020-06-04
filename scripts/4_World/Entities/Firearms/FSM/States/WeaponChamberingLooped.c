@@ -153,9 +153,9 @@ class LoopedChambering extends WeaponStateBase
 			}
 		}
 		
+		super.OnExit(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
-		super.OnExit(e);
 	}
 	override void OnAbort (WeaponEventBase e)
 	{
@@ -209,9 +209,9 @@ class LoopedChambering extends WeaponStateBase
 			}
 		}
 		
+		super.OnAbort(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
-		super.OnAbort(e);
 	}
 	
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)
@@ -389,10 +389,9 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 			}
 		}
 		
+		super.OnExit(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
-		super.OnExit(e);
-		
 	}
 	override void OnAbort (WeaponEventBase e)
 	{
@@ -445,10 +444,10 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 				}
 			}
 		}
-		
+
+		super.OnAbort(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
-		super.OnAbort(e);
 	}
 	
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)

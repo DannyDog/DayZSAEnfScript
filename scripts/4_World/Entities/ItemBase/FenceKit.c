@@ -40,8 +40,9 @@ class FenceKit extends ItemBase
 		if (item && slot_name == "Rope")
 		{
 			if ((GetGame().IsServer() || !GetGame().IsMultiplayer()) && !m_DeployedRegularly)
-			{
+			{					
 				DisassembleKit(ItemBase.Cast(item));
+				item.Delete();
 				Delete();
 			}
 		}
@@ -202,6 +203,20 @@ class FenceKit extends ItemBase
 		{
 			ItemBase stick = ItemBase.Cast(GetGame().CreateObjectEx("WoodenStick",GetPosition(),ECE_PLACE_ON_SURFACE));
 			stick.SetQuantity(2);
+			Rope rope = Rope.Cast(item);
+			CreateRope(rope);
 		}
+	}
+	
+	void CreateRope(Rope rope)
+	{
+		if (!rope)
+			return;
+		
+		InventoryLocation targetLoc = rope.GetTargetLocation();
+		if (targetLoc && targetLoc.GetType() == InventoryLocationType.ATTACHMENT)
+			return;
+
+				GetGame().CreateObjectEx("Rope",GetPosition(),ECE_PLACE_ON_SURFACE);
 	}
 }

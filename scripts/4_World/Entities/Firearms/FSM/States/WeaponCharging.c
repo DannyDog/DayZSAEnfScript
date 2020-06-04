@@ -31,6 +31,7 @@ class WeaponCharging extends WeaponStateBase
 		m_fsm = new WeaponFSM(this); // @NOTE: set owner of the submachine fsm
 		// transitions
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __be_, m_eject ));
+		m_fsm.AddTransition(new WeaponTransition(  m_start, _fin_, NULL ));
 		
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event
@@ -243,6 +244,7 @@ class WeaponChargingInnerMag extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon)));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_onCK));
 		
+		m_fsm.AddTransition(new WeaponTransition(  m_start, _fin_, NULL ));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, _fin_, NULL));
@@ -313,6 +315,7 @@ class WeaponChargingMultiple extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon)));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, __ck_, m_onCK));
 		
+		m_fsm.AddTransition(new WeaponTransition(   m_start, _fin_, NULL ));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBEFireOut, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(   m_hideB, _fin_, NULL));

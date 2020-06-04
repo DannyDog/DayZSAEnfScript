@@ -4,6 +4,7 @@ class SewingKit: Inventory_Base
 	{
 		super.SetActions();
 		
+		AddAction(ActionRepairTent);
 		AddAction(ActionSewTarget);
 		AddAction(ActionSewSelf);
 	}

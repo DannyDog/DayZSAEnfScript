@@ -25,6 +25,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 	}
 	
+	override int GetDamageSystemVersionChange()
+	{
+		return 110;
+	}
+	
 	override void EEInit()
 	{
 		super.EEInit();

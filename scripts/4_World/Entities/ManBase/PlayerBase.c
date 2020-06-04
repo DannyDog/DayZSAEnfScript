@@ -2644,6 +2644,7 @@ class PlayerBase extends ManBase
 		GetGame().GetMission().PlayerControlEnable(false);
 		GetDayZGame().GetBacklit().OnSwimmingStart();
 		
+		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
 		//RequestHandAnimationStateRefresh();
 	}
@@ -2676,6 +2677,7 @@ class PlayerBase extends ManBase
 		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		CloseInventoryMenu();
 		
+		AbortWeaponEvent();		
 		GetWeaponManager().DelayedRefreshAnimationState(10);
 		RequestHandAnimationStateRefresh();
 	}
@@ -2692,6 +2694,7 @@ class PlayerBase extends ManBase
 		CloseInventoryMenu();
 		m_EmoteManager.OnCommandClimbStart();
 		
+		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
 		RequestHandAnimationStateRefresh();
 	}
@@ -2751,17 +2754,25 @@ class PlayerBase extends ManBase
 	override void OnCommandMelee2Start()
 	{
 		m_IsFighting = true;
+		
+		AbortWeaponEvent();	
+		GetWeaponManager().DelayedRefreshAnimationState(10);
+		RequestHandAnimationStateRefresh();
 	}
 	
 	override void OnCommandMelee2Finish()
 	{
 		RunFightBlendTimer();
+		
+		GetWeaponManager().RefreshAnimationState();
 	}
 	
 	override void OnJumpStart()
 	{
 		m_ActionManager.OnJumpStart();
 		m_EmoteManager.OnJumpStart();
+		
+		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
 		RequestHandAnimationStateRefresh();
 	}
@@ -2784,6 +2795,23 @@ class PlayerBase extends ManBase
 		}
 		
 		GetWeaponManager().RefreshAnimationState();
+	}
+	
+	bool IsStance(int stance, int stanceMask)
+	{
+		return ((1 << stance) & stanceMask) != 0;
+	}
+	
+	override void OnStanceChange(int previousStance, int newStance)
+	{
+		int prone = DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_RAISEDPRONE;
+		int notProne = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_RAISEDERECT | DayZPlayerConstants.STANCEMASK_RAISEDCROUCH;
+		
+		if ( ( IsStance(previousStance, prone) && IsStance(newStance, notProne) ) || ( IsStance(previousStance, notProne) && IsStance(newStance, prone) ) )
+		{
+			AbortWeaponEvent();
+			GetWeaponManager().RefreshAnimationState();
+		}
 	}
 		
 	void OnVehicleSwitchSeat( int seatIndex )

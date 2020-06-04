@@ -347,29 +347,35 @@ class RifleBoltLock_Base extends Rifle_Base
 		m_fsm.AddTransition(new WeaponTransition( C00,				__A__,	Attach_C00, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b0/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_fin_,	C01, NULL, new WeaponGuardCurrentChamberEmpty(this)) );
 		m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_fin_,	C11));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C11, NULL, new WeaponGuardCurrentChamberFull(this)) );
-		m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C01, NULL, new WeaponGuardHasMag(this)) );
-		m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C00));
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C11, NULL, new WeaponGuardCurrentChamberFull(this)) );
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C01, NULL, new WeaponGuardHasMag(this)) );
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_C00,		_abt_,	C00));
+			Attach_C00.AddTransition(new WeaponTransition( Attach_C00.m_start,		_abt_,	C00));
+			Attach_C00.AddTransition(new WeaponTransition( Attach_C00.m_attach,		_abt_,	C00));
+			Attach_C00.AddTransition(new WeaponTransition( Attach_C00.m_onCK,		_abt_,	C01));
+			Attach_C00.AddTransition(new WeaponTransition( Attach_C00.m_chamber,	_abt_,	C11));		
 
-	
 		m_fsm.AddTransition(new WeaponTransition( C10,				__A__,	Attach_C10, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b1/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_C10,		_fin_,	C11));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_C10,		_abt_,	C11, NULL, new WeaponGuardHasMag(this)) );
-		m_fsm.AddTransition(new WeaponTransition(  Attach_C10,		_abt_,	C10));
-
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_C10,		_abt_,	C11, NULL, new WeaponGuardHasMag(this)) );
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_C10,		_abt_,	C10));
+			Attach_C10.AddTransition(new WeaponTransition( Attach_C10.m_start,		_abt_,	C10));
+			Attach_C10.AddTransition(new WeaponTransition( Attach_C10.m_attach,		_abt_,	C10));
 	
 		m_fsm.AddTransition(new WeaponTransition( O00,				__A__,	Attach_O00, NULL, new WeaponGuardCanAttachMag(this))); // attach from CLO/b0/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_O00,		_fin_,	C01, NULL, new WeaponGuardCurrentChamberEmpty(this)));
 		m_fsm.AddTransition(new WeaponTransition(  Attach_O00,		_fin_,	C11));
 			Attach_O00.AddTransition(new WeaponTransition( Attach_O00.m_start,		_abt_,	O00));
-			Attach_O00.AddTransition(new WeaponTransition( Attach_O00.m_attach,		_abt_,	O01));
+			Attach_O00.AddTransition(new WeaponTransition( Attach_O00.m_attach,		_abt_,	O00));
 			Attach_O00.AddTransition(new WeaponTransition( Attach_O00.m_onCK,		_abt_,	C01));
 			Attach_O00.AddTransition(new WeaponTransition( Attach_O00.m_chamber,	_abt_,	C11));
 		
 		m_fsm.AddTransition(new WeaponTransition( JF0,				__A__,	Attach_JF0, NULL, new WeaponGuardCanAttachMag(this))); // attach from JAM/b1/m0
 		m_fsm.AddTransition(new WeaponTransition(  Attach_JF0,	_fin_,	JF1));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_JF0,	_abt_,	JF1, NULL, new WeaponGuardHasMag(this)));
-		m_fsm.AddTransition(new WeaponTransition(  Attach_JF0,	_abt_,	JF0));
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_JF0,	_abt_,	JF1, NULL, new WeaponGuardHasMag(this)));
+		//m_fsm.AddTransition(new WeaponTransition(  Attach_JF0,	_abt_,	JF0));
+			Attach_JF0.AddTransition(new WeaponTransition( Attach_JF0.m_start,		_abt_,	JF0));
+			Attach_JF0.AddTransition(new WeaponTransition( Attach_JF0.m_attach,		_abt_,	JF0));
 
 
 		// replace magazine
@@ -391,6 +397,7 @@ class RifleBoltLock_Base extends Rifle_Base
 		m_fsm.AddTransition(new WeaponTransition(  Reload_O01,		_fin_,	C01, NULL, new WeaponGuardCurrentChamberEmpty(this)));
 		m_fsm.AddTransition(new WeaponTransition(  Reload_O01,		_fin_,	C11));
 			Reload_O01.AddTransition(new WeaponTransition( Reload_O01.m_start ,    _abt_,   O01));
+			Reload_O01.AddTransition(new WeaponTransition( Reload_O01.m_eject,     _abt_,   O01));
 			Reload_O01.AddTransition(new WeaponTransition( Reload_O01.m_detach,    _abt_,   O01));
 			Reload_O01.AddTransition(new WeaponTransition( Reload_O01.m_hideOld,   _abt_,   O00));
 			Reload_O01.AddTransition(new WeaponTransition( Reload_O01.m_swapMags,  _abt_,   O01));

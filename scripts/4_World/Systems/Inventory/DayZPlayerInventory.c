@@ -166,6 +166,25 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		//m_postedHandEvent = null;
 	}
 	
+	void CancelWeaponEvent ()
+	{
+		m_DeferredWeaponEvent = null;
+	}
+
+	void AbortWeaponEvent ()
+	{
+		HumanCommandWeapons hcw = GetDayZPlayerOwner().GetCommandModifier_Weapons();
+			
+		Weapon_Base weapon;
+		Class.CastTo(weapon, GetEntityInHands());
+			
+		if (hcw && weapon && weapon.CanProcessWeaponEvents() && !weapon.IsIdle())
+		{
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(weapon) + " Weapon event: ABORT! notifying running state=" + weapon.GetCurrentState());
+			weapon.ProcessWeaponAbortEvent(new WeaponEventHumanCommandActionAborted(GetDayZPlayerOwner()));
+		}
+	}
+	
 	/**@fn	PostWeaponEvent
 	 * @brief	deferred weapon's fsm handling of events
 	 * @NOTE: "post" stores the event for later use when ::CommandHandler is being run
@@ -436,7 +455,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				
 				if (remote && (!src.GetItem() || !dst.GetItem()))
 				{
-					Error("[syncinv] HandleInputData remote input (cmd=SYNC_MOVE) dropped, item not in bubble! src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
+					syncDebugPrint("[syncinv] HandleInputData remote input (cmd=SYNC_MOVE) dropped, item not in bubble! src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 					break; // not in bubble
 				}
 
@@ -526,6 +545,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					ClearInventoryReservation(dst.GetItem(),dst);
 				}
 				
+				if (GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
+					CheckForRope(src, dst);
+
 				LocationSyncMoveEntity(src, dst);				
 				break;
 			}
@@ -627,7 +649,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 						return true; // abort, do not send anything to remotes
 					}
 				}
-
+				
 				if (handling_juncture)
 				{
 					// juncture is already handled inside DayZPlayer::Simulate so it can be handled synchronously right now without delaying via m_PostedEvent
@@ -802,6 +824,21 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	{
 		ItemBase itemIB = ItemBase.Cast(item);
 		itemIB.SetCanBeMovedOverride(true);
+	}
+	
+	// Hacky solution for dealing with fencekit rope related issues, could be fixed by introducing some indicator that this item behaves differently or sth..
+	void CheckForRope(InventoryLocation src, InventoryLocation dst)
+	{
+		if (src.GetType() == InventoryLocationType.ATTACHMENT)
+		{
+			Rope rope = Rope.Cast(src.GetItem());
+			Print(rope);
+			if (rope)
+			{
+				Print(dst);
+				rope.SetTargetLocation(dst);
+			}
+		}
 	}
 	
 	bool IsServerOrLocalPlayer()

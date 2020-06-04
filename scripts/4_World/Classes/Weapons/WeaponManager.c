@@ -984,20 +984,20 @@ class WeaponManager
 		return m_WantContinue;
 	}
 	
-	Magazine GetPreparedMagazine ()
+	Magazine GetPreparedMagazine()
 	{
-		for(int i = 0; i < m_SuitableMagazines.Count(); i++)
-			if(m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
+		for (int i = 0; i < m_SuitableMagazines.Count(); i++)
+			if (m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
 				return m_SuitableMagazines.Get(i);
 		
 		return null;
 	}
 	
-	Magazine GetNextPreparedMagazine ( out int startIdx )
+	Magazine GetNextPreparedMagazine( out int startIdx )
 	{
-		for(int i = startIdx; i < m_SuitableMagazines.Count(); i++)
+		for (int i = startIdx; i < m_SuitableMagazines.Count(); i++)
 		{
-			if(m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
+			if (m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
 			{
 				startIdx = i;
 				return m_SuitableMagazines.Get(i);
@@ -1008,6 +1008,14 @@ class WeaponManager
 	
 	void OnMagazineInventoryEnter(Magazine mag)
 	{
+		if (mag)
+		{
+			Weapon_Base weapon = Weapon_Base.Cast(mag.GetHierarchyParent());
+			
+			if (weapon)
+				return;
+		}
+		
 		int i;
 		MagazineStorage sMag = MagazineStorage.Cast(mag);
 		if(sMag)
@@ -1093,52 +1101,52 @@ class WeaponManager
 		m_SuitableMagazines.Clear();
 		int i;
 		
-		if(m_WeaponInHand)
+		if (m_WeaponInHand)
 		{
 			int mi = m_WeaponInHand.GetCurrentMuzzle();
 			
-			for(i = 0; i < m_MagazineStorageInInventory.Count(); i++ )
+			for (i = 0; i < m_MagazineStorageInInventory.Count(); i++ )
 			{
 				MagazineStorage s_mag = m_MagazineStorageInInventory[i];
 				
-				if(!s_mag)	
+				if (!s_mag)	
 				{
 					m_MagazineStorageInInventory.RemoveOrdered(i);
 					i--;
 					continue;
 				}
 				
-				if( m_WeaponInHand.TestAttachMagazine(mi, s_mag, false, true))
+				if ( m_WeaponInHand.TestAttachMagazine(mi, s_mag, false, true))
 					m_SuitableMagazines.Insert(s_mag);
 			}
 			
-			for(i = 0; i < m_MagazinePilesInInventory.Count(); i++ )
+			for (i = 0; i < m_MagazinePilesInInventory.Count(); i++ )
 			{
 				Magazine mag = m_MagazinePilesInInventory[i];
-				if(!mag)	
+				if (!mag)	
 				{
 					m_MagazinePilesInInventory.RemoveOrdered(i);
 					i--;
 					continue;
 				}
 				
-				if(m_WeaponInHand.CanChamberFromMag(mi, mag))
+				if (m_WeaponInHand.CanChamberFromMag(mi, mag))
 					m_SuitableMagazines.Insert(mag);	
 			}
 //TODO m_MagazineStorageInInventory and m_MagazinePilesInInventory always sort
 		}
-		else if(m_MagazineInHand)
+		else if (m_MagazineInHand)
 		{
-			for(i = 0; i < m_MagazinePilesInInventory.Count(); i++ )
+			for (i = 0; i < m_MagazinePilesInInventory.Count(); i++ )
 			{
 				Magazine m_mag = m_MagazinePilesInInventory[i];
-				if(!m_mag)	
+				if (!m_mag)	
 				{
 					m_MagazinePilesInInventory.RemoveOrdered(i);
 					i--;
 					continue;
 				}
-				if(m_MagazineInHand.IsCompatiableAmmo( m_mag ))
+				if (m_MagazineInHand.IsCompatiableAmmo( m_mag ))
 					m_SuitableMagazines.Insert(m_mag);
 			}
 		}

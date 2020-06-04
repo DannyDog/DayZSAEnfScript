@@ -73,7 +73,7 @@ class CAContinuousTimeCooking : CAContinuousBase
 					}
 					else
 					{
-						if ( m_ItemToCook.ClassName() == "DeerSteakMeat" && m_ItemToCook.GetFoodStage().GetFoodStageType() == FoodStageType.BAKED )
+						if ( m_ItemToCook.IsMeat() && m_ItemToCook.GetFoodStage().GetFoodStageType() == FoodStageType.BAKED )
 						{
 							GetGame().GetAnalyticsClient().OnActionCookedSteak();
 						}

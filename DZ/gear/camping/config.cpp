@@ -69,6 +69,30 @@ class CfgVehicles
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.25;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 25;
+					};
+				};
+			};
 			class DamageZones
 			{
 				class Body
@@ -419,8 +443,32 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 1000;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.25;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 25;
+					};
 				};
 			};
 			class DamageZones
@@ -912,6 +960,30 @@ class CfgVehicles
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.25;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 25;
+					};
+				};
+			};
 			class DamageZones
 			{
 				class Body
@@ -1221,41 +1293,6 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.619608,0.603922,0.505882,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa","dz\gear\camping\data\party_tent_pieces_co.paa","dz\gear\camping\data\party_tent_tubes_cables_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_bag.rvmat","dz\gear\camping\data\party_tent_cloth.rvmat","dz\gear\camping\data\party_tent_pieces.rvmat","dz\gear\camping\data\party_tent_tubes_cables.rvmat"};
 		attachments[] = {"CamoNet","Lights"};
-		class Door_Base
-		{
-			class Health
-			{
-				hitpoints = 650;
-				transferToGlobalCoef = 0;
-				healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
-			};
-			class ArmorType
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0.1;
-					};
-				};
-				class Melee
-				{
-					class Health
-					{
-						damage = 0.5;
-					};
-				};
-				class FragGrenade
-				{
-					class Health
-					{
-						damage = 50;
-					};
-				};
-			};
-			componentNames[] = {""};
-			fatalInjuryCoef = -1;
-		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1264,6 +1301,30 @@ class CfgVehicles
 				{
 					hitpoints = 650;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.25;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 25;
+					};
 				};
 			};
 			class DamageZones
@@ -1340,6 +1401,41 @@ class CfgVehicles
 					componentNames[] = {"inventory"};
 					transferToZonesNames[] = {"Body","Door1","Door2","Door3","Door4","Door5","Door6"};
 					transferToZonesCoefs[] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+					fatalInjuryCoef = -1;
+				};
+				class Door_Base
+				{
+					class Health
+					{
+						hitpoints = 650;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1.0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 5.0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 50;
+							};
+						};
+					};
+					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
 				class Door1: Door_Base
@@ -6083,7 +6179,6 @@ class CfgVehicles
 		rotationFlags = 2;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"\dz\gear\camping\data\sea_chest_co.paa"};
-		hiddenSelectionsMaterials[] = {"\dz\gear\camping\data\sea_chest.rvmat"};
 		class DamageSystem
 		{
 			class GlobalHealth

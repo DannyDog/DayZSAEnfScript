@@ -595,6 +595,7 @@ class HumanCommandVehicle
 	proto native bool				IsSwitchSeat();
 	proto native bool				WasGearChange();
 	proto native void				SetClutchState(bool pState);
+	proto native void				KeepInVehicleSpaceAfterLeave(bool pState);
 }
 
 // *************************************************************************************
@@ -1368,4 +1369,7 @@ class Human extends Man
 
 	void	OnCommandActionAdditiveStart();
 	void	OnCommandActionAdditiveFinish();
+	
+	//! gets called on stance change
+	void	OnStanceChange(int previousStance, int newStance);
 }

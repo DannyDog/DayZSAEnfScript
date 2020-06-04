@@ -213,9 +213,12 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		// 2) otherwise find closest stable state (by looking on abort event)
 		WeaponStateBase abort_dst = FindAbortDestinationState(new WeaponEventHumanCommandActionAborted(null));
 		WeaponStableState closest_stable_state = WeaponStableState.Cast(abort_dst);
-		Print("[wpnfsm] Save occured in fsm transition! current state=" + GetCurrentState() + " closes stable state=" + closest_stable_state + " id=" + closest_stable_state.GetCurrentStateID());
+		
 		if (closest_stable_state)
+		{
+			Print("[wpnfsm] Save occured in fsm transition! current state=" + GetCurrentState() + " closes stable state=" + closest_stable_state + " id=" + closest_stable_state.GetCurrentStateID());
 			return closest_stable_state.GetCurrentStateID();
+		}		
 
 		Print("[wpnfsm] Warning! Save occured in fsm transition! GetCurrentStateID - cannot find closest weapon stable state.");
 		return 0;
