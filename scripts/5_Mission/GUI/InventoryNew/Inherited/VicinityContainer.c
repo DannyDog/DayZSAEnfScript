@@ -193,7 +193,7 @@ class VicinityContainer: CollapsibleContainer
 				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				return;
 			}
-			else if( GameInventory.CanSwapEntities( receiver_item, ipw.GetItem() ) )
+			else if( GameInventory.CanSwapEntitiesEx( receiver_item, ipw.GetItem() ) )
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -249,7 +249,7 @@ class VicinityContainer: CollapsibleContainer
 		{
 			( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 		}
-		else if( GameInventory.CanSwapEntities( receiver_item, item ) )
+		else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 		{
 			InventoryLocation il1 = new InventoryLocation;
 			InventoryLocation il2 = new InventoryLocation;

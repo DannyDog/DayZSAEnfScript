@@ -428,7 +428,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 2500;
+					hitpoints = 900;
 					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_green_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_green_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_green_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_green_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_green_holes_destruct.rvmat"}}};
 				};
@@ -439,15 +439,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 				};
 			};
@@ -466,7 +466,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 2500;
+					hitpoints = 900;
 					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_blue_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_blue_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_blue_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_blue_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_blue_holes_destruct.rvmat"}}};
 				};
@@ -477,15 +477,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 				};
 			};
@@ -504,7 +504,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 2500;
+					hitpoints = 900;
 					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_red_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_red_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_red_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_red_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_red_holes_destruct.rvmat"}}};
 				};
@@ -515,15 +515,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 				};
 			};
@@ -542,7 +542,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 2500;
+					hitpoints = 900;
 					RefTexsMats[] = {"dz\gear\cooking\data\barrel_green_holes.rvmat"};
 					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\barrel_yellow_holes.rvmat"}},{0.7,{"DZ\gear\cooking\data\barrel_yellow_holes.rvmat"}},{0.5,{"DZ\gear\cooking\data\barrel_yellow_holes_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\barrel_yellow_holes_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\barrel_yellow_holes_destruct.rvmat"}}};
 				};
@@ -553,15 +553,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 				};
 			};

@@ -66,11 +66,14 @@ class HandAnimatedTakingFromAtt extends HandStateBase
 		// events:
 		HandEventBase _fin_ = new HandEventHumanCommandActionFinished;
 		HandEventBase _AEh_ = new HandAnimEventChanged;
+		HandEventBase __Xd_ = new HandEventDestroyed;
 
 		m_FSM = new HandFSM(this); // @NOTE: set owner of the submachine fsm
 
 		m_FSM.AddTransition(new HandTransition(   m_Hide, _AEh_,   m_Show ));
+		m_FSM.AddTransition(new HandTransition(   m_Hide, __Xd_,     NULL ));
 		m_FSM.AddTransition(new HandTransition(   m_Show, _fin_,     NULL ));
+		m_FSM.AddTransition(new HandTransition(   m_Show, __Xd_,     NULL ));
 		
 		m_FSM.SetInitialState(m_Hide);
 	}

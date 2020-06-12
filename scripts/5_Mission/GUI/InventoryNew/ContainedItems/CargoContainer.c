@@ -786,7 +786,7 @@ class CargoContainer extends Container
 			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 			if( item_in_hands )
 			{
-				if( GameInventory.CanSwapEntities( item_in_hands, prev_item ) )
+				if( GameInventory.CanSwapEntitiesEx( item_in_hands, prev_item ) )
 				{
 					player.PredictiveSwapEntities( item_in_hands, prev_item );
 					return true;

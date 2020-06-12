@@ -146,7 +146,7 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 		if ( !tgt_item || !tgt_item.IsTakeable() ) return false;
 		if ( tgt_item.IsBeingPlaced() ) return false;
 		
-		if ( player.GetInventory().CanSwapEntities(tgt_item,item) )
+		if ( player.GetInventory().CanSwapEntitiesEx(tgt_item,item) )
 		{
 			//Print("ActionSwapItemToHands | ActionCondition: true");
 			return true;

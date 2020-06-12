@@ -18,7 +18,9 @@ enum WeightUpdateType
 {
 	FULL = 0,
 	ADD,
-	REMOVE
+	REMOVE,
+	RECURSIVE_ADD,
+	RECURSIVE_REMOVE
 }
 
 class EntityAI extends Entity
@@ -416,7 +418,7 @@ class EntityAI extends Entity
 					}
 				}
 			}
-			UpdateWeight();
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD);
 		}
 	}
 	
@@ -516,7 +518,7 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is attached to it.
 	void EEItemAttached(EntityAI item, string slot_name)
 	{
-		UpdateWeight(WeightUpdateType.ADD, item.GetWeight());
+		UpdateWeight(WeightUpdateType.RECURSIVE_ADD, item.GetWeight());
 		
 		//Print (slot_name);
 		if ( m_ComponentsBank != NULL )
@@ -561,7 +563,7 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is detached from it.
 	void EEItemDetached(EntityAI item, string slot_name)
 	{
-		UpdateWeight(WeightUpdateType.REMOVE, item.GetWeight());
+		UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, item.GetWeight());
 		
 		if ( m_ComponentsBank != NULL )
 		{
@@ -599,7 +601,7 @@ class EntityAI extends Entity
 
 	void EECargoIn(EntityAI item)
 	{
-		UpdateWeight(WeightUpdateType.ADD, item.GetWeight());
+		UpdateWeight(WeightUpdateType.RECURSIVE_ADD, item.GetWeight());
 		
 		if( m_OnItemAddedIntoCargo )
 			m_OnItemAddedIntoCargo.Invoke( item, this );
@@ -609,7 +611,7 @@ class EntityAI extends Entity
 
 	void EECargoOut(EntityAI item)
 	{
-		UpdateWeight(WeightUpdateType.REMOVE, item.GetWeight());
+		UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, item.GetWeight());
 		
 		if( m_OnItemRemovedFromCargo )
 			m_OnItemRemovedFromCargo.Invoke( item, this );
@@ -1312,6 +1314,16 @@ class EntityAI extends Entity
 		return 0; // Only ItemBase objects have wetness!
 	}
 	
+	float GetQuantity()
+	{
+		return 0; // Only ItemBase objects quantity!
+	}
+	
+	int GetQuantityMax()
+	{
+		return 0; // Only ItemBase objects quantity!
+	}
+	
 	//! Returns index of the string found in cfg array 'hiddenSelections'. If it's not found then it returns -1.
 	int GetHiddenSelectionIndex( string selection )
 	{
@@ -1957,6 +1969,16 @@ class EntityAI extends Entity
 		if ((GetGame().IsServer() || !GetGame().IsMultiplayer()))
 			AddHealth("","Health",-MELEE_ITEM_DAMAGE);
 		return this;
+	}
+	
+	void ProcessInvulnerabilityCheck(string servercfg_param)
+	{
+		if ( GetGame() && GetGame().IsMultiplayer() && GetGame().IsServer() )
+		{
+			int invulnerability = GetGame().ServerConfigGetInt(servercfg_param);
+			if (invulnerability > 0)
+				SetAllowDamage(false);
+		}
 	}
 
 	void SetBayonetAttached(bool pState, int slot_idx = -1) {};

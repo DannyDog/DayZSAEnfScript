@@ -283,7 +283,7 @@ class VicinitySlotsContainer: Container
 			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 			if( item_in_hands )
 			{
-				if( GameInventory.CanSwapEntities( item_in_hands, ent ) )
+				if( GameInventory.CanSwapEntitiesEx( item_in_hands, ent ) )
 				{
 					GetGame().GetPlayer().PredictiveSwapEntities( item_in_hands, ent );
 					return true;

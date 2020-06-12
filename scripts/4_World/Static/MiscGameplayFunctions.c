@@ -246,23 +246,30 @@ class MiscGameplayFunctions
 	{
 		target.TransferVariablesFloat( source.GetVariablesFloat() );
 		//target.TransferVariablesString( source.GetVariablesString() );
-		if( exclude_quantity )
+		if ( exclude_quantity )
 		{
 			target.RemoveItemVariable(VARIABLE_QUANTITY);
 		}
-		else if( source.IsMagazine() && target.IsMagazine() )
+		else if ( source.IsMagazine() && target.IsMagazine() )
 		{
 			Magazine source_mag = Magazine.Cast(source);
 			Magazine target_mag = Magazine.Cast(target);
 			
 			target_mag.ServerSetAmmoCount( source_mag.GetAmmoCount() );
 		}
-		else if( source.IsWeapon() && target.IsWeapon() )
+		else if ( source.IsWeapon() && target.IsWeapon() )
 		{
 			Weapon_Base source_wpn = Weapon_Base.Cast(source);
 			Weapon_Base target_wpn = Weapon_Base.Cast(target);
 			
 			target_wpn.CopyWeaponStateFrom(source_wpn);
+		}
+		else if ( source.HasEnergyManager() && target.HasEnergyManager() )
+		{
+			target.GetCompEM().SetEnergy(source.GetCompEM().GetEnergy());
+
+			if (source.GetCompEM().IsSwitchedOn())
+				target.GetCompEM().SwitchOn();
 		}
 	}
 

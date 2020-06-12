@@ -33,6 +33,7 @@ class WeaponCharging extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __be_, m_eject ));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, _fin_, NULL ));
 		
+		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_eject, NULL, new GuardNot(new WeaponGuardCurrentChamberEmpty(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event
 		
@@ -235,6 +236,7 @@ class WeaponChargingInnerMag extends WeaponStateBase
 		
 		//TODO after inner magazine rework this events must load new bullet
 		
+		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onBE, NULL, new GuardNot(new WeaponGuardCurrentChamberEmpty(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon)));
@@ -306,6 +308,7 @@ class WeaponChargingMultiple extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(  m_onBE, __bh_, m_hideB));
 		m_fsm.AddTransition(new WeaponTransition(  m_onBEFireOut, __bh_, m_hideB));
 		
+		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onBE, NULL, new GuardNot(new WeaponGuardCurrentChamberEmpty(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(   m_onBE, __ck_, m_chamber, NULL, new WeaponGuardHasAmmo(m_weapon)));

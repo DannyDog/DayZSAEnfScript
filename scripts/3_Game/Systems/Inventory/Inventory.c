@@ -480,6 +480,53 @@ class GameInventory
 	 * @return    true if can be swapped
 	 */
 	static proto native bool CanSwapEntities (notnull EntityAI item1, notnull EntityAI item2);
+	
+	static bool CanSwapEntitiesEx(notnull EntityAI item1, notnull EntityAI item2)
+	{
+		float stack_max = item1.ConfigGetFloat("varStackMax");
+		float slot_stack_max = 0;
+		int slot;
+		InventoryLocation il = new InventoryLocation;
+		
+		item2.GetInventory().GetCurrentInventoryLocation(il);
+		slot = il.GetSlot();
+		if( slot != -1 )
+		{
+			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
+			if( slot_stack_max > 0 )
+				stack_max = slot_stack_max;
+		}
+		
+		if ( stack_max <= 0 )
+		{
+			stack_max = item1.GetQuantityMax();
+		}
+		
+		if( item1.GetQuantity() > stack_max )
+			return false;
+		
+		
+		stack_max = item2.ConfigGetFloat("varStackMax");
+		item1.GetInventory().GetCurrentInventoryLocation(il);
+		slot = il.GetSlot();
+		if( slot != -1 )
+		{
+			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
+			if( slot_stack_max > 0 )
+				stack_max = slot_stack_max;
+		}
+		
+		if ( stack_max <= 0 )
+		{
+			stack_max = item2.GetQuantityMax();
+		}
+		
+		if( item2.GetQuantity() > stack_max )
+			return false;
+		
+		
+		return CanSwapEntities(item1,item2);
+	}
 
 	/**@fn      CanForceSwapEntities
 	 * @brief   test if forced swap can be performed.
@@ -491,6 +538,68 @@ class GameInventory
 	 * @return    true if can be force swapped
 	 */
 	static proto native bool CanForceSwapEntities (notnull EntityAI item1, InventoryLocation item1_dst, notnull EntityAI item2, out InventoryLocation item2_dst);
+	static bool CanForceSwapEntitiesEx(notnull EntityAI item1, InventoryLocation item1_dst, notnull EntityAI item2, out InventoryLocation item2_dst)
+	{
+		float stack_max = item1.ConfigGetFloat("varStackMax");
+		float slot_stack_max = 0;
+		int slot;
+		InventoryLocation il = new InventoryLocation;
+		
+		if( item1_dst == null)
+		{
+			item2.GetInventory().GetCurrentInventoryLocation(il);
+			slot = il.GetSlot();
+		}
+		else
+		{
+			slot = item1_dst.GetSlot();
+		}
+		
+		if( slot != -1 )
+		{
+			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
+			if( slot_stack_max > 0 )
+				stack_max = slot_stack_max;
+		}
+		
+		if( stack_max <= 0 )
+		{
+			stack_max = item1.GetQuantityMax();
+		}
+		
+		if( item1.GetQuantity() > stack_max )
+			return false;
+		
+		
+		stack_max = item2.ConfigGetFloat("varStackMax");
+		if( item2_dst == null)
+		{
+			item1.GetInventory().GetCurrentInventoryLocation(il);
+			slot = il.GetSlot();
+		}
+		else
+		{
+			slot = item2_dst.GetSlot();
+		}
+		
+		if( slot != -1 )
+		{
+			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
+			if( slot_stack_max > 0 )
+				stack_max = slot_stack_max;
+		}
+		
+		if ( stack_max <= 0 )
+		{
+			stack_max = item2.GetQuantityMax();
+		}
+		
+		if( item2.GetQuantity() > stack_max )
+			return false;
+		
+		
+		return CanForceSwapEntities(item1, item1_dst, item2, item2_dst);
+	}
 	
 	proto native bool CanAddSwappedEntity (notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2);
 

@@ -194,7 +194,7 @@ class Attachments
 				{
 					if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 					{
-						if( GameInventory.CanSwapEntities( item_in_hands, prev_item ) )
+						if( GameInventory.CanSwapEntitiesEx( item_in_hands, prev_item ) )
 						{
 							player.PredictiveSwapEntities( item_in_hands, prev_item );
 							return true;

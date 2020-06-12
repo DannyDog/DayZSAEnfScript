@@ -102,6 +102,9 @@ class Roadflare : ItemBase
 		}
 		
 		DestroyAllParticles();
+			
+		if (m_Light)
+			m_Light.FadeOut(0);	
 	}
 	
 	override void OnStoreSave(ParamsWriteContext ctx)

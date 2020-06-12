@@ -23,6 +23,8 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		
 		//synchronized variables
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
+		
+		ProcessInvulnerabilityCheck("disableContainerDamage");
 	}
 	
 	override int GetDamageSystemVersionChange()

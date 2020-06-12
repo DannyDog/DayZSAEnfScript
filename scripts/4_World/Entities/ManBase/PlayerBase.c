@@ -3167,12 +3167,12 @@ class PlayerBase extends ManBase
 				if(Reserved_Item_il)
 					inHandEntityFSwapDst.CopyLocationFrom(Reserved_Item_il, true);
 				
-				if(GameInventory.CanForceSwapEntities( quickBarEntity, null, inHandEntity, inHandEntityFSwapDst ))
+				if(GameInventory.CanForceSwapEntitiesEx( quickBarEntity, null, inHandEntity, inHandEntityFSwapDst ))
 				{
 					syncDebugPrint("[QB] Swap - PredictiveForceSwapEntities HND=" + Object.GetDebugName(inHandEntity) +  " QB=" + Object.GetDebugName(quickBarEntity) + " fswap_dst=" + InventoryLocation.DumpToStringNullSafe(inHandEntityFSwapDst));
 					PredictiveForceSwapEntities( quickBarEntity, inHandEntity, inHandEntityFSwapDst );
 				}
-				else if(GameInventory.CanSwapEntities( quickBarEntity, inHandEntity ))
+				else if(GameInventory.CanSwapEntitiesEx( quickBarEntity, inHandEntity ))
 				{
 					syncDebugPrint("[QB] PredictiveSwapEntities QB=" + Object.GetDebugName(quickBarEntity) + " HND=" + Object.GetDebugName(inHandEntity));
 					PredictiveSwapEntities( quickBarEntity, inHandEntity );

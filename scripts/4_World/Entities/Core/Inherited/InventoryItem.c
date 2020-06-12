@@ -520,13 +520,37 @@ class Clothing extends ItemBase
 		
 		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
 		{		
+			/*
 			if (parent)
 				return !parent.GetHierarchyParent() || parent.GetHierarchyParent().IsMan();
+			*/
 			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	{
+		if (!super.CanReceiveItemIntoCargo(cargo))
+			return false;
+		
+		EntityAI hierarchyParent = GetHierarchyParent();
+		return !hierarchyParent || hierarchyParent.IsMan() || SmershException(hierarchyParent);
+	}
+	
+	//Kind of a hack but I don't have enough time left to do larger scale reworks, sorry
+	bool SmershException(EntityAI hierarchyParent)
+	{
+		EntityAI hp = hierarchyParent.GetHierarchyParent();
+		if (hp)
+		{
+			if (!hp.IsMan())
+				return false;
+		}
+		
+		return IsInherited(SmershBag) && hierarchyParent.IsInherited(SmershVest);
 	}
 
 	float GetItemVisibility()

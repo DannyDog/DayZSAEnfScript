@@ -861,7 +861,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			{
 				( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 			}
-			else if( GameInventory.CanSwapEntities( receiver_item, item ) )
+			else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				if( !receiver_item.GetInventory().CanRemoveEntity() )
 					return;
@@ -973,10 +973,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			{
 				if(player.GetInventory().CanAddEntityToInventory( item ) && item.GetInventory().CanRemoveEntity())
 				{
-					if( item.ConfigGetFloat("varStackMax") )
-						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, InventoryItem.Cast( item ) );
-					else
-						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, InventoryItem.Cast( item ) );
+					player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, InventoryItem.Cast( item ) );
 				}
 				else
 				{
@@ -1146,7 +1143,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 					}
 					ColorManager.GetInstance().SetColor( w, ColorManager.COMBINE_COLOR );
 				}
-				else if( GameInventory.CanSwapEntities( receiver_item, item ) )
+				else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 				{
 					ItemManager.GetInstance().HideDropzones();
 					if( m_Entity.GetHierarchyRootPlayer() == GetGame().GetPlayer() )

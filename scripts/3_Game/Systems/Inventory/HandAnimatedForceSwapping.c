@@ -61,12 +61,14 @@ class HandAnimatedForceSwapping extends HandStateBase
 		// events:
 		HandEventBase _fin_ = new HandEventHumanCommandActionFinished;
 		HandEventBase _AEh_ = new HandAnimEventChanged;
+		HandEventBase __Xd_ = new HandEventDestroyed;
 
 		m_FSM = new HandFSM(this); // @NOTE: set owner of the submachine fsm
 
 		m_FSM.AddTransition(new HandTransition(   m_Hide, _AEh_,   m_Show ));
 		m_FSM.AddTransition(new HandTransition(   m_Hide, _fin_,   m_Show )); // no animation in Hide step
 		m_FSM.AddTransition(new HandTransition(   m_Show, _fin_,     NULL ));
+		m_FSM.AddTransition(new HandTransition(   m_Show, __Xd_,     null ));
 
 		m_FSM.SetInitialState(m_Hide);
 	}
@@ -107,12 +109,12 @@ class HandAnimatedForceSwapping extends HandStateBase
 			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src2.GetItem(), m_Src2);
 			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src1.GetItem(), m_Src1);
 		}
-
+		
 		m_Src1 = null;
 		m_Src2 = null;
 		m_Dst1 = null;
 		m_Dst2 = null;
-
+		
 		super.OnAbort(e);
 	}
 

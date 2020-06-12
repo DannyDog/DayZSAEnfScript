@@ -13,7 +13,7 @@ class ActionDismantlePartCB : ActionContinuousBaseCB
 			case Pickaxe:
 			case Shovel:
 			case FieldShovel:
-				return 7.0;
+				return 12.0;
 			default:
 				return UATimeSpent.DEFAULT_DECONSTRUCT;
 		}

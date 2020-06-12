@@ -29,7 +29,7 @@ class UATimeSpent
 	const float DEFAULT_FILL = 8;
 	const float DEFAULT_SORT = 2;
 	const float DEFAULT_CONSTRUCT = 5;
-	const float DEFAULT_DECONSTRUCT = 5;
+	const float DEFAULT_DECONSTRUCT = 15;
 	const float DEFAULT_DESTROY = 60;
 	const float DEFAULT_PLACE = 0;
 	const float DEFAULT_DEPLOY = 5;
@@ -106,7 +106,7 @@ class UASoftSkillsWeight
 class UADamageApplied
 {
 	const float BUILD 		= 10;
-	const float DISMANTLE 	= 15;
+	const float DISMANTLE 	= 50;
 	const float DESTROY 	= 50;
 	const float SAW_LOCK 	= 34;
 	const float SKINNING 	= 1;

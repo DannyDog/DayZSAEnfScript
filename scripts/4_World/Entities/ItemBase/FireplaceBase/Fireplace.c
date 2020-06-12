@@ -398,6 +398,7 @@ class Fireplace extends FireplaceBase
 		//Oven
 		if ( IsOven() )
 		{
+			RemoveProxyPhysics( ANIMATION_OVEN );
 			AddProxyPhysics( ANIMATION_OVEN );
 		}
 		else
@@ -408,6 +409,7 @@ class Fireplace extends FireplaceBase
 		//Tripod
 		if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) )
 		{
+			RemoveProxyPhysics( ANIMATION_TRIPOD );
 			AddProxyPhysics( ANIMATION_TRIPOD );
 		}
 		else

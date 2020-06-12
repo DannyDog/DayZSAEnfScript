@@ -61,7 +61,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 3500;
+					hitpoints = 1300;
 				};
 			};
 			class GlobalArmor
@@ -70,15 +70,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 30.0;
+						damage = 8.0;
 					};
 				};
 			};
@@ -313,7 +313,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 1200;
+					hitpoints = 750;
 					healthLevels[] = {{1.0,{"DZ\gear\containers\data\Protector_Case.rvmat"}},{0.7,{"DZ\gear\containers\data\Protector_Case.rvmat"}},{0.5,{"DZ\gear\containers\data\Protector_Case_damage.rvmat"}},{0.3,{"DZ\gear\containers\data\Protector_Case_damage.rvmat"}},{0.0,{"DZ\gear\containers\data\Protector_Case_destruct.rvmat"}}};
 				};
 			};
@@ -323,15 +323,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 				};
 			};

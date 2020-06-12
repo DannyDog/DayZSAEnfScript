@@ -196,11 +196,11 @@ class Icon: LayoutHolder
 					player.GetHumanInventory().GetUserReservedLocation( index, i1);
 				}
 				
-				if( player.GetInventory().CanForceSwapEntities( item, null, hands_item, i1 ) )
+				if( player.GetInventory().CanForceSwapEntitiesEx( item, null, hands_item, i1 ) )
 				{
 					player.PredictiveForceSwapEntities( item, hands_item, i1);
 				}
-				else if( player.GetInventory().CanSwapEntities( item, hands_item ) )
+				else if( player.GetInventory().CanSwapEntitiesEx( item, hands_item ) )
 				{
 					player.PredictiveSwapEntities( item, hands_item );
 				}
@@ -278,13 +278,14 @@ class Icon: LayoutHolder
 			return;
 		}
 		
-		if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, NULL ))
+		InventoryLocation il = new InventoryLocation;
+		if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il ))
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.FSWAP_COLOR );
 			ItemManager.GetInstance().HideDropzones();
 			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
 		}
-		else if( GameInventory.CanSwapEntities( receiver_entity, w_entity ) )
+		else if( GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ) )
 		{
 			ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 			ItemManager.GetInstance().HideDropzones();
@@ -480,8 +481,8 @@ class Icon: LayoutHolder
 			}
 			else
 			{
-		
-				if( GameInventory.CanSwapEntities( receiver_entity, w_entity ) )
+				InventoryLocation il = new InventoryLocation;
+				if( GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ) )
 				{
 					ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 					if( m_Obj.GetHierarchyRootPlayer() == player )
@@ -493,7 +494,7 @@ class Icon: LayoutHolder
 						ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 					}
 				}
-				else if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, null ) )
+				else if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il ) )
 					{
 						ColorManager.GetInstance().SetColor( w, ColorManager.FSWAP_COLOR );
 						if( m_Obj.GetHierarchyRootPlayer() == player )
@@ -1052,7 +1053,7 @@ class Icon: LayoutHolder
 				}
 				else
 				{
-					if( GameInventory.CanSwapEntities( w_entity, receiver_entity ) )
+					if( GameInventory.CanSwapEntitiesEx( w_entity, receiver_entity ) )
 					{
 						player.PredictiveSwapEntities( w_entity, receiver_entity );
 		
@@ -1081,7 +1082,7 @@ class Icon: LayoutHolder
 						if (w_entity.IsInherited(Rope) && loc_dst.GetType() == InventoryLocationType.ATTACHMENT)
 							return;
 				
-				 		if( GameInventory.CanForceSwapEntities( w_entity, loc_src, receiver_entity, loc_dst ) )
+				 		if( GameInventory.CanForceSwapEntitiesEx( w_entity, loc_src, receiver_entity, loc_dst ) )
 						{
 							player.PredictiveForceSwapEntities( w_entity, receiver_entity, loc_dst );
 						}
@@ -1140,7 +1141,7 @@ class Icon: LayoutHolder
 		{
 			player.GetHumanInventory().GetUserReservedLocation( index, il_fswap);
 		
-			if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, il_fswap ))
+			if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il_fswap ))
 			{
 				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{
@@ -1149,7 +1150,7 @@ class Icon: LayoutHolder
 			}
 			else
 			{
-				if( GameInventory.CanSwapEntities( w_entity, receiver_entity  ) )
+				if( GameInventory.CanSwapEntitiesEx( w_entity, receiver_entity  ) )
 				{
 					if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 					{
@@ -1165,7 +1166,7 @@ class Icon: LayoutHolder
 		}
 		else
 		{
-			if( GameInventory.CanSwapEntities( w_entity, receiver_entity  ) )
+			if( GameInventory.CanSwapEntitiesEx( w_entity, receiver_entity  ) )
 			{
 				if( !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{
@@ -1177,7 +1178,7 @@ class Icon: LayoutHolder
 					}
 				}
 			}
-			else if( GameInventory.CanForceSwapEntities( w_entity, null, receiver_entity, il_fswap ))
+			else if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il_fswap ))
 			{
 				if( m_HandsIcon && !player.GetInventory().HasInventoryReservation( item_in_hands, null ) && !player.IsItemsToDelete() )
 				{

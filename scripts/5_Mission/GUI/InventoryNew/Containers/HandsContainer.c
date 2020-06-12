@@ -537,7 +537,7 @@ class HandsContainer: Container
 				{
 					if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 					{
-						if( GameInventory.CanSwapEntities( item_in_hands, selected_item ) )
+						if( GameInventory.CanSwapEntitiesEx( item_in_hands, selected_item ) )
 						{
 							player.PredictiveSwapEntities( item_in_hands, selected_item );
 							item_to_be_swap = selected_item;
@@ -686,7 +686,7 @@ class HandsContainer: Container
 					}
 					else
 					{
-						if( GameInventory.CanSwapEntities( receiver_item, w_entity ) )
+						if( GameInventory.CanSwapEntitiesEx( receiver_item, w_entity ) )
 						{
 							ItemManager.GetInstance().HideDropzones();
 							if( m_Entity.GetHierarchyRootPlayer() == GetGame().GetPlayer() )
@@ -732,7 +732,7 @@ class HandsContainer: Container
 			
 			
 			
-			else if(GameInventory.CanSwapEntities( receiver_entity, w_entity ))
+			else if(GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ))
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -975,7 +975,7 @@ class HandsContainer: Container
 		if ( !skipSwap )
 		{
 			if ( entity1 == m_player.GetHumanInventory().GetEntityInHands() ) flags = flags | InventoryCombinationFlags.TAKE_TO_HANDS;
-			else if ( GameInventory.CanSwapEntities( entity1, entity2 ) )
+			else if ( GameInventory.CanSwapEntitiesEx( entity1, entity2 ) )
 			{
 				if ( !entity1.IsInherited( ZombieBase ) && !entity1.IsInherited( Car ) )
 				{
@@ -1406,7 +1406,7 @@ class HandsContainer: Container
 			{
 				( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 			}
-			else if( GameInventory.CanSwapEntities( receiver_item, item ) )
+			else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				if( !receiver_item.GetInventory().CanRemoveEntity() )
 					return;

@@ -179,7 +179,7 @@ class Man extends EntityAI
 				hand_dst.SetHands(this, item);
 				GetHumanInventory().TakeToDst(mode, src_item, hand_dst);
 			}
-			else if (GetHumanInventory().CanSwapEntities(itemInHands, item))
+			else if (GetHumanInventory().CanSwapEntitiesEx(itemInHands, item))
 				GetInventory().SwapEntities(mode, itemInHands, item);
 			UpdateInventoryMenu();
 		}
@@ -496,7 +496,7 @@ class Man extends EntityAI
 	{
 		bool code;
 		syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " ::SwapImpl(" + typename.EnumToString(InventoryMode, mode) + ") item1=" + Object.GetDebugName(item1) + " item2=" + item2.GetDebugName(this));
-		if (!GameInventory.CanSwapEntities(item1, item2))
+		if (!GameInventory.CanSwapEntitiesEx(item1, item2))
 			Error("[inv] (Man@" + this + ") SwapEntitiesImpl - cannot swap items!");
 
 		code = GetHumanInventory().SwapEntities(mode, item1, item2);
@@ -585,7 +585,7 @@ class Man extends EntityAI
 			{
 				int slot_id = item.GetInventory().GetSlotId(i);
 				EntityAI slot_item = GetInventory().FindAttachment( slot_id );
-				if( slot_item && GetInventory().CanSwapEntities( item, slot_item ) )
+				if( slot_item && GetInventory().CanSwapEntitiesEx( item, slot_item ) )
 				{
 					return PredictiveSwapEntities(item, slot_item);
 				}

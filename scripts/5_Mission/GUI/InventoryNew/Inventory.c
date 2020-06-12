@@ -484,13 +484,18 @@ class Inventory: LayoutHolder
 				{
 					int slot_id = item.GetInventory().GetSlotId(0);
 					EntityAI slot_item = player.GetInventory().FindAttachment( slot_id );
-					if( slot_item && player.GetInventory().CanSwapEntities( item, slot_item ) )
+					if( slot_item && player.GetInventory().CanSwapEntitiesEx( item, slot_item ) )
 					{
 						player.PredictiveSwapEntities(item, slot_item);
 					}
 					else if( player.CanReceiveItemIntoCargo( item ) )
 					{
-						player.PredictiveTakeEntityToTargetCargo( player, item );
+						InventoryLocation dst = new InventoryLocation;
+						player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, dst );
+						if(dst.IsValid())
+						{
+							SplitItemUtils.TakeOrSplitToInventoryLocation( player, dst );
+						}
 					}
 				}
 			}
@@ -536,7 +541,7 @@ class Inventory: LayoutHolder
 				EntityAI slot_item = player.GetInventory().FindAttachment( slot_id );
 				
 				InventoryLocation inv_loc = new InventoryLocation;
-				player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT | FindInventoryLocationType.CARGO, inv_loc );
+				player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, inv_loc );
 				if( inv_loc.IsValid() )
 				{
 					ItemManager.GetInstance().HideDropzones();

@@ -982,4 +982,12 @@ class Object extends IEntity
 	}
 	
 	EntityAI ProcessMeleeItemDamage(int mode = 0) {}
+	
+	//Debug
+	//----------------------------------------------
+	/*void DbgAddPxyPhy(string slot)
+	{
+		Print("AddProxyPhysics slot: " + slot);
+		AddProxyPhysics(slot);
+	}*/
 };

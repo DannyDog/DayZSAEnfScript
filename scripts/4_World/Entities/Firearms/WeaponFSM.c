@@ -78,8 +78,10 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		WeaponStateBase state = FindStateForInternalID(curr_state_id);
 		if (state)
 		{
+			Terminate();
 			wpnDebugPrint("[wpnfsm] synced current state=" + state + " id=" + curr_state_id);
 			m_State = state;
+			Start(null, true);
 			return true;
 		}
 		else
@@ -182,8 +184,10 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		WeaponStableState state = FindStableStateForID(id);
 		if (state)
 		{
+			Terminate();
 			wpnDebugPrint("[wpnfsm] OnStoreLoad - loading current state=" + state + " id=" + id);
 			m_State = state;
+			Start(null, true);
 		}
 		else
 		{
@@ -230,7 +234,9 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	int GetInternalStateID ()
 	{
 		WeaponStateBase curr = GetCurrentState();
-		int id = curr.GetInternalStateID();
+		int id = 0;
+		if (curr)
+			id = curr.GetInternalStateID();
 		return id;
 	}
 
@@ -264,7 +270,9 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		{
 			int randomIndex = Math.RandomInt(0, cc);
 			WeaponStableState selected = candidates.Get(randomIndex);
+			Terminate();
 			m_State = selected;
+			Start(null, true);
 			wpnDebugPrint("[wpnfsm] RandomizeFSMState - randomized current state=" + m_State + " id=" + selected.GetCurrentStateID());
 			selected.SyncAnimState();
 		}

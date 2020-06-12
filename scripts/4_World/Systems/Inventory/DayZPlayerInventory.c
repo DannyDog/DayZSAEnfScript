@@ -104,11 +104,13 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		HandEventBase __M__ = new HandEventMoveTo;
 		HandEventBase __W__ = new HandEventSwap;
 		//HandEventBase __D__ = new HandEventDropping;
+		HandEventBase __Xd_ = new HandEventDestroyed;
 		HandEventBase __F__ = new HandEventForceSwap;
 
 		// setup transitions
 		m_FSM.AddTransition(new HandTransition( m_Empty   , __T__,    m_Taking, NULL, new HandSelectAnimationOfTakeToHandsEvent(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition( m_Taking  , _fin_,  m_Equipped, null, null));
+		m_FSM.AddTransition(new HandTransition( m_Taking  , __Xd_,  m_Empty, new HandActionDestroyed, new HandGuardHasDestroyedItemInHands(GetManOwner())));
 			m_Taking.AddTransition(new HandTransition(  m_Taking.m_Hide, _abt_,   m_Empty));
 			m_Taking.AddTransition(new HandTransition(  m_Taking.m_Show, _abt_,   m_Equipped));
 
@@ -124,6 +126,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		m_FSM.AddTransition(new HandTransition( m_Equipped, __F__, m_FSwapping, NULL, new HandSelectAnimationOfForceSwapInHandsEvent(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition(m_FSwapping, _fin_,  m_Equipped, null, null));
 		m_FSM.AddTransition(new HandTransition(m_FSwapping, _abt_,  m_Equipped, null, null));
+		m_FSM.AddTransition(new HandTransition(m_FSwapping, __Xd_,  m_Empty, new HandActionDestroyed, new HandGuardHasDestroyedItemInHands(GetManOwner())));
 
 		super.Init(); // initialize ordinary human fsm (no anims)
 	}
@@ -709,7 +712,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				
 				if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
 				{
-					if (false == GameInventory.CanForceSwapEntities(src1.GetItem(), dst1, src2.GetItem(), dst2))
+					if (false == GameInventory.CanForceSwapEntitiesEx(src1.GetItem(), dst1, src2.GetItem(), dst2))
 					{
 						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT swap cmd=" + typename.EnumToString(InventoryCommandType, type) + " src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) +" | src2=" + InventoryLocation.DumpToStringNullSafe(src2) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 						return false;

@@ -644,7 +644,7 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	override void CombineItemsClient(EntityAI entity2, bool use_stack_max = false )
+	override void CombineItemsClient(EntityAI entity2, bool use_stack_max = true )
 	{
 		/*
 		ref Param1<EntityAI> item = new Param1<EntityAI>(entity2);
@@ -1674,27 +1674,34 @@ class ItemBase extends InventoryItem
 		return ComputeQuantityUsed( other_item, use_stack_max ) == other_item.GetQuantity();
 	}
 	
-	int ComputeQuantityUsed( ItemBase other_item, bool use_stack_max = false )
+	int ComputeQuantityUsed( ItemBase other_item, bool use_stack_max = true )
 	{
 		float other_item_quantity = other_item.GetQuantity();
 		float this_free_space;
 			
-		int max_quantity;
-		int stack_max;
+		int stack_max = 0;
 		
 		InventoryLocation il = new InventoryLocation;
 		GetInventory().GetCurrentInventoryLocation( il );
-		if( il.GetSlot() != -1 )
-			stack_max = InventorySlots.GetStackMaxForSlotId( il.GetSlot() );
-		if( use_stack_max && stack_max > 0 )
+		
+		if( use_stack_max )
 		{
-			max_quantity = stack_max;
+			int slot = il.GetSlot();
+			if( slot != -1 )
+			{
+				stack_max = InventorySlots.GetStackMaxForSlotId( slot );
+			}
+			if( stack_max == 0 )
+			{
+				stack_max = ConfigGetFloat("varStackMax");
+			}
 		}
-		else
+		if( stack_max == 0 )
 		{
-			max_quantity = GetQuantityMax();
-		}
-		this_free_space = max_quantity - GetQuantity();
+			stack_max = GetQuantityMax();
+		}	
+		
+		this_free_space = stack_max - GetQuantity();
 			
 		if( other_item_quantity > this_free_space )
 		{
@@ -1706,7 +1713,7 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	void CombineItems( ItemBase other_item, bool use_stack_max = false )
+	void CombineItems( ItemBase other_item, bool use_stack_max = true )
 	{
 		if( !CanBeCombined(other_item, false) )
 			return;
@@ -2547,6 +2554,9 @@ class ItemBase extends InventoryItem
 			PrintString("getting quantity, current:"+m_VarQuantity.ToString());
 		}
 		*/
+		UpdateWeight();
+		if (GetHierarchyParent())
+			GetHierarchyParent().UpdateWeight();
 		super.OnVariablesSynchronized();
 	}
 	
@@ -2636,7 +2646,7 @@ class ItemBase extends InventoryItem
 		this_mag.SetAmmoCount(result);
 	}*/
 	//----------------------------------------------------------------
-	int GetQuantityMax()
+	override int GetQuantityMax()
 	{
 		return ConfigGetInt("varQuantityMax");
 	}
@@ -2663,7 +2673,7 @@ class ItemBase extends InventoryItem
 		}
 	}
 
-	float GetQuantity()
+	override float GetQuantity()
 	{
 		return m_VarQuantity;
 	}
@@ -2802,6 +2812,43 @@ class ItemBase extends InventoryItem
 				break;
 			case WeightUpdateType.REMOVE:
 				m_Weight -= weightAdjustment;
+				break;
+			case WeightUpdateType.RECURSIVE_ADD:
+				{
+					if (weightAdjustment == 0) //First one in hierarchy
+					{
+						float itemWetness = GetWet() + 1;
+						float quantity = GetQuantity();
+
+						if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						{
+							weightAdjustment = itemWetness * quantity * m_ConfigWeight;
+						}
+						else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
+						{
+							weightAdjustment = itemWetness * m_ConfigWeight * (quantity/GetQuantityMax());
+						}
+						else //quantity determines weight of item without container (i.e. sardines in a can)
+						{
+							weightAdjustment = itemWetness * (quantity + m_ConfigWeight);
+						}
+					
+						weightAdjustment = Math.Round(weightAdjustment);
+					}
+					m_Weight += weightAdjustment;
+				
+					EntityAI hierarchyParent = GetHierarchyParent();
+					if (hierarchyParent && !hierarchyParent.IsInherited(PlayerBase))
+						hierarchyParent.UpdateWeight(WeightUpdateType.RECURSIVE_ADD, weightAdjustment);
+				}
+				break;
+			case WeightUpdateType.RECURSIVE_REMOVE:
+				{
+					m_Weight -= weightAdjustment;
+					EntityAI hp = GetHierarchyParent();
+					if (hp && !hp.IsInherited(PlayerBase))
+						hp.UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, weightAdjustment);
+				}
 				break;
 			default:
 				break;
@@ -2948,6 +2995,7 @@ class ItemBase extends InventoryItem
 		float max = ConfigGetFloat("varWetMax");
 		
 		m_VarWet = Math.Clamp(value, min, max);
+		//UpdateWeight();
 		SetVariableMask(VARIABLE_WET);
 	}
 	//----------------------------------------------------------------

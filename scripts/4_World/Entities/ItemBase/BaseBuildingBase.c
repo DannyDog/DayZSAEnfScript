@@ -33,6 +33,7 @@ class BaseBuildingBase extends ItemBase
 	
 	ref map<string, ref AreaDamageRegularDeferred> m_DamageTriggers;
 	ref array<string> m_HybridAttachments;
+	ref array<string> m_Mountables;
 	
 	// Constructor
 	void BaseBuildingBase() 
@@ -55,6 +56,13 @@ class BaseBuildingBase extends ItemBase
 			m_HybridAttachments = new array<string>;
 			ConfigGetTextArray("hybridAttachments",m_HybridAttachments);
 		}
+		if (ConfigIsExisting("mountables"))
+		{
+			m_Mountables = new array<string>;
+			ConfigGetTextArray("mountables",m_Mountables);
+		}
+		
+		ProcessInvulnerabilityCheck("disableBaseDamage");
 	}
 
 	// --- SYNCHRONIZATION
@@ -533,8 +541,11 @@ class BaseBuildingBase extends ItemBase
 		//synchronize
 		SynchronizeBaseState();
 		
-		if (GetGame().IsMultiplayer() && GetGame().IsServer())
+		//if (GetGame().IsMultiplayer() && GetGame().IsServer())
 			SetPartFromSyncData(constrution_part); // server part of sync, client will be synced from SetPartsFromSyncData
+		
+		//update visuals
+		UpdateVisuals();
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -563,6 +574,9 @@ class BaseBuildingBase extends ItemBase
 
 		// server part of sync, client will be synced from SetPartsFromSyncData
 		SetPartFromSyncData( constrution_part );
+		
+		//update visuals
+		UpdateVisuals();
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -598,6 +612,9 @@ class BaseBuildingBase extends ItemBase
 		
 		// server part of sync, client will be synced from SetPartsFromSyncData
 		SetPartFromSyncData( constrution_part );
+		
+		//update visuals
+		UpdateVisuals();
 		
 		//reset action sync data
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ResetActionSyncData, 100, false, this );
@@ -745,6 +762,10 @@ class BaseBuildingBase extends ItemBase
 	
 	void UpdateAttachmentPhysics( string slot_name, bool is_locked )
 	{
+		//checks for invalid appends; hotfix
+		if( m_Mountables.Find(slot_name) == -1 )
+			return;
+		//----------------------------------
 		string slot_name_mounted = slot_name + "_Mounted";
 		EntityAI attachment = FindAttachmentBySlotName( slot_name );
 		
@@ -1083,7 +1104,7 @@ class BaseBuildingBase extends ItemBase
 	
 	override int GetDamageSystemVersionChange()
 	{
-		return 110;
+		return 111;
 	}
 	
 	//================================================================

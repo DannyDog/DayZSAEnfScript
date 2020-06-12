@@ -554,7 +554,7 @@ class HumanInventory : GameInventory
 						//FindFreeLocationFor(item1,FindInventoryLocationType.ANY,dst);
 						SwapToPrevious = false;
 					}
-					if ( CanSwapEntities(item1,item2) )
+					if ( CanSwapEntitiesEx(item1,item2) )
 					{
 						SwapToPrevious = false;
 					}

@@ -51,6 +51,8 @@ class TentBase extends ItemBase
 		RegisterNetSyncVariableBool("m_IsToggle");
 		RegisterNetSyncVariableBool("m_IsDeploySound");
 		RegisterNetSyncVariableInt("m_OpeningMask");
+		
+		ProcessInvulnerabilityCheck("disableContainerDamage");
 	}
 	
 	void ~TentBase()

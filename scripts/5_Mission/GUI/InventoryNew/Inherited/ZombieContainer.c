@@ -833,7 +833,7 @@ class ZombieContainer: CollapsibleContainer
 					EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 					if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 					{
-						if( GameInventory.CanSwapEntities( item_in_hands, item ) )
+						if( GameInventory.CanSwapEntitiesEx( item_in_hands, item ) )
 						{
 							GetGame().GetPlayer().PredictiveSwapEntities( item_in_hands, item );
 							return true;

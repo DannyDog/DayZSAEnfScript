@@ -86,11 +86,13 @@ class HFSMBase<Class FSMStateBase, Class FSMEventBase, Class FSMActionBase, Clas
 	 * @brief	starts the state machine by entering the initial_state (using intial_event as argument to initial state's onEntry)
 	 * @param[in] e \p optional event for starting the machind
 	 **/
-	void Start (FSMEventBase initial_event = NULL)
+	void Start (FSMEventBase initial_event = NULL, bool useExistingState = false)
 	{
 		fsmDebugPrint("[hfsm] " + this.ToString() + "::Start(" + initial_event.ToString() + "), init_state=" + m_InitialState.ToString());
 
-		m_State = m_InitialState;
+		if (!useExistingState)
+			m_State = m_InitialState;
+		
 		m_State.OnEntry(initial_event);
 
 		if (m_HasCompletions)

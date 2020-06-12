@@ -206,6 +206,8 @@ class WeaponChambering_MultiMuzzle extends WeaponChambering_Cartridge
 				return;
 			}
 		}
+		
+		super.OnExit(e);
 	}
 }
 

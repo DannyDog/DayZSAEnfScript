@@ -912,12 +912,20 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 					textWidget.GetParent().Show(false);
 					break;
 				case QUANTITY_COUNT :
-					string qty_text = string.Format("%1/%2", Math.Round(current).ToString(), max.ToString());
-	
-					progressBar.Show(false);
-					textWidget.SetText(qty_text);
-					textWidget.Show(true);
-					textWidget.GetParent().Show(true);
+					if(max > 1 || current > 1)
+					{
+						string qty_text = string.Format("%1/%2", Math.Round(current).ToString(), max.ToString());
+						progressBar.Show(false);
+						textWidget.SetText(qty_text);
+						textWidget.Show(true);
+						textWidget.GetParent().Show(true);
+					}
+					else
+					{
+						progressBar.Show(false);
+						textWidget.Show(false);
+						textWidget.GetParent().Show(false);
+					}
 					break;
 				case QUANTITY_PROGRESS :
 					float qty_num = Math.Round( ( current / max ) * 100 );

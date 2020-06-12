@@ -161,12 +161,12 @@ class WeaponManager
 		if( !Class.CastTo(mag2, wpn.GetMagazine(muzzleIndex)) ) 
 			return false;
 		
-		if( GameInventory.CanSwapEntities( mag, mag2 ) )
+		if( GameInventory.CanSwapEntitiesEx( mag, mag2 ) )
 			return true;
 		
 		InventoryLocation il = new InventoryLocation;
 		
-		if( GameInventory.CanForceSwapEntities( mag, null, mag2, il ) )
+		if( GameInventory.CanForceSwapEntitiesEx( mag, null, mag2, il ) )
 			return true;
 		
 		return false;

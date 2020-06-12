@@ -447,7 +447,7 @@ class HandEventSwap extends HandEventBase
 	
 	override bool CanPerformEvent ()
 	{
-		if (GameInventory.CanForceSwapEntities(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
+		if (GameInventory.CanForceSwapEntitiesEx(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
 			return true;
 		
 		hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
@@ -493,7 +493,7 @@ class HandEventForceSwap extends HandEventSwap
 	override bool CanPerformEvent ()
 	{
 		Print("Warning - CanFSwap #5");
-		bool test2 = GameInventory.CanForceSwapEntities(m_Src.GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
+		bool test2 = GameInventory.CanForceSwapEntitiesEx(m_Src.GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
 		if (!test2)
 			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
 		return test2;

@@ -84,13 +84,25 @@ class WeaponUnjamming_Cartridge extends WeaponStateBase
 		
 		m_weapon.SetJammed(false);
 	
-		//DayZPlayer p = e.m_player;
 		int mi = m_weapon.GetCurrentMuzzle();
-		m_weapon.EffectBulletHide(mi);
-		m_weapon.SelectionBulletHide();
-		m_weapon.EjectCasing(mi);
-		//m_weapon.EjectCartridge(mi,dmg,type);
-		//ejectBulletAndStoreInMagazine(m_weapon, mi, NULL, p);
+		
+		if (m_weapon.IsChamberFiredOut(mi))
+		{
+			m_weapon.EjectCasing(mi);
+			m_weapon.EffectBulletHide(mi);
+			m_weapon.SelectionBulletHide();
+		}
+		
+		if (!m_weapon.IsChamberEmpty(mi))
+		{
+			DayZPlayer p = e.m_player;
+
+			m_weapon.CreateRound(mi);
+			ejectBulletAndStoreInMagazine(m_weapon, mi, null, p);
+			
+			m_weapon.EffectBulletHide(mi);
+			m_weapon.SelectionBulletHide();
+		}
 	}
 	override void OnExit (WeaponEventBase e)
 	{

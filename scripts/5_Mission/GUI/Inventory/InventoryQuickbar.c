@@ -246,7 +246,7 @@ class InventoryQuickbar extends InventoryGridController
 		}
 		else if( itemInHand )
 		{
-			if(!player.GetInventory().CanAddEntityToInventory(itemInHand) && !GameInventory.CanSwapEntities(item, itemInHand) )	
+			if(!player.GetInventory().CanAddEntityToInventory(itemInHand) && !GameInventory.CanSwapEntitiesEx(item, itemInHand) )	
 			{
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_I_BAD;
 			}

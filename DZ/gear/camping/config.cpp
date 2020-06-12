@@ -65,7 +65,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 600;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
@@ -82,14 +82,14 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.25;
+						damage = 0.3;
 					};
 				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 25;
+						damage = 8;
 					};
 				};
 			};
@@ -99,7 +99,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 500;
+						hitpoints = 600;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_packed.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_medium_packed.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_medium_packed_destruct.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}}};
 					};
@@ -116,14 +116,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -136,7 +136,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 500;
+						hitpoints = 600;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_medium_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\tent_medium_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\tent_medium_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\tent_medium_packed_destruct.rvmat"}}};
 					};
@@ -153,14 +153,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -173,7 +173,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 500;
+						hitpoints = 600;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
@@ -190,14 +190,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.5;
+								damage = 1.0;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 30;
+								damage = 10;
 							};
 						};
 					};
@@ -443,7 +443,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 1000;
+					hitpoints = 2000;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
@@ -460,14 +460,14 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.25;
+						damage = 0.3;
 					};
 				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 25;
+						damage = 8;
 					};
 				};
 			};
@@ -477,7 +477,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 1000;
+						hitpoints = 2000;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"dz\gear\camping\Data\tent_pristine_co.paa","DZ\gear\camping\data\bagpack.rvmat"}},{0.7,{"dz\gear\camping\data\tent_worn_co.paa","DZ\gear\camping\data\bagpack.rvmat"}},{0.5,{"dz\gear\camping\data\tent_damage_co.paa","DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.3,{"dz\gear\camping\data\tent_destruct_co.paa","DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.0,{"dz\gear\camping\data\tent_destruct_co.paa","DZ\gear\camping\data\bagpack_destruct.rvmat"}}};
 					};
@@ -494,14 +494,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -514,7 +514,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 1000;
+						hitpoints = 2000;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\bagpack.rvmat"}},{0.7,{"DZ\gear\camping\data\bagpack.rvmat"}},{0.5,{"DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\bagpack_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\bagpack_destruct.rvmat"}}};
 					};
@@ -531,14 +531,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -551,7 +551,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 1000;
+						hitpoints = 2000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden","hidden"}};
 					};
@@ -575,7 +575,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 50;
+								damage = 40;
 							};
 						};
 					};
@@ -586,7 +586,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 1000;
+						hitpoints = 2000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
@@ -610,7 +610,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 50;
+								damage = 40;
 							};
 						};
 					};
@@ -956,7 +956,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 850;
+					hitpoints = 1700;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
@@ -973,14 +973,14 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.25;
+						damage = 0.3;
 					};
 				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 25;
+						damage = 8;
 					};
 				};
 			};
@@ -990,7 +990,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 850;
+						hitpoints = 1700;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}}};
 					};
@@ -1007,14 +1007,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -1027,7 +1027,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 850;
+						hitpoints = 1700;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat"}}};
 					};
@@ -1044,14 +1044,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -1064,7 +1064,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 850;
+						hitpoints = 1700;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
@@ -1088,7 +1088,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 50;
+								damage = 10;
 							};
 						};
 					};
@@ -1299,7 +1299,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 650;
+					hitpoints = 1400;
 					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
 				};
 			};
@@ -1316,14 +1316,14 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.25;
+						damage = 0.3;
 					};
 				};
 				class FragGrenade
 				{
 					class Health
 					{
-						damage = 25;
+						damage = 8;
 					};
 				};
 			};
@@ -1333,7 +1333,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 650;
+						hitpoints = 1400;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"dz\gear\camping\Data\party_tent_bag.rvmat","dz\gear\camping\Data\tent_pristine_co.paa"}},{0.7,{"dz\gear\camping\Data\party_tent_bag.rvmat","dz\gear\camping\data\tent_worn_co.paa"}},{0.5,{"dz\gear\camping\Data\party_tent_bag_damage.rvmat","dz\gear\camping\data\tent_damage_co.paa"}},{0.3,{"dz\gear\camping\Data\party_tent_bag_damage.rvmat","dz\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"dz\gear\camping\Data\party_tent_bag_destruct.rvmat","dz\gear\camping\data\tent_destruct_co.paa"}}};
 					};
@@ -1350,14 +1350,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -1370,7 +1370,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 650;
+						hitpoints = 1400;
 						transferToGlobalCoef = 0.5;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\party_tent_bag.rvmat"}},{0.7,{"DZ\gear\camping\data\party_tent_bag.rvmat"}},{0.5,{"DZ\gear\camping\data\party_tent_bag_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\party_tent_bag_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\party_tent_bag_destruct.rvmat"}}};
 					};
@@ -1387,14 +1387,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.25;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 25;
+								damage = 8;
 							};
 						};
 					};
@@ -1407,7 +1407,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 650;
+						hitpoints = 1400;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
 					};
@@ -1424,14 +1424,14 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 5.0;
+								damage = 0.3;
 							};
 						};
 						class FragGrenade
 						{
 							class Health
 							{
-								damage = 50;
+								damage = 8;
 							};
 						};
 					};
@@ -1491,7 +1491,7 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_camonet0";
 				description = "";
-				attachmentSlots[] = {"CamoNet"};
+				attachmentSlots[] = {"CamoNet","Lights"};
 				icon = "cat_camonet";
 				view_index = 1;
 			};
@@ -2347,6 +2347,7 @@ class CfgVehicles
 		createProxyPhysicsOnInit = "false";
 		createdProxiesOnInit[] = {"Deployed"};
 		hybridAttachments[] = {"Material_WoodenLogs","Material_MetalWire","Wall_Barbedwire_1","Wall_Barbedwire_2"};
+		mountables[] = {"Wall_Barbedwire_1","Wall_Barbedwire_2"};
 		rotationFlags = 2;
 		class DamageSystem
 		{
@@ -2441,7 +2442,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 10000;
+						hitpoints = 12000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
@@ -2466,7 +2467,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2481,7 +2482,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -2504,7 +2505,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 15500;
+						hitpoints = 16000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
@@ -2529,7 +2530,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2544,7 +2545,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -2567,7 +2568,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 18000;
+						hitpoints = 21000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
 					};
@@ -2592,7 +2593,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2607,7 +2608,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 60;
+								damage = 40;
 							};
 							class Blood
 							{
@@ -2630,7 +2631,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 17500;
+						hitpoints = 18000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
@@ -2655,7 +2656,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2670,7 +2671,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -2846,7 +2847,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2861,7 +2862,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -2906,7 +2907,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -2921,7 +2922,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 60;
+								damage = 40;
 							};
 							class Blood
 							{
@@ -3339,6 +3340,7 @@ class CfgVehicles
 		physLayer = "item_large";
 		createProxyPhysicsOnInit = "false";
 		createdProxiesOnInit[] = {"Deployed"};
+		mountables[] = {"Level_1_Wall_1_Barbedwire_1","Level_1_Wall_1_Barbedwire_2","Level_1_Wall_2_Barbedwire_1","Level_1_Wall_2_Barbedwire_2","Level_1_Wall_3_Barbedwire_1","Level_1_Wall_3_Barbedwire_2"};
 		rotationFlags = 2;
 		class DamageSystem
 		{
@@ -3429,6 +3431,66 @@ class CfgVehicles
 					componentNames[] = {"body"};
 					fatalInjuryCoef = -1;
 				};
+				class Material_L1_WoodenLogs
+				{
+					class Health
+					{
+						hitpoints = 500;
+						transferToGlobalCoef = 0;
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}}};
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class Melee
+						{
+							class Health
+							{
+								damage = 0.65;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+						class FragGrenade
+						{
+							class Health
+							{
+								damage = 50;
+							};
+							class Blood
+							{
+								damage = 0;
+							};
+							class Shock
+							{
+								damage = 0;
+							};
+						};
+					};
+					componentNames[] = {"Material_L1_WoodenLogs"};
+					inventorySlots[] = {"Material_L1_WoodenLogs"};
+					fatalInjuryCoef = -1;
+				};
 				class Level_1_Stairs
 				{
 					class Health
@@ -3458,7 +3520,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -3473,7 +3535,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -3492,7 +3554,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 10000;
+						hitpoints = 12000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
@@ -3517,7 +3579,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -3532,7 +3594,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -3555,7 +3617,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 15500;
+						hitpoints = 16000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
@@ -3580,7 +3642,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -3595,7 +3657,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 70;
+								damage = 50;
 							};
 							class Blood
 							{
@@ -3618,7 +3680,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 18000;
+						hitpoints = 21000;
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
 					};
@@ -3643,7 +3705,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -3658,7 +3720,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 60;
+								damage = 40;
 							};
 							class Blood
 							{
@@ -3810,6 +3872,11 @@ class CfgVehicles
 					componentNames[] = {"level_1_wall_3_barbedwire_2","level_1_wall_3_barbedwire_2_mounted"};
 					inventorySlots[] = {"Level_1_Wall_3_Barbedwire_2"};
 				};
+				class Material_L2_WoodenLogs: Material_L1_WoodenLogs
+				{
+					componentNames[] = {"Material_L2_WoodenLogs"};
+					inventorySlots[] = {"Material_L2_WoodenLogs"};
+				};
 				class Level_2_Stairs: Level_1_Stairs
 				{
 					componentNames[] = {"level_2_stairs"};
@@ -3885,6 +3952,11 @@ class CfgVehicles
 				class Level_2_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
 					componentNames[] = {"level_2_wall_3_metal_up"};
+				};
+				class Material_L3_WoodenLogs: Material_L1_WoodenLogs
+				{
+					componentNames[] = {"Material_L3_WoodenLogs"};
+					inventorySlots[] = {"Material_L3_WoodenLogs"};
 				};
 				class Level_3_Wall_1_Base_Down: Level_1_Wall_1_Base_Down
 				{
@@ -3987,7 +4059,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 0.75;
+								damage = 0.65;
 							};
 							class Blood
 							{
@@ -4002,7 +4074,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 60;
+								damage = 40;
 							};
 							class Blood
 							{
@@ -6185,7 +6257,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 1500;
+					hitpoints = 600;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\sea_chest.rvmat"}},{0.7,{"DZ\gear\camping\data\sea_chest.rvmat"}},{0.5,{"DZ\gear\camping\data\sea_chest_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\sea_chest_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\sea_chest_destruct.rvmat"}}};
 				};
 			};
@@ -6195,15 +6267,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 				};
 			};
@@ -6263,7 +6335,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 1000;
+					hitpoints = 400;
 					healthLevels[] = {{1.0,{"DZ\gear\camping\data\wooden_case.rvmat"}},{0.7,{"DZ\gear\camping\data\wooden_case.rvmat"}},{0.5,{"DZ\gear\camping\data\wooden_case_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\wooden_case_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\wooden_case_destruct.rvmat"}}};
 				};
 			};
@@ -6273,15 +6345,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Blood
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 					class Shock
 					{
-						damage = 35.0;
+						damage = 8.0;
 					};
 				};
 			};

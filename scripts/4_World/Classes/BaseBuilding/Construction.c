@@ -893,19 +893,48 @@ class Construction
 								
 								//unlock slot
 								GetParent().GetInventory().SetSlotLock( inventory_location.GetSlot() , false );
+									
+								EntityAI parent = player;
+								ItemBase item = ItemBase.Cast(inventory_location.GetItem());
+								
+								
+								int quantity_max = item.ConfigGetFloat("varStackMax");
+								if( quantity_max < 1)
+									quantity_max = item.GetQuantityMax();
+								
+								//if (!parent)
+									parent = GetParent();
+								InventoryLocation dst = new InventoryLocation;
+								vector mat[4];
+								item.GetTransform(mat);
+								dst.SetGround(item,mat);
+
+								for( int k = item.GetQuantity(); k > quantity_max;  )
+								{
+									Object o = parent.GetInventory().LocationCreateEntity( dst, item.GetType(), ECE_PLACE_ON_SURFACE, RF_DEFAULT );
+									ItemBase new_item = ItemBase.Cast( o );
+									
+									if( new_item )
+									{			
+										MiscGameplayFunctions.TransferItemProperties( item, new_item );
+										item.AddQuantity( -quantity_max );
+										new_item.SetQuantity( quantity_max );
+									}
+									k -= quantity_max;
+								}
+								
 								
 								//drop
 								if ( GetGame().IsMultiplayer() )
 								{
-									InventoryLocation dst = new InventoryLocation;
 									if (player)
 									{
-										GameInventory.SetGroundPosByOwner( player, inventory_location.GetItem(), dst );
+										//GameInventory.SetGroundPosByOwner( player, inventory_location.GetItem(), dst );
 										player.ServerTakeToDst( inventory_location, dst );
 									}
 									else
 									{
-										GameInventory.SetGroundPosByOwner( GetParent(), inventory_location.GetItem(), dst );
+										//GameInventory.SetGroundPosByOwner( GetParent(), inventory_location.GetItem(), dst );
 										GetParent().ServerTakeToDst( inventory_location, dst );
 									}
 									

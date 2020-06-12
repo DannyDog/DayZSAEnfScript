@@ -673,7 +673,7 @@ class PlayerContainer: CollapsibleContainer
 				if (player.GetInventory().CanAddEntityToInventory( item ) && item.GetInventory().CanRemoveEntity())
 				{
 					if( item.ConfigGetFloat("varStackMax") )
-						item.SplitIntoStackMaxClient( player, -1, );
+						item.SplitIntoStackMaxClient( player, -1 );
 					else
 						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
 				}
@@ -901,7 +901,7 @@ class PlayerContainer: CollapsibleContainer
 					EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 					if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 					{
-						if( GameInventory.CanSwapEntities( item_in_hands, item ) )
+						if( GameInventory.CanSwapEntitiesEx( item_in_hands, item ) )
 						{
 							GetGame().GetPlayer().PredictiveSwapEntities( item_in_hands, item );
 							return true;
@@ -1228,7 +1228,7 @@ class PlayerContainer: CollapsibleContainer
 		
 		if( receiver_item && !is_reserved )
 		{
-			if( GameInventory.CanSwapEntities( receiver_item, item ) )
+			if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -1266,7 +1266,7 @@ class PlayerContainer: CollapsibleContainer
 				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
 			}
-			else if ( receiver_item && GameInventory.CanSwapEntities( receiver_item, item ) )
+			else if ( receiver_item && GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 				ItemManager.GetInstance().HideDropzones();
@@ -1318,7 +1318,7 @@ class PlayerContainer: CollapsibleContainer
 		}
 		if( receiver_item && !is_reserved )
 		{
-			if( GameInventory.CanSwapEntities( receiver_item, item ) )
+			if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
 

@@ -104,7 +104,7 @@ class AttachmentCategoriesRow: ClosableContainer
 							prev_item.CombineItemsClient( selected_item, true );
 							return true;
 						}
-						else if( stack_max == 0 && GameInventory.CanSwapEntities( prev_item, selected_item ) )
+						else if( stack_max == 0 && GameInventory.CanSwapEntitiesEx( prev_item, selected_item ) )
 						{
 							player.PredictiveSwapEntities( selected_item, prev_item );
 							return true;
@@ -124,8 +124,9 @@ class AttachmentCategoriesRow: ClosableContainer
 						InventoryLocation inv_loc_dst = new InventoryLocation;
 						selected_item.GetInventory().GetCurrentInventoryLocation( inv_loc_src );
 						m_Entity.GetInventory().FindFreeLocationFor( selected_item, FindInventoryLocationType.ATTACHMENT, inv_loc_dst );
-						
-						if( selected_item.GetInventory().CanRemoveEntity() && inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
+						int dst_slot = inv_loc_dst.GetSlot();
+
+						if(dst_slot == selected_slot && selected_item.GetInventory().CanRemoveEntity() && inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
 						{
 							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc_dst.GetSlot() );
 							quantity = selected_item.GetQuantity();
@@ -151,7 +152,7 @@ class AttachmentCategoriesRow: ClosableContainer
 				EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
 				if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 				{
-					if( GameInventory.CanSwapEntities( item_in_hands, prev_item ) )
+					if( GameInventory.CanSwapEntitiesEx( item_in_hands, prev_item ) )
 					{
 						player.PredictiveSwapEntities( item_in_hands, prev_item );
 						return true;
@@ -235,7 +236,7 @@ class AttachmentCategoriesRow: ClosableContainer
 							prev_item.CombineItemsClient( selected_item, true );
 							return false;
 						}
-						else if( stack_max == 0 && GameInventory.CanSwapEntities( prev_item, selected_item ) )
+						else if( stack_max == 0 && GameInventory.CanSwapEntitiesEx( prev_item, selected_item ) )
 						{
 							player.PredictiveSwapEntities( selected_item, prev_item );
 							return false;
@@ -573,7 +574,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			{
 				( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 			}
-			else if( GameInventory.CanSwapEntities( receiver_item, item ) )
+			else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				if( !receiver_item.GetInventory().CanRemoveEntity() )
 					return;
@@ -612,7 +613,7 @@ class AttachmentCategoriesRow: ClosableContainer
 				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
 			}
 		}
-		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )
+		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) /*|| player.GetHumanInventory().HasEntityInHands( item )*/ )
 		{
 			SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
 		}
@@ -682,7 +683,7 @@ class AttachmentCategoriesRow: ClosableContainer
 				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				ColorManager.GetInstance().SetColor( w, ColorManager.COMBINE_COLOR );
 			}
-			else if( stack_max == 0 && GameInventory.CanSwapEntities( receiver_item, iw.GetItem() ) )
+			else if( stack_max == 0 && GameInventory.CanSwapEntitiesEx( receiver_item, iw.GetItem() ) )
 			{
 				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
