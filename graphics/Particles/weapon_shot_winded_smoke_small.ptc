@@ -11,7 +11,7 @@ EffectDef {
    Angles 0 0 -90
    LocalTransform 0
    Material "{68CF090B6BE4ED52}Graphics/Particles/materials/smoke/steam_random_weapon_01.emat"
-   SizeMultiplier 3
+   SizeMultiplier 1
    SizeRND 1
    RandomRotDir 1
    RotMultiplier 20
@@ -23,8 +23,8 @@ EffectDef {
    AirResistanceRND 0
    Wind 1
    RandomFrame 1
-   LifeTime 5
-   LifeTimeRND 5
+   LifeTime 1
+   LifeTimeRND 1
    Color {
     0 0.2744 0.2622 0.2683 1 0.2378 0.2256 0.2256
    }

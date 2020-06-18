@@ -413,8 +413,7 @@ class Environment
 		{
 			temperature += Math.AbsFloat( temperature * GameConstants.ENVIRO_TEMPERATURE_INSIDE_COEF );
 		}
-		
-		if( IsUnderRoof() )
+		else if( IsUnderRoof() )
 		{
 			temperature += Math.AbsFloat( temperature * GameConstants.ENVIRO_TEMPERATURE_UNDERROOF_COEF );
 		}

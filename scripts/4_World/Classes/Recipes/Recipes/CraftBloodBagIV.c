@@ -66,6 +66,14 @@ class CraftBloodBagIV extends RecipeBase
 		Class.CastTo(ingredient2, ingredients[1]);
 		ItemBase result;
 		Class.CastTo(result, results.Get(0));
+
+		BloodContainerBase bloodBag;
+
+		if ( Class.CastTo( bloodBag, ingredient2) )
+		{
+			if ( bloodBag.GetBloodTypeVisible() )
+				BloodContainerBase.Cast(result).SetBloodTypeVisible( true );
+		}
 		
 		MiscGameplayFunctions.TransferItemProperties(ingredient2,result, true, true, false, true);
 	}

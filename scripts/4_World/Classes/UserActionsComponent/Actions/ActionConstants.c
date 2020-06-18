@@ -30,6 +30,7 @@ class UATimeSpent
 	const float DEFAULT_SORT = 2;
 	const float DEFAULT_CONSTRUCT = 5;
 	const float DEFAULT_DECONSTRUCT = 15;
+	const float DEFAULT_REPAIR_CYCLE = 5;
 	const float DEFAULT_DESTROY = 60;
 	const float DEFAULT_PLACE = 0;
 	const float DEFAULT_DEPLOY = 5;
@@ -51,6 +52,16 @@ class UATimeSpent
 	const float UNRESTRAIN = 20;
 	const float SHAVE = 12.75;
 	const float SKIN = 10;
+	
+	const float BASEBUILDING_CONSTRUCT_FAST = 5;
+	const float BASEBUILDING_CONSTRUCT_MEDIUM = 7.5;
+	const float BASEBUILDING_CONSTRUCT_SLOW = 10;
+	const float BASEBUILDING_DECONSTRUCT_FAST = 10;
+	const float BASEBUILDING_DECONSTRUCT_MEDIUM = 12;
+	const float BASEBUILDING_DECONSTRUCT_SLOW = 15;
+	const float BASEBUILDING_REPAIR_FAST = 3;
+	const float BASEBUILDING_REPAIR_MEDIUM = 5;
+	const float BASEBUILDING_REPAIR_SLOW = 10;
 
 	const float DRINK_POND = 2.0;
 	const float DRINK_WELL = 3.5;
@@ -105,8 +116,9 @@ class UASoftSkillsWeight
  */
 class UADamageApplied
 {
-	const float BUILD 		= 10;
-	const float DISMANTLE 	= 50;
+	const float BUILD 		= 5;
+	const float DISMANTLE 	= 40;
+	const float REPAIR 		= 3;
 	const float DESTROY 	= 50;
 	const float SAW_LOCK 	= 34;
 	const float SKINNING 	= 1;

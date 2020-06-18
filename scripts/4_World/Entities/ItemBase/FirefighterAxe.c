@@ -14,6 +14,9 @@ class FirefighterAxe extends ToolBase
 		super.SetActions();
 		AddAction(ActionMineTree);
 		AddAction(ActionMineBush);
+		//AddAction(ActionRepairPart);
+		AddAction(ActionDismantlePart);
+		//AddAction(ActionBuildPart);
 		//AddAction(ActionDestroyPart);
 		//AddAction(ActionSawPlanks);
 		AddAction(ActionUnrestrainTarget);

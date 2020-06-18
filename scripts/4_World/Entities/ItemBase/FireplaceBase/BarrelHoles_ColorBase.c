@@ -25,6 +25,8 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 		
 		ProcessInvulnerabilityCheck("disableContainerDamage");
+		
+		m_LightDistance = 50;
 	}
 	
 	override int GetDamageSystemVersionChange()
@@ -103,6 +105,9 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
 		ItemBase item = ItemBase.Cast( attachment );
+		
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
 
 		//direct cooking slots
 		if ( !IsOpen() )
@@ -282,11 +287,12 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//cargo item into/outo this.Cargo
 	override bool CanReceiveItemIntoCargo( EntityAI cargo )
 	{
-		if ( !IsOpen() || GetHierarchyParent() )
-		{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
 			return false;
-		}
-		
+
+		if ( !IsOpen() || GetHierarchyParent() )
+			return false;
+
 		return super.CanReceiveItemIntoCargo( cargo );
 	}
 

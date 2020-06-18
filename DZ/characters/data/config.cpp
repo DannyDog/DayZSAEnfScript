@@ -863,12 +863,12 @@ class CfgVehicles
 					fatalInjuryCoef = -1;
 					inventorySlots[] = {"Gloves"};
 				};
-				class Legs
+				class LeftLeg
 				{
 					class Health
 					{
-						hitpoints = 30;
-						transferToGlobalCoef = 0.7;
+						hitpoints = 100;
+						transferToGlobalCoef = 0.33;
 					};
 					class Blood
 					{
@@ -899,8 +899,60 @@ class CfgVehicles
 						};
 					};
 					fatalInjuryCoef = -1;
-					componentNames[] = {"dmgZone_leftLeg","dmgZone_rightLeg","dmgZone_leftFoot","dmgZone_rightFoot"};
-					inventorySlots[] = {"Legs","Feet"};
+					componentNames[] = {"dmgZone_leftLeg"};
+					inventorySlots[] = {"Legs"};
+				};
+				class RightLeg: LeftLeg
+				{
+					componentNames[] = {"dmgZone_rightLeg"};
+					inventorySlots[] = {"Legs"};
+				};
+				class LeftFoot
+				{
+					class Health
+					{
+						hitpoints = 100;
+						transferToGlobalCoef = 0.1;
+					};
+					class Blood
+					{
+						hitpoints = 100;
+						transferToGlobalCoef = 0;
+					};
+					class Shock
+					{
+						hitpoints = 0;
+						transferToGlobalCoef = 1;
+					};
+					class ArmorType
+					{
+						class Projectile
+						{
+							class Health
+							{
+								damage = 1;
+							};
+							class Blood
+							{
+								damage = 1;
+							};
+							class Shock
+							{
+								damage = 0.1;
+							};
+						};
+					};
+					fatalInjuryCoef = -1;
+					componentNames[] = {"dmgZone_leftFoot"};
+					inventorySlots[] = {"Feet"};
+					transferToZonesNames[] = {"LeftLeg"};
+					transferToZonesCoefs[] = {0.2};
+				};
+				class RightFoot: LeftFoot
+				{
+					componentNames[] = {"dmgZone_rightFoot"};
+					transferToZonesNames[] = {"RightLeg"};
+					transferToZonesCoefs[] = {0.2};
 				};
 			};
 		};

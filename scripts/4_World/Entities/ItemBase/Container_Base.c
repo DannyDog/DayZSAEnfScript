@@ -36,6 +36,23 @@ class DeployableContainer_Base extends Container_Base
 		AddAction(ActionPlaceObject);
 	}
 	
+
+	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanReceiveAttachment(attachment, slotId);
+	}
+
+	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+
+		return super.CanReceiveItemIntoCargo( cargo );
+	}
+	
 	/*
 	override bool CanReceiveItemIntoCargo (EntityAI cargo)
 	{

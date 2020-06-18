@@ -195,7 +195,8 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 		bool b1 = action_data.m_MainItem.ConfigGetString("physLayer") == "item_large";
 		action_data.m_MainItem.m_ThrowItemOnDrop = b1; //hack, should be redundant anyway
 		
-		if (!EntityAI.Cast(action_data.m_Target.GetObject()).IsHeavyBehaviour())
+		EntityAI object = EntityAI.Cast(action_data.m_Target.GetObject());
+		if (!object || !object.IsHeavyBehaviour())
 		{
 			action_data.m_Player.GetActionManager().Interrupt();
 		}
@@ -250,6 +251,7 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 	void PerformSwap( ActionData action_data )
 	{
 		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
-		action_data.m_Player.TakeEntityToHandsImpl(InventoryMode.PREDICTIVE,ntarget);
+		if (action_data.m_Player)
+			action_data.m_Player.TakeEntityToHandsImpl(InventoryMode.PREDICTIVE,ntarget);
 	}
 }

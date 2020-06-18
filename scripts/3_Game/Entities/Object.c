@@ -793,6 +793,11 @@ class Object extends IEntity
 	{
 		SetHealth("", "", health);
 	}
+	//! Sets health relative to its maximum
+	void SetHealth01(string zoneName, string healthType, float coef)
+	{
+		SetHealth(zoneName,healthType,(GetMaxHealth(zoneName,healthType)*coef));
+	}
 	//! Sets health to its maximum (zone or global)
 	void SetHealthMax(string zoneName = "", string healthType = "")
 	{
@@ -856,6 +861,20 @@ class Object extends IEntity
 	@param zoneName if empty string, returns state of global health level
 	*/
 	proto native int GetHealthLevel(string zone = "");
+	
+	/**
+  	\brief Returns global number of health levels specified in object's config class parameter healthLevels
+	     (range is usually 0..4, 0 = pristine, 1 = worn, 2 = damaged, 3 = badly damaged, 4 = ruined but can be changed).
+	@param zoneName if empty string, returns number of global health levels
+	*/
+	proto native int GetNumberOfHealthLevels(string zone = "");
+	
+	/**
+  	\brief Returns cutoff value for health level specified in object's config class parameter healthLevels
+	@param zoneName if empty string, returns number of global health levels
+	@param healthLevel the health level to get the value from
+	*/
+	proto native float GetHealthLevelValue(int healthLevel, string zone = "");
 	
 	/**
   \brief Enable or disable object to receive damage

@@ -78,6 +78,11 @@ class TentBase extends ItemBase
 		return true;
 	}
 	
+	override bool CanBeRepairedByCrafting()
+	{
+		return false;
+	}
+	
 	override int GetMeleeTargetType()
 	{
 		return EMeleeTargetType.NONALIGNABLE;
@@ -230,12 +235,13 @@ class TentBase extends ItemBase
 	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
+		//Print("EEHealthLevelChanged");
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
 		
 		if(m_FixDamageSystemInit)
 			return;
 		
-		if ( zone == "" && newLevel == GameConstants.STATE_RUINED && GetGame().IsServer() )
+		if ( zone == "" && GetState() == PITCHED && newLevel == GameConstants.STATE_RUINED && GetGame().IsServer() )
 			MiscGameplayFunctions.DropAllItemsInInventoryInBounds(this, m_HalfExtents);
 		
 		if( zone != "Body" && zone != "Inventory" && zone != "" && newLevel == GameConstants.STATE_RUINED )
@@ -311,6 +317,11 @@ class TentBase extends ItemBase
 	bool ConditionOutOfHands( EntityAI player )
 	{
 		return CanBeManipulated();
+	}
+	
+	override bool CanBeRepairedToPristine()
+	{
+		return true;
 	}
 	
 	void RefreshAttachements()
@@ -949,5 +960,21 @@ class TentBase extends ItemBase
 	override int GetDamageSystemVersionChange()
 	{
 		return 110;
+	}
+
+	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanReceiveItemIntoCargo( cargo );
+	}
+	
+	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanReceiveAttachment(attachment, slotId);
 	}
 };

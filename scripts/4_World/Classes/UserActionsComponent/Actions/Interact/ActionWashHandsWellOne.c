@@ -34,7 +34,10 @@ class ActionWashHandsWellOne extends ActionInteractLoopBase
 
 	override void OnEndServer( ActionData action_data )
 	{
-		PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
-		module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, false );
+		if (action_data.m_State == UA_FINISHED)
+		{
+			PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
+			module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, false );
+		}
 	}	
 };

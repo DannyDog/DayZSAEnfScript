@@ -6,15 +6,17 @@ class WeaponEjectCasing extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected fired out casing");
-		int mi = m_weapon.GetCurrentMuzzle();
-		if(m_weapon.IsChamberFiredOut(mi))
+		if (e)
 		{
-			m_weapon.EjectCasing(mi);
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected fired out casing");
+			int mi = m_weapon.GetCurrentMuzzle();
+			if(m_weapon.IsChamberFiredOut(mi))
+			{
+				m_weapon.EjectCasing(mi);
+			}
+			m_weapon.EffectBulletHide(mi);
+			m_weapon.SelectionBulletHide();
 		}
-		m_weapon.EffectBulletHide(mi);
-		m_weapon.SelectionBulletHide();
 	}
 };
 
@@ -25,15 +27,17 @@ class WeaponEjectCasingMultiMuzzle extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected fired out casing multi muzzle");
-		for( int i = 0; i < m_weapon.GetMuzzleCount(); i++ )
+		if (e)
 		{
-			if(m_weapon.IsChamberFiredOut(i))
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected fired out casing multi muzzle");
+			for( int i = 0; i < m_weapon.GetMuzzleCount(); i++ )
 			{
-				m_weapon.EjectCasing(i);
-				m_weapon.EffectBulletHide(i);
-				m_weapon.HideBullet(i);
+				if(m_weapon.IsChamberFiredOut(i))
+				{
+					m_weapon.EjectCasing(i);
+					m_weapon.EffectBulletHide(i);
+					m_weapon.HideBullet(i);
+				}
 			}
 		}
 	}
@@ -57,36 +61,37 @@ class WeaponEjectAllMuzzles extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected bullets from all muzzles");
-		for( int i = 0; i < m_weapon.GetMuzzleCount(); i++ )
+		if (e)
 		{
-			if(m_weapon.IsChamberFiredOut(i))
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected bullets from all muzzles");
+			for( int i = 0; i < m_weapon.GetMuzzleCount(); i++ )
 			{
-				m_weapon.EjectCasing(i);
-				m_weapon.EffectBulletHide(i);
-				m_weapon.HideBullet(i);
-				continue;
-			}
-			
-			if(!m_weapon.IsChamberEmpty(i))
-			{
-				DayZPlayer p = e.m_player;
-				if(m_dstMagazine && m_dstMagazine.GetAmmoCount() < m_dstMagazine.GetAmmoMax() )
+				if(m_weapon.IsChamberFiredOut(i))
 				{
-					m_weapon.CreateRound(i);
-					ejectBulletAndStoreInMagazine(m_weapon,i,m_dstMagazine,p);
+					m_weapon.EjectCasing(i);
+					m_weapon.EffectBulletHide(i);
+					m_weapon.HideBullet(i);
+					continue;
 				}
-				else
+				
+				if(!m_weapon.IsChamberEmpty(i))
 				{
-					m_weapon.CreateRound(i);
-					ejectBulletAndStoreInMagazine(m_weapon,i,null,p);
+					DayZPlayer p = e.m_player;
+					if(m_dstMagazine && m_dstMagazine.GetAmmoCount() < m_dstMagazine.GetAmmoMax() )
+					{
+						m_weapon.CreateRound(i);
+						ejectBulletAndStoreInMagazine(m_weapon,i,m_dstMagazine,p);
+					}
+					else
+					{
+						m_weapon.CreateRound(i);
+						ejectBulletAndStoreInMagazine(m_weapon,i,null,p);
+					}
+					m_weapon.EffectBulletHide(i);
+					m_weapon.HideBullet(i);
 				}
-				m_weapon.EffectBulletHide(i);
-				m_weapon.HideBullet(i);
 			}
 		}
-	
 		//m_weapon.SelectionBulletHide();
 	}
 	
@@ -102,9 +107,11 @@ class WeaponEjectCasingAndChamberFromAttMag extends WeaponEjectCasing
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		int mi = m_weapon.GetCurrentMuzzle();
-		pushToChamberFromAttachedMagazine(m_weapon, mi);
+		if (e)
+		{
+			int mi = m_weapon.GetCurrentMuzzle();
+			pushToChamberFromAttachedMagazine(m_weapon, mi);
+		}
 	}
 	override void OnExit (WeaponEventBase e)
 	{

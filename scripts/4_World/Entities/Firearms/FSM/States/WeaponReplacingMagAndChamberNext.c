@@ -49,8 +49,8 @@ class DetachOldMagazine extends WeaponStateBase
 					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot remove old mag from wpn");
 			}
 		}
-		else
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - no magazines configured for replace (m_old=m_oldSrc=NULL)");
+		//else
+		//	Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - no magazines configured for replace (m_old=m_oldSrc=NULL)");
 				
 		m_weapon.HideMagazine();
 		m_oldMagazine = NULL;
@@ -109,22 +109,26 @@ class SwapOldAndNewMagazine extends WeaponStateBase
 	{
 		super.OnEntry(e);
 		
-		if (!m_newMagazine || !m_newDst || !m_newDst.IsValid())
+		if( e )
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, error - m_newMagazine(" + m_newMagazine + ") or destination(" + InventoryLocation + ") is not set ");
-		}
-		else
-		{
-			m_weapon.ShowMagazine();
-			InventoryLocation lhand = new InventoryLocation;
-			m_newMagazine.GetInventory().GetCurrentInventoryLocation(lhand);
-			
-			if (GameInventory.LocationSyncMoveEntity(lhand, m_newDst))
+		
+			if (!m_newMagazine || !m_newDst || !m_newDst.IsValid())
 			{
-				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, ok - new magazine removed from inv (LHand->Att)");
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, error - m_newMagazine(" + m_newMagazine + ") or destination(" + InventoryLocation + ") is not set ");
 			}
 			else
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, error - cannot remove new mag from LHand");
+			{
+				m_weapon.ShowMagazine();
+				InventoryLocation lhand = new InventoryLocation;
+				m_newMagazine.GetInventory().GetCurrentInventoryLocation(lhand);
+			
+				if (GameInventory.LocationSyncMoveEntity(lhand, m_newDst))
+				{
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, ok - new magazine removed from inv (LHand->Att)");
+				}
+				else
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " SwapOldAndNewMagazine, error - cannot remove new mag from LHand");
+			}
 		}
 	}
 	
@@ -208,29 +212,31 @@ class AttachNewMagazine extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		if (m_newMagazine && m_newDst)
+		if (e)
 		{
-			InventoryLocation il = new InventoryLocation;
-			if (m_newMagazine.GetInventory().GetCurrentInventoryLocation(il))
+			if (m_newMagazine && m_newDst)
 			{
-				InventoryLocation lhand = new InventoryLocation;
-				lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
-				if (GameInventory.LocationSyncMoveEntity(il, m_newDst))
+				InventoryLocation il = new InventoryLocation;
+				if (m_newMagazine.GetInventory().GetCurrentInventoryLocation(il))
 				{
-					m_weapon.ShowMagazine();
-					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, ok - attached new magazine (LHand->dst)");
+					InventoryLocation lhand = new InventoryLocation;
+					lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
+					if (GameInventory.LocationSyncMoveEntity(il, m_newDst))
+					{
+						m_weapon.ShowMagazine();
+						wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, ok - attached new magazine (LHand->dst)");
+					}
+					else
+					{
+						wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - cannot attach new magazine!");
+					}
 				}
 				else
-				{
-					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - cannot attach new magazine!");
-				}
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - cannot get curr location");
 			}
 			else
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - cannot get curr location");
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - no magazines configured for replace (m_new=NULL)");
 		}
-		else
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " AttachNewMagazine, error - no magazines configured for replace (m_new=NULL)");
 	}
 
 	override void OnAbort (WeaponEventBase e)
@@ -371,58 +377,97 @@ class WeaponReplacingMagAndChamberNext extends WeaponStateBase
 	
 	override void OnEntry (WeaponEventBase e)
 	{
-		int mi = m_weapon.GetCurrentMuzzle();
-		m_oldMagazine = m_weapon.GetMagazine(mi);
-		m_newMagazine = e.m_magazine;
-
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext, m_oldMagazine=" + m_oldMagazine + " m_newMagazine=" + m_newMagazine);
-
-		if (m_oldMagazine && m_newMagazine)
+		if(e)
 		{
-			m_newDst = new InventoryLocation;
+			int mi = m_weapon.GetCurrentMuzzle();
+			m_oldMagazine = m_weapon.GetMagazine(mi);
+			m_newMagazine = e.m_magazine;
+
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext, m_oldMagazine=" + m_oldMagazine + " m_newMagazine=" + m_newMagazine);
+		
+
+			if (m_oldMagazine && m_newMagazine)
+			{
+				m_newDst = new InventoryLocation;
 			
-			InventoryLocation oldSrc = new InventoryLocation;
-			InventoryLocation newSrc = new InventoryLocation;
+				InventoryLocation oldSrc = new InventoryLocation;
+				InventoryLocation newSrc = new InventoryLocation;
 
-			if (!m_newMagazine.GetInventory().GetCurrentInventoryLocation(newSrc))
-			{
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext cannot get curr inv loc of NEW mag=" + Object.GetDebugName(m_newMagazine));
-			}
-			if (!m_oldMagazine.GetInventory().GetCurrentInventoryLocation(oldSrc))
-			{
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext cannot get curr inv loc of OLD mag=" + Object.GetDebugName(m_oldMagazine));
-			}
+				if (!m_newMagazine.GetInventory().GetCurrentInventoryLocation(newSrc))
+				{
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext cannot get curr inv loc of NEW mag=" + Object.GetDebugName(m_newMagazine));
+				}
+				if (!m_oldMagazine.GetInventory().GetCurrentInventoryLocation(oldSrc))
+				{
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext cannot get curr inv loc of OLD mag=" + Object.GetDebugName(m_oldMagazine));
+				}
 
-			m_newMagazine.GetInventory().GetCurrentInventoryLocation(m_newDst);
-			m_newDst.CopyLocationFrom(oldSrc, true);
+				m_newMagazine.GetInventory().GetCurrentInventoryLocation(m_newDst);
+				m_newDst.CopyLocationFrom(oldSrc, true);
 
-			// move to LH
-			InventoryLocation lhand = new InventoryLocation;
-			lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
-			if (GameInventory.LocationSyncMoveEntity(newSrc, lhand))
-			{
-				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, ok - new magazine removed from inv (inv->LHand)");
+				// move to LH
+				InventoryLocation lhand = new InventoryLocation;
+				lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
+				if (GameInventory.LocationSyncMoveEntity(newSrc, lhand))
+				{
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, ok - new magazine removed from inv (inv->LHand)");
+				}
+				else
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - cannot new remove mag from inv");
+
+				m_detach.m_oldMagazine = m_oldMagazine;
+
+				m_swapMags.m_newMagazine = m_newMagazine;
+
+				m_swapMags.m_newDst = m_newDst;
 			}
 			else
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - cannot new remove mag from inv");
-
-			m_detach.m_oldMagazine = m_oldMagazine;
-
-			m_swapMags.m_newMagazine = m_newMagazine;
-
-			m_swapMags.m_newDst = m_newDst;
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext, error - no magazines configured for replace (m_old=m_new=NULL)");
 		}
-		else
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponReplacingMagAndChamberNext, error - no magazines configured for replace (m_old=m_new=NULL)");
-
 		super.OnEntry(e); // @NOTE: super after submachine init (prevent override from submachine start)
 	}
 	override void OnExit (WeaponEventBase e)
 	{
+		super.OnExit(e);
+		
+		EntityAI leftHandItem = e.m_player.GetInventory().FindAttachment(InventorySlots.LEFTHAND);
+		Magazine mag = Magazine.Cast(leftHandItem);
+		
+		if(mag)
+		{
+			e.m_player.GetInventory().ClearInventoryReservation( mag , null );
+			InventoryLocation il = new InventoryLocation;
+			e.m_player.GetInventory().FindFreeLocationFor( mag, FindInventoryLocationType.CARGO, il );
+		
+			if(!il || !il.IsValid())
+			{
+				if (DayZPlayerUtils.HandleDropMagazine(e.m_player, mag))
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - no inventory space for old magazine - dropped to ground - exit");
+				else
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot drop magazine from left hand after not found inventory space for old magazine - exit");
+				
+			}
+			else
+			{
+				InventoryLocation oldSrc = new InventoryLocation;
+				mag.GetInventory().GetCurrentInventoryLocation(oldSrc);
+				
+				if (GameInventory.LocationSyncMoveEntity(oldSrc, il))
+				{
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - old magazine removed from wpn (LHand->inv) - exit");
+				}
+				else
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot remove old mag from wpn - exit");
+			}
+		}
+		
+		
+		
+		
+		
 		m_oldMagazine = NULL;
 		m_newMagazine = NULL;
 		m_newDst = NULL;
-		super.OnExit(e);
 	}
 	
 	override void OnAbort(WeaponEventBase e)
@@ -441,9 +486,9 @@ class WeaponReplacingMagAndChamberNext extends WeaponStateBase
 			if(!il || !il.IsValid())
 			{
 				if (DayZPlayerUtils.HandleDropMagazine(e.m_player, mag))
-					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - no inventory space for old magazine - dropped to ground");
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - no inventory space for old magazine - dropped to ground - abort");
 				else
-					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot drop magazine from left hand after not found inventory space for old magazine");
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot drop magazine from left hand after not found inventory space for old magazine - abort");
 				
 			}
 			else
@@ -453,12 +498,49 @@ class WeaponReplacingMagAndChamberNext extends WeaponStateBase
 				
 				if (GameInventory.LocationSyncMoveEntity(oldSrc, il))
 				{
-					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - old magazine removed from wpn (LHand->inv)");
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, ok - old magazine removed from wpn (LHand->inv) - abort");
 				}
 				else
-					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot remove old mag from wpn");
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine, error - cannot remove old mag from wpn - abort");
 			}
 		}
+	}
+	
+	override bool SaveCurrentFSMState (ParamsWriteContext ctx)
+	{
+		if (!super.SaveCurrentFSMState(ctx))
+			return false;
+
+		if (!ctx.Write(m_newMagazine))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine.SaveCurrentFSMState: cannot write m_newMagazine for weapon=" + m_weapon);
+			return false;
+		}
+
+		if (!ctx.Write(m_oldMagazine))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine.SaveCurrentFSMState: cannot write m_oldMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		return true;
+	}
+
+	override bool LoadCurrentFSMState (ParamsReadContext ctx, int version)
+	{
+		if (!super.LoadCurrentFSMState(ctx, version))
+			return false;
+
+		if (!ctx.Read(m_newMagazine))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine.LoadCurrentFSMState: cannot read m_newMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		if (!ctx.Read(m_oldMagazine))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " DetachOldMagazine.LoadCurrentFSMState: cannot read m_oldMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		return true;
 	}
 };
 

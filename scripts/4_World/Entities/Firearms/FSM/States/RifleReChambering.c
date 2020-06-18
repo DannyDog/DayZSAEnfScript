@@ -37,28 +37,31 @@ class RifleReChambering extends WeaponStateBase
 
 	override void OnEntry (WeaponEventBase e)
 	{
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber, mag=" + e.m_magazine.ToString());
-		m_srcMagazine = e.m_magazine;
-		m_chamber.m_srcMagazine = m_srcMagazine;
-
-		// prepare magazine for ejected ammo
-		int mi = m_weapon.GetCurrentMuzzle();
-		string magazineTypeName = m_weapon.GetChamberedCartridgeMagazineTypeName(mi);
-		float damage = 0.0;
-		string type;
-		if (m_weapon.GetCartridgeInfo(mi, damage, type))
+		if (e)
 		{
-			bool is_single_or_server = !GetGame().IsMultiplayer() || GetGame().IsServer();
-			if (is_single_or_server)
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber, mag=" + e.m_magazine.ToString());
+			m_srcMagazine = e.m_magazine;
+			m_chamber.m_srcMagazine = m_srcMagazine;
+
+			// prepare magazine for ejected ammo
+			int mi = m_weapon.GetCurrentMuzzle();
+			string magazineTypeName = m_weapon.GetChamberedCartridgeMagazineTypeName(mi);
+			float damage = 0.0;
+			string type;
+			if (m_weapon.GetCartridgeInfo(mi, damage, type))
 			{
-				m_dstMagazine = DayZPlayerUtils.SelectStoreCartridge(e.m_player, m_weapon, mi, m_srcMagazine, damage, magazineTypeName);
-				if (!m_dstMagazine)
+				bool is_single_or_server = !GetGame().IsMultiplayer() || GetGame().IsServer();
+				if (is_single_or_server)
 				{
-					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + "   WeaponRechamber - error, cannot prepare mag for catridge, magType=" + magazineTypeName);
+					m_dstMagazine = DayZPlayerUtils.SelectStoreCartridge(e.m_player, m_weapon, mi, m_srcMagazine, damage, magazineTypeName);
+					if (!m_dstMagazine)
+					{
+						Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + "   WeaponRechamber - error, cannot prepare mag for catridge, magType=" + magazineTypeName);
+					}
 				}
 			}
+			m_eject.m_dstMagazine = m_dstMagazine;
 		}
-		m_eject.m_dstMagazine = m_dstMagazine;
 		super.OnEntry(e); // @NOTE: super after submachine init (prevent override from submachine start)
 
 	}
@@ -84,12 +87,12 @@ class RifleReChambering extends WeaponStateBase
 
 		if (!ctx.Write(m_dstMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.SaveCurrentFSMState: cannot save m_dstMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber.SaveCurrentFSMState: cannot save m_dstMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		if (!ctx.Write(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		return true;
@@ -102,12 +105,12 @@ class RifleReChambering extends WeaponStateBase
 
 		if (!ctx.Read(m_dstMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.LoadCurrentFSMState: cannot read m_dstMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber.LoadCurrentFSMState: cannot read m_dstMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		if (!ctx.Read(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		return true;

@@ -591,7 +591,19 @@ class GameConstants
 	const int STATE_WORN 		  	= 1;
 	const int STATE_PRISTINE 	  	= 0;
 	/** @}*/
-		
+	
+	/**
+	 * \defgroup Item Damage Relative Values (ItemBase.GetHealth01)
+	 * \desc Constants for relative Item Health handling
+	 * @{
+	 */
+	const float DAMAGE_PRISTINE_VALUE 		= 1.0;
+	const float DAMAGE_WORN_VALUE 			= 0.7;
+	const float DAMAGE_DAMAGED_VALUE 		= 0.5;
+	const float DAMAGE_BADLY_DAMAGED_VALUE 	= 0.3;
+	const float DAMAGE_RUINED_VALUE 		= 0.0;
+	/** @}*/
+	
 	/**
 	 * \defgroup Item Wetness States (ItemBase.GetWet)
 	 * \desc Constants for Item Wetness States

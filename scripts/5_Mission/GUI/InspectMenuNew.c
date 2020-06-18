@@ -405,6 +405,7 @@ class InspectMenuNew extends UIScriptedMenu
 			
 			if( max_quantity > 0 ) // Some items, like books, have max_quantity set to 0 => division by ZERO error in quantity_ratio
 			{
+				string quantity_str;
 				if( item.ConfigGetString("stackedUnit") == "pc." )
 				{
 					if( item_quantity == 1 )
@@ -420,19 +421,22 @@ class InspectMenuNew extends UIScriptedMenu
 				{
 					quantity_ratio = Math.Round( ( item_quantity / max_quantity ) * 100 );
 					
-					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_ratio.ToString() + "#inv_inspect_remaining", Colors.COLOR_DEFAULT );			
+					quantity_str = "#inv_inspect_remaining " + quantity_ratio.ToString() + "#inv_inspect_percent";
+					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_str, Colors.COLOR_DEFAULT );			
 				}
 				else if( item.ConfigGetString("stackedUnit") == "g" )
 				{
 					quantity_ratio = Math.Round( ( item_quantity / max_quantity ) * 100 );
 					
-					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_ratio.ToString() + "#inv_inspect_remaining", Colors.COLOR_DEFAULT );			
+					quantity_str = "#inv_inspect_remaining " + quantity_ratio.ToString() + "#inv_inspect_percent";
+					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_str, Colors.COLOR_DEFAULT );			
 				}
 				else if( item.ConfigGetString("stackedUnit") == "ml" )
 				{
 					quantity_ratio = Math.Round( ( item_quantity / max_quantity ) * 100 );
 					
-					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_ratio.ToString() + "#inv_inspect_remaining", Colors.COLOR_DEFAULT );
+					quantity_str = "#inv_inspect_remaining " + quantity_ratio.ToString() + "#inv_inspect_percent";
+					WidgetTrySetText( root_widget, "ItemQuantityWidget", quantity_str, Colors.COLOR_DEFAULT );
 				}
 				else if( item.IsInherited( Magazine ) )
 				{

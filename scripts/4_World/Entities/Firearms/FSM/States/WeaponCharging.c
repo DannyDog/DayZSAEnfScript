@@ -47,15 +47,6 @@ class WeaponCharging extends WeaponStateBase
 
 		m_fsm.SetInitialState(m_start);
 	}
-
-	override void OnEntry (WeaponEventBase e)
-	{
-		super.OnEntry(e);
-	}
-	override void OnExit (WeaponEventBase e)
-	{
-		super.OnExit(e);
-	}
 };
 
 class WeaponCharging_Start extends WeaponStartAction
@@ -82,11 +73,13 @@ class WeaponEjectBullet_Cartridge extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
+		if(e)
+		{
+			DayZPlayer p = e.m_player;
+			int mi = m_weapon.GetCurrentMuzzle();
 
-		DayZPlayer p = e.m_player;
-		int mi = m_weapon.GetCurrentMuzzle();
-
-		ejectBulletAndStoreInMagazine(m_weapon, mi, m_dstMagazine, p); // MP-safe
+			ejectBulletAndStoreInMagazine(m_weapon, mi, m_dstMagazine, p); // MP-safe
+		}
 	}
 
 	override void OnAbort (WeaponEventBase e)
@@ -136,14 +129,16 @@ class WeaponEjectBulletMultiMuzzle_Cartridge extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		DayZPlayer p = e.m_player;
-		for(int i = 0; i < m_weapon.GetMuzzleCount(); i++)
+		if(e)
 		{
-			m_weapon.CreateRound(i);
-			ejectBulletAndStoreInMagazine(m_weapon, i, m_dstMagazine, p); // MP-safe
-			m_weapon.EffectBulletHide(i);
-			m_weapon.HideBullet(i);
+			DayZPlayer p = e.m_player;
+			for(int i = 0; i < m_weapon.GetMuzzleCount(); i++)
+			{
+				m_weapon.CreateRound(i);
+				ejectBulletAndStoreInMagazine(m_weapon, i, m_dstMagazine, p); // MP-safe
+				m_weapon.EffectBulletHide(i);
+				m_weapon.HideBullet(i);
+			}
 		}		
 	}
 
@@ -236,6 +231,7 @@ class WeaponChargingInnerMag extends WeaponStateBase
 		
 		//TODO after inner magazine rework this events must load new bullet
 		
+		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onBEFireOut, NULL, new GuardAnd(new GuardNot(new WeaponGuardCurrentChamberEmpty(m_weapon)), new WeaponGuardCurrentChamberFiredOut(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onBE, NULL, new GuardNot(new WeaponGuardCurrentChamberEmpty(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_chamber, NULL, new WeaponGuardHasAmmoInnerMagazine(m_weapon))); // some anims do not send BE event
 		m_fsm.AddTransition(new WeaponTransition(  m_start, __ck_, m_onCK)); // some anims do not send BE event

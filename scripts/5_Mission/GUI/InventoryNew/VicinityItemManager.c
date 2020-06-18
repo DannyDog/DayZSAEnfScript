@@ -346,7 +346,7 @@ class VicinityItemManager
 		//Print("-->raycast from player to: " + filtered_object);
 		MiscGameplayFunctions.GetHeadBonePos( PlayerBase.Cast( GetGame().GetPlayer() ), raycast_start);
 //			DebugRaycastDraw( raycast_start, object_center_pos );
-					
+		
 		if ( filtered_object.HasProxyParts() || filtered_object.CanUseConstruction() )
 		{
 			//Print(" :) (: pouzij proxy raycast koli proxy itemom :) (: ");
@@ -355,7 +355,7 @@ class VicinityItemManager
 			
 			if ( hit_proxy_objects )
 			{
-				//Print(" /*- hit_proxy_objects -*/ ");
+				//Print(" - hit_proxy_objects - ");
 				if ( hit_proxy_objects.Count() > 0 )
 				{
 					if ( hit_proxy_objects[0].hierLevel > 0 )
@@ -368,8 +368,8 @@ class VicinityItemManager
 							
 							if ( hit_proxy_objects[0].parent )
 							{
-								EntityAI parent_entity = EntityAI.Cast( hit_proxy_objects[0].parent );
-								if ( parent_entity.GetInventory() && parent_entity.GetInventory().GetCargo() )
+								EntityAI proxy_parent = EntityAI.Cast( hit_proxy_objects[0].parent );
+								if ( proxy_parent.GetInventory() && proxy_parent.GetInventory().GetCargo() )
 								{	
 									is_obstructed = true;
 								}
@@ -383,16 +383,11 @@ class VicinityItemManager
 				}
 			}
 		}
-		else
-		{
-			if ( hit_objects ) 
-			{
-				hit_objects.Clear();
-			}
+		if ( hit_objects ) 
+			hit_objects.Clear();
 			
-			//Print(" ===>>> pouzij standardny raycast s fire geometriou koli domom a basebuildingu <<<=== ");
-			DayZPhysics.RaycastRV( raycast_start, object_center_pos, object_contact_pos, object_contact_dir, contact_component, hit_objects, null, GetGame().GetPlayer(), false, false, ObjIntersectFire, 0.0, CollisionFlags.ALLOBJECTS );
-		}	
+		//Print(" ===>>> pouzij standardny raycast s fire geometriou koli domom a basebuildingu <<<=== ");
+		DayZPhysics.RaycastRV( raycast_start, object_center_pos, object_contact_pos, object_contact_dir, contact_component, hit_objects, null, GetGame().GetPlayer(), false, false, ObjIntersectFire, 0.0, CollisionFlags.ALLOBJECTS );
 			
 		//4.2. ignore items if they are obstructed
 		for ( int m = 0; m < hit_objects.Count(); m++ )
@@ -412,6 +407,12 @@ class VicinityItemManager
 				//Print("!!!!!obstacle plain object: " + hit_object);
 				is_obstructed = true;
 			}
+			
+			if ( hit_object.IsInherited(BaseBuildingBase) )
+			{
+				if (filtered_object != hit_object)
+					is_obstructed = true;
+			} 
 			
 			//4.3. ignore item if items are big and heavy >= OBJECT_OBSTRUCTION_WEIGHT 
 			/*EntityAI eai;

@@ -26,7 +26,7 @@ class AmmoData
 	void AmmoData( string init_type )
 	{
 		m_IsValid = GetGame().ConfigIsExisting( "CfgMagazines " + init_type );
-		if( m_IsValid )
+		if ( m_IsValid )
 		{
 			m_CartridgeType = GetGame().ConfigGetInt( "CfgMagazines " + init_type + " iconCartridge" );
 			m_ProjectileType = GetGame().ConfigGetInt( "CfgMagazines " + init_type + " iconType" );
@@ -48,15 +48,16 @@ class Magazine : InventoryItemSuper
 		m_ManipulationDamage = ConfigGetFloat("manipulationDamage");
 		m_CompatiableAmmo = new array<string>;
 		ConfigGetTextArray ("ammoItems", m_CompatiableAmmo);
-		if( GetGame().IsClient() || !GetGame().IsMultiplayer() )
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
-			if( !m_AmmoData )
+			if ( !m_AmmoData )
 				m_AmmoData = new map<string, ref AmmoData>;
+			
 			string classname = ClassName();
-			if( !m_AmmoData.Contains(classname) )
+			if ( !m_AmmoData.Contains(classname) )
 			{
 				ref AmmoData new_data = new AmmoData( classname );
-				if( new_data.m_IsValid )
+				if ( new_data.m_IsValid )
 					m_AmmoData.Insert( classname, new AmmoData( classname ) );
 			}
 		}
@@ -65,8 +66,8 @@ class Magazine : InventoryItemSuper
 	//! Gets magazine ammo count
 	proto native int GetAmmoCount();
 	//! Sets magazine ammo count
-	proto native void ServerSetAmmoCount (int ammoCount);
-	proto native void LocalSetAmmoCount (int ammoCount);
+	proto native void ServerSetAmmoCount(int ammoCount);
+	proto native void LocalSetAmmoCount(int ammoCount);
 
 	/**@fn		AcquireCartridge
 	 * @brief	acquires cartridge(damage, type) to magazine
@@ -74,16 +75,16 @@ class Magazine : InventoryItemSuper
 	 * @param[out] cartTypeName \p	 type name of the ejected ammo
 	 * @return	true if acquired
 	 **/
-	proto bool LocalAcquireCartridge (out float dmg, out string cartTypeName);
-	proto bool ServerAcquireCartridge (out float dmg, out string cartTypeName);
+	proto bool LocalAcquireCartridge(out float dmg, out string cartTypeName);
+	proto bool ServerAcquireCartridge(out float dmg, out string cartTypeName);
 	/**@fn		StoreCartridge
 	 * @brief	stores cartridge(damage, type) to magazine
 	 * @param[in] ammoDamage \p  damage of the cartridge
 	 * @param[in] cartTypeName \p	 type name of the stored cartridge
 	 * @return	true if stored
 	 **/
-	proto native bool LocalStoreCartridge (float ammoDamage, string cartTypeName);
-	proto native bool ServerStoreCartridge (float ammoDamage, string cartTypeName);
+	proto native bool LocalStoreCartridge(float ammoDamage, string cartTypeName);
+	proto native bool ServerStoreCartridge(float ammoDamage, string cartTypeName);
 
 	/**@fn		GetCartridgeAtIndex
 	 * @brief	queries cartridge(damage, type) info at specified index
@@ -92,7 +93,7 @@ class Magazine : InventoryItemSuper
 	 * @param[out] cartTypeName \p	 type name of the cartridge
 	 * @return	true if index valid
 	 **/
-	proto bool GetCartridgeAtIndex (int cartIndex, out float dmg, out string cartTypeName);
+	proto bool GetCartridgeAtIndex(int cartIndex, out float dmg, out string cartTypeName);
 
 	/**@fn		SetCartridgeAtIndex
 	 * @brief	modifies cartridge(damage, type) info at specified index
@@ -101,16 +102,25 @@ class Magazine : InventoryItemSuper
 	 * @param[in] cartTypeName \p	 type name of the cartridge
 	 * @return	true if index valid
 	 **/
-	proto bool SetCartridgeAtIndex (int cartIndex, out float dmg, out string cartTypeName);
+	proto bool SetCartridgeAtIndex(int cartIndex, out float dmg, out string cartTypeName);
+	
+	/**@fn		SetCartridgeDamageAtIndex
+	 * @brief	modifies cartridge damage info at specified index
+	 * @param[in] cartIndex \p  index of the cartridge.
+	 * @param[in] ammoDamage \p  damage of the cartridge
+	 * @return	true if index valid
+	 **/
+	proto bool SetCartridgeDamageAtIndex(int cartIndex, float dmg);
+
 	
 	static AmmoData GetAmmoData( string classname )
 	{
-		if( !m_AmmoData )
+		if ( !m_AmmoData )
 			m_AmmoData = new map<string, ref AmmoData>;
-		if( !m_AmmoData.Contains(classname) )
+		if ( !m_AmmoData.Contains(classname) )
 		{
 			ref AmmoData new_data = new AmmoData( classname );
-			if( new_data.m_IsValid )
+			if ( new_data.m_IsValid )
 				m_AmmoData.Insert( classname, new AmmoData( classname ) );
 			return new_data;
 		}
@@ -122,13 +132,13 @@ class Magazine : InventoryItemSuper
 	
 	bool IsCompatiableAmmo( ItemBase ammo )
 	{
-		if( m_CompatiableAmmo && ammo )
+		if ( m_CompatiableAmmo && ammo )
 			return ( m_CompatiableAmmo.Find( ammo.GetType() ) > -1 );
 		else
 			return false;
 	}
 	
-	bool CanAddCartridges (int count)
+	bool CanAddCartridges(int count)
 	{
 		int spc_avail = GetAmmoMax() - GetAmmoCount();
 		return count <= spc_avail;
@@ -166,18 +176,10 @@ class Magazine : InventoryItemSuper
 	
 	override bool CanBeSplit()
 	{
-		if( ConfigGetBool("canBeSplit") )
-		{
-			if( this.GetAmmoCount() > 1 )
-			{
-				return true;
-			}
-			else
-			{
-				return false;			
-			}
-		}
-		else return false;
+		if ( ConfigGetBool("canBeSplit") )
+			return ( GetAmmoCount() > 1 );
+
+		return false;
 	}
 	
 	bool InitReliability(out array<float> reliability_array)
@@ -230,9 +232,7 @@ class Magazine : InventoryItemSuper
 	override void SplitItem(PlayerBase player)
 	{
 		if ( !CanBeSplit() )
-		{
 			return;
-		}
 
 		
 		Magazine new_pile = Magazine.Cast( player.CreateCopyOfItemInInventoryOrGround( this ) );
@@ -240,7 +240,7 @@ class Magazine : InventoryItemSuper
 		new_pile.ServerSetAmmoCount(0);
 		int quantity = this.GetAmmoCount();
 		
-		for(int i = 0; i < Math.Floor( quantity / 2 ); i++)
+		for (int i = 0; i < Math.Floor( quantity / 2 ); i++)
 		{
 			float damage;
 			string cartrige_name;
@@ -258,7 +258,7 @@ class Magazine : InventoryItemSuper
 
 	override bool IsFullQuantity()
 	{
-		if( GetAmmoCount() == GetAmmoMax() )
+		if ( GetAmmoCount() == GetAmmoMax() )
 		{
 			return true;			
 		}
@@ -318,41 +318,54 @@ class Magazine : InventoryItemSuper
 	override bool IsCombineAll( ItemBase other_item, bool use_stack_max = false)
 	{
 		Magazine other_magazine = Magazine.Cast(other_item);
-		int free_space = this.GetAmmoMax() - this.GetAmmoCount();
+		int free_space = GetAmmoMax() - GetAmmoCount();
 		
 		return free_space >= other_magazine.GetAmmoCount();
 	}
 	
 	override void CombineItems( ItemBase other_item, bool use_stack_max = false )
 	{
-		if( !CanBeCombined(other_item) ) return;
-		if( other_item.GetType() != this.GetType() ) return;
+		if ( !CanBeCombined(other_item) )
+			return;
+		
+		if ( other_item.GetType() != GetType() )
+			return;
 		
 		Magazine other_magazine;
 		if ( Class.CastTo(other_magazine, other_item) )
 		{
 			//int other_item_quantity = other_magazine.GetAmmoCount();
-			int this_free_space = this.GetAmmoMax() - this.GetAmmoCount();
+			int this_free_space = GetAmmoMax() - GetAmmoCount();
+			int numberOfTransferredBullets = 0;
+			int currentAmount = GetAmmoCount();
 			
-			for(int i = 0; i < this_free_space && other_magazine.GetAmmoCount() > 0 ; i++)
+			for (int i = 0; i < this_free_space && other_magazine.GetAmmoCount() > 0 ; i++)
 			{
 				float damage;
 				string cartrige_name;
 				other_magazine.ServerAcquireCartridge(damage, cartrige_name);
-				this.ServerStoreCartridge(damage, cartrige_name);
+				if (ServerStoreCartridge(damage, cartrige_name))
+					++numberOfTransferredBullets;
 			}
+			
+			if (GetGame().IsServer())
+			{
+				float resultingHealth = (currentAmount * GetHealth() + numberOfTransferredBullets * other_magazine.GetHealth()) / GetAmmoCount();
+				SetHealth("", "", resultingHealth);
+			}
+			
 			other_magazine.SetSynchDirty();
 			SetSynchDirty();
 		}
 	}
 	
-	override bool CanDetachAttachment (EntityAI parent)
+	override bool CanDetachAttachment(EntityAI parent)
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
-		if(player)
+		if (player)
 		{
 			Weapon_Base wpn = Weapon_Base.Cast(parent);
-			if(wpn)
+			if (wpn)
 			{
 				return player.GetWeaponManager().CanDetachMagazine(wpn,this);
 			}
@@ -380,7 +393,7 @@ class Magazine : InventoryItemSuper
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		Weapon_Base wpn = Weapon_Base.Cast(parent);
-		if(wpn && player)
+		if (wpn && player)
 		{
 			player.GetWeaponManager().OnMagazineAttach(this);
 		}
@@ -398,10 +411,19 @@ class Magazine : InventoryItemSuper
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		Weapon_Base wpn = Weapon_Base.Cast(parent);
 		
-		if(wpn && player)
+		if (wpn && player)
 		{
 			player.GetWeaponManager().OnMagazineDetach(this);
 		}
+	}
+	
+	override void EEHealthLevelChanged( int oldLevel, int newLevel, string zone )
+	{
+		float damage = 1 - GetHealthLevelValue(newLevel);
+			
+		int cartridgeCount = GetAmmoCount();		
+		for (int i = 0; i < cartridgeCount; ++i)
+			SetCartridgeDamageAtIndex(i, damage);
 	}
 };
 

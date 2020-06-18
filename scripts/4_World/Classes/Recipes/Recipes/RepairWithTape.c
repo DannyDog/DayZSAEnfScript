@@ -68,7 +68,7 @@ class RepairWithTape extends RecipeBase
 		Class.CastTo(ingredient1, ingredients[0]);
 		ItemBase ingredient2;
 		Class.CastTo(ingredient2, ingredients[1]);
-		return module_repairing.CanRepair(ingredient1,ingredient2);
+		return module_repairing.CanRepair(ingredient1,ingredient2) && ingredient2.CanBeRepairedByCrafting();
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion

@@ -12,10 +12,12 @@ class WeaponDetachingMag_Store extends WeaponStateBase
 	{
 		//wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + "  WeaponDetachingMag_Store, Detaching mag=" + m_magazine.ToString() +  "to loc=" + InventoryLocation.DumpToStringNullSafe(m_dst));
 		super.OnEntry(e);
-
-		if (!m_magazine || !m_dst)
+		if (e)
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponDetachingMag_Store, error - no magazine to load from (m_magazine=NULL)");
+			if (!m_magazine || !m_dst)
+			{
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponDetachingMag_Store, error - no magazine to load from (m_magazine=NULL)");
+			}
 		}
 	}
 
@@ -139,12 +141,12 @@ class WeaponDetachingMag extends WeaponStateBase
 				wpnDebugPrint("WeaponDetachingMag type=" + typename.EnumToString(InventoryLocationType, de.m_dst.GetType()));
 				m_magazine = e.m_magazine;
 				m_dst = de.m_dst;
+				
+				m_store.m_magazine = m_magazine;
+				m_store.m_dst = m_dst;
+				wpnDebugPrint("WeaponDetachingMag type=" + typename.EnumToString(InventoryLocationType, m_store.m_dst.GetType()));
 			}
 		}
-
-		m_store.m_magazine = m_magazine;
-		m_store.m_dst = m_dst;
-		wpnDebugPrint("WeaponDetachingMag type=" + typename.EnumToString(InventoryLocationType, m_store.m_dst.GetType()));
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)
 	}
 

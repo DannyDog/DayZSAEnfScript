@@ -791,11 +791,6 @@ class CfgMagazines
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\explosives\data\grenade_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\explosives\data\grenade.rvmat"};
-		class Damage
-		{
-			tex[] = {};
-			mat[] = {"DZ\weapons\explosives\data\grenade.rvmat","DZ\weapons\explosives\data\grenade_damage.rvmat","DZ\weapons\explosives\data\grenade_destruct.rvmat"};
-		};
 		class DamageSystem
 		{
 			class GlobalHealth

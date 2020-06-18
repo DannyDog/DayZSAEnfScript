@@ -57,6 +57,7 @@ class cfgWeapons
 		class Single: Mode_SemiAuto
 		{
 			soundSetShot[] = {"Ruger1022_Shot_SoundSet","Ruger1022_Tail_SoundSet","Ruger1022_InteriorTail_SoundSet"};
+			soundSetShotExt[] = {{"Ruger1022_silencerHomeMade_SoundSet","Ruger1022_silencerHomeMadeTail_SoundSet","Ruger1022_silencerInteriorHomeMadeTail_SoundSet"}};
 			reloadTime = 0.08;
 			dispersion = 0.0025;
 			magazineSlot = "magazine";

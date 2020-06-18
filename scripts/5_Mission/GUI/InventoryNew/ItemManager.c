@@ -493,13 +493,12 @@ class ItemManager
 	
 	void SetWidgetDraggable( Widget w, bool draggable )
 	{
-		if( draggable )
+		if (w)
 		{
-			w.SetFlags( WidgetFlags.DRAGGABLE );
-		}
-		else
-		{
-			w.ClearFlags( WidgetFlags.DRAGGABLE );
+			if ( draggable )
+				w.SetFlags( WidgetFlags.DRAGGABLE );
+			else
+				w.ClearFlags( WidgetFlags.DRAGGABLE );
 		}
 	}
 	

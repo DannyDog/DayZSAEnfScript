@@ -32,14 +32,17 @@ class ActionWashHandsItem: ActionSingleUseBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		//Print(item.GetQuantity());
 		return player.HasBloodyHands() && item.GetQuantity() >= WASH_HANDS_AMOUNT );
 	}
 
-	override void OnExecuteServer( ActionData action_data )
+	override void OnEndServer( ActionData action_data )
 	{
-		PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
-		module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, false );
-		
-		action_data.m_MainItem.AddQuantity( -WASH_HANDS_AMOUNT, false );
+		if (action_data.m_State != UA_INTERRUPT)
+		{
+			PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
+			module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, false );
+			action_data.m_MainItem.AddQuantity( -WASH_HANDS_AMOUNT, false );
+		}
 	}
 };

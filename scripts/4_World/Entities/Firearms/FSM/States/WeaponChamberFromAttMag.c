@@ -8,9 +8,11 @@ class WeaponChamberFromAttMag extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		int mi = m_weapon.GetCurrentMuzzle();
-		pushToChamberFromAttachedMagazine(m_weapon, mi);
+		if(e)
+		{
+			int mi = m_weapon.GetCurrentMuzzle();
+			pushToChamberFromAttachedMagazine(m_weapon, mi);
+		}
 	}
 	override void OnExit (WeaponEventBase e)
 	{
@@ -27,9 +29,11 @@ class WeaponChamberFromInnerMag extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		int mi = m_weapon.GetCurrentMuzzle();
-		pushToChamberFromInnerMagazine(m_weapon, mi);
+		if (e)
+		{
+			int mi = m_weapon.GetCurrentMuzzle();
+			pushToChamberFromInnerMagazine(m_weapon, mi);
+		}
 	}
 	override void OnExit (WeaponEventBase e)
 	{
@@ -42,11 +46,6 @@ class WeaponChamberFromAttMagOnExit extends WeaponStateBase
 {
 	void WeaponChamberFromAttMagOnExit (Weapon_Base w = NULL, WeaponStateBase parent = NULL, int action = -1, int actionType = -1)
 	{ }
-
-	override void OnEntry (WeaponEventBase e)
-	{
-		super.OnEntry(e);
-	}
 
 	override void OnExit (WeaponEventBase e)
 	{

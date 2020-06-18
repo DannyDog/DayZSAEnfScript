@@ -15,25 +15,27 @@ class WeaponStartAction extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-
-		if (e.m_player)
+		if (e)
 		{
-			HumanCommandWeapons hcw = e.m_player.GetCommandModifier_Weapons();
-			if (hcw)
+			if (e.m_player)
 			{
-				hcw.StartAction(m_action, m_actionType);
+				HumanCommandWeapons hcw = e.m_player.GetCommandModifier_Weapons();
+				if (hcw)
+				{
+					hcw.StartAction(m_action, m_actionType);
 		
-				if (hcw.GetRunningAction() == m_action && hcw.GetRunningActionType() == m_actionType)
-					wpnDebugPrint("HCW: playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType) + " fini=" + hcw.IsActionFinished());
+					if (hcw.GetRunningAction() == m_action && hcw.GetRunningActionType() == m_actionType)
+						wpnDebugPrint("HCW: playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType) + " fini=" + hcw.IsActionFinished());
+					else
+						Error("HCW: NOT playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType) + " fini=" + hcw.IsActionFinished());
+				}
 				else
-					Error("HCW: NOT playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType) + " fini=" + hcw.IsActionFinished());
+					wpnDebugPrint("---: remote playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType));
 			}
 			else
-				wpnDebugPrint("---: remote playing A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType));
-		}
-		else
-		{
-			wpnDebugPrint("---: warning, no player wants to play A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType));
+			{
+				wpnDebugPrint("---: warning, no player wants to play A=" + typename.EnumToString(WeaponActions, m_action) + " AT=" + WeaponActionTypeToString(m_action, m_actionType));
+			}
 		}
 	}
 	override void OnExit (WeaponEventBase e)

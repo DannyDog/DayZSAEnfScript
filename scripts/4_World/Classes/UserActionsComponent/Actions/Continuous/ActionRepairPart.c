@@ -1,3 +1,10 @@
+
+/*
+TODO:
+No pairing with part and tool similar to 'CanUseToolToBuildPart' exists here, since only one type of part is damage-able at this point.
+This should be handled by adding "repair_action_type" array to basebuilding and tool configs, this would allow for independent pairing of repair action.
+*/
+
 class RepairPartActionReciveData : ActionReciveData
 {
 	int m_ComponentIndexRecived;
@@ -8,12 +15,24 @@ class RepairPartActionData : ActionData
 	int m_ComponentIndex;
 }
 
-class ActionRepairPartCB : ActionDismantlePartCB
+class ActionRepairPartCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		float time = SetBuildingDuration(m_ActionData.m_MainItem);
+		float time = SetCallbackDuration(m_ActionData.m_MainItem);
 		m_ActionData.m_ActionComponent = new CAContinuousRepeat( time );
+	}
+	
+	float SetCallbackDuration( ItemBase item )
+	{
+		/*switch( item.Type() )
+		{
+			case WoodAxe:
+				return UATimeSpent.BASEBUILDING_REPAIR_SLOW;
+			default:
+				return UATimeSpent.BASEBUILDING_REPAIR_FAST;
+		}*/
+		return UATimeSpent.BASEBUILDING_REPAIR_FAST;
 	}
 };
 
@@ -80,7 +99,7 @@ class ActionRepairPart: ActionDismantlePart
 		construction.TakeMaterialsServer(part_name,true);
 		
 		//add damage to tool
-		action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
+		action_data.m_MainItem.DecreaseHealth( UADamageApplied.REPAIR, false );
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
@@ -184,7 +203,7 @@ class ActionRepairPart: ActionDismantlePart
 						
 						//damage check
 						DamageSystem.GetDamageZoneFromComponentName(base_building,part_name,zone_name);
-						if ( base_building.GetHealthLevel(zone_name) < GameConstants.STATE_DAMAGED || base_building.GetHealthLevel(zone_name) == GameConstants.STATE_RUINED )
+						if ( base_building.GetHealthLevel(zone_name) < GameConstants.STATE_WORN || base_building.GetHealthLevel(zone_name) == GameConstants.STATE_RUINED )
 						{
 							return false;
 						}

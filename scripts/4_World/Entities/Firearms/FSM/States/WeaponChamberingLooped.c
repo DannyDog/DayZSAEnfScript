@@ -156,6 +156,7 @@ class LoopedChambering extends WeaponStateBase
 		super.OnExit(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
+		m_srcMagazinePrevLocation = NULL;
 	}
 	override void OnAbort (WeaponEventBase e)
 	{
@@ -212,6 +213,7 @@ class LoopedChambering extends WeaponStateBase
 		super.OnAbort(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
+		m_srcMagazinePrevLocation = NULL;
 	}
 	
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)
@@ -221,9 +223,16 @@ class LoopedChambering extends WeaponStateBase
 
 		if (!ctx.Write(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
 			return false;
 		}
+		
+		if (!OptionalLocationWriteToContext(m_srcMagazinePrevLocation, ctx))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChambering.SaveCurrentFSMState: cannot write m_srcMagazinePrevLocation for weapon=" + m_weapon);
+			return false;
+		}
+		
 		return true;
 	}
 
@@ -234,7 +243,13 @@ class LoopedChambering extends WeaponStateBase
 
 		if (!ctx.Read(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		
+		if (!OptionalLocationReadFromContext(m_srcMagazinePrevLocation, ctx))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChambering.LoadCurrentFSMState: cannot read m_srcMagazinePrevLocation for weapon=" + m_weapon);
 			return false;
 		}
 		return true;
@@ -392,6 +407,7 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 		super.OnExit(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
+		m_srcMagazinePrevLocation = NULL;
 	}
 	override void OnAbort (WeaponEventBase e)
 	{
@@ -448,6 +464,7 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 		super.OnAbort(e);
 		m_srcMagazine = NULL;
 		m_chamber.m_srcMagazine = NULL;
+		m_srcMagazinePrevLocation = NULL;
 	}
 	
 	override bool SaveCurrentFSMState (ParamsWriteContext ctx)
@@ -457,7 +474,13 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 
 		if (!ctx.Write(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChamberingEjectLast.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		
+		if (!OptionalLocationWriteToContext(m_srcMagazinePrevLocation, ctx))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChamberingEjectLast.SaveCurrentFSMState: cannot write m_srcMagazinePrevLocation for weapon=" + m_weapon);
 			return false;
 		}
 		return true;
@@ -470,7 +493,13 @@ class LoopedChamberingEjectLast extends WeaponStateBase
 
 		if (!ctx.Read(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChamberingEjectLast.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			return false;
+		}
+		
+		if (!OptionalLocationReadFromContext(m_srcMagazinePrevLocation, ctx))
+		{
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " LoopedChamberingEjectLast.LoadCurrentFSMState: cannot read m_srcMagazinePrevLocation for weapon=" + m_weapon);
 			return false;
 		}
 		return true;

@@ -74,7 +74,7 @@ class ActionBuildOven: ActionContinuousBase
 			fireplace_target.SetOrientation( action_data.m_Player.GetOrientation() - "180 0 0" );
 			
 			// extend lifetime
-			fireplace_target.SetLifetime( FireplaceBase.LIFETIME_FIREPLACE_STONE_OVEN );
+			fireplace_target.SetLifetimeMax( FireplaceBase.LIFETIME_FIREPLACE_STONE_OVEN );
 
 			//add specialty to soft skills
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

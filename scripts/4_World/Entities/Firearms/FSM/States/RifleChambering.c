@@ -40,17 +40,17 @@ class RifleChambering extends WeaponStateBase
 		{
 			if (e.m_magazine != NULL)
 			{
-				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering, taking mag from event e.mag=" + e.m_magazine.ToString());
+				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RifleChambering, taking mag from event e.mag=" + e.m_magazine.ToString());
 				m_srcMagazine = e.m_magazine;
+				m_chamber.m_srcMagazine = m_srcMagazine;
 			}
 		}
 		else
 		{
-			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering (e=NULL), m_srcMagazine=" + m_srcMagazine.ToString());
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RifleChambering (e=NULL), m_srcMagazine=" + m_srcMagazine.ToString());
 		}
 		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " m_srcMagazine=" + m_srcMagazine.ToString());
-
-		m_chamber.m_srcMagazine = m_srcMagazine;
+		
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)
 	}
 
@@ -73,7 +73,7 @@ class RifleChambering extends WeaponStateBase
 
 		if (!ctx.Write(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RifleChambering.SaveCurrentFSMState: cannot save m_srcMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		return true;
@@ -86,7 +86,7 @@ class RifleChambering extends WeaponStateBase
 
 		if (!ctx.Read(m_srcMagazine))
 		{
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
+			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RifleChambering.LoadCurrentFSMState: cannot read m_srcMagazine for weapon=" + m_weapon);
 			return false;
 		}
 		return true;

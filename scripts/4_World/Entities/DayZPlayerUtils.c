@@ -269,24 +269,22 @@ class DayZPlayerUtils
 		return false;
 	}
 
-	static bool HandleStoreCartridge (DayZPlayer player, Weapon_Base weapon, int muzzleIndex, float damage, string cartTypeName, string magTypeName, bool CanDrop = true)
+	static bool HandleStoreCartridge(DayZPlayer player, Weapon_Base weapon, int muzzleIndex, float damage, string cartTypeName, string magTypeName, bool CanDrop = true)
 	{
 		if (damage < 1.0)
 		{
 			// find suitable heap / mag
 			ref array<Magazine> mags = new array<Magazine>;
 			if (DayZPlayerUtils.FindMagazinesForAmmo(player, magTypeName, mags))
-			{
+			{				
 				int sz = mags.Count();
 				for (int i = 0; i < sz; ++i)
 				{
 					Magazine mag_i = mags.Get(i);
-					if (mag_i.CanAddCartridges(1))
+					if (mag_i.CanAddCartridges(1) && Math.AbsFloat(1 - mag_i.GetHealthLevelValue(mag_i.GetHealthLevel()) - damage) < 0.01)
 					{
 						if (mag_i.ServerStoreCartridge(damage, cartTypeName))
-						{
 							return true;
-						}
 					}
 				}
 			}
@@ -302,16 +300,15 @@ class DayZPlayerUtils
 					if (Class.CastTo(mag_inv, eai_inv))
 					{
 						mag_inv.ServerSetAmmoCount(0);
+						mag_inv.SetHealth("", "", (1 - damage) * mag_inv.GetMaxHealth());
 						if (mag_inv.ServerStoreCartridge(damage, cartTypeName))
-						{
 							return true;
-						}
 					}
 				}
 			}
 		
 			// drop on ground
-			if(	CanDrop	)
+			if ( CanDrop )
 				return HandleDropCartridge(player, damage, cartTypeName, magTypeName);
 			
 		}

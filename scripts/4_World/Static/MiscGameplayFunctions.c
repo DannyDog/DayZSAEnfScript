@@ -375,31 +375,42 @@ class MiscGameplayFunctions
 		player.ServerReplaceItemInHandsWithNew(lambda);
 	}
 
-	static array<ItemBase> CreateItemBasePiles(string item_name, vector ground_position, float quantity,  float health )
+	//!Spawns multiple piles of stackable ItemBase objects on ground (intended for generic use)
+	static array<ItemBase> CreateItemBasePiles(string item_name, vector ground_position, float quantity, float health, bool floaty_spawn = false)
 	{
-		ref array<ItemBase>	items;
-		float stack_size;
+		ref array<ItemBase>	item_piles;
+		float max_stack_size;
 		ItemBase pile;
 		
-		items = new array<ItemBase>;
-		stack_size = g_Game.ConfigGetInt("cfgVehicles " + item_name + " varQuantityMax");
+		item_piles = new array<ItemBase>;
+		max_stack_size = g_Game.ConfigGetInt("cfgVehicles " + item_name + " varStackMax");
+		if( max_stack_size < 1)
+			max_stack_size = g_Game.ConfigGetInt("cfgVehicles " + item_name + " varQuantityMax");
 		
-		int piles_count = Math.Floor(quantity/stack_size);
-		int rest = quantity - (piles_count*stack_size);
+		int full_piles_count = Math.Floor(quantity/max_stack_size);
+		int rest = quantity - (full_piles_count*max_stack_size);
 		
-		for ( int i = 0; i < piles_count; i++ )
+		for ( int i = 0; i < full_piles_count; i++ )
 		{
-			pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
-			pile.SetQuantity(stack_size);
-			items.Insert(pile);
+			if (floaty_spawn)
+				pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_CREATEPHYSICS|ECE_UPDATEPATHGRAPH));
+			else
+				pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
+			pile.SetQuantity(max_stack_size);
+			pile.SetHealth(health);
+			item_piles.Insert(pile);
 		}
-		if ( rest > 0)
+		if ( rest > 0 )
 		{
-			pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
+			if (floaty_spawn)
+				pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_CREATEPHYSICS|ECE_UPDATEPATHGRAPH));
+			else
+				pile = ItemBase.Cast(GetGame().CreateObjectEx(item_name, ground_position, ECE_PLACE_ON_SURFACE));
 			pile.SetQuantity(rest);
-			items.Insert(pile);
+			pile.SetHealth(health);
+			item_piles.Insert(pile);
 		}
-		return items;
+		return item_piles;
 	}
 	
 	static array<Magazine> CreateMagazinePiles(string item_name, vector ground_position, float quantity,  float health )
@@ -476,6 +487,29 @@ class MiscGameplayFunctions
 			}
 		}
 		return -1;
+	}
+	
+	static float GetTypeMaxGlobalHealth(string class_name, string health_type = "Health")
+	{
+		float max_health;
+		string cfg_path;
+		
+		if ( GetGame().ConfigIsExisting(CFG_VEHICLESPATH+" "+class_name) )
+		{
+			cfg_path = CFG_VEHICLESPATH;
+		}
+		else if ( GetGame().ConfigIsExisting(CFG_WEAPONSPATH+" "+class_name) )
+		{
+			cfg_path = CFG_WEAPONSPATH;
+		}
+		else if ( GetGame().ConfigIsExisting(CFG_MAGAZINESPATH+" "+class_name) )
+		{
+			cfg_path = CFG_MAGAZINESPATH;
+		}
+		cfg_path = cfg_path + " "+class_name+" DamageSystem GlobalHealth " + health_type + " hitpoints";
+		max_health = GetGame().ConfigGetFloat(cfg_path);
+		
+		return max_health;
 	}
 	
 	static bool GetProjectedCursorPos3d (out vector position, Weapon_Base weapon)

@@ -6,6 +6,7 @@ class Hatchet extends ToolBase
 		AddAction(ActionBuildPartSwitch);
 		AddAction(ActionMineTree);
 		AddAction(ActionMineBush);
+		AddAction(ActionRepairPart);
 		AddAction(ActionDismantlePart);
 		AddAction(ActionBuildPart);
 		//AddAction(ActionDestroyPart);

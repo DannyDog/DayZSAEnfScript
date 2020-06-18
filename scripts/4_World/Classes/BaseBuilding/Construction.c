@@ -11,6 +11,7 @@ enum ConstructionMaterialType
 class Construction
 {
 	const float REPAIR_MATERIAL_PERCENTAGE = 0.15;
+	const float DECONSTURCT_MATERIAL_LOSS = 0.2;
 	protected ref map<string, ref ConstructionPart> m_ConstructionParts;	//string - part name; int - 0-not constructed, 1-constructed
 	protected BaseBuildingBase 	m_Parent;
 	
@@ -94,9 +95,12 @@ class Construction
 	//DismantlePart
 	void DismantlePartServer( notnull Man player, string part_name, int action_id )
 	{
+		string damage_zone;
+		DamageSystem.GetDamageZoneFromComponentName( GetParent(),part_name,damage_zone );
+		
 		bsbDebugPrint("[bsb] Construction DismantlePartServer | " + part_name);
 		//receive materials
-		ReceiveMaterialsServer( player, part_name );
+		ReceiveMaterialsServer( player, part_name, damage_zone );
 			
 		//drop non-usable materials
 		DropNonUsableMaterialsServer( player, part_name );
@@ -105,8 +109,7 @@ class Construction
 		GetParent().OnPartDismantledServer( player, part_name, action_id );
 		
 		//set DamageZone health to zero (redundant?)
-		string damage_zone;
-		if ( DamageSystem.GetDamageZoneFromComponentName(GetParent(),part_name,damage_zone) && GetParent().GetHealth(damage_zone,"Health") > 0 )
+		if ( GetParent().GetHealth(damage_zone,"Health") > 0 )
 		{
 			GetParent().SetHealth(damage_zone,"Health",0);
 		}
@@ -680,14 +683,14 @@ class Construction
 					else										//-1 - deletes the object
 					{
 						GetGame().ObjectDelete( attachment );
-					}	
+					}
 				}
 			}
 		}
 	}
 	
 	//receive materials when dismantling
-	protected void ReceiveMaterialsServer( notnull Man player, string part_name )
+	protected void ReceiveMaterialsServer( notnull Man player, string part_name, string damagezone_name )
 	{
 		ConstructionPart construction_part = GetConstructionPart( part_name );
 		string main_part_name = construction_part.GetMainPartName();
@@ -732,8 +735,6 @@ class Construction
 						//detach if base
 						if ( construction_part.IsBase() )
 						{
-
-							
 							if ( GetGame().IsMultiplayer() )
 							{
 								InventoryLocation dst = new InventoryLocation;
@@ -753,7 +754,28 @@ class Construction
 				}
 				else
 				{
-					if ( attachment )
+					float pile_health;
+					float qty_coef;
+					vector destination = GetParent().GetPosition();
+					//placed on helper memory point, if available
+					if (GetParent().MemoryPointExists(main_part_name))
+					{
+						destination = GetParent().GetMemoryPointPos(main_part_name);
+						destination = GetGame().ObjectModelToWorld(GetParent(),destination);
+						/*Print(destination);
+						destination[0] = destination[0] + 1;
+						destination[1] = destination[1] + 1;
+						destination[2] = destination[2] + 1;
+						Print(destination);*/
+					}
+					//pile_health = GameConstants.DAMAGE_WORN_VALUE * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
+					pile_health = GetParent().GetHealth01(damagezone_name,"Health") * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
+					qty_coef =  1 - (GetParent().GetHealthLevel(damagezone_name) * DECONSTURCT_MATERIAL_LOSS) - DECONSTURCT_MATERIAL_LOSS;
+					quantity *= qty_coef;
+					quantity = Math.Max(Math.Floor(quantity),1);
+					MiscGameplayFunctions.CreateItemBasePiles(type,destination,quantity,pile_health,true);
+					
+					/*if ( attachment )
 					{
 						float att_quantity = attachment.GetQuantity();
 						float att_max_quantity = attachment.GetQuantityMax();
@@ -793,7 +815,7 @@ class Construction
 						{
 							attachment.SetQuantity( quantity );
 						}
-					}
+					}*/
 				}
 			}
 		}
@@ -894,16 +916,16 @@ class Construction
 								//unlock slot
 								GetParent().GetInventory().SetSlotLock( inventory_location.GetSlot() , false );
 									
-								EntityAI parent = player;
-								ItemBase item = ItemBase.Cast(inventory_location.GetItem());
+								EntityAI parent = GetParent();
+								if (!parent)
+									parent = player;
 								
+								ItemBase item = ItemBase.Cast(inventory_location.GetItem());
 								
 								int quantity_max = item.ConfigGetFloat("varStackMax");
 								if( quantity_max < 1)
 									quantity_max = item.GetQuantityMax();
 								
-								//if (!parent)
-									parent = GetParent();
 								InventoryLocation dst = new InventoryLocation;
 								vector mat[4];
 								item.GetTransform(mat);
@@ -927,21 +949,11 @@ class Construction
 								//drop
 								if ( GetGame().IsMultiplayer() )
 								{
-									if (player)
-									{
-										//GameInventory.SetGroundPosByOwner( player, inventory_location.GetItem(), dst );
-										player.ServerTakeToDst( inventory_location, dst );
-									}
-									else
-									{
-										//GameInventory.SetGroundPosByOwner( GetParent(), inventory_location.GetItem(), dst );
-										GetParent().ServerTakeToDst( inventory_location, dst );
-									}
-									
+									parent.ServerTakeToDst( inventory_location, dst );
 								}
 								else
 								{
-									GetParent().GetInventory().DropEntity( InventoryMode.PREDICTIVE, GetParent(), attachment );
+									parent.LocalTakeToDst( inventory_location, dst );
 								}
 							}
 						}

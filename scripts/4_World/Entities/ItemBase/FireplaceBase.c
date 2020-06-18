@@ -71,7 +71,9 @@ class FireplaceBase extends ItemBase
 	//! 
 	const int 	TIMER_HEATING_UPDATE_INTERVAL 		= 2;		//! update interval duration of heating process (seconds)
 	const int 	TIMER_COOLING_UPDATE_INTERVAL 		= 2;		//! update interval duration of cooling process (seconds)
-	
+	//! direct cooking slots
+	const int   DIRECT_COOKING_SLOT_COUNT			= 3;
+
 	// stage lifetimes
 	const int   LIFETIME_FIREPLACE_STONE_CIRCLE		= 172800;
 	const int   LIFETIME_FIREPLACE_STONE_OVEN		= 604800;
@@ -82,11 +84,13 @@ class FireplaceBase extends ItemBase
 	protected ref Timer m_HeatingTimer;
 	protected ref Timer m_CoolingTimer;
 	
-	protected FireplaceLight m_Light; // Light entity
+	// Light entity
+	protected FireplaceLight m_Light;
+	protected float m_LightDistance = 2000;
 	
 	//Attachments
 	protected ItemBase m_CookingEquipment;
-	protected ItemBase m_DirectCookingSlots[3];
+	protected ItemBase m_DirectCookingSlots[DIRECT_COOKING_SLOT_COUNT];
 	protected ref FireConsumable m_ItemToConsume;
 	
 	//Particles - default for FireplaceBase
@@ -432,10 +436,14 @@ class FireplaceBase extends ItemBase
 
 	bool DirectCookingSlotsInUse()
 	{
-		if ( m_DirectCookingSlots[0] || m_DirectCookingSlots[1] || m_DirectCookingSlots[2] )
-			return true;
-		else
-			return false;
+		for (int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++)
+		{
+			if ( m_DirectCookingSlots[i] )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	//Destroy
@@ -468,8 +476,25 @@ class FireplaceBase extends ItemBase
 			
 			if ( GetLightEntity() )
 			{
-				// The following solves an issue with the light point clipping through narrow geometry
+				// change brightness based on the distance of player to the fireplace
+				Object player = GetGame().GetPlayer();
+				if ( IsOven() )
+					m_LightDistance = 50;
+				else
+					m_LightDistance = 2000;
+				if ( player )
+				{
+					if ( vector.Distance( player.GetPosition(), this.GetPosition() ) > m_LightDistance )
+					{
+						GetLightEntity().FadeBrightnessTo( 0, 5 );
+					}
+					else
+					{
+						GetLightEntity().FadeBrightnessTo( FireplaceLight.m_FireplaceBrightness, 5 );
+					}
+				}
 				
+				// The following solves an issue with the light point clipping through narrow geometry
 				if ( IsItemTypeAttached ( ATTACHMENT_STONES )  ||  IsBarrelWithHoles()  ||  IsFireplaceIndoor() )
 				{
 					GetLightEntity().SetInteriorMode();

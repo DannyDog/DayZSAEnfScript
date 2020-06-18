@@ -73,7 +73,7 @@ class ActionBuildStoneCircle: ActionContinuousBase
 			fireplace_target.SetStoneCircleState( true );
 			
 			// extend lifetime
-			fireplace_target.SetLifetime( FireplaceBase.LIFETIME_FIREPLACE_STONE_CIRCLE );
+			fireplace_target.SetLifetimeMax( FireplaceBase.LIFETIME_FIREPLACE_STONE_CIRCLE );
 
 			//add specialty to soft skills
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

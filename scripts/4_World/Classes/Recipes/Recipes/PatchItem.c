@@ -68,7 +68,7 @@ class PatchItem extends RecipeBase
 		Class.CastTo(ingredient1, ingredients[0]);
 		ItemBase ingredient2;
 		Class.CastTo(ingredient2, ingredients[1]);
-		return module_repairing.CanRepair(ingredient1,ingredient2);
+		return module_repairing.CanRepair(ingredient1,ingredient2) && ingredient2.CanBeRepairedByCrafting();
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
@@ -81,6 +81,6 @@ class PatchItem extends RecipeBase
 		Class.CastTo(ingredient1, ingredients[0]);
 		ItemBase ingredient2;
 		Class.CastTo(ingredient2, ingredients[1]);
-		module_repairing.Repair(playerPB, ingredient1,ingredient2,m_Specialty);
+		module_repairing.Repair(playerPB, ingredient1,ingredient2,m_Specialty); //TODO repair all damage zones if packed? Design pending
 	}
 };

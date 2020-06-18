@@ -576,10 +576,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 
 				if (!e.CheckRequestSrc())
 				{
-					if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+					if( GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER && itemSrc )
 					{
 						correct_il = new InventoryLocation;
-						e.GetSrcEntity().GetInventory().GetCurrentInventoryLocation(correct_il);
+						itemSrc.GetInventory().GetCurrentInventoryLocation(correct_il);
 						
 						if( !correct_il.CompareLocationOnly(e.GetSrc()) )
 						{
@@ -820,13 +820,15 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	void RemoveMovableOverride(EntityAI item)
 	{
 		ItemBase itemIB = ItemBase.Cast(item);
-		itemIB.SetCanBeMovedOverride(false);
+		if (itemIB)
+			itemIB.SetCanBeMovedOverride(false);
 	}
 	
 	void EnableMovableOverride(EntityAI item)
 	{
 		ItemBase itemIB = ItemBase.Cast(item);
-		itemIB.SetCanBeMovedOverride(true);
+		if (itemIB)
+			itemIB.SetCanBeMovedOverride(true);
 	}
 	
 	// Hacky solution for dealing with fencekit rope related issues, could be fixed by introducing some indicator that this item behaves differently or sth..

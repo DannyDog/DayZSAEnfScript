@@ -719,6 +719,11 @@ class ItemBase extends InventoryItem
 		return false;
 	}
 	
+	bool CanBeRepairedByCrafting()
+	{
+		return true;
+	}
+	
 	override bool IsBeingPlaced()
 	{
 		return m_IsBeingPlaced;
@@ -2524,7 +2529,7 @@ class ItemBase extends InventoryItem
 
 	override void AfterStoreLoad()
 	{	
-		super.AfterStoreLoad();		
+		super.AfterStoreLoad();
 		
 		if (m_FixDamageSystemInit)
 		{
@@ -2995,7 +3000,7 @@ class ItemBase extends InventoryItem
 		float max = ConfigGetFloat("varWetMax");
 		
 		m_VarWet = Math.Clamp(value, min, max);
-		//UpdateWeight();
+		UpdateWeight();
 		SetVariableMask(VARIABLE_WET);
 	}
 	//----------------------------------------------------------------
@@ -3297,6 +3302,7 @@ class ItemBase extends InventoryItem
 		//Print("EEOnCECreate");
 		if( !IsMagazine() && HasQuantity() ) SetCEBasedQuantity();
 		//SetCEBasedQuantity();
+		SetZoneDamageCEInit();
 	}
 	
 	
@@ -3335,16 +3341,18 @@ class ItemBase extends InventoryItem
 
 	override bool CanReceiveItemIntoCargo( EntityAI cargo )
 	{
-		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
-			return false;
+		//removed 15.06. coz of loading from storage -> after load items in cargo was lost -> waiting for proper solution
+		//if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+		//	return false;
 		
 		return super.CanReceiveItemIntoCargo( cargo );
 	}
 
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
-		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
-			return false;
+		//removed 15.06. coz of loading from storage -> after load items in cargo was lost -> waiting for proper solution
+		//if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+		//	return false;
 		
 		GameInventory attachmentInv = attachment.GetInventory();
 		if (attachmentInv && attachmentInv.GetCargo() && attachmentInv.GetCargo().GetItemCount() > 0)
@@ -3618,10 +3626,6 @@ class ItemBase extends InventoryItem
 	}
 	
 	WrittenNoteData GetWrittenNoteData() {};
-	bool GetSpecialUserActionDamage(out float damage, int action_type = -1)
-	{
-		return false;
-	};
 	
 	void StopItemDynamicPhysics()
 	{
@@ -3638,6 +3642,19 @@ class ItemBase extends InventoryItem
 			SetHealthMax(zone_names.Get(i),"Health");
 		}
 		SetHealthMax("","Health");
+	}
+	
+	//! Sets zone damages to match randomized global health set by CE (CE spawn only)
+	void SetZoneDamageCEInit()
+	{
+		float global_health = GetHealth01("","Health");
+		array<string> zones = new array<string>;
+		GetDamageZones(zones);
+		//set damage of all zones to match global health level
+		for (int i = 0; i < zones.Count(); i++)
+		{
+			SetHealth01(zones.Get(i),"Health",global_health);
+		}
 	}
 }
 

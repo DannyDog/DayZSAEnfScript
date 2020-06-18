@@ -3,7 +3,8 @@ class BulletHide extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_weapon.SelectionBulletHide();
+		if(e)
+			m_weapon.SelectionBulletHide();
 	}
 
 	override void OnExit (WeaponEventBase e)

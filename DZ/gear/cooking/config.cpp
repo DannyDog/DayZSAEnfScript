@@ -639,7 +639,7 @@ class CfgVehicles
 		rotationFlags = 2;
 		openable = 0;
 		weight = 750;
-		itemSize[] = {5,3};
+		itemSize[] = {4,3};
 		itemsCargoSize[] = {4,3};
 		fragility = 0.01;
 		allowOwnedCargoManipulation = 1;

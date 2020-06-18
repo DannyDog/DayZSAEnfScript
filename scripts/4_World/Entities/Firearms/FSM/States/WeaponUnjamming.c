@@ -77,31 +77,34 @@ class WeaponUnjamming_Cartridge extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_type = string.Empty;
-		
-		float dmg;
-		string type;
-		
-		m_weapon.SetJammed(false);
-	
-		int mi = m_weapon.GetCurrentMuzzle();
-		
-		if (m_weapon.IsChamberFiredOut(mi))
+		if (e)
 		{
-			m_weapon.EjectCasing(mi);
-			m_weapon.EffectBulletHide(mi);
-			m_weapon.SelectionBulletHide();
-		}
-		
-		if (!m_weapon.IsChamberEmpty(mi))
-		{
-			DayZPlayer p = e.m_player;
-
-			m_weapon.CreateRound(mi);
-			ejectBulletAndStoreInMagazine(m_weapon, mi, null, p);
+			m_type = string.Empty;
 			
-			m_weapon.EffectBulletHide(mi);
-			m_weapon.SelectionBulletHide();
+			float dmg;
+			string type;
+			
+			m_weapon.SetJammed(false);
+		
+			int mi = m_weapon.GetCurrentMuzzle();
+			
+			if (m_weapon.IsChamberFiredOut(mi))
+			{
+				m_weapon.EjectCasing(mi);
+				m_weapon.EffectBulletHide(mi);
+				m_weapon.SelectionBulletHide();
+			}
+			
+			if (!m_weapon.IsChamberEmpty(mi))
+			{
+				DayZPlayer p = e.m_player;
+	
+				m_weapon.CreateRound(mi);
+				ejectBulletAndStoreInMagazine(m_weapon, mi, null, p);
+				
+				m_weapon.EffectBulletHide(mi);
+				m_weapon.SelectionBulletHide();
+			}
 		}
 	}
 	override void OnExit (WeaponEventBase e)
@@ -206,11 +209,14 @@ class WeaponUnjamming extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_dtAccumulator = 0.0;
-		m_jamTime = 5.0; // @TODO: rand
+		if (e)
+		{
+			m_dtAccumulator = 0.0;
+			m_jamTime = 5.0; // @TODO: rand
 
-		m_start.m_dtAccumulator = m_dtAccumulator;
-		m_start.m_jamTime = m_jamTime;
+			m_start.m_dtAccumulator = m_dtAccumulator;
+			m_start.m_jamTime = m_jamTime;
+		}
 	}
 
 	override void OnExit (WeaponEventBase e)

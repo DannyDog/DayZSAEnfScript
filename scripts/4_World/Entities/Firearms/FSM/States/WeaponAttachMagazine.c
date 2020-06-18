@@ -11,33 +11,35 @@ class RemoveNewMagazineFromInventory extends WeaponStateBase
 
 	override void OnEntry (WeaponEventBase e)
 	{
-		if (!m_newSrc.IsValid())
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory m_newSrc=invalid, item not in bubble?");
-
-		if (m_newMagazine && m_newSrc && m_newSrc.IsValid())
+		if(e)
 		{
-			InventoryLocation curr = new InventoryLocation;
-			m_newMagazine.GetInventory().GetCurrentInventoryLocation(curr);
+			if (!m_newSrc.IsValid())
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory m_newSrc=invalid, item not in bubble?");
 
-			if (m_newSrc.GetType() == InventoryLocationType.GROUND && curr.GetType() == InventoryLocationType.ATTACHMENT && curr.GetSlot() == InventorySlots.LEFTHAND)
+			if (m_newMagazine && m_newSrc && m_newSrc.IsValid())
 			{
-				// already in LH
-			}
-			else
-			{
-				InventoryLocation lhand = new InventoryLocation;
-				lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
-				if (GameInventory.LocationSyncMoveEntity(m_newSrc, lhand))
+				InventoryLocation curr = new InventoryLocation;
+				m_newMagazine.GetInventory().GetCurrentInventoryLocation(curr);
+
+				if (m_newSrc.GetType() == InventoryLocationType.GROUND && curr.GetType() == InventoryLocationType.ATTACHMENT && curr.GetSlot() == InventorySlots.LEFTHAND)
 				{
-					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, ok - new magazine removed from inv (inv->LHand)");
+					// already in LH
 				}
 				else
-					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - cannot new remove mag from inv");
+				{
+					InventoryLocation lhand = new InventoryLocation;
+					lhand.SetAttachment(e.m_player, m_newMagazine, InventorySlots.LEFTHAND);
+					if (GameInventory.LocationSyncMoveEntity(m_newSrc, lhand))
+					{
+						wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, ok - new magazine removed from inv (inv->LHand)");
+					}
+					else
+						Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - cannot new remove mag from inv");
+				}
 			}
+			else
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - no magazines configured for replace (m_old=m_new=NULL)");
 		}
-		else
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " RemoveNewMagazineFromInventory, error - no magazines configured for replace (m_old=m_new=NULL)");
-		
 		super.OnEntry(e);
 	}
 
@@ -102,7 +104,8 @@ class RemoveNewMagazineFromInventory_OnEntryShowMag extends RemoveNewMagazineFro
 {
 	override void OnEntry (WeaponEventBase e)
 	{
-		m_weapon.ShowMagazine();
+		if(e)
+			m_weapon.ShowMagazine();
 		super.OnEntry(e);
 	}
 };
@@ -155,26 +158,28 @@ class WeaponAttachMagazine extends WeaponStateBase
 
 	override void OnEntry (WeaponEventBase e)
 	{
-		Magazine mag = e.m_magazine;
-
-		InventoryLocation newSrc = new InventoryLocation;
-		mag.GetInventory().GetCurrentInventoryLocation(newSrc);
-		
-		// move to LH
-		InventoryLocation lhand = new InventoryLocation;
-		lhand.SetAttachment(e.m_player, mag, InventorySlots.LEFTHAND);
-		if (GameInventory.LocationSyncMoveEntity(newSrc, lhand))
+		if (e)
 		{
-			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponAttachMagazine, ok - new magazine removed from inv (inv->LHand)");
+			Magazine mag = e.m_magazine;
+
+			InventoryLocation newSrc = new InventoryLocation;
+			mag.GetInventory().GetCurrentInventoryLocation(newSrc);
+		
+			// move to LH
+			InventoryLocation lhand = new InventoryLocation;
+			lhand.SetAttachment(e.m_player, mag, InventorySlots.LEFTHAND);
+			if (GameInventory.LocationSyncMoveEntity(newSrc, lhand))
+			{
+				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponAttachMagazine, ok - new magazine removed from inv (inv->LHand)");
+			}
+			else
+				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponAttachMagazine, error - cannot new remove mag from inv");
+
+			InventoryLocation il = new InventoryLocation;
+			il.SetAttachment(m_weapon, mag, InventorySlots.MAGAZINE);
+			m_attach.m_newMagazine = mag;
+			m_attach.m_newDst = il;
 		}
-		else
-			Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponAttachMagazine, error - cannot new remove mag from inv");
-
-		InventoryLocation il = new InventoryLocation;
-		il.SetAttachment(m_weapon, mag, InventorySlots.MAGAZINE);
-		m_attach.m_newMagazine = mag;
-		m_attach.m_newDst = il;
-
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)
 	}
 

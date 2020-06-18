@@ -987,8 +987,16 @@ class WeaponManager
 	Magazine GetPreparedMagazine()
 	{
 		for (int i = 0; i < m_SuitableMagazines.Count(); i++)
+		{
+			if(!m_SuitableMagazines.Get(i) || m_SuitableMagazines.Get(i).IsRuined() )
+			{
+				m_SuitableMagazines.Remove(i);
+				i--;
+				continue;
+			}
 			if (m_SuitableMagazines.Get(i).GetAmmoCount() > 0)
 				return m_SuitableMagazines.Get(i);
+		}
 		
 		return null;
 	}

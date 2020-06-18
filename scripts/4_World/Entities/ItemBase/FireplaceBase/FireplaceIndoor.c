@@ -26,6 +26,8 @@ class FireplaceIndoor extends FireplaceBase
 		RegisterNetSyncVariableFloat( "m_SmokePosY", 0, 0, 2 );
 		RegisterNetSyncVariableFloat( "m_SmokePosZ", 0, 0, 2 );
 		RegisterNetSyncVariableInt( "m_FirePointIndex", 1, 9 );
+		
+		m_LightDistance = 50;
 	}
 	
 	//================================================================

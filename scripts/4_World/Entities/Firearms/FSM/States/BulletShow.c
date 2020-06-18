@@ -3,7 +3,8 @@ class BulletShow extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_weapon.ShowBullet(0);
+		if(e)
+			m_weapon.ShowBullet(0);
 	}
 
 	override void OnExit (WeaponEventBase e)
@@ -17,7 +18,8 @@ class BulletShow2 extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_weapon.ShowBullet(1);
+		if(e)
+			m_weapon.ShowBullet(1);
 	}
 
 	override void OnExit (WeaponEventBase e)

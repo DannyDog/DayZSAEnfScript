@@ -76,11 +76,11 @@ class ActionDismantleOven: ActionContinuousBase
 			// extend lifetime (either back to stone circle lifetime or standard fireplace one)
 			if ( fireplace_target.HasStoneCircle() )
 			{
-				fireplace_target.SetLifetime( FireplaceBase.LIFETIME_FIREPLACE_STONE_CIRCLE );
+				fireplace_target.SetLifetimeMax( FireplaceBase.LIFETIME_FIREPLACE_STONE_CIRCLE );
 			}
 			else
 			{
-				fireplace_target.IncreaseLifetime();
+				fireplace_target.SetLifetimeMax( 10800 );
 			}
 			
 			//add specialty to soft skills

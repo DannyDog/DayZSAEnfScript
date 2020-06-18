@@ -34,25 +34,28 @@ class WeaponRechamber extends WeaponStateBase
 
 	override void OnEntry (WeaponEventBase e)
 	{
-		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber, mag=" + e.m_magazine.ToString());
-		m_srcMagazine = e.m_magazine;
-		m_loa.m_srcMagazine = m_srcMagazine;
-
-		// prepare magazine for ejected ammo
-		int mi = m_weapon.GetCurrentMuzzle();
-		string magazineTypeName = m_weapon.GetChamberedCartridgeMagazineTypeName(mi);
-		float damage = 0.0;
-		string type;
-		if (m_weapon.GetCartridgeInfo(mi, damage, type))
+		if (e)
 		{
-			m_dstMagazine = DayZPlayerUtils.SelectStoreCartridge(e.m_player, m_weapon, mi, m_srcMagazine, damage, magazineTypeName);
-			if (!m_dstMagazine)
-			{
-				Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + "   WeaponRechamber - error, cannot prepare mag for catridge, magType=" + magazineTypeName);
-			}
-		}
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponRechamber, mag=" + e.m_magazine.ToString());
+			m_srcMagazine = e.m_magazine;
+			m_loa.m_srcMagazine = m_srcMagazine;
 
-		e.m_magazine = m_dstMagazine; // @NOTE: override event mag - @TODO
+			// prepare magazine for ejected ammo
+			int mi = m_weapon.GetCurrentMuzzle();
+			string magazineTypeName = m_weapon.GetChamberedCartridgeMagazineTypeName(mi);
+			float damage = 0.0;
+			string type;
+			if (m_weapon.GetCartridgeInfo(mi, damage, type))
+			{
+				m_dstMagazine = DayZPlayerUtils.SelectStoreCartridge(e.m_player, m_weapon, mi, m_srcMagazine, damage, magazineTypeName);
+				if (!m_dstMagazine)
+				{
+					Error("[wpnfsm] " + Object.GetDebugName(m_weapon) + "   WeaponRechamber - error, cannot prepare mag for catridge, magType=" + magazineTypeName);
+				}
+			}
+
+			e.m_magazine = m_dstMagazine; // @NOTE: override event mag - @TODO
+		}
 		super.OnEntry(e); // @NOTE: super after submachine init (prevent override from submachine start)
 	}
 

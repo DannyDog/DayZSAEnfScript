@@ -51,7 +51,7 @@ class StaminaConsumers
 		}
 	}
 
-	bool HasEnoughStaminaFor(EStaminaConsumers consumer, float curStamina, bool isDepleted)
+	bool HasEnoughStaminaFor(EStaminaConsumers consumer, float curStamina, bool isDepleted, float cap)
 	{
 		if ( m_StaminaConsumers && m_StaminaConsumers.Contains(consumer) )
 		{
@@ -59,7 +59,7 @@ class StaminaConsumers
 			
 			if ( consumer != EStaminaConsumers.SPRINT )
 			{
-				if( (isDepleted || curStamina < sc.GetDrainThreshold()) )
+				if ( (isDepleted || (curStamina < sc.GetDrainThreshold()/* && curStamina < cap*/)) )
 				{
 					sc.SetState(false);
 					return false;
@@ -69,7 +69,7 @@ class StaminaConsumers
 			{
 				if( !isDepleted )
 				{
-					if ( sc.GetState() )
+					if ( sc.GetState() ) 
 					{
 						sc.SetState(true);
 						return true;
@@ -82,7 +82,7 @@ class StaminaConsumers
 				}
 			}
 
-			if( curStamina > sc.GetDrainThreshold() )
+			if ( curStamina > sc.GetDrainThreshold() || curStamina == cap ) //Sometimes player can't go up to drain threshold
 			{
 				sc.SetState(true);
 				return true;
@@ -92,13 +92,13 @@ class StaminaConsumers
 		return false;
 	}
 	
-	bool HasEnoughStaminaToStart(EStaminaConsumers consumer, float curStamina, bool isDepleted)
+	bool HasEnoughStaminaToStart(EStaminaConsumers consumer, float curStamina, bool isDepleted, float cap)
 	{
 		if ( m_StaminaConsumers && m_StaminaConsumers.Contains(consumer) )
 		{
 			StaminaConsumer sc = m_StaminaConsumers.Get(consumer);
 			
-			if( (isDepleted || curStamina < sc.GetActivationThreshold()) )
+			if( (isDepleted || (curStamina < sc.GetActivationThreshold() && curStamina < cap)) )
 			{
 				sc.SetState(false);
 				return false;
@@ -583,12 +583,12 @@ class StaminaHandler
 	// ---------------------------------------------------
 	bool HasEnoughStaminaFor(EStaminaConsumers consumer)
 	{
-		return m_StaminaConsumers.HasEnoughStaminaFor(consumer, m_Stamina, m_StaminaDepleted);
+		return m_StaminaConsumers.HasEnoughStaminaFor(consumer, m_Stamina, m_StaminaDepleted, m_StaminaCap);
 	}
 	
 	bool HasEnoughStaminaToStart(EStaminaConsumers consumer)
 	{
-		return m_StaminaConsumers.HasEnoughStaminaToStart(consumer, m_Stamina, m_StaminaDepleted);
+		return m_StaminaConsumers.HasEnoughStaminaToStart(consumer, m_Stamina, m_StaminaDepleted, m_StaminaCap);
 	}
 
 	void SetStamina(float stamina_value)

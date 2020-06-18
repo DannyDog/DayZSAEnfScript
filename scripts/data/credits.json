@@ -145,10 +145,11 @@
                 {
                     "SectionName": "#programmers",
                     "SectionLines": [
-					    "Martin Weiser",
                         "Adrian Turcanu",
                         "Aleš Renner",
                         "Eduard Pribula",
+						"Elias Mittet Hernes",
+						"Floris Leysen",
                         "František Bidlo",
                         "Jakub Horyna",
                         "Jakub Lukašík",
@@ -159,6 +160,7 @@
                         "László Nagy",
                         "Lukáš Igaz",
                         "Marek Zeman",
+					    "Martin Weiser",
                         "Matúš Štefánik",
                         "Mojmír Svoboda",
                         "Ondrej Ritomský",
@@ -311,7 +313,8 @@
                         "Andrej Sinkević",
                         "Filip Čenžák",
                         "Kryštof Havel",
-                        "Marek Lacena"
+                        "Marek Lacena",
+						"Zuzana Čapandová"
                     ]
                 }
             ]
@@ -323,7 +326,9 @@
                     "SectionName": "#deployment_engineers",
                     "SectionLines": [
                         "David Komínek",
-                        "Martin Vitouš"
+                        "Martin Vitouš",
+						"Pavel Fitz",
+                        "Petr Vnenk"
                     ]
                 }
             ]
@@ -538,6 +543,7 @@
                 {
                     "SectionName": "#brand_and_pr_management_team",
                     "SectionLines": [
+						"Jakub Vamberský",
                         "Miguel Raimundo",
 						"Matěj Smrček",
                         "Michael Christensen",
@@ -756,7 +762,6 @@
                         "Ondřej Vanča",
                         "Pankaj Singh",
 						"Patrik Šedivý",
-						"Pavel Fitz",
 						"Pavel Fronek",
                         "Pavel Hamata",
                         "Pavol Sočuvka",
@@ -765,7 +770,6 @@
                         "Petr Schiebel",
                         "Petr Secký",
                         "Petr Vlach",
-                        "Petr Vnenk",
                         "Petra Kočí",
                         "Pinatee Panichauttra",
                         "Pitsanu Jittamart",

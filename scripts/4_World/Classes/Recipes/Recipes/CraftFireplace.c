@@ -74,7 +74,7 @@ class CraftFireplace extends RecipeBase
 		ItemBase ingredient1 = ingredients[0];
 		ItemBase ingredient2 = ingredients[1];
 		
-		if ( ingredient1.Type() == ingredient2.Type() )
+		if ( ingredient1.Type() == ingredient2.Type() || ingredient1.GetInventory().GetSlotId(0) == ingredient2.GetInventory().GetSlotId(0) )
 		{
 			return false;
 		}

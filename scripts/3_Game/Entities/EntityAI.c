@@ -518,7 +518,9 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is attached to it.
 	void EEItemAttached(EntityAI item, string slot_name)
 	{
-		UpdateWeight(WeightUpdateType.RECURSIVE_ADD, item.GetWeight());
+		float weight = item.GetWeight();
+		if (weight > 0)
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD, weight);
 		
 		//Print (slot_name);
 		if ( m_ComponentsBank != NULL )
@@ -563,7 +565,9 @@ class EntityAI extends Entity
 	// !Called on PARENT when a child is detached from it.
 	void EEItemDetached(EntityAI item, string slot_name)
 	{
-		UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, item.GetWeight());
+		float weight = item.GetWeight();
+		if (weight > 0)
+			UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, weight);
 		
 		if ( m_ComponentsBank != NULL )
 		{
@@ -601,7 +605,9 @@ class EntityAI extends Entity
 
 	void EECargoIn(EntityAI item)
 	{
-		UpdateWeight(WeightUpdateType.RECURSIVE_ADD, item.GetWeight());
+		float weight = item.GetWeight();
+		if (weight > 0)
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD, weight);
 		
 		if( m_OnItemAddedIntoCargo )
 			m_OnItemAddedIntoCargo.Invoke( item, this );
@@ -611,7 +617,9 @@ class EntityAI extends Entity
 
 	void EECargoOut(EntityAI item)
 	{
-		UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, item.GetWeight());
+		float weight = item.GetWeight();
+		if (weight > 0)
+			UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, weight);
 		
 		if( m_OnItemRemovedFromCargo )
 			m_OnItemRemovedFromCargo.Invoke( item, this );
@@ -1675,6 +1683,11 @@ class EntityAI extends Entity
 	proto native float GetLifetime();
 	//! Reset economy lifetime to default (seconds)
 	proto native void IncreaseLifetime();
+
+	//! Set (override) max economy lifetime per entity instance (seconds)
+	proto native void SetLifetimeMax( float fLifeTime );
+	//! Get max economy lifetime per instance - default is from DB (seconds)
+	proto native float GetLifetimeMax();
 
 	// BODY STAGING
 	//! Use this to access Body Staging component on dead character. Returns NULL if the given object lacks such component.

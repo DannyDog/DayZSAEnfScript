@@ -1,73 +1,71 @@
 class PluginRepairing extends PluginBase
 {
-	bool Repair(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight, string damage_zone = "")
+	bool Repair(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true)
 	{	
 		switch ( item.GetHealthLevel(damage_zone) ) 
 		{
 			case GameConstants.STATE_PRISTINE:
 				break;
-				
+			case GameConstants.STATE_RUINED:
+				break;
 			case GameConstants.STATE_WORN:
 				if( CanRepairToPristine( player ) || CanBeRepairedToPristine( item ) )
 				{
-					CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
+					CalculateHealth( player, repair_kit, item, specialty_weight,/* GameConstants.DAMAGE_PRISTINE_VALUE,*/ damage_zone, use_kit_qty );
 				}
 				break;
-				
-			case GameConstants.STATE_DAMAGED:
-				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
-				break;
-				
-			case GameConstants.STATE_BADLY_DAMAGED:
-				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone );
-				break;
-			
-			case GameConstants.STATE_RUINED:
+			default:
+				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone, use_kit_qty );
 				break;
 		}
 
 		return true;
 	}
 
-	void CalculateHealth( PlayerBase player, ItemBase kit, ItemBase item, float specialty_weight, string damage_zone = "" )
+	void CalculateHealth( PlayerBase player, ItemBase kit, ItemBase item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true )
 	{
 		bool kit_has_quantity = kit.HasQuantity();
+		int health_levels_count = item.GetNumberOfHealthLevels(damage_zone);
 		float cur_kit_quantity = kit.GetQuantity();
-		float kit_repair_cost = GetKitRepairCost( kit, item );
-		float kit_repair_cost_adjusted;
+		float kit_repair_cost_per_level = GetKitRepairCost( kit, item );
+		float kit_repair_cost_adjusted; //used with specialty_weight, disconnected
 		float new_quantity;
-		float item_max_health = item.GetMaxHealth( damage_zone, "" );
-		float health_up_one_level;
 		
-		health_up_one_level = item_max_health / 4;
-		
-		if ( cur_kit_quantity > health_up_one_level )
+		int target_level = Math.Clamp(item.GetHealthLevel(damage_zone) - 1, 0, health_levels_count - 1);
+		float health_coef;
+		if ( !CanRepairToPristine( player ) && !CanBeRepairedToPristine( item ) )
 		{
-			kit_repair_cost_adjusted = player.GetSoftSkillsManager().SubtractSpecialtyBonus( kit_repair_cost, specialty_weight );
+			target_level = Math.Clamp(target_level, GameConstants.STATE_WORN, health_levels_count - 1);
+		}
+		health_coef = item.GetHealthLevelValue(target_level,damage_zone);
+		
+		//handles kit depletion; TODO: move to separate method.
+		if ( cur_kit_quantity > kit_repair_cost_per_level )
+		{
+			kit_repair_cost_adjusted = kit_repair_cost_per_level; //TODO: removed speciality weight for now, it should affect speed only (?).
+			//kit_repair_cost_adjusted = player.GetSoftSkillsManager().SubtractSpecialtyBonus( kit_repair_cost_per_level, specialty_weight );
 			kit_repair_cost_adjusted = Math.Clamp( kit_repair_cost_adjusted, 0, 100 );
-			new_quantity = kit.GetQuantity() - kit_repair_cost_adjusted;
-			kit.SetQuantity( new_quantity );
-			
-			item.AddHealth( damage_zone, "", health_up_one_level );
+			if(use_kit_qty)
+			{
+				new_quantity = kit.GetQuantity() - kit_repair_cost_adjusted;
+				kit.SetQuantity( new_quantity );
+			}
 		}
 		else if (!kit_has_quantity) //"kit" without quantity (hammers and such) for your every day repairing needs
 		{
-			item.AddHealth( damage_zone, "", health_up_one_level );
 		}
 		else
 		{
-			new_quantity = kit.GetQuantity() - cur_kit_quantity;
-			kit.SetQuantity( new_quantity );
-			
-			item.AddHealth( damage_zone, "", cur_kit_quantity );
+			if(use_kit_qty)
+			{
+				kit.SetQuantity( 0 );
+			}
 		}
 		
-		if ( !CanRepairToPristine( player ) && !CanBeRepairedToPristine( item ) )
+		if (item.GetHealth01(damage_zone,"Health") < health_coef)
 		{
-			float item_health = item.GetHealth( damage_zone, "" );
-			float clamp_health = Math.Clamp( item_health, 0, ( item_max_health * 0.7 ) );
-			item.SetHealth( damage_zone, "", clamp_health );
-		}		
+			item.SetHealth01(damage_zone,"Health",health_coef);
+		}
 	}
 
 	bool CanRepair( ItemBase repair_kit, ItemBase item, string damage_zone = "" )
@@ -80,7 +78,7 @@ class PluginRepairing extends PluginBase
 			
 			ref array<int> repairable_with_types = new array<int>;
 			item.ConfigGetIntArray( "repairableWithKits", repairable_with_types );	
-						
+			
 			for ( int i = 0; i < repairable_with_types.Count(); i++ )
 			{
 				int repairable_with_type = repairable_with_types.Get(i);

@@ -31,7 +31,8 @@ class WeaponFireLast extends WeaponStateBase
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		m_dtAccumulator = 0;
+		if (e)
+			m_dtAccumulator = 0;
 	}
 
 	override void OnExit (WeaponEventBase e)

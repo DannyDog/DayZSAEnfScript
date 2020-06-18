@@ -2,22 +2,24 @@ class ActionDismantlePartCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		float time = SetBuildingDuration(m_ActionData.m_MainItem);
+		float time = SetCallbackDuration(m_ActionData.m_MainItem);
 		m_ActionData.m_ActionComponent = new CAContinuousTime( time );
 	}
 	
-	float SetBuildingDuration( ItemBase item )
+	float SetCallbackDuration( ItemBase item )
 	{
-		switch( item.Type() )
+		/*switch( item.Type() )
 		{
 			case Pickaxe:
 			case Shovel:
 			case FieldShovel:
-				return 12.0;
+				return UATimeSpent.BASEBUILDING_DECONSTRUCT_MEDIUM;
+			case FirefighterAxe:
+				return UATimeSpent.BASEBUILDING_DECONSTRUCT_FAST;
 			default:
-				return UATimeSpent.DEFAULT_DECONSTRUCT;
-		}
-		return UATimeSpent.DEFAULT_DECONSTRUCT;
+				return UATimeSpent.BASEBUILDING_DECONSTRUCT_SLOW;
+		}*/
+		return UATimeSpent.BASEBUILDING_DECONSTRUCT_SLOW;
 	}
 };
 

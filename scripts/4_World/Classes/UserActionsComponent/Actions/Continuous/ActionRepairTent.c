@@ -1,13 +1,27 @@
+class RepairTentActionReciveData : ActionReciveData
+{
+	string m_DamageZoneRecived;
+}
+
+class RepairTentActionData : ActionData
+{
+	string m_DamageZone;
+}
+
 class ActionRepairTentCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousTime(3); //TODO add proper constant
+		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.BASEBUILDING_REPAIR_FAST);
 	}
 };
 
 class ActionRepairTent: ActionContinuousBase
 {
+	typename m_LastValidType;
+	string m_CurrentDamageZone = "";
+	int m_LastValidComponentIndex = -1;
+	
 	void ActionRepairTent()
 	{
 		m_CallbackClass = ActionRepairTentCB;
@@ -50,42 +64,62 @@ class ActionRepairTent: ActionContinuousBase
 	}*/
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
+	{
+		//m_CurrentDamageZone = "";
 		Object targetObject = target.GetObject();
 		Object targetParent = target.GetParent();
-		string damageZone;
+		if ( !targetParent.IsInherited(TentBase) )
+			return false;
+		//string damageZone = "";
 
 		if ( player && targetObject && targetParent )
 		{
 			float max_action_distance = 1; //m_MaximalActionDistance;
 			
+			//TODO: purge this abomination
 			if ( targetParent.IsInherited(CarTent) ) max_action_distance = 10.0;
 			else if ( targetParent.IsInherited(LargeTent) ) max_action_distance = 10.0;
 			else if ( targetParent.IsInherited(MediumTent) ) max_action_distance = 6.0;
+			else if ( targetParent.IsInherited(PartyTent) ) max_action_distance = 10.0;
 			
 			float distance = Math.AbsFloat(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
 			
-			if (  distance <= max_action_distance )	
+			if ( distance <= max_action_distance )	
 			{
-				if ( targetParent.IsInherited(TentBase) ) 
+				if (GetGame().IsMultiplayer() && GetGame().IsServer())
+					return true;
+				
+				array<string> selections = new array<string>;
+				PluginRepairing module_repairing;
+				Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
+				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
+				TentBase tent = TentBase.Cast( targetParent );
+				
+				if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "")
 				{
-					array<string> selections = new array<string>;
-					targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
-					TentBase tent = TentBase.Cast( targetParent );
+					string damageZone = "";
 					
 					for (int s = 0; s < selections.Count(); s++)
 					{
-						if (DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone)); //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
+						if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 						{
-							//Print("#" + s + " damageZone: " + damageZone);
+							Print("#" + s + " damageZone: " + damageZone);
 							break;
 						}
 					}
-					
-					PluginRepairing module_repairing;
-					Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
-					
-					return module_repairing.CanRepair(item,tent,damageZone);
+					if ( damageZone != "" )
+					{
+						m_CurrentDamageZone = damageZone;
+						m_LastValidComponentIndex = target.GetComponentIndex();
+						m_LastValidType = targetObject.Type();
+					}
+				}
+				if ( m_CurrentDamageZone != "" )
+				{
+					if (module_repairing.CanRepair(item,tent,m_CurrentDamageZone))
+					{
+						return true;
+					}
 				}
 			}
 		}
@@ -97,36 +131,93 @@ class ActionRepairTent: ActionContinuousBase
 	{
 		Object targetObject = action_data.m_Target.GetObject();
 		Object targetParent = action_data.m_Target.GetParent();
-
-		if ( targetParent && targetParent.IsInherited(TentBase) ) 
+		
+		string damageZone = RepairTentActionData.Cast(action_data).m_DamageZone;
+		if (!GetGame().IsMultiplayer())
+			damageZone = m_CurrentDamageZone;
+		
+		if ( targetParent && targetParent.IsInherited(TentBase) && damageZone != "" ) 
 		{
-			string damageZone;
-			array<string> selections = new array<string>;
-			targetObject.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
-			
 			TentBase tent = TentBase.Cast( targetParent );
-			for ( int s = 0; s < selections.Count(); s++)
-			{
-				if (DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone)); //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-				{
-					break;
-				}
-			}
-			
 			PluginRepairing module_repairing;
 			Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
 			
+			RepairDamageTransfer(action_data.m_Player,action_data.m_MainItem,tent,m_SpecialtyWeight,damageZone);
 			module_repairing.Repair(action_data.m_Player,action_data.m_MainItem,tent,m_SpecialtyWeight,damageZone);
 		}
 	}
 	
-	override void OnEndServer( ActionData action_data )
+	override ActionData CreateActionData()
 	{
-		Object target_object = action_data.m_Target.GetObject();
-		TentBase ntarget = TentBase.Cast( target_object );
-		if( ntarget )
+		RepairTentActionData action_data = new RepairTentActionData;
+		return action_data;
+	}
+	
+	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
+	{
+		super.WriteToContext(ctx, action_data);
+		RepairTentActionData repair_action_data;
+		
+		if( HasTarget() && Class.CastTo(repair_action_data,action_data) )
 		{
-			ntarget.SoundSynchRemoteReset();
+			repair_action_data.m_DamageZone = m_CurrentDamageZone;
+			ctx.Write(repair_action_data.m_DamageZone);
+		}
+	}
+	
+	override bool ReadFromContext(ParamsReadContext ctx, out ActionReciveData action_recive_data )
+	{
+		if(!action_recive_data)
+		{
+			action_recive_data = new RepairTentActionReciveData;
+		}
+		super.ReadFromContext(ctx, action_recive_data);
+		RepairTentActionReciveData recive_data_repair = RepairTentActionReciveData.Cast(action_recive_data);
+		
+		if( HasTarget() )
+		{
+			string zone;
+			if ( !ctx.Read(zone) )
+				return false;
+			
+			recive_data_repair.m_DamageZoneRecived = zone;
+		}
+		return true;
+	}
+	
+	override void HandleReciveData(ActionReciveData action_recive_data, ActionData action_data)
+	{
+		super.HandleReciveData(action_recive_data, action_data);
+		
+		RepairTentActionReciveData recive_data_repair = RepairTentActionReciveData.Cast(action_recive_data);
+		RepairTentActionData.Cast(action_data).m_DamageZone = recive_data_repair.m_DamageZoneRecived;
+	}
+	
+	void RepairDamageTransfer(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight, string damage_zone = "") //hack; mirrors current config setup, replace with either native DamageSystem methods, or script-side DamageSystem systemic solution
+	{
+		float transfer_to_global_coef = 0;
+		array<string> transfer_zones = new array<string>;
+		//array<float> transfer_coefs = new array<float>;
+		string path = "" + CFG_VEHICLESPATH + " " + item.GetType() + " DamageSystem DamageZones " + damage_zone;
+		PluginRepairing module_repairing;
+		Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
+		
+		GetGame().ConfigGetTextArray("" + path + " transferToZonesNames", transfer_zones);
+		//GetGame().ConfigGetFloatArray("" + path + " transferToZonesCoefs", transfer_coefs);
+		
+		for (int i = 0; i < transfer_zones.Count(); i++)
+		{
+			transfer_to_global_coef += GetGame().ConfigGetFloat("" + path + " Health transferToGlobalCoef");
+			if (transfer_zones.Get(i) == damage_zone)
+				continue;
+			
+			module_repairing.Repair(player,repair_kit,item,specialty_weight,transfer_zones.Get(i),false);
+		}
+		
+		//finally, repairs global
+		if (transfer_to_global_coef > 0)
+		{
+			module_repairing.Repair(player,repair_kit,item,specialty_weight,"",false);
 		}
 	}
 };

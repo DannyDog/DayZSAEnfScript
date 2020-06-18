@@ -12,22 +12,22 @@ class ActionBuildPartCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		float time = SetBuildingDuration(m_ActionData.m_MainItem);
+		float time = SetCallbackDuration(m_ActionData.m_MainItem);
 		m_ActionData.m_ActionComponent = new CAContinuousTime( time );
 	}
 	
-	float SetBuildingDuration( ItemBase item )
+	float SetCallbackDuration( ItemBase item )
 	{
-		switch( item.Type() )
+		/*switch( item.Type() )
 		{
 			case Pickaxe:
 			case Shovel:
 			case FieldShovel:
-				return 7.0;
+				return UATimeSpent.BASEBUILDING_CONSTRUCT_MEDIUM;
 			default:
-				return UATimeSpent.DEFAULT_CONSTRUCT;
-		}
-		return UATimeSpent.DEFAULT_CONSTRUCT;
+				return UATimeSpent.BASEBUILDING_CONSTRUCT_FAST;
+		}*/
+		return UATimeSpent.BASEBUILDING_CONSTRUCT_MEDIUM;
 	}
 };
 
@@ -116,15 +116,7 @@ class ActionBuildPart: ActionContinuousBase
 			construction.BuildPartServer( part_name, AT_BUILD_PART );
 			
 			//add damage to tool
-			float alternate_damage;
-			if ( action_data.m_MainItem.GetSpecialUserActionDamage(alternate_damage) )
-			{
-				action_data.m_MainItem.DecreaseHealth( alternate_damage, false );
-			}
-			else
-			{
-				action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
-			}
+			action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
 		}
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

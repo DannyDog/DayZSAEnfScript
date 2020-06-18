@@ -41,6 +41,7 @@ class ActionGetOutTransport: ActionInteractBase
 			{
 				crew_index = trans.CrewMemberIndex( player );
 				
+/*According today testing (12.06.2020) this hack is no longer needed
 				//Hack for NIVA - disabling jumpng out from the back seats
 				Car car;
 				if ( Class.CastTo(car, trans) )
@@ -48,6 +49,7 @@ class ActionGetOutTransport: ActionInteractBase
 					if ( car.GetSpeedometer() > 8 && crew_index >= 2 && trans.GetType() == "OffroadHatchback" )
 						return false;
 				}
+*/
 				
 				if ( crew_index >= 0 && trans.CrewCanGetThrough( crew_index ) && trans.IsAreaAtDoorFree( crew_index ) )
 					return true;
