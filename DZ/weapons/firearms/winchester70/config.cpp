@@ -40,6 +40,7 @@ class cfgWeapons
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,20,170,4,10};
 		WeaponLength = 0.931718;
+		winchesterTypeOpticsMount = 1;
 		chamberSize = 5;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer"};

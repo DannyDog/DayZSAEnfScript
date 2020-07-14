@@ -28,6 +28,7 @@ class JsonApiStruct : Managed
 	*/
 	void OnPack()
 	{
+		Print( "OnPack() ");
 	}
 
 	/**
@@ -94,6 +95,14 @@ class JsonApiStruct : Managed
 	}
 	
 	/**
+	\brief Called when parsing vector value
+	*/
+	void OnVector( string name, vector value )
+	{
+		Print( "OnVector: " + value );
+	}
+	
+	/**
 	\brief Called when parsing array
 	*/
 	void OnStartArray( string name )
@@ -148,6 +157,19 @@ class JsonApiStruct : Managed
 	{
 		Print( "OnItemString: " + value );
 	}
+	
+	/**
+	\brief Called when parsing vector value from array
+	*/
+	void OnItemVector( int index, vector value )
+	{
+		Print( "OnItemVector: " + value );
+	}
+	
+	/**
+	\brief Register script variable for auto-feature
+	*/
+	proto native void RegV( string name );
 
 	/**
 	\brief Push object to parse (only during parse operation)
@@ -190,6 +212,11 @@ class JsonApiStruct : Managed
 	proto native void StoreString( string name, string value );
 	
 	/**
+	\brief Add vector value to hierarchy
+	*/
+	proto native void StoreVector( string name, vector value );
+	
+	/**
 	\brief Start array at hierarchy - !!! Be cautious and doublecheck results when using this !!!
 	*/
 	proto native void StartArray( string name );
@@ -223,7 +250,12 @@ class JsonApiStruct : Managed
 	\brief Add unnamed/ array string value
 	*/
 	proto native void ItemString( string value );
-	
+
+	/**
+	\brief Add unnamed/ array vector value
+	*/
+	proto native void ItemVector( vector value );
+
 	/**
 	\brief Call this when you've done packing or unpacking (interrupt operation)
 	*/
@@ -235,9 +267,14 @@ class JsonApiStruct : Managed
 	proto native void SetFail();
 	
 	/**
-	\brief Start object packing
+	\brief Start object packing - when it can be done (when sending remote etc.)
 	*/
 	proto native void Pack();
+
+	/**
+	\brief Start object packing now - for use at main thread only!
+	*/
+	proto native void InstantPack();
 
 	/**
 	\brief Start object unpacking from RAW string data
@@ -248,6 +285,19 @@ class JsonApiStruct : Managed
 	\brief Get packed JSON as string (!only if you called Pack() first, it may return null)
 	*/
 	proto native string AsString();
+
+	/**
+	\brief Pack() and save JSON to file
+	*/
+	proto native bool PackToFile( string FileName );
+	/**
+	\brief Save JSON to file (only If something was loaded or recieved previously!)
+	*/
+	proto native bool SaveToFile( string FileName );
+	/**
+	\brief Load JSON from file and Expand
+	*/
+	proto native bool LoadFromFile( string FileName );
 
 };
 

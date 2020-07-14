@@ -404,7 +404,7 @@ class OptionsMenuControls extends ScriptedWidgetEventHandler
 	void FillTextMap()
 	{
 		m_TextMap = new map<int, ref Param2<string, string>>;
-		m_TextMap.Insert( AT_CONFIG_YAXIS, new Param2<string, string>( "#options_controls_vertical_sens", "#options_controls_vertical_sens_contr_desc" ) );
+		m_TextMap.Insert( AT_CONFIG_YAXIS, new Param2<string, string>( "#options_controls_vertical_sens", "#options_controls_vertical_sensitivity_desc" ) );
 		m_TextMap.Insert( AT_CONFIG_XAXIS, new Param2<string, string>( "#options_controls_horizontal_sens", "#options_controls_horizontal_sensitivity_desc" ) );
 		m_TextMap.Insert( AT_CONFIG_YREVERSED, new Param2<string, string>( "#options_controls_invert_vertical_view", "#options_controls_invert_vertical_view_desc" ) );
 		

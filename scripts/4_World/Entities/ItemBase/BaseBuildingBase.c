@@ -888,6 +888,11 @@ class BaseBuildingBase extends ItemBase
 		return false;
 	}
 	
+	override bool ShowZonesHealth()
+	{
+		return true;
+	}
+	
 	//this into/outo parent.Cargo
 	override bool CanPutInCargo( EntityAI parent )
 	{

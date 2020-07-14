@@ -28,13 +28,11 @@ class FirearmActionUnjam : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
+		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
 		Weapon_Base wpn = Weapon_Base.Cast(item);
-		if (wpn && wpn.CanProcessWeaponEvents())
-		{
-			if (player.GetWeaponManager().CanUnjam(wpn))
-				return true;
-		}
-		return false;
+		return player.GetWeaponManager().CanUnjam(wpn);
 	}
 	
 	override void Start( ActionData action_data )

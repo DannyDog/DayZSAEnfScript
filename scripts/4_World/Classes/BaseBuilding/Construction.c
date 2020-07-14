@@ -109,10 +109,10 @@ class Construction
 		GetParent().OnPartDismantledServer( player, part_name, action_id );
 		
 		//set DamageZone health to zero (redundant?)
-		if ( GetParent().GetHealth(damage_zone,"Health") > 0 )
+		/*if ( GetParent().GetHealth(damage_zone,"Health") > 0 )
 		{
 			GetParent().SetHealth(damage_zone,"Health",0);
-		}
+		}*/
 	}
 	
 	//DestroyPart

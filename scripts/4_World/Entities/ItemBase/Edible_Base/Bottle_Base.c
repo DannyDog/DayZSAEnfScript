@@ -378,8 +378,7 @@ class Bottle_Base extends Edible_Base
 		AddAction(ActionWaterGardenSlot);
 		AddAction(ActionWaterPlant);
 		AddAction(ActionForceDrink);
-		AddAction(ActionPourLiquid);
-		AddAction(ActionDrainLiquid);
+		AddAction(ActionTransferLiquid);
 		AddAction(ActionEmptyBottleBase);
 		AddAction(ActionWashHandsItem);
 		AddAction(ActionDrink);

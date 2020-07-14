@@ -29,14 +29,12 @@ class FirearmActionAttachMagazine : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
-		Weapon_Base wpn = Weapon_Base.Cast(item);
-		Magazine mag = Magazine.Cast(target.GetObject());
+		if (!super.ActionCondition( player, target, item ))
+			return false;
 		
-		if (wpn && mag )
-			if ( player.GetWeaponManager().CanAttachMagazine(wpn,mag) || player.GetWeaponManager().CanSwapMagazine(wpn,mag))
-				return true;
-
-		return false;
+		Magazine mag = Magazine.Cast(target.GetObject());	
+		Weapon_Base wpn = Weapon_Base.Cast(item);	
+		return mag && (player.GetWeaponManager().CanAttachMagazine(wpn,mag) || player.GetWeaponManager().CanSwapMagazine(wpn,mag));
 	}
 	
 	override bool ActionConditionContinue( ActionData action_data )
@@ -92,6 +90,9 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
+		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
 		MagazineStorage mag = MagazineStorage.Cast(player.GetWeaponManager().GetPreparedMagazine());
 		
 		if (!mag)
@@ -99,11 +100,9 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 		
 		Weapon weapon = Weapon.Cast(item);
 		bool isLoadedMag = false;
-		if (weapon)
-		{
-			for (int i = 0, count = weapon.GetMuzzleCount(); i < count; ++i)
-				isLoadedMag |= (mag == weapon.GetMagazine(i);
-		}
+		
+		for (int i = 0, count = weapon.GetMuzzleCount(); i < count; ++i)
+			isLoadedMag |= (mag == weapon.GetMagazine(i);
 		
 		return !isLoadedMag;
 	}

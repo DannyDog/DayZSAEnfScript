@@ -3,6 +3,7 @@ class Torch : ItemBase
 	private SoundOnVehicle	m_LoopSoundEntity;
 	Particle 				m_FireParticle;
 	bool					m_CanReceiveUpgrade; // Synchronized variable
+	bool					m_IsBeingDestructed = false;
 	
 	static float 			m_BurnTimePerRag;
 	static float 			m_BurnTimePerFullLard;
@@ -344,7 +345,7 @@ class Torch : ItemBase
 		return false;
 	}
 	
-	override void EEItemAttached ( EntityAI item, string slot_name ) 
+	override void EEItemAttached( EntityAI item, string slot_name ) 
 	{
 		super.EEItemAttached( item, slot_name );
 		CalculateQuantity();
@@ -362,10 +363,14 @@ class Torch : ItemBase
 	
 	void TryTransformIntoStick()
 	{
+		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
+		if ( m_IsBeingDestructed || (player && player.IsPlayerDisconnected()) )
+			return;
+		
+		m_IsBeingDestructed = true;
+		
 		if ( CanTransformIntoStick() )
-		{
-			PlayerBase player = PlayerBase.Cast( GetHierarchyParent() );
-				
+		{				
 			if (player)
 			{
 				// Transform object into wooden stick
@@ -399,17 +404,23 @@ class Torch : ItemBase
 		}
 	}
 	
-	override void EEItemDetached ( EntityAI item, string slot_name ) 
+	override void EEItemDetached( EntityAI item, string slot_name ) 
 	{
 		super.EEItemDetached( item, slot_name );
-		CalculateQuantity();
-		UpdateCheckForReceivingUpgrade();
 		
-		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
-		if( player && player.IsPlayerDisconnected() )
+		if (m_IsBeingDestructed)
 		{
+			if (GetGame().IsServer())
+			{
+				EntityAI rags = EntityAI.Cast(GetGame().CreateObjectEx(item.GetType(), GetPosition(), ECE_PLACE_ON_SURFACE));
+				MiscGameplayFunctions.TransferItemProperties(item, rags);
+			}
 			return;
 		}
+		
+		CalculateQuantity();
+		UpdateCheckForReceivingUpgrade();
+
 		TryTransformIntoStick();
 	}
 	

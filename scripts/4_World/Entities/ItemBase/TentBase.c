@@ -19,6 +19,7 @@ class TentBase extends ItemBase
 	
 	protected const int PACKED 	= 0;
 	protected const int PITCHED = 1;
+	const float MAX_PLACEMENT_HEIGHT_DIFF = 1.5;
 	
 	bool m_DamageSystemStarted = false;
 	protected int m_State;
@@ -976,5 +977,15 @@ class TentBase extends ItemBase
 			return false;
 		
 		return super.CanReceiveAttachment(attachment, slotId);
+	}
+	
+	override bool CanBePlaced( Man player, vector position )
+	{
+		vector playerpos = player.GetPosition();
+		float delta1 = playerpos[1] - position[1];
+		
+		if( delta1 > MAX_PLACEMENT_HEIGHT_DIFF || delta1 < -MAX_PLACEMENT_HEIGHT_DIFF )
+			return false;
+		return true;
 	}
 };

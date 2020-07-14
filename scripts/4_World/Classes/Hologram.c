@@ -29,6 +29,7 @@ class Hologram
 	protected const float 		PROJECTION_TRANSITION_MIN		= 1;
 	protected const float 		PROJECTION_TRANSITION_MAX		= 0.25;
 	protected const float 		LOOKING_TO_SKY					= 0.75;
+	static const float 			DEFAULT_MAX_PLACEMENT_HEIGHT_DIFF = 1.5;
 	
 	protected float 			m_SlopeTolerance;
 	protected bool				m_AlignToTerrain;
@@ -341,16 +342,16 @@ class Hologram
 
 		m_ProjectionTrigger.SetPosition( GetProjectionPosition() );
 		m_ProjectionTrigger.SetOrientation( GetProjectionOrientation() );
-		m_ProjectionTrigger.SetExtents(min_max[0], min_max[1]);	
+		m_ProjectionTrigger.SetExtents(min_max[0], min_max[1]);
 	}
 
 	void EvaluateCollision(ItemBase action_item = null)
-	{	
+	{
 		//if ( IsHidden() || IsCollidingBBox() || IsCollidingPlayer() || IsCollidingBase() || IsCollidingGPlot() || IsCollidingZeroPos() || IsBehindObstacle() || IsCollidingAngle() )
-		if ( IsHidden() || IsCollidingBBox(action_item) || IsCollidingPlayer() || IsClippingRoof() || !IsBaseViable() || IsCollidingGPlot() || IsCollidingZeroPos() || IsCollidingAngle() )
+		if ( IsHidden() || IsCollidingBBox(action_item) || IsCollidingPlayer() || IsClippingRoof() || !IsBaseViable() || IsCollidingGPlot() || IsCollidingZeroPos() || IsCollidingAngle() || !IsPlacementPermitted() || !HeightPlacementCheck() )
 		{
-			SetIsColliding( true );							
-		}	
+			SetIsColliding( true );
+		}
 		else if ( m_Projection.IsInherited( TrapSpawnBase ))
 		{
 			TrapSpawnBase trap_spawn_base;
@@ -365,7 +366,7 @@ class Hologram
 		}
 		else
 		{
-			SetIsColliding( IsSurfaceWater( m_Projection.GetPosition() ) );		
+			SetIsColliding( IsSurfaceWater( m_Projection.GetPosition() ) );
 		}
 	}
 	
@@ -454,7 +455,7 @@ class Hologram
 			m_DebugPlugArrowLeftFar = NULL; 
 
 			m_DebugPlugArrowRightFar.Destroy();
-			m_DebugPlugArrowRightFar = NULL; 
+			m_DebugPlugArrowRightFar = NULL;
 		}
 		*/
 		
@@ -755,6 +756,34 @@ class Hologram
 		return Shape.CreateLines(color, flags, pts, 5);
 	}
 	*/
+	
+	//! Checks if the item can be legally placed (usually checked by action as well)
+	bool IsPlacementPermitted()
+	{
+		ItemBase item = m_Player.GetItemInHands();
+		if( item && item.Type() == GetProjectionEntity().Type() && !item.CanBePlaced(m_Player,GetProjectionPosition()) )
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	//! Checks height relative to player's position
+	bool HeightPlacementCheck()
+	{
+		if( GetProjectionEntity() ) //simple height check
+		{
+			vector playerpos = m_Player.GetPosition();
+			vector projectionpos = GetProjectionPosition();
+			float delta1 = playerpos[1] - projectionpos[1];
+			
+			if( delta1 > DEFAULT_MAX_PLACEMENT_HEIGHT_DIFF || delta1 < -DEFAULT_MAX_PLACEMENT_HEIGHT_DIFF )
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	void CheckPowerSource()
 	{

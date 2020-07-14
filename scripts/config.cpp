@@ -556,6 +556,7 @@ class CfgSlots
 		name = "Rags";
 		displayName = "Rags";
 		ghostIcon = "rags";
+		stackMax = 6;
 	};
 	class Slot_Stones
 	{
@@ -600,12 +601,14 @@ class CfgSlots
 		name = "BirchBark";
 		displayName = "BirchBark";
 		ghostIcon = "bark";
+		stackMax = 8;
 	};
 	class Slot_OakBark
 	{
 		name = "OakBark";
 		displayName = "OakBark";
 		ghostIcon = "bark";
+		stackMax = 8;
 	};
 	class Slot_Plant
 	{
@@ -636,6 +639,7 @@ class CfgSlots
 		name = "Bark";
 		displayName = "Bark";
 		ghostIcon = "bark";
+		stackMax = 8;
 	};
 	class Slot_DirectCookingA
 	{
@@ -1741,6 +1745,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l1_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L1W1_Nails
 	{
@@ -1748,6 +1753,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l1w1_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L1W2_Nails
 	{
@@ -1755,6 +1761,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l1w2_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L1W3_Nails
 	{
@@ -1762,6 +1769,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l1w3_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L1_WoodenPlanks
 	{
@@ -1833,6 +1841,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l2_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L2W1_Nails
 	{
@@ -1840,6 +1849,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l2w1_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L2W2_Nails
 	{
@@ -1847,6 +1857,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l2w2_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L2W3_Nails
 	{
@@ -1854,6 +1865,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "material_l2w3_nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L2_WoodenPlanks
 	{
@@ -1925,6 +1937,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "Material_L3_Nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L3_MetalSheets
 	{
@@ -1940,6 +1953,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "Material_L3W1_Nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L3W2_Nails
 	{
@@ -1947,6 +1961,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "Material_L3W2_Nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L3W3_Nails
 	{
@@ -1954,6 +1969,7 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "Material_L3W3_Nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_L3_WoodenPlanks
 	{
@@ -2017,11 +2033,12 @@ class CfgSlots
 		displayName = "Nails";
 		selection = "Material_Nails";
 		ghostIcon = "nails";
+		stackMax = 99;
 	};
 	class Slot_Material_WoodenPlanks
 	{
 		name = "Material_WoodenPlanks";
-		displayName = "Nails";
+		displayName = "Wooden planks";
 		selection = "Material_WoodenPlanks";
 		ghostIcon = "planks";
 		stackMax = 20;

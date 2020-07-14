@@ -873,7 +873,7 @@ class CfgWorlds
 					speed = 0.1;
 					size = 0.5;
 					height = 1.0;
-					through = 1.0;
+					through = 0.45;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -890,7 +890,7 @@ class CfgWorlds
 					speed = 0.3;
 					size = 0.55;
 					height = 0.9;
-					through = 0.7;
+					through = 0.2;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -907,7 +907,7 @@ class CfgWorlds
 					speed = 0.5;
 					size = 0.65;
 					height = 0.85;
-					through = 0.5;
+					through = 0.1;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -924,7 +924,7 @@ class CfgWorlds
 					speed = 0.75;
 					size = 0.85;
 					height = 0.8;
-					through = 0.2;
+					through = 0.1;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;
@@ -963,7 +963,7 @@ class CfgWorlds
 		mapTextureClosed = "dz\gear\navigation\data\map_chernarus_co.paa";
 		mapTextureOpened = "dz\structures\signs\tourist\data\karta_co.paa";
 		mapTextureLegend = "dz\structures\signs\tourist\data\karta_side_co.paa";
-		starsIntensity = 0.141;
+		starsIntensity = 0.181;
 		hazeDistCoef = 0.0;
 		hazeFogCoef = 1.0;
 		volFogOffset = 0;
@@ -1762,6 +1762,101 @@ class PreloadTextures
 	class CfgNoMipmapTextures
 	{
 		NoMipmapTextures = "@*";
+	};
+};
+class PreloadVehicles
+{
+	class MediumTent
+	{
+		loadStyle = 2;
+	};
+	class MediumTent_Green
+	{
+		loadStyle = 2;
+	};
+	class MediumTent_Orange
+	{
+		loadStyle = 2;
+	};
+	class LargeTent
+	{
+		loadStyle = 2;
+	};
+	class CarTent
+	{
+		loadStyle = 2;
+	};
+	class PartyTent
+	{
+		loadStyle = 2;
+	};
+	class PartyTent_Blue
+	{
+		loadStyle = 2;
+	};
+	class PartyTent_Brown
+	{
+		loadStyle = 2;
+	};
+	class PartyTent_Lunapark
+	{
+		loadStyle = 2;
+	};
+	class Watchtower
+	{
+		loadStyle = 2;
+	};
+	class Fence
+	{
+		loadStyle = 2;
+	};
+	class Sedan_02
+	{
+		loadStyle = 2;
+	};
+	class Sedan_02_Red
+	{
+		loadStyle = 2;
+	};
+	class Sedan_02_Grey
+	{
+		loadStyle = 2;
+	};
+	class OffroadHatchback
+	{
+		loadStyle = 2;
+	};
+	class OffroadHatchback_Blue
+	{
+		loadStyle = 2;
+	};
+	class OffroadHatchback_White
+	{
+		loadStyle = 2;
+	};
+	class Hatchback_02
+	{
+		loadStyle = 2;
+	};
+	class Hatchback_02_Black
+	{
+		loadStyle = 2;
+	};
+	class Hatchback_02_Blue
+	{
+		loadStyle = 2;
+	};
+	class CivilianSedan
+	{
+		loadStyle = 2;
+	};
+	class CivilianSedan_Wine
+	{
+		loadStyle = 2;
+	};
+	class CivilianSedan_Black
+	{
+		loadStyle = 2;
 	};
 };
 class CfgVehicles

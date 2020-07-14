@@ -109,14 +109,12 @@ class FirearmActionDetachMagazine_Old : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
+		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
+		Magazine mag = Magazine.Cast(target.GetObject());
 		Weapon_Base wpn = Weapon_Base.Cast(item);
-		if (wpn && wpn.CanProcessWeaponEvents())
-		{
-			Magazine mag = Magazine.Cast(target.GetObject());
-			if (player.GetWeaponManager().CanDetachMagazine(wpn,mag))
-				return true;
-		}
-		return false;
+		return mag && player.GetWeaponManager().CanDetachMagazine(wpn,mag);
 	}
 	
 	override bool ActionConditionContinue( ActionData action_data)
@@ -267,11 +265,12 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 	
 	override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
 	{
+		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
 		Weapon_Base wpn = Weapon_Base.Cast( item );
 		int mi = wpn.GetCurrentMuzzle();
-		if( wpn && wpn.GetMagazine(mi) == target.GetObject() )
-			return true;
-		return false;
+		return wpn && wpn.GetMagazine(mi) == target.GetObject();
 	}
 	
 	override bool ActionConditionContinue( ActionData action_data )

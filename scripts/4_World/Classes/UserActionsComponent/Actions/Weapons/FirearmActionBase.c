@@ -25,6 +25,12 @@ class FirearmActionBase : ActionBase
 		return !wpn.IsIdle();
 	}
 	
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		Weapon_Base wpn = Weapon_Base.Cast(item);
+		return wpn && wpn.CanProcessWeaponEvents() && !player.GetDayZPlayerInventory().IsProcessing();
+	}
+	
 	override void Start( ActionData action_data )
 	{
 		super.Start( action_data );

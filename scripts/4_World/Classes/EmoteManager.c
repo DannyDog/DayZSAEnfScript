@@ -409,6 +409,13 @@ class EmoteManager
 		//Print(m_DeferredEmoteExecution);
 	}
 	
+	void AfterStoreLoad()
+	{
+		//failsafe, deletes helper item after fully loading character
+		if ( m_Player.GetItemInHands() && SurrenderDummyItem.Cast(m_Player.GetItemInHands()) )
+			m_Player.GetItemInHands().Delete();
+	}
+	
 	//Configure Emote parameters for callback here
 	bool PlayEmote( int id )
 	{

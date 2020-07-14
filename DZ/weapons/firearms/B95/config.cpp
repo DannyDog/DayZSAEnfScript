@@ -44,6 +44,7 @@ class cfgWeapons
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer","Mag_308WinSnaploader_2Rnd"};
 		magazines[] = {};
 		DisplayMagazine = 0;
+		winchesterTypeOpticsMount = 1;
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.85;
 		muzzles[] = {"this","SecondMuzzle"};

@@ -87,7 +87,7 @@ class Particle extends ScriptedEntity
 		{
 			float lifetime_min = 0;
 			float lifetime_random = 0;
-			float lifetime_return = 1;
+			float lifetime_return = 0;
 			float effect_time = 0;
 			string emitors_array[MAX_EMITORS];
 			

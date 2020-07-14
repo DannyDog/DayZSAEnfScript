@@ -20,6 +20,7 @@ class FireplaceBase extends ItemBase
 	protected bool m_IsOven		= false;
 	protected bool m_HasStoneCircle = false;
 	protected bool m_RoofAbove 	= false;
+	protected int m_OvenAttachmentsLockState = -1;
 	protected FireplaceFireState m_FireState	 = FireplaceFireState.NO_FIRE;
 	protected FireplaceFireState m_LastFireState = FireplaceFireState.NO_FIRE;		//for synchronization purposes
 	
@@ -478,13 +479,12 @@ class FireplaceBase extends ItemBase
 			{
 				// change brightness based on the distance of player to the fireplace
 				Object player = GetGame().GetPlayer();
+				float lightDist = m_LightDistance;
 				if ( IsOven() )
-					m_LightDistance = 50;
-				else
-					m_LightDistance = 2000;
+					lightDist = 50;
 				if ( player )
 				{
-					if ( vector.Distance( player.GetPosition(), this.GetPosition() ) > m_LightDistance )
+					if ( vector.Distance( player.GetPosition(), this.GetPosition() ) > lightDist )
 					{
 						GetLightEntity().FadeBrightnessTo( 0, 5 );
 					}
@@ -583,10 +583,18 @@ class FireplaceBase extends ItemBase
 			//set burn parameters
 			SetFuelBurnRateMP( FUEL_BURN_RATE_OVEN );
 			SetTemperatureLossMP( TEMPERATURE_LOSS_MP_OVEN );
+			
+			//lock attachment slots
+			if ( m_OvenAttachmentsLockState != true )
+				LockOvenAttachments(true);
 		}
 		else
 		{
 			SetAnimationPhase( ANIMATION_OVEN, 1 );
+			
+			//unlock attachment slots
+			if ( m_OvenAttachmentsLockState != false )
+				LockOvenAttachments(false);
 		}
 		
 		// Stone circle state
@@ -1716,7 +1724,7 @@ class FireplaceBase extends ItemBase
 		{
 			float cook_item_temp;
 
-			for ( int i = 0; i < 3; i++ )
+			for ( int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
 			{
 				if ( m_DirectCookingSlots[i] )
 				{
@@ -1850,7 +1858,7 @@ class FireplaceBase extends ItemBase
 			{
 				float cook_item_temp;
 
-				for ( int i = 0; i < 3; i++ )
+				for ( int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
 				{
 					if ( m_DirectCookingSlots[i] )
 					{
@@ -1901,7 +1909,7 @@ class FireplaceBase extends ItemBase
 		}
 		if ( DirectCookingSlotsInUse() )
 		{
-			for ( int i = 0; i < 3; i++ )
+			for ( int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
 			{
 				if ( m_DirectCookingSlots[i] )
 				{
@@ -1996,8 +2004,7 @@ class FireplaceBase extends ItemBase
 			
 			//set damage
 			AddDamageToItemByFire( item, false );
-			//set damage
-			AddDamageToItemByFire( item, false );
+
 			if ( ( item.GetHealth("", "Health") <= 0 ) && !( item.IsKindOf( "Grenade_Base" ) ) )
 			{
 				item.Delete();
@@ -2019,7 +2026,10 @@ class FireplaceBase extends ItemBase
 			if ( IsKindling( attachment ) || IsFuel( attachment ) )
 			{
 				//set damage
-				AddDamageToItemByFire( attachment, false );
+				if ( attachment.GetHealthLevel() < GameConstants.STATE_BADLY_DAMAGED )
+				{
+					AddDamageToItemByFire( attachment, false );
+				}
 			}
 			
 			//add temperature
@@ -2029,7 +2039,7 @@ class FireplaceBase extends ItemBase
 			AddWetnessToItem( attachment, -PARAM_WET_HEATING_DECREASE_COEF );		
 		}
 	}
-	
+
 	//add temperature to item by fire
 	protected void AddTemperatureToItemByFire( ItemBase item )
 	{
@@ -2531,5 +2541,37 @@ class FireplaceBase extends ItemBase
 		super.OnAttachmentQuantityChanged( item );
 		
 		CalcAndSetQuantity();
-	}	
+	}
+	
+	void LockOvenAttachments(bool lock)
+	{
+		//Print("LockOvenAttachments");
+		string path_cooking_equipment = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps CookingEquipment attachmentSlots";
+		string path_direct_cooking = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps DirectCooking attachmentSlots";
+		if ( GetGame().ConfigIsExisting(path_cooking_equipment) && GetGame().ConfigIsExisting(path_direct_cooking) )
+		{
+			array<string> arr_cooking_equipment = new array<string>;
+			array<string> arr_direct_cooking = new array<string>;
+			GetGame().ConfigGetTextArray(path_cooking_equipment,arr_cooking_equipment);
+			GetGame().ConfigGetTextArray(path_direct_cooking,arr_direct_cooking);
+			for ( int i = 0; i < arr_cooking_equipment.Count(); i++ )
+			{
+				if ( lock != GetInventory().GetSlotLock(InventorySlots.GetSlotIdFromString(arr_cooking_equipment[i])) )
+				{
+					GetInventory().SetSlotLock(InventorySlots.GetSlotIdFromString(arr_cooking_equipment[i]),lock);
+					//Print("attachment lock: " + arr_cooking_equipment[i] + " " + lock);
+				}
+			}
+			
+			for ( i = 0; i < arr_direct_cooking.Count(); i++ )
+			{
+				if ( lock == GetInventory().GetSlotLock(InventorySlots.GetSlotIdFromString(arr_direct_cooking[i])) )
+				{
+					GetInventory().SetSlotLock(InventorySlots.GetSlotIdFromString(arr_direct_cooking[i]),!lock);
+					//Print("attachment lock: " + arr_direct_cooking[i] + " " + !lock);
+				}
+			}
+		}
+		m_OvenAttachmentsLockState = lock;
+	}
 }

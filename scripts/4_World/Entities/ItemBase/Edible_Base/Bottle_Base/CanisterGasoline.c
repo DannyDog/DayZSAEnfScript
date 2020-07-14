@@ -79,8 +79,6 @@ class CanisterGasoline extends Bottle_Base
 		AddAction(ActionWaterGardenSlot);
 		AddAction(ActionWaterPlant);
 		AddAction(ActionForceDrink);
-		AddAction(ActionPourLiquid);
-		AddAction(ActionDrainLiquid);
 		AddAction(ActionEmptyBottleBase);
 		AddAction(ActionDrink);
 		

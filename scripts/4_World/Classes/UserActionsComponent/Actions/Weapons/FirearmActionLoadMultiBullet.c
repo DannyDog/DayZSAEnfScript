@@ -29,14 +29,12 @@ class FirearmActionLoadMultiBullet : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
-		Weapon_Base wpn = Weapon_Base.Cast(item);
-		Magazine mag = Magazine.Cast(target.GetObject());
+		if (!super.ActionCondition( player, target, item ))
+			return false;
 		
-		if (wpn && mag )
-			if ( player.GetWeaponManager().CanLoadBullet(wpn,mag) )
-				return true;
-
-		return false;
+		Weapon_Base wpn = Weapon_Base.Cast(item);
+		Magazine mag = Magazine.Cast(target.GetObject());		
+		return mag && player.GetWeaponManager().CanLoadBullet(wpn,mag);
 	}
 	
 	override void Start( ActionData action_data )
@@ -130,6 +128,9 @@ class FirearmActionLoadMultiBulletQuick : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
+		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
 		Weapon_Base weapon = Weapon_Base.Cast( item );
 		return player.GetWeaponManager().CanLoadBullet(weapon ,player.GetWeaponManager().GetPreparedMagazine());
 	}

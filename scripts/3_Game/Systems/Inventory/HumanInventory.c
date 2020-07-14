@@ -126,8 +126,9 @@ class HumanInventory : GameInventory
 		PostHandEvent(new HandEventDestroyed(GetManOwner(), cpy));
 	}
 
-	void HandEvent (InventoryMode mode, HandEventBase e)
+	bool HandEvent (InventoryMode mode, HandEventBase e)
 	{
+		return true;
 	}
 	
 	override bool DropEntity (InventoryMode mode, EntityAI owner, notnull EntityAI item)
@@ -204,21 +205,19 @@ class HumanInventory : GameInventory
 					r_il.GetParent().GetOnAttachmentReleaseLock().Invoke( item, r_il.GetSlot() );
 				}
 			}
-
-			AddInventoryReservation(item, dst, GameInventory.c_InventoryReservationTimeoutShortMS);
 	
-			man_src.GetHumanInventory().HandEvent(mode, new HandEventMoveTo(man_src, src, dst));
+			if (man_src.GetHumanInventory().HandEvent(mode, new HandEventMoveTo(man_src, src, dst)))
+				AddInventoryReservation(item, dst, GameInventory.c_InventoryReservationTimeoutShortMS);
 			return true;
 		}
 		
 		if (dst.GetType() == InventoryLocationType.HANDS)
 		{
 			hndDebugPrint("[inv] HI::RedirectToHandEvent - dst location == HANDS, player has to handle this");
-			
-			AddInventoryReservation(src.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS);
-			
+						
 			Man man_dst = Man.Cast(dst.GetParent());
-			man_dst.GetHumanInventory().HandEvent(mode, new HandEventTake(man_dst, src));
+			if (man_dst.GetHumanInventory().HandEvent(mode, new HandEventTake(man_dst, src)))
+				AddInventoryReservation(src.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS);
 			return true;
 		}
 		return false;
@@ -362,11 +361,16 @@ class HumanInventory : GameInventory
 		return false;
 	}
 
-	override bool ForceSwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
+	override bool ForceSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
 	{
 		InventoryLocation src1, src2, dst1;
 		if (GameInventory.MakeSrcAndDstForForceSwap(item1, item2, src1, src2, dst1, item2_dst))
 		{
+			GameInventory manOwnerInventory = GetManOwner().GetInventory();
+			
+			//manOwnerInventory.AddInventoryReservation(item1, dst1, GameInventory.c_InventoryReservationTimeoutMS);
+			//manOwnerInventory.AddInventoryReservation(item2, item2_dst, GameInventory.c_InventoryReservationTimeoutMS);
+					
 			hndDebugPrint("[inv] HumanInventory::FSwap(" + typename.EnumToString(InventoryMode, mode) + ") dst1=" + InventoryLocation.DumpToStringNullSafe(dst1)+ " dst2=" + InventoryLocation.DumpToStringNullSafe(item2_dst));
 			bool handled = false;
 			switch (src1.GetType())
@@ -400,10 +404,16 @@ class HumanInventory : GameInventory
 					break;
 				}
 			}
+			
+			bool returnValue = true;
 
 			if (!handled)
-				return super.ForceSwapEntities(mode, item1, item2, item2_dst);
-			return true;
+				returnValue = super.ForceSwapEntities(mode, item1, item2, item2_dst);
+
+			//manOwnerInventory.ClearInventoryReservation(item1, dst1);
+			//manOwnerInventory.ClearInventoryReservation(item2, item2_dst);
+			
+			return returnValue;
 		}
 		Error("HumanInventory::ForceSwapEntities: No inventory location");
 		return false;

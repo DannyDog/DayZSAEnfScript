@@ -533,6 +533,12 @@ class Object extends IEntity
 		return true;
 	}
 	
+	//! Returns true if the health of damage zones should be displayed (instead of global HP of the entity) ( action widgets)
+	bool ShowZonesHealth()
+	{
+		return false;
+	}
+
 	bool IsParticle()
 	{
 		return false;

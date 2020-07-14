@@ -64,14 +64,24 @@ class ActionFillCoolant: ActionContinuousBase
 		
 		if( carS )
 		{
-			for (int s = 0; s < selections.Count(); s++)
+			EntityAI radiator = null;
+			EntityAI carAI;
+			
+			if ( CastTo(carAI, car) )
 			{
-				if ( selections[s] == carS.GetActionCompNameCoolant() )
+				radiator = carAI.GetInventory().FindAttachment(InventorySlots.GetSlotIdFromString("CarRadiator"));
+				if ( radiator && !radiator.IsRuined() )
 				{
-					float dist = vector.Distance( carS.GetCoolantPtcPosWS(), player.GetPosition() );
+					for (int s = 0; s < selections.Count(); s++)
+					{
+						if ( selections[s] == carS.GetActionCompNameCoolant() )
+						{
+							float dist = vector.Distance( carS.GetCoolantPtcPosWS(), player.GetPosition() );
 
-					if ( dist < carS.GetActionDistanceCoolant() )
-						return true;
+							if ( dist < carS.GetActionDistanceCoolant() )
+								return true;
+						}
+					}
 				}
 			}
 		}

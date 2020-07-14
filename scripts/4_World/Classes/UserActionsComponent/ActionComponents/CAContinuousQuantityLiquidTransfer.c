@@ -1,5 +1,6 @@
 class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 {
+	protected bool 					m_TendencyDrain; //true == drain, false == pour
 	protected float 				m_ItemQuantity;
 	protected float 				m_SpentQuantity;
 	protected float 				m_SpentQuantity_total;
@@ -10,18 +11,15 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	protected float 				m_DefaultTimeStep;
 	protected ref Param1<float>		m_SpentUnits;
 	
-	protected PlayerBase 			m_Player;
-	
-	void CAContinuousQuantityLiquidTransfer( float quantity_used_per_second, float time_to_progress )
+	void CAContinuousQuantityLiquidTransfer( float quantity_used_per_second, float time_to_progress, bool drain )
 	{
 		m_QuantityUsedPerSecond = quantity_used_per_second;
 		m_DefaultTimeStep = time_to_progress;
+		m_TendencyDrain = drain;
 	}
 	
 	override void Setup( ActionData action_data )
 	{
-		m_Player = action_data.m_Player;
-		
 		ItemBase target_item = ItemBase.Cast(action_data.m_Target.GetObject());
 		
 		m_TimeElpased = 0;
@@ -36,7 +34,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 			m_SpentUnits.param1 = 0;
 		}
 		
-		if ( action_data.m_Player.GetLiquidTendencyDrain() )
+		if ( m_TendencyDrain )
 		{
 			if ( target_item.GetQuantity() > (action_data.m_MainItem.GetQuantityMax() - action_data.m_MainItem.GetQuantity()) )
 			{
@@ -62,8 +60,6 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 				m_ItemQuantity = m_ItemMaxQuantity; //target_item.GetQuantity();
 			}
 		}
-		//m_ItemMaxQuantity = action_data.m_MainItem.GetQuantityMax();
-		//m_ItemQuantity = action_data.m_MainItem.GetQuantity();
 	}
 	
 	
@@ -92,7 +88,6 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 				{
 					CalcAndSetQuantity( action_data );
 					m_TimeElpased = 0;
-					//Setup(action_data);	//reset data after repeat
 				}
 				
 				return UA_PROCESSING;
@@ -119,13 +114,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	
 	override float GetProgress()
 	{
-		//float progress = ( m_ItemQuantity - m_SpentQuantity ) / m_ItemMaxQuantity;
-		//float progress = ( m_ItemQuantity - m_SpentQuantity ) / m_ItemMaxQuantity;
-		//float progress2 = m_ItemQuantity - m_SpentQuantity / m_ItemMaxQuantity;;
-		
-		//return (m_ItemQuantity - m_SpentQuantity) / m_ItemMaxQuantity;
-		
-		if ( m_Player.GetLiquidTendencyDrain() )
+		if ( m_TendencyDrain )
 		{
 			return m_SpentQuantity_total / m_ItemMaxQuantity;
 		}
@@ -151,7 +140,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 			}
 			
 			//could move following stuff to action itself, if needed
-			if ( action_data.m_Player.GetLiquidTendencyDrain() )
+			if ( m_TendencyDrain )
 			{
 				Liquid.Transfer(target_item, action_data.m_MainItem, m_SpentQuantity);
 			}
@@ -159,7 +148,6 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 			{
 				Liquid.Transfer(action_data.m_MainItem, target_item, m_SpentQuantity);
 			}
-			//action_data.m_MainItem.AddQuantity( -m_SpentQuantity, false, false );
 		}
 		m_SpentQuantity = 0;
 	}

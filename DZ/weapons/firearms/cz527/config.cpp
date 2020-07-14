@@ -43,6 +43,7 @@ class cfgWeapons
 		distanceZoomMax = 100;
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		opticsFlare = 0;
+		winchesterTypeOpticsMount = 1;
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		WeaponLength = 0.934214;
 		value = 0;

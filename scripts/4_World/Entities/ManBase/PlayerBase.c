@@ -6,7 +6,7 @@ class PlayerBase extends ManBase
 	private int						m_LastShavedSeconds;
 	private int						m_BloodType;
 	private bool					m_HasBloodTypeVisible;
-	private bool					m_LiquidTendencyDrain;
+	private bool					m_LiquidTendencyDrain; //client-side only
 	private bool					m_HasBloodyHandsVisible;
 	protected bool 					m_PlayerLoaded;
 	protected bool 					m_PlayerDisconnectProcessed;
@@ -358,7 +358,7 @@ class PlayerBase extends ManBase
 		RegisterNetSyncVariableBool("m_IsInWater");
 		RegisterNetSyncVariableBool("m_HasBloodyHandsVisible");
 		RegisterNetSyncVariableBool("m_HasBloodTypeVisible");
-		RegisterNetSyncVariableBool("m_LiquidTendencyDrain");
+		//RegisterNetSyncVariableBool("m_LiquidTendencyDrain");
 		RegisterNetSyncVariableBool("m_IsRestrainStarted");
 		
 		m_OriginalSlidePoseAngle = GetSlidePoseAngle();
@@ -2328,7 +2328,7 @@ class PlayerBase extends ManBase
 					OnQuickBarContinuousUseStart(quickBarSlot);
 					Print("PlayerBase.c IsQuickBarContinuousUseStart - slot: " + quickBarSlot.ToString());
 				}
-				if (hic.IsQuickBarContinuousUseEnd() && ((!GetGame().IsMultiplayer() || GetGame().IsClient()) && !GetGame().GetUIManager().GetMenu()))
+				if (hic.IsQuickBarContinuousUseEnd() && ((!GetGame().IsMultiplayer() || GetGame().IsClient())))
 				{
 					OnQuickBarContinuousUseEnd(quickBarSlot);
 					Print("PlayerBase.c IsQuickBarContinuousUseEnd - slot: " + quickBarSlot.ToString());
@@ -3434,7 +3434,6 @@ class PlayerBase extends ManBase
 	void SetLiquidTendencyDrain(bool state)
 	{
 		m_LiquidTendencyDrain = state;
-		SetSynchDirty();
 	}
 	
 	override SoundOnVehicle PlaySound(string sound_name, float range, bool create_local = false)
@@ -3456,7 +3455,7 @@ class PlayerBase extends ManBase
 	void SetPlayerLoad(float load)
 	{
 		m_CargoLoad = load;
-		
+		//Print("m_CargoLoad: " + m_CargoLoad);
 		//Log(ToString(this) + "'s load weight is " + ftoa(m_CargoLoad) + " g.", LogTemplates.TEMPLATE_PLAYER_WEIGHT);
 	}
 
@@ -3528,8 +3527,12 @@ class PlayerBase extends ManBase
 		}
 
 		if ( itemHands ) // adds weight of item carried in hands
+		{
 			total_load += itemHands.GetWeight();
+			//Print("itemHands.GetWeight(): " + itemHands.GetWeight());
+		}
 		m_Weight = total_load;
+		//Print("total_load: " + total_load);
 	}
 
 	void CalculateVisibilityForAI()
@@ -5167,6 +5170,10 @@ class PlayerBase extends ManBase
 	override void AfterStoreLoad()
 	{
 		GetHumanInventory().OnAfterStoreLoad();
+		if (m_EmoteManager)
+		{
+			m_EmoteManager.AfterStoreLoad();
+		}
 		//SetSynchDirty();		
 	}
 
@@ -5318,7 +5325,10 @@ class PlayerBase extends ManBase
 			if(edible_item.IsLiquidContainer())
 			{
 				int liquid_type = edible_item.GetLiquidType();
-				m_PlayerStomach.AddToStomach(Liquid.GetLiquidClassname(liquid_type), amount, 0, agents);
+				string liquidClassName = Liquid.GetLiquidClassname(liquid_type);
+				if (liquidClassName.Length() == 0)
+					Error("Error! Trying to add unknown liquid to stomach with item=" + Object.GetDebugName(edible_item) + " consume_type=" + consume_type + " liquid_type=" + liquid_type);
+				m_PlayerStomach.AddToStomach(liquidClassName, amount, 0, agents);
 			}
 			else 
 			{

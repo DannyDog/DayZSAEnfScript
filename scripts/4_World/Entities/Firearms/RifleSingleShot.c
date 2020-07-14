@@ -166,10 +166,4 @@ class RifleSingleShot_Base extends Rifle_Base
 
 		m_fsm.Start();
 	}
-	
-	override bool CanChamberBullet (int muzzleIndex, Magazine mag)
-	{
-		return CanChamberFromMag(muzzleIndex, mag);
-	}
-
 };

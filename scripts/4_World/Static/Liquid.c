@@ -7,7 +7,13 @@ class Liquid
 	
 	static string GetLiquidClassname(int liquid_type)
 	{
-			return m_AllLiquidsByType.Get(liquid_type).GetLiquidClassname();
+		NutritionalProfile liquid = m_AllLiquidsByType.Get(liquid_type);
+		if (liquid)
+		{
+			return liquid.GetLiquidClassname();
+		}
+		
+		return "";
 	}
 	
 	static bool InitAllLiquids()

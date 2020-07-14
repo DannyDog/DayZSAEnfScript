@@ -1586,7 +1586,7 @@ class ItemBase extends InventoryItem
 	}
 	
 	//! Called on server side when this item's quantity is changed. Call super.OnQuantityChanged(); first when overriding this event.
-	void OnQuantityChanged()
+	void OnQuantityChanged(float delta)
 	{
 		ItemBase parent = ItemBase.Cast( GetHierarchyParent() );
 		
@@ -1594,7 +1594,19 @@ class ItemBase extends InventoryItem
 		{
 			parent.OnAttachmentQuantityChanged(this);
 		}
-		UpdateWeight();
+		
+		if (delta > 0 && GetUnitWeight() != -1)
+		{
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD,GetUnitWeight() * delta);
+		}
+		else if (delta < 0 && GetUnitWeight() != -1)
+		{
+			UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE,-GetUnitWeight() * delta);
+		}
+		else
+		{
+			UpdateWeight();
+		}
 	}
 	
 	//! Called on server side when some attachment's quantity is changed. Call super.OnAttachmentQuantityChanged(item); first when overriding this event.
@@ -2572,6 +2584,7 @@ class ItemBase extends InventoryItem
 	//! Set item quantity[related to varQuantity... config entry], destroy_config = true > if the quantity reaches varQuantityMin or lower and the item config contains the varQuantityDestroyOnMin = true entry, the item gets destroyed. destroy_forced = true means item gets destroyed when quantity reaches varQuantityMin or lower regardless of config setting, returns true if the item gets deleted
 	bool SetQuantity(float value, bool destroy_config = true, bool destroy_forced = false, bool allow_client = false)
 	{
+		float delta = 0;
 		if( !IsServerCheck(allow_client) ) return false;
 		if( !HasQuantity() ) return false;
 		if( IsLiquidContainer() && GetLiquidType() == 0 )
@@ -2615,9 +2628,11 @@ class ItemBase extends InventoryItem
 			PrintString("setting quantity, new:"+value.ToString());
 		}*/
 		
+		delta = m_VarQuantity;
 		m_VarQuantity = Math.Clamp(value, min, max);
+		delta = m_VarQuantity - delta;
 		SetVariableMask(VARIABLE_QUANTITY);
-		OnQuantityChanged();
+		OnQuantityChanged(delta);
 		return false;
 	}
 
@@ -2750,6 +2765,8 @@ class ItemBase extends InventoryItem
 	
 	override void UpdateWeight(WeightUpdateType updateType = WeightUpdateType.FULL, float weightAdjustment = 0)
 	{
+		float itemWetness = GetWet() + 1;
+		float current_quantity;
 		switch (updateType)
 		{
 			case WeightUpdateType.FULL:
@@ -2820,22 +2837,22 @@ class ItemBase extends InventoryItem
 				break;
 			case WeightUpdateType.RECURSIVE_ADD:
 				{
+					//Print("RECURSIVE_ADD WA: " + weightAdjustment);
 					if (weightAdjustment == 0) //First one in hierarchy
 					{
-						float itemWetness = GetWet() + 1;
-						float quantity = GetQuantity();
+						current_quantity = GetQuantity();
 
 						if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
 						{
-							weightAdjustment = itemWetness * quantity * m_ConfigWeight;
+							weightAdjustment = itemWetness * current_quantity * m_ConfigWeight;
 						}
 						else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 						{
-							weightAdjustment = itemWetness * m_ConfigWeight * (quantity/GetQuantityMax());
+							weightAdjustment = itemWetness * m_ConfigWeight * (current_quantity/GetQuantityMax());
 						}
 						else //quantity determines weight of item without container (i.e. sardines in a can)
 						{
-							weightAdjustment = itemWetness * (quantity + m_ConfigWeight);
+							weightAdjustment = itemWetness * (current_quantity + m_ConfigWeight);
 						}
 					
 						weightAdjustment = Math.Round(weightAdjustment);
@@ -2849,7 +2866,28 @@ class ItemBase extends InventoryItem
 				break;
 			case WeightUpdateType.RECURSIVE_REMOVE:
 				{
+					if (weightAdjustment == 0) //First one in hierarchy
+					{
+						current_quantity = GetQuantity();
+
+						if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						{
+							weightAdjustment = itemWetness * current_quantity * m_ConfigWeight;
+						}
+						else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
+						{
+							weightAdjustment = itemWetness * m_ConfigWeight * (current_quantity/GetQuantityMax());
+						}
+						else //quantity determines weight of item without container (i.e. sardines in a can)
+						{
+							weightAdjustment = itemWetness * (current_quantity + m_ConfigWeight);
+						}
+					
+						weightAdjustment = Math.Round(weightAdjustment);
+					}
+					
 					m_Weight -= weightAdjustment;
+				
 					EntityAI hp = GetHierarchyParent();
 					if (hp && !hp.IsInherited(PlayerBase))
 						hp.UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, weightAdjustment);
@@ -2858,7 +2896,12 @@ class ItemBase extends InventoryItem
 			default:
 				break;
 		}
-		
+		/*Print(this);
+		Print("current_quantity: " + current_quantity);
+		Print("updateType: " + updateType);
+		Print("weightAdjustment: " + weightAdjustment);
+		Print("m_Weight: " + m_Weight);
+		DumpStack();*/
 	}
 
 	//! Returns the number of items in cargo, otherwise returns 0(non-cargo objects). Recursive.
@@ -2879,6 +2922,24 @@ class ItemBase extends InventoryItem
 				item_count += item.GetNumberOfItems();
 		}
 		return item_count;
+	}
+	
+	//! Returns weight of unit, useful for stackable items
+	float GetUnitWeight(bool include_wetness = true)
+	{
+		float weight = 0;
+		float wetness = 1;
+		if (include_wetness)
+			wetness += GetWet();
+		if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+		{
+			weight = wetness * m_ConfigWeight;
+		}
+		else if (ConfigGetFloat("liquidContainerType") > 0) //is a liquid container, default liquid weight is set to 1. May revisit later?
+		{
+			weight = 1;
+		}
+		return weight;
 	}
 	
 	void SetVariableMask(int variable)

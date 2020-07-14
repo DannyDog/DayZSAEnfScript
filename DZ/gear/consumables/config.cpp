@@ -1253,7 +1253,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 10;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\gear\consumables\data\oak_bark.rvmat"}},{0.7,{"DZ\gear\consumables\data\oak_bark.rvmat"}},{0.5,{"DZ\gear\consumables\data\oak_bark_damage.rvmat"}},{0.3,{"DZ\gear\consumables\data\oak_bark_damage.rvmat"}},{0.0,{"DZ\gear\consumables\data\oak_bark_destruct.rvmat"}}};
 				};
 			};
@@ -1272,7 +1272,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 10;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\gear\consumables\data\birch_bark.rvmat"}},{0.7,{"DZ\gear\consumables\data\birch_bark.rvmat"}},{0.5,{"DZ\gear\consumables\data\birch_bark_damage.rvmat"}},{0.3,{"DZ\gear\consumables\data\birch_bark_damage.rvmat"}},{0.0,{"DZ\gear\consumables\data\birch_bark_destruct.rvmat"}}};
 				};
 			};

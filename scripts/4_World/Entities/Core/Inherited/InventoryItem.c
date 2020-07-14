@@ -519,11 +519,9 @@ class Clothing extends ItemBase
 			is_hidden_stash_exception = true;
 		
 		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
-		{		
-			/*
+		{
 			if (parent)
 				return !parent.GetHierarchyParent() || parent.GetHierarchyParent().IsMan();
-			*/
 			
 			return true;
 		}

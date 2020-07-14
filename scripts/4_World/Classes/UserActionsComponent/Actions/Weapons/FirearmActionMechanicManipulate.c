@@ -28,20 +28,17 @@ class FirearmActionMechanicManipulate : FirearmActionBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
-		Weapon_Base wpn = Weapon_Base.Cast(item);
+		if (!super.ActionCondition( player, target, item ))
+			return false;
 		
-		if (wpn && wpn.CanProcessWeaponEvents())
-		{
-			if (player.GetWeaponManager().CanEjectBullet(wpn))
-				return true;
-		}
-		return false;
+		Weapon_Base wpn = Weapon_Base.Cast(item);		
+		return player.GetWeaponManager().CanEjectBullet(wpn);
 	}
 	
 	override void Start( ActionData action_data )
 	{
-			super.Start( action_data );
+		super.Start( action_data );
 		
-			action_data.m_Player.GetWeaponManager().EjectBulletVerified( this );
+		action_data.m_Player.GetWeaponManager().EjectBulletVerified( this );
 	}
 };

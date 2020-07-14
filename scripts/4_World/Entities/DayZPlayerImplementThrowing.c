@@ -177,9 +177,13 @@ class DayZPlayerImplementThrowing
 	bool CanContinueThrowing(HumanInputController pHic)
 	{
 		HumanItemBehaviorCfg itemInHandsCfg = m_Player.GetItemAccessor().GetItemInHandsBehaviourCfg();
-		Input input = GetGame().GetInput();
-		
-		if( input.LocalPress("UAGear") || pHic.IsWeaponRaised() || (itemInHandsCfg && itemInHandsCfg.m_iType == ItemBehaviorType.HEAVY) )
+		bool boo = false;
+		UAInterface input_interface = m_Player.GetInputInterface();
+		if(input_interface && input_interface.SyncedPress("UAGear"))
+		{
+			boo = true;
+		}
+		if( boo || pHic.IsWeaponRaised() || (itemInHandsCfg && itemInHandsCfg.m_iType == ItemBehaviorType.HEAVY) )
 		{
 			return false;
 		}

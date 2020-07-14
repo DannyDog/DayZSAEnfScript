@@ -123,8 +123,7 @@ class Pot extends Bottle_Base
 		AddAction(ActionWaterGardenSlot);
 		AddAction(ActionWaterPlant);
 		AddAction(ActionForceDrink);
-		AddAction(ActionPourLiquid);
-		AddAction(ActionDrainLiquid);
+		AddAction(ActionTransferLiquid);
 		AddAction(ActionEmptyCookingPot);
 		AddAction(ActionDrinkCookingPot);
 	}

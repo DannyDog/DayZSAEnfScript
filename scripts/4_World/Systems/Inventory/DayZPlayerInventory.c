@@ -69,6 +69,7 @@ class DeferredHandEvent: DeferredEvent
 class DayZPlayerInventory : HumanInventoryWithFSM
 {
 	ref DeferredEvent m_DeferredEvent = NULL;
+	ref Timer m_DeferredWeaponTimer = new Timer;
 	//protected ref HandEventBase m_PostedHandEvent = NULL; /// deferred hand event
 	
 	
@@ -115,11 +116,13 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 			m_Taking.AddTransition(new HandTransition(  m_Taking.m_Show, _abt_,   m_Equipped));
 
 		m_FSM.AddTransition(new HandTransition( m_Equipped, __M__,  m_MovingTo, NULL, new HandSelectAnimationOfMoveFromHandsEvent(GetManOwner())));
+		m_FSM.AddTransition(new HandTransition( m_MovingTo, __Xd_,  m_Empty, new HandActionDestroyed, new HandGuardHasDestroyedItemInHands(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition( m_MovingTo, _fin_,  m_Empty   , null, null));
 			m_MovingTo.AddTransition(new HandTransition(  m_MovingTo.m_Hide, _abt_,   m_Equipped));
 			m_MovingTo.AddTransition(new HandTransition(  m_MovingTo.m_Show, _abt_,   m_Empty));
 
 		m_FSM.AddTransition(new HandTransition( m_Equipped, __W__,  m_Swapping, NULL, new HandSelectAnimationOfSwapInHandsEvent(GetManOwner())));
+		m_FSM.AddTransition(new HandTransition( m_Swapping, __Xd_,  m_Empty, new HandActionDestroyed, new HandGuardHasDestroyedItemInHands(GetManOwner())));
 		m_FSM.AddTransition(new HandTransition( m_Swapping, _fin_,  m_Equipped, null, null));
 		m_FSM.AddTransition(new HandTransition( m_Swapping, _abt_,  m_Equipped, null, null));
 
@@ -172,6 +175,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	void CancelWeaponEvent ()
 	{
 		m_DeferredWeaponEvent = null;
+		m_DeferredWeaponTimer.Stop();
 	}
 
 	void AbortWeaponEvent ()
@@ -201,6 +205,30 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		}
 		else
 			Error("[wpnfsm] " + Object.GetDebugName(GetInventoryOwner()) + " warning - pending event already posted, curr_event=" + m_DeferredWeaponEvent.DumpToString() + " new_event=" + e.DumpToString());
+	}
+	
+	void DeferredWeaponFailed()
+	{
+		Weapon_Base weapon;
+		Class.CastTo(weapon, GetEntityInHands());
+		
+		string secondPart = " - ENTITY IN HANDS IS NOT A WEAPON: " + Object.GetDebugName(GetEntityInHands());
+		
+		string firstPart = "[wpnfsm] " + Object.GetDebugName(GetInventoryOwner()) + " failed to perform weaponevent " + m_DeferredWeaponEvent.DumpToString();
+		if (weapon)
+		{
+			secondPart = " on " + Object.GetDebugName(GetEntityInHands()) + " which is in state " + weapon.GetCurrentState();
+			for (int i = 0; i < weapon.GetMuzzleCount(); ++i)
+			{
+				secondPart += "Chamber_" + i + ": " + weapon.IsChamberFull(i) + " " + weapon.IsChamberFiredOut(i) + " " + weapon.IsChamberJammed(i) + " " + weapon.IsChamberEmpty(i) + " | ";
+				secondPart += "Magazine_" + i + ": " + weapon.GetMagazine(i);
+				if (i < weapon.GetMuzzleCount() - 1)
+					secondPart += " | ";
+			}
+		}
+		
+		Error(firstPart + secondPart);
+		CancelWeaponEvent();
 	}
 
 	void HandleWeaponEvents (float dt, out bool exitIronSights)
@@ -262,6 +290,11 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					exitIronSights = true;
 					fsmDebugSpam("[wpnfsm] " + Object.GetDebugName(weapon) + " Weapon event: resetting deferred event" + m_DeferredWeaponEvent.DumpToString());
 					m_DeferredWeaponEvent = NULL;
+					m_DeferredWeaponTimer.Stop();
+				}
+				else if (!m_DeferredWeaponTimer.IsRunning())
+				{
+					m_DeferredWeaponTimer.Run(3, this, "DeferredWeaponFailed");
 				}
 			}
 		}
@@ -446,6 +479,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		
 		InventoryLocation correct_il;
 		ScriptJunctureData ctx_repair;
+		ScriptInputUserData n_ctx = new ScriptInputUserData;
 
 		switch (type)
 		{
@@ -669,14 +703,20 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				InventoryLocation src2 = new InventoryLocation;
 				InventoryLocation dst1 = new InventoryLocation;
 				InventoryLocation dst2 = new InventoryLocation;
+				bool skippedSwap = false;
+				
 				src1.ReadFromContext(ctx);
 				src2.ReadFromContext(ctx);
 				dst1.ReadFromContext(ctx);
 				dst2.ReadFromContext(ctx);
+				ctx.Read(skippedSwap);
 				
 				if (remote && (!src1.GetItem() || !src2.GetItem()))
 				{
-					Error("[syncinv] HandleInputData remote input (cmd=SWAP) dropped, item not in bubble");
+					if (skippedSwap)
+						syncDebugPrint("[syncinv] HandleInputData remote input (cmd=SWAP) dropped, swap is skipped");
+					else
+						Error("[syncinv] HandleInputData remote input (cmd=SWAP) dropped, item not in bubble");
 					break; // not in bubble
 				}
 				
@@ -752,7 +792,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 						ClearInventoryReservation(dst2.GetItem(),dst2);
 					}
 
-					LocationSwap(src1, src2, dst1, dst2);
+					bool isNotSkipped = LocationSwap(src1, src2, dst1, dst2);
+					
+					InventoryInputUserData.SerializeSwap(n_ctx, src1, src2, dst1, dst2, !isNotSkipped);
+					ctx = n_ctx;
 				}
 				else
 				{
@@ -1233,12 +1276,32 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 #endif
 	}
 	
-	override void HandEvent (InventoryMode mode, HandEventBase e)
+	override bool HandEvent(InventoryMode mode, HandEventBase e)
 	{
-		if(!m_DeferredEvent)
+		if (!m_DeferredEvent)
 		{
-			m_DeferredEvent = new DeferredHandEvent(mode,e);
+			EntityAI itemInHands = GetEntityInHands();
+			InventoryLocation handInventoryLocation = new InventoryLocation;
+			handInventoryLocation.SetHands(GetInventoryOwner(), itemInHands);
+			
+			bool hadHandReservation = false;
+			
+			if (HasInventoryReservation(itemInHands, handInventoryLocation))
+			{
+				ClearInventoryReservation(itemInHands, handInventoryLocation);
+				hadHandReservation = true;	
+			}
+			
+			if (e.CanPerformEvent())
+			{
+				m_DeferredEvent = new DeferredHandEvent(mode,e);
+				return true;
+			}
+			
+			if (hadHandReservation)
+				AddInventoryReservation(itemInHands, handInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
 		}
+		return false;
 	}
 	
 	

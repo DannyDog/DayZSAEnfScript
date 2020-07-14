@@ -88,8 +88,7 @@ class Trap_SmallFish extends TrapSpawnBase
 		AddAction(ActionWaterGardenSlot);
 		AddAction(ActionWaterPlant);
 		AddAction(ActionForceDrink);
-		AddAction(ActionPourLiquid);
-		AddAction(ActionDrainLiquid);
+		AddAction(ActionTransferLiquid);
 		AddAction(ActionEmptyBottleBase);
 		AddAction(ActionDrink);
 	}

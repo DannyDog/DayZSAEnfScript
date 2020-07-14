@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 1.18986;
 		initSpeedMultiplier = 1.15;
+		winchesterTypeOpticsMount = 1;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_22"};

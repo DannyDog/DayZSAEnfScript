@@ -201,8 +201,7 @@ class ActionConstructor
 		//actions.Insert(ActionWritePaper);
 		//actions.Insert(ActionReadPaper);
 		actions.Insert(ActionFillFuel);
-		actions.Insert(ActionPourLiquid);
-		actions.Insert(ActionDrainLiquid);
+		actions.Insert(ActionTransferLiquid);
 		actions.Insert(ActionStartEngine);
 		actions.Insert(ActionRaiseMegaphone);
 		actions.Insert(ActionActivateTrap);

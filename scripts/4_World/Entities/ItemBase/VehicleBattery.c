@@ -79,9 +79,9 @@ class VehicleBattery : ItemBase
 		AddAction(ActionPlugTargetIntoThis);
 	}
 	
-	override void OnQuantityChanged()
+	override void OnQuantityChanged(float delta)
 	{
-		super.OnQuantityChanged();
+		super.OnQuantityChanged(delta);
 		m_EM.SetEnergy(m_VarQuantity / GetQuantityMax() * m_EM.GetEnergyMax());
 	}
 }
