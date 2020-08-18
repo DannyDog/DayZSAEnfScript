@@ -1,5 +1,10 @@
-class ActionGetOutTransport: ActionInteractBase
+class ActionGetOutTransport: ActionBase
 {
+	Car m_Car;
+	vector m_StartLocation;
+	float m_CarSpeed;
+	bool m_WasJumpingOut = false;
+	
 	void ActionGetOutTransport()
 	{
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ALL;
@@ -72,13 +77,17 @@ class ActionGetOutTransport: ActionInteractBase
 				Car car;
 				if ( Class.CastTo(car, trans) )
 				{
+					m_StartLocation = action_data.m_Player.GetPosition();
+					m_Car = car;
 					float speed = car.GetSpeedometer();
+					m_CarSpeed = speed;
 					if ( speed <= 8 )
 					{
 						vehCommand.GetOutVehicle();
 					}
 					else
 					{
+						m_WasJumpingOut = true;
 						vehCommand.JumpOutVehicle();
 					}
 					//action_data.m_Player.GetItemAccessor().HideItemInHands(false);
@@ -106,10 +115,9 @@ class ActionGetOutTransport: ActionInteractBase
 
 	override void OnUpdate(ActionData action_data)
 	{
-
-		if(action_data.m_State == UA_START)
+		if (action_data.m_State == UA_START)
 		{
-			if( !action_data.m_Player.GetCommand_Vehicle().IsGettingOut() )
+			if ( !action_data.m_Player.GetCommand_Vehicle() )
 			{
 				End(action_data);
 			}
@@ -136,7 +144,7 @@ class ActionGetOutTransport: ActionInteractBase
 		return AC_INTERACT;
 	}
 	
-	override void OnEndClient( ActionData action_data )
+	override void OnEnd( ActionData action_data )
 	{
 		if ( action_data.m_Player.GetInventory() ) 
 				action_data.m_Player.GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
@@ -144,7 +152,20 @@ class ActionGetOutTransport: ActionInteractBase
 	
 	override void OnEndServer( ActionData action_data )
 	{
-		if ( action_data.m_Player.GetInventory() ) 
-				action_data.m_Player.GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		vector endLocation = action_data.m_Player.GetPosition();
+		
+		vector contact_pos;
+		vector contact_dir;
+		int contact_component;
+		
+		set<Object> result = new set<Object>;
+		
+		vector offset = Vector(0, 2, 0);
+		
+		if (DayZPhysics.RaycastRV(m_StartLocation, endLocation, contact_pos, contact_dir, contact_component, result, m_Car, action_data.m_Player, false, false, ObjIntersectView, 0.3))
+			action_data.m_Player.SetPosition(contact_pos);
+
+		if (m_WasJumpingOut)
+			action_data.m_Player.OnJumpOutVehicleFinish(m_CarSpeed);
 	}
 };

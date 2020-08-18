@@ -36,7 +36,7 @@ class cfgWeapons
 		animName = "cz527";
 		weight = 2720;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";

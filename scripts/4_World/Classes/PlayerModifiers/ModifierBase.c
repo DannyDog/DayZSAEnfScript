@@ -158,7 +158,7 @@ class ModifierBase
 	{
 		string name = ClassName();
 		int index_start = name.Length() - 4;
-		int index_end = name.Length(;
+		int index_end = name.Length();
 		name = name.SubstringInverted(name, index_start, index_end);
 		return name;
 	}

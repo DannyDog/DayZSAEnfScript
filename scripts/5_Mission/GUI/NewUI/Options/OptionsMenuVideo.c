@@ -18,7 +18,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	protected ref OptionSelectorMultistate	m_ResolutionSelector;
 	protected ref OptionSelectorSlider		m_BrightnessSelector;
 	protected ref OptionSelectorMultistate	m_VSyncSelector;
-	protected ref OptionSelectorMultistate	m_ColorDepthSelector;
+	//protected ref OptionSelectorMultistate	m_ColorDepthSelector;
 	
 	//Scene
 	protected ref OptionSelectorMultistate	m_ObjectDetailSelector;
@@ -43,7 +43,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	protected ref ListOptionsAccess			m_ResolutionOption;
 	protected ref NumericOptionsAccess		m_BrightnessOption;
 	protected ref ListOptionsAccess			m_VSyncOption;
-	protected ref ListOptionsAccess			m_ColorDepthOption;
+	//protected ref ListOptionsAccess			m_ColorDepthOption;
 	
 	//Scene
 	protected ref ListOptionsAccess			m_ObjectDetailOption;
@@ -78,7 +78,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "resolution_setting_option" ).SetUserID( AT_OPTIONS_RESOLUTION );
 		m_Root.FindAnyWidget( "brightness_setting_option" ).SetUserID( AT_OPTIONS_BRIGHT_SLIDER );
 		m_Root.FindAnyWidget( "vsync_setting_option" ).SetUserID( AT_VSYNC_VALUE );
-		m_Root.FindAnyWidget( "color_depth_setting_option" ).SetUserID( AT_HDR_DETAIL );
+		//m_Root.FindAnyWidget( "color_depth_setting_option" ).SetUserID( AT_HDR_DETAIL );
 		
 		//Scene
 		m_Root.FindAnyWidget( "object_detail_setting_option" ).SetUserID( AT_OBJECTS_DETAIL );
@@ -122,7 +122,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ResolutionSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "resolution_setting_option" ), m_ResolutionOption.GetIndex(), this, false, opt8 );
 		m_BrightnessSelector			= new OptionSelectorSlider( m_Root.FindAnyWidget( "brightness_setting_option" ), m_BrightnessOption.ReadValue(), this, false, m_BrightnessOption.GetMin(), m_BrightnessOption.GetMax() );
 		m_VSyncSelector					= new OptionSelectorMultistate( m_Root.FindAnyWidget( "vsync_setting_option" ), m_VSyncOption.GetIndex(), this, false, opt1 );
-		m_ColorDepthSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "color_depth_setting_option" ), m_ColorDepthOption.GetIndex(), this, false, opt3 );
+		//m_ColorDepthSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "color_depth_setting_option" ), m_ColorDepthOption.GetIndex(), this, false, opt3 );
 		
 		//Scene
 		m_ObjectDetailSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "object_detail_setting_option" ), m_ObjectDetailOption.GetIndex(), this, false, opt4 );
@@ -148,7 +148,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ResolutionSelector.m_OptionChanged.Insert( OnResolutionChanged );
 		m_BrightnessSelector.m_OptionChanged.Insert( OnBrightnessChanged );
 		m_VSyncSelector.m_OptionChanged.Insert( OnVSyncChanged );
-		m_ColorDepthSelector.m_OptionChanged.Insert( OnColorDepthChanged );
+		//m_ColorDepthSelector.m_OptionChanged.Insert( OnColorDepthChanged );
 		
 		//Scene
 		m_ObjectDetailSelector.m_OptionChanged.Insert( OnObjectDetailChanged );
@@ -215,7 +215,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ResolutionSelector.SetValue( m_ResolutionOption.GetIndex(), false );
 		m_BrightnessSelector.SetValue( m_BrightnessOption.ReadValue(), false );
 		m_VSyncSelector.SetValue( m_VSyncOption.GetIndex(), false );
-		m_ColorDepthSelector.SetValue( m_ColorDepthOption.GetIndex(), false );
+		//m_ColorDepthSelector.SetValue( m_ColorDepthOption.GetIndex(), false );
 		
 		RefreshCustom();
 	}
@@ -232,7 +232,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 		m_ResolutionOption				= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_RESOLUTION ) );
 		m_BrightnessOption				= NumericOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_BRIGHT_SLIDER ) );
 		m_VSyncOption					= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_VSYNC_VALUE ) );
-		m_ColorDepthOption				= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_HDR_DETAIL ) );
+		//m_ColorDepthOption				= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_HDR_DETAIL ) );
 		
 		//Scene
 		m_ObjectDetailOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OBJECTS_DETAIL ) );
@@ -344,7 +344,7 @@ class OptionsMenuVideo extends ScriptedWidgetEventHandler
 	
 	void OnColorDepthChanged( int value )
 	{
-		m_ColorDepthOption.SetIndex( value );
+		//m_ColorDepthOption.SetIndex( value );
 		m_Menu.OnChanged();
 	}
 	

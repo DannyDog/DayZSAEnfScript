@@ -528,7 +528,7 @@ class VicinitySlotsContainer: Container
 			{
 				return "";
 			}
-			int max = item.ConfigGetInt( "varQuantityMax" );
+			int max = item.GetQuantityMax();
 			string unit = item.ConfigGetString( "stackedUnit" );
 
 			if ( max > 0 )
@@ -560,7 +560,7 @@ class VicinitySlotsContainer: Container
 			{
 				return QUANTITY_HIDDEN;
 			}
-			int max = item.ConfigGetInt( "varQuantityMax" );
+			int max = item.GetQuantityMax();
 			bool bar = item.ConfigGetBool( "quantityBar" );
 			if ( max > 0 )
 			{

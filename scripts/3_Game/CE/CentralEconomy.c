@@ -25,6 +25,8 @@ const int ECE_LOCAL							= 1073741824; // create object locally
 const int ECE_NOSURFACEALIGN				= 262144;	// do not align object on surface/ terrain
 const int ECE_KEEPHEIGHT					= 524288;	// keep height when creating object (do not use trace or placement on surface)
 
+const int ECE_NOLIFETIME					= 4194304;	// do not set lifetime when creating the object
+
 // note: use predefined combination when not solving something specific
 //
 const int ECE_IN_INVENTORY					= 787456;	// ECE_CREATEPHYSICS|ECE_KEEPHEIGHT|ECE_NOSURFACEALIGN
@@ -94,12 +96,56 @@ class CEApi
 	proto native void EconomyOutput( string sOutputType, float fRange );
 
 	//! Process lifetime increase withing radius by value (sec)
-	proto native void OnRadiusLifetimeIncrease( vector vCenter, float fRadius, float fValue );
+	proto native void RadiusLifetimeIncrease( vector vCenter, float fRadius, float fValue );
 	//! Process lifetime decrease withing radius by value (sec)
-	proto native void OnRadiusLifetimeDecrease( vector vCenter, float fRadius, float fValue );
+	proto native void RadiusLifetimeDecrease( vector vCenter, float fRadius, float fValue );
 	//! Process lifetime reset withing radius to default value from DB
-	proto native void OnRadiusLifetimeReset( vector vCenter, float fRadius );
+	proto native void RadiusLifetimeReset( vector vCenter, float fRadius );
+	
+	//! Loot spawn edit debug menu
+	proto native void LootSetSpawnVolumeVisualisation(int mode);
+	proto native void LootToggleSpawnSetup(bool mode);
+	proto native void LootToggleVolumeEditing(bool mode);
+	proto native void LootToggleProxyEditing(bool mode);
+	proto native void LootRetraceGroupPoints();
+	proto native void LootExportGroup();
+	proto native void LootExportAllGroups();
+	proto native void LootExportMap();
+	proto native void LootExportClusters();
 
+	//! Loot tool debug menu
+	proto native void LootDepleteLifetime();
+	proto native void LootSetDamageToOne();
+	proto native void LootDepleteAndDamage();
+
+	//! Infected debug menu
+	proto native void InfectedToggleVisualisation(bool mode);
+	proto native void InfectedToggleZoneInfo(bool mode);
+	proto native void InfectedSpawn();
+	proto native void InfectedResetCleanup();
+
+	//! Animal debug menu
+	proto native void AnimalToggleVisualisation(bool mode);
+	proto native void AnimalSpawn();
+	proto native void AnimalAmbientSpawn();
+
+	//! General CE debugs
+	proto native void ToggleVehicleAndWreckVisualisation(bool mode);
+	proto native void ToggleLootVisualisation(bool mode);
+	proto native void ToggleClusterVisualisation(bool mode);
+	proto native void ToggleOverallStats(bool mode);
+	proto native void OnUpdate();
+
+	//! Dynamic event debugs
+	proto native void ToggleDynamicEventStatus(bool mode);
+	proto native void ToggleDynamicEventVisualisation(bool mode);
+	proto native void DynamicEventSpawn();
+	proto native void DynamicEventExport();
+	
+	//! Get values from globals.xml
+	proto native int GetCEGlobalInt(string varName);
+	proto native float GetCEGlobalFloat(string varName);
+	proto native string GetCEGlobalString(string varName);
 };
 
 proto native CEApi GetCEApi();
@@ -115,7 +161,7 @@ class CEItemProfile
 
 	proto native float GetQuantity(); // random quantity (0.0 - 1.0)
 
-	proto native float GetLifetime(); // lifetime in (seconds) - what is the idle before item abandoned at ground gets deleted
+	proto native float GetLifetime(); // maximum lifetime in (seconds) - what is the idle before item abandoned at ground gets deleted
 	proto native float GetRestock(); // restock is oposite of lifetime - idle before item is allowed to respawn when required
 
 	proto native int GetCost(); // cost of item determines its 'value' for players (this serve as priority during respawn and cleanup operation)

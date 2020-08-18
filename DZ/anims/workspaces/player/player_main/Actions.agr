@@ -2388,7 +2388,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 		}
 		$Node AnimNodeStateMachine {
 			 "FullBodyActionMaster" "TagFullBodyActions"
-			$States 160 {
+			$States 162 {
 				$State {
 					 "LitChemlightPne" "" "LitChemlightPne" "GetCommandI(CMD_FullBodyAction) == 504" "notime" 1
 					$EditorData {
@@ -3347,6 +3347,18 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 					 "PullOut" "" "PullOut" "GetCommandI(CMD_FullBodyAction) == 520" "notime" 1
 					$EditorData {
 						#EditorPos 96.0999985 34.5
+					}
+				}
+				$State {
+					 "RaiseFlag" "" "RaiseFlagGroup" "GetCommandI(CMD_FullBodyAction) == 600" "notime" 1
+					$EditorData {
+						#EditorPos 39.2000008 35.0
+					}
+				}
+				$State {
+					 "LowerFlag" "" "LowerFlagGroup" "GetCommandI(CMD_FullBodyAction) == 601" "notime" 1
+					$EditorData {
+						#EditorPos 41.5 35.0
 					}
 				}
 			}
@@ -4365,6 +4377,12 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			}
 		}
 		$Node AnimNodeGroupSelect {
+			 "LowerFlagGroup" "" "ActionInLoopOutSTM" "ActionInLoopOut" "LowerFlag"
+			$EditorData {
+				#EditorPos 41.5 32.5
+			}
+		}
+		$Node AnimNodeGroupSelect {
 			 "MineRockErc" "" "ActionInLoopOutSTM" "ActionInLoopOut" "MineRockErc"
 			$EditorData {
 				#EditorPos 25.3999996 32.5
@@ -4921,6 +4939,12 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			}
 			$EditorData {
 				#EditorPos 175.0 -10.9000006
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "RaiseFlagGroup" "" "ActionInLoopOutSTM" "ActionInLoopOut" "RaiseFlag"
+			$EditorData {
+				#EditorPos 39.2000008 32.5
 			}
 		}
 		$Node AnimNodeGroupSelect {

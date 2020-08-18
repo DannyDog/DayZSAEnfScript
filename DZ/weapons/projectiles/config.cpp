@@ -255,6 +255,8 @@ class CfgAmmo
 		maxLeadSpeed = 23;
 		typicalSpeed = 900;
 		initSpeed = 900;
+		damageBarrel = 100;
+		damageBarrelDestroyed = 100;
 		weight = 0.015;
 		impactBehaviour = 0;
 		class DamageApplied
@@ -503,6 +505,8 @@ class CfgAmmo
 			water_int[] = {"Shell_12ga_water_int_SoundSet"};
 			water[] = {"Shell_12ga_water_int_SoundSet"};
 		};
+		damageBarrel = 100;
+		damageBarrelDestroyed = 100;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -557,6 +561,8 @@ class CfgAmmo
 		deflecting = 0;
 		dispersion = 0.05;
 		projectilesCount = 8;
+		damageBarrel = 600.0;
+		damageBarrelDestroyed = 600.0;
 		weight = 0.005;
 		impactBehaviour = 1;
 		class DamageApplied
@@ -600,6 +606,8 @@ class CfgAmmo
 		airFriction = -0.006;
 		caliber = 1;
 		deflecting = 0;
+		damageBarrel = 600.0;
+		damageBarrelDestroyed = 600.0;
 		weight = 0.028;
 		impactBehaviour = 1;
 		class SoundSetsGroundHits
@@ -712,6 +720,8 @@ class CfgAmmo
 		airFriction = -0.01;
 		caliber = 0.1;
 		deflecting = 30;
+		damageBarrel = 480.0;
+		damageBarrelDestroyed = 480.0;
 		weight = 0.005;
 		class DamageApplied
 		{
@@ -752,6 +762,8 @@ class CfgAmmo
 		caliber = 0.1;
 		deflecting = 30;
 		dispersion = 0.05;
+		damageBarrel = 500.0;
+		damageBarrelDestroyed = 500.0;
 		weight = 0.005;
 		class DamageApplied
 		{
@@ -796,8 +808,8 @@ class CfgAmmo
 		tracerStartTime = -1;
 		tracerEndTime = 1;
 		nvgOnly = 1;
-		damageBarrel = 3;
-		damageBarrelDestroyed = 30;
+		damageBarrel = 250;
+		damageBarrelDestroyed = 250;
 		weight = 0.00356;
 		class DamageApplied
 		{
@@ -845,6 +857,8 @@ class CfgAmmo
 		initSpeed = 880;
 		caliber = 0.9;
 		deflecting = 10;
+		damageBarrel = 214.28572;
+		damageBarrelDestroyed = 214.28572;
 		weight = 0.00343;
 		class DamageApplied
 		{
@@ -895,8 +909,8 @@ class CfgAmmo
 		airFriction = -0.0008;
 		caliber = 1;
 		deflecting = 10;
-		damageBarrel = 6;
-		damageBarrelDestroyed = 60;
+		damageBarrel = 500;
+		damageBarrelDestroyed = 500;
 		weight = 0.01;
 		impactBehaviour = 1;
 		class DamageApplied
@@ -950,8 +964,8 @@ class CfgAmmo
 		airFriction = -0.00085;
 		caliber = 1;
 		deflecting = 10;
-		damageBarrel = 6;
-		damageBarrelDestroyed = 60;
+		damageBarrel = 500;
+		damageBarrelDestroyed = 500;
 		initSpeed = 740;
 		weight = 0.01;
 		impactBehaviour = 1;
@@ -1004,8 +1018,8 @@ class CfgAmmo
 		airFriction = -0.00143;
 		caliber = 0.9;
 		deflecting = 10;
-		damageBarrel = 3;
-		damageBarrelDestroyed = 30;
+		damageBarrel = 500;
+		damageBarrelDestroyed = 500;
 		weight = 0.008;
 		class DamageApplied
 		{
@@ -1045,7 +1059,7 @@ class CfgAmmo
 	{
 		scope = 2;
 		casing = "FxCartridge_9mm";
-		round = "FxRound_9mm";
+		round = "FxRound_45acp";
 		spawnPileType = "Ammo_45ACP";
 		hit = 0;
 		indirectHit = 0;
@@ -1058,6 +1072,8 @@ class CfgAmmo
 		airFriction = -0.00145;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
+		damageBarrel = 187.5;
+		damageBarrelDestroyed = 187.5;
 		weight = 0.0149;
 		class DamageApplied
 		{
@@ -1099,6 +1115,8 @@ class CfgAmmo
 		airFriction = -0.0014;
 		typicalSpeed = 440;
 		initSpeed = 382.6;
+		damageBarrel = 187.5;
+		damageBarrelDestroyed = 187.5;
 		weight = 0.0102;
 		class DamageApplied
 		{
@@ -1142,6 +1160,8 @@ class CfgAmmo
 		airFriction = -0.003;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
+		damageBarrel = 166.66667;
+		damageBarrelDestroyed = 166.66667;
 		weight = 0.0084;
 		class DamageApplied
 		{
@@ -1185,6 +1205,8 @@ class CfgAmmo
 		airFriction = -0.0016;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
+		damageBarrel = 150;
+		damageBarrelDestroyed = 150;
 		weight = 0.006;
 		class DamageApplied
 		{
@@ -1228,6 +1250,8 @@ class CfgAmmo
 		airFriction = -0.000769;
 		typicalSpeed = 380;
 		initSpeed = 330;
+		damageBarrel = 115.38461;
+		damageBarrelDestroyed = 115.38461;
 		weight = 0.0025;
 		soundFly[] = {};
 		supersonicCrackNear[] = {};
@@ -1272,6 +1296,8 @@ class CfgAmmo
 		typicalSpeed = 320;
 		airFriction = -0.00055;
 		initSpeed = 320;
+		damageBarrel = 250;
+		damageBarrelDestroyed = 250;
 		weight = 0.0168;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
@@ -1316,6 +1342,8 @@ class CfgAmmo
 		typicalSpeed = 320;
 		airFriction = -0.00055;
 		initSpeed = 320;
+		damageBarrel = 250;
+		damageBarrelDestroyed = 250;
 		weight = 0.0168;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
@@ -2049,6 +2077,10 @@ class CfgVehicles
 	class FxRound_9mm: FxRound
 	{
 		model = "\dz\weapons\projectiles\9mm_SingleRound.p3d";
+	};
+	class FxRound_45acp: FxRound
+	{
+		model = "\dz\weapons\projectiles\45acp_SingleRound.p3d";
 	};
 	class FxRound_556: FxRound
 	{

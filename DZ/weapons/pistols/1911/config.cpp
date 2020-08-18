@@ -35,10 +35,11 @@ class cfgWeapons
 		scope = 0;
 		weight = 1106;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.9,10,250,4,10};
 		WeaponLength = 0.634148;
+		barrelArmor = 1.523;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_1911_7Rnd"};
@@ -61,7 +62,7 @@ class cfgWeapons
 			reloadTime = 0.13;
 			recoil = "recoil_1911";
 			recoilProne = "recoil_1911_prone";
-			dispersion = 0.006;
+			dispersion = 0.0065;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,100};

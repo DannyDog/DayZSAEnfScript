@@ -179,7 +179,7 @@ class cfgVehicles
 			PPBlurProperties = 0.2;
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -241,7 +241,7 @@ class cfgVehicles
 			PPBlurProperties = 0.2;
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -263,7 +263,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 150;
 		itemSize[] = {1,1};
-		inventorySlot[] = {"pistolOptics"};
+		inventorySlot[] = {"pistolOptics","weaponOpticsCrossbow"};
 		simulation = "itemoptics";
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
@@ -304,7 +304,7 @@ class cfgVehicles
 			PPDOFProperties[] = {1,0.2,20,185,4,10};
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -367,7 +367,7 @@ class cfgVehicles
 			PPLensProperties[] = {1,0.15,0,0};
 			PPBlurProperties = 0.2;
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -431,7 +431,7 @@ class cfgVehicles
 			PPLensProperties[] = {1,0.15,0,0};
 			PPBlurProperties = 0.2;
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -783,21 +783,19 @@ class cfgVehicles
 		{
 			memoryPointCamera = "eyeScope";
 			cameraDir = "cameraDir";
-			useModelOptics = 1;
-			modelOptics = "\DZ\weapons\attachments\optics\opticview_pistol.p3d";
-			preloadOpticType = "Preload2DOptic_Pistol";
+			modelOptics = "-";
 			opticsDisablePeripherialVision = 0.67;
 			opticsFlare = 1;
-			opticsPPEffects[] = {"OpticsCHAbera3","OpticsBlur1"};
-			opticsZoomMin = "0.3926/2";
-			opticsZoomMax = "0.3926/2";
-			opticsZoomInit = "0.3926/2";
+			opticsPPEffects[] = {"OpticsCHAbera5","OpticsBlur1"};
+			opticsZoomMin = "0.3926/1.8";
+			opticsZoomMax = "0.3926/1.8";
+			opticsZoomInit = "0.3926/1.8";
 			distanceZoomMin = 100;
 			distanceZoomMax = 600;
 			discreteDistance[] = {100,200,300,400,500,600};
-			discreteDistanceInitIndex = 1;
-			PPMaskProperties[] = {0.5,0.5,0.4,0.05};
-			PPLensProperties[] = {1,0.15,0,0};
+			discreteDistanceInitIndex = 0;
+			PPMaskProperties[] = {0.5,0.5,0.23,0.05};
+			PPLensProperties[] = {0.5,0.15,0,0};
 			PPBlurProperties = 0.2;
 		};
 	};
@@ -856,7 +854,7 @@ class cfgVehicles
 			PPLensProperties[] = {0.5,0.15,0,0};
 			PPBlurProperties = 0.6;
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -921,7 +919,7 @@ class cfgVehicles
 			PPLensProperties[] = {0.5,0.15,0,0};
 			PPBlurProperties = 0.6;
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -1051,7 +1049,7 @@ class cfgVehicles
 			PPBlurProperties = 0.2;
 			opticSightTexture = "dz\weapons\attachments\optics\data\red_chevron_ca.paa";
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{

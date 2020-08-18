@@ -3,16 +3,15 @@ class ActionAttachOnSelection: ActionSingleUseBase
 	void ActionAttachOnSelection()
 	{
 	}
-
+	
 	override void CreateConditionComponents() 
 	{
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 	}
-		
+	
 	override string GetText()
 	{
-		//return "attach on Selection";
 		return "#attach";
 	}
 	

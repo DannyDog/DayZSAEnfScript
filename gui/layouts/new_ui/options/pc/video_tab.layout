@@ -553,6 +553,7 @@ FrameWidgetClass video_tab_root {
            }
           }
           FrameWidgetClass color_depth_setting_container {
+           visible 0
            ignorepointer 0
            position 0 0
            size 1 30

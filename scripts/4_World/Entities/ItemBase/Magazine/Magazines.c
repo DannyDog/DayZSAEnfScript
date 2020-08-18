@@ -1,6 +1,6 @@
 class Mag_FNX45_15Rnd: MagazineStorage {};
 class Mag_357Speedloader_6Rnd: MagazineStorage {};
-class Mag_DE_9rnd: MagazineStorage {};
+class Mag_Deagle_9rnd: MagazineStorage {};
 class Mag_1911_7Rnd: MagazineStorage {};
 class Mag_CZ75_15Rnd: MagazineStorage {};
 class Mag_Glock_15Rnd: MagazineStorage {};

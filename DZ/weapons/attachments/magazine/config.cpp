@@ -30,7 +30,7 @@ class CfgMagazines
 		scope = 0;
 		storageCategory = 1;
 		inventorySlot[] = {"magazine","magazine2","magazine3"};
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		handheld = "true";
 		armAction = "Disarm";
@@ -273,11 +273,11 @@ class CfgMagazines
 			};
 		};
 	};
-	class Mag_DE_9rnd: Magazine_Base
+	class Mag_Deagle_9rnd: Magazine_Base
 	{
 		scope = 2;
-		displayName = "$STR_CfgMagazines_Mag_DE_9rnd0";
-		descriptionShort = "$STR_CfgMagazines_Mag_DE_9rnd1";
+		displayName = "$STR_CfgMagazines_Mag_Deagle_9rnd0";
+		descriptionShort = "$STR_CfgMagazines_Mag_Deagle_9rnd1";
 		model = "\dz\weapons\attachments\magazine\magazine_DE.p3d";
 		weight = 70;
 		itemSize[] = {1,2};
@@ -293,7 +293,7 @@ class CfgMagazines
 				class Health
 				{
 					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\weapons\pistols\DE\data\gold_de.rvmat"}},{0.7,{"DZ\weapons\pistols\DE\data\gold_de.rvmat"}},{0.5,{"DZ\weapons\pistols\DE\data\gold_de_damage.rvmat"}},{0.3,{"DZ\weapons\pistols\DE\data\gold_de_damage.rvmat"}},{0.0,{"DZ\weapons\pistols\DE\data\gold_de_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"dz\weapons\attachments\magazine\data\deagle_mag.rvmat"}},{0.7,{"dz\weapons\attachments\magazine\data\deagle_mag.rvmat"}},{0.5,{"dz\weapons\attachments\magazine\data\deagle_mag_damage.rvmat"}},{0.3,{"dz\weapons\attachments\magazine\data\deagle_mag_damage.rvmat"}},{0.0,{"dz\weapons\attachments\magazine\data\deagle_mag_destruct.rvmat"}}};
 				};
 			};
 		};

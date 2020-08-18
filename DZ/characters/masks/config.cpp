@@ -396,6 +396,62 @@ class CfgVehicles
 		soundVoiceType = "gasmask";
 		soundVoicePriority = 5;
 	};
+	class AirborneMask: Clothing
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_AirborneMask0";
+		descriptionShort = "$STR_CfgVehicles_AirborneMask1";
+		model = "\DZ\characters\masks\airborne_mask_g.p3d";
+		inventorySlot[] = {"Mask"};
+		itemInfo[] = {"Clothing","Mask"};
+		rotationFlags = 2;
+		weight = 700;
+		itemSize[] = {3,4};
+		heatIsolation = 0.5;
+		visibilityModifier = 0.9;
+		noHelmet = 0;
+		headSelectionsToHide[] = {"Clipping_GP5GasMask"};
+		hiddenSelections[] = {"camoGround","camoMale","camoFemale","camoFilter","camoGlass"};
+		hiddenSelectionsTextures[] = {"\dz\characters\masks\data\airborne_mask_co.paa","\dz\characters\masks\data\airborne_mask_co.paa","\dz\characters\masks\data\airborne_mask_co.paa","\dz\characters\masks\data\gp5gasmask_white_co.paa","\dz\characters\masks\data\airborne_mask_glass_ca.paa"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"dz\characters\masks\data\airborne_mask.rvmat","dz\characters\masks\data\airborne_mask_glass.rvmat","dz\characters\masks\data\gp5gasmask.rvmat"}},{0.7,{}},{0.5,{"dz\characters\masks\data\airborne_mask_damage.rvmat","dz\characters\masks\data\airborne_mask_glass.rvmat","dz\characters\masks\data\gp5gasmask_damage.rvmat"}},{0.3,{}},{0.0,{"dz\characters\masks\data\airborne_mask_destruct.rvmat","dz\characters\masks\data\airborne_mask_glass.rvmat","dz\characters\masks\data\gp5gasmask_destruct.rvmat"}}};
+				};
+			};
+		};
+		class ClothingTypes
+		{
+			male = "\DZ\characters\masks\airborne_mask_m.p3d";
+			female = "\DZ\characters\masks\airborne_mask_f.p3d";
+		};
+		class Protection
+		{
+			biological = 1;
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpItem
+				{
+					soundSet = "DarkMotoHelmet_pickup_SoundSet";
+					id = 797;
+				};
+				class drop
+				{
+					soundset = "DarkMotoHelmet_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+		soundVoiceType = "gasmask";
+		soundVoicePriority = 5;
+	};
 	class GP5GasMask_Filter: Inventory_Base
 	{
 		scope = 2;

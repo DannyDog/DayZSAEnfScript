@@ -759,6 +759,17 @@ class OnlineServices
 		return false;
 	}
 	
+	static bool IsGameActive( bool sim )
+	{
+		#ifdef PLATFORM_XBOX
+		#ifndef PLATFORM_WINDOWS
+		if( m_TrialService )
+			return m_TrialService.IsGameActive( sim );
+		#endif
+		#endif
+		return false;
+	}
+	
 	static bool CheckUpdate()
 	{
 		GetClientServices();

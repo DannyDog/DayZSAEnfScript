@@ -29,6 +29,7 @@ class CfgVehicles
 	class WorldContainer_Base;
 	class HouseNoDestruct;
 	class Static;
+	class BaseBuildingBase: Inventory_Base{};
 	class TentBase: Container_Base
 	{
 		destrType = "DestructTent";
@@ -2329,7 +2330,7 @@ class CfgVehicles
 		alignHologramToTerain = 0;
 		slopeTolerance = 0.3;
 	};
-	class Fence: Inventory_Base
+	class Fence: BaseBuildingBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_Fence0";
@@ -3325,7 +3326,7 @@ class CfgVehicles
 			};
 		};
 	};
-	class Watchtower: Inventory_Base
+	class Watchtower: BaseBuildingBase
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_Watchtower0";
@@ -7130,6 +7131,574 @@ class CfgVehicles
 			};
 		};
 	};
+	class TerritoryFlag: BaseBuildingBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_TerritoryFlag0";
+		descriptionShort = "$STR_CfgVehicles_TerritoryFlag1";
+		model = "\DZ\gear\camping\territory_flag.p3d";
+		bounding = "BSphere";
+		overrideDrawArea = "3.0";
+		forceFarBubble = "true";
+		handheld = "false";
+		lootCategory = "Crafted";
+		carveNavmesh = 1;
+		weight = 60000;
+		itemSize[] = {6,6};
+		physLayer = "item_large";
+		createProxyPhysicsOnInit = "false";
+		createdProxiesOnInit[] = {"Deployed"};
+		rotationFlags = 2;
+		attachments[] = {"Material_FPole_WoodenLog","Material_FPole_Stones","Material_FPole_WoodenLog2","Material_FPole_MetalWire","Material_FPole_Rope","Material_FPole_Nails","Material_FPole_MagicStick","Material_FPole_Flag"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Base
+			{
+				name = "$STR_CfgVehicles_Construction_Part_Base";
+				description = "";
+				attachmentSlots[] = {"Material_FPole_WoodenLog"};
+				icon = "cat_tf_log";
+				selection = "totem";
+			};
+			class Support
+			{
+				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Support";
+				description = "";
+				attachmentSlots[] = {"Material_FPole_Stones","Material_FPole_WoodenLog2"};
+				icon = "tf_stones";
+				selection = "totem";
+			};
+			class Pole
+			{
+				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Pole";
+				description = "";
+				attachmentSlots[] = {"Material_FPole_MetalWire","Material_FPole_Rope","Material_FPole_Nails","Material_FPole_MagicStick"};
+				icon = "cat_tf_pole";
+				selection = "totem";
+			};
+			class Flag
+			{
+				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Flag";
+				description = "";
+				attachmentSlots[] = {"Material_FPole_Flag"};
+				icon = "tf_flag";
+				selection = "totem";
+			};
+		};
+		class AnimationSources
+		{
+			class AnimSourceShown
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class AnimSourceHidden
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class flag_mast
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 1;
+			};
+			class Deployed: AnimSourceHidden{};
+			class Base: AnimSourceHidden{};
+			class Support: AnimSourceHidden{};
+			class Pole: AnimSourceHidden{};
+			class Material_FPole_WoodenLog: AnimSourceHidden{};
+			class Material_FPole_Stones: AnimSourceHidden{};
+			class Material_FPole_WoodenLog2: AnimSourceHidden{};
+			class Material_FPole_MetalWire: AnimSourceHidden{};
+			class Material_FPole_Rope: AnimSourceHidden{};
+			class Material_FPole_Nails: AnimSourceHidden{};
+			class Material_FPole_MagicStick: AnimSourceHidden{};
+		};
+		class Construction
+		{
+			class totem
+			{
+				class base
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base";
+					is_base = 1;
+					id = 1;
+					required_parts[] = {};
+					conflicted_parts[] = {};
+					collision_data[] = {"base_min","base_max"};
+					build_action_type = 16;
+					dismantle_action_type = 16;
+					material_type = 1;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenLog";
+							slot_name = "Material_FPole_WoodenLog";
+							quantity = 1;
+							lockable = 0;
+						};
+					};
+				};
+				class support
+				{
+					name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Support";
+					id = 2;
+					required_parts[] = {"base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"support_min","support_max"};
+					build_action_type = 36;
+					dismantle_action_type = 36;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "Stone";
+							slot_name = "Material_FPole_Stones";
+							quantity = 32;
+							lockable = 0;
+						};
+						class Material2
+						{
+							type = "WoodenLog";
+							slot_name = "Material_FPole_WoodenLog2";
+							quantity = 6;
+							lockable = 0;
+						};
+					};
+				};
+				class pole
+				{
+					name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Pole";
+					id = 3;
+					required_parts[] = {"support"};
+					conflicted_parts[] = {};
+					collision_data[] = {"pole_min","pole_max"};
+					build_action_type = 2;
+					dismantle_action_type = 64;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "MetalWire";
+							slot_name = "Material_FPole_MetalWire";
+							quantity = 0;
+							lockable = 1;
+						};
+						class Material2
+						{
+							type = "Rope";
+							slot_name = "Material_FPole_Rope";
+							quantity = 0;
+							lockable = 1;
+						};
+						class Material3
+						{
+							type = "Nail";
+							slot_name = "Material_FPole_Nails";
+							quantity = 60;
+							lockable = 0;
+						};
+						class Material4
+						{
+							type = "WoodenLog";
+							slot_name = "Material_FPole_MagicStick";
+							quantity = 3;
+							lockable = 0;
+						};
+					};
+				};
+			};
+		};
+	};
+	class TerritoryFlagKit: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_TerritoryFlagKit0";
+		descriptionShort = "$STR_CfgVehicles_TerritoryFlagKit1";
+		model = "\DZ\gear\camping\territory_flag_kit.p3d";
+		rotationFlags = 17;
+		itemSize[] = {1,5};
+		weight = 280;
+		itemBehaviour = 1;
+		attachments[] = {"Rope"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
+				};
+				class GlobalArmor
+				{
+					class Projectile
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+					class FragGrenade
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+				};
+			};
+		};
+		class AnimationSources
+		{
+			class AnimSourceShown
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class AnimSourceHidden
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Inventory: AnimSourceHidden{};
+			class Placing: AnimSourceHidden{};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class crafting_1
+				{
+					soundSet = "FenceKit_crafting_1_SoundSet";
+					id = 1111;
+				};
+				class crafting_2
+				{
+					soundSet = "FenceKit_crafting_2_SoundSet";
+					id = 1112;
+				};
+				class crafting_3
+				{
+					soundSet = "FenceKit_crafting_3_SoundSet";
+					id = 1113;
+				};
+				class crafting_4
+				{
+					soundSet = "FenceKit_crafting_4_SoundSet";
+					id = 1114;
+				};
+				class crafting_5
+				{
+					soundSet = "FenceKit_crafting_5_SoundSet";
+					id = 1115;
+				};
+			};
+		};
+	};
+	class TerritoryFlagKitPlacing: TerritoryFlagKit
+	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
+		scope = 2;
+		model = "\DZ\gear\camping\territory_flag_kit_placing.p3d";
+		storageCategory = 10;
+		hiddenSelections[] = {"placing"};
+		hiddenSelectionsTextures[] = {"dz\gear\consumables\data\pile_of_planks_co.tga"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\fence_pile_of_planks.rvmat"};
+		hologramMaterial = "tent_medium";
+		hologramMaterialPath = "dz\gear\camping\data";
+		alignHologramToTerain = 0;
+		slopeTolerance = 0.3;
+	};
+	class Flag_Base: Inventory_Base
+	{
+		scope = 0;
+		displayName = "$STR_CfgVehicles_Flag_Base0";
+		descriptionShort = "$STR_CfgVehicles_Flag_Base1";
+		model = "\dz\gear\camping\DZ_Flag.p3d";
+		itemSize[] = {2,2};
+		absorbency = 0.9;
+		inventorySlot[] = {"Material_FPole_Flag"};
+		hiddenSelections[] = {"camo"};
+		hiddenSelectionsTextures[] = {"dz\gear\camping\data\flag_chern_co.paa"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+				class GlobalArmor
+				{
+					class Projectile
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+					class FragGrenade
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+				};
+			};
+		};
+		class AnimationSources
+		{
+			class folded
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class unfolded
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
+	};
+	class Flag_Chernarus: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Chern_co.paa"};
+	};
+	class Flag_Chedaki: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Ched_co.paa"};
+	};
+	class Flag_NAPA: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_NAPA_co.paa"};
+	};
+	class Flag_CDF: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_CDF_co.paa"};
+	};
+	class Flag_Livonia: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Livo_co.paa"};
+	};
+	class Flag_Altis: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Alti_co.paa"};
+	};
+	class Flag_SSahrani: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_KoS_co.paa"};
+	};
+	class Flag_NSahrani: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_DRoS_co.paa"};
+	};
+	class Flag_DayZ: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_DAYZ_co.paa"};
+	};
+	class Flag_LivoniaArmy: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_LDF_co.paa"};
+	};
+	class Flag_White: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_white_co.paa"};
+	};
+	class Flag_Bohemia: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_BI_co.paa"};
+	};
+	class Flag_APA: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_APA_co.paa"};
+	};
+	class Flag_UEC: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_UEC_co.paa"};
+	};
+	class Flag_Pirates: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_jolly_co.paa"};
+	};
+	class Flag_Cannibals: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_jolly_c_co.paa"};
+	};
+	class Flag_Bear: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_bear_co.paa"};
+	};
+	class Flag_Wolf: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_wolf_co.paa"};
+	};
+	class Flag_BabyDeer: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Fawn_co.paa"};
+	};
+	class Flag_Rooster: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_cock_co.paa"};
+	};
+	class Flag_LivoniaPolice: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_police_co.paa"};
+	};
+	class Flag_CMC: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_CMC_co.paa"};
+	};
+	class Flag_TEC: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_TEC_co.paa"};
+	};
+	class Flag_CHEL: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_CHEL_co.paa"};
+	};
+	class Flag_Zenit: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_Zenit_co.paa"};
+	};
+	class Flag_HunterZ: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_zhunters_co.paa"};
+	};
+	class Flag_BrainZ: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_brain_co.paa"};
+	};
 };
 class CfgNonAIVehicles
 {
@@ -7162,7 +7731,7 @@ class CfgNonAIVehicles
 	class ProxyNails_loose_10: ProxyBaseBuilding
 	{
 		model = "\DZ\gear\consumables\Nails_loose_10.p3d";
-		inventorySlot[] = {"Material_Nails","Material_L1_Nails","Material_L1W1_Nails","Material_L1W2_Nails","Material_L1W3_Nails","Material_L2_Nails","Material_L2W1_Nails","Material_L2W2_Nails","Material_L2W3_Nails","Material_L3_Nails","Material_L3W1_Nails","Material_L3W2_Nails","Material_L3W3_Nails"};
+		inventorySlot[] = {"Material_Nails","Material_L1_Nails","Material_L1W1_Nails","Material_L1W2_Nails","Material_L1W3_Nails","Material_L2_Nails","Material_L2W1_Nails","Material_L2W2_Nails","Material_L2W3_Nails","Material_L3_Nails","Material_L3W1_Nails","Material_L3W2_Nails","Material_L3W3_Nails","Material_FPole_Nails"};
 	};
 	class ProxyCombinationLock: ProxyBaseBuilding
 	{
@@ -7187,6 +7756,11 @@ class CfgNonAIVehicles
 	class Proxycombination_lock4: ProxyCombinationLock
 	{
 		model = "\DZ\gear\camping\combination_lock4.p3d";
+	};
+	class Proxywooden_log: ProxyBaseBuilding
+	{
+		model = "\dz\gear\camping\wooden_log.p3d";
+		inventorySlot[] = {"Material_FPole_WoodenLog","Material_FPole_WoodenLog2"};
 	};
 	class Proxycable_reel
 	{
@@ -7225,6 +7799,27 @@ class CfgNonAIVehicles
 				initPhase = 1;
 			};
 			class dropped_plug_1
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
+	};
+	class ProxyDZ_Flag: ProxyAttachment
+	{
+		scope = 2;
+		inventorySlot[] = {"Material_FPole_Flag"};
+		model = "\DZ\gear\camping\DZ_Flag.p3d";
+		class AnimationSources
+		{
+			class folded
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class unfolded
 			{
 				source = "user";
 				animPeriod = 0.01;

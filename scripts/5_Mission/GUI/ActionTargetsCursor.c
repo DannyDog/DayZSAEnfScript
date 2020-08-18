@@ -301,6 +301,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			}
 			else if (m_Target.GetObject() != null)
 			{
+				CheckRefresherFlagVisibility(m_Target.GetObject());
 				//! build cursor for new target
 				if ( m_Target.GetObject() != m_CachedObject.Get() )
 				{
@@ -1066,5 +1067,15 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		textWidget.SetText(keyName);
 		//frameWidget.Show(true);
 		textWidget.Show(true);
+	}
+	
+	protected void CheckRefresherFlagVisibility(Object object)
+	{
+		EntityAI entity;
+		Widget w = m_Root.FindAnyWidget("item_flag_icon");
+		if ( Class.CastTo(entity,object) && w )
+		{
+			w.Show(entity.IsRefresherSignalingViable() && m_Player.IsTargetInActiveRefresherRange(entity));
+		}
 	}
 }

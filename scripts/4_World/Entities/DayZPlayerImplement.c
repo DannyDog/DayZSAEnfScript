@@ -880,8 +880,6 @@ class DayZPlayerImplement extends DayZPlayer
 	bool m_DamageHitFullbody = false;
 	int m_DamageHitAnimType = -1;
 	float m_DamageHitDir = 0;
-	bool m_TransportHitRegistered = false;
-	vector m_TransportHitVelocity;
 
 	bool HandleDamageHit(int pCurrentCommandID)
 	{
@@ -1005,33 +1003,6 @@ class DayZPlayerImplement extends DayZPlayer
 		//Print("hitdir: " + pAnimHitDir.ToString());
 
 		return true;
-	}
-	
-	void RegisterTransportHit(Transport transport)
-	{
-		if( !m_TransportHitRegistered )
-		{	
-			m_TransportHitRegistered = true; 
-			m_TransportHitVelocity = GetVelocity(transport);
-		
-			// avoid damage because of small movements
-			if (m_TransportHitVelocity.Length() > 0.1)
-			{
-				float damage = m_TransportHitVelocity.Length();
-				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
-				ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
-			}
-			else
-				m_TransportHitRegistered = false; // EEHitBy is not called if no damage	
-			
-			// compute impulse and apply only if the body dies
-			if (IsDamageDestroyed() && m_TransportHitVelocity.Length() > 0.3)
-			{
-				vector impulse = 40 * m_TransportHitVelocity;
-				impulse[1] = 40 * 1.5;
-				dBodyApplyImpulse(this, impulse);
-			}
-		}
 	}
 
 	//! event from damage system
@@ -1235,14 +1206,17 @@ class DayZPlayerImplement extends DayZPlayer
 	//!
 	bool CanJump()
 	{
-		if( IsFBSymptomPlaying() || IsRestrained() || IsUnconscious() || IsInFBEmoteState() )
+		if ( IsFBSymptomPlaying() || IsRestrained() || IsUnconscious() || IsInFBEmoteState() )
 			return false;
 		
-		if( m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
+		if ( m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
 			return false;
 		
 		HumanItemBehaviorCfg hibcfg = GetItemAccessor().GetItemInHandsBehaviourCfg();
-		if( !hibcfg.m_bJumpAllowed )
+		if ( !hibcfg.m_bJumpAllowed )
+			return false;
+		
+		if ( !DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_ERECT) || !DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_RAISEDERECT) )
 			return false;
 		
 		return true;
@@ -1250,17 +1224,17 @@ class DayZPlayerImplement extends DayZPlayer
 
 	bool CanClimb( int climbType, SHumanCommandClimbResult climbRes )
 	{
-		if( IsFBSymptomPlaying() || IsRestrained() || IsUnconscious() || IsInFBEmoteState() )
+		if ( IsFBSymptomPlaying() || IsRestrained() || IsUnconscious() || IsInFBEmoteState() )
 			return false;
 		
-		if( m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
+		if ( m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
 			return false;
 		
 		HumanItemBehaviorCfg hibcfg = GetItemAccessor().GetItemInHandsBehaviourCfg();
-		if( !hibcfg.m_bJumpAllowed )
+		if ( !hibcfg.m_bJumpAllowed )
 			return false;
 		
-		if(climbRes)
+		if (climbRes)
 		{
 			EntityAI entity;
 			if (Class.CastTo(entity,climbRes.m_GrabPointParent) && entity.IsHologram())
@@ -3330,4 +3304,16 @@ class DayZPlayerImplement extends DayZPlayer
 	
 	bool m_input_process_successful;
 	string m_input_name = "";*/
+	
+	//! ---------------- Checks if player can pick up heavy item -------------------------
+	// Will return true when the item is not heavy as well
+	bool CanPickupHeavyItem(notnull EntityAI item)
+	{
+		return !item.IsHeavyBehaviour() || (item.IsHeavyBehaviour() && DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_ERECT));
+	}
+	
+	bool CanPickupHeavyItemSwap(notnull EntityAI item1, notnull EntityAI item2)
+	{
+		return CanPickupHeavyItem(item1) && CanPickupHeavyItem(item2);
+	}
 }

@@ -35,7 +35,7 @@ class cfgWeapons
 		inventorySlot[] = {""};
 		weight = 1700;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
@@ -45,7 +45,6 @@ class cfgWeapons
 		chamberedRound = "";
 		magazines[] = {};
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer"};
-		barrelArmor = 1820;
 		ejectType = 2;
 		recoilModifier[] = {1,1,1};
 		drySound[] = {"dz\sounds\weapons\firearms\mosin9130\mosin_dry",0.5,1,20};

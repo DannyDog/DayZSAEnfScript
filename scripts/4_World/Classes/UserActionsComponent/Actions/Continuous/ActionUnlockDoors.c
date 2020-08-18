@@ -19,7 +19,7 @@ class ActionUnlockDoors: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{	
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 	}
 		
 	override string GetText()
@@ -32,7 +32,7 @@ class ActionUnlockDoors: ActionContinuousBase
 		if( !target ) return false;
 		//if( IsDamageDestroyed(action_data.m_Target) ) return false;
 		if( !IsBuilding(target) ) return false;
-		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		//if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		
 		Building building;

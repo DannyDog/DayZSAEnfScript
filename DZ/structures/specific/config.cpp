@@ -1736,10 +1736,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_20";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall1_20_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_20_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_Wall1_20_Turn: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_20_Turn";
+		featureSize = 12;
+	};
+	class Land_Castle_Wall1_20_Turn_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_20_Turn_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Wall1_Corner1: HouseNoDestruct
@@ -1748,10 +1760,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_Corner1";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall1_Corner1_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_Corner1_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_Wall1_End1: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_End1";
+		featureSize = 12;
+	};
+	class Land_Castle_Wall1_End1_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_End1_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Wall1_End2: HouseNoDestruct
@@ -1760,10 +1784,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_End2";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall1_End2_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_End2_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_Wall2_30: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_Wall2_30";
+		featureSize = 12;
+	};
+	class Land_Castle_Wall2_30_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall2_30_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Wall2_Corner1: HouseNoDestruct
@@ -1772,10 +1808,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall2_Corner1";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall2_Corner1_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall2_Corner1_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_Wall2_End1: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_Wall2_End1";
+		featureSize = 12;
+	};
+	class Land_Castle_Wall2_End1_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall2_End1_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Wall2_End2: HouseNoDestruct
@@ -1784,10 +1832,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall2_End2";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall2_End2_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall2_End2_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_WallS_10: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_WallS_10";
+		featureSize = 12;
+	};
+	class Land_Castle_WallS_10_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_WallS_10_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_WallS_5_D: HouseNoDestruct
@@ -1796,10 +1856,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_WallS_5_D";
 		featureSize = 12;
 	};
+	class Land_Castle_WallS_5_D_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_WallS_5_D_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_WallS_End: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_WallS_End";
+		featureSize = 12;
+	};
+	class Land_Castle_WallS_End_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_WallS_End_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Stairs: HouseNoDestruct
@@ -1820,10 +1892,22 @@ class CfgVehicles
 		model = "\DZ\structures\Specific\Castles\Castle_Wall1_Corner2";
 		featureSize = 12;
 	};
+	class Land_Castle_Wall1_Corner2_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall1_Corner2_nolc";
+		featureSize = 12;
+	};
 	class Land_Castle_Wall2_Corner2: HouseNoDestruct
 	{
 		scope = 1;
 		model = "\DZ\structures\Specific\Castles\Castle_Wall2_Corner2";
+		featureSize = 12;
+	};
+	class Land_Castle_Wall2_Corner2_nolc: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\DZ\structures\Specific\Castles\Castle_Wall2_Corner2_nolc";
 		featureSize = 12;
 	};
 	class Land_Castle_Bergfrit: HouseNoDestruct
@@ -9854,7 +9938,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.0;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -9867,7 +9951,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.0;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -9880,7 +9964,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -9893,7 +9977,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9906,7 +9990,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9919,7 +10003,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9932,7 +10016,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9945,7 +10029,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.0;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";

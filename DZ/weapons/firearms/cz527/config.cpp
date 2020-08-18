@@ -36,7 +36,7 @@ class cfgWeapons
 		animName = "cz527";
 		weight = 2720;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
@@ -46,13 +46,12 @@ class cfgWeapons
 		winchesterTypeOpticsMount = 1;
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		WeaponLength = 0.934214;
-		value = 0;
+		barrelArmor = 1.111;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Ammo_762x39Tracer"};
 		magazines[] = {"Mag_CZ527_5rnd"};
 		magazineSwitchTime = 0.38;
-		barrelArmor = 900;
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.2,2.2,1.2};

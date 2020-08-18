@@ -20,12 +20,13 @@ class QuickBarBase
 	
 	void QuickBarBase(PlayerBase player)
 	{
-		for(int i = 0; i < MAX_QUICKBAR_SLOTS_COUNT; i++)
+		for (int i = 0; i < MAX_QUICKBAR_SLOTS_COUNT; i++)
 		{
 			m_aQuickbarEnts[i] = new QuickBarItem;
 			m_aQuickbarEnts[i].m_enabled = false;
 			m_aQuickbarEnts[i].m_entity = NULL;
 		}
+		
 		_player = player;
 		m_slotsCount = 0;
 	}
@@ -33,18 +34,18 @@ class QuickBarBase
 	void SetSize(int newSize)
 	{
 		int i = m_slotsCount;
-		if( newSize == m_slotsCount )
+		if ( newSize == m_slotsCount )
 			return;
 		
-		if(newSize > MAX_QUICKBAR_SLOTS_COUNT)
+		if (newSize > MAX_QUICKBAR_SLOTS_COUNT)
 			newSize = MAX_QUICKBAR_SLOTS_COUNT;
 		
-		if( newSize > i )
+		if ( newSize > i )
 		{	
-			for(; i < newSize; i++)
+			for (; i < newSize; i++)
 			{
 				EntityAI entity = m_aQuickbarEnts[i].m_entity;
-				if( entity != NULL && entity.GetHierarchyRootPlayer() == _player )
+				if ( entity != NULL && entity.GetHierarchyRootPlayer() == _player )
 				{
 					m_aQuickbarEnts[i].m_enabled = true;
 				}
@@ -52,32 +53,36 @@ class QuickBarBase
 		}
 		else
 		{	
-			for(i--; i >= newSize; i--)
+			for (i--; i >= newSize; i--)
 				m_aQuickbarEnts[i].m_enabled = false;
 		}
+		
 		m_slotsCount = newSize;
-		if(_player.m_Hud)
+		
+		if (_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
 	}
 //-------------------------------------------------------------		
 	int GetNonEmptyCount()
 	{
 		int count = 0;
-		for( int i = 0; i < m_slotsCount; i++ )
+		for ( int i = 0; i < m_slotsCount; i++ )
 		{
-			if(m_aQuickbarEnts[i].m_enabled)
+			if (m_aQuickbarEnts[i].m_enabled)
 				count++;					
 		}
+		
 		return count;	
 	}
 //-------------------------------------------------------------		
 	EntityAI GetEntity(int index)
 	{
-		if(index < 0 || index >= m_slotsCount)
+		if (index < 0 || index >= m_slotsCount)
 			return NULL;
 		
-		if(m_aQuickbarEnts[index].m_enabled)
+		if (m_aQuickbarEnts[index].m_enabled)
 			return m_aQuickbarEnts[index].m_entity;
+		
 		return NULL;
 	}
 	
@@ -89,50 +94,51 @@ class QuickBarBase
 //-------------------------------------------------------------		
 	int FindEntityIndex(EntityAI entity)
 	{
-		for(int i = 0; i < MAX_QUICKBAR_SLOTS_COUNT; i++)
+		for (int i = 0; i < MAX_QUICKBAR_SLOTS_COUNT; i++)
 		{
-			if(m_aQuickbarEnts[i].m_entity == entity) return i;
+			if (m_aQuickbarEnts[i].m_entity == entity)
+				return i;
 		}
+		
 		return -1;	
 	}
 //-------------------------------------------------------------
 	bool OnInputUserDataProcess(int userDataType, ParamsReadContext ctx)
 	{
-		if( userDataType == INPUT_UDT_QUICKABARSHORTCUT)
+		if ( userDataType == INPUT_UDT_QUICKABARSHORTCUT)
 		{
 			OnSetEntityRequest(ctx);
 			return true;
 		}
+		
 		return false;
 	}
 //-------------------------------------------------------------
 	void UpdateShotcutVisibility(int index)
 	{
-		if( CanAddAsShortcut(m_aQuickbarEnts[index].m_entity) )
-			m_aQuickbarEnts[index].m_enabled = true;
-		else
-			m_aQuickbarEnts[index].m_enabled = false;
-		if(_player.m_Hud)
+		m_aQuickbarEnts[index].m_enabled = CanAddAsShortcut(m_aQuickbarEnts[index].m_entity);
+		
+		if (_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
 	}
 //-------------------------------------------------------------
 	void SetShotcutEnable(int index, bool value)
 	{
-		m_aQuickbarEnts[index].m_enabled = value;
-		if(_player.m_Hud)
+		m_aQuickbarEnts[index].m_enabled = value && CanAddAsShortcut(m_aQuickbarEnts[index].m_entity);
+		
+		if (_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
 	}
 //-------------------------------------------------------------
 	bool CanAddAsShortcut(EntityAI entity)
 	{
-		if(entity && entity.GetHierarchyRootPlayer() == _player )
-		{
-			//if( entity.GetOwner() == _player )
-				return true;
-			
-			//if( )
-		}
-		return false;
+		// TODO: Excluding of the kits and fireplace is kinda dirty, find some prettier way to do it
+		// Maybe add event on parent that gets called that will check if the attachment allows it?
+		InventoryLocation loc = new InventoryLocation;
+		entity.GetInventory().GetCurrentInventoryLocation(loc);
+		EntityAI parent = loc.GetParent();
+		
+		return (entity && entity.GetHierarchyRootPlayer() == _player && parent.CanAssignAttachmentsToQuickbar() && entity.CanAssignToQuickbar());
 	}
 //-------------------------------------------------------------		
 	void SetEntityShortcut(EntityAI entity, int index, bool force = false)
@@ -149,7 +155,7 @@ class QuickBarBase
 				ctx.Write(force);
 				ctx.Send();
 			
-				_SetEntityShortcut(entity,index,force);	
+				_SetEntityShortcut(entity, index, force);	
 			}
 		}
 		//Server
@@ -166,7 +172,7 @@ class QuickBarBase
 //-------------------------------------------------------------
 	void OnSetEntityNoSync(EntityAI entity, int index, bool force = false )
 	{
-		_SetEntityShortcut(entity,index, force);
+		_SetEntityShortcut(entity, index, force);
 	}
 //-------------------------------------------------------------
 	//! Reaction on Rpc from server for set inicial state for quickbar
@@ -175,6 +181,7 @@ class QuickBarBase
 		Param2<Entity,int> param;
 		if (!ctx.Read(param))
 			return;
+		
 		EntityAI entity1 = EntityAI.Cast(param.param1);
 		_SetEntityShortcut(entity1, param.param2, false);
 	}
@@ -185,12 +192,15 @@ class QuickBarBase
 		EntityAI eai = null;
 		if (!ctx.Read(eai))
 			return;
+		
 		int index = -1;
 		if (!ctx.Read(index))
 			return;
+		
 		bool force = false;
 		if (!ctx.Read(force))
 			return
+		
 		_SetEntityShortcut(eai, index, force);
 	}
 //-------------------------------------------------------------		
@@ -198,7 +208,7 @@ class QuickBarBase
 	{
 		//TODO Check, if is in inventory
 		//if(entity.GetLoca)
-		if( entity == NULL )
+		if ( entity == NULL )
 		{
 			_RemoveEntity(index);
 			return;
@@ -206,12 +216,11 @@ class QuickBarBase
 		
 		int i = FindEntityIndex(entity);
 		
-		if( i != -1 )
+		if ( i != -1 )
 			_RemoveEntity(i);
 				
 		_RemoveEntity(index);
-		_SetEntity( entity, index, force);
-				
+		_SetEntity( entity, index, force);				
 	}
 //-------------------------------------------------------------		
 	void updateSlotsCount()
@@ -220,15 +229,15 @@ class QuickBarBase
 		int attCount  = _player.GetInventory().AttachmentCount();
 		EntityAI attachment;
 		
-		for( int i = 0; i < attCount; i++)
+		for ( int i = 0; i < attCount; i++)
 		{
 			attachment = _player.GetInventory().GetAttachmentFromIndex(i);		
 			int cnt = attachment.ConfigGetInt("quickBarBonus");		
-			slotsCount += cnt;
-			
+			slotsCount += cnt;		
 		}
+		
 		//just for sure, max map slots is 10
-		if(slotsCount > 10)
+		if (slotsCount > 10)
 			slotsCount = 10;
 				
 		SetSize(slotsCount);
@@ -236,32 +245,31 @@ class QuickBarBase
 //-------------------------------------------------------------		
 	protected void _RemoveEntity(int index)
 	{
-		if( index >= 0 && index < MAX_QUICKBAR_SLOTS_COUNT )
+		if ( index >= 0 && index < MAX_QUICKBAR_SLOTS_COUNT )
 		{
 			m_aQuickbarEnts[index].m_entity = NULL;
 			m_aQuickbarEnts[index].m_enabled = false;
-			if(_player.m_Hud)
+			
+			if (_player.m_Hud)
 				_player.m_Hud.RefreshQuickbar(true);
 		}
 	}
 //-------------------------------------------------------------		
 	protected void _SetEntity( EntityAI entity, int index, bool force = false)
-	{	
-		if( index >= 0 && index < MAX_QUICKBAR_SLOTS_COUNT )
-		{
-			m_aQuickbarEnts[index].m_entity = entity;
-			
-			bool can =  CanAddAsShortcut(entity);
-			if( can )
+	{		
+		if ( index >= 0 && index < MAX_QUICKBAR_SLOTS_COUNT )
+		{		
+			if ( CanAddAsShortcut(entity) )
+			{
+				m_aQuickbarEnts[index].m_entity = entity;
 				m_aQuickbarEnts[index].m_enabled = true;
+			}
 			else
 				m_aQuickbarEnts[index].m_enabled = false;
 			
-			if(_player.m_Hud)
+			if (_player.m_Hud)
 				_player.m_Hud.RefreshQuickbar(true);
-		}
-		
-		
+		}		
 	}
 //-------------------------------------------------------------	
 	void ~QuickBarBase()

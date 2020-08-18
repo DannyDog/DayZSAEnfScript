@@ -31,7 +31,8 @@ class RecoilBase
 	void RecoilBase(Weapon_Base weapon)
 	{
 		m_Weapon = weapon;
-		m_DebugMode = false;
+		//m_DebugMode = false;
+		m_DebugMode = GetDayZGame().IsAimLogEnabled();
 		m_Player = PlayerBase.Cast(weapon.GetHierarchyRootPlayer());
 		m_HandsCurvePoints = new array<vector>;
 		Init();

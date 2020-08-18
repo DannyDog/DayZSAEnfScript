@@ -895,4 +895,5 @@ class Man extends EntityAI
 	
 	void StopDeathDarkeningEffect() {}
 	bool PhysicalPredictiveDropItem(EntityAI entity, bool heavy_item_only = true) {}
+	void SetProcessUIWarning(bool state);
 };

@@ -131,3 +131,10 @@ class UAWaterType
 	const string ALL = "water";
 	const string FRESH = "fresh_water";
 }
+
+/**@class	Miscelaneous constants for use in actions
+ */
+class UAMisc
+{
+	const float FLAG_STEP_INCREMENT = 0.2; //0..1
+};

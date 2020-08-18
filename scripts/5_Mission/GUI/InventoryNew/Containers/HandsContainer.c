@@ -1380,7 +1380,7 @@ class HandsContainer: Container
 		}
 		
 		ItemBase item_base	= ItemBase.Cast( item );
-		float stackable = item_base.ConfigGetFloat("varStackMax");
+		float stack_max = item_base.GetTargetQuantityMax(slot_id);
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
@@ -1415,33 +1415,33 @@ class HandsContainer: Container
 		}
 		else if( slot_owner && slot_owner.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
-			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			if( stack_max == 0 || stack_max >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachmentEx(slot_owner, item, slot_id);
 			}
-			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			else if( stack_max != 0 && stack_max < item_base.GetQuantity() )
 			{
 				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
 			}
 		}
 		else if( slot_owner && slot_owner.GetInventory().CanAddAttachment( item ) )
 		{
-			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			if( stack_max == 0 || stack_max >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachment(slot_owner, item);
 			}
-			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			else if( stack_max != 0 && stack_max < item_base.GetQuantity() )
 			{
 				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
 			}
 		}
 		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
 		{
-			if( stackable == 0 || stackable >= item_base.GetQuantity() )
+			if( stack_max == 0 || stack_max >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
 			}
-			else if( stackable != 0 && stackable < item_base.GetQuantity() )
+			else if( stack_max != 0 && stack_max < item_base.GetQuantity() )
 			{
 				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
 			}
@@ -1680,10 +1680,7 @@ class HandsContainer: Container
 			{
 				if( player.GetInventory().CanAddEntityToInventory( item ) && player.GetHumanInventory().CanRemoveEntityInHands() )
 				{
-					if( item.ConfigGetFloat("varStackMax") )
-						item.SplitIntoStackMaxClient( player, -1, );
-					else
-						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
+					player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
 				}
 				else
 				{

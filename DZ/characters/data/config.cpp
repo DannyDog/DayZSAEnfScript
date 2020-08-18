@@ -1165,6 +1165,26 @@ class CfgVehicles
 					soundSet = "rope_tieup_back_SoundSet";
 					id = 40;
 				};
+				class Flag_in
+				{
+					soundSet = "Flag_in_SoundSet";
+					id = 50;
+				};
+				class Flag_out
+				{
+					soundSet = "Flag_out_SoundSet";
+					id = 51;
+				};
+				class Flag_raise_loop
+				{
+					soundSet = "Flag_raise_loop_SoundSet";
+					id = 52;
+				};
+				class Flag_lower_loop
+				{
+					soundSet = "Flag_lower_loop_SoundSet";
+					id = 53;
+				};
 				class CZ75_charge_open
 				{
 					soundSet = "CZ75_charge_open_SoundSet";
@@ -3844,6 +3864,26 @@ class CfgVehicles
 				{
 					soundSet = "Saiga12_jam_SoundSet";
 					id = 1280;
+				};
+				class Magnum_cilinder_in
+				{
+					soundSet = "Magnum_cilinder_in_SoundSet";
+					id = 1820;
+				};
+				class Magnum_cilinder_out
+				{
+					soundSet = "Magnum_cilinder_out_SoundSet";
+					id = 1821;
+				};
+				class Magnum_bullet_in
+				{
+					soundSet = "Magnum_bullet_in_SoundSet";
+					id = 1822;
+				};
+				class Magnum_bullet_out
+				{
+					soundSet = "Magnum_bullet_out_SoundSet";
+					id = 1823;
 				};
 				class Colt1911_charge_open
 				{

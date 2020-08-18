@@ -4,8 +4,8 @@ class SplitItemUtils
 	{
 		ItemBase item_base = ItemBase.Cast( item );
 		float stack_max = item_base.ConfigGetFloat("varStackMax");
-		if(stack_max < 1)
-			stack_max = item_base.GetQuantityMax();
+		if( stack_max <= 0 )
+			stack_max = item_base.ConfigGetInt("varQuantityMax");
 		
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
 			return;
@@ -22,23 +22,13 @@ class SplitItemUtils
 	
 	static void TakeOrSplitToInventoryLocation ( notnull PlayerBase player, notnull InventoryLocation dst)
 	{
-		ItemBase item_base = ItemBase.Cast( dst.GetItem() );
-		float stack_max = item_base.ConfigGetFloat("varStackMax");
-		
-		if(stack_max < 1)
-			stack_max = item_base.GetQuantityMax();
-		
+		ItemBase item_base = ItemBase.Cast( dst.GetItem() );	
 		int slot = dst.GetSlot();
 
 		if( !dst.GetItem().GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
 			return;
 		
-		if( slot != -1 )
-		{
-			int slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			if (slot_stack_max > 0)
-				stack_max = slot_stack_max;
-		}
+		float stack_max = item_base.GetTargetQuantityMax(slot);
 		
 		if( stack_max >= item_base.GetQuantity() )
 		{

@@ -1461,6 +1461,7 @@ class CfgVehicles
 		weight = 800;
 		itemSize[] = {4,2};
 		fragility = 0.08;
+		dismantle_action_type = 64;
 		openItemSpillRange[] = {10,40};
 		class DamageSystem
 		{
@@ -1918,7 +1919,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\ImprovisedFishingRod.p3d";
 		rotationFlags = 17;
 		weight = 670;
-		itemSize[] = {2,9};
+		itemSize[] = {1,9};
 		itemBehaviour = 2;
 		absorbency = 0.8;
 		lootCategory = "Crafted";
@@ -2166,6 +2167,8 @@ class CfgVehicles
 		openItemSpillRange[] = {30,50};
 		inventorySlot[] = {"Shoulder","Melee"};
 		isMeleeWeapon = 1;
+		build_action_type = 16;
+		dismantle_action_type = 16;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -2511,6 +2514,7 @@ class CfgVehicles
 		weight = 800;
 		itemSize[] = {5,2};
 		fragility = 0.08;
+		dismantle_action_type = 64;
 		openItemSpillRange[] = {10,40};
 		class DamageSystem
 		{

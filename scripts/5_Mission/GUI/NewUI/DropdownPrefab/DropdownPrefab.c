@@ -3,7 +3,7 @@ class DropdownPrefab extends ScriptedWidgetEventHandler
 	protected Widget				m_Root;
 	protected ScrollWidget			m_Scroller;
 	protected Widget				m_ContentContainer;
-	protected ref array<Widget>		m_Content		= new array<Widget>>;
+	protected ref array<Widget>		m_Content = new array<Widget>;
 	
 	protected Widget				m_Button;
 	protected TextWidget			m_Text;

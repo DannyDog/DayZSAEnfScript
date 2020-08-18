@@ -36,7 +36,10 @@ class VicinityObjects
 		for(int i = 0; i < objects.Count(); i++)
 		{
 			if (objects[i].GetType() != "")
+			{
 				StoreVicinityObject(objects[i]);
+				//Print("storing, 2nd pass: " + objects[i]);
+			}
 		}
 	}
 	
@@ -123,6 +126,23 @@ class ActionTarget
 		m_CursorHitPos = cursor_position;
 	}
 	
+	void DbgPrintTargetDump()
+	{
+		Print(DumpToString());
+	}
+	
+	string DumpToString()
+	{
+		string res = "ActionTarget dump = {";
+		res = res + "m_Object: " + Object.GetDebugName(m_Object);
+		res = res + "; m_Parent: " + Object.GetDebugName(m_Parent);
+		res = res + "; m_ComponentIndex: " + m_ComponentIndex.ToString();
+		res = res + "; m_CursorHitPos: " + m_CursorHitPos.ToString();
+		res = res + "; m_Utility: " + m_Utility.ToString();
+		res = res + "}";
+		return res;
+	}
+	
 	private Object m_Object;		// object itself
 	private Object m_Parent;		// null or parent of m_Object
 	private int m_ComponentIndex;	// p3d Component ID or -1
@@ -192,13 +212,17 @@ class ActionTargets
 				
 				for(i = 0; i < results.Count(); i++)
 				{
-					distance = vector.Distance(results[i].pos,m_RayStart);
+					distance = vector.DistanceSq(results[i].pos, m_RayStart);
 					distance_helper.Insert(distance);
+					//Print("#" + i + " " + results.Get(i).obj);
 				}
+				//Print("--------------");
 				distance_helper_unsorted.Copy(distance_helper);
 				distance_helper.Sort();
 				
 				RaycastRVResult res;
+				
+				
 				for( i = 0; i < results.Count(); i++)
 				{
 					res = results.Get(distance_helper_unsorted.Find(distance_helper[i])); //closest object
@@ -211,11 +235,17 @@ class ActionTargets
 					{
 						//! ignores attachments on player
 						if ( !res.parent.IsMan() )
+						{
 							m_VicinityObjects.StoreVicinityObject(res.obj, res.parent);
+							//Print("storing, 1st pass (hier > 0): " + res.obj);
+						}
+						else
+							continue;
 					}
 					else
 					{
 						m_VicinityObjects.StoreVicinityObject(res.obj, null);
+						//Print("storing, 1st pass: " + res.obj);
 					}
 					
 					m_HitPos = res.pos;
@@ -223,9 +253,12 @@ class ActionTargets
 					break;
 				}
 			}
+			//else
+				//Print("NO RESULTS FOUND!");
 		}
 		else
 		{
+			//Print("CAST UNSUCCESFUL");
 			cursorTarget = null;
 			m_HitPos = vector.Zero;
 			hitComponentIndex = -1;
@@ -236,9 +269,11 @@ class ActionTargets
 		//! removes player from the vicinity
 		vicinityObjects.RemoveItem(m_Player);
 
+		//Print("m_VicinityObjects before" + m_VicinityObjects.Count());
 		//! transformation of array of Objects to hashmap (VicinityObjects)
 		m_VicinityObjects.TransformToVicinityObjects(vicinityObjects);
 
+		//Print("m_VicinityObjects after" + m_VicinityObjects.Count());
 		//! removes Vicinity objects that are not directly visible from player position
 		FilterObstructedObjects(cursorTarget);
 		
@@ -257,6 +292,8 @@ class ActionTargets
 				ActionTarget at = new ActionTarget(object, parent, targetComponent, m_HitPos, utility);
 				StoreTarget(at);
 			}
+			/*else
+				Print("utility < 0; object: " + object + " | parent: " + parent);*/
 		}
 
 		//! action target for surface actions (lowest utility)
@@ -294,6 +331,7 @@ class ActionTargets
 			DrawSelectionPos(false);
 		}
 #endif
+		//Print("--------------");
 	}
 	
 	private bool IsObstructed(Object object)
@@ -369,6 +407,7 @@ class ActionTargets
 	{
 		int index = FindIndexForStoring(pActionTarget.GetUtility());
 		m_Targets.InsertAt(pActionTarget, index);
+		//Print("StoreTarget; object: " + pActionTarget.GetObject() + " | parent: " + pActionTarget.GetParent() + " | idx: " + index);
 	}
 
 	//! binary search algorithm	

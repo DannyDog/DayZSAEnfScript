@@ -3,7 +3,7 @@ class CCTWaterSurface : CCTBase
 	protected float m_MaximalActionDistanceSq;
 	protected string m_SurfaceType;
 	
-	void CCTWaterSurface ( float maximal_target_distance, string surfaceType )
+	void CCTWaterSurface ( float maximal_target_distance = UAMaxDistances.DEFAULT, string surfaceType = "" )
 	{
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 		m_SurfaceType = surfaceType;

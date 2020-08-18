@@ -21,7 +21,7 @@ class ActionMineTree: ActionContinuousBase
 	
 	override void CreateConditionComponents()  
 	{	
-		m_ConditionTarget = new CCTTree(UAMaxDistances.DEFAULT);
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.DEFAULT);
 		m_ConditionItem = new CCINonRuined;
 	}
 	

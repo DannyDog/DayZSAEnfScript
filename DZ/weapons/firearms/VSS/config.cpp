@@ -35,10 +35,11 @@ class cfgWeapons
 		scope = 0;
 		weight = 2600;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,50,150,4,10};
 		WeaponLength = 0.78;
+		barrelArmor = 2.4;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_9x39","Ammo_9x39AP"};

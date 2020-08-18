@@ -1,7 +1,7 @@
 MetaFileClass {
- Name "{771E1B31745CBD1}Enfusion/Graphics/arrow_raw.edds"
- Author "tomco"
- ChangeDate 589996601
+ Name "{0771E1B31745CBD1}Gui/textures/arrow_raw.tga"
+ Author "4930"
+ ChangeDate 1285761239
  Configurations {
   TGAResourceClass PC {
    SourceFile "arrow_raw.tga"
@@ -9,6 +9,8 @@ MetaFileClass {
   TGAResourceClass XBOX_ONE : PC {
   }
   TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
   }
  }
 }

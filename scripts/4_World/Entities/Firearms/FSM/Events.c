@@ -259,6 +259,7 @@ WeaponEventBase WeaponAnimEventFactory (WeaponEvents type, DayZPlayer p = NULL, 
 		case WeaponEvents.UNJAMMED: return new WeaponEventAnimUnjammed(p, m);
 		case WeaponEvents.HAMMER_UNCOCKED: return new WeaponEventAnimHammerUncocked(p, m);
 		case WeaponEvents.HAMMER_COCKED: return new WeaponEventAnimHammerCocked(p, m);
+		case WeaponEvents.CYLINDER_ROTATE: return new WeaponEventCylinderRotate(p, m);
 		//case WeaponEvents.: return new WeaponEventAnim(p, m);
 	}
 	return NULL;
@@ -315,6 +316,11 @@ class WeaponEventAnimBulletEject extends WeaponEventAnimation
 			}
 		}
 	}
+};
+
+class WeaponEventCylinderRotate extends WeaponEventAnimation
+{
+	void WeaponEventCylinderRotate (DayZPlayer p = NULL, Magazine m = NULL) { m_type = WeaponEvents.CYLINDER_ROTATE; }
 };
 
 class WeaponEventAnimBulletHide extends WeaponEventAnimation

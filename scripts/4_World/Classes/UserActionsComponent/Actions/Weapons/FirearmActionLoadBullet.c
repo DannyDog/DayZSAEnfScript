@@ -109,8 +109,11 @@ class FirearmActionLoadBulletQuick : FirearmActionBase
 		if (!super.ActionCondition( player, target, item ))
 			return false;
 		
-		Weapon_Base weapon = Weapon_Base.Cast( item );			
-		return (weapon.IsChamberEmpty(0) || weapon.IsChamberFiredOut(0)) && player.GetWeaponManager().GetPreparedMagazine()!= null;
+		Weapon_Base weapon = Weapon_Base.Cast( item );		
+		return player.GetWeaponManager().CanLoadBullet(weapon,player.GetWeaponManager().GetPreparedMagazine(),true);
+		
+		
+		//return (weapon.IsChamberEmpty(0) || weapon.IsChamberFiredOut(0)) && player.GetWeaponManager().GetPreparedMagazine()!= null;
 	}
 	
 	override void Start( ActionData action_data )

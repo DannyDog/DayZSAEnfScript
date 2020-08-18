@@ -77,6 +77,7 @@ const int MENU_TUTORIAL								= 35;
 const int MENU_CREDITS								= 36;
 const int MENU_INVITE_TIMER							= 37;
 const int MENU_LOGIN_TIME							= 38;
+const int MENU_WARNING_ITEMDROP						= 39;
 
 const int GUI_WINDOW_MISSION_LOADER = 1;
 
@@ -655,4 +656,15 @@ class GameConstants
 	const float PROJECTILE_CONVERSION_PLAYERS 	= 0.1;
 	
 	const float ROOF_CHECK_RAYCAST_DIST = 20.0;
+	
+	/**
+	 * \defgroup Lifetime Refresher functionality constants
+	 * \desc Constats for lifetime refresher (radius, default lifetime, frequency...)
+	 */
+	const int REFRESHER_MAX_DURATION_DEFAULT		= 3600 * 24 * 40; 	//max duration of refresher in seconds - 40 days (+ 5 days final refresh )
+	const int REFRESHER_FREQUENCY_DEFAULT 			= 3600 * 24 * 5;	//frequency of lifetime refreshes/refresher time decreases - 5 days 
+	const float REFRESHER_RADIUS 					= 60; 				//meters
+	
+	
+	// lifetime of refresher itself is in db (3600 * 24 * 7 = 604800 )
 }

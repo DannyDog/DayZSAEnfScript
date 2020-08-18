@@ -372,7 +372,7 @@ class CfgSlots
 	{
 		name = "weaponOpticsCrossbow";
 		displayName = "weaponOpticsCrossbow";
-		ghostIcon = "weaponoptics";
+		ghostIcon = "weaponopticssmall";
 	};
 	class Slot_weaponOpticsHunting
 	{
@@ -570,7 +570,7 @@ class CfgSlots
 		name = "WoodenStick";
 		displayName = "WoodenStick";
 		ghostIcon = "woodenstick";
-		stackMax = 4;
+		stackMax = 10;
 	};
 	class Slot_bait
 	{
@@ -2094,6 +2094,67 @@ class CfgSlots
 		selection = "wall_camonet";
 		ghostIcon = "camonet";
 	};
+	class Slot_Material_FPole_WoodenLog
+	{
+		name = "Material_FPole_WoodenLog";
+		displayName = "Material_FPole_WoodenLog";
+		selection = "Material_FPole_WoodenLog";
+		ghostIcon = "woodenlog";
+		stackMax = 1;
+	};
+	class Slot_Material_FPole_Stones
+	{
+		name = "Material_FPole_Stones";
+		displayName = "Material_FPole_Stones";
+		selection = "Material_FPole_Stones";
+		ghostIcon = "stones";
+		stackMax = 32;
+	};
+	class Slot_Material_FPole_WoodenLog2
+	{
+		name = "Material_FPole_WoodenLog2";
+		displayName = "Material_FPole_WoodenLog2";
+		selection = "Material_FPole_WoodenLog2";
+		ghostIcon = "woodenlog";
+		stackMax = 6;
+	};
+	class Slot_Material_FPole_MetalWire
+	{
+		name = "Material_FPole_MetalWire";
+		displayName = "Material_FPole_MetalWire";
+		selection = "Material_FPole_MetalWire";
+		ghostIcon = "metalwire";
+	};
+	class Slot_Material_FPole_Rope
+	{
+		name = "Material_FPole_Rope";
+		displayName = "Material_FPole_Rope";
+		selection = "Material_FPole_Rope";
+		ghostIcon = "rope";
+	};
+	class Slot_Material_FPole_Nails
+	{
+		name = "Material_FPole_Nails";
+		displayName = "Material_FPole_Nails";
+		selection = "Material_FPole_Nails";
+		ghostIcon = "nails";
+		stackMax = 60;
+	};
+	class Slot_Material_FPole_MagicStick
+	{
+		name = "Material_FPole_MagicStick";
+		displayName = "Material_FPole_MagicStick";
+		selection = "Material_FPole_MagicStick";
+		ghostIcon = "woodenlog";
+		stackMax = 3;
+	};
+	class Slot_Material_FPole_Flag
+	{
+		name = "Material_FPole_Flag";
+		displayName = "Material_FPole_Flag";
+		selection = "Material_FPole_Flag";
+		ghostIcon = "tf_flag";
+	};
 	class Slot_LargeBattery
 	{
 		name = "LargeBattery";
@@ -2184,5 +2245,19 @@ class CfgSlots
 		name = "Rope";
 		displayName = "Rope";
 		ghostIcon = "rope";
+	};
+	class Slot_RevolverCylinder
+	{
+		name = "RevolverCylinder";
+		displayName = "RevolverCylinder";
+		ghostIcon = "";
+		show = "false";
+	};
+	class Slot_RevolverEjector
+	{
+		name = "RevolverEjector";
+		displayName = "RevolverEjector";
+		ghostIcon = "";
+		show = "false";
 	};
 };

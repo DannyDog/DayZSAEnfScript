@@ -2,7 +2,7 @@ class CCTCursor : CCTBase
 {
 	protected float m_MaximalActionDistanceSq;
 	
-	void CCTCursor ( float maximal_target_distance )
+	void CCTCursor ( float maximal_target_distance = UAMaxDistances.DEFAULT )
 	{
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 	}
@@ -19,6 +19,12 @@ class CCTCursor : CCTBase
 		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			return true;
 		
-		return ( vector.DistanceSq(target.GetCursorHitPos(), player.GetPosition()) <= m_MaximalActionDistanceSq );
+		vector playerHeadPos;
+		MiscGameplayFunctions.GetHeadBonePos(player, playerHeadPos);
+		
+		float distanceRoot = vector.DistanceSq(target.GetCursorHitPos(), player.GetPosition());
+		float distanceHead = vector.DistanceSq(target.GetCursorHitPos(), playerHeadPos);
+		
+		return ( distanceRoot <= m_MaximalActionDistanceSq || distanceHead <= m_MaximalActionDistanceSq );
 	}
 };

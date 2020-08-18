@@ -11,7 +11,7 @@ class ActionFillBottleBaseCB : ActionContinuousBaseCB
 		
 		//first implementation for obtaining the fuel from the feed faster
 		//TODO:: make some proper get method, maybe param in config?
-		if( m_ActionData.m_Target.GetObject() && m_ActionData.m_Target.GetObject().GetType() == "Land_FuelStation_Feed")
+		if ( m_ActionData.m_Target.GetObject() && m_ActionData.m_Target.GetObject().GetType() == "Land_FuelStation_Feed")
 		{
 			m_ActionData.m_ActionComponent = new CAContinuousFill(UAQuantityConsumed.FUEL, m_liquid_type);
 		}
@@ -34,7 +34,7 @@ class ActionFillBottleBase: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursorNoObject(UAMaxDistances.DEFAULT);
 	}
 
 	override string GetText()
@@ -68,7 +68,7 @@ class ActionFillBottleBase: ActionContinuousBase
 	{	
 		SetupStance( player );
 	
-		if( super.SetupAction(player, target, item, action_data, extra_data ))
+		if ( super.SetupAction(player, target, item, action_data, extra_data ))
 		{
 			if ( target.GetObject() )
 			{
@@ -88,7 +88,7 @@ class ActionFillBottleBase: ActionContinuousBase
 	{
 		super.WriteToContext(ctx, action_data);
 		
-		if( HasTarget() )
+		if ( HasTarget() )
 		{
 			ctx.Write(action_data.m_Target.GetCursorHitPos()); //sends cursor pos for pond recognition
 		}
@@ -98,7 +98,7 @@ class ActionFillBottleBase: ActionContinuousBase
 	{		
 		super.ReadFromContext(ctx, action_recive_data);
 		
-		if( HasTarget() )
+		if ( HasTarget() )
 		{
 			vector cursor_position;
 			if ( !ctx.Read(cursor_position) )
@@ -132,31 +132,16 @@ class ActionFillBottleBase: ActionContinuousBase
 	
 	int GetLiquidType( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		vector pos_cursor = target.GetCursorHitPos();
-		string surfType;
-		int liquidType;
-		g_Game.SurfaceUnderObject(player, surfType, liquidType);
-		
+		vector pos_cursor = target.GetCursorHitPos();		
 		CCTWaterSurface waterCheck = new CCTWaterSurface(UAMaxDistances.DEFAULT, UAWaterType.FRESH);
 		
-		if ( waterCheck.Can(player, target) || (target.GetObject() && target.GetObject().IsWell()) )
+		if ( ( waterCheck.Can(player, target) || (target.GetObject() && target.GetObject().IsWell()) ) && Liquid.CanFillContainer(item, LIQUID_WATER ) )
 		{
-			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT && Liquid.CanFillContainer(item, LIQUID_WATER ) )
-			{
-				return LIQUID_WATER;
-			}
+			return LIQUID_WATER;
 		}
-		else if (target.GetObject() && target.GetObject().IsFuelStation())
+		else if ( target.GetObject() && target.GetObject().IsFuelStation() && Liquid.CanFillContainer(item, LIQUID_GASOLINE ) )
 		{
-			if ( vector.Distance(player.GetPosition(), pos_cursor) < UAMaxDistances.DEFAULT && Liquid.CanFillContainer(item, LIQUID_GASOLINE ) )
-			{
-				return LIQUID_GASOLINE;
-			}
-		}
-		//if it does not return target on cursor, check under player for liquid type
-		else if (liquidType > 0)
-		{
-			return liquidType;
+			return LIQUID_GASOLINE;
 		}
 		
 		return -1;

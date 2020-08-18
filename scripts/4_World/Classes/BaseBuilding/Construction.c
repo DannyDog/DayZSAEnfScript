@@ -758,7 +758,12 @@ class Construction
 					float qty_coef;
 					vector destination = GetParent().GetPosition();
 					//placed on helper memory point, if available
-					if (GetParent().MemoryPointExists(main_part_name))
+					if ( GetParent().MemoryPointExists("" + main_part_name + "_materials") )
+					{
+						destination = GetParent().GetMemoryPointPos("" + main_part_name + "_materials");
+						destination = GetGame().ObjectModelToWorld(GetParent(),destination);
+					}
+					else if ( GetParent().MemoryPointExists(main_part_name) )
 					{
 						destination = GetParent().GetMemoryPointPos(main_part_name);
 						destination = GetGame().ObjectModelToWorld(GetParent(),destination);
@@ -922,9 +927,7 @@ class Construction
 								
 								ItemBase item = ItemBase.Cast(inventory_location.GetItem());
 								
-								int quantity_max = item.ConfigGetFloat("varStackMax");
-								if( quantity_max < 1)
-									quantity_max = item.GetQuantityMax();
+								int quantity_max = item.GetTargetQuantityMax(-1);
 								
 								InventoryLocation dst = new InventoryLocation;
 								vector mat[4];

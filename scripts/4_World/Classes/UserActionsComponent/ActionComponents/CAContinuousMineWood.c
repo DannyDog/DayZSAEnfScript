@@ -228,18 +228,10 @@ class CAContinuousMineWood : CAContinuousBase
 		}
 		
 		int increment = quantity_secondary;
-		int stack_max;// = m_SecondaryItem.GetQuantityMax();
+		int stack_max = m_SecondaryItem.GetQuantityMax();
 		int stacks_amount;// = Math.Ceil(increment/m_SecondaryItem.GetQuantityMax());
 		
-		if (m_SecondaryItem.ConfigIsExisting("varStackMax"))
-		{
-			stack_max = m_SecondaryItem.ConfigGetFloat("varStackMax");
-		}
-		else
-		{
-			stack_max = m_SecondaryItem.GetQuantityMax();
-		}
-		stacks_amount = Math.Ceil(increment/stack_max);;
+		stacks_amount = Math.Ceil(increment/stack_max);
 		
 		for (int i = 0; i < stacks_amount; i++)
 		{

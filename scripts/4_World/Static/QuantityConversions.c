@@ -1,6 +1,6 @@
 class QuantityConversions
 {
-	static string GetItemQuantityText( EntityAI item )
+	static string GetItemQuantityText( EntityAI item, bool showMax = false )
 	{
 		string quantity_text = "";
 		if ( item.IsInherited( InventoryItem) )
@@ -21,19 +21,35 @@ class QuantityConversions
 			{
 				return "";
 			}
-			int max = item.ConfigGetInt("varQuantityMax");
-			string unit = item.ConfigGetString("stackedUnit");
+			int stack_max = item.GetQuantityMax();
+			
+			//int max = item.ConfigGetInt("varQuantityMax");
+			//string unit = item.ConfigGetString("stackedUnit");
 
-			if (max > 0)
+			if (stack_max > 0)
 			{
-				if (max == 1)
+				if (stack_max == 1)
 				{
-					float tmp = Math.Round( ( quantity / max ) * 100 );
-					quantity_text = tmp.ToString() + "%";
+					if(quantity > 1)
+					{
+						if(showMax)
+							quantity_text = string.Format("%1/%2", quantity.ToString(), stack_max.ToString() );
+						//quantity_text = string.Format("%i/%i", quantity, stack_max );
+						else
+							quantity_text = quantity.ToString();
+					}
+					else
+					{
+						quantity_text = "";
+					}
 				}
 				else
 				{
-					quantity_text = quantity.ToString();
+					if(showMax)
+						quantity_text = string.Format("%1/%2", quantity.ToString(), stack_max.ToString() );
+						//quantity_text = string.Format("%i/%i", quantity, stack_max );
+					else
+						quantity_text = quantity.ToString();
 					// if (unit == "ml")
 					// {
 					// 	float liters = round(quantity / 1000.0);

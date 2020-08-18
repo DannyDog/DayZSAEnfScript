@@ -59,17 +59,24 @@ class FryingPan extends Inventory_Base
 		return false;
 	}
 
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
-		if( !super.CanReceiveItemIntoCargo( cargo ) )
-		{
+		if( !super.CanReceiveItemIntoCargo( item ) )
 			return false;
-		}
 
-		if ( cargo.IsKindOf( this.GetType() ) || cargo.IsKindOf( "Pot" ) )
-		{
+		if ( item.IsKindOf( this.GetType() ) || item.IsKindOf( "Pot" ) )
 			return false;
-		}
+
+		return true;
+	}
+	
+	override bool CanLoadItemIntoCargo( EntityAI item )
+	{
+		if ( !super.CanLoadItemIntoCargo( item ) )
+			return false;
+
+		if ( item.IsKindOf( GetType() ) || item.IsKindOf( "Pot" ) )
+			return false;
 
 		return true;
 	}

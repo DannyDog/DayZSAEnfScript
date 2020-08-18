@@ -210,7 +210,7 @@ class Repeater_Base extends Rifle_Base
 	
 	override bool CanChamberBullet (int muzzleIndex, Magazine mag)
 	{
-		return CanChamberFromMag(muzzleIndex, mag) && !IsInternalMagazineFull(muzzleIndex) );
+		return CanChamberFromMag(muzzleIndex, mag) && !IsInternalMagazineFull(muzzleIndex);
 	}
 	
 	override void SetActions()

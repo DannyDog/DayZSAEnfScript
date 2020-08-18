@@ -65,17 +65,24 @@ class Pot extends Bottle_Base
 		return false;
 	}
 	
-	override bool CanReceiveItemIntoCargo (EntityAI cargo)
+	override bool CanReceiveItemIntoCargo(EntityAI item)
 	{
-		if( !super.CanReceiveItemIntoCargo( cargo ) )
-		{
+		if ( !super.CanReceiveItemIntoCargo( item ) )
 			return false;
-		}
 
-		if ( cargo.IsKindOf( "FryingPan" ) || cargo.IsKindOf( this.GetType() ) )
-		{
+		if ( item.IsKindOf( "FryingPan" ) || item.IsKindOf( GetType() ) )
 			return false;
-		}
+
+		return true;
+	}
+	
+	override bool CanLoadItemIntoCargo(EntityAI item)
+	{
+		if ( !super.CanLoadItemIntoCargo( item ) )
+			return false;
+
+		if ( item.IsKindOf( "FryingPan" ) || item.IsKindOf( GetType() ) )
+			return false;
 
 		return true;
 	}

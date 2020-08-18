@@ -246,20 +246,32 @@ class BatteryCharger extends ItemBase
 		// No attaching if the charger is in inventory!
 		PlayerBase charger_owner = PlayerBase.Cast( GetHierarchyRootPlayer() );
 		if ( charger_owner )
-		{
 			return false;
-		}
 		
 		// Only one attachment allowed
 		if ( GetCompEM().GetPluggedDevice() )
-		{
 			return false;
-		}
 		
 		if ( ibase.HasEnergyManager()  &&  ibase.GetCompEM().GetPluggedDevicesCount() >= 1 ) // Make sure nothing is plugged into the battery
-		{
 			return false;
-		}
+		
+		return true;
+	}
+	
+	override bool CanLoadAttachment( EntityAI attachment) 
+	{
+		if ( !super.CanLoadAttachment(attachment) )
+			return false;
+		
+		ItemBase ibase;
+		Class.CastTo(ibase, attachment);
+		
+		// Only one attachment allowed
+		if ( GetCompEM().GetPluggedDevice() )
+			return false;
+		
+		if ( ibase.HasEnergyManager()  &&  ibase.GetCompEM().GetPluggedDevicesCount() >= 1 ) // Make sure nothing is plugged into the battery
+			return false;
 		
 		return true;
 	}

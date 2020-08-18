@@ -54,9 +54,9 @@ class MissionGameplay extends MissionBase
 		m_ChatChannelFadeTimer		= new WidgetFadeTimer;
 		m_MicFadeTimer				= new WidgetFadeTimer;
 		m_ChatChannelHideTimer		= new Timer(CALL_CATEGORY_GUI);
-		
 		m_ToggleHudTimer			= new Timer(CALL_CATEGORY_GUI);
 		
+		m_ActiveRefresherLocations 	= new array<vector>;
 		SyncEvents.RegisterEvents();
 	}
 	
@@ -333,7 +333,7 @@ class MissionGameplay extends MissionBase
 		if( input.LocalPress("UAUIGesturesOpen",false) )
 		{
 			//open gestures menu
-			if ( !playerPB.IsRaised() /*&& !playerPB.IsInProne()*/ && !playerPB.GetCommand_Vehicle() )
+			if ( !playerPB.IsRaised() && (playerPB.GetActionManager().ActionPossibilityCheck(playerPB.m_MovementState.m_CommandTypeId) || playerPB.IsEmotePlaying()) && !playerPB.GetCommand_Vehicle() )
 			{
 				if ( !GetUIManager().IsMenuOpen( MENU_GESTURES ) )
 				{
@@ -465,7 +465,7 @@ class MissionGameplay extends MissionBase
 			}
 			
 			//hologram rotation
-			if (menu == NULL && playerPB.IsPlacingLocal())
+			if (menu == NULL && playerPB.IsPlacingLocal() && playerPB.GetHologramLocal().GetParentEntity().PlacementCanBeRotated())
 			{
 				if( input.LocalRelease("UANextAction",false) )
 				{
@@ -1184,5 +1184,10 @@ class MissionGameplay extends MissionBase
 	override bool IsPlayerRespawning()
 	{
 		return m_PlayerRespawning;
+	}
+	
+	override array<vector> GetActiveRefresherLocations()
+	{
+		return m_ActiveRefresherLocations;
 	}
 }

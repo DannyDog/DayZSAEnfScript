@@ -7,22 +7,7 @@ class ActionPlaceObjectCB : ActiondeployObjectCB
 	
 	override void DropDuringPlacing()
 	{
-		EntityAI entity_for_placing = m_ActionData.m_MainItem;	
-		vector orientation = m_ActionData.m_Player.GetLocalProjectionOrientation();
-		vector position = m_ActionData.m_Player.GetLocalProjectionPosition();
-		vector rotation_matrix[3];
-		float direction[4];
-		InventoryLocation source = new InventoryLocation;
-		InventoryLocation destination = new InventoryLocation;
-		
-		Math3D.YawPitchRollMatrix( orientation, rotation_matrix );
-		Math3D.MatrixToQuat( rotation_matrix, direction );
-	
-		if ( entity_for_placing.GetInventory().GetCurrentInventoryLocation( source ) )
-		{
-			destination.SetGroundEx( entity_for_placing, position, direction );
-			m_ActionData.m_Player.PredictiveTakeToDst(source, destination);
-		}
+		// Does not need this, so empty the function
 	}
 };
 
@@ -41,5 +26,10 @@ class ActionPlaceObject: ActionDeployObject
 	override string GetText()
 	{
 		return "#place_object";
+	}
+	
+	override void MoveEntityToFinalPositionSinglePlayer(ActionData action_data, InventoryLocation source, InventoryLocation destination)
+	{
+		action_data.m_Player.GetDayZPlayerInventory().RedirectToHandEvent(InventoryMode.LOCAL, source, destination);
 	}
 };

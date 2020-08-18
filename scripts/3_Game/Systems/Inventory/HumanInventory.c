@@ -587,7 +587,7 @@ class HumanInventory : GameInventory
 		if( m_syncClearUserReservationindex != -1 && ScriptInputUserData.CanStoreInputUserData())
 		{
 			ScriptInputUserData ctx = new ScriptInputUserData;
-			ctx.Write(INPUT_UDT_ITEM_MANIPULATION);
+			ctx.Write(INPUT_UDT_INVENTORY);
 			ctx.Write(InventoryCommandType.USER_RESERVATION_CANCEL);
 			ctx.Write(m_syncClearUserReservationindex);
 			ctx.Send();
@@ -595,6 +595,7 @@ class HumanInventory : GameInventory
 			InventoryLocation il = new InventoryLocation;
 			
 			GetUserReservedLocation(m_syncClearUserReservationindex,il);
+			ClearUserReservedLocationAtIndex(m_syncClearUserReservationindex);
 			EntityAI item = il.GetItem();
 			item.GetOnReleaseLock().Invoke(item);
 			m_syncClearUserReservationindex = -1;

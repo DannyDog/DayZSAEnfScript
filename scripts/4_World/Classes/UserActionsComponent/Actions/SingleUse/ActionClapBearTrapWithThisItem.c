@@ -10,7 +10,7 @@ class ActionClapBearTrapWithThisItem: ActionSingleUseBase
 	override void CreateConditionComponents()
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 	}
 
 	override string GetText()
@@ -21,7 +21,7 @@ class ActionClapBearTrapWithThisItem: ActionSingleUseBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( !target ) return false;
-		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		//if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		TrapBase target_TB;
 

@@ -35,7 +35,7 @@ class cfgWeapons
 		scope = 0;
 		weight = 3600;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";
@@ -44,6 +44,7 @@ class cfgWeapons
 		magazineSwitchTime = 0.2;
 		PPDOFProperties[] = {1,0.5,10,140,4,10};
 		WeaponLength = 0.95;
+		barrelArmor = 1.68;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.5,2.5,1.3};

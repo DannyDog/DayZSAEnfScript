@@ -9,12 +9,12 @@ class ActionLockedDoors: ActionInteractBase
 	override void CreateConditionComponents()
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 	}
 
 	override string GetText()
 	{
-		return "#locked_door";
+		return "#open";
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
@@ -22,7 +22,7 @@ class ActionLockedDoors: ActionInteractBase
 		if( !target ) return false;
 		//if( IsDamageDestroyed(action_data.m_Target) ) return false;
 		if( !IsBuilding(target) ) return false;
-		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		//if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		Building building;
 		if( Class.CastTo(building, target.GetObject()) )

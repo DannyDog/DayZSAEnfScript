@@ -488,12 +488,24 @@ class Inventory: LayoutHolder
 					{
 						player.PredictiveSwapEntities(item, slot_item);
 					}
-					else if( player.CanReceiveItemIntoCargo( item ) )
+					else if ( player.CanReceiveItemIntoCargo( item ) )
 					{
 						InventoryLocation dst = new InventoryLocation;
 						player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, dst );
-						if(dst.IsValid())
-						{
+						if ( dst.IsValid() )
+						{						
+							if ( dst.GetType() == InventoryLocationType.HANDS && item.IsHeavyBehaviour() )
+							{											
+								ActionManagerClient mngr_client;
+								CastTo(mngr_client, player.GetActionManager());
+			
+								ActionTarget atrg = new ActionTarget(item, null, -1, vector.Zero, -1.0);
+								if ( mngr_client.GetAction(ActionTakeItemToHands).Can(player, atrg, null) )
+									mngr_client.PerformActionStart(mngr_client.GetAction(ActionTakeItemToHands), atrg, null);
+								
+								return;
+							}
+							
 							SplitItemUtils.TakeOrSplitToInventoryLocation( player, dst );
 						}
 					}
@@ -569,7 +581,7 @@ class Inventory: LayoutHolder
 
 	override void UpdateInterval()
 	{
-		PlayerBase player;
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		InventoryItem item;
 		if( GetGame().GetInput().LocalPress( "UAUIRotateInventory", false ) )
 		{
@@ -587,7 +599,11 @@ class Inventory: LayoutHolder
 		}
 		
 		#ifdef PLATFORM_CONSOLE
-		if( GetGame().GetInput().LocalPress( "UAUIExpandCollapseContainer", false ) )
+		DayZPlayerInventory dpi;
+		if ( player )
+			dpi = player.GetDayZPlayerInventory();
+		
+		if( GetGame().GetInput().LocalPress( "UAUIExpandCollapseContainer", false ) && !dpi.IsProcessing() )
 		{
 			if( m_RightArea.IsActive() )
 			{
@@ -599,7 +615,7 @@ class Inventory: LayoutHolder
 			}
 		}
 		
-		if( GetGame().GetInput().LocalPress( "UAUIFastEquipOrSplit", false ) )
+		if( GetGame().GetInput().LocalPress( "UAUIFastEquipOrSplit", false ) && !dpi.IsProcessing() )
 		{
 			if( m_HandsArea.IsActive() )
 			{
@@ -657,7 +673,7 @@ class Inventory: LayoutHolder
 			UpdateConsoleToolbar();
 		}
 		
-		if( GetGame().GetInput().LocalPress( "UAUIFastTransferToVicinity", false ) )
+		if( GetGame().GetInput().LocalPress( "UAUIFastTransferToVicinity", false ) && !dpi.IsProcessing() )
 		{
 			if( m_HandsArea.IsActive() )
 			{
@@ -734,7 +750,7 @@ class Inventory: LayoutHolder
 		if( GetGame().GetInput().LocalPress( "UAUIInspectItem", false ) )
 			m_HadInspected = false;
 		
-		if( !m_HadFastTransferred && GetGame().GetInput().LocalRelease( "UAUIFastTransferItem", false ) )
+		if( !m_HadFastTransferred && GetGame().GetInput().LocalRelease( "UAUIFastTransferItem", false ) && !dpi.IsProcessing() )
 		{
 			if( ItemManager.GetInstance().IsMicromanagmentMode() )
 			{

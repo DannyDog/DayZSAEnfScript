@@ -105,6 +105,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftFishingRod);
 		RegisterRecipe(new DeCraftFishingRod);
 		RegisterRecipe(new DeCraftWoodenCrate);
+		RegisterRecipe(new CraftTerritoryFlagKit);
 		
 		//"paint" recipes
 		/*RegisterRecipe(new PaintFirefighterAxe);

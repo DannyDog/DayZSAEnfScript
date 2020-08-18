@@ -140,8 +140,8 @@ class AdvDetachMagActionReciveData : ActionReciveData
 }
 class AdvDetachMagActionData : SequentialActionData
 {
-	ref InventoryLocation  m_ilWeapon;
-	ref InventoryLocation  m_ilMagazine;
+	ref InventoryLocation  m_ilWeapon = new InventoryLocation;
+	ref InventoryLocation  m_ilMagazine = new InventoryLocation;
 }
 
 class FirearmActionDetachMagazine : ActionSequentialBase
@@ -242,8 +242,8 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 		AdvDetachMagActionReciveData recive_data_dm = AdvDetachMagActionReciveData.Cast(action_recive_data);
 		AdvDetachMagActionData action_data_dm = AdvDetachMagActionData.Cast(action_data);
 		
-		action_data_dm.m_ilWeapon = recive_data_dm.m_ilWeapon;
-		action_data_dm.m_ilMagazine = recive_data_dm.m_ilMagazine;
+		action_data_dm.m_ilWeapon.Copy(recive_data_dm.m_ilWeapon);
+		action_data_dm.m_ilMagazine.Copy(recive_data_dm.m_ilMagazine);
 	}	
 	
 	
@@ -347,5 +347,16 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 					break;
 			}
 		}
+	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		AdvDetachMagActionData action_data_dm = AdvDetachMagActionData.Cast(action_data);
+		GetGame().AddInventoryJuncture(action_data.m_Player, EntityAI.Cast(action_data.m_Target.GetObject()),action_data_dm.m_ilMagazine, true, 10000);
+	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		GetGame().ClearJuncture(action_data.m_Player, EntityAI.Cast(action_data.m_Target.GetObject()));
 	}
 }

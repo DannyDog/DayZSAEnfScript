@@ -711,6 +711,7 @@ class DayZGame extends CGame
 	
 	static bool		m_ReportModded;
 	private bool	m_IsStressTest;
+	private bool 	m_AimLoggingEnabled;
 	int 			m_OriginalCharactersCount;
 	private string 	m_PlayerName;
 	private bool 	m_IsNewCharacter;
@@ -761,6 +762,10 @@ class DayZGame extends CGame
 		if ( CommandlineGetParam("stresstest", tmp) )
 		{
 			m_IsStressTest = true;
+		}
+		if ( CommandlineGetParam("doAimLogs", tmp) )
+		{
+			m_AimLoggingEnabled = true;
 		}
 		
 		/*m_ParamNewMenu= false;
@@ -909,6 +914,11 @@ class DayZGame extends CGame
 	bool IsStressTest()
 	{
 		return m_IsStressTest;
+	}
+	
+	bool IsAimLogEnabled()
+	{
+		return m_AimLoggingEnabled;
 	}
 	
 	void SetGameState( DayZGameState state )

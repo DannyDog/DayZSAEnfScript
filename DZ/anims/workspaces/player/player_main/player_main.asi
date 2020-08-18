@@ -380,6 +380,8 @@ $animsetinstance {
    "ActionInLoopOut.HackTreeCro.InLoopOut" "{205464359D8FC4F0}DZ/anims/anm/player/actions/horticulture/p_1hd_cro_hack_tree.anm"
    "ActionInLoopOut.HackTreeErc.Cancel" "{480A72D029ED39AC}DZ/anims/anm/player/actions/horticulture/p_1hd_erc_hack_tree_cancel.anm"
    "ActionInLoopOut.HackTreeErc.InLoopOut" "{0A96FCA9010EAF35}DZ/anims/anm/player/actions/horticulture/p_1hd_erc_hack_tree.anm"
+   "ActionInLoopOut.LowerFlag.InLoopOut" "{0C1AAF4626B46640}DZ/anims/anm/player/actions/misc/p_flag_lowered_InLoopOut.anm"
+   "ActionInLoopOut.RaiseFlag.InLoopOut" "{5043FE440DBC47D3}DZ/anims/anm/player/actions/misc/p_flag_raised_InLoopOut.anm"
    "ActionOnce.AttachItemCro.Once" "{8000D8C7A228D058}DZ/anims/anm/player/actions/environment/p_cro_attach_item.anm"
    "ActionOnce.AttachItemErc.Once" "{53C9B3B67EDCFC9A}DZ/anims/anm/player/actions/environment/p_erc_attach_item.anm"
    "ActionOnce.BatonExtendCro.Once" "{23B39F57C38DD44B}DZ/anims/anm/player/actions/items/p_cro_baton_deploy.anm"

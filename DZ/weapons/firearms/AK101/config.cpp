@@ -35,10 +35,11 @@ class CfgWeapons
 		scope = 0;
 		weight = 3077;
 		absorbency = 0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.56;
+		barrelArmor = 1.806;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_556x45","Ammo_556x45Tracer"};

@@ -1,6 +1,9 @@
 class AnimalBase extends DayZAnimal
 {
-	
+	override bool IsRefresherSignalingViable()
+	{
+		return false;
+	}
 }
 
 class Animal_BosTaurus extends AnimalBase

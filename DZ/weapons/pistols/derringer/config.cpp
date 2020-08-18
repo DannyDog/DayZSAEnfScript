@@ -39,7 +39,7 @@ class cfgWeapons
 		weight = 800;
 		itemSize[] = {2,1};
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		attachments[] = {};
 		modelOptics = "-";
@@ -50,7 +50,6 @@ class cfgWeapons
 		chamberedRound = "";
 		magazines[] = {};
 		chamberableFrom[] = {"Ammo_45ACP"};
-		barrelArmor = 240;
 		ejectType = 3;
 		recoilModifier[] = {1,1,1};
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};
@@ -70,7 +69,7 @@ class cfgWeapons
 			reloadTime = 0.5;
 			recoil = "recoil_derringer";
 			recoilProne = "recoil_derringer_prone";
-			dispersion = 0.008;
+			dispersion = 0.01;
 			magazineSlot = "magazine";
 		};
 		class Damage

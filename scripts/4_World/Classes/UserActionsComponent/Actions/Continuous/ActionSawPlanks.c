@@ -40,6 +40,7 @@ class ActionSawPlanks: ActionContinuousBase
 	
 	static const int YIELD = 3;
 	ItemBase m_Planks;
+	ref InventoryLocation m_PlanksLocation = new InventoryLocation;
 	
 	void ActionSawPlanks()
 	{
@@ -95,10 +96,18 @@ class ActionSawPlanks: ActionContinuousBase
 		item_POWP.RemovePlanks(YIELD);
 		
 		vector pos = action_data.m_Player.GetPosition();
-		if (!m_Planks)
+		
+		InventoryLocation currentLoc = new InventoryLocation;
+		if (m_Planks)
+			m_Planks.GetInventory().GetCurrentInventoryLocation(currentLoc);
+		
+		if (!m_Planks || !currentLoc.CompareLocationOnly(m_PlanksLocation))
 		{
 			m_Planks = ItemBase.Cast( GetGame().CreateObjectEx("WoodenPlank", pos, ECE_PLACE_ON_SURFACE) );
 			m_Planks.SetQuantity(YIELD);
+			
+			m_Planks.GetInventory().GetCurrentInventoryLocation(currentLoc);
+			m_PlanksLocation.Copy(currentLoc);
 		}
 		else if ((m_Planks.GetQuantity() + YIELD) >= m_Planks.GetQuantityMax())
 		{
@@ -108,6 +117,9 @@ class ActionSawPlanks: ActionContinuousBase
 			{
 				m_Planks = ItemBase.Cast( GetGame().CreateObjectEx("WoodenPlank", pos, ECE_PLACE_ON_SURFACE) );
 				m_Planks.SetQuantity(remnant);
+
+				m_Planks.GetInventory().GetCurrentInventoryLocation(currentLoc);
+				m_PlanksLocation.Copy(currentLoc);
 			}
 		}
 		else

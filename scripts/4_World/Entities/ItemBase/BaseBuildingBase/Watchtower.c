@@ -88,8 +88,7 @@ class Watchtower extends BaseBuildingBase
 	{
 		//super
 		if ( !super.CanDisplayAttachmentSlot( slot_name ) )
-		return false;
-		//
+			return false;
 
 		slot_name.ToLower();
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );

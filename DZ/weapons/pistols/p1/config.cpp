@@ -34,7 +34,7 @@ class cfgWeapons
 		scope = 0;
 		weight = 960;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
@@ -60,7 +60,7 @@ class cfgWeapons
 			reloadTime = 0.13;
 			recoil = "recoil_p1";
 			recoilProne = "recoil_p1_prone";
-			dispersion = 0.006;
+			dispersion = 0.011;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\waltherP1\P1Silenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\waltherP1\P1Silenced",1,1,100};

@@ -41,6 +41,7 @@ class CfgVehicles
 		inventorySlot[] = {"Shoulder","Melee"};
 		lootCategory = "Tools";
 		lootTag[] = {"Work","Forester","Camping"};
+		dismantle_action_type = 74;
 		openItemSpillRange[] = {20,40};
 		itemInfo[] = {"Axe"};
 		isMeleeWeapon = 1;
@@ -123,7 +124,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Hatchet1";
 		model = "\dz\weapons\melee\blade\hatchet.p3d";
 		build_action_type = 10;
-		dismantle_action_type = 10;
+		dismantle_action_type = 74;
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
@@ -229,6 +230,7 @@ class CfgVehicles
 		inventorySlot[] = {"Shoulder","Melee"};
 		lootCategory = "Tools";
 		lootTag[] = {"Work","Forester","Camping"};
+		dismantle_action_type = 74;
 		openItemSpillRange[] = {20,40};
 		itemInfo[] = {"Axe"};
 		hiddenSelections[] = {"camo"};
@@ -1262,8 +1264,8 @@ class CfgVehicles
 		rotationFlags = 12;
 		repairableWithKits[] = {5,4};
 		repairCosts[] = {30.0,25.0};
-		build_action_type = 4;
-		dismantle_action_type = 14;
+		build_action_type = 36;
+		dismantle_action_type = 46;
 		itemInfo[] = {"Pickaxe"};
 		RestrainUnlockType = 1;
 		itemSize[] = {3,6};

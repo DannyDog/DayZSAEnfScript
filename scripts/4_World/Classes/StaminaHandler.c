@@ -381,6 +381,8 @@ class StaminaHandler
 		}
 
 		m_IsInCooldown = cooldown;
+		
+		m_Player.SetStamina(m_Stamina, m_StaminaCap);
 	}
 	
 	protected void StaminaProcessor_Move(HumanMovementState pHumanMovementState)

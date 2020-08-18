@@ -47,6 +47,7 @@ class cfgWeapons
 		chamberedRound = "";
 		magazines[] = {};
 		chamberableFrom[] = {"Ammo_9x19","Mag_CLIP9x19_10Rnd"};
+		damagePerShot[] = {0.05,0.05};
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
 		drySound[] = {"DZ\sounds\weapons\firearms\red9\Red9_dry",0.5,1,20};
@@ -61,7 +62,7 @@ class cfgWeapons
 			reloadTime = 0.18;
 			recoil = "recoil_red9";
 			recoilProne = "recoil_red9_prone";
-			dispersion = 0.006;
+			dispersion = 0.009;
 			magazineSlot = "magazine";
 			begin1[] = {"dz\sounds\weapons\firearms\red9\mauser_0",1,1,600};
 			begin2[] = {"dz\sounds\weapons\firearms\red9\mauser_1",1,1,600};

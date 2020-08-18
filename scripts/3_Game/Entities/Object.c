@@ -141,6 +141,11 @@ class Object extends IEntity
 	//! Flag to determine this object is marked to be deleted soon
 	proto native bool ToDelete();
 	
+	//! Determine whether this object is in the deletion ProcessDirectDamage
+	//! Is useful in the case where a parent is being deleted, since the children will be deleted first
+	//! So to know if something was removed or detached from it's parent, use this check to see if it is because the parent is being deleted
+	proto native bool IsPendingDeletion();
+	
 	//! Retrieve position
 	proto native vector GetPosition();
 
@@ -323,8 +328,15 @@ class Object extends IEntity
 //	string GetName()
 	{
 		string tmp;
-		if (!NameOverride(tmp))
+		if (NameOverride(tmp))
+		{
+			tmp = Widget.TranslateString(tmp);
+			//tmp.ToUpper();
+		}
+		else
+		{
 			GetGame().ObjectGetDisplayName(this, tmp);
+		}
 		return tmp;
 	}
 	

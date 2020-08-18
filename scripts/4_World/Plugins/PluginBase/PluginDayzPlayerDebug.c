@@ -713,7 +713,9 @@ class PluginDayzPlayerDebug extends PluginBase
 			m_ActionsSelector.AddItem("FB L RESTRAIN SELF", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_ACTIONFB_RESTRAINSELF, true, DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT), 0);
 			m_ActionsSelector.AddItem("FB L ASSEMBLE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_ACTIONFB_ASSEMBLE, true, DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT), 0);
 			m_ActionsSelector.AddItem("FB L DISASSEMBLE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_ACTIONFB_DISASSEMBLE, true, DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT), 0);
-		
+			m_ActionsSelector.AddItem("FB L RAISE FLAG", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_ACTIONFB_RAISE_FLAG, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+			m_ActionsSelector.AddItem("FB L LOWER FLAG", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_ACTIONFB_LOWER_FLAG, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+
 		}
 		
 		

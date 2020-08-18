@@ -10,7 +10,7 @@ class ActionTakeMaterialToHands: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINotPresent;
-		m_ConditionTarget = new CCTObject( UAMaxDistances.BASEBUILDING );
+		m_ConditionTarget = new CCTCursor;
 	}	
 	
 	override bool HasProneException()
@@ -56,6 +56,7 @@ class ActionTakeMaterialToHands: ActionInteractBase
 			
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
 			string main_part_name = target_entity.GetActionComponentName( target.GetComponentIndex() );
+			//Print(main_part_name);
 			
 			if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
 			{

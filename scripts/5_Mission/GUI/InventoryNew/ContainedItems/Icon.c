@@ -204,7 +204,6 @@ class Icon: LayoutHolder
 				{
 					player.PredictiveSwapEntities( item, hands_item );
 				}
-				else 
 			}
 			else
 			{
@@ -1427,38 +1426,104 @@ class Icon: LayoutHolder
 		Weapon_Base wpn = Weapon_Base.Cast( GetObject() );
 		if( wpn )
 		{
-			//TODO MW - add more conplex logic
-			for ( int i = 0; i < wpn.GetMuzzleCount(); i++ )
+			int i;
+			ImageWidget ammo_icon;
+			if (!wpn.IsShowingChamberedBullet())
 			{
-				if ( i > m_AmmoIcons.Count() )
+				for (i = 0; i < m_AmmoIcons.Count(); i++)
 				{
-					//add plus ammo
-					break;
+					ammo_icon = m_AmmoIcons.Get(i);
+					ammo_icon.Show(false);
+				}
+			/*	int bullet_count = 0;
+				int fireout_count = 0;
+				
+				for ( i = 0; i < wpn.GetMuzzleCount(); i++ )
+				{
+					if (wpn.IsChamberFull(i))
+					{
+						if (wpn.IsChamberFiredOut(i))
+						{
+							fireout_count++;
+						}
+						else
+						{
+							bullet_count++;
+						}
+					}
 				}
 				
-				ImageWidget ammo_icon = m_AmmoIcons.Get(i);
-				
-				if( wpn.IsChamberFull( i ) )
+				int j;
+				i = 0;
+				for ( j= 0; j < bullet_count; j++ )
 				{
-					if( wpn.IsJammed() )
+					if ( i > m_AmmoIcons.Count() )
 					{
-						ammo_icon.Show( true );
-						ammo_icon.SetImage( 2 );
+						//add plus ammo
+						break;
 					}
-					else if( wpn.IsChamberFiredOut( i ) )
+					
+					ammo_icon = m_AmmoIcons.Get(i);
+					ammo_icon.Show( true );
+					ammo_icon.SetImage( 0 );
+					i++;
+				}
+				
+				for ( j= 0; j < fireout_count; j++ )
+				{
+					if ( i > m_AmmoIcons.Count() )
 					{
-						ammo_icon.Show( true );
-						ammo_icon.SetImage( 1 );
+						//add plus ammo
+						break;
+					}
+					
+					ammo_icon = m_AmmoIcons.Get(i);
+					ammo_icon.Show( true );
+					ammo_icon.SetImage( 1 );
+					i++;
+				}
+				
+				for (j = i; j < m_AmmoIcons.Count(); j++)
+				{
+					ammo_icon = m_AmmoIcons.Get(j);
+					ammo_icon.Show(false);
+				}*/
+			}
+			else
+			{
+				//TODO MW - add more conplex logic
+				for ( i = 0; i < wpn.GetMuzzleCount(); i++ )
+				{
+					if ( i > m_AmmoIcons.Count() )
+					{
+						//add plus ammo
+						break;
+					}
+					
+					ammo_icon = m_AmmoIcons.Get(i);
+					
+					if( wpn.IsChamberFull( i ) )
+					{
+						if( wpn.IsJammed() )
+						{
+							ammo_icon.Show( true );
+							ammo_icon.SetImage( 2 );
+						}
+						else if( wpn.IsChamberFiredOut( i ) )
+						{
+							ammo_icon.Show( true );
+							ammo_icon.SetImage( 1 );
+						}
+						else
+						{
+							ammo_icon.Show( true );
+							ammo_icon.SetImage( 0 );
+						}
 					}
 					else
 					{
-						ammo_icon.Show( true );
-						ammo_icon.SetImage( 0 );
+						ammo_icon.Show( false );
 					}
-				}
-				else
-				{
-					ammo_icon.Show( false );
 				}
 			}
 		}
@@ -1497,7 +1562,7 @@ class Icon: LayoutHolder
 			{
 
 				float progress_max = m_QuantityProgress.GetMax();
-				int max = m_Item.ConfigGetInt( "varQuantityMax" );
+				int max = m_Item.GetQuantityMax();
 				int count = m_Item.ConfigGetInt( "count" );
 				float quantity = QuantityConversions.GetItemQuantity( m_Item );
 

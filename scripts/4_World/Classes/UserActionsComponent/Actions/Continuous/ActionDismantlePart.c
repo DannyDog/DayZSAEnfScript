@@ -127,7 +127,7 @@ class ActionDismantlePart: ActionContinuousBase
 			if ( target_object && target_object.CanUseConstruction() )
 			{
 				//invalid if is gate and is locked
-				if (Class.CastTo(target_entity,target_object) && target_entity.FindAttachmentBySlotName("Att_CombinationLock"))
+				if ( Class.CastTo(target_entity,target_object) && (target_entity.FindAttachmentBySlotName("Att_CombinationLock") || target_entity.FindAttachmentBySlotName("Material_FPole_Flag")) )
 				{
 					return false;
 				}

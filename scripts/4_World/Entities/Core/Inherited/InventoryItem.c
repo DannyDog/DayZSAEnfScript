@@ -529,9 +529,9 @@ class Clothing extends ItemBase
 		return false;
 	}
 	
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
-		if (!super.CanReceiveItemIntoCargo(cargo))
+		if (!super.CanReceiveItemIntoCargo(item))
 			return false;
 		
 		EntityAI hierarchyParent = GetHierarchyParent();
@@ -549,6 +549,19 @@ class Clothing extends ItemBase
 		}
 		
 		return IsInherited(SmershBag) && hierarchyParent.IsInherited(SmershVest);
+	}
+	
+	override bool CanLoadItemIntoCargo(EntityAI item)
+	{
+		if (!super.CanLoadItemIntoCargo(item))
+			return false;
+		
+		EntityAI parent = GetHierarchyParent();
+		
+		if ( parent && parent.IsInherited( UndergroundStash ) )
+			return true;
+				
+		return !parent || parent.IsMan() || SmershException(parent);
 	}
 
 	float GetItemVisibility()

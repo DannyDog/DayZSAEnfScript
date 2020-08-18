@@ -72,6 +72,7 @@ class LoopedChambering extends WeaponStateBase
 			m_srcMagazine = e.m_magazine;
 			if (m_srcMagazine != NULL)
 			{
+				m_weapon.SelectionBulletHide();
 				InventoryLocation newSrc = new InventoryLocation;
 				m_srcMagazine.GetInventory().GetCurrentInventoryLocation(newSrc);
 				

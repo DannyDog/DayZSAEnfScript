@@ -644,7 +644,7 @@ class CargoContainer extends Container
 	int GetRecipeCount( bool recipe_anywhere, ItemBase entity1, ItemBase entity2, PlayerBase player )
 	{
 		PluginRecipesManager recipes_manager = PluginRecipesManager.Cast( GetPlugin( PluginRecipesManager ) );
-		return recipes_manager.GetValidRecipes( entity1, entity2, null, player ) );
+		return recipes_manager.GetValidRecipes( entity1, entity2, null, player );
 	}
 	
 	override bool CanEquip()

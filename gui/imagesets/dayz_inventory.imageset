@@ -584,6 +584,36 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass tf_stones {
+   Name "tf_stones"
+   Pos 1197 1197
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass tf_flag {
+   Name "tf_flag"
+   Pos 1197 1368
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass cat_tf_pole {
+   Name "cat_tf_pole"
+   Pos 1368 171
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass cat_tf_stones {
+   Name "cat_tf_stones"
+   Pos 1368 513
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass cat_tf_log {
+   Name "cat_tf_log"
+   Pos 1368 684
+   Size 170 170
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass AttachmentCategory {

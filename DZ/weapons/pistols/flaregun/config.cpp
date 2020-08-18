@@ -34,7 +34,7 @@ class cfgWeapons
 		scope = 0;
 		weight = 400;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
@@ -44,7 +44,6 @@ class cfgWeapons
 		chamberedRound = "";
 		magazines[] = {};
 		chamberableFrom[] = {"Ammo_Flare"};
-		barrelArmor = 2000;
 		ejectType = 2;
 		recoilModifier[] = {1,1,1};
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};

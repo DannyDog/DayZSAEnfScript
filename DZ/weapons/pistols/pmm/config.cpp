@@ -35,10 +35,11 @@ class cfgWeapons
 		scope = 0;
 		weight = 760;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,10,280,4,10};
 		WeaponLength = 0.560518;
+		barrelArmor = 0.281;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_IJ70_8Rnd"};
@@ -60,7 +61,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_ij70";
 			recoilProne = "recoil_if70_prone";
-			dispersion = 0.006;
+			dispersion = 0.013;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,100};

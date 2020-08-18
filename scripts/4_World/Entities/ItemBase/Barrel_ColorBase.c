@@ -499,10 +499,10 @@ class Barrel_ColorBase : DeployableContainer_Base
 
 	}
 	
-	override bool CanReceiveItemIntoCargo(EntityAI cargo)
+	override bool CanReceiveItemIntoCargo(EntityAI item)
 	{
 		if ( IsOpen() )
-			return super.CanReceiveItemIntoCargo( cargo );
+			return super.CanReceiveItemIntoCargo( item );
 		
 		return false;
 	}

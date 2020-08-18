@@ -39,7 +39,7 @@ class cfgWeapons
 		scope = 0;
 		weight = 760;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
@@ -65,7 +65,7 @@ class cfgWeapons
 			reloadTime = 0.13;
 			recoil = "recoil_ij70";
 			recoilProne = "recoil_if70_prone";
-			dispersion = 0.006;
+			dispersion = 0.012;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,100};

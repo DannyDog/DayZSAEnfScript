@@ -3589,19 +3589,6 @@ class CfgVehicles
 				soundLocked = "doorWoodSmallRattle";
 				soundOpenABit = "doorWoodSmallOpenABit";
 			};
-			class Doors2
-			{
-				displayName = "door 2";
-				component = "Doors2";
-				soundPos = "doors2_action";
-				animPeriod = 1;
-				initPhase = 0;
-				initOpened = 0;
-				soundOpen = "doorWoodSmallOpen";
-				soundClose = "doorWoodSmallClose";
-				soundLocked = "doorWoodSmallRattle";
-				soundOpenABit = "doorWoodSmallOpenABit";
-			};
 		};
 		class DamageSystem
 		{
@@ -3670,64 +3657,6 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 					};
 					componentNames[] = {"doors1"};
-					fatalInjuryCoef = -1;
-					class ArmorType
-					{
-						class Projectile
-						{
-							class Health
-							{
-								damage = 3;
-							};
-							class Blood
-							{
-								damage = 0;
-							};
-							class Shock
-							{
-								damage = 0;
-							};
-						};
-						class Melee
-						{
-							class Health
-							{
-								damage = 5;
-							};
-							class Blood
-							{
-								damage = 0;
-							};
-							class Shock
-							{
-								damage = 0;
-							};
-						};
-						class FragGrenade
-						{
-							class Health
-							{
-								damage = 3;
-							};
-							class Blood
-							{
-								damage = 0;
-							};
-							class Shock
-							{
-								damage = 0;
-							};
-						};
-					};
-				};
-				class door2
-				{
-					class Health
-					{
-						hitpoints = 1000;
-						transferToGlobalCoef = 0;
-					};
-					componentNames[] = {"doors2"};
 					fatalInjuryCoef = -1;
 					class ArmorType
 					{

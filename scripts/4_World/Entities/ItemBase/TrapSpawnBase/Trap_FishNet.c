@@ -68,7 +68,7 @@ class Trap_FishNet extends TrapSpawnBase
 		return IsTakeable();
 	}
 
-	override bool CanReceiveItemIntoCargo( EntityAI child )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		if ( GetHierarchyRootPlayer() == NULL )
 		{

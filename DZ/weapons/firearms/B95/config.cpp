@@ -37,7 +37,7 @@ class cfgWeapons
 		weight = 2820;
 		itemSize[] = {9,3};
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";
@@ -47,6 +47,7 @@ class cfgWeapons
 		winchesterTypeOpticsMount = 1;
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.85;
+		barrelArmor = 1.6;
 		muzzles[] = {"this","SecondMuzzle"};
 		ejectType = 3;
 		recoilModifier[] = {1,1,1};
@@ -82,7 +83,7 @@ class cfgWeapons
 			modes[] = {"Single","Burst"};
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer","Mag_308WinSnaploader_2Rnd"};
-			barrelArmor = 1000.0;
+			barrelArmor = 1.6;
 			initSpeedMultiplier = 1.0;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";

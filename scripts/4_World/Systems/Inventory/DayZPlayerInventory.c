@@ -687,6 +687,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					}
 				}
 				
+				if (GetDayZPlayerOwner().GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
+					CheckForRope(e.GetSrc(), e.GetDst());
+				
 				if (handling_juncture)
 				{
 					// juncture is already handled inside DayZPlayer::Simulate so it can be handled synchronously right now without delaying via m_PostedEvent
@@ -877,16 +880,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 	// Hacky solution for dealing with fencekit rope related issues, could be fixed by introducing some indicator that this item behaves differently or sth..
 	void CheckForRope(InventoryLocation src, InventoryLocation dst)
 	{
-		if (src.GetType() == InventoryLocationType.ATTACHMENT)
-		{
-			Rope rope = Rope.Cast(src.GetItem());
-			Print(rope);
-			if (rope)
-			{
-				Print(dst);
-				rope.SetTargetLocation(dst);
-			}
-		}
+		Rope rope = Rope.Cast(src.GetItem());
+		if (rope)
+			rope.SetTargetLocation(dst);
 	}
 	
 	bool IsServerOrLocalPlayer()

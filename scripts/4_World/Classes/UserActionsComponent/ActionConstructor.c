@@ -44,7 +44,6 @@ class ActionConstructor
 		actions.Insert(ActionPlantSeed);
 		actions.Insert(ActionDisinfectPlantBit);
 		actions.Insert(ActionTurnOnHeatpack);
-		//actions.Insert(ActionToggleFishing);
 //		actions.Insert(ActionAttachToCharger);
 		actions.Insert(ActionTurnOnTransmitter);	
 		actions.Insert(ActionTurnOffTransmitter);
@@ -79,12 +78,7 @@ class ActionConstructor
 		actions.Insert(ActionNextCombinationLockDial);
 		actions.Insert(ActionAttachToConstruction);
 		actions.Insert(ActionTakeMaterialToHandsSwitch);
-		actions.Insert(ActionFoldBandanaToMask);
-		actions.Insert(ActionFoldBandanaToHead);
-		actions.Insert(ActionUnfoldBandana);
 		actions.Insert(ActionClapBearTrapWithThisItem);
-		actions.Insert(ActionZoomIn);
-		actions.Insert(ActionZoomOut);
 		actions.Insert(ActionPlaceFireplaceIntoBarrel);
 		actions.Insert(ActionStopEngine);
 		actions.Insert(ActionUnfoldMap);
@@ -286,6 +280,11 @@ class ActionConstructor
 		actions.Insert(ActionCheckPulse);
 		actions.Insert(ActionUnpin);
 		actions.Insert(ActionPin);
+		actions.Insert(ActionTakeHybridAttachment);
+		actions.Insert(ActionTakeHybridAttachmentToHands);
+		actions.Insert(ActionWorldFlagActionSwitch);
+		actions.Insert(ActionRaiseFlag);
+		actions.Insert(ActionLowerFlag);
 		//vehicle actions
 		actions.Insert(ActionSwitchLights);
 		
@@ -296,8 +295,6 @@ class ActionConstructor
 		actions.Insert(FirearmActionAttachMagazine);
 		actions.Insert(FirearmActionLoadMultiBullet);
 		actions.Insert(FirearmActionLoadBullet);
-		
-		actions.Insert(ActionTakeItem);
 		
 		actions.Insert(ActionLoadMagazineQuick);
 		actions.Insert(FirearmActionAttachMagazineQuick);

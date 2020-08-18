@@ -2,7 +2,7 @@ class CCTObject : CCTBase
 {
 	protected float m_MaximalActionDistanceSq;
 	
-	void CCTObject ( float maximal_target_distance )
+	void CCTObject ( float maximal_target_distance = UAMaxDistances.DEFAULT )
 	{		
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 	}
@@ -27,7 +27,7 @@ class CCTParent : CCTBase
 {
 	protected float m_MaximalActionDistanceSq;
 	
-	void CCTParent ( float maximal_target_distance )
+	void CCTParent ( float maximal_target_distance = UAMaxDistances.DEFAULT )
 	{		
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 	}

@@ -33,7 +33,7 @@ class ActionWashHandsItem: ActionSingleUseBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		//Print(item.GetQuantity());
-		return player.HasBloodyHands() && item.GetQuantity() >= WASH_HANDS_AMOUNT );
+		return player.HasBloodyHands() && ( item.GetQuantity() >= WASH_HANDS_AMOUNT );
 	}
 
 	override void OnEndServer( ActionData action_data )

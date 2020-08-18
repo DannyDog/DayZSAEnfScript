@@ -1,7 +1,7 @@
 MetaFileClass {
  Name "{534691EE0479871C}Gui/imagesets/dayz_gui.tga"
- Author "tom-1070"
- ChangeDate 1837639855
+ Author "4930"
+ ChangeDate 882043146
  Configurations {
   TGAResourceClass PC {
    SourceFile "dayz_gui.tga"

@@ -984,7 +984,7 @@ class CfgWorlds
 			class Hill_Klen
 			{
 				name = "Клен";
-				position[] = {11473.511,11315.393};
+				position[] = {11473.511,11315.3926};
 				type = "Hill";
 			};
 			class Hill_Chernayagora
@@ -1032,7 +1032,7 @@ class CfgWorlds
 			class Marine_Zelenyzaliv
 			{
 				name = "Зеленый залив";
-				position[] = {11227.019,2989.838};
+				position[] = {11227.0186,2989.838};
 				type = "Marine";
 			};
 			class Marine_Skalistyproliv
@@ -1080,7 +1080,7 @@ class CfgWorlds
 			class Marine_PlotinaPobeda
 			{
 				name = "Плотина Победа";
-				position[] = {9928.294,13874.643};
+				position[] = {9928.294,13874.6426};
 				type = "Marine";
 			};
 			class Marine_PlotinaTishina

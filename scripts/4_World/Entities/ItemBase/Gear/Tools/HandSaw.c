@@ -7,6 +7,7 @@ class HandSaw: Inventory_Base
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionMineBush);
 		AddAction(ActionSawPlanks);
+		AddAction(ActionDismantlePart);
 		//AddAction(ActionDestroyCombinationLock);
 		//AddAction(ActionDestroyPart);
 	}

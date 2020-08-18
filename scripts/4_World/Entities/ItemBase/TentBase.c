@@ -963,12 +963,20 @@ class TentBase extends ItemBase
 		return 110;
 	}
 
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
 			return false;
 		
-		return super.CanReceiveItemIntoCargo( cargo );
+		return super.CanReceiveItemIntoCargo( item );
+	}
+	
+	override bool CanLoadItemIntoCargo( EntityAI item )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanLoadItemIntoCargo( item );
 	}
 	
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
@@ -977,6 +985,14 @@ class TentBase extends ItemBase
 			return false;
 		
 		return super.CanReceiveAttachment(attachment, slotId);
+	}
+	
+	override bool CanLoadAttachment( EntityAI attachment )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+		
+		return super.CanLoadAttachment(attachment);
 	}
 	
 	override bool CanBePlaced( Man player, vector position )

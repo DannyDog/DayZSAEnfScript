@@ -11428,6 +11428,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_House_1W05_Yellow: Land_House_1W05
+	{
+		model = "\DZ\structures\Residential\Houses\House_1W05_Yellow.p3d";
+	};
 	class Land_House_1W06: HouseNoDestruct
 	{
 		scope = 1;
@@ -12487,6 +12491,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_House_1W08_Brown: Land_House_1W08
+	{
+		model = "\DZ\structures\Residential\Houses\House_1W08_Brown.p3d";
+	};
 	class Land_House_1W09: HouseNoDestruct
 	{
 		scope = 1;
@@ -12840,6 +12848,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_House_1W09_Yellow: Land_House_1W08
+	{
+		model = "\DZ\structures\Residential\Houses\House_1W09_Yellow.p3d";
+	};
 	class Land_House_1W10: HouseNoDestruct
 	{
 		scope = 1;
@@ -12979,6 +12991,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_House_1W10_Brown: Land_House_1W10
+	{
+		model = "\DZ\structures\Residential\Houses\House_1W10_Brown.p3d";
 	};
 	class Land_House_1W11: HouseNoDestruct
 	{
@@ -13898,6 +13914,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_House_1W12_Brown: Land_House_1W12
+	{
+		model = "\DZ\structures\Residential\Houses\House_1W12_Brown.p3d";
 	};
 	class Land_House_2B01: HouseNoDestruct
 	{
@@ -16867,6 +16887,10 @@ class CfgVehicles
 			};
 		};
 	};
+	class Land_House_2W03_Brown: Land_House_2W03
+	{
+		model = "\DZ\structures\Residential\Houses\House_2W03_Brown.p3d";
+	};
 	class Land_House_2W04: HouseNoDestruct
 	{
 		scope = 1;
@@ -17148,6 +17172,10 @@ class CfgVehicles
 				};
 			};
 		};
+	};
+	class Land_House_2W04_Yellow: Land_House_2W04
+	{
+		model = "\DZ\structures\Residential\Houses\House_2W04_Yellow.p3d";
 	};
 	class Land_Village_Pub: HouseNoDestruct
 	{

@@ -10,6 +10,8 @@ class Entity extends ObjectTyped
 	
 	//! Process animation on object. Animation is defined in config file. Wanted animation phase is set to phase.
 	proto native void SetAnimationPhase(string animation, float phase);
+		
+	proto native void ResetAnimationPhase(string animation, float phase);
 
 	//! Returns skeleton's bone index of named proxy selection.
 	proto native int GetBoneIndex( string proxySelectionName );

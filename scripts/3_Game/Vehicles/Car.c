@@ -63,6 +63,68 @@ class Car extends Transport
 
 	//!	Returns the current speed of the vehicle in km/h.
 	proto native float GetSpeedometer();
+	
+	override bool IsAreaAtDoorFree( int currentSeat, float maxAllowedObjHeight = 0.5, float horizontalExtents = 0.5, float playerHeight = 1.7 )
+	{
+		float speed = GetSpeedometer();
+		vector direction = GetDirection();
+		vector crewPos;
+		vector crewDir;
+		CrewEntryWS( currentSeat, crewPos, crewDir );
+		crewPos[1] = crewPos[1] + maxAllowedObjHeight + playerHeight * 0.5;
+		float vExtents = horizontalExtents;
+		if (speed > 8)
+			vExtents *= 6;
+		if (speed > 8)
+			horizontalExtents = 2;
+		array<Object> excluded = new array<Object>;
+		array<Object> collided = new array<Object>;
+		excluded.Insert(this);
+		excluded.Insert(GetGame().GetPlayer());
+		GetGame().IsBoxColliding(crewPos, crewDir, Vector(horizontalExtents, playerHeight, vExtents), excluded, collided); 
+		foreach (Object o : collided)
+		{
+			EntityAI e = EntityAI.Cast(o);
+			vector minmax[2];
+			if ( e && e.IsZombie() && e.IsDamageDestroyed() )
+				continue;
+			
+			if ( o.GetCollisionBox(minmax) && !o.CanBeSkinned() ) // CanBeSkinned means it is a dead entity which should not block the door
+				return false;
+		}
+		return true;
+	}
+	
+	override Shape DebugFreeAreaAtDoor( int currentSeat, float maxAllowedObjHeight = 0.5, float horizontalExtents = 0.5, float playerHeight = 1.7 )
+	{
+		float speed = GetSpeedometer();
+		vector direction = GetDirection();
+		vector crewPos;
+		vector crewDir;
+		CrewEntryWS( currentSeat, crewPos, crewDir );
+		crewPos[1] = crewPos[1] + maxAllowedObjHeight + playerHeight * 0.5;
+		float vExtents = horizontalExtents;
+		if (speed > 8)
+			vExtents *= 6;
+		if (speed > 8)
+			horizontalExtents = 2;
+		array<Object> excluded = new array<Object>;
+		array<Object> collided = new array<Object>;
+		excluded.Insert(this);
+		excluded.Insert(GetGame().GetPlayer());
+		GetGame().IsBoxColliding(crewPos, crewDir, Vector(horizontalExtents, playerHeight, vExtents), excluded, collided); 
+		int color = ARGB(20, 0, 255, 0);
+		foreach (Object o : collided)
+		{
+			vector minmax[2];
+			if (o.GetCollisionBox(minmax))
+			{
+				color = ARGB(20, 255, 0, 0);
+			}
+		}
+
+		return Debug.DrawCylinder(crewPos, horizontalExtents, playerHeight, color);
+	}
 
 
 //-----------------------------------------------------------------------------

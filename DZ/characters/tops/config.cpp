@@ -332,12 +332,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Armband"};
 		rotationFlags = 34;
 		weight = 80;
-		itemSize[] = {1,3};
+		itemSize[] = {1,2};
 		ragQuantity = 1;
-		canBeSplit = 1;
-		varQuantityInit = 1;
-		varQuantityMin = 0;
-		varQuantityMax = 5;
 		heatIsolation = 0.1;
 		absorbency = 0.8;
 		repairableWithKits[] = {5,2};
@@ -398,7 +394,7 @@ class CfgVehicles
 	{
 		scope = 2;
 		color = "Red";
-		hiddenSelectionsTextures[] = {"\dz\characters\tops\data\armbends_red_co.paa","\dz\characters\tops\data\armbend_small_red_co.paa","\dz\characters\tops\data\armbend_small_red_co.paa","\dz\characters\tops\Data\armbend_big_red_co.paa","\dz\characters\tops\Data\armbend_big_red_co.paa"};
+		hiddenSelectionsTextures[] = {"\dz\characters\tops\data\armbend_red_g_co.paa","\dz\characters\tops\data\armbend_small_red_co.paa","\dz\characters\tops\data\armbend_small_red_co.paa","\dz\characters\tops\Data\armbend_big_red_co.paa","\dz\characters\tops\Data\armbend_big_red_co.paa"};
 	};
 	class Armband_Green: Armband_ColorBase
 	{

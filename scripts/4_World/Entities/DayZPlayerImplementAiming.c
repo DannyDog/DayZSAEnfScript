@@ -153,6 +153,7 @@ class DayZPlayerImplementAiming
 		float adjusted_sway_multiplier = PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT;
 		float speed;
 		
+		DbgPrintAimingImplement("Player: " + m_PlayerPb + " | ProcessAimFilters | timestamp: " + m_PlayerPb.GetSimulationTimeStamp());
 		//negates stamina effect during hold breath
 		if( m_PlayerPb.IsHoldingBreath() )
 		{
@@ -175,7 +176,7 @@ class DayZPlayerImplementAiming
 		adjusted_sway_multiplier = CalculateSwayMultiplier();
 		m_LastSwayMultiplier = adjusted_sway_multiplier;
 		
-		m_SwayWeight = CalculateWeight(	stance_index, player_stamina, m_PlayerPb.m_CameraSwayModifier, m_PlayerPb.IsHoldingBreath() ) * adjusted_sway_multiplier;
+		m_SwayWeight = CalculateWeight(	stance_index, player_stamina, 0.5/*m_PlayerPb.m_CameraSwayModifier*/, m_PlayerPb.IsHoldingBreath() ) * adjusted_sway_multiplier;
 		
 		//! get sway
 		ApplyBreathingPattern(breathing_offset_x, breathing_offset_y, 3.0, m_TotalTime, m_SwayWeight);
@@ -201,14 +202,20 @@ class DayZPlayerImplementAiming
 		//! hands offset
 		pModel.m_fAimXHandsOffset = breathing_offset_x + noise_offset_x + recoil_offset_hands_x + shake_offset_x + kuru_offset_x;
 		pModel.m_fAimYHandsOffset = breathing_offset_y + noise_offset_y + recoil_offset_hands_y + shake_offset_y + kuru_offset_y;
-		//Print(pModel.m_fAimXHandsOffset);
-		//Print(pModel.m_fAimYHandsOffset);
+		//DbgPrintAimingImplement("pModel.m_fAimXHandsOffset: " + pModel.m_fAimXHandsOffset);
+		DbgPrintAimingImplement("breathing_offset_y: " + breathing_offset_y);
+		DbgPrintAimingImplement("noise_offset_y: " + noise_offset_y);
+		DbgPrintAimingImplement("recoil_offset_hands_y: " + recoil_offset_hands_y);
+		DbgPrintAimingImplement("shake_offset_y: " + shake_offset_y);
+		DbgPrintAimingImplement("kuru_offset_y: " + kuru_offset_y);
+		DbgPrintAimingImplement("pModel.m_fAimYHandsOffset: " + pModel.m_fAimYHandsOffset);
 		
 		//! cam offset
 		pModel.m_fAimXCamOffset = -shake_offset_x - recoil_offset_hands_x - kuru_offset_x + m_CamShakeX;
 		pModel.m_fAimYCamOffset	= -shake_offset_y - recoil_offset_hands_y - kuru_offset_y + m_CamShakeY;
-		//Print(pModel.m_fAimXCamOffset);
-		//Print(pModel.m_fAimYCamOffset);
+		//DbgPrintAimingImplement("pModel.m_fAimXCamOffset: " + pModel.m_fAimXCamOffset);
+		DbgPrintAimingImplement("m_CamShakeY: " + m_CamShakeY);
+		DbgPrintAimingImplement("pModel.m_fAimYCamOffset: " + pModel.m_fAimYCamOffset);
 		
 		/*
 		if( m_CamShakeX != 0 ) Print(m_CamShakeX);
@@ -233,8 +240,9 @@ class DayZPlayerImplementAiming
 		//! mouse offset
 		pModel.m_fAimXMouseShift = recoil_offset_mouse_x -kuru_offset_x / 10;
 		pModel.m_fAimYMouseShift = recoil_offset_mouse_y + kuru_offset_y / 10;
-		//Print(pModel.m_fAimXMouseShift);
-		//Print(pModel.m_fAimYMouseShift);
+		//DbgPrintAimingImplement("pModel.m_fAimXMouseShift: " + pModel.m_fAimXMouseShift);
+		DbgPrintAimingImplement("recoil_offset_mouse_y: " + recoil_offset_mouse_y);
+		DbgPrintAimingImplement("pModel.m_fAimYMouseShift: " + pModel.m_fAimYMouseShift);
 		
 		//Debug.ClearCanvas();
 		//Debug.CanvasDrawPoint(pModel.m_fAimXHandsOffset * 100 + 250 ,-pModel.m_fAimYHandsOffset * 100 + 300, ARGBF( 1, 0, 1, 1 ));
@@ -259,7 +267,7 @@ class DayZPlayerImplementAiming
 			m_BreathingYAxisOffset = 0;
 			//Print("Sway Offsets Reset");
 		}
-		
+		DbgPrintAimingImplement("----------------------------");
 		return true;
 	}
 	
@@ -323,11 +331,17 @@ class DayZPlayerImplementAiming
 		return m_SwayState;
 	}
 
-	protected void ApplyBreathingPattern(out float x_axis, out float y_axis, float pAmplitude, out float pTotalTime, float weight)
+	protected void ApplyBreathingPattern(out float x_axis, out float y_axis, float pAmplitude, float pTotalTime, float weight)
 	{
+		DbgPrintAimingImplement("m_LastSwayMultiplier: " + m_LastSwayMultiplier);
+		DbgPrintAimingImplement("pAmplitude: " + pAmplitude);
+		DbgPrintAimingImplement("pTotalTime: " + pTotalTime);
+		DbgPrintAimingImplement("weight: " + weight);
 		float multiplier = Math.Lerp(PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT,0,m_LastSwayMultiplier); //TODO revise
+		DbgPrintAimingImplement("multiplier: " + multiplier);
 		x_axis = (Math.Sin(pTotalTime) * pAmplitude / 4) * weight;
 		y_axis = (Math.Sin((pTotalTime) * 0.8 + 0.6 ) * pAmplitude) * weight;
+		DbgPrintAimingImplement("y_axis_midproduct: " + y_axis);
 		x_axis += m_BreathingXAxisOffset * multiplier;
 		y_axis += m_BreathingYAxisOffset * multiplier;
 	}
@@ -386,12 +400,21 @@ class DayZPlayerImplementAiming
 				//Debug.LogError("stance mask out of definition");
 			break;
 		}
+		DbgPrintAimingImplement("current_stamina: " + current_stamina);
+		DbgPrintAimingImplement("camera_sway_modifier: " + camera_sway_modifier);
+		DbgPrintAimingImplement("holding_breath: " + holding_breath);
 		
 		//is_holding_breath = !is_holding_breath;
 		//return (1 - current_stamina * stance_modifier) * m_AimNoiseAllowed;
 		//PrintString(camera_sway_modifier.ToString());
 		
 		return (1 - stance_modifier) * m_AimNoiseAllowed * camera_sway_modifier * scale;
+	}
+	
+	void DbgPrintAimingImplement(string val)
+	{
+		if (GetDayZGame().IsAimLogEnabled())
+			Print(val);
 	}
 }
 

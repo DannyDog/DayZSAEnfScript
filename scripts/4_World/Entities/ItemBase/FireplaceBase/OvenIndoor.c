@@ -168,21 +168,37 @@ class OvenIndoor extends FireplaceBase
 		
 		//kindling items
 		if ( IsKindling ( item ) )
-		{
 			return true;
-		}
 		
 		//fuel items
 		if ( IsFuel ( item ) )
-		{
 			return true;
-		}
 		
 		//direct cooking slots
 		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
-		{
 			return true;
-		}
+		
+		return false;
+	}
+	
+	override bool CanLoadAttachment( EntityAI attachment )
+	{
+		if ( !super.CanLoadAttachment(attachment) )
+			return false;
+		
+		ItemBase item = ItemBase.Cast( attachment );
+		
+		//kindling items
+		if ( IsKindling ( item ) )
+			return true;
+		
+		//fuel items
+		if ( IsFuel ( item ) )
+			return true;
+		
+		//direct cooking slots
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+			return true;
 		
 		return false;
 	}
@@ -369,9 +385,9 @@ class OvenIndoor extends FireplaceBase
 	}
 	
 	//cargo item into/outo this.Cargo
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
-		return super.CanReceiveItemIntoCargo( cargo );
+		return super.CanReceiveItemIntoCargo( item );
 	}
 /*
 	override bool CanReleaseCargo( EntityAI cargo )

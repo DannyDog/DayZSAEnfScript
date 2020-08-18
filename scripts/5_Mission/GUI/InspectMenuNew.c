@@ -397,9 +397,7 @@ class InspectMenuNew extends UIScriptedMenu
 		if( item_base )
 		{
 			float item_quantity = item_base.GetQuantity();
-			int max_quantity = item.ConfigGetFloat("varStackMax");
-			if( max_quantity <= 0)
-				max_quantity = item.ConfigGetInt("varQuantityMax");
+			int max_quantity = item.GetQuantityMax();
 			
 			float quantity_ratio;
 			

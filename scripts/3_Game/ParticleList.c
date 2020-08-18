@@ -156,6 +156,8 @@ class ParticleList
 	static const int GUN_AK74						= RegisterParticle("weapon_shot_ak74_01");
 	static const int GUN_AK101						= RegisterParticle("weapon_shot_ak101_01");
 	
+	static const int GUN_MAGNUM						= RegisterParticle("weapon_shot_magnum_01");
+	
 	static const int GUN_CZ61						= RegisterParticle("weapon_shot_cz61_01");
 	static const int GUN_LONG_WINDED_SMOKE			= RegisterParticle("weapon_shot_winded_smoke");
 	static const int GUN_LONG_WINDED_SMOKE_SMALL	= RegisterParticle("weapon_shot_winded_smoke_small");

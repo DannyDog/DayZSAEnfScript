@@ -36,11 +36,12 @@ class cfgWeapons
 		scope = 0;
 		weight = 1746;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.6,50,200,4,10};
 		ironsightsExcludingOptics[] = {"M4_CarryHandleOptic","BUISOptic","M68Optic","M4_T3NRDSOptic","ReflexOptic","ACOGOptic"};
 		WeaponLength = 0.814784;
+		barrelArmor = 3.75;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_556x45","Ammo_556x45Tracer"};
@@ -235,7 +236,6 @@ class cfgWeapons
 		chamberedRound = "";
 		magazines[] = {};
 		chamberableFrom[] = {"Ammo_GrenadeM4"};
-		barrelArmor = 2000;
 		ejectType = 2;
 		recoilModifier[] = {1,1,1};
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};

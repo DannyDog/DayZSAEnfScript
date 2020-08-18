@@ -242,14 +242,14 @@ class VicinityContainer: CollapsibleContainer
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 
-		if( !item.GetInventory().CanRemoveEntity() || m_ShowedItemIcons.Find( item ) > -1 )
+		if( !item.GetInventory().CanRemoveEntity() || m_ShowedItemIcons.Find( item ) == -1 )
 			return;
 		
 		if ( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )
 		{
 			( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 		}
-		else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
+		/*else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 		{
 			InventoryLocation il1 = new InventoryLocation;
 			InventoryLocation il2 = new InventoryLocation;
@@ -259,7 +259,7 @@ class VicinityContainer: CollapsibleContainer
 			if( !receiver_item.GetInventory().CanRemoveEntity() || ( il1.GetType() == InventoryLocationType.GROUND && il2.GetType() == InventoryLocationType.GROUND ) )
 				return;
 			player.PredictiveSwapEntities( item, receiver_item );
-		}
+		}*/
 		/*else if( player.CanDropEntity( item ) )
 		{
 			player.PredictiveDropEntity( item );

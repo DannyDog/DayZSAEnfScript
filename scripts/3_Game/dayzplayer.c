@@ -88,7 +88,7 @@ class DayZPlayerCamera
 	
 	bool IsCamera3rdRaised()
 	{
-		return true;
+		return false;
 	}
 
 	void SpawnCameraShake(float strength = 1, float radius = 2, float smoothness = 5, float radius_decay_speed = 6)
@@ -822,6 +822,8 @@ enum DayZPlayerConstants
 	CMD_ACTIONFB_ATTACHBARREL			= 517,		// pne
 	CMD_ACTIONFB_RESTRAIN				= 518,		// erc,cro,pne
 	CMD_ACTIONFB_PICKUP_HEAVY			= 519,		// erc
+	CMD_ACTIONFB_RAISE_FLAG				= 600,		// erc?
+	CMD_ACTIONFB_LOWER_FLAG				= 601,		// erc?
 
 	CMD_ACTIONFB_DROPITEM_HANDS		= 900,			// pne, pne back
 	
@@ -1182,7 +1184,7 @@ class DayZPlayer extends Human
 	}
 	
 	//! ---------------- Forces player to stand up when swapping to heavy item -------------------------
-	void ForceStandUpForHeavyItemsSwap (notnull EntityAI item)
+	void ForceStandUpForHeavyItems(notnull EntityAI item)
 	{
 		InventoryLocation il = new InventoryLocation;
 		if ( item.IsHeavyBehaviour() && item.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.CARGO && IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_CROUCH))
@@ -1195,10 +1197,10 @@ class DayZPlayer extends Human
 		}
 	}
 	
-	void ForceStandUpForHeavyItemsSwap (notnull EntityAI item1, notnull EntityAI item2)
+	void ForceStandUpForHeavyItemsSwap(notnull EntityAI item1, notnull EntityAI item2)
 	{
-		ForceStandUpForHeavyItemsSwap(item1);
-		ForceStandUpForHeavyItemsSwap(item2);
+		ForceStandUpForHeavyItems(item1);
+		ForceStandUpForHeavyItems(item2);
 	}
 }
 

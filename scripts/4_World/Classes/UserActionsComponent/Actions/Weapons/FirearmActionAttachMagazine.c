@@ -102,7 +102,7 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 		bool isLoadedMag = false;
 		
 		for (int i = 0, count = weapon.GetMuzzleCount(); i < count; ++i)
-			isLoadedMag |= (mag == weapon.GetMagazine(i);
+			isLoadedMag |= ( mag == weapon.GetMagazine( i ) );
 		
 		return !isLoadedMag;
 	}

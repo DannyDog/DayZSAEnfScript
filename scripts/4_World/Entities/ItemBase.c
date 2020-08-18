@@ -802,28 +802,34 @@ class ItemBase extends InventoryItem
 		PlayerBase new_player = null;
 		PlayerBase old_player = null;
 		
-		if( newLoc.GetParent() )
+		if ( newLoc.GetParent() )
 			new_player = PlayerBase.Cast(newLoc.GetParent().GetHierarchyRootPlayer());
 		
-		if( oldLoc.GetParent() )
+		if ( oldLoc.GetParent() )
 			old_player = PlayerBase.Cast(oldLoc.GetParent().GetHierarchyRootPlayer());
 		
-		if(old_player && oldLoc.GetType() == InventoryLocationType.HANDS)
+		if ( old_player )
+			old_player.SetEnableQuickBarEntityShortcut(this, false);
+		
+		if ( new_player )
+			new_player.SetEnableQuickBarEntityShortcut(this, true);
+		
+		if (old_player && oldLoc.GetType() == InventoryLocationType.HANDS)
 		{
 			int r_index = old_player.GetHumanInventory().FindUserReservedLocationIndex(this);
 
-			if(r_index >= 0)
+			if (r_index >= 0)
 			{
 					InventoryLocation r_il = new InventoryLocation;
 					old_player.GetHumanInventory().GetUserReservedLocation(r_index,r_il);
 
 					old_player.GetHumanInventory().ClearUserReservedLocationAtIndex(r_index);
 					int r_type = r_il.GetType();
-					if( r_type == InventoryLocationType.CARGO || r_type == InventoryLocationType.PROXYCARGO )
+					if ( r_type == InventoryLocationType.CARGO || r_type == InventoryLocationType.PROXYCARGO )
 					{
 						r_il.GetParent().GetOnReleaseLock().Invoke( this );
 					}
-					else if( r_type == InventoryLocationType.ATTACHMENT )
+					else if ( r_type == InventoryLocationType.ATTACHMENT )
 					{
 						r_il.GetParent().GetOnAttachmentReleaseLock().Invoke( this, r_il.GetSlot() );
 					}
@@ -833,24 +839,23 @@ class ItemBase extends InventoryItem
 			//GetOnReleaseLock().Invoke(this);
 		}
 		
-		if(newLoc.GetType() == InventoryLocationType.HANDS)
+		if (newLoc.GetType() == InventoryLocationType.HANDS)
 		{
-			if(new_player == old_player)
+			if (new_player == old_player)
 			{
-				if(new_player.GetHumanInventory().LocationGetEntity(oldLoc) == NULL )
+				if ( oldLoc.GetParent() && !(oldLoc.GetParent() != new_player && oldLoc.GetType() == InventoryLocationType.ATTACHMENT) && new_player.GetHumanInventory().LocationGetEntity(oldLoc) == NULL )
 				{
-					//if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
-						new_player.GetHumanInventory().SetUserReservedLocation(this,oldLoc);
+					new_player.GetHumanInventory().SetUserReservedLocation(this,oldLoc);
 				}
 				
-				if( new_player.GetHumanInventory().FindUserReservedLocationIndex( this ) >= 0 )
+				if ( new_player.GetHumanInventory().FindUserReservedLocationIndex( this ) >= 0 )
 				{
 					int type = oldLoc.GetType();
-					if( type == InventoryLocationType.CARGO || type == InventoryLocationType.PROXYCARGO )
+					if ( type == InventoryLocationType.CARGO || type == InventoryLocationType.PROXYCARGO )
 					{
 						oldLoc.GetParent().GetOnSetLock().Invoke( this );
 					}
-					else if( type == InventoryLocationType.ATTACHMENT )
+					else if ( type == InventoryLocationType.ATTACHMENT )
 					{
 						oldLoc.GetParent().GetOnAttachmentSetLock().Invoke( this, oldLoc.GetSlot() );
 					}
@@ -873,21 +878,21 @@ class ItemBase extends InventoryItem
 		}
 		else
 		{
-			if(new_player)
+			if (new_player)
 			{
 				int res_index = new_player.GetHumanInventory().FindCollidingUserReservedLocationIndex(this, newLoc );
-				if(res_index >= 0)
+				if (res_index >= 0)
 				{
 					InventoryLocation il = new InventoryLocation;
 					new_player.GetHumanInventory().GetUserReservedLocation(res_index,il);
 					ItemBase it = ItemBase.Cast(il.GetItem());
 					new_player.GetHumanInventory().ClearUserReservedLocationAtIndex(res_index);
 					int rel_type = il.GetType();
-					if( rel_type == InventoryLocationType.CARGO || rel_type == InventoryLocationType.PROXYCARGO )
+					if ( rel_type == InventoryLocationType.CARGO || rel_type == InventoryLocationType.PROXYCARGO )
 					{
 						il.GetParent().GetOnReleaseLock().Invoke( it );
 					}
-					else if( rel_type == InventoryLocationType.ATTACHMENT )
+					else if ( rel_type == InventoryLocationType.ATTACHMENT )
 					{
 						il.GetParent().GetOnAttachmentReleaseLock().Invoke( it, il.GetSlot() );
 					}
@@ -1089,10 +1094,18 @@ class ItemBase extends InventoryItem
 		//	player.UpdateQuickBarEntityVisibility(this);
 		//}*/
 		//Print("OnWasAttached: " + GetType());
+		
+		if ( HasQuantity() )
+			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), GetQuantityMax() );
 	}
 	
-	override void OnWasDetached ( EntityAI parent, int slot_id )
+	override void OnWasDetached( EntityAI parent, int slot_id )
 	{
+		if ( HasQuantity() )
+		{
+			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), GetQuantityMax() );
+		}
+
 		//Print("OnWasDetached: " + GetType());
 		PlayerBase player = PlayerBase.Cast(parent);
 		if (player)
@@ -1336,12 +1349,11 @@ class ItemBase extends InventoryItem
 		float split_quantity_new;
 		ref ItemBase new_item;
 		float quantity = GetQuantity();
-		float stackable = ConfigGetFloat("varStackMax");
+		float stack_max = GetTargetQuantityMax(slot_id);
 		InventoryLocation loc = new InventoryLocation;
 		
 		if( destination_entity && slot_id != -1 && InventorySlots.IsSlotIdValid( slot_id ) )
 		{
-			int stack_max = InventorySlots.GetStackMaxForSlotId( slot_id );
 			if( stack_max <= GetQuantity() )
 				split_quantity_new = stack_max;
 			else
@@ -1357,8 +1369,8 @@ class ItemBase extends InventoryItem
 		}
 		else if( destination_entity && slot_id == -1 )
 		{
-			if( quantity > stackable )
-				split_quantity_new = stackable;
+			if( quantity > stack_max )
+				split_quantity_new = stack_max;
 			else
 				split_quantity_new = quantity;
 			
@@ -1377,11 +1389,11 @@ class ItemBase extends InventoryItem
 		}
 		else
 		{
-			if( stackable != 0 )
+			if( stack_max != 0 )
 			{
-				if( stackable < GetQuantity() )
+				if( stack_max < GetQuantity() )
 				{
-					split_quantity_new = GetQuantity() - stackable;
+					split_quantity_new = GetQuantity() - stack_max;
 				}
 				
 				if( split_quantity_new == 0 )
@@ -1407,16 +1419,16 @@ class ItemBase extends InventoryItem
 				{
 					MiscGameplayFunctions.TransferItemProperties( this, new_item );
 					SetQuantity( split_quantity_new );
-					new_item.SetQuantity( stackable );
+					new_item.SetQuantity( stack_max );
 					new_item.PlaceOnSurface();
 				}
 			}
 		}
 	}
 	
-	void SplitIntoStackMaxToInventoryLocationClient ( notnull InventoryLocation dst )
+	void SplitIntoStackMaxToInventoryLocationClient( notnull InventoryLocation dst )
 	{
-		if( GetGame().IsClient() )
+		if ( GetGame().IsClient() )
 		{
 			if (ScriptInputUserData.CanStoreInputUserData())
 			{
@@ -1429,7 +1441,7 @@ class ItemBase extends InventoryItem
 				ctx.Send();
 			}
 		}
-		else if( !GetGame().IsMultiplayer() )
+		else if ( !GetGame().IsMultiplayer() )
 		{
 			SplitIntoStackMaxToInventoryLocation( dst );
 		}
@@ -1467,9 +1479,11 @@ class ItemBase extends InventoryItem
 		ref ItemBase new_item;
 		if( dst.IsValid() )
 		{
-			float stackable = ConfigGetFloat("varStackMax");
-			if( quantity > stackable )
-				split_quantity_new = stackable;
+			int slot_id = dst.GetSlot();
+			float stack_max = GetTargetQuantityMax(slot_id);
+			
+			if( quantity > stack_max )
+				split_quantity_new = stack_max;
 			else
 				split_quantity_new = quantity;
 			
@@ -1491,7 +1505,7 @@ class ItemBase extends InventoryItem
 		ref ItemBase new_item;
 		if( destination_entity )
 		{
-			float stackable = ConfigGetFloat("varStackMax");
+			float stackable = GetTargetQuantityMax();
 			if( quantity > stackable )
 				split_quantity_new = stackable;
 			else
@@ -1538,7 +1552,7 @@ class ItemBase extends InventoryItem
 		ref ItemBase new_item;
 		if( player )
 		{
-			float stackable = ConfigGetFloat("varStackMax");
+			float stackable = GetTargetQuantityMax();
 			if( quantity > stackable )
 				split_quantity_new = stackable;
 			else
@@ -1553,6 +1567,38 @@ class ItemBase extends InventoryItem
 				new_item.SetQuantity( split_quantity_new );
 			}
 		}
+	}
+	
+	void SplitItemToInventoryLocation( notnull InventoryLocation dst )
+	{
+		if ( !CanBeSplit() )
+			return;
+		
+		float quantity = GetQuantity();
+		float split_quantity_new = Math.Floor( quantity * 0.5 );
+		
+		ItemBase new_item = ItemBase.Cast( GameInventory.LocationCreateEntity( dst, GetType(), ECE_IN_INVENTORY, RF_DEFAULT ) );
+		
+		if (new_item.GetQuantityMax() < split_quantity_new)
+		{
+			split_quantity_new = new_item.GetQuantityMax();
+		}
+		
+		if ( new_item )
+		{
+			MiscGameplayFunctions.TransferItemProperties(this, new_item);
+			
+			if (dst.IsValid() && dst.GetType() == InventoryLocationType.ATTACHMENT && split_quantity_new > 1)
+			{
+				AddQuantity(-1);
+				new_item.SetQuantity(1);
+			}
+			else
+			{
+				AddQuantity(-split_quantity_new);
+				new_item.SetQuantity( split_quantity_new );				
+			}
+		}	
 	}
 	
 	void SplitItem( PlayerBase player )
@@ -1570,6 +1616,12 @@ class ItemBase extends InventoryItem
 		
 		ItemBase new_item;
 		new_item = player.CreateCopyOfItemInInventoryOrGround(this);
+		
+		if (new_item.GetQuantityMax() < split_quantity_new)
+		{
+			split_quantity_new = new_item.GetQuantityMax();
+		}
+		
 		if( new_item )
 		{
 			if (found && invloc.IsValid() && invloc.GetType() == InventoryLocationType.ATTACHMENT && split_quantity_new > 1)
@@ -1619,25 +1671,46 @@ class ItemBase extends InventoryItem
 	{
 		super.OnRightClick();
 		
-		if( CanBeSplit() && !GetDayZGame().IsLeftCtrlDown() )
+		if ( CanBeSplit() && !GetDayZGame().IsLeftCtrlDown() )
 		{
-			if( GetGame().IsClient() )
+			if ( GetGame().IsClient() )
 			{
-				if (ScriptInputUserData.CanStoreInputUserData())
+				if ( ScriptInputUserData.CanStoreInputUserData() )
 				{
+					PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+					
+					InventoryLocation dst = new InventoryLocation;
+					if ( !player.GetInventory().FindFirstFreeLocationForNewEntity(GetType(), FindInventoryLocationType.CARGO, dst) )
+					{
+						EntityAI root = GetHierarchyRoot();
+						
+						if (root)
+						{
+							vector m4[4];
+							root.GetTransform(m4);
+							dst.SetGround(this, m4);
+						}
+						else
+							GetInventory().GetCurrentInventoryLocation(dst);
+					}
+					else
+					{
+						dst.SetCargo( dst.GetParent(), this, dst.GetIdx(), dst.GetRow(), dst.GetCol(), dst.GetFlip());
+					}
+					
+					Print(dst.DumpToStringNullSafe(dst));
+					
 					ScriptInputUserData ctx = new ScriptInputUserData;
 					ctx.Write(INPUT_UDT_ITEM_MANIPULATION);
-					ctx.Write(1);
-					ItemBase i1 = this; // @NOTE: workaround for correct serialization
-					ctx.Write(i1);
-					ItemBase i2 = null; // @NOTE: workaround for correct serialization
-					ctx.Write(i2);
-					ctx.Write(false);
-					ctx.Write(-1);
+					ctx.Write(4);
+					ItemBase thiz = this; // @NOTE: workaround for correct serialization
+					ctx.Write(thiz);
+					dst.WriteToContext(ctx);
+					ctx.Write(true); // dummy
 					ctx.Send();
 				}
 			}
-			else if( !GetGame().IsMultiplayer() )
+			else if ( !GetGame().IsMultiplayer() )
 			{
 				SplitItem( PlayerBase.Cast( GetGame().GetPlayer() ) );
 			}
@@ -1811,6 +1884,8 @@ class ItemBase extends InventoryItem
 		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.INJECT_STRING_TIGER, "Inject String Tiger"));
 		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.INJECT_STRING_RABBIT, "Inject String Rabbit"));
 		
+		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.SPIN, "Spin"));
+		
 		// watch
 		outputList.Insert(new TSelectableActionInfo(SAT_DEBUG_ACTION, EActions.WATCH_ITEM, "Watch"));
 
@@ -1907,11 +1982,56 @@ class ItemBase extends InventoryItem
 			if( action_id == EActions.REMOVE_HEALTH ) 
 			{
 				this.AddHealth("","",-GetMaxHealth("","Health")/5);
-			}
+			}	
 			
 			if( action_id == EActions.SET_QUANTITY_0 ) //SetMaxQuantity
 			{
 				SetQuantity(0);
+			}
+			
+			if( action_id == EActions.SPIN ) //SetMaxQuantity
+			{
+				
+				Magnum_Cylinder cylinder = Magnum_Cylinder.Cast(GetAttachmentByType(Magnum_Cylinder));
+				Magnum_Ejector ejector = Magnum_Ejector.Cast(GetAttachmentByType(Magnum_Ejector));
+		
+		//Magnum_Base magnum = Magnum_Base.Cast(m_weapon);
+		
+		//Magazine mag = m_weapon.GetMagazine(0);
+				if(cylinder)
+				{
+					float a  = cylinder.GetAnimationPhase("Rotate_Cylinder");
+					if(a + 0.167 > 1.0)
+					{
+						Print("-----RESET-----");
+						a -= 1.0;
+						cylinder.ResetAnimationPhase("Rotate_Cylinder", a );
+						ejector.ResetAnimationPhase("Rotate_Ejector", a );
+						
+					}
+					a += 0.167;
+					Print(a);
+					cylinder.SetAnimationPhase("Rotate_Cylinder", a );
+					ejector.ResetAnimationPhase("Rotate_Ejector", a );
+				}
+				/*Weapon_Base wpn = Weapon_Base.Cast(this);
+				if(wpn)
+				{
+					Magazine mag = wpn.GetMagazine(0);
+					if(mag)
+					{
+						float a  = mag.GetAnimationPhase("rotate");
+						a += 0.3;
+						if(a > 1.0)
+							a -= 1.0;
+						mag.SetAnimationPhase("rotate", a );
+					
+					}
+				}*/
+				
+				/*if(a > 1.0)
+					a -= 1.0;
+				SetAnimationPhase("cylinder_rotate", a + 0.2);*/
 			}
 			
 			if( action_id == EActions.WATCH_ITEM ) //SetMaxQuantity
@@ -2303,7 +2423,7 @@ class ItemBase extends InventoryItem
 		if( mask & VARIABLE_QUANTITY )
 		{
 			float quantity = floats.Get(index);
-			SetQuantity(quantity, true );
+			SetQuantity(quantity, true, false, false, false );
 			index++;
 		}
 		//--------------------------------------------
@@ -2571,9 +2691,11 @@ class ItemBase extends InventoryItem
 			PrintString("getting quantity, current:"+m_VarQuantity.ToString());
 		}
 		*/
+
 		UpdateWeight();
 		if (GetHierarchyParent())
 			GetHierarchyParent().UpdateWeight();
+
 		super.OnVariablesSynchronized();
 	}
 	
@@ -2582,7 +2704,7 @@ class ItemBase extends InventoryItem
 	//-------------------------	Quantity
 	//----------------------------------------------------------------
 	//! Set item quantity[related to varQuantity... config entry], destroy_config = true > if the quantity reaches varQuantityMin or lower and the item config contains the varQuantityDestroyOnMin = true entry, the item gets destroyed. destroy_forced = true means item gets destroyed when quantity reaches varQuantityMin or lower regardless of config setting, returns true if the item gets deleted
-	bool SetQuantity(float value, bool destroy_config = true, bool destroy_forced = false, bool allow_client = false)
+	bool SetQuantity(float value, bool destroy_config = true, bool destroy_forced = false, bool allow_client = false, bool clamp_to_stack_max = true)
 	{
 		float delta = 0;
 		if( !IsServerCheck(allow_client) ) return false;
@@ -2629,7 +2751,14 @@ class ItemBase extends InventoryItem
 		}*/
 		
 		delta = m_VarQuantity;
-		m_VarQuantity = Math.Clamp(value, min, max);
+		if(clamp_to_stack_max)
+		{
+			m_VarQuantity = Math.Clamp(value, min, max);
+		}
+		else
+		{
+			m_VarQuantity = value;
+		}
 		delta = m_VarQuantity - delta;
 		SetVariableMask(VARIABLE_QUANTITY);
 		OnQuantityChanged(delta);
@@ -2668,7 +2797,45 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	override int GetQuantityMax()
 	{
-		return ConfigGetInt("varQuantityMax");
+		float maxItem = ConfigGetInt("varQuantityMax");
+		float max = maxItem;
+		
+		InventoryLocation il = new InventoryLocation;
+		if (GetInventory())
+			GetInventory().GetCurrentInventoryLocation(il);
+		int slot = il.GetSlot();
+		
+		if ( slot != -1 )
+			max = InventorySlots.GetStackMaxForSlotId( slot );
+		
+		if ( max <= 0 )
+			max = ConfigGetFloat("varStackMax");
+		
+		if ( max <= 0 )
+			max = maxItem;
+		
+		return max;
+	}
+	
+	override int GetTargetQuantityMax(int attSlotID = -1)
+	{
+		float quantity_max = -1;
+		
+		if (attSlotID != -1)
+		{
+			quantity_max = InventorySlots.GetStackMaxForSlotId( attSlotID );
+		}
+		
+		if( quantity_max <= 0 )
+		{
+			quantity_max = ConfigGetFloat("varStackMax");
+		}
+		
+		if( quantity_max <= 0 )
+		{
+			quantity_max = ConfigGetFloat("varQuantityMax");
+		}
+		return quantity_max;
 	}
 	//----------------------------------------------------------------
 	int GetQuantityMin()
@@ -2806,7 +2973,7 @@ class ItemBase extends InventoryItem
 					}
 
 					//other
-					{
+					{					
 						if (this.ConfigGetBool("canBeSplit")) //quantity determines size of the stack
 						{
 							totalWeight += Math.Round((item_wetness + 1) * this.GetQuantity() * m_ConfigWeight);
@@ -2858,7 +3025,7 @@ class ItemBase extends InventoryItem
 						weightAdjustment = Math.Round(weightAdjustment);
 					}
 					m_Weight += weightAdjustment;
-				
+								
 					EntityAI hierarchyParent = GetHierarchyParent();
 					if (hierarchyParent && !hierarchyParent.IsInherited(PlayerBase))
 						hierarchyParent.UpdateWeight(WeightUpdateType.RECURSIVE_ADD, weightAdjustment);
@@ -3400,13 +3567,13 @@ class ItemBase extends InventoryItem
 		return false;
 	}
 
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		//removed 15.06. coz of loading from storage -> after load items in cargo was lost -> waiting for proper solution
 		//if ( GetHealthLevel() == GameConstants.STATE_RUINED )
 		//	return false;
 		
-		return super.CanReceiveItemIntoCargo( cargo );
+		return super.CanReceiveItemIntoCargo( item );
 	}
 
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
@@ -3423,6 +3590,22 @@ class ItemBase extends InventoryItem
 		}
 		
 		return super.CanReceiveAttachment( attachment, slotId );
+	}
+	
+	override bool CanLoadAttachment( EntityAI attachment )
+	{
+		//removed 15.06. coz of loading from storage -> after load items in cargo was lost -> waiting for proper solution
+		//if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+		//	return false;
+		
+		GameInventory attachmentInv = attachment.GetInventory();
+		if (attachmentInv && attachmentInv.GetCargo() && attachmentInv.GetCargo().GetItemCount() > 0)
+		{
+			if (GetHierarchyParent() && !GetHierarchyParent().IsInherited(PlayerBase))
+				return false;
+		}
+		
+		return super.CanLoadAttachment( attachment );
 	}
 
 	// Plays muzzle flash particle effects

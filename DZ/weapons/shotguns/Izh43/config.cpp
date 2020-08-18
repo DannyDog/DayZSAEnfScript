@@ -35,7 +35,7 @@ class cfgWeapons
 	{
 		scope = 0;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 1;
 		chamberedRound = "";
@@ -44,6 +44,7 @@ class cfgWeapons
 		magazines[] = {};
 		PPDOFProperties[] = {1,0.5,10,175,4,10};
 		WeaponLength = 0.95;
+		barrelArmor = 1.333;
 		ejectType = 3;
 		reloadSkips[] = {0.48,0.81};
 		drySound[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_dry",0.005623413,1};
@@ -191,7 +192,7 @@ class cfgWeapons
 			modes[] = {"Single","Burst"};
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
-			barrelArmor = 1000.0;
+			barrelArmor = 1.333;
 			initSpeedMultiplier = 1.0;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";
@@ -291,7 +292,7 @@ class cfgWeapons
 			modes[] = {"Single","Burst"};
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
-			barrelArmor = 1000.0;
+			barrelArmor = 1.333;
 			initSpeedMultiplier = 1.0;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";

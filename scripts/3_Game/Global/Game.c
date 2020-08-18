@@ -28,7 +28,7 @@ class CGame
 		m_AnalyticsManagerClient = new AnalyticsManagerClient;
 		
 		// actual script version - increase by one when you make changes
-		StorageVersion(111);
+		StorageVersion(113);
 	}
 	
 	private void ~CGame();
@@ -835,6 +835,13 @@ class CGame
 	
 	// Interny build
 	proto native bool		IsDebug();
+	
+//#ifdef PLATFORM_XBOX
+	static bool 			IsDigitalCopy() 
+	{
+		return OnlineServices.IsGameActive(false);
+	}
+//#endif
 	
 	static bool IsDoNoLogs()
 	{

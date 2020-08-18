@@ -204,6 +204,27 @@ class WeaponGuardCurrentChamberEmpty extends WeaponGuardBase
 	}
 };
 
+class WeaponGuardAnyChamberEmpty extends WeaponGuardBase
+{
+	protected Weapon_Base m_weapon;
+	protected int m_muzzle;
+	void WeaponGuardAnyChamberEmpty (Weapon_Base w = NULL, int muzzle_index = 0 ) { m_weapon = w; m_muzzle = muzzle_index; }
+
+	override bool GuardCondition (WeaponEventBase e)
+	{
+		for (int i = 0; i < m_weapon.GetMuzzleCount(); i++)
+		{
+			if (m_weapon.IsChamberEmpty(i))
+			{
+				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - multi chamber (" + i + ") empty");
+				return true;
+			}
+		}
+		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - no chamber empty");
+		return false;
+	}
+};
+
 class WeaponGuardChamberFull extends WeaponGuardBase
 {
 	protected Weapon_Base m_weapon;
@@ -310,6 +331,27 @@ class WeaponGuardCurrentChamberFiredOut extends WeaponGuardBase
 			return true;
 		}
 		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - chamber not fired out");
+		return false;
+	}
+};
+
+class WeaponGuardAnyChamberFiredOut extends WeaponGuardBase
+{
+	protected Weapon_Base m_weapon;
+	void WeaponGuardAnyChamberFiredOut (Weapon_Base w = NULL) { m_weapon = w; }
+
+	override bool GuardCondition (WeaponEventBase e)
+	{
+		for (int i = 0; i < m_weapon.GetMuzzleCount(); i++)
+		{
+			if (m_weapon.IsChamberFiredOut(i))
+			{
+				wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - multi chamber (" + i + ") fired out");
+				return true;
+			}
+		}
+
+		wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - any chamber has not fired out");
 		return false;
 	}
 };
@@ -425,6 +467,36 @@ class WeaponGuardChamberMultiHasRoomBulltet extends WeaponGuardBase
 		return false;
 	}
 };
+
+class WeaponGuardChamberMultiHasRoomBulltetIgnoreLast extends WeaponGuardBase
+{
+	protected Weapon_Base m_weapon;
+	void WeaponGuardChamberMultiHasRoomBulltetIgnoreLast (Weapon_Base w = NULL) { m_weapon = w; }
+
+	override bool GuardCondition (WeaponEventBase e)
+	{
+		int i = m_weapon.GetMuzzleCount() - 1;
+		bool emty_one = false;
+		for ( ; i >= 0; i--)
+		{
+			if (m_weapon.GetTotalMaxCartridgeCount(i) - m_weapon.GetTotalCartridgeCount(i) >= 1)
+			{
+				if ( !emty_one )
+				{
+					emty_one = true;
+				}
+				else
+				{
+					wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - chamber has room for 1b");
+					return true;
+				}
+			}
+			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " guard - chamber has no room for 1b");
+		}
+		return false;
+	}
+};
+
 
 class WeaponGuardHasAmmoInLoopedState extends WeaponGuardBase
 {

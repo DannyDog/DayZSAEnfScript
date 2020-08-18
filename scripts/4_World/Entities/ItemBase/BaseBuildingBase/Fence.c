@@ -175,6 +175,9 @@ class Fence extends BaseBuildingBase
 	// --- INVENTORY
 	override bool CanDisplayAttachmentSlot( string slot_name )
 	{
+		if (!super.CanDisplayAttachmentSlot(slot_name))
+			return false;
+		
 		if ( slot_name == "Att_CombinationLock" )
 		{
 			if ( !HasFullyConstructedGate() )

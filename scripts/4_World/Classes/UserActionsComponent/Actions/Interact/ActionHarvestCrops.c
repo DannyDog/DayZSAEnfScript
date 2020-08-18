@@ -21,10 +21,9 @@ class ActionHarvestCrops: ActionInteractBase
 	}
 
 	override void CreateConditionComponents()  
-	{	
-		
-		m_ConditionTarget = new CCTNone;
+	{
 		m_ConditionItem = new CCINone;
+		m_ConditionTarget = new CCTCursor;
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )

@@ -161,7 +161,7 @@ $animsettemplate {
   }
  }
  $groupType "ActionInLoopOut" {
-  #ngroupnames 20
+  #ngroupnames 22
   #nanims 2
   $groupnames {
     "AssembleCro"
@@ -183,7 +183,9 @@ $animsettemplate {
     "HackBushErc"
     "HackTreeCro"
     "HackTreeErc"
+    "LowerFlag"
     "MineRockErc"
+    "RaiseFlag"
    
   }
   $anims {

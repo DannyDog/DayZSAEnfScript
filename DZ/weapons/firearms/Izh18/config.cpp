@@ -35,12 +35,13 @@ class cfgWeapons
 		scope = 0;
 		weight = 3200;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,10,170,4,10};
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		DisplayMagazine = 0;
 		WeaponLength = 0.981055;
+		barrelArmor = 1.875;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Ammo_762x39Tracer"};

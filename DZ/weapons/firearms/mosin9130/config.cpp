@@ -38,15 +38,16 @@ class cfgWeapons
 		animName = "Mosin9130";
 		weight = 4000;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,20,170,4,10};
 		DisplayMagazine = 0;
 		WeaponLength = 1.22271;
+		barrelArmor = 2.0;
 		chamberSize = 5;
 		chamberedRound = "";
-		magazines[] = {};
 		chamberableFrom[] = {"Ammo_762x54","Ammo_762x54Tracer","Mag_CLIP762x54_5Rnd"};
+		magazines[] = {};
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.5,2.5,1.3};
@@ -142,7 +143,7 @@ class cfgWeapons
 		animName = "Mosin9130";
 		weight = 3000;
 		absorbency = 0.1;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		chamberSize = 5;
 		chamberedRound = "";

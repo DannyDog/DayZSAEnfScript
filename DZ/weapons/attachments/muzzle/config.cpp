@@ -34,10 +34,10 @@ class cfgVehicles
 		itemSize[] = {1,1};
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		muzzlePos = "usti hlavne";
-		barrelArmor = 600;
+		barrelArmor = 3000;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		isMeleeWeapon = 1;
@@ -48,7 +48,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_AK_Bayonet0";
 		descriptionShort = "$STR_cfgVehicles_AK_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_ak.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
@@ -114,7 +114,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_M9A1_Bayonet0";
 		descriptionShort = "$STR_cfgVehicles_M9A1_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_m9a1.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
@@ -180,7 +180,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_Mosin_Bayonet0";
 		descriptionShort = "$STR_cfgVehicles_Mosin_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_mosin.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
@@ -246,7 +246,7 @@ class cfgVehicles
 		displayName = "$STR_cfgVehicles_SKS_Bayonet0";
 		descriptionShort = "$STR_cfgVehicles_SKS_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_sks.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
@@ -318,6 +318,7 @@ class cfgVehicles
 		weight = 150;
 		itemSize[] = {1,1};
 		itemModelLength = 0.089;
+		barrelArmor = 39.063;
 		lootTag[] = {"Hunting"};
 		lootCategory = "Attachments";
 		inventorySlot[] = {"weaponMuzzleMosin"};
@@ -361,6 +362,7 @@ class cfgVehicles
 		weight = 80;
 		itemSize[] = {1,1};
 		itemModelLength = 0.071;
+		barrelArmor = 20.834;
 		lootTag[] = {"Police"};
 		lootCategory = "Attachments";
 		inventorySlot[] = {"weaponMuzzleMP5"};
@@ -400,13 +402,13 @@ class cfgVehicles
 		weight = 50;
 		itemSize[] = {3,1};
 		itemModelLength = 0.24;
+		barrelArmor = 1500;
 		lootCategory = "Attachments";
 		inventorySlot[] = {"suppressorImpro","weaponMuzzleAK","weaponMuzzleM4","pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.7;
 		dispersionCondition = "true";
-		barrelArmor = 7;
 		recoilModifier[] = {0.9,0.9,0.9};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
@@ -468,6 +470,7 @@ class cfgVehicles
 		weight = 73;
 		itemSize[] = {3,1};
 		itemModelLength = 0.148;
+		barrelArmor = 3281.25;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_west"};
 		inventorySlot[] = {"weaponMuzzleM4"};
@@ -475,7 +478,6 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;
 		dispersionCondition = "true";
-		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
@@ -538,6 +540,7 @@ class cfgVehicles
 		weight = 100;
 		itemSize[] = {3,1};
 		itemModelLength = 0.23;
+		barrelArmor = 3281.25;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east"};
 		inventorySlot[] = {"weaponMuzzleAK"};
@@ -545,7 +548,6 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.87;
 		dispersionCondition = "true";
-		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
@@ -607,12 +609,12 @@ class cfgVehicles
 		weight = 70;
 		itemSize[] = {3,1};
 		itemModelLength = 0.176;
+		barrelArmor = 1500;
 		lootCategory = "Attachments";
 		lootTag[] = {"Military_east","Military_west","Police","Civilian"};
 		inventorySlot[] = {"pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		noiseShootModifier = -0.9;
-		barrelArmor = 600;
 		recoilModifier[] = {0.8,0.8,0.8};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
@@ -739,7 +741,6 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;
 		simulation = "ItemSuppressor";
-		barrelArmor = 7;
 		dispersionCondition = "true";
 		selectionFireAnim = "zasleh";
 		muzzlePos = "usti hlavne";
@@ -772,7 +773,6 @@ class cfgVehicles
 		inventorySlot[] = {"pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		noiseShootModifier = -0.9;
-		barrelArmor = 600;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";
@@ -824,7 +824,6 @@ class cfgVehicles
 		dispersionModifier = -0.0001;
 		noiseShootModifier = -0.9;
 		dispersionCondition = "true";
-		barrelArmor = 600;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		selectionFireAnim = "zasleh";

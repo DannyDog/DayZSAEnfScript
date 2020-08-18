@@ -127,6 +127,19 @@ class BarrelHoles_ColorBase extends FireplaceBase
 
 		return false;
 	}
+	
+	override bool CanLoadAttachment( EntityAI attachment )
+	{
+		ItemBase item = ItemBase.Cast( attachment );
+		
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+
+		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) || IsKindling( item ) || IsFuel( item ) )
+			return super.CanLoadAttachment(attachment);
+
+		return false;
+	}
 
 	override bool CanReleaseAttachment( EntityAI attachment )
 	{
@@ -285,7 +298,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	}
 
 	//cargo item into/outo this.Cargo
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
 			return false;
@@ -293,7 +306,18 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		if ( !IsOpen() || GetHierarchyParent() )
 			return false;
 
-		return super.CanReceiveItemIntoCargo( cargo );
+		return super.CanReceiveItemIntoCargo( item );
+	}
+	
+	override bool CanLoadItemIntoCargo( EntityAI item )
+	{
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+			return false;
+
+		if ( GetHierarchyParent() )
+			return false;
+
+		return super.CanLoadItemIntoCargo( item );
 	}
 
 	override bool CanReleaseCargo( EntityAI cargo )

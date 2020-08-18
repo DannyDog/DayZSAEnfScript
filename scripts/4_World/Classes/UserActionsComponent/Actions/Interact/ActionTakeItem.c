@@ -47,10 +47,13 @@ class ActionTakeItem: ActionInteractBase
 		EntityAI tgt_parent = EntityAI.Cast( target.GetParent() );
 		EntityAI tgt_entity = EntityAI.Cast( target.GetObject() );
 		
-		if ( tgt_entity && !tgt_parent )
+		if ( tgt_entity && (!tgt_parent || BaseBuildingBase.Cast(tgt_parent)) )
 		{
 			if ( tgt_entity && tgt_entity.IsItemBase() && player.GetInventory().CanAddEntityIntoInventory(tgt_entity) && tgt_entity.GetHierarchyRootPlayer() != player )
 			{
+				if ( tgt_parent && (!tgt_item.CanDetachAttachment(tgt_parent) || !tgt_parent.CanReleaseAttachment(tgt_item)) )
+					return false;
+				
 				return true;
 			}
 		}
@@ -99,7 +102,7 @@ class ActionTakeItem: ActionInteractBase
 	
 	
 	override bool InventoryReservation(ActionData action_data)
-	{		
+	{
 		bool success = true;
 		
 		InventoryLocation il = new InventoryLocation;
@@ -115,7 +118,7 @@ class ActionTakeItem: ActionInteractBase
 			else
 			{
 				action_data.m_Player.GetInventory().AddInventoryReservation( targetItem, il, GameInventory.c_InventoryReservationTimeoutMS);
-			}			
+			}
 		}	
 		
 		if ( success )
@@ -140,7 +143,7 @@ class ActionTakeItem: ActionInteractBase
 		
 		//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
 		
-		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		float stackable = ntarget.GetTargetQuantityMax(il.GetSlot());
 		
 		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
 		{
@@ -148,6 +151,7 @@ class ActionTakeItem: ActionInteractBase
 		}
 		else
 		{
+			ClearInventoryReservation(action_data);
 			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
 		}
 		
@@ -158,13 +162,13 @@ class ActionTakeItem: ActionInteractBase
 	{
 		//Debug.Log("[Action DEBUG] Start time stamp: " + action_data.m_Player.GetSimulationTimeStamp());
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		InventoryLocation il = action_data.m_ReservedInventoryLocations.Get(0);		
+		InventoryLocation il = action_data.m_ReservedInventoryLocations.Get(0);
 		InventoryLocation targetInventoryLocation = new InventoryLocation;
 		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
 		
 		//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
 		//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
-		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		float stackable = ntarget.GetTargetQuantityMax(il.GetSlot());
 		
 		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
 		{

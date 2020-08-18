@@ -157,7 +157,10 @@ class ActionBuildPart: ActionContinuousBase
 				break;
 			case Pliers:
 				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_INTERACT;
-				break;				
+				break;
+			case SledgeHammer:
+				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_MINEROCK;
+				break;
 			default:
 				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_ASSEMBLE;
 				break;

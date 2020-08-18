@@ -27,56 +27,94 @@ class Fireplace extends FireplaceBase
 
 		//kindling items
 		if ( IsKindling ( item ) )
-		{
 			return true;
-		}
 		
 		//fuel items
 		if ( IsFuel ( item ) )
-		{
 			return true;
-		}
 		
 		//cookware
 		if ( item.Type() == ATTACHMENT_COOKING_POT )
 		{
 			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) || IsOven() ) 
-			{
 				return true;
-			}
 		}
 		if ( item.Type() == ATTACHMENT_FRYING_PAN )
 		{
 			if ( IsOven() ) 
-			{
 				return true;
-			}
 		}
 
 		// food on direct cooking slots
 		if ( IsOven() )
 		{
 			if ( item.IsKindOf( "Edible_Base" ) )
-			{
 				return true;
-			}
 		}
 		//tripod
 		if ( item.Type() == ATTACHMENT_TRIPOD )
 		{
 			if ( !IsOven() && GetHierarchyParent() == NULL )
-			{
 				return true;
-			}
 		}
 		
 		//stones
 		if ( item.Type() == ATTACHMENT_STONES )
 		{
 			if ( GetHierarchyParent() || IsBurning() )
-			{
 				return false;
-			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	override bool CanLoadAttachment( EntityAI attachment )
+	{
+		if ( !super.CanLoadAttachment(attachment) )
+			return false;
+
+		ItemBase item = ItemBase.Cast( attachment );
+
+		//kindling items
+		if ( IsKindling ( item ) )
+			return true;
+		
+		//fuel items
+		if ( IsFuel ( item ) )
+			return true;
+		
+		//cookware
+		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		{
+			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) || IsOven() ) 
+				return true;
+		}
+		if ( item.Type() == ATTACHMENT_FRYING_PAN )
+		{
+			if ( IsOven() ) 
+				return true;
+		}
+
+		// food on direct cooking slots
+		if ( IsOven() )
+		{
+			if ( item.IsKindOf( "Edible_Base" ) )
+				return true;
+		}
+		//tripod
+		if ( item.Type() == ATTACHMENT_TRIPOD )
+		{
+			if ( !IsOven() && GetHierarchyParent() == NULL )
+				return true;
+		}
+		
+		//stones
+		if ( item.Type() == ATTACHMENT_STONES )
+		{
+			if ( GetHierarchyParent() || IsBurning() )
+				return false;
 			
 			return true;
 		}
@@ -319,14 +357,22 @@ class Fireplace extends FireplaceBase
 	}
 	
 	//cargo item into/outo this.Cargo
-	override bool CanReceiveItemIntoCargo( EntityAI cargo )
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		if ( GetHierarchyParent() )
 		{
 			return false;
 		}
 		
-		return super.CanReceiveItemIntoCargo( cargo );
+		return super.CanReceiveItemIntoCargo( item );
+	}
+	
+	override bool CanLoadItemIntoCargo( EntityAI item )
+	{
+		if ( GetHierarchyParent() )
+			return false;
+		
+		return super.CanLoadItemIntoCargo( item );
 	}
 /*
 	override bool CanReleaseCargo( EntityAI cargo )
@@ -379,6 +425,11 @@ class Fireplace extends FireplaceBase
 				return false;
 		}
 		return true;
+	}
+	
+	override bool CanAssignAttachmentsToQuickbar()
+	{
+		return false;
 	}
 	
 	//particles
@@ -555,9 +606,12 @@ class Fireplace extends FireplaceBase
 		}
 		
 		//check roof
-		if ( !IsCeilingHighEnoughForSmoke() && IsOnInteriorSurface() )
+		if ( !IsOven() )
 		{
-			return false;
+			if ( !IsCeilingHighEnoughForSmoke() && IsOnInteriorSurface() )
+			{
+				return false;
+			}
 		}
 		
 		//check surface

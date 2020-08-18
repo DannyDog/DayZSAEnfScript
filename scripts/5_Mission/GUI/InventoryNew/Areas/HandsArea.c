@@ -241,7 +241,8 @@ class HandsArea: LayoutHolder
 		if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityIntoHands( ipw.GetItem() ) )
 		{
 			ItemBase item_base = ItemBase.Cast( ipw.GetItem() );
-			float stackable = item_base.ConfigGetFloat("varStackMax");
+			float stackable = item_base.GetTargetQuantityMax(-1);
+			
 			if( stackable == 0 || item_base.GetQuantity() <= stackable )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToHands( item_base );		

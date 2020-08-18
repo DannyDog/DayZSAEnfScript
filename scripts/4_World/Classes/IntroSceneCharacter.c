@@ -414,14 +414,14 @@ class IntroSceneCharacter extends Managed
 	{
 		string character_name;
 		 m_CharacterDta.GetCharacterName(char_id, character_name);
-		return character_name:
+		return character_name;
 	}
 	
 	string GetCharacterName()
 	{
 		string character_name;
 		 m_CharacterDta.GetCharacterName(m_CharacterId, character_name);
-		return character_name:
+		return character_name;
 	}
 	
 	//==============================================

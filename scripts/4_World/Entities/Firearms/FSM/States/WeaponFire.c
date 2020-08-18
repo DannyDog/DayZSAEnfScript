@@ -134,6 +134,7 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 						DayZPlayerImplement p1;
 						if (Class.CastTo(p1, e.m_player))
 						p1.GetAimingModel().SetRecoil(m_weapon);
+						m_weapon.OnFire(i);
 					}
 				}
 			}
@@ -145,8 +146,13 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 					DayZPlayerImplement p;
 					if (Class.CastTo(p, e.m_player))
 						p.GetAimingModel().SetRecoil(m_weapon);
+					m_weapon.OnFire(mi);
 				}
 			}
+			if(mi >= m_weapon.GetMuzzleCount() - 1 )
+				m_weapon.SetCurrentMuzzle(0);
+			else
+				m_weapon.SetCurrentMuzzle(mi + 1);
 		}
 		super.OnEntry(e);
 	}
@@ -172,6 +178,73 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 		super.OnExit(e);
 	}
 };
+
+
+class WeaponFireMagnum extends WeaponFireMultiMuzzle
+{
+	override void OnEntry (WeaponEventBase e)
+	{
+		super.OnEntry(e);
+		if (e)
+		{
+			Magnum_Cylinder cylinder = Magnum_Cylinder.Cast(m_weapon.GetAttachmentByType(Magnum_Cylinder));
+			Magnum_Ejector ejector = Magnum_Ejector.Cast(m_weapon.GetAttachmentByType(Magnum_Ejector));
+			if(cylinder && ejector)
+			{
+				float a;
+				int mi = m_weapon.GetCurrentMuzzle();
+				switch(mi)
+				{
+					case 0:
+						a = MAGNUM_ROTATION_POSITION_0;
+						break;
+					case 1:
+						a = MAGNUM_ROTATION_POSITION_5;
+						cylinder.ResetAnimationPhase("Rotate_Cylinder", MAGNUM_ROTATION_POSITION_6 );
+						ejector.ResetAnimationPhase("Rotate_Ejector", MAGNUM_ROTATION_POSITION_6 );
+						break;
+					case 2:
+						a = MAGNUM_ROTATION_POSITION_4;
+						break;
+					case 3:
+						a = MAGNUM_ROTATION_POSITION_3;
+						break;
+					case 4:
+						a = MAGNUM_ROTATION_POSITION_2;
+						break;
+					case 5:
+						a = MAGNUM_ROTATION_POSITION_1;
+						break;
+				}
+				cylinder.SetAnimationPhase("Rotate_Cylinder", a );
+				ejector.SetAnimationPhase("Rotate_Ejector", a );
+			}
+		}
+	}
+
+	override void OnUpdate (float dt)
+	{
+		m_dtAccumulator += dt;
+
+		DayZPlayer p;
+		Class.CastTo(p, m_weapon.GetHierarchyParent());
+
+		int muzzleIndex = m_weapon.GetCurrentMuzzle();
+		float reloadTime = m_weapon.GetReloadTime(muzzleIndex);
+		if (m_dtAccumulator >= reloadTime)
+			if (m_weapon.CanProcessWeaponEvents())
+				m_weapon.ProcessWeaponEvent(new WeaponEventReloadTimeout(p));
+	}
+
+	override void OnExit (WeaponEventBase e)
+	{
+		if (e)
+			m_dtAccumulator = 0;
+		super.OnExit(e);
+	}
+};
+
+
 
 // fire to jam
 class WeaponFireToJam extends WeaponStartAction

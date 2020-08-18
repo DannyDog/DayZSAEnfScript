@@ -171,6 +171,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		if((m_EntityInHands || m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && GetGame().GetUIManager().GetMenu() == null)
 		{
 			BuildCursor();
+			CheckRefresherFlagVisibility();
 			m_Root.Show(true);
 		}
 		else
@@ -508,49 +509,62 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 
 			if ( Class.CastTo(wpn, m_EntityInHands ) )
 			{
-				for (int i = 0; i < wpn.GetMuzzleCount(); i++)
+				if(Magnum.Cast(wpn))
 				{
-					if ( i > 0)
+					mag_quantity = 0;
+					for (int j = 0; j < wpn.GetMuzzleCount(); j++)
 					{
-						wpn_qty = wpn_qty + " ";
+						if(wpn.IsChamberFull(j)&& !wpn.IsChamberFiredOut(j))
+							mag_quantity++; 
 					}
-					if (wpn.IsChamberEmpty(i))
-					{
-						wpn_qty = wpn_qty + "0";
-					}
-					else if (wpn.IsChamberFiredOut(i))
-					{
-						wpn_qty = wpn_qty + "F";
-					}
-					else
-					{
-						wpn_qty = wpn_qty + "1";
-					}
-					
-					maga = wpn.GetMagazine(i);
-					if (maga)
-					{
-						mag_quantity = maga.GetAmmoCount();
-					}
-					else if (wpn.GetInternalMagazineMaxCartridgeCount(i) > 0)
-					{
-						mag_quantity = wpn.GetInternalMagazineCartridgeCount(i);
-					}
-				
-				}
-			
-				if (wpn.IsJammed())
-				{
-					if (mag_quantity != -1 )
-						wpn_qty = string.Format("X (+%1)", mag_quantity);
-					else
-						wpn_qty = "X";
+					wpn_qty = mag_quantity.ToString();
 				}
 				else
 				{
-					if(mag_quantity != -1 )
+					for (int i = 0; i < wpn.GetMuzzleCount(); i++)
 					{
-						wpn_qty = wpn_qty + " (" + mag_quantity.ToString() + ")";
+						if ( i > 0 && (wpn.GetMuzzleCount() < 3 ||  i%2 == 0 ) )
+						{
+							wpn_qty = wpn_qty + " ";
+						}
+						if (wpn.IsChamberEmpty(i))
+						{
+							wpn_qty = wpn_qty + "0";
+						}
+						else if (wpn.IsChamberFiredOut(i))
+						{
+							wpn_qty = wpn_qty + "F";
+						}
+						else
+						{
+							wpn_qty = wpn_qty + "1";
+						}
+						
+						maga = wpn.GetMagazine(i);
+						if (maga)
+						{
+							mag_quantity = maga.GetAmmoCount();
+						}
+						else if (wpn.GetInternalMagazineMaxCartridgeCount(i) > 0)
+						{
+							mag_quantity = wpn.GetInternalMagazineCartridgeCount(i);
+						}
+					
+					}
+				
+					if (wpn.IsJammed())
+					{
+						if (mag_quantity != -1 )
+							wpn_qty = string.Format("X (+%1)", mag_quantity);
+						else
+							wpn_qty = "X";
+					}
+					else
+					{
+						if(mag_quantity != -1 )
+						{
+							wpn_qty = wpn_qty + " (" + mag_quantity.ToString() + ")";
+						}
 					}
 				}
 			}
@@ -714,5 +728,19 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		textWidget.SetText(keyName);
 		//frameWidget.Show(true);
 		textWidget.Show(true);	
+	}
+	
+	protected void CheckRefresherFlagVisibility()
+	{
+		Widget w = m_Root.FindAnyWidget("ia_item_flag_icon");
+		if ( m_Player.GetHologramLocal() )
+		{
+			EntityAI entity = m_Player.GetHologramLocal().GetProjectionEntity();
+			w.Show(entity.IsRefresherSignalingViable() && m_Player.IsTargetInActiveRefresherRange(entity));
+		}
+		else if ( w.IsVisible() )
+		{
+			w.Show(false);
+		}
 	}
 }

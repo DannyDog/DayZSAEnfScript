@@ -20,7 +20,7 @@ class ActionDialCombinationLockOnTarget: ActionContinuousBase
 	
 	override void CreateConditionComponents()  
 	{
-		m_ConditionItem = new CCINotPresent;
+		m_ConditionItem = new CCINone;
 		m_ConditionTarget = new CCTNonRuined( UAMaxDistances.DEFAULT );
 	}
 	

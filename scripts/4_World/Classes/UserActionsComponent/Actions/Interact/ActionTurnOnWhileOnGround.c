@@ -15,14 +15,10 @@ class ActionTurnOnWhileOnGround: ActionInteractBase
 	{
 		EntityAI target_entity = EntityAI.Cast( target.GetObject() );
 		
-		if ( player.IsAlive()  &&  target_entity.HasEnergyManager()  &&  target_entity.GetCompEM().CanSwitchOn() && target_entity.GetCompEM().CanWork() )
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		InventoryLocation loc = new InventoryLocation;
+		target_entity.GetInventory().GetCurrentInventoryLocation(loc);
+		
+		return ( player.IsAlive()  &&  target_entity.HasEnergyManager()  &&  target_entity.GetCompEM().CanSwitchOn() && target_entity.GetCompEM().CanWork() && loc.GetType() == InventoryLocationType.GROUND );
 	}
 
 	override void OnExecuteServer( ActionData action_data )

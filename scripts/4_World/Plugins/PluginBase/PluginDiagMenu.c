@@ -72,6 +72,7 @@ enum DiagMenuIDs
 	DM_HAIR_LEVEL_HIDE,
 	DM_HAIR_HIDE_ALL,
 	DM_CAM_SHAKE,
+	DM_QUICK_FISHING,
 };
 
 enum DebugActionType
@@ -104,6 +105,7 @@ class PluginDiagMenu extends PluginBase
 	int m_DisplayPlayerInfo			= false;
 	bool m_ProceduralRecoilEnabled 	= true;
 	bool m_EnableQuickRestrain 		= false;
+	bool m_EnableQuickFishing		= false;
 	bool m_StaminaDisabled			= false;
 	bool m_EnvironmentStats			= false;
 	bool m_DrawCheckerboard			= false;
@@ -264,6 +266,7 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_GO_UNCONSCIOUS, "", "Go Unconscious", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_GO_UNCONSCIOUS_DELAYED, "", "Uncons. in 10sec", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_QUICK_RESTRAIN, "ralt+0", "Quick Restrain", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_QUICK_FISHING, "", "Quick Fishing", "Misc");
 				DiagMenu.RegisterMenu(DiagMenuIDs.DM_HAIR_MENU, "Hair Hiding", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_DISABLE_PERSONAL_LIGHT, "", "Disable Personal Light", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_CAM_SHAKE, "lalt+3", "Simulate Cam Shake", "Misc");
@@ -355,6 +358,7 @@ class PluginDiagMenu extends PluginBase
 		CheckReloadBS();
 		CheckActivateBleedingSource();
 		CheckQuickRestrain();
+		CheckQuickFishing();
 		CheckHairLevel();
 		CheckHairHide();
 		CheckPersonalLight();
@@ -983,8 +987,9 @@ class PluginDiagMenu extends PluginBase
 		{
 			if(!m_ProceduralRecoilEnabled)
 			{
-				Class.CastTo(player, GetGame().GetPlayer());
-				player.GetAimingModel().SetProceduralRecoilEnabled(true);
+				//Class.CastTo(player, GetGame().GetPlayer());
+				//player.GetAimingModel().SetProceduralRecoilEnabled(true);
+				SendProceduralRecoilRPC(true);
 				m_ProceduralRecoilEnabled = true;
 			}
 		}
@@ -992,8 +997,9 @@ class PluginDiagMenu extends PluginBase
 		{
 			if(m_ProceduralRecoilEnabled)	
 			{
-				Class.CastTo(player, GetGame().GetPlayer());
-				player.GetAimingModel().SetProceduralRecoilEnabled(false);
+				//Class.CastTo(player, GetGame().GetPlayer());
+				//player.GetAimingModel().SetProceduralRecoilEnabled(false);
+				SendProceduralRecoilRPC(false);
 				m_ProceduralRecoilEnabled = false;
 			}
 		}
@@ -1019,6 +1025,29 @@ class PluginDiagMenu extends PluginBase
 			}
 		}
 	}
+	
+	//---------------------------------------------	
+	void CheckQuickFishing()
+	{
+		
+		if ( DiagMenu.GetBool( DiagMenuIDs.DM_QUICK_FISHING ) )
+		{
+			if (!m_EnableQuickFishing)
+			{
+				SendEnableQuickFishingRPC(true);
+				m_EnableQuickFishing = true;
+			}
+		}
+		else
+		{
+			if (m_EnableQuickFishing)	
+			{
+				SendEnableQuickFishingRPC(false);
+				m_EnableQuickFishing = false;
+			}
+		}
+	}
+	
 	//---------------------------------------------	
 	
 	void CheckCamShake()
@@ -1197,6 +1226,26 @@ class PluginDiagMenu extends PluginBase
 		if(player) player.SetQuickRestrain(enable);
 		if( GetGame() && GetGame().GetPlayer() ) 
 			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_ENABLE_QUICK_RESTRAIN, CachedObjectsParams.PARAM1_BOOL, true, GetGame().GetPlayer().GetIdentity() );
+ 	}
+	
+	//---------------------------------------------
+	void SendEnableQuickFishingRPC(bool enable)
+	{
+		CachedObjectsParams.PARAM1_BOOL.param1 = enable;
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		if (player) player.SetQuickFishing(enable);
+		if ( GetGame() && GetGame().GetPlayer() ) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_ENABLE_QUICK_FISHING, CachedObjectsParams.PARAM1_BOOL, true, GetGame().GetPlayer().GetIdentity() );
+ 	}
+	
+	//---------------------------------------------
+	void SendProceduralRecoilRPC(bool enable)
+	{
+		CachedObjectsParams.PARAM1_BOOL.param1 = enable;
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		if(player) player.GetAimingModel().SetProceduralRecoilEnabled(enable);
+		if( GetGame() && GetGame().GetPlayer() ) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_WEAPON_PROC_RECOIL, CachedObjectsParams.PARAM1_BOOL, true, GetGame().GetPlayer().GetIdentity() );
  	}
 	
 	//---------------------------------------------
@@ -1397,6 +1446,8 @@ class PluginDiagMenu extends PluginBase
 			}
 		}
 		
+		bool enable;
+		
 		switch(rpc_type)
 		{
 			case ERPCs.DEV_ACTIVATE_BS:
@@ -1406,8 +1457,8 @@ class PluginDiagMenu extends PluginBase
 			
 			case ERPCs.DEV_RPC_UNLIMITED_AMMO:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				bool enabled = CachedObjectsParams.PARAM1_BOOL.param1;
-				if(enabled)
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				if(enable)
 				{			
 					ItemBase.SetDebugActionsMask( ItemBase.GetDebugActionsMask() | DebugActionType.UNLIMITED_AMMO );
 				}
@@ -1419,7 +1470,7 @@ class PluginDiagMenu extends PluginBase
 			
 			case ERPCs.RPC_DISABLE_MODIFIERS:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				bool enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
 				player.SetModifiers( enable );
 			break;
 			
@@ -1438,8 +1489,8 @@ class PluginDiagMenu extends PluginBase
 
 			case ERPCs.RPC_ENABLE_INVINCIBILITY:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				bool value = CachedObjectsParams.PARAM1_BOOL.param1;
-				player.SetAllowDamage(!value);
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				player.SetAllowDamage(!enable);
 			break;
 
 			case ERPCs.RPC_ITEM_DEBUG_ACTIONS:
@@ -1448,10 +1499,22 @@ class PluginDiagMenu extends PluginBase
 				ItemBase.SetDebugActionsMask(mask);
 			break;
 			
+			case  ERPCs.RPC_WEAPON_PROC_RECOIL:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				player.GetAimingModel().SetProceduralRecoilEnabled(enable);
+			break;
+			
 			case ERPCs.RPC_ENABLE_QUICK_RESTRAIN:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				bool allow = CachedObjectsParams.PARAM1_BOOL.param1;
-				player.SetQuickRestrain(allow);
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				player.SetQuickRestrain(enable);
+			break;
+			
+			case ERPCs.RPC_ENABLE_QUICK_FISHING:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
+				player.SetQuickFishing(enable);
 			break;
 
 			case ERPCs.RPC_LOG_PLAYER_STATS:
@@ -1466,9 +1529,9 @@ class PluginDiagMenu extends PluginBase
 
 			case ERPCs.RPC_SOFT_SKILLS_DEBUG_WINDOW:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				bool show = CachedObjectsParams.PARAM1_BOOL.param1;
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
 				
-				if( show )
+				if( enable )
 				{
 					player.GetSoftSkillsManager().StartSynchTimer();
 				}
@@ -1508,10 +1571,10 @@ class PluginDiagMenu extends PluginBase
 
 			case ERPCs.RPC_LIFESPAN_BLOODY_HANDS:
 				ctx.Read( CachedObjectsParams.PARAM1_BOOL );
-				bool bloody_hands = CachedObjectsParams.PARAM1_BOOL.param1;
+				enable = CachedObjectsParams.PARAM1_BOOL.param1;
 				PluginLifespan lifespan_bloody_hands;
 				Class.CastTo(lifespan_bloody_hands, GetPlugin( PluginLifespan ));
-				lifespan_bloody_hands.UpdateBloodyHandsVisibility( player, bloody_hands );
+				lifespan_bloody_hands.UpdateBloodyHandsVisibility( player, enable );
 			break;
 
 			case ERPCs.RPC_LIFESPAN_PLAYTIME_UPDATE:

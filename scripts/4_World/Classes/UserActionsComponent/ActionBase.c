@@ -597,6 +597,11 @@ class ActionBase : ActionBase_Basic
 		if ( ( (condition_mask & m_ConditionMask) != condition_mask ) || ( !IsFullBody(player) && !player.IsPlayerInStance(GetStanceMask(player)) ) )
 			return false;
 		
+		int stanceIdx = DayZPlayerUtils.ConvertStanceMaskToStanceIdx(GetStanceMask(player));
+		
+		if ( stanceIdx != -1 && IsFullBody(player) && !DayZPlayerUtils.PlayerCanChangeStance(player, stanceIdx ))
+			return false;
+		
 		if ( HasTarget() )
 		{
 			EntityAI entity = EntityAI.Cast(target.GetObject());

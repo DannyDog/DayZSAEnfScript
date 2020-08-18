@@ -36,15 +36,11 @@ class ActionTakeItemToHands: ActionInteractBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		ItemBase tgt_item = ItemBase.Cast( target.GetObject() );
-		if ( !tgt_item || !tgt_item.IsTakeable() ) return false;
-		if ( tgt_item.IsBeingPlaced() ) return false;
-		if ( tgt_item.GetHierarchyParent() ) return false;
+		EntityAI tgt_parent = EntityAI.Cast(tgt_item.GetHierarchyParent());
+		if ( !tgt_item || !tgt_item.IsTakeable() || tgt_item.IsBeingPlaced() || ( tgt_item.GetHierarchyParent() && !BaseBuildingBase.Cast(tgt_item.GetHierarchyParent()) ) || ((tgt_parent && !tgt_item.CanDetachAttachment(tgt_parent)) || (tgt_parent && !tgt_parent.CanReleaseAttachment(tgt_item))) )
+			return false;
 		
-		if ( player.GetInventory().CanAddEntityIntoHands(tgt_item) )
-		{
-			return true;
-		}
-		return false;
+		return player.GetInventory().CanAddEntityIntoHands(tgt_item);
 	}
 	
 	override bool CanContinue( ActionData action_data )
@@ -59,20 +55,23 @@ class ActionTakeItemToHands: ActionInteractBase
 		
 		InventoryLocation il = new InventoryLocation;
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		il.SetHands(action_data.m_Player,ntarget);
-		//action_data.m_Player.G
+		ClearInventoryReservation(action_data);
+		
+		/*il.SetHands(action_data.m_Player,ntarget);
 		
 		InventoryLocation targetInventoryLocation = new InventoryLocation;
-		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
+		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);*/
 		
-		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		float stackable = ntarget.GetTargetQuantityMax(-1);
 		
 		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
 		{
-			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+			//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+			action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
 		}
 		else
 		{
+			ClearInventoryReservation(action_data);
 			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
 		}
 	}
@@ -81,16 +80,19 @@ class ActionTakeItemToHands: ActionInteractBase
 	{
 		InventoryLocation il = new InventoryLocation;
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		il.SetHands(action_data.m_Player,ntarget);
+		ClearInventoryReservation(action_data);
+		
+		/*il.SetHands(action_data.m_Player,ntarget);
 		
 		InventoryLocation targetInventoryLocation = new InventoryLocation;
-		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
+		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);*/
 		
-		float stackable = ntarget.ConfigGetFloat("varStackMax");
+		float stackable = ntarget.GetTargetQuantityMax(-1);
 		
 		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
 		{
-			action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+			//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
+			action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
 		}
 		else
 		{
@@ -143,16 +145,10 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		ItemBase tgt_item = ItemBase.Cast( target.GetObject() );
-		if ( !tgt_item || !tgt_item.IsTakeable() ) return false;
-		if ( tgt_item.IsBeingPlaced() ) return false;
+		if ( !tgt_item || !tgt_item.IsTakeable() || tgt_item.IsBeingPlaced() )
+			return false;
 		
-		if ( player.GetInventory().CanSwapEntitiesEx(tgt_item,item) )
-		{
-			//Print("ActionSwapItemToHands | ActionCondition: true");
-			return true;
-		}
-		//Print("ActionSwapItemToHands | ActionCondition: false");
-		return false;
+		return player.GetInventory().CanSwapEntitiesEx(tgt_item,item);
 	}
 	
 	override bool UseMainItem()

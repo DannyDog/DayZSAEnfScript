@@ -588,7 +588,11 @@ class AttachmentCategoriesRow: ClosableContainer
 		else if( attached_entity && slot_id != -1 &&  attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
 			item_base	= ItemBase.Cast( item );
-			stackable	= item_base.ConfigGetFloat("varStackMax");
+			stackable	= InventorySlots.GetStackMaxForSlotId( slot_id );
+			if(stackable < 1)
+			{
+				stackable	= item_base.ConfigGetFloat("varStackMax");
+			}
 			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
@@ -602,7 +606,11 @@ class AttachmentCategoriesRow: ClosableContainer
 		else if(attached_entity && slot_id == -1 && attached_entity.GetInventory().CanAddAttachment(item))
 		{
 			item_base	= ItemBase.Cast( item );
-			stackable	= item_base.ConfigGetFloat("varStackMax");
+			stackable	= InventorySlots.GetStackMaxForSlotId( slot_id );
+			if(stackable < 1)
+			{
+				stackable	= item_base.ConfigGetFloat("varStackMax");
+			}
 			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{

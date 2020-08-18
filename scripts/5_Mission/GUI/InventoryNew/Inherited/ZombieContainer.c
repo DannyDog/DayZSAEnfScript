@@ -716,7 +716,7 @@ class ZombieContainer: CollapsibleContainer
 				if( player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, il) )
 				{
 					if( item.ConfigGetFloat("varStackMax") )
-						item.SplitIntoStackMaxClient( player, -1, );
+						item.SplitIntoStackMaxClient( player, -1 );
 					else
 						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
 				}

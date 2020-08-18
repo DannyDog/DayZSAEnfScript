@@ -780,6 +780,12 @@ ImageSetClass {
    Size 47 20
    Flags 0
   }
+  ImageSetDefClass icon_flag {
+   Name "icon_flag"
+   Pos 174 272
+   Size 26 26
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass UI {

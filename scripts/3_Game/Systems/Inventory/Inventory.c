@@ -483,45 +483,19 @@ class GameInventory
 	
 	static bool CanSwapEntitiesEx(notnull EntityAI item1, notnull EntityAI item2)
 	{
-		float stack_max = item1.ConfigGetFloat("varStackMax");
-		float slot_stack_max = 0;
 		int slot;
 		InventoryLocation il = new InventoryLocation;
 		
 		item2.GetInventory().GetCurrentInventoryLocation(il);
 		slot = il.GetSlot();
-		if( slot != -1 )
-		{
-			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			if( slot_stack_max > 0 )
-				stack_max = slot_stack_max;
-		}
-		
-		if ( stack_max <= 0 )
-		{
-			stack_max = item1.GetQuantityMax();
-		}
-		
-		if( item1.GetQuantity() > stack_max )
+
+		if( item1.GetQuantity() > item1.GetTargetQuantityMax(slot) )
 			return false;
 		
-		
-		stack_max = item2.ConfigGetFloat("varStackMax");
 		item1.GetInventory().GetCurrentInventoryLocation(il);
 		slot = il.GetSlot();
-		if( slot != -1 )
-		{
-			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			if( slot_stack_max > 0 )
-				stack_max = slot_stack_max;
-		}
 		
-		if ( stack_max <= 0 )
-		{
-			stack_max = item2.GetQuantityMax();
-		}
-		
-		if( item2.GetQuantity() > stack_max )
+		if( item2.GetQuantity() > item2.GetTargetQuantityMax(slot) )
 			return false;
 		
 		
@@ -540,8 +514,6 @@ class GameInventory
 	static proto native bool CanForceSwapEntities (notnull EntityAI item1, InventoryLocation item1_dst, notnull EntityAI item2, out InventoryLocation item2_dst);
 	static bool CanForceSwapEntitiesEx(notnull EntityAI item1, InventoryLocation item1_dst, notnull EntityAI item2, out InventoryLocation item2_dst)
 	{
-		float stack_max = item1.ConfigGetFloat("varStackMax");
-		float slot_stack_max = 0;
 		int slot;
 		InventoryLocation il = new InventoryLocation;
 		
@@ -555,23 +527,9 @@ class GameInventory
 			slot = item1_dst.GetSlot();
 		}
 		
-		if( slot != -1 )
-		{
-			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			if( slot_stack_max > 0 )
-				stack_max = slot_stack_max;
-		}
-		
-		if( stack_max <= 0 )
-		{
-			stack_max = item1.GetQuantityMax();
-		}
-		
-		if( item1.GetQuantity() > stack_max )
+		if( item1.GetQuantity() > item1.GetTargetQuantityMax(slot) )
 			return false;
 		
-		
-		stack_max = item2.ConfigGetFloat("varStackMax");
 		if( item2_dst == null)
 		{
 			item1.GetInventory().GetCurrentInventoryLocation(il);
@@ -582,19 +540,7 @@ class GameInventory
 			slot = item2_dst.GetSlot();
 		}
 		
-		if( slot != -1 )
-		{
-			slot_stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			if( slot_stack_max > 0 )
-				stack_max = slot_stack_max;
-		}
-		
-		if ( stack_max <= 0 )
-		{
-			stack_max = item2.GetQuantityMax();
-		}
-		
-		if( item2.GetQuantity() > stack_max )
+		if( item2.GetQuantity() > item2.GetTargetQuantityMax(slot) )
 			return false;
 		
 		
@@ -866,8 +812,9 @@ class GameInventory
 		{
 			case InventoryMode.SERVER:
 				ret = LocationSyncMoveEntity(src, dst);
-				InventoryInputUserData.SendServerMove(null, InventoryCommandType.SYNC_MOVE, src, dst);
-				return true;
+				if (ret && dst.IsValid())
+					InventoryInputUserData.SendServerMove(null, InventoryCommandType.SYNC_MOVE, src, dst);
+				return ret;
 			case InventoryMode.LOCAL:
 				ret = LocationSyncMoveEntity(src, dst);
 				//InventoryInputUserData.SendInputUserDataMove(InventoryCommandType.SYNC_MOVE, src, dst);

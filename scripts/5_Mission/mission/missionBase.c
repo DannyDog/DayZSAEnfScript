@@ -189,6 +189,9 @@ class MissionBase extends MissionBaseWorld
 		case MENU_INVITE_TIMER:
 			menu = new InviteMenu;
 			break;
+		case MENU_WARNING_ITEMDROP:
+			menu = new ItemDropWarningMenu;
+			break;
 		}
 
 		if (menu)

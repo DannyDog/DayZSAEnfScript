@@ -2202,6 +2202,25 @@ FrameWidgetClass HudFrameWidget {
        "src alpha" 1
        stretch 1
        {
+        ImageWidgetClass item_flag_icon {
+         visible 0
+         clipchildren 1
+         position 50 0
+         size 16 16
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         image0 "set:dayz_gui image:icon_flag"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         filter 1
+         nocache 0
+        }
         GridSpacerWidgetClass item_left {
          clipchildren 1
          inheritalpha 0
@@ -2221,7 +2240,7 @@ FrameWidgetClass HudFrameWidget {
          Columns 1
          Rows 2
          {
-          ContentWidgetClass item_health_mark_wrapper {
+          ContentWidgetClass item_status_wrapper {
            visible 1
            inheritalpha 0
            size 60 10
@@ -3378,6 +3397,25 @@ FrameWidgetClass HudFrameWidget {
          "no wrap" 1
          stretch 1
          {
+          ImageWidgetClass ia_item_flag_icon {
+           visible 0
+           clipchildren 1
+           position 45 0
+           size 16 16
+           valign center_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           scaled 1
+           image0 "set:dayz_gui image:icon_flag"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
+           stretch 0
+           filter 1
+           nocache 0
+          }
           GridSpacerWidgetClass ia_item_left {
            clipchildren 1
            position 0 0
@@ -3396,7 +3434,7 @@ FrameWidgetClass HudFrameWidget {
            Columns 1
            Rows 2
            {
-            ContentWidgetClass ia_item_health_mark_wrapper {
+            ContentWidgetClass ia_item_status_wrapper {
              visible 1
              position 0 2
              size 1 10
@@ -4927,6 +4965,24 @@ FrameWidgetClass HudFrameWidget {
      "no wrap" 0
      "flip u" 0
      rotation 0 0 15
+    }
+    TextWidgetClass RefresherNotificationWidget {
+     visible 0
+     position -0.00074 -0.05768
+     size 0.117 0.016
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     fixaspect fixwidth
+     style Bold
+     text "Refresher Active"
+     font "gui/fonts/sdf_MetronLight42"
+     "bold text" 0
+     "exact text" 0
+     "text valign" center
     }
    }
   }

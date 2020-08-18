@@ -28,6 +28,7 @@ class EntityAI extends Entity
 	bool 					m_DeathSyncSent;
 	bool 					m_KilledByHeadshot;
 	bool 					m_PreparedToDelete = false;
+	bool 					m_RefresherViable = false;
 	ref KillerData 			m_KillerData;
 	
 	ref array<EntityAI> 	m_AttachmentsWithCargo;
@@ -36,6 +37,11 @@ class EntityAI extends Entity
 	ref InventoryLocation 	m_OldLocation;
 	
 	float					m_Weight;
+	private float 			m_LastUpdatedTime;
+	protected float			m_ElapsedSinceLastUpdate;
+	
+	bool m_TransportHitRegistered = false;
+	vector m_TransportHitVelocity;
 	
 	//Called on item attached to this item (EntityAI item, string slot, EntityAI parent)
 	protected ref ScriptInvoker		m_OnItemAttached;
@@ -80,11 +86,15 @@ class EntityAI extends Entity
 		
 		// Item preview index
 		RegisterNetSyncVariableInt( "m_ViewIndex", 0, 99 );
+		// Refresher signalization
+		RegisterNetSyncVariableBool("m_RefresherViable");
 		
 		m_AttachmentsWithCargo			= new array<EntityAI>;
 		m_AttachmentsWithAttachments	= new array<EntityAI>;
 		//m_NewLocation 					= new InventoryLocation;
 		//m_OldLocation 					= new InventoryLocation;
+		m_LastUpdatedTime = 0.0;
+		m_ElapsedSinceLastUpdate = 0.0;
 		
 		InitDamageZoneMapping();
 	}
@@ -125,6 +135,35 @@ class EntityAI extends Entity
 			return m_ComponentsBank.IsComponentAlreadyExist(comp_type);
 		
 		return false;
+	}
+	
+	//! Calculates if the max lifetime is higher than refresher frequency (i.e. gets kept alive by refresher) 
+	void MaxLifetimeRefreshCalc()
+	{
+		if ( (!GetGame().IsMultiplayer() || GetGame().IsServer()) && GetEconomyProfile() )
+		{
+			float lifetime = GetEconomyProfile().GetLifetime();
+			int frequency = GetCEApi().GetCEGlobalInt("FlagRefreshFrequency");
+			if ( frequency <= 0 )
+			{
+				frequency = GameConstants.REFRESHER_FREQUENCY_DEFAULT;
+			}
+			
+			if ( frequency <= lifetime )
+			{
+				m_RefresherViable = true;
+				SetSynchDirty();
+			}
+		}
+	}
+	
+	bool IsRefresherSignalingViable()
+	{
+		if (IsRuined())
+		{
+			return false;
+		}
+		return m_RefresherViable;
 	}
 	
 	//! Initializes script-side map of damage zones and their components (named selections in models)
@@ -204,6 +243,17 @@ class EntityAI extends Entity
 			return GetCompEM().IsWorking(); // This code is optional, it's just what's most likely to be used in your items.
 		
 		return false;
+	}
+	
+	bool IsBasebuildingKit()
+	{
+		return false;
+	}
+	
+	//! Should return false if you want to disable hologram rotation
+	bool PlacementCanBeRotated()
+	{
+		return true;
 	}
 	
 	//! Executed on Server when this item ignites some target item
@@ -418,8 +468,13 @@ class EntityAI extends Entity
 					}
 				}
 			}
-			UpdateWeight(WeightUpdateType.RECURSIVE_ADD);
+			
+			// For client it happens in OnVariablesSynchronized
+			if (GetGame().IsServer())
+				UpdateWeight(WeightUpdateType.RECURSIVE_ADD);
 		}
+		
+		MaxLifetimeRefreshCalc();
 	}
 	
 	//! Called right before object deleting
@@ -468,6 +523,8 @@ class EntityAI extends Entity
 	}
 	void EEInventoryOut (Man oldParentMan, EntityAI diz, EntityAI newParent)
 	{
+		m_LastUpdatedTime = 0.0;
+		
 		if (GetInventory() && newParent == null)
 		{
 			GetInventory().ResetFlipCargo();
@@ -520,7 +577,10 @@ class EntityAI extends Entity
 	{
 		float weight = item.GetWeight();
 		if (weight > 0)
+		{
+			//Print("this: " + this + " | att: " + item + " | worldpos: " + GetWorldPosition());
 			UpdateWeight(WeightUpdateType.RECURSIVE_ADD, weight);
+		}
 		
 		//Print (slot_name);
 		if ( m_ComponentsBank != NULL )
@@ -777,6 +837,16 @@ class EntityAI extends Entity
 	void AfterStoreLoad()
 	{
 	}
+	
+	//! Called when an item fails to get loaded into the inventory of an entity and gets dropped
+	void OnBinLoadItemsDropped()
+	{
+		if ( GetHierarchyRootPlayer() )
+		{
+			//GetGame().RPCSingleParam(GetHierarchyRootPlayer(), ERPCs.RPC_WARNING_ITEMDROP, null, true, GetHierarchyRootPlayer().GetIdentity());
+			GetHierarchyRootPlayer().SetProcessUIWarning(true);
+		}
+	}
 
 	//! Checks if this instance is of type DayZCreature
 	bool IsDayZCreature()
@@ -827,6 +897,17 @@ class EntityAI extends Entity
 	 * @note: return scriptConditionExecute(this, attachment, "CanReceiveAttachment");
 	 **/
 	bool CanReceiveAttachment (EntityAI attachment, int slotId)
+	{
+		return true;
+	}
+	
+	/**@fn		CanLoadAsAttachment
+	 * @brief	calls this->CanLoadAsAttachment(attachment), is called on server start when loading in the storage
+	 * @return	true if action allowed
+	 *
+	 * @note: return scriptConditionExecute(this, attachment, "CanLoadAsAttachment");
+	 **/
+	bool CanLoadAttachment(EntityAI attachment)
 	{
 		return true;
 	}
@@ -890,18 +971,30 @@ class EntityAI extends Entity
 	{}
 	
 	/**@fn		CanReceiveItemIntoCargo
-	 * @brief	calls this->CanReceiveItemIntoCargo(cargo)
+	 * @brief	calls this->CanReceiveItemIntoCargo(item)
 	 * @return	true if action allowed
 	 *
-	 * @note: return scriptConditionExecute(this, cargo, "CanReceiveItemIntoCargo");
+	 * @note: return scriptConditionExecute(this, item, "CanReceiveItemIntoCargo");
 	 **/
-	bool CanReceiveItemIntoCargo (EntityAI cargo)
+	bool CanReceiveItemIntoCargo(EntityAI item)
 	{
 		if (GetInventory() && GetInventory().GetCargo())
-			return GetInventory().GetCargo().CanReceiveItemIntoCargo(cargo));
+			return GetInventory().GetCargo().CanReceiveItemIntoCargo(item));
 		
 		return true;
 	}
+	
+	/**@fn		CanLoadItemIntoCargo
+	 * @brief	calls this->CanLoadItemIntoCargo(item), is called on server start when loading in the storage
+	 * @return	true if action allowed
+	 *
+	 * @note: return scriptConditionExecute(this, item, "CanLoadItemIntoCargo");
+	 **/
+	bool CanLoadItemIntoCargo(EntityAI item)
+	{
+		return true;
+	}
+	
 	/**@fn		CanPutInCargo
 	 * @brief	calls this->CanPutInCargo(parent)
 	 * @return	true if action allowed
@@ -1036,7 +1129,7 @@ class EntityAI extends Entity
 	 **/	
 	bool CanDisplayAttachmentSlot( string slot_name )
 	{
-		return true;
+		return InventorySlots.GetShowForSlotId(InventorySlots.GetSlotIdFromString(slot_name));
 	}
 
 	/**@fn		CanDisplayAttachmentCategory
@@ -1054,7 +1147,23 @@ class EntityAI extends Entity
 	bool CanDisplayCargo()
 	{
 		return true;
-	}	
+	}
+	
+	/**@fn		CanAssignToQuickbar
+	 * @return	true if item can be assigned to quickbar safely
+	 **/		
+	bool CanAssignToQuickbar()
+	{
+		return true;
+	}
+	
+	/**@fn		CanAssignAttachmentsToQuickbar
+	 * @return	true if attached item can be assigned to quickbar safely
+	 **/
+	bool CanAssignAttachmentsToQuickbar()
+	{
+		return true;
+	}
 	
 	/**@fn		IgnoreOutOfReachCondition
 	 * @return	if true, attachment condition for out of reach (inventory) will be ignored
@@ -1332,6 +1441,10 @@ class EntityAI extends Entity
 		return 0; // Only ItemBase objects quantity!
 	}
 	
+	int GetTargetQuantityMax(int attSlotID = -1)
+	{
+		return 0;
+	}
 	//! Returns index of the string found in cfg array 'hiddenSelections'. If it's not found then it returns -1.
 	int GetHiddenSelectionIndex( string selection )
 	{
@@ -1391,6 +1504,9 @@ class EntityAI extends Entity
 	 * @param[in]	precision		\p		precision in number of digits after decimal point
 	 **/	
 	proto native void RegisterNetSyncVariableFloat(string variableName, float minValue = 0, float maxValue = 0, int precision = 1);
+	
+	proto native void UpdateNetSyncVariableInt(string variableName, float minValue = 0, float maxValue = 0);
+	proto native void UpdateNetSyncVariableFloat(string variableName, float minValue = 0, float maxValue = 0, int precision = 1);
 
 	proto native void SwitchLight(bool isOn);
 
@@ -1462,6 +1578,7 @@ class EntityAI extends Entity
 	/**
 	\brief Called when data is loaded from persistence (on server side).
 	@code
+
 	void OnStoreLoad(ParamsReadContext ctx, int version)
 	{
 		// dont forget to propagate this call trough class hierarchy!
@@ -1481,6 +1598,7 @@ class EntityAI extends Entity
 	}
 	@endcode
 	*/
+	
 	bool OnStoreLoad (ParamsReadContext ctx, int version)
 	{
 		// Restoring of energy related states
@@ -1921,6 +2039,28 @@ class EntityAI extends Entity
 	string ChangeIntoOnAttach(string slot) {}
 	string ChangeIntoOnDetach() {}
 	
+	/**
+	\brief Central economy calls this function whenever going over all the entities 
+	@code
+	void OnCEUpdate()
+	{
+		// dont forget to propagate this call trough class hierarchy! - always at the start of the function
+		super.OnCEUpdate();
+	
+		// use m_ElapsedSinceLastUpdate for time-related purposes
+	}
+	@endcode
+	*/
+	void OnCEUpdate()
+	{
+		float currentTime = GetGame().GetTickTime();
+		if (m_LastUpdatedTime == 0)
+			m_LastUpdatedTime = currentTime;
+		
+		m_ElapsedSinceLastUpdate = currentTime - m_LastUpdatedTime; 
+		m_LastUpdatedTime = currentTime;
+	}
+	
 	void OnDebugSpawn() 
 	{
 		array<string> slots = new array<string>;
@@ -2064,5 +2204,32 @@ class EntityAI extends Entity
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "softBushFall_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
+	}
+	
+	void RegisterTransportHit(Transport transport)
+	{
+		if ( !m_TransportHitRegistered )
+		{	
+			m_TransportHitRegistered = true; 
+			m_TransportHitVelocity = GetVelocity(transport);
+		
+			// avoid damage because of small movements
+			if (m_TransportHitVelocity.Length() > 0.1)
+			{
+				float damage = m_TransportHitVelocity.Length();
+				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
+				ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
+			}
+			else
+				m_TransportHitRegistered = false; // EEHitBy is not called if no damage	
+			
+			// compute impulse and apply only if the body dies
+			if (IsDamageDestroyed() && m_TransportHitVelocity.Length() > 0.3)
+			{
+				vector impulse = 40 * m_TransportHitVelocity;
+				impulse[1] = 40 * 1.5;
+				dBodyApplyImpulse(this, impulse);
+			}
+		}
 	}
 };

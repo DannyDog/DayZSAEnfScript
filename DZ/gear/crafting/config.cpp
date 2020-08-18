@@ -75,7 +75,7 @@ class CfgVehicles
 		rotationFlags = 17;
 		itemSize[] = {1,3};
 		weight = 280;
-		inventorySlot[] = {"Rope"};
+		inventorySlot[] = {"Rope","Material_FPole_Rope"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -186,7 +186,7 @@ class CfgVehicles
 		rotationFlags = 17;
 		itemSize[] = {2,3};
 		weight = 170;
-		inventorySlot[] = {"MetalWire","Material_MetalWire"};
+		inventorySlot[] = {"MetalWire","Material_MetalWire","Material_FPole_MetalWire"};
 		hiddenSelections[] = {"att_battery_car","att_battery_car_plugged","att_battery_truck","att_battery_truck_plugged","att_battery_car_plug","att_battery_truck_plug","rolled"};
 		hiddenSelectionsTextures[] = {"dz\gear\crafting\data\string_metalwire_co.paa","dz\gear\crafting\data\string_metalwire_co.paa","dz\gear\crafting\data\string_metalwire_co.paa","dz\gear\crafting\data\string_metalwire_co.paa","","","dz\gear\crafting\data\string_metalwire_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\crafting\data\String_MetalWire.rvmat","dz\gear\crafting\data\String_MetalWire.rvmat","dz\gear\crafting\data\String_MetalWire.rvmat","dz\gear\crafting\data\String_MetalWire.rvmat","","","dz\gear\crafting\data\String_MetalWire.rvmat"};
@@ -541,6 +541,11 @@ class CfgVehicles
 		rotationFlags = 17;
 		weight = 670;
 		itemSize[] = {1,8};
+		canBeSplit = 1;
+		varQuantityInit = 1.0;
+		varQuantityMin = 0.0;
+		varQuantityMax = 1.0;
+		varQuantityDestroyOnMin = 1;
 		inventorySlot[] = {"Shoulder","Melee"};
 		itemBehaviour = 1;
 		attachments[] = {"Ingredient"};
@@ -723,7 +728,7 @@ class CfgNonAIVehicles
 	{
 		scope = 2;
 		model = "\dz\gear\crafting\String_MetalWire.p3d";
-		inventorySlot[] = {"MetalWire"};
+		inventorySlot[] = {"MetalWire","Material_FPole_MetalWire"};
 		class AnimationSources
 		{
 			class Att_battery_car
@@ -769,5 +774,17 @@ class CfgNonAIVehicles
 				initPhase = 0;
 			};
 		};
+	};
+	class ProxyBp_rope: ProxyAttachment
+	{
+		scope = 2;
+		model = "\dz\gear\crafting\bp_rope.p3d";
+		inventorySlot[] = {"Rope","Material_FPole_Rope"};
+	};
+	class ProxyWooden_stick: ProxyAttachment
+	{
+		scope = 2;
+		model = "\dz\gear\crafting\Wooden_stick.p3d";
+		inventorySlot[] = {"Material_FPole_MagicStick"};
 	};
 };

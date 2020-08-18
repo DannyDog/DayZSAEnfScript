@@ -763,7 +763,7 @@ class BaseBuildingBase extends ItemBase
 	void UpdateAttachmentPhysics( string slot_name, bool is_locked )
 	{
 		//checks for invalid appends; hotfix
-		if( m_Mountables.Find(slot_name) == -1 )
+		if( !m_Mountables || m_Mountables.Find(slot_name) == -1 )
 			return;
 		//----------------------------------
 		string slot_name_mounted = slot_name + "_Mounted";
@@ -1110,6 +1110,15 @@ class BaseBuildingBase extends ItemBase
 	override int GetDamageSystemVersionChange()
 	{
 		return 111;
+	}
+	
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionTakeHybridAttachment);
+		AddAction(ActionTakeHybridAttachmentToHands);
+		RemoveAction(ActionTakeItem);
 	}
 	
 	//================================================================

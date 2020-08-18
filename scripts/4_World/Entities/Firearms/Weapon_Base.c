@@ -17,6 +17,7 @@ typedef FSMTransition<WeaponStateBase, WeaponEventBase, WeaponActionBase, Weapon
  **/
 class Weapon_Base extends Weapon
 {
+	protected const float DEFAULT_DAMAGE_ON_SHOT = 0.05;
 	protected ref array<ref AbilityRecord> m_abilities = new array<ref AbilityRecord>;		/// weapon abilities
 	protected ref WeaponFSM m_fsm;	/// weapon state machine
 	protected bool m_isJammed = false;
@@ -28,7 +29,7 @@ class Weapon_Base extends Weapon
 	protected int m_weaponAnimState = -1; /// animation state the weapon is in, -1 == uninitialized
 	protected int m_magazineSimpleSelectionIndex = -1;
 	protected int m_weaponHideBarrelIdx = -1; //index in simpleHiddenSelections cfg array
-	protected float m_DmgPerShot;
+	protected float m_DmgPerShot = 0; //default is set to zero, since C++ solution has been implemented. See 'damageBarrel' and 'barrelArmor' in configs.
 	protected float m_WeaponLength;
 	ref array<int> m_bulletSelectionIndex = new array<int>;
 	ref array<float> m_DOFProperties = new array<float>;
@@ -39,7 +40,7 @@ class Weapon_Base extends Weapon
 
 	void Weapon_Base ()
 	{
-		m_DmgPerShot 		= ConfigGetFloat("damagePerShot");
+		//m_DmgPerShot		= ConfigGetFloat("damagePerShot");
 		m_BayonetAttached 	= false;
 		m_ButtstockAttached = false;
 		m_BayonetAttachmentIdx = -1;
@@ -173,7 +174,7 @@ class Weapon_Base extends Weapon
 
 	bool CanChamberBullet (int muzzleIndex, Magazine mag)
 	{
-		return CanChamberFromMag(muzzleIndex, mag) && (!IsChamberFull(muzzleIndex) || IsChamberFiredOut(muzzleIndex) || !IsInternalMagazineFull(muzzleIndex)) );
+		return CanChamberFromMag(muzzleIndex, mag) && (!IsChamberFull(muzzleIndex) || IsChamberFiredOut(muzzleIndex) || !IsInternalMagazineFull(muzzleIndex));
 	}
 
 	void SetWeaponAnimState (int state)
@@ -203,12 +204,15 @@ class Weapon_Base extends Weapon
 			}
 		}
 		
+		//obsolete, replaced by C++ solution!
+/*
 		if (GetGame().IsServer())
 		{
 			AddHealth("","Health",-m_DmgPerShot); //damages weapon
 			if (suppressor)
 				suppressor.AddHealth("","Health",-m_DmgPerShot); //damages suppressor; TODO add suppressor damage coeficient/parameter (?) to suppressors/weapons (?)
 		}
+*/		
 		//JamCheck(muzzleType);
 		
 		#ifdef DEVELOPER
@@ -279,6 +283,18 @@ class Weapon_Base extends Weapon
 	{
 		if ( !super.OnStoreLoad(ctx, version) )
 			return false;
+		
+		
+		if (version >= 113)
+		{
+			int current_muzzle = 0;
+			if (!ctx.Read(current_muzzle))
+			{
+				Error("Weapon.OnStoreLoad " + this + " cannot read current muzzle!");
+				return false;
+			}
+			SetCurrentMuzzle(current_muzzle);
+		}		
 		
 		if (version >= 105)
 		{
@@ -389,6 +405,10 @@ class Weapon_Base extends Weapon
 	{
 		super.OnStoreSave(ctx);
 		
+		// current muzzle added in version 113
+		int current_muzzle = GetCurrentMuzzle();
+		ctx.Write(current_muzzle);
+		
 		// fire mode added in version 105
 		int mode_count = GetMuzzleCount();
 		ctx.Write(mode_count);
@@ -462,6 +482,8 @@ class Weapon_Base extends Weapon
 		}
 		return m_PropertyModifierObject;
 	}
+	
+	void OnFire(int muzzle_index){}
 	
 	override void OnInventoryEnter (Man player)
 	{
@@ -891,6 +913,11 @@ class Weapon_Base extends Weapon
 		}
 		
 		return this;
+	}
+	
+	bool IsShowingChamberedBullet()
+	{
+		return true;
 	}
 
 	override void SetActions()

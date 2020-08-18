@@ -2,7 +2,7 @@ class CCTNonRuined : CCTBase
 {
 	protected float m_MaximalActionDistanceSq;
 	
-	void CCTNonRuined ( float maximal_target_distance )
+	void CCTNonRuined ( float maximal_target_distance = UAMaxDistances.DEFAULT )
 	{		
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 	}

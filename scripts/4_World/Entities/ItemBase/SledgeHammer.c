@@ -11,6 +11,9 @@ class SledgeHammer extends Inventory_Base
 		
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionMineRock);
+		AddAction(ActionBuildPartSwitch);
+		AddAction(ActionDismantlePart);
+		AddAction(ActionBuildPart);
 		//AddAction(ActionDestroyPart);
 	}
 }

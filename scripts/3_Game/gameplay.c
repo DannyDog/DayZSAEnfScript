@@ -593,6 +593,7 @@ class Mission
 {
 	ScriptModule MissionScript;
 
+	ref array<vector> m_ActiveRefresherLocations;
 	private void ~Mission();
 	
 	void OnInit()	{}
@@ -693,6 +694,7 @@ class Mission
 	void SetNoteMenu(UIScriptedMenu menu) {};
 	void SetPlayerRespawning(bool state);
 	bool IsPlayerRespawning();
+	array<vector> GetActiveRefresherLocations();
 };
 
 // -------------------------------------------------------------------------

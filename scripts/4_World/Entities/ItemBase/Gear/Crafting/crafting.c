@@ -23,7 +23,7 @@ class LongWoodenStick: Inventory_Base
 };
 class Rope: Inventory_Base
 {
-	InventoryLocation m_TargetLocation = null;
+	ref InventoryLocation m_TargetLocation = new InventoryLocation;
 	
 	override void SetActions()
 	{
@@ -40,7 +40,12 @@ class Rope: Inventory_Base
 	
 	void SetTargetLocation(InventoryLocation targetLocation)
 	{
-		m_TargetLocation = targetLocation;
+		m_TargetLocation.CopyLocationFrom(targetLocation, true);
+	}
+	
+	override bool CanAssignToQuickbar()
+	{
+		return (!GetInventory().IsAttachment());
 	}
 };
 class Spear : Inventory_Base

@@ -48,7 +48,7 @@ class cfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		hiddenSelections[] = {"zbytek","reflector","glass","reflector_far"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\m4_flashlight_co.paa","dz\weapons\attachments\data\m4_flashlight_co.paa","dz\gear\tools\data\flashlight_glass.paa","dz\weapons\attachments\data\m4_flashlight_co.paa"};
@@ -85,7 +85,7 @@ class cfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		hiddenSelections[] = {"glass","reflector"};
 		hiddenSelectionsTextures[] = {"dz\gear\tools\data\flashlight_glass.paa","dz\gear\tools\data\flashlight_old_co.paa"};

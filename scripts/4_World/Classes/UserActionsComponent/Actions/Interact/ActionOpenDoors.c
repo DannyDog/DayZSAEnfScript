@@ -10,7 +10,7 @@ class ActionOpenDoors: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 	}
 
 	override string GetText()
@@ -30,7 +30,7 @@ class ActionOpenDoors: ActionInteractBase
 			int doorIndex = building.GetDoorIndex(target.GetComponentIndex());
 			if ( doorIndex != -1 )
 			{
-				if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+				//if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 				return ( !building.IsDoorOpen(doorIndex) && !building.IsDoorLocked(doorIndex) );
 			}
 		}

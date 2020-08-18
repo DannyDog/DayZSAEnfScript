@@ -35,11 +35,12 @@ class cfgWeapons
 		scope = 0;
 		weight = 950;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.5,10,250,4,10};
 		ironsightsExcludingOptics[] = {"FNP45_MRDSOptic"};
 		WeaponLength = 0.634148;
+		barrelArmor = 3.125;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_FNX45_15Rnd"};
@@ -60,7 +61,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_fnx";
 			recoilProne = "recoil_fnx_prone";
-			dispersion = 0.006;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,100};

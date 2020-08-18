@@ -90,6 +90,7 @@ class SlotsIcon: LayoutHolder
 		//WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_ReservedWidget,  this, "MouseLeave" );
 		
 		m_Reserved 				= false;
+		m_SlotID 				= -1;
 		
 		m_SlotParent			= slot_parent;
 		
@@ -282,8 +283,16 @@ class SlotsIcon: LayoutHolder
 		Weapon_Base wpn = Weapon_Base.Cast( GetObject() );
 		if( wpn )
 		{
-			int mi = wpn.GetCurrentMuzzle();
-			m_AmmoIcon.Show( wpn.IsChamberFull( mi ) );
+			if( wpn.IsShowingChamberedBullet() )
+			{
+				int mi = wpn.GetCurrentMuzzle();
+				m_AmmoIcon.Show( wpn.IsChamberFull( mi ) );
+				
+			}
+			else
+			{
+				m_AmmoIcon.Show( false );
+			}
 		}
 	}
 	
@@ -312,9 +321,19 @@ class SlotsIcon: LayoutHolder
 			
 			if( has_quantity == QUANTITY_COUNT )
 			{
-				m_QuantityItem.SetText( QuantityConversions.GetItemQuantityText( m_Item ) );
-				m_QuantityStack.Show( true );
-				m_QuantityProgress.Show( false );
+				string q_text = QuantityConversions.GetItemQuantityText( m_Item , true);
+				if( q_text == "" )
+				{
+					m_QuantityStack.Show( false );
+					m_QuantityProgress.Show( false );
+				}
+				else
+				{
+					m_QuantityItem.SetText( q_text );
+					m_QuantityStack.Show( true );
+					m_QuantityProgress.Show( false );
+				}
+
 			}
 			else if( has_quantity == QUANTITY_PROGRESS )
 			{
@@ -450,7 +469,22 @@ class SlotsIcon: LayoutHolder
 		m_AmmoIcon.Show( false );
 		m_PanelWidget.Show( false );
 		m_RadialIconPanel.Show( false );
+		
 		m_QuantityPanel.Show( false );
+		if(GetSlotID() != -1)
+		{
+			int stack_max = InventorySlots.GetStackMaxForSlotId( GetSlotID() );
+			if(stack_max > 1)
+			{
+				m_QuantityPanel.Show( true );
+				m_QuantityItem.SetText( string.Format("0/%1", stack_max.ToString()) );
+				m_QuantityStack.Show( true );
+				m_QuantityProgress.Show( false );
+				m_PanelWidget.Show( true );
+				m_ItemPreview.Show( true );
+			}
+		}
+		
 		m_ColWidget.Show( false );
 		m_SelectedPanel.Show( false );
 		m_MountedWidget.Show( false );

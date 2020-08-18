@@ -3,45 +3,67 @@ class RestrainingToolLocked extends ItemBase
 	void ~RestrainingToolLocked()
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
-		if( player && player.IsRestrained() )
+		if ( player && player.IsRestrained() )
 		{
 			player.SetRestrained(false);
 		}
 	}
 	
-	override void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner) 
-	{ 
-		if( GetGame().IsServer() )
+	override void EEItemLocationChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
+	{
+		super.EEItemLocationChanged(oldLoc, newLoc);
+		
+		if ( GetGame().IsServer() )
 		{
-			if( old_owner )
+			if ( oldLoc.IsValid() && oldLoc.GetParent() )
 			{
-				PlayerBase old_player = PlayerBase.Cast(old_owner);
-				if(old_player && old_player.IsRestrained())
+				PlayerBase old_player = PlayerBase.Cast(oldLoc.GetParent().GetHierarchyRootPlayer());
+				if (old_player && old_player.IsRestrained())
 				{
-					Print("old_owner restrain");
 					old_player.SetRestrained(false);
 				}
 			}
-			
-			if( !new_owner && old_owner )
-			{
-				Print("restrain item dropped - deleting");
-				this.Delete();
-			}
 		}
-		if( new_owner )
+		
+		if ( newLoc.IsValid() )
 		{
-			PlayerBase player = PlayerBase.Cast(new_owner);
-			
-			if(player)
+			if (newLoc.GetParent())
 			{
-				if(player.GetItemInHands() == this && player.IsControlledPlayer())
+				PlayerBase player = PlayerBase.Cast(newLoc.GetParent().GetHierarchyRootPlayer());
+			
+				if ( player )
 				{
-					player.OnRestrainStart();
+					if ( newLoc.GetType() == InventoryLocationType.HANDS )
+					{
+						if ( !player.IsRestrained() )
+						{
+							player.SetRestrained(true);
+							player.OnItemInHandsChanged();
+						}
+						
+						player.OnRestrainStart();
+					}
 				}
-				//Print("---------============ restraining item goes into inventory =============-----------");
 			}
 		}
+		
+		if ( GetGame().IsServer() )
+		{
+			if ( newLoc.GetType() != InventoryLocationType.HANDS )
+			{
+				if (oldLoc.GetParent())
+				{
+					PlayerBase old_p = PlayerBase.Cast(oldLoc.GetParent().GetHierarchyRootPlayer());
+					if (old_p)
+					{
+						MiscGameplayFunctions.TransformRestrainItem(this, null, old_p, old_p);
+						return;
+					}
+				}
+				
+				Delete();
+			}
+		}	
 	}
 	
 	override void SetActions()

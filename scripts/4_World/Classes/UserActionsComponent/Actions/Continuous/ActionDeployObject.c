@@ -24,23 +24,13 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 		
 		switch (pEventID)
 		{
-			case UA_ANIM_EVENT:			
-				if ( !GetGame().IsMultiplayer() && GetGame().IsServer() )
-				{		
-					//local singleplayer
-					if ( m_ActionData.m_Player.GetItemInHands() )
-					{
-						DropDuringPlacing();
-						m_ActionData.m_MainItem.SoundSynchRemote();
-					}
-				}
-			
-				if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
+			case UA_ANIM_EVENT:						
+				if ( GetGame().IsServer() )
 				{		
 					m_ActionData.m_MainItem.SoundSynchRemote();
 				}
 			
-				if ( GetGame().IsMultiplayer() && GetGame().IsClient() )
+				if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 				{			
 					if ( m_ActionData.m_Player.GetItemInHands() )
 					{
@@ -55,10 +45,8 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 	void DropDuringPlacing()
 	{
 		EntityAI entity_for_placing = m_ActionData.m_MainItem;
-		if ( entity_for_placing.IsKindOf( "FenceKit" ) || entity_for_placing.IsKindOf( "WatchtowerKit" ) )
-		{
+		if ( entity_for_placing.IsBasebuildingKit() )
 			return;
-		}
 		
 		vector orientation = m_ActionData.m_Player.GetOrientation();
 		vector 	position = m_ActionData.m_Player.GetPosition() + m_ActionData.m_Player.GetDirection();
@@ -142,7 +130,7 @@ class ActionDeployObject: ActionContinuousBase
 	
 	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
 	{	
-		if( super.SetupAction(player, target, item, action_data, extra_data ))
+		if ( super.SetupAction(player, target, item, action_data, extra_data ))
 		{
 			PlaceObjectActionData poActionData;
 			poActionData = PlaceObjectActionData.Cast(action_data);
@@ -150,7 +138,7 @@ class ActionDeployObject: ActionContinuousBase
 			if (!GetGame().IsMultiplayer() || GetGame().IsClient() )
 			{
 				Hologram hologram = player.GetHologramLocal();
-				if(hologram)
+				if (hologram)
 				{
 					poActionData.m_Position = player.GetHologramLocal().GetProjectionPosition();
 					poActionData.m_Orientation = player.GetHologramLocal().GetProjectionOrientation();
@@ -164,7 +152,7 @@ class ActionDeployObject: ActionContinuousBase
 				}
 			}
 			
-			if( !action_data.m_MainItem )
+			if ( !action_data.m_MainItem )
 				return false;
 			
 			SetupAnimation( action_data.m_MainItem );
@@ -230,7 +218,7 @@ class ActionDeployObject: ActionContinuousBase
 	
 	override void OnStartServer( ActionData action_data )
 	{
-		if( GetGame().IsMultiplayer() )
+		if ( GetGame().IsMultiplayer() )
 		{
 			PlaceObjectActionData poActionData;
 			poActionData = PlaceObjectActionData.Cast(action_data);
@@ -241,7 +229,7 @@ class ActionDeployObject: ActionContinuousBase
 			poActionData.m_Player.SetLocalProjectionPosition( poActionData.m_Position );
 			poActionData.m_Player.SetLocalProjectionOrientation( poActionData.m_Orientation );
 			
-			if( action_data.m_MainItem )
+			if ( action_data.m_MainItem )
 			{
 				poActionData.m_Player.PlacingStartServer(action_data.m_MainItem);
 			
@@ -294,27 +282,15 @@ class ActionDeployObject: ActionContinuousBase
 			//return;
 		}
 		
+		action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
+		
 		if ( GetGame().IsMultiplayer() )
-		{
-			action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
 			action_data.m_Player.GetHologramServer().CheckPowerSource();
-			action_data.m_Player.PlacingCompleteServer();	
-			
-			entity_for_placing.OnPlacementComplete( action_data.m_Player );
-		}
 		
-		//local singleplayer
-		if ( !GetGame().IsMultiplayer())
-		{
-			MoveEntityToFinalPosition( action_data, position, orientation );
-			
-			action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );
-			action_data.m_Player.PlacingCompleteServer();
-			
-			entity_for_placing.OnPlacementComplete( action_data.m_Player );
-		}
+		action_data.m_Player.PlacingCompleteServer();
+		entity_for_placing.OnPlacementComplete( action_data.m_Player );		
 		
-		MoveEntityToFinalPosition( action_data, position, orientation );
+		MoveEntityToFinalPosition( action_data, position, orientation );		
 		GetGame().ClearJuncture( action_data.m_Player, entity_for_placing );
 		action_data.m_MainItem.SetIsBeingPlaced( false );
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
@@ -359,8 +335,17 @@ class ActionDeployObject: ActionContinuousBase
 				//local singleplayer
 				action_data.m_Player.PlacingCancelLocal();
 				action_data.m_Player.PlacingCancelServer();
-				action_data.m_Player.LocalTakeEntityToHands( entity_for_placing );
+				
+				InventoryLocation source = new InventoryLocation;
+				InventoryLocation destination = new InventoryLocation;
+		
+				if ( action_data.m_MainItem.GetInventory().GetCurrentInventoryLocation( source ) )
+				{
+					destination.SetHands( action_data.m_Player, action_data.m_MainItem );
+					action_data.m_Player.GetDayZPlayerInventory().RedirectToHandEvent(InventoryMode.LOCAL, source, destination);
+				}
 			}
+			
 			GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
 		}
 		else
@@ -370,7 +355,8 @@ class ActionDeployObject: ActionContinuousBase
 			action_data.m_MainItem.SetIsDeploySound( false );
 			action_data.m_MainItem.SetIsPlaceSound( false );
 			action_data.m_MainItem.SoundSynchRemoteReset();
-			if ( action_data.m_MainItem.IsKindOf( "FenceKit" ) || action_data.m_MainItem.IsKindOf( "WatchtowerKit" ) )
+			
+			if ( action_data.m_MainItem.IsBasebuildingKit() )
 			{
 				action_data.m_MainItem.Delete();
 			}
@@ -427,7 +413,7 @@ class ActionDeployObject: ActionContinuousBase
 			
 	void MoveEntityToFinalPosition( ActionData action_data, vector position, vector orientation )
 	{
-		if ( action_data.m_MainItem.IsKindOf( "FenceKit" ) || action_data.m_MainItem.IsKindOf( "WatchtowerKit" ) ) return;
+		if ( action_data.m_MainItem.IsBasebuildingKit() ) return;
 		
 		EntityAI entity_for_placing = action_data.m_MainItem;
 		vector rotation_matrix[3];
@@ -437,26 +423,26 @@ class ActionDeployObject: ActionContinuousBase
 		
 		Math3D.YawPitchRollMatrix( orientation, rotation_matrix );
 		Math3D.MatrixToQuat( rotation_matrix, direction );
-	
-		if ( GetGame().IsMultiplayer() )
-		{
-			if ( entity_for_placing.GetInventory().GetCurrentInventoryLocation( source ) )
-			{
-				destination.SetGroundEx( entity_for_placing, position, direction );
-				action_data.m_Player.ServerTakeToDst(source, destination);
-			}
-		}
 		
-		//local singleplayer
-		if ( !GetGame().IsMultiplayer())
+		if ( entity_for_placing.GetInventory().GetCurrentInventoryLocation( source ) )
 		{
-			if ( entity_for_placing.GetInventory().GetCurrentInventoryLocation( source ) )
+			destination.SetGroundEx( entity_for_placing, position, direction );
+			
+			if ( GetGame().IsMultiplayer() )
 			{
-				destination.SetGroundEx( entity_for_placing, position, direction );
-				action_data.m_Player.GetInventory().TakeToDst(InventoryMode.LOCAL, source, destination);
-			}
+				action_data.m_Player.ServerTakeToDst(source, destination);
+			}		
+			//local singleplayer
+			else
+			{
+				MoveEntityToFinalPositionSinglePlayer(action_data, source, destination);
+			}			
 		}
-
+	}
+	
+	void MoveEntityToFinalPositionSinglePlayer(ActionData action_data, InventoryLocation source, InventoryLocation destination)
+	{
+		action_data.m_Player.GetInventory().TakeToDst(InventoryMode.LOCAL, source, destination);
 	}
 	
 	void SetupAnimation( ItemBase item )

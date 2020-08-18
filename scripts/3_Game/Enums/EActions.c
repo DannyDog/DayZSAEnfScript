@@ -18,6 +18,7 @@ enum EActions
 	LIQUIDTYPE_UP,
 	LIQUIDTYPE_DOWN,
 	PRINT_BULLETS,
+	SPIN,
 	//<----add new individual types above this line
 	
 	

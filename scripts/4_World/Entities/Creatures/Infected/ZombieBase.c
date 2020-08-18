@@ -106,6 +106,10 @@ class ZombieBase extends DayZInfected
 		return false;
 	}
 	//-------------------------------------------------------------
+	override bool IsRefresherSignalingViable()
+	{
+		return false;
+	}
 
 	//! returns hit component for attacking AI
 	override string GetHitComponentForAI()
@@ -897,36 +901,6 @@ class ZombieBase extends DayZInfected
 			{
 				RegisterTransportHit(transport);
 			}			
-		}
-	}
-	
-	bool m_TransportHitRegistered = false;
-	vector m_TransportHitVelocity;
-	
-	void RegisterTransportHit(Transport transport)
-	{
-		if( !m_TransportHitRegistered )
-		{	
-			m_TransportHitRegistered = true; 
-			m_TransportHitVelocity = GetVelocity(transport);
-		
-			// avoid damage because of small movements
-			if (m_TransportHitVelocity.Length() > 0.1)
-			{
-				float damage = m_TransportHitVelocity.Length();
-				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
-				ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
-			}
-			else
-				m_TransportHitRegistered = false; // EEHitBy is not called if no damage	
-			
-			// compute impulse and apply only if the body dies
-			if (IsDamageDestroyed() && m_TransportHitVelocity.Length() > 0.3)
-			{
-				vector impulse = 40 * m_TransportHitVelocity;
-				impulse[1] = 40 * 1.5;
-				dBodyApplyImpulse(this, impulse);
-			}
 		}
 	}
 	

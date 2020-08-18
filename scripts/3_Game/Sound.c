@@ -105,6 +105,7 @@ class AbstractWave
 	proto native void SetVolume(float value);
 	proto native void SetVolumeRelative(float value);
 	proto native void SetFrequency(float value);
+	proto native float GetFrequency();
 	proto native void SetPosition(vector position);
 	proto native void SetFadeInFactor(float volume);
 	proto native void SetFadeOutFactor(float volume);

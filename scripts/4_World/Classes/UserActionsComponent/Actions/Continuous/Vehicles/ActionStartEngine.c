@@ -27,7 +27,7 @@ class ActionStartEngine: ActionContinuousBase
 
 	override void CreateConditionComponents()  
 	{	
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTCursor;
 		m_ConditionItem = new CCINone;
 	}
 		

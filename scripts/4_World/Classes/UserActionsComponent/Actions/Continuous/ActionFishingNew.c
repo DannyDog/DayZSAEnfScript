@@ -114,7 +114,6 @@ class ActionFishingNewCB : ActionContinuousBaseCB
 			{
 				//Print("---Caught something: " + fish + "---");
 				fish.SetWet(0.3);
-				fish.PlaceOnSurface();
 				if (fish.HasQuantity())
 				{
 					float coef = Math.RandomFloatInclusive(0.5, 1.0);
@@ -313,6 +312,9 @@ class ActionFishingNew: ActionContinuousBase
 	
 	int EvaluateFishingResult(ActionData action_data)
 	{
+		if (action_data.m_Player.IsQuickFishing())
+			return 1;
+		
 		FishingActionData fad = FishingActionData.Cast(action_data);
 		float rnd = fad.m_Player.GetRandomGeneratorSyncManager().GetRandom01(RandomGeneratorSyncUsage.RGSGeneric);
 		float daytime_modifier = 1;

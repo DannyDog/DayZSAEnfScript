@@ -102,6 +102,7 @@
                         "Ľuboš Kováč",
                         "Martin Strapko",
                         "Peter Jánošík",
+                        "Pierre Rencurel",
                         "Radek Řáda",
                         "Vratislav Jindřich"
                     ]
@@ -314,6 +315,7 @@
                         "Filip Čenžák",
                         "Kryštof Havel",
                         "Marek Lacena",
+                        "Miguel Salas",
 						"Zuzana Čapandová"
                     ]
                 }
@@ -339,6 +341,7 @@
                 {
                     "SectionName": "#quality_assurance_lead",
                     "SectionLines": [
+                        "Filip Konupka",
                         "Ondřej Klíma"
                     ]
                 }
@@ -468,7 +471,6 @@
                         "László Nagy",
                         "Maelika Eberhard",
                         "Mark Fitzhenry",
-                        "Miguel Salas",
                         "Míša Krejčíková",
                         "Rudolf Klenovský",
                         "Sarah Giercksky",
@@ -512,7 +514,7 @@
                     ]
                 }
             ]
-        },		
+        },
         {
             "DepartmentName": "",
             "Sections": [
@@ -572,9 +574,11 @@
                         "Alex Sutton",
                         "Chelsea Steeb",
                         "David Foltýn",
+                        "Filip Hauer",
                         "Ivo Stružinský",
                         "Jan Kunt",
                         "Jan Libich",
+                        "Martin Janoušek",
                         "Matt Lightfoot",
                         "Nela Wojaczková",
                         "Ota Vrťátko",
@@ -614,7 +618,8 @@
                     "SectionLines": [
                         "Kristýna Valíková",
 						"Nikolas Rašín",
-						"Richard Kužidlo"
+						"Richard Kužidlo",
+                        "Patrik Šedivý"
                     ]
                 }
             ]
@@ -672,6 +677,7 @@
                 {
                     "SectionName": "#additional_quality_assurance_leads",
                     "SectionLines": [
+                        "Patrik Mateašák",
                         "Jan Hauer",
                         "Rakpon Malarote",
                         "Tomáš Matoušek"
@@ -709,7 +715,6 @@
                         "Filip Čort",
                         "Filip Faschingbauer",
                         "Filip Knotek",
-						"Filip Konupka",
                         "František Bláha",
                         "František Pichnarčík",
                         "Hynek Svoboda",
@@ -761,7 +766,6 @@
                         "Ondřej Vanáč",
                         "Ondřej Vanča",
                         "Pankaj Singh",
-						"Patrik Šedivý",
 						"Pavel Fronek",
                         "Pavel Hamata",
                         "Pavol Sočuvka",

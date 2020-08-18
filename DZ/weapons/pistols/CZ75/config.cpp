@@ -35,10 +35,11 @@ class cfgWeapons
 		scope = 0;
 		weight = 1000;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		PPDOFProperties[] = {1,0.55,10,280,4,10};
 		WeaponLength = 0.635576;
+		barrelArmor = 2.018;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_CZ75_15Rnd"};
@@ -63,7 +64,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_cz75";
 			recoilProne = "recoil_cz75_prone";
-			dispersion = 0.006;
+			dispersion = 0.0055;
 			magazineSlot = "magazine";
 		};
 		class Particles

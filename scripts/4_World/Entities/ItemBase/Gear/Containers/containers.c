@@ -12,7 +12,24 @@ class FirstAidKit : Container_Base
 		return 110;
 	}
 };
-class PlateCarrierPouches : Container_Base {};
+class PlateCarrierPouches : Container_Base
+{
+	override bool CanReceiveItemIntoCargo( EntityAI item )
+	{
+		if (!super.CanReceiveItemIntoCargo(item))
+			return false;
+		
+		return !item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Vest"));
+	}
+	
+	override bool CanLoadItemIntoCargo( EntityAI item )
+	{
+		if (!super.CanLoadItemIntoCargo(item))
+			return false;
+		
+		return !item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Vest"));
+	}
+};
 class Refrigerator: WorldContainer_Base {};
 class RefrigeratorMinsk : WorldContainer_Base {};
 class SmallProtectorCase : Container_Base 

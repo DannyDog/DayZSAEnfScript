@@ -198,7 +198,7 @@ class Hologram
 		}
 		
 		//Camping & Base building
-		if ( item.IsInherited( TentBase ) || item.IsInherited( FenceKit ) || item.IsInherited( WatchtowerKit ) )
+		if ( item.IsInherited( TentBase ) || item.IsBasebuildingKit() )
 		{
 			return item.GetType() + "Placing";
 		}
@@ -419,7 +419,7 @@ class Hologram
 
 		//add is construction check
 		// Base building objects behave in a way that causes this test to generate false positives
-		return GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && (!collided_objects[0].IsInherited(BaseBuildingBase) || IsFenceOrWatchtowerKit()));
+		return GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && (!collided_objects[0].IsInherited(BaseBuildingBase) || IsFenceOrWatchtowerKit());
 		
 		/*
 		if ( GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && !collided_objects[0].IsInherited(BaseBuildingBase) )
@@ -538,7 +538,7 @@ class Hologram
 
 	bool IsCollidingZeroPos()
 	{
-		vector origin = Vector(0, 0, 0,);
+		vector origin = Vector(0, 0, 0);
 		return GetProjectionPosition() == origin;
 		
 		/*
@@ -813,7 +813,7 @@ class Hologram
 	EntityAI PlaceEntity( EntityAI entity_for_placing )
 	{
 		//string-based comparison
-		if ( entity_for_placing.IsInherited( TentBase ) || entity_for_placing.IsInherited( FenceKit ) || entity_for_placing.IsInherited( WatchtowerKit ) ) //special little snowflakes
+		if ( entity_for_placing.IsInherited( TentBase ) || entity_for_placing.IsBasebuildingKit() ) //special little snowflakes
 		{
 			//condition redundant, return if you want
 			/*
@@ -978,7 +978,7 @@ class Hologram
 	
 	bool IsFenceOrWatchtowerKit()
 	{
-		return m_Parent.IsInherited(FenceKit) || m_Parent.IsInherited(WatchtowerKit) || m_Parent.IsInherited(TentBase);
+		return m_Parent.IsBasebuildingKit() || m_Parent.IsInherited(TentBase);
 	}
 	
 	vector CorrectForWatchtower( int contactComponent, vector contactPos, PlayerBase player, Object hitObject )
@@ -1198,7 +1198,12 @@ class Hologram
 	{
 		m_DefaultOrientation = GetGame().GetCurrentCameraDirection().VectorToAngles();
 		m_DefaultOrientation[1] = 0;
-
+		
+		if (!GetParentEntity().PlacementCanBeRotated())
+		{
+			m_DefaultOrientation = vector.Zero;
+		}
+		
 		return m_DefaultOrientation;
 	}
 

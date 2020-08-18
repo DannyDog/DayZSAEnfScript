@@ -63,6 +63,25 @@ class WeaponEjectAllMuzzles extends WeaponStateBase
 		super.OnEntry(e);
 		if (e)
 		{
+			Magnum_Cylinder cylinder = Magnum_Cylinder.Cast(m_weapon.GetAttachmentByType(Magnum_Cylinder));
+			if(cylinder)
+			{
+				cylinder.HideSelection("bullet");
+				cylinder.HideSelection("bullet_2");
+				cylinder.HideSelection("bullet_3");
+				cylinder.HideSelection("bullet_4");
+				cylinder.HideSelection("bullet_5");
+				cylinder.HideSelection("bullet_6");
+				
+				cylinder.HideSelection("bullet_nose");
+				cylinder.HideSelection("bullet_nose_2");
+				cylinder.HideSelection("bullet_nose_3");
+				cylinder.HideSelection("bullet_nose_4");
+				cylinder.HideSelection("bullet_nose_5");
+				cylinder.HideSelection("bullet_nose_6");
+			}
+			
+			
 			wpnDebugPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " ejected bullets from all muzzles");
 			for( int i = 0; i < m_weapon.GetMuzzleCount(); i++ )
 			{

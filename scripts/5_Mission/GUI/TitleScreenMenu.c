@@ -54,15 +54,18 @@ class TitleScreenMenu extends UIScriptedMenu
 		if( g_Game.GetGameState() != DayZGameState.CONNECTING )
 		{
 			#ifdef PLATFORM_CONSOLE
-			#ifdef PLATFORM_XBOX
-			#ifdef BUILD_EXPERIMENTAL
-				layoutRoot.FindAnyWidget("notification_root").Show(true);
-			#endif
-			#endif
 				g_Game.GamepadCheck();
 			#endif
 		}
 		
+		//hotfix
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			layoutRoot.FindAnyWidget("notification_root").Show(true);
+		#endif
+		#endif
+		#endif
 		SetWidgetAnimAlpha( m_TextPress );
 	}
 	

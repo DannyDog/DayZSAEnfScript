@@ -1,0 +1,96 @@
+WindowWidgetClass WindowWidget {
+ position 0 0
+ size 1 1
+ halign center_ref
+ valign center_ref
+ hexactpos 0
+ vexactpos 0
+ hexactsize 0
+ vexactsize 0
+ priority 1000
+ style Default
+ font "gui/fonts/sdf_MetronBook24"
+ {
+  PanelWidgetClass Panel {
+   clipchildren 1
+   inheritalpha 0
+   color 0.1176 0.1176 0.1176 0.9804
+   position 0 -2.52632
+   size 900 550
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   priority 1
+   style rover_sim_colorable
+   {
+    TextWidgetClass Caption {
+     clipchildren 0
+     position 0 30
+     size 700 60
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     style Normal
+     text "#menu_warning"
+     font "gui/fonts/sdf_MetronBook24"
+     "text color" 1 1 1 1
+     "italic text" 0
+     "bold text" 1
+     "exact text" 0
+     "text halign" center
+     "text valign" center
+    }
+    MultilineTextWidgetClass Text {
+     inheritalpha 0
+     color 1 1 1 1
+     position 4 130
+     size 840 320
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "#str_item_drop_notification"
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "size to text h" 0
+     "size to text v" 0
+     wrap 1
+    }
+    ButtonWidgetClass bOK {
+     visible 1
+     position 0 30
+     size 350 50
+     halign center_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     userID 1
+     style MainMenu
+     text "#early_access_alpha_understand"
+     text_proportion 0.75
+     font "gui/fonts/sdf_MetronBook24"
+    }
+    PanelWidgetClass SeparatorPanel {
+     color 0.7569 0.0941 0.0941 1
+     position 0 105
+     size 600 5
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     priority 10
+     style rover_sim_colorable
+    }
+   }
+  }
+ }
+}

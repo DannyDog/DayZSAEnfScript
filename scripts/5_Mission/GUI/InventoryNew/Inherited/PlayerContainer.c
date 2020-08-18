@@ -1296,11 +1296,12 @@ class PlayerContainer: CollapsibleContainer
 		EntityAI receiver_item;
 		bool is_reserved = false;
 		InventoryMenu menu = InventoryMenu.Cast( GetGame().GetUIManager().FindMenu( MENU_INVENTORY ) );
-
+		float stack_max;
 
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( GetItemPreviewWidget( w ) );
 		SlotsIcon slots_icon;
 		receiver.GetUserData(slots_icon);
+		int slot_id = slots_icon.GetSlotID();
 		
 		receiver_item = slots_icon.GetEntity();
 		is_reserved = slots_icon.IsReserved();
@@ -1310,7 +1311,7 @@ class PlayerContainer: CollapsibleContainer
 			return;
 		}
 
-		EntityAI item = ipw.GetItem();
+		ItemBase item = ItemBase.Cast(ipw.GetItem());
 		PlayerBase real_player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( !item )
 		{
@@ -1355,9 +1356,16 @@ class PlayerContainer: CollapsibleContainer
 			}
 		}
 		
-		if( m_Player.GetInventory().CanAddAttachmentEx( item, slots_icon.GetSlotID() ) )
-		{
-			real_player.PredictiveTakeEntityToTargetAttachmentEx( m_Player, item, slots_icon.GetSlotID() );
+		if( m_Player.GetInventory().CanAddAttachmentEx( item, slot_id ) )
+		{			
+			if(item.GetTargetQuantityMax(slot_id) > stack_max)
+			{
+				item.SplitIntoStackMaxClient( real_player, slot_id );
+			}
+			else
+			{
+				real_player.PredictiveTakeEntityToTargetAttachmentEx( m_Player, item, slots_icon.GetSlotID() );
+			}
 		}
 		else if(  m_Player.GetInventory().CanAddAttachment( item ) )
 		{

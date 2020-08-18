@@ -6,12 +6,12 @@ class ActionRestrainTargetCB : ActionContinuousBaseCB
 	{
 		float time = DEFAULT_RESTRAIN_TIME;
 		
-		if( m_ActionData.m_MainItem.ConfigIsExisting("RestrainTime") )
+		if ( m_ActionData.m_MainItem.ConfigIsExisting("RestrainTime") )
 		{
 			time = m_ActionData.m_MainItem.ConfigGetFloat("RestrainTime");
 		}
 		
-		if( m_ActionData.m_Player.IsQuickRestrain() )
+		if ( m_ActionData.m_Player.IsQuickRestrain() )
 		{
 			time = DEBUG_QUICK_UNRESTRAIN_TIME;
 		}
@@ -39,7 +39,7 @@ class ActionRestrainTarget: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if( player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
+		if ( player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER )
 		{
 			PlayerBase other_player = PlayerBase.Cast(target.GetObject());
 			return other_player.CanBeRestrained();
@@ -52,15 +52,22 @@ class ActionRestrainTarget: ActionContinuousBase
 	{
 		PlayerBase target_player = PlayerBase.Cast(action_data.m_Target.GetObject());
 		
-		if( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
 		{
-			if( target_player.IsSurrendered() || !target_player.CanBeRestrained() )
+			if ( target_player.IsSurrendered() || !target_player.CanBeRestrained() )
 			{
 				return false;
 			}
 		}
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
+			ActionRestrainTargetCB callback = ActionRestrainTargetCB.Cast(action_data.m_Callback);
+			
+			if ( callback.GetActionComponentProgress() > 0.75 && !target_player.IsRestrainPrelocked() )
+			{
+				target_player.SetRestrainPrelocked(true);
+			}
+			
 			return !GetGame().GetMission().IsPlayerDisconnecting(target_player);
 			
 		}
@@ -75,12 +82,12 @@ class ActionRestrainTarget: ActionContinuousBase
 	override void OnStartServer(ActionData action_data)
 	{
 		PlayerBase target_player = PlayerBase.Cast(action_data.m_Target.GetObject());
-		if( target_player.IsSurrendered() )
+		if ( target_player.IsSurrendered() )
 		{
 			SurrenderDataRestrain sdr = new SurrenderDataRestrain;
 			target_player.EndSurrenderRequest(sdr);
 		}
-		else if( target_player.IsEmotePlaying() )
+		else if ( target_player.IsEmotePlaying() )
 		{
 			target_player.m_EmoteManager.ServerRequestEmoteCancel();
 		}
@@ -94,6 +101,7 @@ class ActionRestrainTarget: ActionContinuousBase
 		if (target_player)
 		{
 			target_player.SetRestrainStarted(false);
+			target_player.SetRestrainPrelocked(false);
 		}
 	}
 
@@ -105,7 +113,7 @@ class ActionRestrainTarget: ActionContinuousBase
 		EntityAI item_in_hands_target = target_player.GetHumanInventory().GetEntityInHands();
 		EntityAI item_in_hands_source = source_player.GetHumanInventory().GetEntityInHands();
 		
-		if( !item_in_hands_source )
+		if ( !item_in_hands_source )
 		{
 			Error("Restraining target failed, nothing in hands");
 			return;

@@ -278,7 +278,7 @@ class CombinationLock extends ItemBase
 				m_LockActionPerformed = LockAction.LOCKED;
 			}
 			ShuffleLock();
-			
+			SetTakeable(false);
 			//synchronize
 			Synchronize();
 		}
@@ -308,7 +308,7 @@ class CombinationLock extends ItemBase
 			PlaceOnSurface();
 			
 			m_LockActionPerformed = LockAction.UNLOCKED;
-			
+			SetTakeable(true);
 			//synchronize
 			Synchronize();
 		}
