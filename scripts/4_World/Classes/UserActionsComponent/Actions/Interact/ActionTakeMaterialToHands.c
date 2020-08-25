@@ -89,7 +89,7 @@ class ActionTakeMaterialToHands: ActionInteractBase
 		ItemBase item_target = ItemBase.Cast( construction_action_data.GetActualAttachmentToDetach() );
 		if( item_target )
 		{
-			float stackable = item_target.ConfigGetFloat( "varStackMax" );
+			float stackable = item_target.GetTargetQuantityMax();
 			
 			if( stackable == 0 || stackable >= item_target.GetQuantity() )
 			{

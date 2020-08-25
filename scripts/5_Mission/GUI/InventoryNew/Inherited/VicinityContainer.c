@@ -339,7 +339,7 @@ class VicinityContainer: CollapsibleContainer
 			ItemBase item_base = ItemBase.Cast( item );
 			if( item_base )
 			{
-				float stackable = item_base.ConfigGetFloat("varStackMax");
+				float stackable = item_base.GetTargetQuantityMax();
 				if( stackable == 0 || item_base.GetQuantity() <= stackable )
 				{
 					player.PhysicalPredictiveDropItem( item );

@@ -336,7 +336,9 @@ class ActionTargets
 	
 	private bool IsObstructed(Object object)
 	{
-		vector hitNormal, hitPosObstructed, objCenterPos;
+		return MiscGameplayFunctions.IsObjectObstructed(object, true, m_HitPos, c_MaxActionDistance);
+		
+		/*vector hitNormal, hitPosObstructed, objCenterPos;
 		int hitComponentIndex;
 		ref set<Object> hitObjects = new set<Object>;
 		
@@ -391,7 +393,7 @@ class ActionTargets
 #endif
 			return false;
 		}
-		return false;
+		return false;*/
 	}
  	
 	//! returns count of founded targets

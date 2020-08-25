@@ -111,11 +111,7 @@ class QuantityConversions
 			{
 				q_cur = item_base.GetQuantity();
 				q_min = item_base.GetQuantityMin();
-				q_max = item_base.ConfigGetFloat( "varStackMax" );
-				if(q_max <= 0)
-				{
-					q_max = item_base.GetQuantityMax();
-				}
+				q_max = item_base.GetQuantityMax();
 			}
 		}
 	}

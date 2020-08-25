@@ -672,17 +672,17 @@ class PlayerContainer: CollapsibleContainer
 			{
 				if (player.GetInventory().CanAddEntityToInventory( item ) && item.GetInventory().CanRemoveEntity())
 				{
-					if( item.ConfigGetFloat("varStackMax") )
+					if( item.GetTargetQuantityMax() < item.GetQuantity() )
 						item.SplitIntoStackMaxClient( player, -1 );
 					else
 						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
 				}
 				else
 				{
-					if( player.GetHumanInventory().CanAddEntityInHands( item ) )
-					{
+					if( item.GetTargetQuantityMax() < item.GetQuantity() )
+						item.SplitIntoStackMaxHandsClient( player );
+					else
 						player.PredictiveTakeEntityToHands( item );
-					}
 				}
 			}
 			ToggleWidget( w );

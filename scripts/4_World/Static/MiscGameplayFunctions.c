@@ -856,6 +856,149 @@ class MiscGameplayFunctions
 				ib.GetInventory().DropEntityInBounds(InventoryMode.SERVER, ib, item, halfExtents, angle, cos, sin);					
 		}
 	}
+	
+	static bool IsObjectObstructed(Object object, bool doDistanceCheck = false, vector distanceCheckPos = "0 0 0", float maxDist = 0)
+	{
+		if (!object)
+			return true;
+		
+		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		if (doDistanceCheck && vector.DistanceSq(player.GetPosition(), distanceCheckPos) > maxDist * maxDist)
+			return true;
+		
+		bool is_obstructed = false;
+		vector object_center_pos;
+		vector object_contact_pos;
+		vector object_contact_dir;
+		vector raycast_start;
+		int contact_component;
+		array<ref RaycastRVResult> hit_proxy_objects = new array<ref RaycastRVResult>;	
+		set<Object> hit_objects = new set<Object>;
+		EntityAI entity_ai;
+		
+		Class.CastTo( entity_ai, object );
+				
+		if ( object.MemoryPointExists("ce_center") )
+		{
+			//Print("CE_CENTER found");
+			vector modelPos = object.GetMemoryPointPos("ce_center");
+			object_center_pos = object.ModelToWorld(modelPos);
+		}
+		else if ( entity_ai && entity_ai.IsMan() )
+		{
+			//Print("NA HRACovi getujem pelvis");
+			PlayerBase vicinity_player = PlayerBase.Cast( entity_ai );
+			if ( vicinity_player )
+			{
+				int bone_index_player = vicinity_player.GetBoneIndexByName( "Pelvis" );
+				object_center_pos = vicinity_player.GetBonePositionWS( bone_index_player );
+			}
+		}
+		else if ( entity_ai && (entity_ai.IsZombie() || entity_ai.IsZombieMilitary()) )
+		{
+			//Print("NA INFECTEDovi getujem pelvis");
+			ZombieBase vicinity_zombie = ZombieBase.Cast( entity_ai );
+			if ( vicinity_zombie )
+			{
+				object_center_pos = vicinity_zombie.ModelToWorld( vicinity_zombie.GetSelectionPositionOld("Pelvis") );
+			}
+		}
+		else
+		{
+			//Print("CE_CENTER DOING A BAMBOOZLE => not found");
+			object_center_pos = object.GetPosition();
+			object_center_pos[1] = object_center_pos[1] + 0.2;
+		}
+			
+		//Print("-->raycast from player to: " + object);
+		MiscGameplayFunctions.GetHeadBonePos( PlayerBase.Cast( GetGame().GetPlayer() ), raycast_start);
+		//DebugRaycastDraw( raycast_start, object_center_pos );
+			
+		if ( object.HasProxyParts() || object.CanUseConstruction() )
+		{
+			//Print(" :) (: pouzij proxy raycast koli proxy itemom :) (: ");
+			RaycastRVParams ray_input = new RaycastRVParams( raycast_start, object_center_pos, player );
+			DayZPhysics.RaycastRVProxy( ray_input, hit_proxy_objects );
+				
+			if ( hit_proxy_objects )
+			{
+				//Print(" - hit_proxy_objects - ");
+				if ( hit_proxy_objects.Count() > 0 )
+				{
+					if ( hit_proxy_objects[0].hierLevel > 0 )
+					{
+						// ignores attachments on player
+						if ( !hit_proxy_objects[0].parent.IsMan() )
+						{
+							//Print( "hit_proxy_objects[0].obj " + hit_proxy_objects[0].obj );
+							//Print( "hit_proxy_objects[0].parent" + hit_proxy_objects[0].parent );
+								
+							if ( hit_proxy_objects[0].parent )
+							{
+								EntityAI proxy_parent = EntityAI.Cast( hit_proxy_objects[0].parent );
+								if ( proxy_parent.GetInventory() && proxy_parent.GetInventory().GetCargo() )
+								{	
+									is_obstructed = true;
+								}
+								else
+								{
+									is_obstructed = false;
+								}
+							}
+						}	
+					}
+				}
+			}
+		}
+		if ( hit_objects ) 
+			hit_objects.Clear();
+				
+		//Print(" ===>>> pouzij standardny raycast s fire geometriou koli domom a basebuildingu <<<=== ");
+		DayZPhysics.RaycastRV( raycast_start, object_center_pos, object_contact_pos, object_contact_dir, contact_component, hit_objects, null, GetGame().GetPlayer(), false, false, ObjIntersectFire, 0.0, CollisionFlags.ALLOBJECTS );
+				
+		//4.2. ignore items if they are obstructed
+		for ( int m = 0; m < hit_objects.Count(); m++ )
+		{
+			Object hit_object = hit_objects.Get(m);
+				
+			//Print("-->>pocas raycastu hitujem: " + hit_object);
+				
+			if ( hit_object.IsBuilding() )
+			{
+				//Print("!!!!!obstacle building: " + hit_object);
+				is_obstructed = true;
+			}
+	
+			if ( hit_object.IsPlainObject()/* && !ItemBase.Cast(hit_object)*/ )
+			{
+				//Print("!!!!!obstacle plain object: " + hit_object);
+				is_obstructed = true;
+			}
+				
+			if ( hit_object.IsInherited(BaseBuildingBase) )
+			{
+				if (object != hit_object)
+					is_obstructed = true;
+			} 
+				
+			//4.3. ignore item if items are big and heavy >= OBJECT_OBSTRUCTION_WEIGHT 
+			/*EntityAI eai;
+			if ( Class.CastTo( eai, hit_object ) )
+			{
+					
+				if ( eai.GetWeight() >= OBJECT_OBSTRUCTION_WEIGHT )
+				{
+					if ( eai != filtered_object && eai.GetHierarchyRoot() != filtered_object )
+					{
+						//Print("!!!!!obstacle vaha: " + hit_object);
+						is_obstructed = true;
+					}
+				}
+			}*/
+		}
+			
+		return is_obstructed;
+	}
 };
 
 class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda

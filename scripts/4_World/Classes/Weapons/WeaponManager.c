@@ -262,6 +262,9 @@ class WeaponManager
 		if( reservationCheck && m_player.GetInventory().HasInventoryReservation(wpn, null))
 			return false;
 		
+		if( !wpn.CanEjectBullet() )
+			return false;
+		
 		if( wpn.IsJammed(/*wpn.GetCurrentMuzzle()*/) )
 			return false;
 		 

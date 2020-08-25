@@ -28,7 +28,7 @@ class CGame
 		m_AnalyticsManagerClient = new AnalyticsManagerClient;
 		
 		// actual script version - increase by one when you make changes
-		StorageVersion(113);
+		StorageVersion(114);
 	}
 	
 	private void ~CGame();

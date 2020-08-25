@@ -181,15 +181,8 @@ class CAContinuousMineWood : CAContinuousBase
 				{
 					if ( m_MinedItem[i].IsFullQuantity() )
 					{
-						int stack_max;
-						if (m_MinedItem[i].ConfigIsExisting("varStackMax"))
-						{
-							stack_max = m_MinedItem[i].ConfigGetFloat("varStackMax");
-						}
-						else
-						{
-							stack_max = m_MinedItem[i].GetQuantityMax();
-						}
+						int stack_max = m_MinedItem[i].GetQuantityMax();
+
 						//Print("CreateItems | new stack");
 						increment -= stack_max - m_MinedItem[i].GetQuantity();
 						if (increment >= 1.0)

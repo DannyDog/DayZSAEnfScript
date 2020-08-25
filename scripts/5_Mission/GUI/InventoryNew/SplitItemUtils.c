@@ -3,20 +3,21 @@ class SplitItemUtils
 	static void TakeOrSplitToInventory ( notnull PlayerBase player, notnull EntityAI target, notnull EntityAI item)
 	{
 		ItemBase item_base = ItemBase.Cast( item );
-		float stack_max = item_base.ConfigGetFloat("varStackMax");
-		if( stack_max <= 0 )
-			stack_max = item_base.ConfigGetInt("varQuantityMax");
 		
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
 			return;
 		
-		if( stack_max >= item_base.GetQuantity() )
+		InventoryLocation il = new InventoryLocation;
+		if( target.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, il) )
 		{
-			player.PredictiveTakeEntityToTargetAttachment(target, item);
-		}
-		else
-		{
-			item_base.SplitIntoStackMaxCargoClient( target, -1, 0, 0 );
+			if( item_base.GetTargetQuantityMax(il.GetSlot()) >= item_base.GetQuantity() )
+			{
+				player.PredictiveTakeEntityToTargetInventory(target, FindInventoryLocationType.ANY, item);
+			}
+			else
+			{
+				item_base.SplitIntoStackMaxClient( target, il.GetSlot() );
+			}
 		}
 	}
 	

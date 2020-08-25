@@ -538,6 +538,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		EntityAI attached_entity;
 		receiver.GetUserData(slots_icon);
 		float stackable = 0.0;
+		InventoryLocation il = new InventoryLocation;
 		
 		if( slots_icon )
 		{
@@ -588,11 +589,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		else if( attached_entity && slot_id != -1 &&  attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
 			item_base	= ItemBase.Cast( item );
-			stackable	= InventorySlots.GetStackMaxForSlotId( slot_id );
-			if(stackable < 1)
-			{
-				stackable	= item_base.ConfigGetFloat("varStackMax");
-			}
+			stackable	= item_base.GetTargetQuantityMax( slot_id );
 			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
@@ -603,22 +600,18 @@ class AttachmentCategoriesRow: ClosableContainer
 				item_base.SplitIntoStackMaxClient( m_Entity, slot_id );
 			}
 		}
-		else if(attached_entity && slot_id == -1 && attached_entity.GetInventory().CanAddAttachment(item))
+		else if(attached_entity && slot_id == -1 && attached_entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il))
 		{
 			item_base	= ItemBase.Cast( item );
-			stackable	= InventorySlots.GetStackMaxForSlotId( slot_id );
-			if(stackable < 1)
-			{
-				stackable	= item_base.ConfigGetFloat("varStackMax");
-			}
+			stackable	= item_base.GetTargetQuantityMax( il.GetSlot() );
 			
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
-				player.PredictiveTakeEntityToTargetAttachment(attached_entity, item);
+				player.PredictiveTakeEntityToTargetAttachmentEx(attached_entity, item, il.GetSlot());
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
+				item_base.SplitIntoStackMaxClient( m_Entity, il.GetSlot() );
 			}
 		}
 		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) /*|| player.GetHumanInventory().HasEntityInHands( item )*/ )
@@ -773,18 +766,27 @@ class AttachmentCategoriesRow: ClosableContainer
 			{
 				if(player.GetInventory().CanAddEntityToInventory( item ) && item.GetInventory().CanRemoveEntity())
 				{
-					if( item.ConfigGetFloat("varStackMax") )
+					if( item.GetTargetQuantityMax() < item.GetQuantity() )
 					{
 						item.SplitIntoStackMaxClient( player, -1 );
 					}
 					else
+					{
 						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
+					}
 				}
 				else
 				{
 					if( player.GetHumanInventory().CanAddEntityInHands( item ) )
 					{
-						player.PredictiveTakeEntityToHands( item );
+						if( item.GetTargetQuantityMax() < item.GetQuantity() )
+						{
+							item.SplitIntoStackMaxHandsClient( player );
+						}
+						else
+						{
+							player.PredictiveTakeEntityToHands( item );
+						}
 					}
 				}
 			}

@@ -715,14 +715,17 @@ class ZombieContainer: CollapsibleContainer
 				InventoryLocation il = new InventoryLocation;
 				if( player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, il) )
 				{
-					if( item.ConfigGetFloat("varStackMax") )
-						item.SplitIntoStackMaxClient( player, -1 );
+					if( item.GetTargetQuantityMax(il.GetSlot()) < item.GetQuantity() )
+						item.SplitIntoStackMaxToInventoryLocationClient( il );
 					else
 						player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, item );
 				}
 				else if( GetGame().GetPlayer().GetHumanInventory().CanAddEntityInHands( item ) )
 				{
-					player.PredictiveTakeEntityToHands( item );
+					if( item.GetTargetQuantityMax() < item.GetQuantity() )
+						item.SplitIntoStackMaxHandsClient( player );
+					else
+						player.PredictiveTakeEntityToHands( item );
 				}
 			}
 			

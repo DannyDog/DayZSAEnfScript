@@ -326,6 +326,16 @@ class Magnum_Base extends Weapon_Base
 	{
 		return false;
 	}
+	
+	override bool CanEjectBullet() 
+	{
+		for(int i = 0; i < GetMuzzleCount(); i++)
+		{
+			if(IsChamberFull(i))
+				return true;
+		}
+		return false;
+	}
 };
 
 class Magnum extends Magnum_Base {};

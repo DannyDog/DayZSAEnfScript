@@ -549,7 +549,7 @@ class HandsContainer: Container
 						if( player.GetHumanInventory().CanAddEntityInHands( selected_item ) && selected_item.GetInventory().CanRemoveEntity() )
 						{
 			 				ItemBase item_base = ItemBase.Cast( selected_item );
-							float stackable = item_base.ConfigGetFloat("varStackMax");
+							float stackable = item_base.GetTargetQuantityMax();
 							if( stackable == 0 || item_base.GetQuantity() <= stackable )
 							{
 								GetGame().GetPlayer().PredictiveTakeEntityToHands( item_base );		

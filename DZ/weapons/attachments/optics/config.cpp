@@ -762,7 +762,7 @@ class cfgVehicles
 		itemSize[] = {3,1};
 		inventorySlot[] = {"weaponOpticsCrossbow"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.048;
+		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -790,9 +790,9 @@ class cfgVehicles
 			opticsZoomMin = "0.3926/1.8";
 			opticsZoomMax = "0.3926/1.8";
 			opticsZoomInit = "0.3926/1.8";
-			distanceZoomMin = 100;
-			distanceZoomMax = 600;
-			discreteDistance[] = {100,200,300,400,500,600};
+			distanceZoomMin = 50;
+			distanceZoomMax = 150;
+			discreteDistance[] = {50,100,150};
 			discreteDistanceInitIndex = 0;
 			PPMaskProperties[] = {0.5,0.5,0.23,0.05};
 			PPLensProperties[] = {0.5,0.15,0,0};

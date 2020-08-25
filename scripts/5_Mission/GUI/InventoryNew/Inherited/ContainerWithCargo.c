@@ -368,7 +368,7 @@ class ContainerWithCargo: ClosableContainer
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
 			return;
 		
-		float stackable = item_base.ConfigGetFloat("varStackMax");
+		float stackable = item_base.GetTargetQuantityMax();
 		
 		if( stackable == 0 || stackable >= item_base.GetQuantity() )
 		{

@@ -144,7 +144,7 @@ class ItemBase extends InventoryItem
 		}
 		
 		//RegisterNetSyncVariableInt("m_VariablesMask");
-		if ( HasQuantity() ) RegisterNetSyncVariableFloat("m_VarQuantity", GetQuantityMin(), GetQuantityMax() );
+		if ( HasQuantity() ) RegisterNetSyncVariableFloat("m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
 		RegisterNetSyncVariableFloat("m_VarTemperature", GetTemperatureMin(),GetTemperatureMax() );
 		RegisterNetSyncVariableFloat("m_VarWet", GetWetMin(), GetWetMax(), 2 );
 		RegisterNetSyncVariableInt("m_VarLiquidType");
@@ -1096,14 +1096,14 @@ class ItemBase extends InventoryItem
 		//Print("OnWasAttached: " + GetType());
 		
 		if ( HasQuantity() )
-			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), GetQuantityMax() );
+			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
 	}
 	
 	override void OnWasDetached( EntityAI parent, int slot_id )
 	{
 		if ( HasQuantity() )
 		{
-			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), GetQuantityMax() );
+			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
 		}
 
 		//Print("OnWasDetached: " + GetType());
@@ -1729,17 +1729,16 @@ class ItemBase extends InventoryItem
 		if ( !can_this_be_combined )
 			return false;
 
-		int slot_ID = -1;
-		string slot_name = "";
-		if ( GetInventory().GetCurrentAttachmentSlotInfo( slot_ID, slot_name ) )
+		
+		Magazine mag = Magazine.Cast(this);
+		if (mag)
 		{
-			int slotMax = g_Game.ConfigGetInt( "CfgSlots " + "Slot_" + slot_name + " stackMax" );
-			if ( ItemBase.Cast(other_item).GetQuantity() >= slotMax )
+			if ( mag.GetAmmoCount() >= mag.GetAmmoMax())
 				return false;
 		}
 		else
 		{
-			if ( ItemBase.Cast(other_item).IsFullQuantity() )
+			if ( GetQuantity() >= GetQuantityMax() )	
 				return false;
 		}
 
@@ -1769,27 +1768,7 @@ class ItemBase extends InventoryItem
 		float other_item_quantity = other_item.GetQuantity();
 		float this_free_space;
 			
-		int stack_max = 0;
-		
-		InventoryLocation il = new InventoryLocation;
-		GetInventory().GetCurrentInventoryLocation( il );
-		
-		if( use_stack_max )
-		{
-			int slot = il.GetSlot();
-			if( slot != -1 )
-			{
-				stack_max = InventorySlots.GetStackMaxForSlotId( slot );
-			}
-			if( stack_max == 0 )
-			{
-				stack_max = ConfigGetFloat("varStackMax");
-			}
-		}
-		if( stack_max == 0 )
-		{
-			stack_max = GetQuantityMax();
-		}	
+		int stack_max = GetQuantityMax();	
 		
 		this_free_space = stack_max - GetQuantity();
 			
@@ -2611,22 +2590,44 @@ class ItemBase extends InventoryItem
 		
 		if ( !super.OnStoreLoad(ctx, version) )
 			return false;
-
-		PlayerBase player;
-		int itemQBIndex;
-		if(version == int.MAX)
+	
+		if (version >= 114)
 		{
-			if(!ctx.Read(itemQBIndex))
+			bool hasQuickBarIndexSaved;
+			
+			if (!ctx.Read(hasQuickBarIndexSaved))
 				return false;
-		}
-		else if( Class.CastTo(player, GetHierarchyRootPlayer()) )
-		{
-			//Load quickbar item bind
-			if(!ctx.Read(itemQBIndex))
-				return false;
-			if( itemQBIndex != -1 && player )
+			
+			if (hasQuickBarIndexSaved)
 			{
-				player.SetLoadedQuickBarItemBind(this,itemQBIndex);
+				int itmQBIndex;
+				
+				//Load quickbar item bind
+				if (!ctx.Read(itmQBIndex))
+					return false;
+				
+				PlayerBase parentPlayer = PlayerBase.Cast(GetHierarchyRootPlayer());				
+				if ( itmQBIndex != -1 && parentPlayer )
+					parentPlayer.SetLoadedQuickBarItemBind(this, itmQBIndex);
+			}
+		}
+		else
+		{
+			// Backup of how it used to be
+			PlayerBase player;
+			int itemQBIndex;
+			if (version == int.MAX)
+			{
+				if (!ctx.Read(itemQBIndex))
+					return false;
+			}
+			else if ( Class.CastTo(player, GetHierarchyRootPlayer()) )
+			{
+				//Load quickbar item bind
+				if (!ctx.Read(itemQBIndex))
+					return false;
+				if ( itemQBIndex != -1 && player )
+					player.SetLoadedQuickBarItemBind(this,itemQBIndex);
 			}
 		}
 		
@@ -2647,12 +2648,17 @@ class ItemBase extends InventoryItem
 	{
 		super.OnStoreSave(ctx);
 		PlayerBase player;
-		if(PlayerBase.CastTo(player,GetHierarchyRootPlayer()))
+		if (PlayerBase.CastTo(player,GetHierarchyRootPlayer()))
 		{
+			ctx.Write(true); // Keep track of if we should actually read this in or not
 			//Save quickbar item bind
 			int itemQBIndex = -1;
 			itemQBIndex = player.FindQuickBarEntityIndex(this);
-			ctx.Write(itemQBIndex);			
+			ctx.Write(itemQBIndex);	
+		}
+		else
+		{
+			ctx.Write(false); // Keep track of if we should actually read this in or not
 		}
 		SaveVariables(ctx);// variable management system
 		SaveAgents(ctx);//agent trasmission system
@@ -2691,11 +2697,14 @@ class ItemBase extends InventoryItem
 			PrintString("getting quantity, current:"+m_VarQuantity.ToString());
 		}
 		*/
-
-		UpdateWeight();
-		if (GetHierarchyParent())
-			GetHierarchyParent().UpdateWeight();
-
+		
+		if (m_Initialized)
+		{
+			UpdateWeight();
+			if (GetHierarchyParent())
+				GetHierarchyParent().UpdateWeight();
+		}
+		
 		super.OnVariablesSynchronized();
 	}
 	
@@ -2797,8 +2806,7 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	override int GetQuantityMax()
 	{
-		float maxItem = ConfigGetInt("varQuantityMax");
-		float max = maxItem;
+		float max = 0;
 		
 		InventoryLocation il = new InventoryLocation;
 		if (GetInventory())
@@ -2812,14 +2820,14 @@ class ItemBase extends InventoryItem
 			max = ConfigGetFloat("varStackMax");
 		
 		if ( max <= 0 )
-			max = maxItem;
+			max = ConfigGetInt("varQuantityMax");
 		
 		return max;
 	}
 	
 	override int GetTargetQuantityMax(int attSlotID = -1)
 	{
-		float quantity_max = -1;
+		float quantity_max = 0;
 		
 		if (attSlotID != -1)
 		{
@@ -2867,36 +2875,7 @@ class ItemBase extends InventoryItem
 	
 	bool IsFullQuantity()
 	{
-		InventoryLocation loc = new InventoryLocation;
-		GetInventory().GetCurrentInventoryLocation(loc);
-		int slot = loc.GetSlot();
-		float stackable = ConfigGetFloat("varStackMax");
-		if( slot != -1 )
-		{
-			float slot_stack = InventorySlots.GetStackMaxForSlotId( slot );
-			if( slot_stack == 0 && stackable == 0 )
-				slot_stack = GetQuantityMax();
-			else if( slot_stack == 0 )
-				slot_stack = stackable;
-			
-			if( GetQuantity() >= slot_stack )
-			{
-				return true;
-			}
-			return false;
-		}
-		else
-		{
-			if( stackable != 0 && GetQuantity() >= stackable )
-			{
-				return true;			
-			}
-			else if( GetQuantity() == GetQuantityMax() )
-			{
-				return true;			
-			}
-			return false;
-		}
+		return GetQuantity() >= GetQuantityMax();
 	}
 	
 	//Calculates weight of single item without attachments

@@ -839,7 +839,8 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			return;
 		}
 		ItemBase item_base	= ItemBase.Cast( item );
-		float stackable = item_base.ConfigGetFloat("varStackMax");
+		InventoryLocation il = new InventoryLocation;
+		float stackable;
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( !item.GetInventory().CanRemoveEntity() || !player.CanManipulateInventory() )
@@ -874,6 +875,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		}
 		else if( attached_entity && attached_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{
+			stackable = item_base.GetTargetQuantityMax(slot_id);
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
 				player.PredictiveTakeEntityToTargetAttachmentEx(attached_entity, item, slot_id);
@@ -883,26 +885,28 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				item_base.SplitIntoStackMaxClient( attached_entity, slot_id );
 			}
 		}
-		else if(attached_entity && attached_entity.GetInventory().CanAddAttachment(item))
+		else if(attached_entity && attached_entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il))
 		{
+			stackable = item_base.GetTargetQuantityMax(il.GetSlot());
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
-				player.PredictiveTakeEntityToTargetAttachment(attached_entity, item);
+				player.PredictiveTakeEntityToTargetAttachmentEx(attached_entity, item, il.GetSlot());
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( attached_entity, -1 );
+				item_base.SplitIntoStackMaxClient( attached_entity, il.GetSlot() );
 			}
 		}
-		else if( m_Entity.GetInventory().CanAddAttachment( item ) )
+		else if( m_Entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il) )
 		{
+			stackable = item_base.GetTargetQuantityMax(il.GetSlot());
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
-				player.PredictiveTakeEntityToTargetAttachment(m_Entity, item);
+				player.PredictiveTakeEntityToTargetAttachmentEx(m_Entity, item, il.GetSlot());
 			}
 			else if( stackable != 0 && stackable < item_base.GetQuantity() )
 			{
-				item_base.SplitIntoStackMaxClient( m_Entity, -1 );
+				item_base.SplitIntoStackMaxClient( m_Entity, il.GetSlot() );
 			}
 		}
 		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) || player.GetHumanInventory().HasEntityInHands( item ) )

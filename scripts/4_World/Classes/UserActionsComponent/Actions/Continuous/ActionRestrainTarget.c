@@ -52,7 +52,7 @@ class ActionRestrainTarget: ActionContinuousBase
 	{
 		PlayerBase target_player = PlayerBase.Cast(action_data.m_Target.GetObject());
 		
-		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 		{
 			if ( target_player.IsSurrendered() || !target_player.CanBeRestrained() )
 			{

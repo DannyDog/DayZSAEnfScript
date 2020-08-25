@@ -281,10 +281,11 @@ class CfgVehicles
 		weight = 1500;
 		itemSize[] = {3,3};
 		canBeSplit = 1;
+		varQuantityDestroyOnMin = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 1.0;
-		varQuantityDestroyOnMin = 1;
+		varQuantityMax = 32.0;
+		varStackMax = 1.0;
 		inventorySlot[] = {"Stones","Material_FPole_Stones"};
 		isMeleeWeapon = 1;
 		class DamageSystem
@@ -352,8 +353,9 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 1.0;
+		varQuantityMax = 6.0;
 		varQuantityDestroyOnMin = 1;
+		varStackMax = 1.0;
 		inventorySlot[] = {"Firewood"};
 		class DamageSystem
 		{
@@ -1287,7 +1289,7 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 70.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 70.0;
+		varQuantityMax = 99.0;
 		varQuantityDestroyOnMin = 1;
 		class DamageSystem
 		{
@@ -1492,8 +1494,9 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 10.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 10.0;
+		varQuantityMax = 20.0;
 		varQuantityDestroyOnMin = 1;
+		varStackMax = 10.0;
 		inventorySlot[] = {"Material_WoodenPlanks","Material_L1_WoodenPlanks","Material_L1W1_WoodenPlanks","Material_L1W2_WoodenPlanks","Material_L1W3_WoodenPlanks","Material_L2_WoodenPlanks","Material_L2W1_WoodenPlanks","Material_L2W2_WoodenPlanks","Material_L2W3_WoodenPlanks","Material_L3_WoodenPlanks","Material_L3W1_WoodenPlanks","Material_L3W2_WoodenPlanks","Material_L3W3_WoodenPlanks"};
 		class DamageSystem
 		{
@@ -1587,8 +1590,9 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 10.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 10.0;
+		varQuantityMax = 20.0;
 		varQuantityDestroyOnMin = 1;
+		varStackMax = 10.0;
 		inventorySlot[] = {"Material_MetalSheets","Material_L3_MetalSheets","Material_L1W1_MetalSheets","Material_L1W2_MetalSheets","Material_L1W3_MetalSheets","Material_L2W1_MetalSheets","Material_L2W2_MetalSheets","Material_L2W3_MetalSheets","Material_L3W1_MetalSheets","Material_L3W2_MetalSheets","Material_L3W3_MetalSheets"};
 		class DamageSystem
 		{
@@ -1615,7 +1619,8 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 1.0;
+		varQuantityMax = 6.0;
+		varStackMax = 1.0;
 		inventorySlot[] = {"Material_WoodenLogs","Material_L1_WoodenLogs","Material_L2_WoodenLogs","Material_L3_WoodenLogs","Material_FPole_WoodenLog","Material_FPole_WoodenLog2","Material_FPole_MagicStick"};
 		class DamageSystem
 		{

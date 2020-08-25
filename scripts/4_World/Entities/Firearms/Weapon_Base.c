@@ -254,6 +254,7 @@ class Weapon_Base extends Weapon
 	}
 	
 	bool IsJammed () { return m_isJammed; }
+	bool CanEjectBullet() {return true;}
 	void SetJammed (bool value) { m_isJammed = value; }
 	float GetSyncChanceToJam () { return m_ChanceToJamSync; }
 	float GetChanceToJam()
@@ -293,7 +294,11 @@ class Weapon_Base extends Weapon
 				Error("Weapon.OnStoreLoad " + this + " cannot read current muzzle!");
 				return false;
 			}
-			SetCurrentMuzzle(current_muzzle);
+			
+			if (current_muzzle >= GetMuzzleCount() || current_muzzle < 0)
+				Error("Weapon.OnStoreLoad " + this + " trying to set muzzle index " + current_muzzle + " while it only has " + GetMuzzleCount() + " muzzles!");
+			else
+				SetCurrentMuzzle(current_muzzle);
 		}		
 		
 		if (version >= 105)
@@ -816,6 +821,9 @@ class Weapon_Base extends Weapon
 		}
 		
 		int dummy_version = int.MAX;
+		PlayerBase parentPlayer = PlayerBase.Cast(src.GetHierarchyRootPlayer());
+		if (!parentPlayer)
+			dummy_version -= 1;
 		ScriptReadWriteContext ctx = new ScriptReadWriteContext;
 		src.OnStoreSave(ctx.GetWriteContext());
 		OnStoreLoad(ctx.GetReadContext(), dummy_version);

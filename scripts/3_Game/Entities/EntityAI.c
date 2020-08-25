@@ -40,6 +40,7 @@ class EntityAI extends Entity
 	private float 			m_LastUpdatedTime;
 	protected float			m_ElapsedSinceLastUpdate;
 	
+	bool m_Initialized = false;
 	bool m_TransportHitRegistered = false;
 	vector m_TransportHitVelocity;
 	
@@ -469,12 +470,12 @@ class EntityAI extends Entity
 				}
 			}
 			
-			// For client it happens in OnVariablesSynchronized
-			if (GetGame().IsServer())
-				UpdateWeight(WeightUpdateType.RECURSIVE_ADD);
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD);
 		}
 		
 		MaxLifetimeRefreshCalc();
+		
+		m_Initialized = true;
 	}
 	
 	//! Called right before object deleting

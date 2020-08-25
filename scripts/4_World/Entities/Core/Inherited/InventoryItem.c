@@ -508,10 +508,8 @@ class Clothing extends ItemBase
 	// Conditions	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo( parent ) )
-		{
+		if ( !super.CanPutInCargo( parent ) )
 			return false;
-		}
 		
 		bool is_hidden_stash_exception = false;
 		
@@ -520,8 +518,9 @@ class Clothing extends ItemBase
 		
 		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
 		{
-			if (parent)
-				return !parent.GetHierarchyParent() || parent.GetHierarchyParent().IsMan();
+			EntityAI cargoParent = parent.GetHierarchyParent();
+			if (cargoParent)
+				return !(parent.IsClothing() && cargoParent.IsClothing());
 			
 			return true;
 		}

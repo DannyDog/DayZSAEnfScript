@@ -342,8 +342,9 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 5.0;
+		varQuantityMax = 10.0;
 		varQuantityDestroyOnMin = 1;
+		varStackMax = 5.0;
 		absorbency = 0.9;
 		isMeleeWeapon = 1;
 		class DamageSystem
