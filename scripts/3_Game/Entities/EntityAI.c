@@ -317,7 +317,19 @@ class EntityAI extends Entity
 	string CanBePlacedFailMessage( Man player, vector position )
 	{
 		return "";
-	}	
+	}
+	
+	//! Do the roof check when placing this?
+	bool DoPlacingHeightCheck()
+	{
+		return false;
+	}
+	
+	//! used as script-side override of specific height checks
+	float HeightCheckOverride()
+	{
+		return 0.0;
+	}
 	
 	//! is this container empty or not, checks both cargo and attachments
 	bool IsEmpty()

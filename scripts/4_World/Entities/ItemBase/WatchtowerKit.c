@@ -187,6 +187,16 @@ class WatchtowerKit extends ItemBase
 		}
 	}
 	
+	override bool DoPlacingHeightCheck()
+	{
+		return true;
+	}
+	
+	override float HeightCheckOverride()
+	{
+		return 2.83;//9.56;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

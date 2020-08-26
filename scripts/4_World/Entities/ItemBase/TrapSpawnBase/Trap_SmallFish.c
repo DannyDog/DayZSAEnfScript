@@ -139,6 +139,11 @@ class SmallFishTrap extends Trap_SmallFish
 		return "fishtrap_deploy_SoundSet";
 	}
 	
+	override bool DoPlacingHeightCheck()
+	{
+		return true; //has to be able to catch rain, default distance raycast
+	}
+	
 	// ----------------------------------------------------------------------------------------
 	// When the item is picked up by a player, stop the rain procurement
 	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 

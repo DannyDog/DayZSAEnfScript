@@ -761,10 +761,12 @@ class Man extends EntityAI
 
 	protected bool TakeEntityToTargetAttachmentImpl (InventoryMode mode, notnull EntityAI target, notnull EntityAI item)
 	{
-		syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " ::Take2TargetAtt(" + typename.EnumToString(InventoryMode, mode) + ") item=" + Object.GetDebugName(item));
-		bool code = GetInventory().TakeEntityToTargetInventory(mode, target, FindInventoryLocationType.ATTACHMENT, item);
-		UpdateInventoryMenu();
-		return code;
+		InventoryLocation il = new InventoryLocation;
+		if( target.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il) )
+		{
+			return TakeEntityToTargetAttachmentExImpl(mode, target, item, il.GetSlot());
+		}
+		return false;
 	}
 	///@} to target att juncture
 

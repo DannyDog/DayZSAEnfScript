@@ -28,6 +28,16 @@ class TerritoryFlagKit extends ItemBase
 		return false;
 	}
 	
+	override bool DoPlacingHeightCheck()
+	{
+		return true;
+	}
+	
+	override float HeightCheckOverride()
+	{
+		return 11.3;
+	}
+	
 	override void EEInit()
 	{
 		super.EEInit();

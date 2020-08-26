@@ -209,7 +209,7 @@ class InGameMenuXbox extends UIScriptedMenu
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif
 
-		#ifdef PLATFORM_XBOX
+		/*#ifdef PLATFORM_XBOX
 		if ( CGame.IsDigitalCopy() )
 		{
 			layoutRoot.FindAnyWidget( "PhysicalCopy" ).Show( false );
@@ -220,7 +220,7 @@ class InGameMenuXbox extends UIScriptedMenu
 			layoutRoot.FindAnyWidget( "PhysicalCopy" ).Show( true );
 			layoutRoot.FindAnyWidget( "DigitalCopy" ).Show( false );
 		}
-		#endif
+		#endif*/
 		LoadTextStrings();
 		LoadFooterButtonTexts();
 		

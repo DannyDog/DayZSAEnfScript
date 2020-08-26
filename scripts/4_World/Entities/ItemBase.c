@@ -1579,13 +1579,15 @@ class ItemBase extends InventoryItem
 		
 		ItemBase new_item = ItemBase.Cast( GameInventory.LocationCreateEntity( dst, GetType(), ECE_IN_INVENTORY, RF_DEFAULT ) );
 		
-		if (new_item.GetQuantityMax() < split_quantity_new)
-		{
-			split_quantity_new = new_item.GetQuantityMax();
-		}
+
 		
 		if ( new_item )
 		{
+			if (new_item.GetQuantityMax() < split_quantity_new)
+			{
+				split_quantity_new = new_item.GetQuantityMax();
+			}
+			
 			MiscGameplayFunctions.TransferItemProperties(this, new_item);
 			
 			if (dst.IsValid() && dst.GetType() == InventoryLocationType.ATTACHMENT && split_quantity_new > 1)
@@ -1617,13 +1619,14 @@ class ItemBase extends InventoryItem
 		ItemBase new_item;
 		new_item = player.CreateCopyOfItemInInventoryOrGround(this);
 		
-		if (new_item.GetQuantityMax() < split_quantity_new)
-		{
-			split_quantity_new = new_item.GetQuantityMax();
-		}
+
 		
 		if( new_item )
 		{
+			if (new_item.GetQuantityMax() < split_quantity_new)
+			{
+				split_quantity_new = new_item.GetQuantityMax();
+			}
 			if (found && invloc.IsValid() && invloc.GetType() == InventoryLocationType.ATTACHMENT && split_quantity_new > 1)
 			{
 				AddQuantity(-1);

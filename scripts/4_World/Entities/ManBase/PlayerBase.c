@@ -941,8 +941,6 @@ class PlayerBase extends ManBase
 		//AddAction(ActionSwitchLights);
 		//AddAction(ActionTakeMaterialToHands);
 		
-		AddAction(ActionPullBodyFromTransport);
-		
 		/*
 		AddAction(AT_VEH_ENGINE_START);// TODO -> target
 		AddAction(AT_FOLD_BASEBUILDING_OBJECT);// TODO -> target
@@ -965,6 +963,7 @@ class PlayerBase extends ManBase
 		AddAction(ActionUncoverHeadTarget);
 		AddAction(ActionUngagTarget);
 		AddAction(ActionCheckPulse);
+		AddAction(ActionPullBodyFromTransport);
 		//AddAction(AT_GIVE_ITEM);
 	}
 	
@@ -1011,7 +1010,7 @@ class PlayerBase extends ManBase
 			action_array = new array<ActionBase_Basic>;
 			m_InputActionMap.Insert(ai, action_array);
 		}
-		action_array.Insert(action); 
+		action_array.Insert(action);
 	}
 	
 	void RemoveAction(typename actionName)

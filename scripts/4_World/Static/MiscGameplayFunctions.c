@@ -770,24 +770,49 @@ class MiscGameplayFunctions
 		return false;
 	}
 	
-	static bool IsUnderRoof(Object object, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST) 
+	static bool IsUnderRoof(EntityAI entity, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST) 
 	{
 		vector minMax[2];
-		object.GetCollisionBox(minMax);
+		entity.GetCollisionBox(minMax);
+		/*if (!entity.GetCollisionBox(minMax))
+		{
+			Print("IsUnderRoof | GetCollisionBox");
+		}*/
 
 		vector size = Vector(0,0,0);
 		size[1] = minMax[1][1] - minMax[0][1];
 
-		vector from = object.GetPosition() + size;  
+		vector from = entity.GetPosition() + size;  
 		vector ceiling = "0 0 0";
 		ceiling[1] = height;
-		vector to = from + ceiling;
+		vector to;
+		if ( entity.HeightCheckOverride() > 0 )
+		{
+			to = entity.GetPosition() + Vector(0, entity.HeightCheckOverride(), 0);
+		}
+		else
+		{
+			to = from + ceiling;
+		}
 		vector contact_pos;
 		vector contact_dir;
 
-		int contact_component;	
-	
-		return DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, NULL, NULL, object );	
+		int contact_component;
+		//set<Object> hit_object = new set<Object>;
+		bool boo = DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, /*hit_object*/NULL, NULL, entity, false, false, ObjIntersectView,0.25 );
+		
+		/*if (boo)
+		{
+			Debug.DrawSphere(from , 0.8,Colors.YELLOW, ShapeFlags.ONCE);
+			Debug.DrawSphere(to , 0.8,Colors.RED, ShapeFlags.ONCE);
+		}
+		else
+		{
+			Debug.DrawSphere(from , 0.8,Colors.GREEN, ShapeFlags.ONCE);
+			Debug.DrawSphere(to , 0.8,Colors.RED, ShapeFlags.ONCE);
+		}*/
+		
+		return boo;
 	}
 
 	// cooking equipment effects (get position for steam particle)

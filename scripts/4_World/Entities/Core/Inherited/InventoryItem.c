@@ -519,8 +519,9 @@ class Clothing extends ItemBase
 		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
 		{
 			EntityAI cargoParent = parent.GetHierarchyParent();
+			Clothing parentClothing = Clothing.Cast(parent);
 			if (cargoParent)
-				return !(parent.IsClothing() && cargoParent.IsClothing());
+				return !(parent.IsClothing() && cargoParent.IsClothing()) || ( parentClothing && parentClothing.SmershException(cargoParent) );
 			
 			return true;
 		}

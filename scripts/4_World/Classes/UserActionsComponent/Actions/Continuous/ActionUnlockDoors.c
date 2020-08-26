@@ -18,7 +18,7 @@ class ActionUnlockDoors: ActionContinuousBase
 	
 	override void CreateConditionComponents()  
 	{	
-		m_ConditionItem = new CCINone;
+		m_ConditionItem = new CCINonRuined;
 		m_ConditionTarget = new CCTCursor;
 	}
 		

@@ -213,7 +213,7 @@ class Hologram
 	
 	// update loop for visuals and collisions of the hologram
 	void UpdateHologram( float timeslice )
-	{		
+	{
 		if ( !m_Parent )
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(m_Player.TogglePlacingLocal);
@@ -373,7 +373,20 @@ class Hologram
 	{
 		//Some locations allow you to look up and attempt placing the hologram on the bottom side of a floor - most notably the floors of a watchtower
 		//This check also prevents some very unnatural placements
-		return !GetGame().IsServer() && m_Projection.GetPosition()[1] > GetGame().GetCurrentCameraPosition()[1];
+		if (!GetGame().IsServer())
+		{
+			bool b1 = m_Projection.GetPosition()[1] > GetGame().GetCurrentCameraPosition()[1];
+			bool b2 = false;
+			if (m_Projection.DoPlacingHeightCheck())
+			{
+				b2 = MiscGameplayFunctions.IsUnderRoof(m_Projection);
+			}
+		}
+		else
+		{
+			return false;
+		}
+		return b1 || b2;
 	}
 	
 	bool IsCollidingAngle()
@@ -911,8 +924,8 @@ class Hologram
 			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[0]) , 0.8,Colors.GREEN, ShapeFlags.ONCE);
 			//Debug.DrawSphere(m_Projection.ModelToWorld(min_max[1]), 0.8,Colors.GREEN, ShapeFlags.ONCE);
 		}
-	}	
-		
+	}
+	
 	protected vector GetCollisionBoxSize( vector min_max[2] )
 	{
 		vector box_size = Vector(1,1,1);

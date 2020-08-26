@@ -9,7 +9,7 @@ class ActionPullBodyFromTransport: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTCursor;
+		m_ConditionTarget = new CCTNone;
 	}
 
 	override string GetText()
@@ -30,7 +30,7 @@ class ActionPullBodyFromTransport: ActionInteractBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		PlayerBase targetPlayer = PlayerBase.Cast(target.GetObject());
-		if (!targetPlayer || targetPlayer.IsAlive() || !targetPlayer.GetParent() || !targetPlayer.GetParent().IsInherited(Transport)/* || !IsInReach(player, target, UAMaxDistances.DEFAULT)*/)
+		if (!targetPlayer || targetPlayer.IsAlive() || !targetPlayer.GetParent() || !targetPlayer.GetParent().IsInherited(Transport) || !IsInReach(player, target, UAMaxDistances.DEFAULT))
 			return false;
 		
 		bool found = false;

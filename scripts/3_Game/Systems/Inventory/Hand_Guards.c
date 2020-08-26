@@ -176,9 +176,9 @@ class HandGuardHasRoomForItem extends HandGuardBase
 	protected Man m_Player;
 	void HandGuardHasRoomForItem (Man p = NULL) { m_Player = p; }
 
-	override bool GuardCondition (HandEventBase e)
+	override bool GuardCondition(HandEventBase e)
 	{
-		if (e.GetDst())
+		if (e.GetDst() && e.GetDst().IsValid())
 		{
 			if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 			{

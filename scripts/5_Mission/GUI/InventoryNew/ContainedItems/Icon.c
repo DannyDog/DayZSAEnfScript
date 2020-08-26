@@ -931,6 +931,7 @@ class Icon: LayoutHolder
 					if( m_Item.GetInventory().CanRemoveEntity() )
 					{
 						GetGame().GetPlayer().PhysicalPredictiveDropItem( m_Item );
+						ItemManager.GetInstance().SetWidgetDraggable( w, false );	
 					}
 				}
 				else

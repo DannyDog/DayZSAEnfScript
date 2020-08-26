@@ -183,6 +183,7 @@ class cfgVehicles
 	{
 		scope = 2;
 		model = "\dz\weapons\pistols\magnum\proxy\magnum_cylinder.p3d";
+		weight = 1;
 		inventorySlot[] = {"RevolverCylinder"};
 		class DamageSystem
 		{
@@ -287,6 +288,7 @@ class cfgVehicles
 	{
 		scope = 2;
 		model = "\dz\weapons\pistols\magnum\proxy\magnum_ejector.p3d";
+		weight = 1;
 		inventorySlot[] = {"RevolverEjector"};
 		class DamageSystem
 		{

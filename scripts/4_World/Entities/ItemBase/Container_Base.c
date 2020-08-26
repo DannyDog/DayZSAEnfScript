@@ -36,7 +36,6 @@ class DeployableContainer_Base extends Container_Base
 		AddAction(ActionPlaceObject);
 	}
 	
-
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED )

@@ -190,6 +190,16 @@ class FenceKit extends ItemBase
 		}
 	}
 	
+	override bool DoPlacingHeightCheck()
+	{
+		return true;
+	}
+	
+	override float HeightCheckOverride()
+	{
+		return 2.54;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

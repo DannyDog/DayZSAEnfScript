@@ -47,7 +47,7 @@ class InviteMenu extends UIScriptedMenu
 			string ip;
 			int port;
 			OnlineServices.GetInviteServerInfo( ip, port );
-			g_Game.ConnectFromJoin( ip, port );
+			GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).Call(g_Game.ConnectFromJoin, ip, port);
 			//Close();
 		}
 	}
