@@ -2225,23 +2225,52 @@ class EntityAI extends Entity
 		{	
 			m_TransportHitRegistered = true; 
 			m_TransportHitVelocity = GetVelocity(transport);
-		
-			// avoid damage because of small movements
-			if (m_TransportHitVelocity.Length() > 0.1)
-			{
-				float damage = m_TransportHitVelocity.Length();
-				//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
-				ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
-			}
-			else
-				m_TransportHitRegistered = false; // EEHitBy is not called if no damage	
+			Car car;
+			float damage;
+			vector impulse;
 			
-			// compute impulse and apply only if the body dies
-			if (IsDamageDestroyed() && m_TransportHitVelocity.Length() > 0.3)
+			// a different attempt to solve hits from "standing" car to the players
+			if ( car.CastTo(car, transport) )
 			{
-				vector impulse = 40 * m_TransportHitVelocity;
-				impulse[1] = 40 * 1.5;
-				dBodyApplyImpulse(this, impulse);
+				if ( car.GetSpeedometer() > 2 )
+				{
+					damage = m_TransportHitVelocity.Length();
+					ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
+				}
+				else
+				{
+					m_TransportHitRegistered = false; // EEHitBy is not called if no damage
+				}
+
+				// compute impulse and apply only if the body dies
+				if ( IsDamageDestroyed() && car.GetSpeedometer() > 3 )
+				{
+					impulse = 40 * m_TransportHitVelocity;
+					impulse[1] = 40 * 1.5;
+					dBodyApplyImpulse(this, impulse);
+				}
+			}			
+			else //old solution just in case if somebody use it
+			{
+				// avoid damage because of small movements
+				if ( m_TransportHitVelocity.Length() > 0.1 )
+				{
+					damage = m_TransportHitVelocity.Length();
+					//Print("Transport damage: " + damage.ToString() + " velocity: " +  m_TransportHitVelocity.Length().ToString());
+					ProcessDirectDamage( DT_CUSTOM, transport, "", "TransportHit", "0 0 0", damage );
+				}
+				else
+				{
+					m_TransportHitRegistered = false; // EEHitBy is not called if no damage
+				}
+				
+				// compute impulse and apply only if the body dies
+				if ( IsDamageDestroyed() && m_TransportHitVelocity.Length() > 0.3 )
+				{
+					impulse = 40 * m_TransportHitVelocity;
+					impulse[1] = 40 * 1.5;
+					dBodyApplyImpulse(this, impulse);
+				}
 			}
 		}
 	}

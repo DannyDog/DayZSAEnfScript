@@ -75,6 +75,7 @@ class CraftBloodBagIV extends RecipeBase
 				BloodContainerBase.Cast(result).SetBloodTypeVisible( true );
 		}
 		
-		MiscGameplayFunctions.TransferItemProperties(ingredient2,result, true, true, false, true);
+		if( result)
+			MiscGameplayFunctions.TransferItemProperties(ingredient2,result, true, true, false, true);
 	}
 };

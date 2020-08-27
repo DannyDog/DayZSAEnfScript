@@ -235,20 +235,23 @@ class Magazine : InventoryItemSuper
 			return;
 		
 		Magazine new_pile = Magazine.Cast( GameInventory.LocationCreateEntity( dst, GetType(), ECE_IN_INVENTORY, RF_DEFAULT ) );
-		MiscGameplayFunctions.TransferItemProperties(dst.GetItem(), new_pile);
-		
-		new_pile.ServerSetAmmoCount(0);
-		int quantity = GetAmmoCount();
-		
-		for (int i = 0; i < Math.Floor( quantity * 0.5 ); ++i)
+		if( new_pile )
 		{
-			float damage;
-			string cartrige_name;
-			ServerAcquireCartridge(damage, cartrige_name);
-			new_pile.ServerStoreCartridge(damage, cartrige_name);
+			MiscGameplayFunctions.TransferItemProperties(dst.GetItem(), new_pile);
+		
+			new_pile.ServerSetAmmoCount(0);
+			int quantity = GetAmmoCount();
+		
+			for (int i = 0; i < Math.Floor( quantity * 0.5 ); ++i)
+			{
+				float damage;
+				string cartrige_name;
+				ServerAcquireCartridge(damage, cartrige_name);
+				new_pile.ServerStoreCartridge(damage, cartrige_name);
+			}
+			new_pile.SetSynchDirty();
+			SetSynchDirty();
 		}
-		new_pile.SetSynchDirty();
-		SetSynchDirty();
 	}
 
 	override void SplitItem(PlayerBase player)
@@ -258,19 +261,21 @@ class Magazine : InventoryItemSuper
 
 		
 		Magazine new_pile = Magazine.Cast( player.CreateCopyOfItemInInventoryOrGround( this ) );
-
-		new_pile.ServerSetAmmoCount(0);
-		int quantity = this.GetAmmoCount();
-		
-		for (int i = 0; i < Math.Floor( quantity / 2 ); i++)
+		if( new_pile )
 		{
-			float damage;
-			string cartrige_name;
-			ServerAcquireCartridge(damage, cartrige_name);
-			new_pile.ServerStoreCartridge(damage, cartrige_name);
+			new_pile.ServerSetAmmoCount(0);
+			int quantity = this.GetAmmoCount();
+		
+			for (int i = 0; i < Math.Floor( quantity / 2 ); i++)
+			{
+				float damage;
+				string cartrige_name;
+				ServerAcquireCartridge(damage, cartrige_name);
+				new_pile.ServerStoreCartridge(damage, cartrige_name);
+			}
+			new_pile.SetSynchDirty();
+			SetSynchDirty();
 		}
-		new_pile.SetSynchDirty();
-		SetSynchDirty();
 	}
 	
 	void ApplyManipulationDamage()

@@ -66,7 +66,8 @@ class ActionUncoverHeadTarget: ActionContinuousBase
 				item = GameInventory.LocationCreateEntity(target_gnd, "BurlapSack",ECE_IN_INVENTORY,RF_DEFAULT);
 			}
 			
-			MiscGameplayFunctions.TransferItemProperties(attachment,item);
+			if ( item )
+				MiscGameplayFunctions.TransferItemProperties(attachment,item);
 			
 			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		}

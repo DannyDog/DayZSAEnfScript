@@ -75,19 +75,19 @@ class PluginConfigEmotesProfile extends PluginConfigHandler
 		m_DefaultValues = new map<string, ref CfgParam>;
 		//Here you can configure default EMOTES
 
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_1.ToString(),  GetNewCfgParamInt(ID_EMOTE_GREETING) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_2.ToString(),  GetNewCfgParamInt(ID_EMOTE_SOS) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_3.ToString(),  GetNewCfgParamInt(ID_EMOTE_HEART) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_4.ToString(),  GetNewCfgParamInt(ID_EMOTE_TAUNT) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_5.ToString(),  GetNewCfgParamInt(ID_EMOTE_SURRENDER) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_6.ToString(),  GetNewCfgParamInt(ID_EMOTE_TAUNTKISS) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_7.ToString(),  GetNewCfgParamInt(ID_EMOTE_POINT) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_8.ToString(),  GetNewCfgParamInt(ID_EMOTE_TAUNTELBOW) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_9.ToString(),  GetNewCfgParamInt(ID_EMOTE_THUMB) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_10.ToString(), GetNewCfgParamInt(ID_EMOTE_THROAT) );
-		m_DefaultValues.Insert( EmoteSlots.EMOTE_11.ToString(), GetNewCfgParamInt(ID_EMOTE_SUICIDE) );
-		//m_DefaultValues.Insert( EMOTE_12, GetNewCfgParamInt(ID_EMOTE_DANCE) );
-		//m_DefaultValues.Insert( EMOTE_12, GetNewCfgParamInt(ID_EMOTE_SOS) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_1.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_GREETING) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_2.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_SOS) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_3.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_HEART) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_4.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_TAUNT) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_5.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_SURRENDER) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_6.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_TAUNTKISS) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_7.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_POINT) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_8.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_TAUNTELBOW) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_9.ToString(),  GetNewCfgParamInt(EmoteConstants.ID_EMOTE_THUMB) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_10.ToString(), GetNewCfgParamInt(EmoteConstants.ID_EMOTE_THROAT) );
+		m_DefaultValues.Insert( EmoteSlots.EMOTE_11.ToString(), GetNewCfgParamInt(EmoteConstants.ID_EMOTE_SUICIDE) );
+		//m_DefaultValues.Insert( EMOTE_12, GetNewCfgParamInt(EmoteConstants.ID_EMOTE_DANCE) );
+		//m_DefaultValues.Insert( EMOTE_12, GetNewCfgParamInt(EmoteConstants.ID_EMOTE_SOS) );
 	}
 	
 	//========================================

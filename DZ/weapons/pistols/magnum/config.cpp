@@ -41,6 +41,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.9,10,250,4,10};
 		WeaponLength = 0.63;
 		barrelArmor = 1.758;
+		initSpeedMultiplier = 1.17;
 		DisplayMagazine = 0;
 		chamberSize = 1;
 		chamberedRound = "";

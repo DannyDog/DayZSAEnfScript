@@ -228,6 +228,8 @@ const int ID_EMOTE_DANCE 		= 13;
 const int ID_EMOTE_RPS 			= 14;
 /** @}
 */
+class EmoteConstants
+{
 	const int ID_EMOTE_GREETING			= 1;
 	const int ID_EMOTE_SOS				= 2; //FB
 	const int ID_EMOTE_HEART 			= 3;
@@ -244,42 +246,43 @@ const int ID_EMOTE_RPS 			= 14;
 	const int ID_EMOTE_SITA 			= 14;
 	const int ID_EMOTE_SITB 			= 15;
 	const int ID_EMOTE_THUMBDOWN 		= 16;
-
-const int ID_EMOTE_DABBING 		= 32;
-const int ID_EMOTE_TIMEOUT 		= 35;
-const int ID_EMOTE_CLAP 		= 39;
-const int ID_EMOTE_POINT 		= 40;
-const int ID_EMOTE_SILENT 		= 43;
-const int ID_EMOTE_SALUTE 		= 44;
-const int ID_EMOTE_RPS 			= 45;
-const int ID_EMOTE_WATCHING 	= 46;
-const int ID_EMOTE_HOLD 		= 47;
-const int ID_EMOTE_LISTENING 	= 48;
-const int ID_EMOTE_POINTSELF 	= 49;
-const int ID_EMOTE_LOOKATME 	= 50;
-const int ID_EMOTE_TAUNTTHINK 	= 51;
-const int ID_EMOTE_MOVE 		= 52;
-const int ID_EMOTE_DOWN 		= 53;
-const int ID_EMOTE_COME 		= 54;
-const int ID_EMOTE_RPS_R 		= 55;
-const int ID_EMOTE_RPS_P 		= 56;
-const int ID_EMOTE_RPS_S 		= 57;
-const int ID_EMOTE_NOD 			= 58;
-const int ID_EMOTE_SHAKE 		= 59;
-const int ID_EMOTE_SHRUG 		= 60;
-const int ID_EMOTE_SURRENDER 	= 61;
-const int ID_EMOTE_VOMIT 		= 62;
-const int ID_EMOTE_DEBUG 		= 1000;
-
-/**
- * \defgroup Custom animation events ID for emotes
- * \desc used mainly in suicide emotes
- * @{
- */
-const int EMOTE_SUICIDE_DEATH 	= 1;
-const int EMOTE_SUICIDE_BLEED 	= 2;
-const int EMOTE_SUICIDE_SIMULATION_END = 3;
-
+	
+	const int ID_EMOTE_DABBING 		= 32;
+	const int ID_EMOTE_TIMEOUT 		= 35;
+	const int ID_EMOTE_CLAP 		= 39;
+	const int ID_EMOTE_POINT 		= 40;
+	const int ID_EMOTE_SILENT 		= 43;
+	const int ID_EMOTE_SALUTE 		= 44;
+	const int ID_EMOTE_RPS 			= 45;
+	const int ID_EMOTE_WATCHING 	= 46;
+	const int ID_EMOTE_HOLD 		= 47;
+	const int ID_EMOTE_LISTENING 	= 48;
+	const int ID_EMOTE_POINTSELF 	= 49;
+	const int ID_EMOTE_LOOKATME 	= 50;
+	const int ID_EMOTE_TAUNTTHINK 	= 51;
+	const int ID_EMOTE_MOVE 		= 52;
+	const int ID_EMOTE_DOWN 		= 53;
+	const int ID_EMOTE_COME 		= 54;
+	const int ID_EMOTE_RPS_R 		= 55;
+	const int ID_EMOTE_RPS_P 		= 56;
+	const int ID_EMOTE_RPS_S 		= 57;
+	const int ID_EMOTE_NOD 			= 58;
+	const int ID_EMOTE_SHAKE 		= 59;
+	const int ID_EMOTE_SHRUG 		= 60;
+	const int ID_EMOTE_SURRENDER 	= 61;
+	const int ID_EMOTE_VOMIT 		= 62;
+	const int ID_EMOTE_DEBUG 		= 1000;
+	
+	/**
+	 * \defgroup Custom animation events ID for emotes
+	 * \desc used mainly in suicide emotes
+	 * @{
+	 */
+	const int EMOTE_SUICIDE_DEATH 	= 1;
+	const int EMOTE_SUICIDE_BLEED 	= 2;
+	const int EMOTE_SUICIDE_SIMULATION_END = 3;
+	/** @}*/
+}
 
 /**
  * \defgroup Configurations for ItemsGenerator class

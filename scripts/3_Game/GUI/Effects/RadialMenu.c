@@ -10,6 +10,9 @@ class RadialMenu : ScriptedWidgetEventHandler
 	protected Widget 					m_ItemCardsContainer;
 	protected Widget					m_RadialSelector;
 	protected ImageWidget				m_RadialSelectorImage;
+	protected ImageWidget 				m_RadialSelectorPointerImage;
+	protected int 						m_RadialSelectorOriginalColor;
+	protected int 						m_RadialSelectorDisabledColor;
 	protected Widget 					m_SelectedObject;
 	protected ref map<Widget, float> 	m_RadialItemCards;
 	
@@ -19,6 +22,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 	//widget
 	static const string 				RADIAL_SELECTOR	 			= "RadialSelector";
 	static const string 				RADIAL_SELECTOR_IMAGE		= "SelectorImage";
+	static const string 				RADIAL_SELECTOR_POINTER		= "SelectorPointer";
 	static const string 				RADIAL_DELIMITER_CONTAINER 	= "RadialDelimiterContainer";
 	static const string 				RADIAL_ITEM_CARD_CONTAINER 	= "RadialItemCardContainer";
 
@@ -107,6 +111,10 @@ class RadialMenu : ScriptedWidgetEventHandler
 		m_ItemCardsContainer = w.FindAnyWidget( RADIAL_ITEM_CARD_CONTAINER );
 		m_RadialSelector = w.FindAnyWidget( RADIAL_SELECTOR );
 		m_RadialSelectorImage = ImageWidget.Cast( m_RadialSelector.FindAnyWidget( RADIAL_SELECTOR_IMAGE ) );
+		m_RadialSelectorPointerImage = ImageWidget.Cast( m_RadialSelector.FindAnyWidget( RADIAL_SELECTOR_POINTER ) );
+		
+		m_RadialSelectorOriginalColor = m_RadialSelectorImage.GetColor();
+		m_RadialSelectorDisabledColor = ARGB(255,150,150,150);
 		
 		//parent
 		m_Parent = w;
@@ -304,6 +312,18 @@ class RadialMenu : ScriptedWidgetEventHandler
 				m_RadialSelectorImage.SetMaskProgress( progress );
 				
 				m_RadialSelector.Show( true );
+				
+				bool grey_selector = selected_item.GetFlags() & WidgetFlags.DISABLED;
+				if (!grey_selector)
+				{
+					m_RadialSelectorImage.SetColor(m_RadialSelectorDisabledColor);
+					m_RadialSelectorPointerImage.SetColor(m_RadialSelectorDisabledColor);
+				}
+				else
+				{
+					m_RadialSelectorImage.SetColor(m_RadialSelectorOriginalColor);
+					m_RadialSelectorPointerImage.SetColor(m_RadialSelectorOriginalColor);
+				}
 			}
 		}
 	}
@@ -559,7 +579,7 @@ class RadialMenu : ScriptedWidgetEventHandler
 								GetGame().GameScript.CallFunction( m_RegisteredClass, "OnControllerSelect", NULL, m_SelectedObject );
 								//show selector
 								ShowRadialSelector( m_SelectedObject );
-							}	
+							}
 						}
 					}
 					else

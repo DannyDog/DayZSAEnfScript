@@ -364,23 +364,23 @@ class DayZPlayerUtils
 	{
 		switch (stanceMask)
 		{
-			case DayZPlayerConstants.STANCEMASK_ERECT:
-				return DayZPlayerConstants.STANCEIDX_ERECT;
-			
-			case DayZPlayerConstants.STANCEMASK_CROUCH:
-				return DayZPlayerConstants.STANCEIDX_CROUCH;
-			
-			case DayZPlayerConstants.STANCEMASK_PRONE:
+			case stanceMask | DayZPlayerConstants.STANCEMASK_PRONE:
 				return DayZPlayerConstants.STANCEIDX_PRONE;
 			
-			case DayZPlayerConstants.STANCEMASK_RAISEDERECT:
-				return DayZPlayerConstants.STANCEIDX_RAISEDERECT;
+			case stanceMask | DayZPlayerConstants.STANCEMASK_CROUCH:
+				return DayZPlayerConstants.STANCEIDX_CROUCH;
 			
-			case DayZPlayerConstants.STANCEMASK_RAISEDCROUCH:
+			case stanceMask | DayZPlayerConstants.STANCEMASK_ERECT:
+				return DayZPlayerConstants.STANCEIDX_ERECT;
+			
+			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDPRONE:
+				return DayZPlayerConstants.STANCEIDX_RAISEDPRONE;
+			
+			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDCROUCH:
 				return DayZPlayerConstants.STANCEIDX_RAISEDCROUCH;
 			
-			case DayZPlayerConstants.STANCEMASK_RAISEDPRONE:
-				return DayZPlayerConstants.STANCEIDX_RAISEDPRONE;
+			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDERECT:
+				return DayZPlayerConstants.STANCEIDX_RAISEDERECT;
 		}
 		
 		return -1;

@@ -2728,7 +2728,6 @@ class PlayerBase extends ManBase
 	{
 		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		CloseInventoryMenu();
-		m_EmoteManager.OnCommandClimbStart();
 		
 		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
@@ -2813,7 +2812,6 @@ class PlayerBase extends ManBase
 	override void OnJumpStart()
 	{
 		m_ActionManager.OnJumpStart();
-		m_EmoteManager.OnJumpStart();
 		
 		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
@@ -3885,6 +3883,13 @@ class PlayerBase extends ManBase
 	{
 		return m_MovementState.IsLeaning();
 	}	
+	
+	bool IsRolling()
+	{
+		if (GetCommand_Move() && GetCommand_Move().IsInRoll())
+			return true;
+		return false;
+	}
 	
 	override bool IsRaised()
 	{

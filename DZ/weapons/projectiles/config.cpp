@@ -1114,7 +1114,7 @@ class CfgAmmo
 		deflecting = 30;
 		airFriction = -0.0014;
 		typicalSpeed = 440;
-		initSpeed = 382.6;
+		initSpeed = 327.32;
 		damageBarrel = 187.5;
 		damageBarrelDestroyed = 187.5;
 		weight = 0.0102;
@@ -1123,7 +1123,7 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.8,1.0}};
+			defaultDamageOverride[] = {{0.65,1.0}};
 			class Health
 			{
 				damage = 105.9;

@@ -10,8 +10,36 @@ PanelWidgetClass GestureItemCard {
  vexactsize 1
  style blank
  {
-  TextWidgetClass RadialText {
+  PanelWidgetClass RadialItem_Disabled {
+   visible 0
+   clipchildren 1
+   position 0 0
+   size 1 1
+   halign center_ref
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+   {
+    ImageWidgetClass image0 {
+     ignorepointer 1
+     color 0.5608 0.0706 0.0706 0.7804
+     position 0 0
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     mode blend
+    }
+   }
+  }
+  ButtonWidgetClass RadialText {
    clipchildren 0
+   ignorepointer 1
    position 0 0
    size 230 30
    halign center_ref
@@ -22,11 +50,7 @@ PanelWidgetClass GestureItemCard {
    vexactsize 1
    text "Item Name"
    font "gui/fonts/sdf_MetronBook24"
-   "exact text" 1
-   "size to text h" 0
-   "size to text v" 1
-   "text halign" center
-   "text valign" center
+   "disabled text color" 0.5882 0.5882 0.5882 1
   }
  }
 }

@@ -117,6 +117,8 @@ class QuickBarBase
 	void UpdateShotcutVisibility(int index)
 	{
 		m_aQuickbarEnts[index].m_enabled = CanAddAsShortcut(m_aQuickbarEnts[index].m_entity);
+		if (!m_aQuickbarEnts[index].m_enabled)
+			CancelContinuousUse(index);
 		
 		if (_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
@@ -125,6 +127,8 @@ class QuickBarBase
 	void SetShotcutEnable(int index, bool value)
 	{
 		m_aQuickbarEnts[index].m_enabled = value && CanAddAsShortcut(m_aQuickbarEnts[index].m_entity);
+		if (!m_aQuickbarEnts[index].m_enabled)
+			CancelContinuousUse(index);
 		
 		if (_player.m_Hud)
 			_player.m_Hud.RefreshQuickbar(true);
@@ -247,6 +251,8 @@ class QuickBarBase
 	{
 		if ( index >= 0 && index < MAX_QUICKBAR_SLOTS_COUNT )
 		{
+			CancelContinuousUse(index);
+			
 			m_aQuickbarEnts[index].m_entity = NULL;
 			m_aQuickbarEnts[index].m_enabled = false;
 			
@@ -265,7 +271,10 @@ class QuickBarBase
 				m_aQuickbarEnts[index].m_enabled = true;
 			}
 			else
+			{
+				CancelContinuousUse(index);
 				m_aQuickbarEnts[index].m_enabled = false;
+			}
 			
 			if (_player.m_Hud)
 				_player.m_Hud.RefreshQuickbar(true);
@@ -275,5 +284,15 @@ class QuickBarBase
 	void ~QuickBarBase()
 	{
 		
+	}
+//-------------------------------------------------------------	
+	protected void CancelContinuousUse(int index)
+	{
+		if (_player.m_QuickBarHold)
+		{
+			HumanInputController hic = _player.GetInputController();
+			if (hic && hic.IsQuickBarSlot() == index + 1)
+				_player.OnQuickBarContinuousUseEnd(index + 1);
+		}
 	}
 }

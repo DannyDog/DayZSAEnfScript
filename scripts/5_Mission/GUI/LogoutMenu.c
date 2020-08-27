@@ -58,7 +58,7 @@ class LogoutMenu extends UIScriptedMenu
 		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 		if (player.GetEmoteManager() && !player.IsRestrained() && !player.IsUnconscious()) 
 		{
-			player.GetEmoteManager().CreateEmoteCBFromMenu(ID_EMOTE_SITA);
+			player.GetEmoteManager().CreateEmoteCBFromMenu(EmoteConstants.ID_EMOTE_SITA);
 		}
 		
 		return layoutRoot;

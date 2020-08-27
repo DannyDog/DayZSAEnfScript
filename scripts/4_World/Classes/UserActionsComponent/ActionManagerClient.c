@@ -319,7 +319,11 @@ class ActionManagerClient: ActionManagerBase
 		
 	void ForceTarget(Object targetObject)
 	{
-		m_ForceTarget = new ActionTarget(targetObject, null, -1, vector.Zero, -1);
+		Object parent = null;
+		EntityAI targetEntity = EntityAI.Cast(targetObject);
+		if (targetEntity)
+			parent = targetEntity.GetHierarchyParent();
+		m_ForceTarget = new ActionTarget(targetObject, parent, -1, vector.Zero, -1);
 	}
 	
 	void ClearForceTarget()
@@ -710,7 +714,10 @@ class ActionManagerClient: ActionManagerBase
 	{
 		ItemBase itemInHand = m_Player.GetItemInHands();
 		ActionTarget target;
-		target = new ActionTarget(targetItem, null, -1, vector.Zero, -1);
+		ItemBase parent = null;
+		if (targetItem)
+			parent = ItemBase.Cast(targetItem.GetHierarchyParent());
+		target = new ActionTarget(targetItem, parent, -1, vector.Zero, -1);
 		bool hasTarget = targetItem != NULL;
 		
 		if( mainItem )

@@ -26,7 +26,17 @@ class DayZPlayerCommandDeathCallback : HumanCommandDeathCallback
 				vector m4[4];
 				m_pPlayer.GetBoneTransformWS(boneIndex, m4);
 			
-				m_pPlayer.GetInventory().DropEntityWithTransform(InventoryMode.SERVER, m_pPlayer, itemInHands, m4);			
+				m_pPlayer.GetInventory().DropEntityWithTransform(InventoryMode.SERVER, m_pPlayer, itemInHands, m4);
+				
+				if ( GetCEApi() )
+				{
+					int deadBodyLifetime = GetCEApi().GetCEGlobalInt( "CleanupLifetimeDeadPlayer" );
+					if ( deadBodyLifetime <= 0 )
+					{
+						deadBodyLifetime = 3600;
+					}
+					itemInHands.SetLifetime( deadBodyLifetime );
+				}
 			}	
 		}
 		

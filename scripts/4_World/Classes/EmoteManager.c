@@ -20,7 +20,7 @@ class EmoteCB : HumanCommandActionCallback
 	{
 		switch (pEventID)
 		{
-			case EMOTE_SUICIDE_DEATH :
+			case EmoteConstants.EMOTE_SUICIDE_DEATH :
 				if (GetGame().IsServer())
 					m_Manager.KillPlayer();
 			break;
@@ -39,12 +39,12 @@ class EmoteCB : HumanCommandActionCallback
 				m_Manager.m_ItemToBeCreated = true;
 			break;
 			
-			case EMOTE_SUICIDE_BLEED :
+			case EmoteConstants.EMOTE_SUICIDE_BLEED :
 				if (GetGame().IsServer())
 					m_Manager.CreateBleedingEffect(m_callbackID);
 			break;
 			
-			case EMOTE_SUICIDE_SIMULATION_END :
+			case EmoteConstants.EMOTE_SUICIDE_SIMULATION_END :
 				if (GetGame().IsServer())
 				{
 					EntityAI itemInHands = m_player.GetHumanInventory().GetEntityInHands();
@@ -106,11 +106,9 @@ class EmoteManager
 	protected const int 	CALLBACK_CMD_INVALID = -1;
 	protected const int 	CALLBACK_CMD_END = -2;
 	protected const int 	CALLBACK_CMD_GESTURE_INTERRUPT = -3;
-	//protected const int 	CALLBACK_CMD_SERVER = 0;
-	//protected const int 	CALLBACK_CMD_CLIENT = 1;
-	protected const float 	WATER_DEPTH = 0.15;
 	PluginAdminLog 			m_AdminLog;
 	ref Timer 				m_ReservationTimer;
+	ref map<int, ref EmoteBase>		m_NameEmoteMap;
 	
 	void EmoteManager( PlayerBase player ) 
 	{
@@ -144,9 +142,18 @@ class EmoteManager
 		
 		m_ReservationTimer = new Timer();
 		m_ReservationTimer.Run(8,this,"CheckEmoteLockedState",NULL,true);
+		
+		EmoteConstructor ec = new EmoteConstructor;
+		if ( !m_NameEmoteMap )
+		{
+			if ( !ec.ConstructEmotes(m_Player,m_NameEmoteMap) )
+			{
+				Error("EmoteManager | EmoteConstructor initialization failed!");
+			}
+		}
 	}
 	
-	void ~EmoteManager() 
+	void ~EmoteManager()
 	{
 		if (m_ReservationTimer && m_ReservationTimer.IsRunning())
 			m_ReservationTimer.Stop();
@@ -170,6 +177,31 @@ class EmoteManager
 	
 		int gesture = m_HIC.IsGestureSlot();
 		return gesture;
+	}
+	
+	//! Also includes a stance check for FB callbacks
+	bool DetermineEmoteData(EmoteBase emote, out int callback_ID, out int stancemask, out bool is_fullbody)
+	{
+		if ( emote.DetermineOverride(callback_ID, stancemask, is_fullbody) && emote.EmoteFBStanceCheck(stancemask) )
+		{
+			return true;
+		}
+		else if ( emote.m_AdditiveCallbackUID != 0 && m_Player.IsPlayerInStance(emote.m_StanceMaskAdditive) )
+		{
+			callback_ID = emote.m_AdditiveCallbackUID;
+			stancemask = emote.m_StanceMaskAdditive;
+			is_fullbody = false;
+			return true;
+		}
+		else if ( emote.m_FullbodyCallbackUID != 0 && emote.EmoteFBStanceCheck(emote.m_StanceMaskFullbody) )
+		{
+			callback_ID = emote.m_FullbodyCallbackUID;
+			stancemask = emote.m_StanceMaskFullbody;
+			is_fullbody = true;
+			return true;
+		}
+		
+		return false;
 	}
 	
 	//Called from players commandhandler each frame, checks input
@@ -204,17 +236,13 @@ class EmoteManager
 				
 				if (InterruptGestureCheck())
 				{
-					SendEmoteRequestSync(CALLBACK_CMD_END); //TODO CALLBACK_CMD_END CALLBACK_CMD_GESTURE_INTERRUPT
+					SendEmoteRequestSync(CALLBACK_CMD_END);
 				}
 			}
 			
 			if( (gestureSlot > 0 && gestureSlot != 12 ) || m_GestureInterruptInput || (m_HIC.IsSingleUse() && !uiGesture) || (m_HIC.IsContinuousUseStart() && !uiGesture) || (m_Callback.m_IsFullbody && !uiGesture && m_HIC.IsWeaponRaised()) ) 
 			{
-				/*if (m_GestureInterruptInput)
-				{
-					SendEmoteRequestSync(CALLBACK_CMD_END);
-				}
-				else */if (m_CurrentGestureID == ID_EMOTE_SUICIDE  && m_HIC.IsSingleUse())
+				if (m_CurrentGestureID == EmoteConstants.ID_EMOTE_SUICIDE  && m_HIC.IsSingleUse())
 				{
 					if (m_Callback.GetState() == m_Callback.STATE_LOOP_LOOP)
 					{
@@ -225,11 +253,11 @@ class EmoteManager
 						return;
 					}
 				}
-				else if ( (m_CurrentGestureID == ID_EMOTE_THUMB || m_CurrentGestureID == ID_EMOTE_THUMBDOWN) && m_HIC.IsSingleUse() )
+				else if ( (m_CurrentGestureID == EmoteConstants.ID_EMOTE_THUMB || m_CurrentGestureID == EmoteConstants.ID_EMOTE_THUMBDOWN) && m_HIC.IsSingleUse() )
 				{
 					m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_ACTION);
 				}
-				else if ( m_CurrentGestureID == ID_EMOTE_RPS || m_CurrentGestureID == ID_EMOTE_RPS_R || m_CurrentGestureID == ID_EMOTE_RPS_P || m_CurrentGestureID == ID_EMOTE_RPS_S )
+				else if ( m_CurrentGestureID == EmoteConstants.ID_EMOTE_RPS || m_CurrentGestureID == EmoteConstants.ID_EMOTE_RPS_R || m_CurrentGestureID == EmoteConstants.ID_EMOTE_RPS_P || m_CurrentGestureID == EmoteConstants.ID_EMOTE_RPS_S )
 				{
 					if ( m_RPSOutcome != -1 )
 					{
@@ -243,11 +271,11 @@ class EmoteManager
 						m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_END);
 					}
 				}
-				else if (m_CurrentGestureID != ID_EMOTE_SUICIDE || (m_CurrentGestureID == ID_EMOTE_SUICIDE && m_Callback.GetState() < 3))
+				else if (m_CurrentGestureID != EmoteConstants.ID_EMOTE_SUICIDE || (m_CurrentGestureID == EmoteConstants.ID_EMOTE_SUICIDE && m_Callback.GetState() < 3))
 				{
 					SendEmoteRequestSync(CALLBACK_CMD_END);
 				}
-				else if (m_CurrentGestureID == ID_EMOTE_SUICIDE)
+				else if (m_CurrentGestureID == EmoteConstants.ID_EMOTE_SUICIDE)
 				{
 					SendEmoteRequestSync(CALLBACK_CMD_END);
 				}
@@ -287,7 +315,7 @@ class EmoteManager
 				PlaySurrenderInOut(false);
 				return;
 			}
-			// getting out of surrender state - hard cancel (TODO: refactor)
+			// getting out of surrender state - hard cancel
 			else if (m_IsSurrendered && (m_HIC.IsSingleUse() || m_HIC.IsContinuousUseStart() || m_HIC.IsWeaponRaised()))
 			{
 				if ( m_Player.GetItemInHands() )
@@ -334,7 +362,7 @@ class EmoteManager
 		}
 		
 		//surrender "state" switch
-		if ( m_CurrentGestureID == ID_EMOTE_SURRENDER )
+		if ( m_CurrentGestureID == EmoteConstants.ID_EMOTE_SURRENDER )
 		{
 			m_IsSurrendered = !m_IsSurrendered;
 			SetEmoteLockState(m_IsSurrendered);
@@ -429,434 +457,66 @@ class EmoteManager
 		
 		m_PreviousGestureID = m_CurrentGestureID;
 		m_CurrentGestureID = id;
-		if( id > 0)
+		if( id > 0 )
 		{
-			switch ( id )
+			//-----------------------------------------------
+			EmoteBase emote;// = new EmoteBase;
+			if (m_NameEmoteMap.Find(id,emote))
 			{
-				case ID_EMOTE_GREETING :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_GREETING,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_GREETING,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-			
-				case ID_EMOTE_SOS :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE)) 	CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SOS,DayZPlayerConstants.STANCEMASK_ERECT,true);
-					HideItemInHands();
-				break;
-			
-				case ID_EMOTE_HEART :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_HEART,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_HEART,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-					HideItemInHands();
-				break;
-			
-				case ID_EMOTE_TAUNT :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_TAUNT,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_TAUNT,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-			
-				case ID_EMOTE_LYINGDOWN :
-					vector water_info = HumanCommandSwim.WaterLevelCheck( m_Player, m_Player.GetPosition() - (m_Player.GetDirection() * 0.9) );
-					if ( water_info[0] < WATER_DEPTH ) //is player able to lay down without "drowning"?
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_LYINGDOWN,DayZPlayerConstants.STANCEMASK_CROUCH,true);
-						HideItemInHands();
-					}
-				break;
-			
-				case ID_EMOTE_TAUNTKISS :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_TAUNTKISS,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_TAUNTKISS,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-			
-				case ID_EMOTE_POINT :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_POINT,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_POINT,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_TAUNTELBOW :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_TAUNTELBOW,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_THUMB :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_THUMB,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_THUMB,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_THUMBDOWN :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_THUMBDOWN,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_THUMBDOWN,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_THROAT :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_THROAT,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_THROAT,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-			
-				case ID_EMOTE_SUICIDE :
-					int suicideID = DayZPlayerConstants.CMD_SUICIDEFB_UNARMED;
-					int m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
-					string suicideStr;
-					ItemBase weapon;
-					weapon = m_Player.GetItemInHands();
-					//suicideID = DayZPlayerConstants.CMD_SUICIDEFB_UNARMED; //unarmed suicide...optional?
-					if (weapon)
-					{
-						if (weapon.ConfigIsExisting("suicideAnim"))
-						{
-							suicideStr = weapon.ConfigGetString("suicideAnim");
-						}
-						
-						if (weapon.IsKindOf("Pistol_Base"))
-						{
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_PISTOL;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
-							m_Player.OverrideShootFromCamera(false);
-						}
-
-						else if (weapon.IsKindOf("Rifle_Base"))
-						{
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_RIFLE;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
-							m_Player.OverrideShootFromCamera(false);
-						}
-						
-						else if (suicideStr == "onehanded"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_1HD;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
-						}
-						
-						else if (suicideStr == "fireaxe"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_FIREAXE;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
-						}
-						
-						else if (suicideStr == "pitchfork"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_PITCHFORK;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
-						}
-						
-						else if (suicideStr == "sword"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_SWORD;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
-						}
-						
-						else if (suicideStr == "spear"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_SPEAR;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
-						}
-						
-						else if (suicideStr == "woodaxe"){
-							suicideID = DayZPlayerConstants.CMD_SUICIDEFB_WOODAXE;
-							m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
-						}
+				int callback_ID;
+				int stancemask;
+				bool is_fullbody;
+				if ( DetermineEmoteData(emote,callback_ID,stancemask,is_fullbody) )
+				{
+					emote.OnBeforeStandardCallbackCreated(callback_ID,stancemask,is_fullbody);
+					CreateEmoteCallback(EmoteCB,callback_ID,stancemask,is_fullbody);
 					
-						else
-							suicideID = -1;
-					}
-			
-					if (suicideID > -1)
+					if (emote.m_HideItemInHands)
 					{
-						CreateEmoteCallback(EmoteCB, suicideID, m_StanceMask, true);
-					}
-					else
-						m_Player.SetInventorySoftLock(false);
-				break;
-			
-				case ID_EMOTE_DANCE:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE)) 	CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_DANCE,DayZPlayerConstants.STANCEMASK_ERECT,true);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_SALUTE:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE)) 	CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SALUTE,DayZPlayerConstants.STANCEMASK_ERECT,true);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_TIMEOUT:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_TIMEOUT,DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH,false);
 						HideItemInHands();
 					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_TIMEOUT,DayZPlayerConstants.STANCEMASK_PRONE,true);
-						HideItemInHands();
-					}
-					
-				break;
-				
-				case ID_EMOTE_DABBING:
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_DABBING,DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH,false);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_FACEPALM:
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_FACEPALM,DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH,false);
-					//HideItemInHands();
-				break;
-				
-				case ID_EMOTE_CLAP:
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_CLAP,DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH,false);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_SILENT:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_SILENCE,DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH,false);
-						//HideItemInHands();
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SILENCE,DayZPlayerConstants.STANCEMASK_PRONE,true);
-						//HideItemInHands();
-					}
-				break;
-				
-				case ID_EMOTE_WATCHING:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_WATCHING,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_WATCHING,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_HOLD:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_HOLD,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_HOLD,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_LISTENING:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_LISTENING,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_LISTENING,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_POINTSELF:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_POINTSELF,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_POINTSELF,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_LOOKATME:
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_LOOKATME,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_LOOKATME,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_TAUNTTHINK :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_TAUNTTHINK,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_TAUNTTHINK,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_MOVE :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_MOVE,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_MOVE,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_DOWN :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_DOWN,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_DOWN,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_COME :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_COME,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_COME,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_SURRENDER :
-					if ( !m_IsSurrendered )
-					{
-						PlaySurrenderInOut(true);
-					}
-					else if ( m_IsSurrendered )
-					{
-						if ( m_Player.GetItemInHands() )
-							m_Player.GetItemInHands().Delete();
-					}
-				break;
-				
-				case ID_EMOTE_CAMPFIRE :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_CAMPFIRE,DayZPlayerConstants.STANCEMASK_CROUCH,true);
-					HideItemInHands();
-				break;
-				
-				case ID_EMOTE_SITA :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SITA,DayZPlayerConstants.STANCEMASK_CROUCH,true);
-				break;
-				
-				case ID_EMOTE_SITB :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SITB,DayZPlayerConstants.STANCEMASK_CROUCH,true);
-				break;
-				
-				case ID_EMOTE_RPS :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_RPS,DayZPlayerConstants.STANCEMASK_ERECT,false);
-				break;
-				
-				case ID_EMOTE_RPS_R :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_RPS,DayZPlayerConstants.STANCEMASK_ERECT,false);
-				break;
-				
-				case ID_EMOTE_RPS_P :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_RPS,DayZPlayerConstants.STANCEMASK_ERECT,false);
-				break;
-				
-				case ID_EMOTE_RPS_S :
-					CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_RPS,DayZPlayerConstants.STANCEMASK_ERECT,false);
-				break;
-				
-				case ID_EMOTE_NOD :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_NODHEAD,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_NODHEAD,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_SHAKE :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_SHAKEHEAD,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SHAKEHEAD,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_SHRUG :
-					if (!m_Player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE))
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREMOD_SHRUG,DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT,false);
-					}
-					else
-					{
-						CreateEmoteCallback(EmoteCB,DayZPlayerConstants.CMD_GESTUREFB_SHRUG,DayZPlayerConstants.STANCEMASK_PRONE,true);
-					}
-				break;
-				
-				case ID_EMOTE_VOMIT :
-					if ( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer() )
-					{
-						ref SymptomBase symptom = m_Player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
-	        			
-			            if ( symptom )
-			            { 
-			                symptom.SetDuration(Math.RandomIntInclusive(4,8));
-			            }
-					}
-				break;
-				
-				/*case ID_EMOTE_DEBUG :
-				break;*/
-				
-				default :
-					Print("EmoteManager.c | PlayEmote | WRONG ID");
-					m_bEmoteIsPlaying = false;
-					return false;
-				break;
+				}
+				else
+				{
+					Error("EmoteManager | DetermineEmoteData failed!");
+				}
 			}
+			else //direcly handled exceptions
+			{
+				switch ( id )
+				{
+					case EmoteConstants.ID_EMOTE_SURRENDER :
+						if ( !m_IsSurrendered )
+						{
+							PlaySurrenderInOut(true);
+						}
+						else if ( m_IsSurrendered )
+						{
+							if ( m_Player.GetItemInHands() )
+								m_Player.GetItemInHands().Delete();
+						}
+					break;
+					
+					case EmoteConstants.ID_EMOTE_VOMIT :
+						if ( m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer() )
+						{
+							ref SymptomBase symptom = m_Player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
+		        			
+				            if ( symptom )
+				            { 
+				                symptom.SetDuration(Math.RandomIntInclusive(4,8));
+				            }
+						}
+					break;
+					
+					default :
+						Print("EmoteManager.c | PlayEmote | WRONG ID");
+						m_bEmoteIsPlaying = false;
+						return false;
+					break;
+				}
+			}
+			//-----------------------------------------------
 		}
 		if ( m_bEmoteIsPlaying )
 		{
@@ -875,7 +535,6 @@ class EmoteManager
 		if ( m_Player && (GetGame().IsClient() || !GetGame().IsMultiplayer()))
 		{
 			m_PreviousGestureID = gestureslot;
-			//HACK - to be removed with new input controller
 			if ( gestureslot == 12)
 			{
 				return;
@@ -943,7 +602,7 @@ class EmoteManager
 			//TODO : check multiple muzzles for shotguns, eventually
 			if (weapon.CanFire())
 			{
-				m_Callback.RegisterAnimationEvent("Simulation_End",EMOTE_SUICIDE_SIMULATION_END);
+				m_Callback.RegisterAnimationEvent("Simulation_End",EmoteConstants.EMOTE_SUICIDE_SIMULATION_END);
 				m_Player.SetSuicide(true);
 				weapon.ProcessWeaponEvent(weapon_event);
 				m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_FINISH);
@@ -953,7 +612,7 @@ class EmoteManager
 					if (helm && GetGame().IsServer())
 					{
 						float damage = helm.GetMaxHealth("","");
-						helm.AddHealth( "","", -damage/2); //TODO damages by 50% now. Use some proper, projectile-related value here
+						helm.AddHealth( "","", -damage/2);
 					}
 					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(this.KillPlayer);
 					//LogSuicide(); 	// older logging
@@ -971,9 +630,9 @@ class EmoteManager
 		}
 		else if ( m_Player.GetItemInHands() && m_Player.GetItemInHands().ConfigIsExisting("suicideAnim") )
 		{
-			m_Callback.RegisterAnimationEvent("Death",EMOTE_SUICIDE_DEATH);
-			m_Callback.RegisterAnimationEvent("Bleed",EMOTE_SUICIDE_BLEED);
-			m_Callback.RegisterAnimationEvent("Simulation_End",EMOTE_SUICIDE_SIMULATION_END);
+			m_Callback.RegisterAnimationEvent("Death",EmoteConstants.EMOTE_SUICIDE_DEATH);
+			m_Callback.RegisterAnimationEvent("Bleed",EmoteConstants.EMOTE_SUICIDE_BLEED);
+			m_Callback.RegisterAnimationEvent("Simulation_End",EmoteConstants.EMOTE_SUICIDE_SIMULATION_END);
 			m_Player.SetSuicide(true);
 			m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_FINISH);
 			
@@ -988,31 +647,8 @@ class EmoteManager
 	void KillPlayer()
 	{
 		if (GetGame().IsServer())
-		{		
+		{
 			m_Player.SetHealth(0);
-			
-			/*EntityAI itemInHands = m_Player.GetHumanInventory().GetEntityInHands();
-			bool can_drop = itemInHands && m_Player.CanDropEntity(itemInHands);
-			if (!m_Player.IsAlive() && can_drop)
-			{
-				syncDebugPrint("EmoteManager::KillPlayer - char already dead, using alternative drop method");
-				string item_name = itemInHands.GetType();
-				
-				m_Player.ServerReplaceItemInHandsWithNewElsewhere(new DestroyItemInCorpsesHandsAndCreateNewOnGndLambda(itemInHands, item_name, m_Player, false));
-			}
-			else
-			{
-				if( can_drop )
-				{
-					syncDebugPrint("EmoteManager::KillPlayer - trying to drop item");
-					ChainedDropAndKillPlayerLambda lambda = new ChainedDropAndKillPlayerLambda(itemInHands, "", m_Player);
-					m_Player.GetDayZPlayerInventory().ReplaceItemInHandsWithNew(InventoryMode.SERVER, lambda);
-				}
-				else
-				{
-					m_Player.SetHealth(0);
-				}
-			}*/
 		}
 	}
 	
@@ -1030,13 +666,11 @@ class EmoteManager
 	
 	void CreateEmoteCBFromMenu(int id, bool interrupts_same = false)
 	{
-		//if (CanPlayEmote(id))
-			m_MenuEmote = new EmoteLauncher(id,interrupts_same);
+		m_MenuEmote = new EmoteLauncher(id,interrupts_same);
 	}
 	
 	void InterruptCallbackCommand()
 	{
-		//Print("ending ECB - interrupt");
 		m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_INTERRUPT);
 		
 		if (m_MenuEmote)
@@ -1046,8 +680,7 @@ class EmoteManager
 	
 	void EndCallbackCommand()
 	{
-		//Print("ending ECB - proper");
-		if (m_CurrentGestureID == ID_EMOTE_DANCE)
+		if (m_CurrentGestureID == EmoteConstants.ID_EMOTE_DANCE)
 		{
 			m_Callback.InternalCommand(DayZPlayerConstants.CMD_ACTIONINT_INTERRUPT);
 		}
@@ -1074,27 +707,25 @@ class EmoteManager
 				m_RPSOutcome = -1;
 				switch (id)
 				{
-					case ID_EMOTE_RPS :
+					case EmoteConstants.ID_EMOTE_RPS :
 						m_RPSOutcome = Math.RandomInt(0,3);
 					break;
 					
-					case ID_EMOTE_RPS_R :
+					case EmoteConstants.ID_EMOTE_RPS_R :
 						m_RPSOutcome = 0;
 					break;
 					
-					case ID_EMOTE_RPS_P :
+					case EmoteConstants.ID_EMOTE_RPS_P :
 						m_RPSOutcome = 1;
 					break;
 					
-					case ID_EMOTE_RPS_S :
+					case EmoteConstants.ID_EMOTE_RPS_S :
 						m_RPSOutcome = 2;
 					break;
 				}
 				if (m_RPSOutcome != -1) 	ctx.Write(m_RPSOutcome);
 				ctx.Send();
 				m_Player.SetInventorySoftLock(true);
-				//m_DeferredEmoteExecution = m_MenuEmote.m_ID;
-				//PlayEmote(m_MenuEmote.m_ID);
 			}
 			m_MenuEmote = NULL;
 		}
@@ -1114,11 +745,6 @@ class EmoteManager
 			}
 			m_MenuEmote = NULL;
 		}
-		/*else
-		{
-			EndCallbackCommand();
-			m_MenuEmote = NULL;
-		}*/
 	}
 	
 	bool IsControllsLocked()
@@ -1140,7 +766,7 @@ class EmoteManager
 		}
 		
 		ItemBase item = m_Player.GetItemInHands();
-		if ( item && item.IsHeavyBehaviour() &&  (id != ID_EMOTE_SURRENDER) )
+		if ( item && item.IsHeavyBehaviour() &&  (id != EmoteConstants.ID_EMOTE_SURRENDER) )
 		{
 			return false;
 		}
@@ -1150,7 +776,7 @@ class EmoteManager
 			return false;
 		}
 		
-		if ( m_HIC.IsWeaponRaised() || m_Player.IsClimbing() || m_Player.IsRestrainStarted() || m_Player.IsFighting() || m_Player.IsSwimming() || m_Player.IsClimbingLadder() || m_Player.IsFalling() || m_Player.IsUnconscious() || m_Player.IsJumpInProgress() ) 	// rework conditions into something better?
+		if ( m_HIC.IsWeaponRaised() || m_Player.IsRolling() || m_Player.IsClimbing() || m_Player.IsRestrainStarted() || m_Player.IsFighting() || m_Player.IsSwimming() || m_Player.IsClimbingLadder() || m_Player.IsFalling() || m_Player.IsUnconscious() || m_Player.IsJumpInProgress() ) 	// rework conditions into something better?
 		{
 			return false;
 		}
@@ -1162,13 +788,13 @@ class EmoteManager
 			}
 		}
 		
-		if ( m_Player.GetCommand_Move() && m_Player.GetCommand_Move().IsOnBack() && id != ID_EMOTE_SURRENDER)
+		if ( m_Player.GetCommand_Move() && m_Player.GetCommand_Move().IsOnBack() && id != EmoteConstants.ID_EMOTE_SURRENDER)
 		{
 			return false;
 		}
 		
 		//"locks" player in surrender state
-		if ( m_IsSurrendered && (id != ID_EMOTE_SURRENDER) )
+		if ( m_IsSurrendered && (id != EmoteConstants.ID_EMOTE_SURRENDER) )
 		{
 			return false;
 		}
@@ -1177,13 +803,34 @@ class EmoteManager
 		{
 			return false;
 		}
-		return true;
+		
+		EmoteBase emote;
+		if (m_NameEmoteMap.Find(id,emote))
+		{
+			int callback_ID;
+			int stancemask;
+			bool is_fullbody;
+			if ( DetermineEmoteData(emote,callback_ID,stancemask,is_fullbody) && emote.EmoteCondition(stancemask) )
+			{
+				return true;
+			}
+		}
+		else if ( id == EmoteConstants.ID_EMOTE_SURRENDER )//direcly handled exceptions
+		{
+			return true;
+		}
+		else if (id == EmoteConstants.ID_EMOTE_VOMIT && DayZPlayerUtils.PlayerCanChangeStance(m_Player,DayZPlayerConstants.STANCEIDX_CROUCH) )//direcly handled exceptions
+		{
+			return true;
+		}
+		
+		return false;
 	}
 	
 	void PlaySurrenderInOut(bool state)
 	{
 		m_PreviousGestureID = m_CurrentGestureID;
-		m_CurrentGestureID = ID_EMOTE_SURRENDER;
+		m_CurrentGestureID = EmoteConstants.ID_EMOTE_SURRENDER;
 		if (state)
 		{
 			if (m_Player.GetItemInHands() && !m_Player.CanDropEntity(m_Player.GetItemInHands()))
@@ -1267,6 +914,19 @@ class EmoteManager
 			m_Player.GetInventory().ExtendInventoryReservation( null, m_HandInventoryLocation, 10000);
 		}
 	}
+/*
+	//! Locks inputs during emote request processing
+	void SetInputsLocked(bool state)
+	{
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
+		{
+			if (state)
+				GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
+			else
+				GetGame().GetMission().PlayerControlEnable(true);
+		}
+	}
+*/
 	
 	//! force-ends surrender state from outside of normal flow
 	void EndSurrenderRequest(SurrenderData data = null)
@@ -1296,9 +956,6 @@ class EmoteManager
 	bool InterruptGestureCheck()
 	{
 		//interrupts any callback if restrain action is in progress, takes priority
-		/*if (m_Player.IsRestrainStarted())
-			return true;*/
-		
 		if (!m_Callback.m_IsFullbody)
 			return false;
 		
@@ -1312,23 +969,10 @@ class EmoteManager
 					
 					if( inp && inp.LocalPress() )
 					{
-						return true; //TODO
+						return true;
 					}
 			}
 		}
-		/*UAInterface input_interface = m_Player.GetInputInterface();
-		if ( input_interface )
-		{
-			for( int idx = 0; idx < m_InterruptInputs.Count(); idx++ )
-			{
-				string inputName = m_InterruptInputs[idx];
-				
-				if( input_interface.SyncedPress(inputName) )
-				{
-					return true;
-				}
-			}
-		}*/
 		return false;
 	}
 	
@@ -1383,16 +1027,6 @@ class EmoteManager
 		if (m_MenuEmote)
 			m_MenuEmote = null;
 		m_DeferredEmoteExecution = CALLBACK_CMD_END;
-	}
-	
-	void OnJumpStart()
-	{
-		//CancelEmote();
-	}
-	
-	void OnCommandClimbStart()
-	{
-		//CancelEmote();
 	}
 };
 

@@ -107,15 +107,26 @@ class ActionSkinning: ActionContinuousBase
 			DropEquipAndDestroyRootLambda lambda(body_PB, "", action_data.m_Player);
 			action_data.m_Player.ServerReplaceItemWithNew(lambda);
 			*/
-			
+			int deadBodyLifetime;
+			if ( GetCEApi() )
+			{
+				deadBodyLifetime = GetCEApi().GetCEGlobalInt( "CleanupLifetimeDeadPlayer" );
+				if ( deadBodyLifetime <= 0 )
+				{
+					deadBodyLifetime = 3600;
+				}
+			}
 			array<EntityAI> children = new array<EntityAI>;
 			body_PB.GetInventory().EnumerateInventory(InventoryTraversalType.LEVELORDER, children);
 			int count = children.Count();
 			for (int i = 0; i < count; ++i)
 			{
 				EntityAI child = children.Get(i);
-				if (child)
+				if ( child )
+				{
 					body_PB.GetInventory().DropEntity(InventoryMode.SERVER, body_PB, child);
+					child.SetLifetime( deadBodyLifetime );
+				}
 			}
 		}
 		

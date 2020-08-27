@@ -413,7 +413,8 @@ class Torch : ItemBase
 			if (GetGame().IsServer())
 			{
 				EntityAI rags = EntityAI.Cast(GetGame().CreateObjectEx(item.GetType(), GetPosition(), ECE_PLACE_ON_SURFACE));
-				MiscGameplayFunctions.TransferItemProperties(item, rags);
+				if( rags )
+					MiscGameplayFunctions.TransferItemProperties(item, rags);
 			}
 			return;
 		}

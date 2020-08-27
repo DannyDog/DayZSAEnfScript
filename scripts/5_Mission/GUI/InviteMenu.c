@@ -21,7 +21,7 @@ class InviteMenu extends UIScriptedMenu
 		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 		if (player && player.GetEmoteManager() && !player.IsRestrained() && !player.IsUnconscious()) 
 		{
-			player.GetEmoteManager().CreateEmoteCBFromMenu(ID_EMOTE_SITA);
+			player.GetEmoteManager().CreateEmoteCBFromMenu(EmoteConstants.ID_EMOTE_SITA);
 		}
 		
 		GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( UpdateTime, 1000, true );

@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.9,10,250,5,10};
 		WeaponLength = 0.6;
 		barrelArmor = 1.453;
+		initSpeedMultiplier = 1.265;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_Deagle_9rnd"};

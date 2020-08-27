@@ -67,7 +67,8 @@ class CraftSalineBagIV extends RecipeBase
 		ItemBase result;
 		Class.CastTo(result, results.Get(0));
 		
-		MiscGameplayFunctions.TransferItemProperties(ingredient2,result, true, true, false, true);
+		if( result )
+			MiscGameplayFunctions.TransferItemProperties(ingredient2,result, true, true, false, true);
 		Debug.Log("Recipe Do method called","recipes");
 	}
 };
