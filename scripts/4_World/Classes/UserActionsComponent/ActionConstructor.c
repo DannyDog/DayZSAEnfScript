@@ -306,6 +306,7 @@ class ActionConstructor
 		
 		actions.Insert(FirearmActionLoadBulletQuick);
 		actions.Insert(FirearmActionLoadMultiBulletQuick);
+		actions.Insert(FirearmActionLoadMultiBulletRadial);
 
 		actions.Insert(ActionPullBodyFromTransport);
 		

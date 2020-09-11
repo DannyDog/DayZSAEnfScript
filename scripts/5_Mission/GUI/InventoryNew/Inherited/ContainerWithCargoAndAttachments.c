@@ -670,7 +670,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		if(slots_icon)
 			item = slots_icon.GetEntity();
 		
-		InventoryItem itemAtPos = InventoryItem.Cast( item );
+		ItemBase itemAtPos = ItemBase.Cast( item );
 		
 		if( item )
 		{
@@ -698,17 +698,19 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 			{
 				if( !reserved )
 				{
+					PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 					if ( g_Game.IsLeftCtrlDown() )
 					{
-						if( item.GetInventory().CanRemoveEntity() )
+						if( itemAtPos && itemAtPos.GetInventory().CanRemoveEntity() )
 						{
-							GetGame().GetPlayer().PhysicalPredictiveDropItem( item );
+							if( itemAtPos.GetTargetQuantityMax() < itemAtPos.GetQuantity() )
+								itemAtPos.SplitIntoStackMaxClient( player, -1 );
+							else
+								player.PredictiveTakeEntityToInventory( FindInventoryLocationType.ANY, itemAtPos );
 						}
 					}
 					else
 					{
-						PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-						
 						bool draggable = !player.GetInventory().HasInventoryReservation( item, null ) && !player.GetInventory().IsInventoryLocked() && item.GetInventory().CanRemoveEntity() && !player.IsItemsToDelete();
 						ItemManager.GetInstance().SetWidgetDraggable( w, draggable );
 					}

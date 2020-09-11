@@ -550,7 +550,7 @@ class GameInventory
 	proto native bool CanAddSwappedEntity (notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2);
 
 	///@{ reservations
-	const int c_InventoryReservationTimeoutMS = 15000;
+	const int c_InventoryReservationTimeoutMS = 5000;
 	const int c_InventoryReservationTimeoutShortMS = 3000;
 	static proto native bool AddInventoryReservation (EntityAI item, InventoryLocation dst, int timeout_ms);
 	static proto native bool ExtendInventoryReservation (EntityAI item, InventoryLocation dst, int timeout_ms);

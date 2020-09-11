@@ -295,11 +295,14 @@ class Attachments
 	
 	bool TransferItemToVicinity()
 	{
-		EntityAI item = GetFocusedEntity();
+		ItemBase item = ItemBase.Cast(GetFocusedEntity());
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if( item && !GetFocusedIcon().IsOutOfReach() )
 		{
-			player.PhysicalPredictiveDropItem( item );
+			if( item.GetTargetQuantityMax() < item.GetQuantity() )
+				item.SplitIntoStackMaxClient( null, -1 );
+			else
+				player.PhysicalPredictiveDropItem( item );
 			return true;
 		}
 		return false;

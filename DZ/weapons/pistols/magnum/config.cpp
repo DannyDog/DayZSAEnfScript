@@ -59,7 +59,7 @@ class cfgWeapons
 			begin1[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_2",1,1,700};
 			begin2[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_1",1,1,700};
 			soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin2",0.33333};
-			reloadTime = 0.25;
+			reloadTime = 0.19;
 			dispersion = 0.009;
 			magazineSlot = "magazine";
 		};
@@ -93,7 +93,7 @@ class cfgWeapons
 				begin1[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_2",1,1,700};
 				begin2[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_1",1,1,700};
 				soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin2",0.33333};
-				reloadTime = 0.25;
+				reloadTime = 0.19;
 				dispersion = 0.009;
 				magazineSlot = "magazine";
 			};

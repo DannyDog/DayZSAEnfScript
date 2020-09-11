@@ -57,7 +57,8 @@ class PlayerBase extends ManBase
 	ref DamageDealtEffect			m_DamageDealtEffect;
 	ref FlashbangEffect				m_FlashbangEffect;
 	ref EffectParticle 				m_FliesEff;
-	ref TInputActionMap				m_InputActionMap;
+	ref TInputActionMap				m_InputActionMapControled;
+	ref TInputActionMap				m_InputActionMapAsTarget;
 	bool							m_ActionsInitialize;
 	//ref CraftingMeta 				m_CraftingMeta;
 	ref WeaponManager				m_WeaponManager;
@@ -914,30 +915,30 @@ class PlayerBase extends ManBase
 	// --------------------------------------------------
 	// User Actions
 	//---------------------------------------------------
-	void SetActions()
+	void SetActions(out TInputActionMap InputActionMap)
 	{
-		AddAction(ActionOpenDoors);
-		AddAction(ActionCloseDoors);
-		AddAction(ActionEnterLadder);
-		AddAction(ActionExitLadder);
+		AddAction(ActionOpenDoors, InputActionMap);
+		AddAction(ActionCloseDoors, InputActionMap);
+		AddAction(ActionEnterLadder, InputActionMap);
+		AddAction(ActionExitLadder, InputActionMap);
 		//AddAction(ActionWorldCraft);//??
 		//AddAction(ActionWorldCraftSwitch);//??
 		
 		//-----------CheckIfCanMOveToTarget----------
-		AddAction(ActionStartEngine);
-		AddAction(ActionStopEngine);
-		AddAction(ActionSwitchSeats);
+		AddAction(ActionStartEngine, InputActionMap);
+		AddAction(ActionStopEngine, InputActionMap);
+		AddAction(ActionSwitchSeats, InputActionMap);
 		//AddAction(ActionTakeMaterialToHandsSwitch);
-		AddAction(ActionUncoverHeadSelf);
+		AddAction(ActionUncoverHeadSelf, InputActionMap);
 		//AddAction(ActionAttach);
-		AddAction(ActionDrinkPondContinuous);
-		AddAction(ActionIgniteFireplaceByAir);
-		AddAction(ActionMineBushByHand);
+		AddAction(ActionDrinkPondContinuous, InputActionMap);
+		AddAction(ActionIgniteFireplaceByAir, InputActionMap);
+		AddAction(ActionMineBushByHand, InputActionMap);
 		
-		AddAction(ActionUngagSelf);
-		AddAction(ActionLockedDoors);
-		AddAction(ActionWashHandsWaterOne);
-		AddAction(ActionGetOutTransport);
+		AddAction(ActionUngagSelf, InputActionMap);
+		AddAction(ActionLockedDoors, InputActionMap);
+		AddAction(ActionWashHandsWaterOne, InputActionMap);
+		AddAction(ActionGetOutTransport, InputActionMap);
 		//AddAction(ActionSwitchLights);
 		//AddAction(ActionTakeMaterialToHands);
 		
@@ -957,28 +958,23 @@ class PlayerBase extends ManBase
 		
 	}
 	
-	void SetActionsRemoteTarget()
+	void SetActionsRemoteTarget( out TInputActionMap InputActionMap)
 	{
-		AddAction(ActionCPR);
-		AddAction(ActionUncoverHeadTarget);
-		AddAction(ActionUngagTarget);
-		AddAction(ActionCheckPulse);
-		AddAction(ActionPullBodyFromTransport);
+		AddAction(ActionCPR, InputActionMap);
+		AddAction(ActionUncoverHeadTarget, InputActionMap);
+		AddAction(ActionUngagTarget, InputActionMap);
+		AddAction(ActionCheckPulse, InputActionMap);
+		AddAction(ActionPullBodyFromTransport, InputActionMap);
 		//AddAction(AT_GIVE_ITEM);
 	}
 	
 	void InitializeActions()
 	{
-		if (IsControlledPlayer())
-		{
-			m_InputActionMap = new TInputActionMap;
-			SetActions();
-		}
-		else
-		{
-			m_InputActionMap = new TInputActionMap;
-			SetActionsRemoteTarget();
-		}
+		m_InputActionMapControled = new TInputActionMap;
+		SetActions(m_InputActionMapControled);
+
+		m_InputActionMapAsTarget = new TInputActionMap;
+		SetActionsRemoteTarget(m_InputActionMapAsTarget);
 	}
 	
 	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
@@ -989,10 +985,18 @@ class PlayerBase extends ManBase
 			InitializeActions();
 		}
 		
-		actions = m_InputActionMap.Get(action_input_type);
+		if(IsControlledPlayer())
+		{
+			actions = m_InputActionMapControled.Get(action_input_type);
+		}
+		else
+		{
+			actions = m_InputActionMapAsTarget.Get(action_input_type);
+		}
+		
 	}
 	
-	void AddAction(typename actionName)
+	void AddAction(typename actionName, out TInputActionMap InputActionMap )
 	{
 		ActionBase action = GetActionManager().GetAction(actionName);
 
@@ -1003,21 +1007,21 @@ class PlayerBase extends ManBase
 			return;
 		}
 		
-		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		ref array<ActionBase_Basic> action_array = InputActionMap.Get( ai );
 		
 		if(!action_array)
 		{
 			action_array = new array<ActionBase_Basic>;
-			m_InputActionMap.Insert(ai, action_array);
+			InputActionMap.Insert(ai, action_array);
 		}
 		action_array.Insert(action);
 	}
 	
-	void RemoveAction(typename actionName)
+	void RemoveAction(typename actionName, out TInputActionMap InputActionMap)
 	{
 		ActionBase action = GetActionManager().GetAction(actionName);
 		typename ai = action.GetInputType();
-		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
+		ref array<ActionBase_Basic> action_array = InputActionMap.Get( ai );
 		
 		if(action_array)
 		{
@@ -1029,7 +1033,7 @@ class PlayerBase extends ManBase
 				}
 			}
 			action_array = new array<ActionBase_Basic>;
-			m_InputActionMap.Insert(ai, action_array);
+			InputActionMap.Insert(ai, action_array);
 		}
 		action_array.Insert(action); 
 	}
@@ -3361,33 +3365,40 @@ class PlayerBase extends ManBase
 	//Reload weapon with given magazine
 	void ReloadWeapon( EntityAI weapon, EntityAI magazine )
 	{
-		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 		{
-			if (GetWeaponManager().IsRunning())
+			ActionManagerClient mngr_client;
+			CastTo(mngr_client, GetActionManager());
+			
+			if (mngr_client && FirearmActionLoadMultiBulletRadial.Cast(mngr_client.GetRunningAction()))
 			{
-				GetWeaponManager().LoadMultiBulletStop();
+				mngr_client.Interrupt();
 			}
-			else if( GetHumanInventory().GetEntityInHands()!= magazine )
+			else if ( GetHumanInventory().GetEntityInHands()!= magazine )
 			{
 				Weapon_Base wpn;
 				Magazine mag;
 				Class.CastTo( wpn,  weapon );
 				Class.CastTo( mag,  magazine );
-				if( GetWeaponManager().CanUnjam(wpn) )
+				if ( GetWeaponManager().CanUnjam(wpn) )
 				{
 					GetWeaponManager().Unjam();
 				}
-				else if( GetWeaponManager().CanAttachMagazine( wpn, mag ) )
+				else if ( GetWeaponManager().CanAttachMagazine( wpn, mag ) )
 				{
 					GetWeaponManager().AttachMagazine( mag );
 				}
-				else if( GetWeaponManager().CanSwapMagazine( wpn, mag ) )
+				else if ( GetWeaponManager().CanSwapMagazine( wpn, mag ) )
 				{
 					GetWeaponManager().SwapMagazine( mag );
 				}
-				else if( GetWeaponManager().CanLoadBullet( wpn, mag ) )
+				else if ( GetWeaponManager().CanLoadBullet( wpn, mag ) )
 				{
-					GetWeaponManager().LoadMultiBullet( mag );
+					//GetWeaponManager().LoadMultiBullet( mag );
+
+					ActionTarget atrg = new ActionTarget(mag, this, -1, vector.Zero, -1.0);
+					if ( mngr_client && !mngr_client.GetRunningAction() && mngr_client.GetAction(FirearmActionLoadMultiBulletRadial).Can(this, atrg, wpn) )
+						mngr_client.PerformActionStart(mngr_client.GetAction(FirearmActionLoadMultiBulletRadial), atrg, wpn);
 				}
 			}
 		}		

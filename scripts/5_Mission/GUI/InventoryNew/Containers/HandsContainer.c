@@ -468,15 +468,16 @@ class HandsContainer: Container
 		if( m_ActiveIndex == 1 )
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-			EntityAI item_in_hands = player.GetHumanInventory().GetEntityInHands();
+			ItemBase item_in_hands = ItemBase.Cast(player.GetHumanInventory().GetEntityInHands());
 			if( item_in_hands && player.CanDropEntity( item_in_hands ) && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() )
 			{
-				if( player.PhysicalPredictiveDropItem( item_in_hands ) )
-				{
-					m_MainWidget.FindAnyWidget("Selected").Show( false );
-					m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
-					return true;
-				}
+				if( item_in_hands.GetTargetQuantityMax() < item_in_hands.GetQuantity() )
+					item_in_hands.SplitIntoStackMaxClient( null, -1 );
+				else
+					player.PhysicalPredictiveDropItem( item_in_hands );
+				m_MainWidget.FindAnyWidget("Selected").Show( false );
+				m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
+				return true;
 			}
 		}
 		else if( GetFocusedContainer() )
@@ -819,7 +820,9 @@ class HandsContainer: Container
 					return;
 				}
 			}
-			m_player.PredictiveTakeEntityToTargetAttachment( m_am_entity1, m_am_entity2 );
+			
+			SplitItemUtils.TakeOrSplitToInventory(m_player, m_am_entity1, m_am_entity2);
+			//m_player.PredictiveTakeEntityToTargetAttachment( m_am_entity1, m_am_entity2 );
 		}
 
 		if ( combinationFlags & InventoryCombinationFlags.ADD_AS_CARGO )

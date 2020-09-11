@@ -444,7 +444,7 @@ class Inventory: LayoutHolder
 				InventoryLocation il = new InventoryLocation;
 				if( player && player.GetInventory().FindFreeLocationFor(item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, il) )
 				{
-					player.PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
+					SplitItemUtils.TakeOrSplitToInventory(player, player, item);
 				}
 			}
 		}
@@ -603,137 +603,141 @@ class Inventory: LayoutHolder
 		if ( player )
 			dpi = player.GetDayZPlayerInventory();
 		
-		if( GetGame().GetInput().LocalPress( "UAUIExpandCollapseContainer", false ) && !dpi.IsProcessing() )
+		// There's a second one a bit below
+		if ( dpi && !dpi.IsProcessing() )
 		{
-			if( m_RightArea.IsActive() )
+			if ( GetGame().GetInput().LocalPress( "UAUIExpandCollapseContainer", false ) )
 			{
-				m_RightArea.ExpandCollapseContainer();
-			}
-			else if( m_LeftArea.IsActive() )
-			{
-				m_LeftArea.ExpandCollapseContainer();
-			}
-		}
-		
-		if( GetGame().GetInput().LocalPress( "UAUIFastEquipOrSplit", false ) && !dpi.IsProcessing() )
-		{
-			if( m_HandsArea.IsActive() )
-			{
-				if( m_HandsArea.EquipItem() )
+				if ( m_RightArea.IsActive() )
 				{
-					m_HandsArea.SetActive( false );
-					m_HandsArea.UnfocusGrid();
-					m_RightArea.SetActive( true );
+					m_RightArea.ExpandCollapseContainer();
 				}
-			}
-			else if( m_RightArea.IsActive() )
-			{
-				m_RightArea.EquipItem();
-			}
-			else if( m_LeftArea.IsActive() )
-			{
-				m_LeftArea.EquipItem();
-			}
-			
-			UpdateConsoleToolbar();
-			ItemManager.GetInstance().HideTooltip();
-		}
-		
-		if( GetGame().GetInput().LocalRelease( "UAUISelect", false ) )
-		{
-			if( m_RightArea.IsActive() )
-			{
-				if( m_RightArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+				else if ( m_LeftArea.IsActive() )
 				{
-					m_RightArea.SetActive( false );
-					m_RightArea.UnfocusGrid();
-					m_HandsArea.SetActive( true );
-				}
-			}
-			else if( m_LeftArea.IsActive() )
-			{
-				if( m_LeftArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
-				{
-					//m_LeftArea.SetActive( false );
-					//m_LeftArea.UnfocusGrid();
-					//m_RightArea.SetActive( true );
-				}
-			}
-			else if( m_HandsArea.IsActive() )
-			{
-				if( m_HandsArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
-				{
-					m_HandsArea.SetActive( false );
-					m_HandsArea.UnfocusGrid();
-					m_RightArea.SetActive( true );
+					m_LeftArea.ExpandCollapseContainer();
 				}
 			}
 			
-			DisableMicromanagement();
-			UpdateConsoleToolbar();
-		}
-		
-		if( GetGame().GetInput().LocalPress( "UAUIFastTransferToVicinity", false ) && !dpi.IsProcessing() )
-		{
-			if( m_HandsArea.IsActive() )
+			if ( GetGame().GetInput().LocalPress( "UAUIFastEquipOrSplit", false ) )
 			{
-				item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				if ( m_HandsArea.IsActive() )
 				{
-					if( m_HandsArea.TransferItemToVicinity() )
+					if ( m_HandsArea.EquipItem() )
 					{
 						m_HandsArea.SetActive( false );
 						m_HandsArea.UnfocusGrid();
-						m_LeftArea.SetActive( true );
-						m_HadFastTransferred = true;
+						m_RightArea.SetActive( true );
 					}
 				}
-			}
-			else if( m_RightArea.IsActive() )
-			{
-				item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				else if ( m_RightArea.IsActive() )
 				{
-					if( m_RightArea.TransferItemToVicinity() )
-					{
-						//m_RightArea.SetActive( false );
-						//m_RightArea.UnfocusGrid();
-						//m_LeftArea.SetActive( true );
-						m_HadFastTransferred = true;
-					}
+					m_RightArea.EquipItem();
 				}
-			}
-			else if( m_LeftArea.IsActive() )
-			{
-				item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				else if ( m_LeftArea.IsActive() )
 				{
-					m_LeftArea.TransferItemToVicinity();
-					m_HadFastTransferred = true;
+					m_LeftArea.EquipItem();
 				}
+				
+				UpdateConsoleToolbar();
+				ItemManager.GetInstance().HideTooltip();
 			}
 			
-			UpdateConsoleToolbar();
-			ItemManager.GetInstance().HideTooltip();
+			if ( GetGame().GetInput().LocalRelease( "UAUISelect", false ) )
+			{
+				if ( m_RightArea.IsActive() )
+				{
+					if ( m_RightArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+					{
+						m_RightArea.SetActive( false );
+						m_RightArea.UnfocusGrid();
+						m_HandsArea.SetActive( true );
+					}
+				}
+				else if ( m_LeftArea.IsActive() )
+				{
+					if ( m_LeftArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+					{
+						//m_LeftArea.SetActive( false );
+						//m_LeftArea.UnfocusGrid();
+						//m_RightArea.SetActive( true );
+					}
+				}
+				else if ( m_HandsArea.IsActive() )
+				{
+					if ( m_HandsArea.Select() && !ItemManager.GetInstance().IsMicromanagmentMode() )
+					{
+						m_HandsArea.SetActive( false );
+						m_HandsArea.UnfocusGrid();
+						m_RightArea.SetActive( true );
+					}
+				}
+				
+				DisableMicromanagement();
+				UpdateConsoleToolbar();
+			}
+			
+			if ( GetGame().GetInput().LocalPress( "UAUIFastTransferToVicinity", false ) )
+			{
+				if ( m_HandsArea.IsActive() )
+				{
+					item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
+					{
+						if ( m_HandsArea.TransferItemToVicinity() )
+						{
+							m_HandsArea.SetActive( false );
+							m_HandsArea.UnfocusGrid();
+							m_LeftArea.SetActive( true );
+							m_HadFastTransferred = true;
+						}
+					}
+				}
+				else if ( m_RightArea.IsActive() )
+				{
+					item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
+					{
+						if ( m_RightArea.TransferItemToVicinity() )
+						{
+							//m_RightArea.SetActive( false );
+							//m_RightArea.UnfocusGrid();
+							//m_LeftArea.SetActive( true );
+							m_HadFastTransferred = true;
+						}
+					}
+				}
+				else if ( m_LeftArea.IsActive() )
+				{
+					item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
+					{
+						m_LeftArea.TransferItemToVicinity();
+						m_HadFastTransferred = true;
+					}
+				}
+				
+				UpdateConsoleToolbar();
+				ItemManager.GetInstance().HideTooltip();
+			}
 		}
 		
-		if( GetGame().GetInput().LocalPress( "UAUIInspectItem", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUIInspectItem", false ) )
 		{
-			if( m_HandsArea.IsActive() )
+			if ( m_HandsArea.IsActive() )
 			{
-				if( m_HandsArea.InspectItem() )
+				if ( m_HandsArea.InspectItem() )
 				{
 					m_HadInspected = true;
 				}
 			}
-			else if( m_RightArea.IsActive() )
+			else if ( m_RightArea.IsActive() )
 			{
-				if( m_RightArea.InspectItem() )
+				if ( m_RightArea.InspectItem() )
 				{
 					m_HadInspected = true;
 				}
 			}
-			else if( m_LeftArea.IsActive() )
+			else if ( m_LeftArea.IsActive() )
 			{
 				if( m_LeftArea.InspectItem() )
 				{
@@ -744,82 +748,85 @@ class Inventory: LayoutHolder
 			UpdateConsoleToolbar();
 		}
 		
-		if( GetGame().GetInput().LocalPress( "UAUIFastTransferItem", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUIFastTransferItem", false ) )
 			m_HadFastTransferred = false;
 		
-		if( GetGame().GetInput().LocalPress( "UAUIInspectItem", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUIInspectItem", false ) )
 			m_HadInspected = false;
 		
-		if( !m_HadFastTransferred && GetGame().GetInput().LocalRelease( "UAUIFastTransferItem", false ) && !dpi.IsProcessing() )
+		if ( dpi && !dpi.IsProcessing() )
 		{
-			if( ItemManager.GetInstance().IsMicromanagmentMode() )
+			if ( !m_HadFastTransferred && GetGame().GetInput().LocalRelease( "UAUIFastTransferItem", false ) )
 			{
-				return;
-			}
-			
-			if( m_RightArea.IsActive() )
-			{
-				item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				if ( ItemManager.GetInstance().IsMicromanagmentMode() )
 				{
-					m_RightArea.TransferItem();
+					return;
 				}
-			}
-			else if( m_LeftArea.IsActive() )
-			{
-				item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				
+				if ( m_RightArea.IsActive() )
 				{
-					if( m_LeftArea.TransferItem() )
+					item = InventoryItem.Cast( m_RightArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
 					{
-						//m_LeftArea.SetActive( false );
-						//m_LeftArea.UnfocusGrid();
-						//m_RightArea.SetActive( true );
+						m_RightArea.TransferItem();
 					}
 				}
-			}
-			else if( m_HandsArea.IsActive() )
-			{
-				item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
-				if ( item && item.GetInventory().CanRemoveEntity() )
+				else if ( m_LeftArea.IsActive() )
 				{
-					if( m_HandsArea.TransferItem() )
+					item = InventoryItem.Cast( m_LeftArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
 					{
-						m_HandsArea.SetActive( false );
-						m_HandsArea.UnfocusGrid();
-						m_RightArea.SetActive( true );
+						if ( m_LeftArea.TransferItem() )
+						{
+							//m_LeftArea.SetActive( false );
+							//m_LeftArea.UnfocusGrid();
+							//m_RightArea.SetActive( true );
+						}
 					}
 				}
+				else if ( m_HandsArea.IsActive() )
+				{
+					item = InventoryItem.Cast( m_HandsArea.GetFocusedItem() );
+					if ( item && item.GetInventory().CanRemoveEntity() )
+					{
+						if ( m_HandsArea.TransferItem() )
+						{
+							m_HandsArea.SetActive( false );
+							m_HandsArea.UnfocusGrid();
+							m_RightArea.SetActive( true );
+						}
+					}
+				}
+				
+				UpdateConsoleToolbar();
+				ItemManager.GetInstance().HideTooltip();
 			}
-			
-			UpdateConsoleToolbar();
-			ItemManager.GetInstance().HideTooltip();
 		}
 		
-		if( GetGame().GetInput().LocalPress( "UAUINextUp", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUINextUp", false ) )
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
+			if ( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
 			
-			if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+			if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 			{
 				m_RightArea.UnfocusGrid();
 				m_LeftArea.UnfocusGrid();
 				m_HandsArea.UnfocusGrid();
 			}
-			if( m_LeftArea.IsActive() )
+			if ( m_LeftArea.IsActive() )
 			{
 				m_LeftArea.SetPreviousActive();
 			}
-			else if( m_RightArea.IsActive() )
+			else if ( m_RightArea.IsActive() )
 			{
 				m_RightArea.SetPreviousActive();
 			}
-			else if( m_HandsArea.IsActive() )
+			else if ( m_HandsArea.IsActive() )
 			{
 				m_HandsArea.SetPreviousActive();
 			}
@@ -827,31 +834,31 @@ class Inventory: LayoutHolder
 			UpdateConsoleToolbar();
 		}
 
-		if( GetGame().GetInput().LocalPress( "UAUINextDown", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUINextDown", false ) )
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
+			if ( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
 			
-			if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+			if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 			{
 				m_RightArea.UnfocusGrid();
 				m_LeftArea.UnfocusGrid();
 				m_HandsArea.UnfocusGrid();
 			}
 			
-			if( m_LeftArea.IsActive() )
+			if ( m_LeftArea.IsActive() )
 			{
 				m_LeftArea.SetNextActive();
 			}
-			else if( m_RightArea.IsActive() )
+			else if ( m_RightArea.IsActive() )
 			{
 				m_RightArea.SetNextActive();
 			}
-			else if( m_HandsArea.IsActive() )
+			else if ( m_HandsArea.IsActive() )
 			{
 				m_HandsArea.SetNextActive();
 			}
@@ -859,23 +866,23 @@ class Inventory: LayoutHolder
 			UpdateConsoleToolbar();
 		}
 
-		if( GetGame().GetInput().LocalPress( "UAUITabLeft", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUITabLeft", false ) )
 		{
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
+			if ( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
 			
-			if( ItemManager.GetInstance().IsMicromanagmentMode() )
+			if ( ItemManager.GetInstance().IsMicromanagmentMode() )
 			{
 				ItemManager.GetInstance().SetItemMoving( true );
 			}
 			
-			if( m_LeftArea.IsActive() )
+			if ( m_LeftArea.IsActive() )
 			{
-				if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+				if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 				{
 					m_LeftArea.UnfocusGrid();
 				}
@@ -884,9 +891,9 @@ class Inventory: LayoutHolder
 				
 				UpdateConsoleToolbar();
 			}
-			else if( m_RightArea.IsActive() )
+			else if ( m_RightArea.IsActive() )
 			{
-				if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+				if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 				{
 					m_RightArea.UnfocusGrid();
 				}
@@ -897,7 +904,7 @@ class Inventory: LayoutHolder
 
 				UpdateConsoleToolbar();
 			}
-			else if( m_HandsArea.IsActive() )
+			else if ( m_HandsArea.IsActive() )
 			{
 				m_HandsArea.UnfocusGrid();
 				m_HandsArea.SetActive( false );
@@ -907,23 +914,23 @@ class Inventory: LayoutHolder
 			}
 		}
 
-		if( GetGame().GetInput().LocalPress( "UAUITabRight", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUITabRight", false ) )
 		{
-			if( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
+			if ( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
 			}
 			
-			if( ItemManager.GetInstance().IsMicromanagmentMode() )
+			if ( ItemManager.GetInstance().IsMicromanagmentMode() )
 			{
 				ItemManager.GetInstance().SetItemMoving( true );
 			}
 			
 			ItemManager.GetInstance().HideTooltip();
 			
-			if( m_LeftArea.IsActive() )
+			if ( m_LeftArea.IsActive() )
 			{
-				if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+				if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 				{
 					m_LeftArea.UnfocusGrid();
 				}
@@ -934,9 +941,9 @@ class Inventory: LayoutHolder
 				
 				UpdateConsoleToolbar();
 			}
-			else if( m_RightArea.IsActive() )
+			else if ( m_RightArea.IsActive() )
 			{
-				if( !ItemManager.GetInstance().IsMicromanagmentMode() )
+				if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
 				{
 					m_RightArea.UnfocusGrid();
 				}
@@ -945,7 +952,7 @@ class Inventory: LayoutHolder
 				
 				UpdateConsoleToolbar();
 			}
-			else if( m_HandsArea.IsActive() )
+			else if ( m_HandsArea.IsActive() )
 			{
 				m_HandsArea.UnfocusGrid();
 				m_HandsArea.SetActive( false );
@@ -957,7 +964,7 @@ class Inventory: LayoutHolder
 		}
 		
 		//Open Quickbar radial menu
-		if( GetGame().GetInput().LocalPress( "UAUIQuickbarRadialInventoryOpen", false ) )
+		if ( GetGame().GetInput().LocalPress( "UAUIQuickbarRadialInventoryOpen", false ) )
 		{
 			//assign item
 			EntityAI item_to_assign;
@@ -972,7 +979,7 @@ class Inventory: LayoutHolder
 				item_to_assign = m_RightArea.GetFocusedItem();
 			}
 			
-			if ( item_to_assign )
+			if ( item_to_assign && dpi && !dpi.IsProcessing() )
 			{
 				RadialQuickbarMenu.SetItemToAssign( item_to_assign );
 				
@@ -986,20 +993,20 @@ class Inventory: LayoutHolder
 		#endif
 		
 		MissionGameplay mission = MissionGameplay.Cast( GetGame().GetMission() );
-		if( !m_HadInspected && GetGame().GetInput().LocalRelease( "UAUIBack", false ) )
+		if ( !m_HadInspected && GetGame().GetInput().LocalRelease( "UAUIBack", false ) )
 		{
-			if( GetMainWidget().IsVisible() )
+			if ( GetMainWidget().IsVisible() )
 			{
 			#ifdef PLATFORM_CONSOLE
 				DisableMicromanagement();
-				if( m_RightArea.IsActive() )
+				if ( m_RightArea.IsActive() )
 				{
-					if( m_RightArea.Combine() )
+					if ( m_RightArea.Combine() )
 						mission.HideInventory();
 				}
-				else if( m_LeftArea.IsActive() )
+				else if ( m_LeftArea.IsActive() )
 				{
-					if( m_LeftArea.Combine() )
+					if ( m_LeftArea.Combine() )
 						mission.HideInventory();
 				}
 				else
@@ -1013,15 +1020,15 @@ class Inventory: LayoutHolder
 			}
 		}
 		
-		for( int i = 0; i < 10; i++ )
+		for ( int i = 0; i < 10; i++ )
 		{
-			if( !m_HoldingQB && GetGame().GetInput().LocalPress( "UAItem" + i, false ) )
+			if ( !m_HoldingQB && GetGame().GetInput().LocalPress( "UAItem" + i, false ) )
 			{
 				m_QBHoveredItems = InventoryItem.Cast( ItemManager.GetInstance().GetHoveredItem() );
 				m_HoldingQB = true;
 			}
 			
-			if( m_HoldingQB && GetGame().GetInput().LocalHold( "UAItem" + i, false ) )
+			if ( m_HoldingQB && GetGame().GetInput().LocalHold( "UAItem" + i, false ) )
 			{
 				
 				AddQuickbarItem( m_QBHoveredItems, i );

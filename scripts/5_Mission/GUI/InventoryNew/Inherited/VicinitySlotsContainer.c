@@ -256,22 +256,23 @@ class VicinitySlotsContainer: Container
 		
 		if( ItemManager.GetInstance().IsItemMoving() )
 		{
-			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
+			ItemBase selected_item = ItemBase.Cast(ItemManager.GetInstance().GetSelectedItem());
 			
 			if( selected_item && GetGame().GetPlayer().CanDropEntity( selected_item ) )
 			{
 				bool draggable = false;
-				if( ItemBase.Cast( selected_item ) )
-				{
-					PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-					draggable = !player.GetInventory().HasInventoryReservation( selected_item, null ) && !player.IsItemsToDelete();
-					draggable = draggable && selected_item.CanPutIntoHands( GetGame().GetPlayer() );
-					draggable = draggable && selected_item.GetInventory().CanRemoveEntity();
-				}
+
+				PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+				draggable = !player.GetInventory().HasInventoryReservation( selected_item, null ) && !player.IsItemsToDelete();
+				draggable = draggable && selected_item.CanPutIntoHands( GetGame().GetPlayer() );
+				draggable = draggable && selected_item.GetInventory().CanRemoveEntity();
 				
 				if( draggable && m_ShowedItems.Find( selected_item ) == -1 )
 				{
-					GetGame().GetPlayer().PhysicalPredictiveDropItem( selected_item );
+					if( selected_item.GetTargetQuantityMax() < selected_item.GetQuantity() )
+						selected_item.SplitIntoStackMaxClient( null, -1 );
+					else
+						player.PhysicalPredictiveDropItem( selected_item );
 					ItemManager.GetInstance().SetSelectedItem( null, null, null );
 					return true;
 				}
@@ -670,7 +671,7 @@ class VicinitySlotsContainer: Container
 		}
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		EntityAI item = ipw.GetItem();
+		ItemBase item = ItemBase.Cast(ipw.GetItem());
 		
 		if( item )
 		{
@@ -679,7 +680,10 @@ class VicinitySlotsContainer: Container
 			
 			if( player.CanDropEntity( item ) )
 			{
-				player.PhysicalPredictiveDropItem( item );
+				if( item.GetTargetQuantityMax() < item.GetQuantity() )
+					item.SplitIntoStackMaxClient( null, -1 );
+				else
+					player.PhysicalPredictiveDropItem( item );
 			}
 		}
 	}

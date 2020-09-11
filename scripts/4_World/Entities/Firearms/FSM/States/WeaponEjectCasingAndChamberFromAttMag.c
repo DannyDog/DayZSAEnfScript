@@ -44,7 +44,7 @@ class WeaponEjectCasingMultiMuzzle extends WeaponStateBase
 	
 	override bool IsWaitingForActionFinish()
 	{
-		return true;
+		return false;
 	}
 };
 
@@ -116,7 +116,7 @@ class WeaponEjectAllMuzzles extends WeaponStateBase
 	
 	override bool IsWaitingForActionFinish () 
 	{ 
-		return true; 
+		return false; 
 	}
 };
 

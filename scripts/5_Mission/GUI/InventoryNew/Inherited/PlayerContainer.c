@@ -273,7 +273,7 @@ class PlayerContainer: CollapsibleContainer
 		
 		}
 
-		InventoryItem itemAtPos = InventoryItem.Cast( item );
+		ItemBase itemAtPos = ItemBase.Cast( item );
 		
 		if( item )
 		{
@@ -298,9 +298,12 @@ class PlayerContainer: CollapsibleContainer
 				{
 					if ( g_Game.IsLeftCtrlDown() )
 					{
-						if( item.GetInventory().CanRemoveEntity() )
+						if( itemAtPos && itemAtPos.GetInventory().CanRemoveEntity() )
 						{
-							GetGame().GetPlayer().PhysicalPredictiveDropItem( item );
+							if( itemAtPos.GetTargetQuantityMax() < itemAtPos.GetQuantity() )
+								itemAtPos.SplitIntoStackMaxClient( null, -1 );
+							else
+								m_Player.PhysicalPredictiveDropItem( itemAtPos );
 						}
 					}
 					else
@@ -723,10 +726,13 @@ class PlayerContainer: CollapsibleContainer
 		else
 		{
 			Man player = GetGame().GetPlayer();
-			EntityAI item = GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity();
+			ItemBase item = ItemBase.Cast(GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity());
 			if( item && player.CanDropEntity( item ) )
 			{
-				player.PhysicalPredictiveDropItem( item );
+				if( item.GetTargetQuantityMax() < item.GetQuantity() )
+					item.SplitIntoStackMaxClient( null, -1 );
+				else
+					player.PhysicalPredictiveDropItem( item );
 				return true;
 			}
 		}
@@ -1341,7 +1347,7 @@ class PlayerContainer: CollapsibleContainer
 			}
 			else if( receiver_item.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && !receiver_item.GetInventory().HasEntityInCargo( item ) )
 			{
-				GetGame().GetPlayer().PredictiveTakeEntityToTargetInventory( receiver_item, FindInventoryLocationType.ANY_CARGO, item );
+				SplitItemUtils.TakeOrSplitToInventory(real_player, receiver_item,item);
 
 				if ( menu )
 				{
@@ -1373,7 +1379,7 @@ class PlayerContainer: CollapsibleContainer
 		}
 		else if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
-			real_player.PredictiveTakeEntityToTargetInventory( m_Player, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
+			SplitItemUtils.TakeOrSplitToInventory(m_Player, m_Player, item);
 		}
 
 		if ( menu )

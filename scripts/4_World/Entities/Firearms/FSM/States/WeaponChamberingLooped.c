@@ -6,7 +6,7 @@ class LoopedChambering_EndLoop extends WeaponStartAction
 
 class LoopedChambering_Wait4ShowBullet2 extends WeaponStateBase
 { 
-	override bool IsWaitingForActionFinish () { return true; }
+	override bool IsWaitingForActionFinish () { return false; }
 };
 
 class LoopedChambering extends WeaponStateBase

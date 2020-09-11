@@ -170,7 +170,7 @@ class WeaponChambering_Cartridge_ChambToMag extends WeaponChambering_Cartridge
 //-----------MAGNUM-----------
 class WeaponChambering_MultiMuzzleMagnum extends WeaponChambering_Cartridge
 {
-	override bool IsWaitingForActionFinish () { return true; }
+	override bool IsWaitingForActionFinish () { return false; }
 	override void OnEntry(WeaponEventBase e)
 	{
 		super.OnEntry(e);

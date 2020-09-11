@@ -185,12 +185,15 @@ class AttachmentCategoriesRow: ClosableContainer
 	
 	override bool TransferItemToVicinity()
 	{
-		EntityAI item = GetFocusedEntity();
+		ItemBase item = ItemBase.Cast(GetFocusedEntity());
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		
 		if( item && !item.IsLockedInSlot() && !GetFocusedIcon().IsOutOfReach() )
 		{
-			player.PhysicalPredictiveDropItem( item );
+			if( item.GetTargetQuantityMax() < item.GetQuantity() )
+				item.SplitIntoStackMaxClient( null, -1 );
+			else
+				player.PhysicalPredictiveDropItem( item );
 			return true;
 		}
 		return false;

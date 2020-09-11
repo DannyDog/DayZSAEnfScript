@@ -8347,10 +8347,10 @@
         <value name="Tier4"/>
     </type>
     <type name="KitchenKnife">
-        <nominal>90</nominal>
+        <nominal>120</nominal>
         <lifetime>86400</lifetime>
         <restock>0</restock>
-        <min>70</min>
+        <min>100</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -8358,7 +8358,6 @@
         <category name="tools"/>
         <tag name="shelves"/>
         <usage name="Town"/>
-        <usage name="Village"/>
     </type>
     <type name="KobraOptic">
         <nominal>15</nominal>
@@ -9908,20 +9907,16 @@
         <usage name="Town"/>
     </type>
     <type name="Marmalade">
-        <nominal>20</nominal>
+        <nominal>35</nominal>
         <lifetime>86400</lifetime>
         <restock>60</restock>
-        <min>15</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <usage name="Town"/>
-        <usage name="Village"/>
-        <value name="Tier1"/>
-        <value name="Tier2"/>
-        <value name="Tier3"/>
     </type>
     <type name="Matchbox">
         <nominal>60</nominal>
@@ -11169,17 +11164,17 @@
         <usage name="Lunapark"/>
     </type>
     <type name="PeachesCan">
-        <nominal>20</nominal>
+        <nominal>25</nominal>
         <lifetime>86400</lifetime>
         <restock>60</restock>
-        <min>15</min>
+        <min>20</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <tag name="shelves"/>
-        <value name="Tier1"/>
+        <usage name="Town"/>
         <value name="Tier2"/>
         <value name="Tier3"/>
     </type>
@@ -11705,8 +11700,6 @@
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <tag name="shelves"/>
-        <usage name="Town"/>
-        <usage name="Village"/>
         <usage name="Hunting"/>
         <value name="Tier1"/>
         <value name="Tier2"/>
@@ -12281,10 +12274,10 @@
         <value name="Tier3"/>
     </type>
     <type name="Rice">
-        <nominal>20</nominal>
+        <nominal>35</nominal>
         <lifetime>86400</lifetime>
         <restock>60</restock>
-        <min>15</min>
+        <min>30</min>
         <quantmin>10</quantmin>
         <quantmax>100</quantmax>
         <cost>100</cost>
@@ -12292,10 +12285,8 @@
         <category name="food"/>
         <tag name="shelves"/>
         <usage name="Town"/>
-        <usage name="Village"/>
         <value name="Tier1"/>
         <value name="Tier2"/>
-        <value name="Tier3"/>
     </type>
     <type name="RidersJacket_Black">
         <nominal>20</nominal>
@@ -12499,7 +12490,7 @@
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <tag name="shelves"/>
-        <value name="Tier1"/>
+        <usage name="Village"/>
         <value name="Tier2"/>
         <value name="Tier3"/>
     </type>
@@ -13758,6 +13749,7 @@
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <tag name="shelves"/>
+        <usage name="Village"/>
         <value name="Tier1"/>
         <value name="Tier2"/>
     </type>
@@ -13915,10 +13907,8 @@
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="tools"/>
         <tag name="shelves"/>
-        <usage name="Town"/>
         <usage name="Village"/>
         <value name="Tier1"/>
-        <value name="Tier2"/>
     </type>
     <type name="Stone">
         <nominal>0</nominal>
@@ -14767,18 +14757,18 @@
         <usage name="Industrial"/>
     </type>
     <type name="TunaCan">
-        <nominal>20</nominal>
+        <nominal>28</nominal>
         <lifetime>86400</lifetime>
         <restock>60</restock>
-        <min>15</min>
+        <min>22</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
         <category name="food"/>
         <tag name="shelves"/>
+        <usage name="Village"/>
         <value name="Tier1"/>
-        <value name="Tier2"/>
     </type>
     <type name="TunaCan_Opened">
         <nominal>0</nominal>

@@ -15,6 +15,6 @@ class BulletHide extends WeaponStateBase
 
 class BulletHide_W4T extends BulletHide
 {
-	override bool IsWaitingForActionFinish () { return true; }
+	override bool IsWaitingForActionFinish () { return false; }
 };
 

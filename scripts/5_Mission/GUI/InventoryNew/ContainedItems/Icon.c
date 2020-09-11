@@ -541,7 +541,7 @@ class Icon: LayoutHolder
 		}
 		if( combinationFlags & InventoryCombinationFlags.ADD_AS_CARGO )
 		{
-			m_player.PredictiveTakeEntityToTargetCargo(m_am_entity1, m_am_entity2);
+			SplitItemUtils.TakeOrSplitToInventory(m_player, m_am_entity1, m_am_entity2);
 		}
 		if( combinationFlags & InventoryCombinationFlags.SWAP )
 		{
@@ -926,18 +926,20 @@ class Icon: LayoutHolder
 			}
 			else if ( button == MouseState.LEFT )
 			{
+				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 				if(g_Game.IsLeftCtrlDown())
 				{
 					if( m_Item.GetInventory().CanRemoveEntity() )
 					{
-						GetGame().GetPlayer().PhysicalPredictiveDropItem( m_Item );
+						if( m_Item.GetTargetQuantityMax() < m_Item.GetQuantity() )
+							m_Item.SplitIntoStackMaxClient( null, -1 );
+						else
+							player.PhysicalPredictiveDropItem( m_Item );
 						ItemManager.GetInstance().SetWidgetDraggable( w, false );	
 					}
 				}
 				else
 				{
-					PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		
 					InventoryLocation il = new InventoryLocation;
 					m_Obj.GetInventory().GetCurrentInventoryLocation( il );
 	

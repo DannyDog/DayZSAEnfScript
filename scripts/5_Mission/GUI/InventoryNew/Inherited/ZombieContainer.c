@@ -890,10 +890,13 @@ class ZombieContainer: CollapsibleContainer
 		else
 		{
 			Man player = GetGame().GetPlayer();
-			EntityAI item = GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity();
+			ItemBase item = ItemBase.Cast(GetSlotsIcon( m_FocusedRow, m_FocusedColumn ).GetEntity());
 			if( item && player.CanDropEntity( item ) )
 			{
-				player.PhysicalPredictiveDropItem( item );
+				if( item.GetTargetQuantityMax() < item.GetQuantity() )
+					item.SplitIntoStackMaxClient( null, -1 );
+				else
+					player.PhysicalPredictiveDropItem( item );
 				return true;
 			}
 		}

@@ -539,10 +539,13 @@ class CargoContainer extends Container
 		Man player = GetGame().GetPlayer();
 		if( GetFocusedItem() )
 		{
-			EntityAI entity = EntityAI.Cast( GetFocusedItem().GetObject() );
-			if( entity && player.CanDropEntity( entity ) )
+			ItemBase item = ItemBase.Cast( GetFocusedItem().GetObject() );
+			if( item && player.CanDropEntity( item ) )
 			{
-				player.PhysicalPredictiveDropItem( entity );
+				if( item.GetTargetQuantityMax() < item.GetQuantity() )
+					item.SplitIntoStackMaxClient( null, -1 );
+				else
+					player.PhysicalPredictiveDropItem( item );
 				return true;
 			}
 		}

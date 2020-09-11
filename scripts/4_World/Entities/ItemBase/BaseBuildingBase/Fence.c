@@ -573,7 +573,7 @@ class Fence extends BaseBuildingBase
 		int slot_id;
 		string slot_name;
 		string slot_name_mounted;
-		if ( GetBarbedWire1() )
+		if ( GetBarbedWire1() && GetBarbedWire1().IsMounted() )
 		{
 			GetBarbedWire1().GetInventory().GetCurrentAttachmentSlotInfo(slot_id,slot_name);
 			slot_name_mounted = slot_name + "_Mounted";
@@ -586,7 +586,7 @@ class Fence extends BaseBuildingBase
 				super.CreateAreaDamage( slot_name_mounted, rotation_angle );
 			}
 		}
-		if ( GetBarbedWire2() )
+		if ( GetBarbedWire2() && GetBarbedWire2().IsMounted() )
 		{
 			GetBarbedWire2().GetInventory().GetCurrentAttachmentSlotInfo(slot_id,slot_name);
 			slot_name_mounted = slot_name + "_Mounted";
