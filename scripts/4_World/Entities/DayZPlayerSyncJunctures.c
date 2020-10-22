@@ -24,6 +24,8 @@ class DayZPlayerSyncJunctures
 	static const int SJ_WEAPON_LIFT						= 18;
 	static const int SJ_WEAPON_RAISE_COMPLETED			= 19;
 	static const int SJ_DELETE_ITEM						= 20;
+	static const int SJ_BROKEN_LEGS						= 21;
+	static const int SJ_SHOCK							= 22;
 	
 	//-------------------------------------------------------------
 	//!
@@ -298,5 +300,54 @@ class DayZPlayerSyncJunctures
 		ctx.Write(item);
 
 		pPlayer.SendSyncJuncture(SJ_DELETE_ITEM, ctx);
+	}
+	
+	
+	//-------------------------------------------------------------
+	//!
+	//! BrokenLegs
+	//! 
+	
+	static void SendBrokenLegs(DayZPlayer pPlayer, bool canPlaySound, eBrokenLegs currentState, eBrokenLegs localState)
+	{
+		ScriptJunctureData ctx = new ScriptJunctureData;
+		ctx.Write(canPlaySound);
+		ctx.Write(currentState);
+		ctx.Write(localState);
+
+		pPlayer.SendSyncJuncture(SJ_BROKEN_LEGS, ctx);
+	}
+	
+	static bool ReadBrokenLegsParams(ParamsReadContext pCtx, out bool canPlaySound, out eBrokenLegs currentState, out eBrokenLegs localState)
+	{
+		if ( !pCtx.Read(canPlaySound) )
+			return false; // error		
+		if ( !pCtx.Read(currentState) )
+			return false; // error
+		if ( !pCtx.Read(localState) )
+			return false;
+		
+		return true;
+	}
+	
+	//-------------------------------------------------------------
+	//!
+	//! Shock
+	//! 
+	
+	static void SendShock(DayZPlayer pPlayer, float shockValue)
+	{
+		ScriptJunctureData ctx = new ScriptJunctureData;
+		ctx.Write(shockValue);
+
+		pPlayer.SendSyncJuncture(SJ_SHOCK, ctx);
+	}
+	
+	static bool ReadShockParams(ParamsReadContext pCtx, out float shockValue)
+	{
+		if ( !pCtx.Read(shockValue) )
+			return false; // error
+		
+		return true;
 	}
 }

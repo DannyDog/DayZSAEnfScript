@@ -73,6 +73,8 @@ enum DiagMenuIDs
 	DM_HAIR_HIDE_ALL,
 	DM_CAM_SHAKE,
 	DM_QUICK_FISHING,
+	DM_HOLOGRAM,
+	DM_SHOCK_IMPACT,
 };
 
 enum DebugActionType
@@ -253,6 +255,7 @@ class PluginDiagMenu extends PluginBase
 				//---------------------------------------------------------------
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_ITEM_DEBUG_ACTIONS_SHOW, "lalt+4", "Item Debug Actions", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_BULLET_IMPACT, "lalt+7", "BulletImpact", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_SHOCK_IMPACT, "lalt+8", "ShockHitEffect", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_PLAYER_STATS_LOG_ENABLE, "", "Log Player Stats", "Misc");
 				DiagMenu.RegisterMenu(DiagMenuIDs.DM_ACTION_TARGETS_MENU, "Action Targets", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_XBOX_CURSOR, "", "XboxCursor", "Misc");
@@ -270,6 +273,7 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterMenu(DiagMenuIDs.DM_HAIR_MENU, "Hair Hiding", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_DISABLE_PERSONAL_LIGHT, "", "Disable Personal Light", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_CAM_SHAKE, "lalt+3", "Simulate Cam Shake", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_HOLOGRAM, "lctrl+h", "Hologram placing debug", "Misc");
 					//---------------------------------------------------------------
 					// LEVEL 3
 					//---------------------------------------------------------------
@@ -345,6 +349,7 @@ class PluginDiagMenu extends PluginBase
 		CheckDisplayMenu();
 		CheckDrawCheckerboard();
 		CheckBulletImpact();
+		CheckShockImpact();
 		CheckPresenceNotifierDebug();
 		CheckGoUnconscious();
 		CheckGoUnconsciousDelayed();
@@ -581,6 +586,19 @@ class PluginDiagMenu extends PluginBase
 		else
 		{
 			
+		}
+	}
+	
+	float tmp = 0.25;
+	void CheckShockImpact()
+	{
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_SHOCK_IMPACT) )
+		{
+			PlayerBase pl_player = PlayerBase.Cast(GetGame().GetPlayer() );
+			if (tmp >= 1.0) 	tmp = 0.25;
+			pl_player.SpawnShockEffect(tmp);
+			tmp += 0.25;
+			DiagMenu.SetValue(DiagMenuIDs.DM_SHOCK_IMPACT, false);
 		}
 	}
 	

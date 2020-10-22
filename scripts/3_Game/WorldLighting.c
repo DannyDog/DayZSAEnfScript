@@ -18,10 +18,6 @@ class WorldLighting
 			case 1:
 				GetGame().GetWorld().LoadNewLightingCfg( lighting_darknight );
 				break;
-			
-			default:
-				Print( "Unknown global lighting ID received from the server." );
-				break;
 		}
 	}
 }

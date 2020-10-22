@@ -223,7 +223,11 @@ class ActionConstructor
 		actions.Insert(ActionBreakLongWoodenStick);
 		actions.Insert(ActionFishingNew);
 		actions.Insert(ActionRepairTent);
+		actions.Insert(ActionRepairTentPart);
 		actions.Insert(ActionRepairPart);
+		actions.Insert(ActionRepairCarPart);
+		actions.Insert(ActionRepairCarChassis);
+		actions.Insert(ActionRepairCarEngine);
 		//actions.Insert(ActionEmptyBarrel);
 		
 		// Interact actions
@@ -285,6 +289,10 @@ class ActionConstructor
 		actions.Insert(ActionWorldFlagActionSwitch);
 		actions.Insert(ActionRaiseFlag);
 		actions.Insert(ActionLowerFlag);
+		actions.Insert(ActionDeconstructShelter);
+		actions.Insert(ActionBuildShelter);
+		actions.Insert(ActionHandsPartSwitch);
+		
 		//vehicle actions
 		actions.Insert(ActionSwitchLights);
 		

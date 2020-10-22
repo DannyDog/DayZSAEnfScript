@@ -730,9 +730,10 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 					string zone = "";
 					string compName;
 					array<string> selections = new array<string>();
-					
+
+					//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 					tgObject.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
-					
+
 					for ( int s = 0; s < selections.Count(); s++ )
 					{
 						compName = selections[s];
@@ -741,6 +742,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 						if ( targetEntity && DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
 						{
 							health = m_Target.GetObject().GetHealthLevel(zone);
+							//Print(zone);
 							break;
 						}
 					}

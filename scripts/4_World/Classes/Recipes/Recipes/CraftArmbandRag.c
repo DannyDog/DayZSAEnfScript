@@ -31,7 +31,7 @@ class CraftArmbandRag extends RecipeBase
 		//ingredient 2
 		InsertIngredient(1,"SewingKit");//you can insert multiple ingredients this way
 		
-		m_IngredientAddHealth[1] = -10;
+		m_IngredientAddHealth[1] = -5;
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;
 		m_IngredientDestroy[1] = 0;

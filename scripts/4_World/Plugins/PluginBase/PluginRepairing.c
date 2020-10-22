@@ -1,6 +1,6 @@
 class PluginRepairing extends PluginBase
 {
-	bool Repair(PlayerBase player, ItemBase repair_kit, ItemBase item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true)
+	bool Repair(PlayerBase player, ItemBase repair_kit, Object item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true)
 	{	
 		switch ( item.GetHealthLevel(damage_zone) ) 
 		{
@@ -22,7 +22,7 @@ class PluginRepairing extends PluginBase
 		return true;
 	}
 
-	void CalculateHealth( PlayerBase player, ItemBase kit, ItemBase item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true )
+	void CalculateHealth( PlayerBase player, ItemBase kit, Object item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true )
 	{
 		bool kit_has_quantity = kit.HasQuantity();
 		int health_levels_count = item.GetNumberOfHealthLevels(damage_zone);
@@ -68,7 +68,7 @@ class PluginRepairing extends PluginBase
 		}
 	}
 
-	bool CanRepair( ItemBase repair_kit, ItemBase item, string damage_zone = "" )
+	bool CanRepair( ItemBase repair_kit, Object item, string damage_zone = "" )
 	{
 		int state = item.GetHealthLevel(damage_zone);
 		
@@ -126,12 +126,12 @@ class PluginRepairing extends PluginBase
 	}
 	
 	//! Item can be repaired to 100%
-	private bool CanBeRepairedToPristine( ItemBase item )
+	private bool CanBeRepairedToPristine( Object item )
 	{
 		return item.CanBeRepairedToPristine();
 	}
 	
-	private float GetKitRepairCost( ItemBase repair_kit, ItemBase item )
+	private float GetKitRepairCost( ItemBase repair_kit, Object item )
 	{
 		ref array<int> repair_kit_types = new array<int>;	
 		ref array<float> repair_kit_costs = new array<float>;	

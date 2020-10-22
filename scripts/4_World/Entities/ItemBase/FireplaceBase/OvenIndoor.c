@@ -284,13 +284,17 @@ class OvenIndoor extends FireplaceBase
 			case "DirectCookingA":
 				m_DirectCookingSlots[0] = item_base;
 				break;
+		}
 
-			case "DirectCookingB":
-				m_DirectCookingSlots[1] = item_base;
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = item_base;
 				break;
 
-			case "DirectCookingC":
-				m_DirectCookingSlots[2] = item_base;
+			case "SmokingB":
+				m_SmokingSlots[1] = item_base;
 				break;
 		}
 
@@ -337,13 +341,17 @@ class OvenIndoor extends FireplaceBase
 			case "DirectCookingA":
 				m_DirectCookingSlots[0] = NULL;
 				break;
+		}
 
-			case "DirectCookingB":
-				m_DirectCookingSlots[1] = NULL;
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = NULL;
 				break;
 
-			case "DirectCookingC":
-				m_DirectCookingSlots[2] = NULL;
+			case "SmokingB":
+				m_SmokingSlots[1] = NULL;
 				break;
 		}
 

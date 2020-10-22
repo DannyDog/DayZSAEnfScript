@@ -72,7 +72,7 @@ class CfgVehicles
 			};
 		};
 		attachments[] = {"BatteryD"};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -223,7 +223,7 @@ class CfgVehicles
 		model = "\DZ\gear\tools\Heatpack.p3d";
 		animClass = "Knife";
 		rotationFlags = 17;
-		itemSize[] = {2,2};
+		itemSize[] = {1,2};
 		varEnergyInit = 1000;
 		varEnergyMin = 0;
 		varEnergyMax = 1000;
@@ -655,7 +655,8 @@ class CfgVehicles
 		weight = 380;
 		fragility = 0.01;
 		OnRestrainChange = "Handcuffs";
-		CanBeUnrestrainedBy[] = {"HandcuffKeys","3","Hacksaw","15","Pliers","25","Lockpick","10"};
+		CanBeUnrestrainedBy[] = {"HandcuffKeys","3","Hacksaw","15","Pliers","25","Lockpick","10","HandSaw","15"};
+		CanBeUnrestrainedByDMG[] = {5,30,30,12,30};
 		StruggleLength = 20;
 		class DamageSystem
 		{
@@ -936,7 +937,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Crowbar1";
 		model = "\dz\gear\tools\Crowbar.p3d";
 		rotationFlags = 12;
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		build_action_type = 0;
 		dismantle_action_type = 10;
@@ -1360,7 +1361,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Screwdriver1";
 		model = "\dz\gear\tools\Screwdriver.p3d";
 		animClass = "Knife";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
 		suicideAnim = "onehanded";
@@ -1406,11 +1407,10 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Sickle0";
 		descriptionShort = "$STR_CfgVehicles_Sickle1";
 		model = "\dz\gear\tools\sickle.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
 		suicideAnim = "woodaxe";
-		canSkinBodies = 1;
 		RestrainUnlockType = 1;
 		weight = 550;
 		itemSize[] = {4,3};
@@ -1452,12 +1452,11 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Hacksaw1";
 		model = "\dz\gear\tools\hacksaw.p3d";
 		action = "GestureMeleeBayonetStab";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		itemInfo[] = {"Knife"};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
-		canSkinBodies = 1;
 		weight = 800;
 		itemSize[] = {4,2};
 		fragility = 0.08;
@@ -1531,7 +1530,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_KitchenKnife1";
 		model = "\dz\gear\tools\kitchenknife.p3d";
 		animClass = "Knife";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		itemInfo[] = {"Knife"};
 		inventorySlot[] = {"Knife"};
@@ -1539,7 +1538,6 @@ class CfgVehicles
 		rotationFlags = 17;
 		isMeleeWeapon = 1;
 		suicideAnim = "onehanded";
-		canSkinBodies = 1;
 		weight = 170;
 		itemSize[] = {1,3};
 		openItemSpillRange[] = {10,20};
@@ -1606,7 +1604,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_SteakKnife1";
 		model = "\dz\gear\tools\steak_knife.p3d";
 		animClass = "Knife";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		itemInfo[] = {"Knife"};
 		RestrainUnlockType = 1;
@@ -1614,7 +1612,6 @@ class CfgVehicles
 		inventorySlot[] = {"Knife"};
 		isMeleeWeapon = 1;
 		suicideAnim = "onehanded";
-		canSkinBodies = 1;
 		weight = 90;
 		itemSize[] = {1,2};
 		openItemSpillRange[] = {10,20};
@@ -1681,12 +1678,11 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_HayHook1";
 		model = "\dz\gear\tools\Hay_Hook.p3d";
 		animClass = "Knife";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		RestrainUnlockType = 1;
 		rotationFlags = 1;
 		suicideAnim = "onehanded";
-		canSkinBodies = 1;
 		weight = 250;
 		itemSize[] = {3,2};
 		openItemSpillRange[] = {10,30};
@@ -1727,12 +1723,11 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_StoneKnife1";
 		model = "\dz\gear\consumables\Stone_slice.p3d";
 		itemInfo[] = {"Knife"};
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
 		suicideAnim = "onehanded";
-		canSkinBodies = 1;
 		weight = 260;
 		itemSize[] = {1,2};
 		openItemSpillRange[] = {10,30};
@@ -2247,7 +2242,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Iceaxe1";
 		model = "\dz\gear\tools\Ice_Axe.p3d";
 		rotationFlags = 17;
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		suicideAnim = "woodaxe";
 		weight = 425;
@@ -2505,12 +2500,11 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_HandSaw0";
 		descriptionShort = "$STR_CfgVehicles_HandSaw1";
 		model = "\dz\gear\tools\handsaw.p3d";
-		repairableWithKits[] = {5,4};
+		repairableWithKits[] = {4};
 		repairCosts[] = {30.0,25.0};
 		itemInfo[] = {"Knife"};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
-		canSkinBodies = 1;
 		weight = 800;
 		itemSize[] = {5,2};
 		fragility = 0.08;

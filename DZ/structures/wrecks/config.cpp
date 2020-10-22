@@ -129,7 +129,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -167,7 +167,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -193,7 +193,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -219,7 +219,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -244,7 +244,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -269,7 +269,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -282,7 +282,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -295,7 +295,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -308,7 +308,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -342,7 +342,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -368,7 +368,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -381,7 +381,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorCarSmallOpen";
 				soundClose = "doorCarSmallClose";
 				soundLocked = "doorCarSmallRattle";
@@ -457,7 +457,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1.5;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorCarWreckOpen";
 				soundClose = "doorCarWreckClose";
 				soundLocked = "doorCarWreckRattle";
@@ -585,5 +585,29 @@ class CfgVehicles
 	class Land_Wreck_sed02_aban2_yellow: Land_Wreck_hb01_aban1_blue
 	{
 		model = "DZ\structures\Wrecks\Vehicles\Wreck_sed02_aban2_yellow";
+	};
+	class Land_Wreck_truck01_aban1_blue: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban1_blue";
+	};
+	class Land_Wreck_truck01_aban1_green: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban1_green";
+	};
+	class Land_Wreck_truck01_aban1_orange: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban1_orange";
+	};
+	class Land_Wreck_truck01_aban2_blue: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban2_blue";
+	};
+	class Land_Wreck_truck01_aban2_green: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban2_green";
+	};
+	class Land_Wreck_truck01_aban2_orange: Land_Wreck_hb01_aban1_blue
+	{
+		model = "DZ\structures\Wrecks\Vehicles\Wreck_truck01_aban2_orange";
 	};
 };

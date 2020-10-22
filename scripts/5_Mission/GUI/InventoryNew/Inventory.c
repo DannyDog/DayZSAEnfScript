@@ -471,14 +471,25 @@ class Inventory: LayoutHolder
 			}
 	
 			EntityAI item = ipw.GetItem();
-			if( item )
+			if ( item )
 			{
-				if( !item.GetInventory().CanRemoveEntity() )
+				if ( !item.GetInventory().CanRemoveEntity() )
 					return;
 				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-				if( player && ( player.GetInventory().CanAddAttachment( item ) ) )
+				if ( player && ( player.GetInventory().CanAddAttachment( item ) ) )
 				{
-					player.PredictiveTakeEntityAsAttachment( item );
+					float stackable = item.GetTargetQuantityMax(-1);
+		
+					if ( stackable == 0 || stackable >= item.GetQuantity() )
+					{
+						player.PredictiveTakeEntityAsAttachment( item );
+					}
+					else
+					{
+						InventoryLocation il = new InventoryLocation;
+						player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il );
+						ItemBase.Cast(item).SplitIntoStackMaxToInventoryLocationClient( il );
+					}
 				}
 				else
 				{

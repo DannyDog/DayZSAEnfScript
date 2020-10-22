@@ -341,8 +341,12 @@ class MainMenu extends UIScriptedMenu
 	
 	override void OnShow()
 	{
+		//Print("MainMenu game state = " + g_Game.GetGameState());
+		if (g_Game.GetGameState() != DayZGameState.MAIN_MENU)
+			return;
+		
 		SetFocus( null );
-		OnChangeCharacter();
+		//OnChangeCharacter();
 		LoadMods();
 		return;
 		/*
@@ -383,9 +387,10 @@ class MainMenu extends UIScriptedMenu
 		if (m_ScenePC && m_ScenePC.GetIntroCharacter())
 		{
 			//saves new, unplayed demounit for further use
-			if (CanSaveCharacterSetup())
+			if (CanSaveDefaultCharacter())
 			{
-				m_ScenePC.GetIntroCharacter().SaveCharacterSetup();
+				//todo - save default char here if none exists?
+				//m_ScenePC.GetIntroCharacter().SaveCharacterSetup();
 			}
 		}
 	
@@ -399,19 +404,16 @@ class MainMenu extends UIScriptedMenu
 		}
 	}
 	
-	bool CanSaveCharacterSetup()
+	bool CanSaveDefaultCharacter()
 	{
+		//TODO - check if default character exists
 		if (m_ScenePC && m_ScenePC.GetIntroCharacter() && m_ScenePC.GetIntroCharacter().GetCharacterID() == -1)
 		{
-			PlayerBase player = m_ScenePC.GetIntroCharacter().GetCharacterObj();
-			if (player && player.GetInventory() && player.GetInventory().FindAttachment(InventorySlots.BODY)) //default equipment detected
-			{
-				return true;
-			}
+			return true;
 		}
 		return false;
 	}
-
+	
 	void OpenMenuServerBrowser()
 	{
 		EnterScriptedMenu(MENU_SERVER_BROWSER);
@@ -422,7 +424,8 @@ class MainMenu extends UIScriptedMenu
 			PlayerBase player = m_ScenePC.GetIntroCharacter().GetCharacterObj();
 			if(player && player.GetInventory() && player.GetInventory().FindAttachment(InventorySlots.BODY))
 			{
-				m_ScenePC.GetIntroCharacter().SaveCharacterSetup();
+				//todo - save default char here if none exists
+				//m_ScenePC.GetIntroCharacter().SaveCharacterSetup();
 			}
 		}
 	}

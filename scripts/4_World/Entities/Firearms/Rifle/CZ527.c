@@ -25,6 +25,8 @@ class CZ527_CLO_BU0_MA0 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class CZ527_CLO_BU1_MA0 extends WeaponStableState
 {
@@ -34,6 +36,8 @@ class CZ527_CLO_BU1_MA0 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class CZ527_CLO_BU1_MA1 extends WeaponStableState
 {
@@ -43,6 +47,8 @@ class CZ527_CLO_BU1_MA1 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class CZ527_CLO_BU0_MA1 extends WeaponStableState
 {
@@ -52,6 +58,8 @@ class CZ527_CLO_BU0_MA1 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class CZ527_CLO_BUF_MA0 extends WeaponStableState
 {
@@ -59,17 +67,21 @@ class CZ527_CLO_BUF_MA0 extends WeaponStableState
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } close fireout bullet nomag"); }
 	override int GetCurrentStateID () { return CZ527StableStateID.CZ527_CLO_BUF_MA0; }
 	override bool HasBullet () { return true; }
-	override bool HasMagazine () { return true; }
+	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class CZ527_CLO_BUF_MA1 extends WeaponStableState
 {
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { close fireout bull mag"); super.OnEntry(e); }
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } close fireout bull mag"); }
 	override int GetCurrentStateID () { return CZ527StableStateID.CZ527_CLO_BUF_MA1; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class CZ527_JAM_BU1_MA0 extends WeaponStateJammed
 {
@@ -80,6 +92,8 @@ class CZ527_JAM_BU1_MA0 extends WeaponStateJammed
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class CZ527_JAM_BU1_MA1 extends WeaponStateJammed
 {
@@ -90,6 +104,8 @@ class CZ527_JAM_BU1_MA1 extends WeaponStateJammed
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 
 

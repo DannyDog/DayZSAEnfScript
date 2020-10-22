@@ -578,7 +578,7 @@ class EmoteManager
 		m_item = m_Player.GetItemInHands();
 		if(m_Callback && m_item)
 		{
-			m_Player.GetItemAccessor().HideItemInHands(true);
+			m_Player.TryHideItemInHands(true);
 			m_ItemToHands = true;
 		}
 	}
@@ -587,7 +587,7 @@ class EmoteManager
 	{
 		if (m_item)
 		{
-			m_Player.GetItemAccessor().HideItemInHands(false);
+			m_Player.TryHideItemInHands(false);
 		}
 		m_ItemToHands = false;
 	}

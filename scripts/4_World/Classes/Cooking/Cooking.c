@@ -12,7 +12,7 @@ enum CookingMethodType
 class Cooking
 {
 	static const float COOKING_FOOD_TIME_INC_VALUE 		= 2;		//time increase when cooking a food
-	static const float COOKING_LARD_DECREASE_COEF 		= 0.05;		//lard quantity decrease when cooking a food (Baking)
+	static const float COOKING_LARD_DECREASE_COEF 		= 25;		//lard quantity decrease when cooking a food (Baking)
 	//
 	static const float DEFAULT_COOKING_TEMPERATURE 		= 150;		//default temperature for cooking (e.g. cooking on stick)
 	static const float FOOD_MAX_COOKING_TEMPERATURE		= 150;		//
@@ -207,7 +207,6 @@ class Cooking
 				
 				//reset cooking time
 				item_to_cook.SetCookingTime( 0 );
-				
 				return 1;
 			}
 		}
@@ -297,6 +296,33 @@ class Cooking
 		return 0;
 	}
 	
+	void SmokeItem( Edible_Base item_to_cook, float cook_time_inc )
+	{
+		if ( item_to_cook )
+		{
+			if ( ( item_to_cook.GetFoodStageType() == FoodStageType.RAW ) || ( item_to_cook.GetFoodStageType() == FoodStageType.BAKED ) || ( item_to_cook.GetFoodStageType() == FoodStageType.BOILED ) )
+			{
+				ref array<float> next_stage_cooking_properties = new array<float>;
+				string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
+				GetGame().ConfigGetFloatArray ( config_path + " " + item_to_cook.GetFoodStageName( FoodStageType.DRIED ) + " " + "cooking_properties", next_stage_cooking_properties );
+				if ( next_stage_cooking_properties.Count() == 0 )
+					return;
+				
+				float new_cooking_time = item_to_cook.GetCookingTime() + ( cook_time_inc );
+				item_to_cook.SetCookingTime( new_cooking_time );
+
+				if ( item_to_cook.GetCookingTime() >= next_stage_cooking_properties.Get( 1 ) )
+				{
+					item_to_cook.ChangeFoodStage( FoodStageType.DRIED );
+				}
+			}
+			else
+			{
+				item_to_cook.SetCookingTime( 0 );
+			}
+		}
+	}
+	
 	//COOKING DATA
 	//
 	protected ItemBase GetItemTypeFromCargo( typename item_type, ItemBase cooking_equipment )
@@ -332,7 +358,6 @@ class Cooking
 			{
 				return CookingMethodType.BAKING;
 			}
-			
 			return CookingMethodType.DRYING;
 		}
 		
@@ -342,7 +367,6 @@ class Cooking
 			{
 				return CookingMethodType.BAKING;
 			}
-
 			return CookingMethodType.DRYING;
 		}
 

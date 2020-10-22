@@ -19,6 +19,9 @@ class RoadflareLight extends PointLightBase
 		SetFlickerSpeed(1.5);
 		SetDancingShadowsMovementSpeed(0.1);
 		SetDancingShadowsAmplitude(0.015);
+		EnableHeatHaze(true);
+		SetHeatHazeRadius(0.1);
+		SetHeatHazePower(0.02);
 	}
 	
 	/*override void OnFrameLightSource(IEntity other, float timeSlice)

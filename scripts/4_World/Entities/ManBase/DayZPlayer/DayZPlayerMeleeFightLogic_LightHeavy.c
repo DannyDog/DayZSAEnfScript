@@ -119,6 +119,9 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	{		
 		InventoryItem itemInHands = InventoryItem.Cast(pEntityInHands);
 		HumanCommandMove hcm = m_DZPlayer.GetCommand_Move();
+		
+		//Get worn gloves
+		ClothingBase gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("GLOVES"));
 				
 		bool isFireWeapon = itemInHands && itemInHands.IsWeapon();
 		bool isNotMeleeWeapon = itemInHands && !itemInHands.IsMeleeWeapon(); // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
@@ -140,6 +143,11 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			{
 				return false;
 			}
+			
+			//If player has BrokenLegs she cannot use melee weapons
+			/*PlayerBase m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
+			if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				return false;*/
 
 			if (pCurrentCommandID == DayZPlayerConstants.COMMANDID_MOVE)
 			{
@@ -195,9 +203,27 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 
 						m_DZPlayer.StartCommand_Melee2(target, m_HitType == EMeleeHitType.HEAVY, attackByDistance);
-						if(m_HitType == EMeleeHitType.HEAVY)
+						PlayerBase m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
+						if (m_HitType == EMeleeHitType.HEAVY)
+						{
 							m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_HEAVY);
-						m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_LIGHT);
+							if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+							{	
+								m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+								m_PlayerBase.m_ShockHandler.CheckValue(true);
+								//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+							}
+						}
+						else
+						{
+							m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_LIGHT);
+							if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+							{
+								m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+								m_PlayerBase.m_ShockHandler.CheckValue(true);
+								//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+							}
+						}	
 						DisableControls();
 						return true;
 					}
@@ -206,10 +232,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					{
 						HumanCommandWeapons hcw = m_DZPlayer.GetCommandModifier_Weapons();
 						
+						PlayerBase m_Player = PlayerBase.Cast(m_DZPlayer);
+						//Print("Broken leg state : " + m_Player.m_BrokenLegState);
+						
 						float hcw_angle = hcw.GetBaseAimingAngleLR();
 						//! check if player is on back
 						//! (situation where the player is raised in prone and on back is not in anim graph)
-						if( hcw_angle < -90 || hcw_angle > 90 )
+						if( ( hcw_angle < -90 || hcw_angle > 90 ) && m_Player.m_BrokenLegState != eBrokenLegs.BROKEN_LEGS )
 						{
 							m_HitType = EMeleeHitType.KICK;
 							m_MeleeCombat.Update(itemInHands, m_HitType);
@@ -268,7 +297,15 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						//m_MeleeCombat.Update(itemInHands, m_HitType);
 						GetTargetData(target, targetType);						
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
-
+						
+						//!Testing
+						m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
+						if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+						{
+							m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+							m_PlayerBase.m_ShockHandler.CheckValue(true);
+							//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+						}
 						hmc2.ContinueCombo(true, attackByDistance);
 
 						DisableControls();
@@ -279,6 +316,14 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						GetTargetData(target, targetType);
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 
+						//!Testing
+						m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
+						if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+						{
+							m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+							m_PlayerBase.m_ShockHandler.CheckValue(true);
+							//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+						}
 						hmc2.ContinueCombo(false, attackByDistance);
 
 						DisableControls();
@@ -319,7 +364,9 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					m_MeleeCombat.Update(itemInHands, m_HitType, true);
 					//! evaluate hit - selection of cfg 'ammo' type
 					EvaluateHit(itemInHands);
-
+					
+					//If we hit something, inflict damage
+					DamageHands(m_DZPlayer, gloves, itemInHands);
 					//! reset - prepared for next hit
 					m_MeleeCombat.SetTargetObject(null);
 					m_MeleeCombat.SetHitPos(vector.Zero);
@@ -632,5 +679,50 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			m_Mission.PlayerControlDisable(INPUT_EXCLUDE_MOUSE_ALL);
 		}
 		*/
+	}
+	
+	protected void DamageHands(DayZPlayer DZPlayer, ClothingBase gloves, InventoryItem itemInHands)
+	{
+		EntityAI target = m_MeleeCombat.GetTargetEntity();
+		
+		//We did not hit anything
+		if ( !target )
+			return;
+		
+		//Check if server side
+		if ( DZPlayer.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER && !itemInHands )
+		{
+			//If gloves, damage gloves
+			if ( gloves && gloves.GetHealthLevel() < GameConstants.STATE_RUINED )
+			{
+				gloves.DecreaseHealth("", "", 1);
+			}
+			else
+			{
+				//If no gloves, inflict hand damage and bleeding
+				//DZPlayer.DecreaseHealth("hands", "", 10); IN CASE WE WANT TO DO STUFF WITH HAND HEALTH
+				
+				//Do not add bleeding if hitting player, zombie or animal
+				if ( PlayerBase.Cast(target) || DayZInfected.Cast(target) || AnimalBase.Cast(target) )
+					return;
+				
+				//Random bleeding source
+				int m_RandNum = Math.RandomIntInclusive(1, 15);
+				switch (m_RandNum)
+				{
+					case 1:
+						PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArmRoll");
+					break;
+					
+					case 2:
+						PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftForeArmRoll");
+					break;
+					
+					default:
+						//Do nothing here
+					break;
+				}
+			}
+		}
 	}
 }

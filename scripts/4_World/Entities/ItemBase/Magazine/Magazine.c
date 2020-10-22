@@ -446,7 +446,7 @@ class Magazine : InventoryItemSuper
 	
 	override void EEHealthLevelChanged( int oldLevel, int newLevel, string zone )
 	{
-		float damage = 1 - GetHealthLevelValue(newLevel);
+		float damage = 1 - GetHealthLevelValue(newLevel) + 0.001;
 			
 		int cartridgeCount = GetAmmoCount();		
 		for (int i = 0; i < cartridgeCount; ++i)

@@ -53,9 +53,9 @@ class Refridgerator extends ItemBase
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
 			
 		SetIsPlaceSound( true );
 	}
@@ -68,6 +68,7 @@ class Refridgerator extends ItemBase
 	override void SetActions()
 	{
 		super.SetActions();
+		RemoveAction(ActionTakeItemToHands);
 		
 		AddAction(ActionPlugIn);
 		AddAction(ActionTogglePlaceObject);
@@ -76,5 +77,6 @@ class Refridgerator extends ItemBase
 		AddAction(ActionTurnOffWhileOnGround);
 		AddAction(ActionRepositionPluggedItem);
 		AddAction(ActionPlaceObject);
+		AddAction(ActionTakeItemToHands);
 	}
 }

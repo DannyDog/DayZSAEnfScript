@@ -37,15 +37,15 @@ class RockBase: Object
 	{
 		if ( item && item.IsKindOf("Pickaxe") )
 		{
-			return 15;
+			return 20;
 		}
 		else if ( item && item.IsKindOf("SledgeHammer") )
 		{
-			return 10;
+			return 20;
 		}
 		else
 		{
-			return 10;
+			return 20;
 		}
 	}
 };

@@ -22,5 +22,8 @@ class Pickaxe extends ItemBase
 		AddAction(ActionBuildPart);
 		//AddAction(ActionDestroyPart);
 		AddAction(ActionDigWorms);
+		AddAction(ActionSkinning);
+		AddAction(ActionDigOutStash);
+		AddAction(ActionDigInStash);
 	}
 }	

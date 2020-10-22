@@ -14,4 +14,9 @@ class Mackerel extends Edible_Base
 	{
 		return true;
 	}
+
+	override bool CanDecay()
+	{
+		return true;
+	}
 }

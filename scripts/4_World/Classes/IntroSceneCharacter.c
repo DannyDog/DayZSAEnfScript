@@ -8,16 +8,13 @@ class IntroSceneCharacter extends Managed
 	protected vector		m_CharacterRot;
 		
 	protected ref TStringArray 	m_CharGenderList				= new TStringArray;
-	protected ref TStringArray	m_CharShirtList					= new TStringArray;
-	protected ref TStringArray 	m_CharPantsList					= new TStringArray;
-	protected ref TStringArray	m_CharShoesList					= new TStringArray;
+	protected ref TStringArray	m_CharShirtList					= new TStringArray; //legacy
+	protected ref TStringArray 	m_CharPantsList					= new TStringArray; //legacy
+	protected ref TStringArray	m_CharShoesList					= new TStringArray; //legacy
 	
 	protected ref map<ECharGender, ref array<string>> m_Characters = new map<ECharGender, ref array<string>>;
 	
 	protected ECharGender		m_CharGender;
-	protected int 				m_CharShirtIndex;
-	protected int 				m_CharPantsIndex;
-	protected int 				m_CharShoesIndex;
 	
 	void IntroSceneCharacter()
 	{
@@ -184,11 +181,6 @@ class IntroSceneCharacter extends Managed
 		// Select random gender
 		SetCharacterGender( Math.RandomInt(0, 2) );
 		
-		// Select random chloths ( attachments )
-		m_CharShirtIndex = m_CharShirtList.GetRandomIndex();
-		m_CharPantsIndex = m_CharPantsList.GetRandomIndex();
-		m_CharShoesIndex = m_CharShoesList.GetRandomIndex();
-		
 		// Select random character skin (class name)
 		string char_name_random = m_Characters[GetCharacterGender()].GetRandomElement();
 		
@@ -197,7 +189,7 @@ class IntroSceneCharacter extends Managed
 	}
 	
 	//==============================================
-	// CreateNewCharacterByName
+	// CreateNewCharacterById
 	//==============================================
 	void CreateNewCharacterById( int character_id )
 	{
@@ -214,9 +206,12 @@ class IntroSceneCharacter extends Managed
 	//==============================================
 	// CreateNewCharacterByName
 	//==============================================
-	void CreateNewCharacterByName( string character_name )
+	void CreateNewCharacterByName( string character_name, bool randomize_equip = true )
 	{
 		m_CharacterNam = character_name;
+		GetGame().GetMenuDefaultCharacterData().SetCharacterType(m_CharacterNam);
+		if (randomize_equip)
+			GetGame().GetMenuDefaultCharacterData().GenerateRandomEquip();
 		
 		CreateNewCharacter();
 	}
@@ -224,8 +219,13 @@ class IntroSceneCharacter extends Managed
 	void CreateDefaultCharacter()
 	{
 		CharacterUnload();
-		Man man = m_CharacterDta.CreateCharacterPerson( -1 );
-		m_CharacterObj = PlayerBase.Cast( man );
+		//m_CharacterDta.RequestGetDefaultCharacterData();
+		m_CharacterNam = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
+		if (m_CharacterNam != "")
+		{
+			CreateNewCharacter();
+		}
+		
 		if(m_CharacterObj)
 		{
 			m_CharacterObj.PlaceOnSurface();
@@ -236,7 +236,6 @@ class IntroSceneCharacter extends Managed
 		{
 			string default_name = Widget.TranslateString( GameConstants.DEFAULT_CHARACTER_NAME );
 			CreateNewCharacterRandom();
-			m_CharacterDta.SaveDefaultCharacter( m_CharacterObj );
 			m_CharacterDta.SetCharacterName(GameConstants.DEFAULT_CHARACTER_MENU_ID, default_name);
 		}
 	}
@@ -254,7 +253,7 @@ class IntroSceneCharacter extends Managed
 	{
 		// Unload old character (if exist)
 		CharacterUnload();
-				
+		
 		// Create Character
 		m_CharacterObj = PlayerBase.Cast(g_Game.CreateObjectEx(m_CharacterNam, m_CharacterPos, ECE_PLACE_ON_SURFACE));
 		
@@ -262,16 +261,29 @@ class IntroSceneCharacter extends Managed
 		{
 			m_CharacterObj.PlaceOnSurface();
 			m_CharacterObj.SetOrientation(m_CharacterRot);
-			
-			// Select Random Cloths
-			SetAttachment(m_CharShirtList[m_CharShirtIndex], InventorySlots.BODY);
-			SetAttachment(m_CharPantsList[m_CharPantsIndex], InventorySlots.LEGS);
-			SetAttachment(m_CharShoesList[m_CharShoesIndex], InventorySlots.FEET);
+			GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_CharacterObj);
 		}
 		
 		//Create New Random Character
 		SetupPlayerName( true );
 	}
+	
+	//! Generates random equip for the new IntroSceneCharacter, whatever is defined in 'cfgCharacterCreation'
+	/*void EquipNewCharacter()
+	{
+		int slot_ID;
+		string attachment_type;
+		for (int i = 0; i < DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Count(); i++)
+		{
+			slot_ID = DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Get(i);
+			if (DefaultCharacterCreationMethods.GetConfigArrayCountFromSlotID(slot_ID) > 0)
+			{
+				attachment_type = DefaultCharacterCreationMethods.GetConfigAttachmentTypes(slot_ID).GetRandomElement();
+				if (attachment_type != "")
+					SetAttachment(attachment_type,slot_ID);
+			}
+		}
+	}*/
 	
 	//==============================================
 	// LoadCharacterData
@@ -288,7 +300,7 @@ class IntroSceneCharacter extends Managed
 			m_CharacterDta.GetCharacterName(m_CharacterId, g_Game.GetPlayerGameName());
 		}
 		
-		// Load all avalible options for character creation
+		// Load all avalible options for character creation; mostly legacy stuff
 		g_Game.ConfigGetTextArray("cfgCharacterCreation" + " gender",	m_CharGenderList);
 		g_Game.ConfigGetTextArray("cfgCharacterCreation" + " top",		m_CharShirtList);
 		g_Game.ConfigGetTextArray("cfgCharacterCreation" + " bottom",	m_CharPantsList);
@@ -434,78 +446,13 @@ class IntroSceneCharacter extends Managed
 	}
 	
 	//==============================================
-	// SaveCharacterSetup
-	//==============================================
-	void SaveCharacterSetup()
-	{
-		int index_top; 
-		int index_bottom;
-		int index_shoes;
-		int index_character;
-		
-		if( m_CharacterObj )
-		{
-			Object obj = m_CharacterObj.GetInventory().FindAttachment(InventorySlots.BODY);
-			if( obj )
-			{
-				index_top = m_CharShirtList.Find( obj.GetType() );
-			}
-			
-			obj = m_CharacterObj.GetInventory().FindAttachment(InventorySlots.LEGS);
-			if( obj )
-			{
-				index_bottom = m_CharPantsList.Find( obj.GetType() );
-			}
-			
-			obj = m_CharacterObj.GetInventory().FindAttachment(InventorySlots.FEET);
-			if( obj )
-			{
-				index_shoes = m_CharShoesList.Find( obj.GetType() );
-			}
-			
-			index_character = GetGame().ListAvailableCharacters().Find( m_CharacterObj.GetType() );
-		}		
-		
-		//saves player' type and clothes to g_Game to sync with server
-		GetGame().SetCharacterInfo(index_top, index_bottom, index_shoes, index_character);
-	}
-	
-	//==============================================
 	// SaveDefaultCharacter
 	//==============================================
 	void SaveDefaultCharacter()
 	{
-		if (m_CharacterObj)
+		//if (m_CharacterObj)
 		{
-			m_CharacterDta.SaveDefaultCharacter(m_CharacterObj);
-			
-			/*g_Game.SetProfileString("defaultCharacter", m_CharacterObj.GetType());
-			
-			InventoryItem item = NULL;
-			TStringArray inventory = new TStringArray;
-			
-			for (int i = 0; i < InventorySlots.COUNT; i++)
-			{
-				Class.CastTo(item, m_CharacterObj.GetInventory().FindAttachment(i));
-				if (item)
-				{
-					inventory.Insert(item.GetType());
-				}
-			}
-			
-			g_Game.SetProfileStringList("defaultInventory", inventory);
-			g_Game.SaveProfile();*/
+			m_CharacterDta.RequestSetDefaultCharacterData();
 		}
 	}
-	
-	/* Played Time
-		string cached_playtime_str = "";
-		g_Game.GetProfileString("cachedPlaytime", cached_playtime_str);
-		if ( cached_playtime_str != "" )
-		{
-			m_CachedPlaytime = cached_playtime_str.ToInt();
-		}
-	*/
-	
-	//g_Game.GetPlayerName(m_player_name);
 }

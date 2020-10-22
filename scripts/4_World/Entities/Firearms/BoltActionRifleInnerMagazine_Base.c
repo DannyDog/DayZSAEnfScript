@@ -23,15 +23,19 @@ class BARIMEmptyDischarged extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class BARIMLoadedCharged extends WeaponStableState
 {
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { LoadedCharged C1"); super.OnEntry(e); }
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } LoadedCharged C1"); }
 	override int GetCurrentStateID () { return BARIMStableStateID.LoadedCharged; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class BARIMLoadedDischarged extends WeaponStableState
 {
@@ -41,6 +45,8 @@ class BARIMLoadedDischarged extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class BARIMLoadedJammed extends WeaponStateJammed
 {
@@ -50,6 +56,8 @@ class BARIMLoadedJammed extends WeaponStateJammed
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 
 

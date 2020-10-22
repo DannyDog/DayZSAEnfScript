@@ -23,6 +23,11 @@ class Pear : Edible_Base
 		AddAction(ActionEatFruit);
 	}
 	
+	override bool CanDecay()
+	{
+		return true;
+	}
+	
 	override void EEOnCECreate()
 	{
 		int rand = Math.RandomInt(0,10);

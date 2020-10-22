@@ -69,6 +69,7 @@ class CAContinuousTimeCooking : CAContinuousBase
 					
 					if ( GetGame().IsServer() )
 					{
+						MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 30);
 						action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_Action.GetSpecialtyWeight() );
 					}
 					else

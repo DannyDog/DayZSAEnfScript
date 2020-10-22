@@ -32,9 +32,10 @@ class FirearmActionLoadBullet : FirearmActionBase
 		if (!super.ActionCondition( player, target, item ))
 			return false;
 		
+		HumanCommandWeapons hcw = player.GetCommandModifier_Weapons();		
 		Magazine mag = Magazine.Cast(target.GetObject());	
 		Weapon_Base wpn = Weapon_Base.Cast(item);
-		return mag && player.GetWeaponManager().CanLoadBullet(wpn,mag);
+		return mag && player.GetWeaponManager().CanLoadBullet(wpn,mag) && hcw && hcw.GetRunningAction() != WeaponActions.CHAMBERING;
 	}
 	
 	override void Start( ActionData action_data )
@@ -80,11 +81,6 @@ class FirearmActionLoadBulletQuick : FirearmActionBase
 	//-----------------------------------------------------
 	void FirearmActionLoadBulletQuick() 
 	{
-	}	
-	
-	override bool HasTarget()
-	{
-		return false;
 	}
 	
 	override typename GetInputType()
@@ -102,24 +98,38 @@ class FirearmActionLoadBulletQuick : FirearmActionBase
 	{
 		return false;
 	}
-	
-	
+		
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
 		if (!super.ActionCondition( player, target, item ))
 			return false;
 		
+		HumanCommandWeapons hcw = player.GetCommandModifier_Weapons();		
 		Weapon_Base weapon = Weapon_Base.Cast( item );		
-		return player.GetWeaponManager().CanLoadBullet(weapon,player.GetWeaponManager().GetPreparedMagazine(),true);
+		return player.GetWeaponManager().CanLoadBullet(weapon, player.GetWeaponManager().GetPreparedMagazine(), true) && hcw && hcw.GetRunningAction() != WeaponActions.CHAMBERING;
 		
 		
 		//return (weapon.IsChamberEmpty(0) || weapon.IsChamberFiredOut(0)) && player.GetWeaponManager().GetPreparedMagazine()!= null;
 	}
 	
+	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
+	{
+		if ( super.SetupAction( player, target, item, action_data, extra_data))
+		{
+			if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
+			{
+				ActionTarget newTarget = new ActionTarget(player.GetWeaponManager().GetPreparedMagazine(), null, -1, vector.Zero, -1);
+				action_data.m_Target = newTarget;
+			}
+			return true;
+		}
+		return false;
+	}
+	
 	override void Start( ActionData action_data )
 	{
 		super.Start( action_data );
-		Magazine mag = Magazine.Cast(action_data.m_Player.GetWeaponManager().GetPreparedMagazine());	
+		Magazine mag = Magazine.Cast(action_data.m_Target.GetObject());
 
 		action_data.m_Player.GetWeaponManager().LoadBullet(mag, this);
 	}

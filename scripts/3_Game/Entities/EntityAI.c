@@ -212,7 +212,7 @@ class EntityAI extends Entity
 	bool CanBeSkinnedWith(EntityAI tool)
 	{
 		if ( !IsSkinned()  &&  tool )
-			if ( !IsAlive()  &&  tool.ConfigGetBool("canSkinBodies") )
+			if ( !IsAlive() )
 				return true;
 		return false;
 	}
@@ -299,7 +299,8 @@ class EntityAI extends Entity
 		
 	void OnHologramBeingPlaced( Man player ) { }
 	
-	void OnPlacementComplete( Man player ) { }
+	// now includes information on final object position
+	void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" ) { }
 
 	void OnPlacementCancelled( Man player )
 	{
@@ -307,7 +308,10 @@ class EntityAI extends Entity
 		{
 			Man attached_to = Man.Cast( GetHierarchyParent() );
 			if (!attached_to  ||  attached_to == player )// Check for exception with attaching a cable reel to an electric fence
+			{
+				GetCompEM().UnplugAllDevices();
 				GetCompEM().UnplugThis();
+			}
 		}
 	}
 	

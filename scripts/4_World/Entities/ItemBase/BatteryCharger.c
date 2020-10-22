@@ -41,11 +41,6 @@ class BatteryCharger extends ItemBase
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
 		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
-	
-	/*override bool IsHeavyBehaviour()
-	{
-		return true;
-	}*/
 
 	override void OnWork( float consumed_energy )
 	{
@@ -393,9 +388,9 @@ class BatteryCharger extends ItemBase
 		}
 	}
 	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
 			
 		SetIsPlaceSound( true );
 	}

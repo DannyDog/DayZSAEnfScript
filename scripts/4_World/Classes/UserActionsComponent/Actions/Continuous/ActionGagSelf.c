@@ -52,6 +52,14 @@ class ActionGagSelf: ActionContinuousBase
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		action_data.m_Player.GetInventory().CreateInInventory("MouthRag");
+		//This is specific to rags, would need something better to scale if we want more gag types
+		MouthRag m_Gag = MouthRag.Cast(action_data.m_Player.GetItemOnSlot("Mask"));
+		if (m_Gag)
+		{
+			m_Gag.SetHealth01("", "", action_data.m_MainItem.GetHealth01("", ""));
+		}
+		
+		
 		action_data.m_MainItem.TransferModifiers(action_data.m_Player);
 		action_data.m_MainItem.Delete();
 		//action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

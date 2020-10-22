@@ -67,6 +67,7 @@ class CraftTorch extends RecipeBase
 		
 		ItemBase rag = ingredients[0];
 		Torch torch = Torch.Cast(results[0]);
+		torch.SetTorchDecraftResult(ingredients[1].GetType());
 		
 		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{

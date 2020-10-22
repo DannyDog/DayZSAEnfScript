@@ -14,4 +14,9 @@ class Carp extends Edible_Base
 	{
 		return true;
 	}
+
+	override bool CanDecay()
+	{
+		return true;
+	}
 }

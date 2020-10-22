@@ -18,7 +18,8 @@ class IngameHud extends Hud
 	protected bool								m_IsTemperatureVisible;
 	protected float								m_TemperatureTimer;
 	protected float								m_TemperatureShowTime = 30;
-	
+	protected ImageWidget						m_HeatBufferPlus;
+
 	protected bool								m_IsStaminaVisible;
 	protected float								m_StaminaTimer;
 	protected float								m_StaminaShowTime = 0.15;
@@ -251,6 +252,11 @@ class IngameHud extends Hud
 		m_StatesWidgetNames.Set( NTFKEY_SICK, "Health" );
 		m_StatesWidgetNames.Set( NTFKEY_BLEEDISH, "Blood" );
 		m_StatesWidgetNames.Set( NTFKEY_FEVERISH, "Temperature" );
+
+		// heat buffer plus sign
+		m_HeatBufferPlus = ImageWidget.Cast( m_HudPanelWidget.FindAnyWidget( "HeatBuffer" ) );
+		if ( m_HeatBufferPlus )
+			m_HeatBufferPlus.Show( false );
 
 		#ifndef NO_GUI
 			m_Timer = new Timer( CALL_CATEGORY_GAMEPLAY );
@@ -1172,6 +1178,11 @@ class IngameHud extends Hud
 	{
 		m_HudInventory = show;
 		RefreshHudVisibility();
+	}
+
+	override void ToggleHeatBufferPlusSign( bool show )
+	{
+		m_HeatBufferPlus.Show( show );
 	}
 
 	override void ShowQuickBar( bool show )

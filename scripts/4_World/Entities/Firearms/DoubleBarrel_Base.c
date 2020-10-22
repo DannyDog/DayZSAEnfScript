@@ -27,27 +27,33 @@ class DoubleBarrelLoadedLoaded extends WeaponStableState
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { LoadedLoaded L_L"); super.OnEntry(e); m_weapon.SetCurrentMuzzle(MuzzleIndex.First); }
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } LoadedLoaded L_L"); }
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.LoadedLoaded; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L, MuzzleState.L}; }
 };
 class DoubleBarrelLoadedEmpty extends WeaponStableState
 {
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { LoadedEmpty L_E"); super.OnEntry(e); m_weapon.SetCurrentMuzzle(MuzzleIndex.First);}
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } LoadedEmpty L_E"); }
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.LoadedEmpty; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L, MuzzleState.E}; }
 };
 class DoubleBarrelEmptyLoaded extends WeaponStableState
 {
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { EmptyLoaded E_L"); super.OnEntry(e); m_weapon.SetCurrentMuzzle(MuzzleIndex.Second);}
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } EmptyLoaded E_L"); }
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.EmptyLoaded; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E, MuzzleState.L}; }
 };
 class DoubleBarrelFireoutLoaded extends WeaponStableState
 {
@@ -57,6 +63,8 @@ class DoubleBarrelFireoutLoaded extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F, MuzzleState.L}; }
 };
 class DoubleBarrelFireoutFireout extends WeaponStableState
 {
@@ -65,7 +73,9 @@ class DoubleBarrelFireoutFireout extends WeaponStableState
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.FireoutFireout; }
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
-	override bool IsJammed () { return true; }
+	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F, MuzzleState.F}; }
 };
 
 class DoubleBarrelFireoutEmpty extends WeaponStableState
@@ -75,7 +85,9 @@ class DoubleBarrelFireoutEmpty extends WeaponStableState
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.FireoutEmpty; }
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
-	override bool IsJammed () { return true; }
+	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F, MuzzleState.E}; }
 };
 
 class DoubleBarrelEmptyFireout extends WeaponStableState
@@ -85,7 +97,9 @@ class DoubleBarrelEmptyFireout extends WeaponStableState
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.EmptyFireout; }
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
-	override bool IsJammed () { return true; }
+	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E, MuzzleState.F}; }
 };
 
 class DoubleBarrelEmptyEmpty extends WeaponStableState
@@ -93,9 +107,11 @@ class DoubleBarrelEmptyEmpty extends WeaponStableState
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { EmptyEmpty E_E"); super.OnEntry(e); m_weapon.SetCurrentMuzzle(MuzzleIndex.First);}
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } EmptyEmpty E_E"); }
 	override int GetCurrentStateID () { return DoubleBarrelStableStateID.EmptyEmpty; }
-	override bool HasBullet () { return true; }
+	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
-	override bool IsJammed () { return true; }
+	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E, MuzzleState.E}; }
 };
 
 
@@ -206,20 +222,24 @@ class DoubleBarrel_Base : Rifle_Base
 		m_fsm.AddTransition(new WeaponTransition( L_E,			__L__,	Chamber_L_E));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_L_E,	_abt_,	L_L, NULL, new WeaponGuardChamberFull(this, MuzzleIndex.Second)));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_L_E,	_abt_,	L_E));
-		m_fsm.AddTransition(new WeaponTransition(  Chamber_L_E,	_fin_,	L_L));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_L_E,	_fin_,	L_L, NULL, new WeaponGuardChamberFull(this, MuzzleIndex.Second)));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_L_E,	_fin_,	L_E));
 		
 		m_fsm.AddTransition(new WeaponTransition( E_L,			__L__,	Chamber_E_L));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_E_L,	_abt_,	L_L, NULL, new WeaponGuardChamberFull(this, MuzzleIndex.First)));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_E_L,	_abt_,	E_L));
-		m_fsm.AddTransition(new WeaponTransition(  Chamber_E_L,	_fin_,	L_L));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_E_L,	_fin_,	L_L, NULL, new WeaponGuardChamberFull(this, MuzzleIndex.First)));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_E_L,	_fin_,	E_L));
 		
 		m_fsm.AddTransition(new WeaponTransition( F_L,			__L__,	Chamber_F_L));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_abt_,	F_L, NULL, new WeaponGuardChamberFiredOut(this, MuzzleIndex.First)));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_abt_,	L_L, NULL, new GuardAnd( new WeaponGuardChamberFull(this, MuzzleIndex.First), new WeaponGuardChamberFull(this, MuzzleIndex.Second))));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_abt_,	E_L, NULL, new GuardAnd( new WeaponGuardChamberEmpty(this, MuzzleIndex.First), new WeaponGuardChamberFull(this, MuzzleIndex.Second))));
 		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_abt_,	L_E));
-		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_fin_,	L_L));
-		
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_fin_,	F_L, NULL, new WeaponGuardChamberFiredOut(this, MuzzleIndex.First)));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_fin_,	L_L, NULL, new GuardAnd( new WeaponGuardChamberFull(this, MuzzleIndex.First), new WeaponGuardChamberFull(this, MuzzleIndex.Second))));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_fin_,	E_L, NULL, new GuardAnd( new WeaponGuardChamberEmpty(this, MuzzleIndex.First), new WeaponGuardChamberFull(this, MuzzleIndex.Second))));
+		m_fsm.AddTransition(new WeaponTransition(  Chamber_F_L,	_fin_,	L_E));
 		
 		m_fsm.AddTransition(new WeaponTransition( L_E,			__T__,	Trigger_L_E));
 		m_fsm.AddTransition(new WeaponTransition(  Trigger_L_E,	_fin_,	F_E));

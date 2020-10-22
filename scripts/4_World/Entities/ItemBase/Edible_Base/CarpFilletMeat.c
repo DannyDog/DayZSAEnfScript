@@ -15,6 +15,11 @@ class CarpFilletMeat extends Edible_Base
 		return true;
 	}
 	
+	override bool CanDecay()
+	{
+		return true;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

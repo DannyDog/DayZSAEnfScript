@@ -145,6 +145,7 @@ class cfgWeapons
 		absorbency = 0.1;
 		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
+		WeaponLength = 0.52;
 		chamberSize = 5;
 		chamberedRound = "";
 		magazines[] = {};

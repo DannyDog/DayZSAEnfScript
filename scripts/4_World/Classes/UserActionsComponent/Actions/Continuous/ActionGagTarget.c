@@ -52,6 +52,13 @@ class ActionGagTarget: ActionContinuousBase
 		PlayerBase ntarget;
 		Class.CastTo(ntarget, action_data.m_Target.GetObject());
 		ntarget.GetInventory().CreateInInventory("MouthRag");
+		
+		MouthRag m_Gag = MouthRag.Cast(ntarget.GetItemOnSlot("Mask"));
+		if (m_Gag)
+		{
+			m_Gag.SetHealth01("", "", action_data.m_MainItem.GetHealth01("", ""));
+		}
+		
 		action_data.m_MainItem.TransferModifiers(ntarget);
 		action_data.m_MainItem.Delete();
 

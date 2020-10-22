@@ -336,8 +336,17 @@ class DayZPlayerImplement extends DayZPlayer
 					Transport transport = hcv.GetTransport();
 					int crewPos = transport.CrewMemberIndex( this );
 					transport.CrewDeath( crewPos );
+
+					if (hcv.IsGettingIn() || hcv.IsGettingOut())
+					{
+						transport.CrewGetOut(crewPos);
+						UnlinkFromLocalSpace();
+						DisableSimulation(false);
+						GetItemAccessor().HideItemInHands(false);
+						m_TransportCache = null;
+					}
 				}
-				
+
 				DayZPlayerCommandDeathCallback callback = DayZPlayerCommandDeathCallback.Cast(StartCommand_Death(type, m_DeathHitDir, DayZPlayerCommandDeathCallback));
 				callback.m_pPlayer = PlayerBase.Cast(this);
 			}
@@ -1029,8 +1038,8 @@ class DayZPlayerImplement extends DayZPlayer
 			if (EvaluateDeathAnimation(damageType, source, ammo, animTypeDeath, animHitDirDeath))
 			{
 				SendDeathJuncture(animTypeDeath, animHitDirDeath);
-			}
-			dBodySetInteractionLayer(this, PhxInteractionLayers.AI_NO_COLLISION);
+			}			
+			dBodySetInteractionLayer(this, PhxInteractionLayers.RAGDOLL);
 			
 			if ( !m_DeathSyncSent ) //checked until the death is evaluated by 'OnCommandHandlerTick' higher up the road
 			{
@@ -2762,6 +2771,7 @@ class DayZPlayerImplement extends DayZPlayer
 			float speedNoiseMultiplier = 0;
 			float bootsNoiseMultiplier = 0;
 			float surfaceNoiseMultiplier = GetSurfaceNoise(); //! gets noise multiplayer base on surface player walks on
+		
 			
 			ref HumanMovementState	hms = new HumanMovementState();
 

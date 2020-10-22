@@ -479,9 +479,9 @@ class TrapSpawnBase extends ItemBase
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player )
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
 	{
-		super.OnPlacementComplete( player );
+		super.OnPlacementComplete( player, position, orientation );
 		
 		if ( GetGame().IsServer() )
 		{

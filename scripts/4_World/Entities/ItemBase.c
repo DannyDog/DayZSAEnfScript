@@ -19,10 +19,10 @@ class ItemBase extends InventoryItem
 	
 	int		m_VariablesMask;//this holds information about which vars have been changed from their default values
 	float 	m_VarQuantity;
+	float	m_StoreLoadedQuantity = -1;
 	float 	m_VarTemperature;
 	float 	m_VarWet;
 	float	m_HeatIsolation;
-	float 	m_Absorbency; 
 	float 	m_ItemModelLength;
 	float 	m_ConfigWeight = -1;
 	int 	m_VarLiquidType;
@@ -37,6 +37,8 @@ class ItemBase extends InventoryItem
 	bool 	m_ItemBeingDroppedPhys;
 	bool    m_CanBeMovedOverride;
 	bool 	m_FixDamageSystemInit = false; //can be changed on storage version check
+	bool 	can_this_be_combined = false; //Check if item can be combined
+	bool	m_IsStoreLoad = false;
 	string	m_SoundAttType;
 	// items color variables
 	int 	m_ColorComponentR;
@@ -136,8 +138,12 @@ class ItemBase extends InventoryItem
 		m_IsSoundSynchRemote = false;
 		m_CanBeMovedOverride = false;
 		m_HeatIsolation = GetHeatIsolationInit();
-		m_Absorbency = GetAbsorbencyInit();
 		m_ItemModelLength = GetItemModelLength();
+		
+		//Define if item can be split and set ability to be combined accordingly
+		if (ConfigGetBool("canBeSplit"))
+			can_this_be_combined = ConfigGetBool("canBeSplit");
+		
 		if(ConfigIsExisting("itemBehaviour"))
 		{
 			m_ItemBehaviour = ConfigGetInt("itemBehaviour");
@@ -713,12 +719,12 @@ class ItemBase extends InventoryItem
 	{
 		return false;
 	}
-	
+/*
 	bool CanBeRepairedToPristine()
 	{
 		return false;
 	}
-	
+*/
 	bool CanBeRepairedByCrafting()
 	{
 		return true;
@@ -1023,7 +1029,6 @@ class ItemBase extends InventoryItem
 	// -------------------------------------------------------------------------------
 	override void EOnInit(IEntity other, int extra)
 	{
-		
 	}
 	// -------------------------------------------------------------------------------
 	override void EEDelete(EntityAI parent)
@@ -1725,10 +1730,10 @@ class ItemBase extends InventoryItem
 		if ( !other_item || GetType() != other_item.GetType() || IsFullQuantity() )
 			return false;
 
-		if ( GetHealthLevel() == GameConstants.STATE_RUINED || other_item.GetHealthLevel() == GameConstants.STATE_RUINED )
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED || other_item.GetHealthLevel() == GameConstants.STATE_RUINED )	
 			return false;
 		
-		bool can_this_be_combined = ConfigGetBool("canBeSplit");
+		//can_this_be_combined = ConfigGetBool("canBeSplit");
 		if ( !can_this_be_combined )
 			return false;
 
@@ -2404,8 +2409,15 @@ class ItemBase extends InventoryItem
 		//--------------------------------------------
 		if( mask & VARIABLE_QUANTITY )
 		{
-			float quantity = floats.Get(index);
-			SetQuantity(quantity, true, false, false, false );
+			if ( m_IsStoreLoad )
+			{
+				m_StoreLoadedQuantity = floats.Get(index);
+			}
+			else
+			{
+				float quantity = floats.Get(index);
+				SetQuantity(quantity, true, false, false, false );
+			}
 			index++;
 		}
 		//--------------------------------------------
@@ -2586,20 +2598,28 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	override bool OnStoreLoad(ParamsReadContext ctx, int version)
 	{
+		m_IsStoreLoad = true;
+		
 		if (GetDamageSystemVersionChange() != -1 && version < GetDamageSystemVersionChange())
 		{
 			m_FixDamageSystemInit = true;
 		}
 		
 		if ( !super.OnStoreLoad(ctx, version) )
+		{
+			m_IsStoreLoad = false;
 			return false;
+		}
 	
 		if (version >= 114)
 		{
 			bool hasQuickBarIndexSaved;
 			
 			if (!ctx.Read(hasQuickBarIndexSaved))
+			{
+				m_IsStoreLoad = false;
 				return false;
+			}
 			
 			if (hasQuickBarIndexSaved)
 			{
@@ -2607,7 +2627,10 @@ class ItemBase extends InventoryItem
 				
 				//Load quickbar item bind
 				if (!ctx.Read(itmQBIndex))
+				{
+					m_IsStoreLoad = false;
 					return false;
+				}
 				
 				PlayerBase parentPlayer = PlayerBase.Cast(GetHierarchyRootPlayer());				
 				if ( itmQBIndex != -1 && parentPlayer )
@@ -2622,13 +2645,19 @@ class ItemBase extends InventoryItem
 			if (version == int.MAX)
 			{
 				if (!ctx.Read(itemQBIndex))
+				{
+					m_IsStoreLoad = false;
 					return false;
+				}
 			}
 			else if ( Class.CastTo(player, GetHierarchyRootPlayer()) )
 			{
 				//Load quickbar item bind
 				if (!ctx.Read(itemQBIndex))
+				{
+					m_IsStoreLoad = false;
 					return false;
+				}
 				if ( itemQBIndex != -1 && player )
 					player.SetLoadedQuickBarItemBind(this,itemQBIndex);
 			}
@@ -2636,12 +2665,19 @@ class ItemBase extends InventoryItem
 		
 		// variable management system
 		if ( !LoadVariables(ctx, version) )
+		{
+			m_IsStoreLoad = false;
 			return false;
+		}
 
 		//agent trasmission system
 		if ( !LoadAgents(ctx, version) )
+		{
+			m_IsStoreLoad = false;
 			return false;
+		}
 
+		m_IsStoreLoad = false;
 		return true;
 	}
 
@@ -2676,6 +2712,9 @@ class ItemBase extends InventoryItem
 		{
 			PerformDamageSystemReinit();
 		}
+
+		if ( m_StoreLoadedQuantity != -1 )
+			SetQuantity(m_StoreLoadedQuantity);
 	}
 	
 	override void EEOnAfterLoad()
@@ -2763,14 +2802,14 @@ class ItemBase extends InventoryItem
 		}*/
 		
 		delta = m_VarQuantity;
-		if(clamp_to_stack_max)
-		{
+		//if(clamp_to_stack_max)
+		//{
 			m_VarQuantity = Math.Clamp(value, min, max);
-		}
-		else
-		{
-			m_VarQuantity = value;
-		}
+		//}
+		//else
+		//{
+		//	m_VarQuantity = value;
+		//}
 		delta = m_VarQuantity - delta;
 		SetVariableMask(VARIABLE_QUANTITY);
 		OnQuantityChanged(delta);
@@ -3245,16 +3284,6 @@ class ItemBase extends InventoryItem
 		return ConfigGetFloat("varWetInit");
 	}
 	//----------------------------------------------------------------
-	float GetAbsorbencyInit()
-	{
-		return ConfigGetFloat("absorbency");
-	}
-	
-	float GetAbsorbency()
-	{
-		return m_Absorbency;
-	}
-	//----------------------------------------------------------------
 	bool IsServerCheck(bool allow_client)
 	{
 		if(allow_client) return true;
@@ -3383,14 +3412,14 @@ class ItemBase extends InventoryItem
 		SetTakeable(false);
 	}
 	
-	override void OnPlacementComplete( Man player ) 
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
 	{
 		if ( m_AdminLog )
 		{
 			m_AdminLog.OnPlacementComplete( player, this );
 		}
 		
-		super.OnPlacementComplete( player );
+		super.OnPlacementComplete( player, position, orientation );
 	}
 		
 	//-----------------------------
@@ -3450,7 +3479,7 @@ class ItemBase extends InventoryItem
 	}
 	//----------------------------------------------------------------------
 	
-	int GetContaminationType()
+	/*int GetContaminationType()
 	{
 		int contamination_type;
 		
@@ -3488,7 +3517,7 @@ class ItemBase extends InventoryItem
 		}
 		
 		return agents;
-	}
+	}*/
 	
 	// -------------------------------------------------------------------------
 	bool LoadAgents(ParamsReadContext ctx, int version)
@@ -3544,7 +3573,7 @@ class ItemBase extends InventoryItem
 	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
-		if ( !IsRuined() )
+		if ( !IsRuined() && parent.!IsRuined() )
 			return true;
 		return false;
 	}
@@ -3691,7 +3720,7 @@ class ItemBase extends InventoryItem
 	}
 	
 	//----------------------------------------------------------------
-	//Item Behaviour
+	//Item Behaviour - unified approach
 	override bool IsHeavyBehaviour()
 	{
 		if (m_ItemBehaviour == 0)
@@ -3880,6 +3909,117 @@ class ItemBase extends InventoryItem
 		for (int i = 0; i < zones.Count(); i++)
 		{
 			SetHealth01(zones.Get(i),"Health",global_health);
+		}
+	}
+	
+	void ProcessItemWetnessAndTemperature( float delta, bool hasParent, bool hasRootAsPlayer, ItemBase refParentIB )
+	{
+		if ( !hasRootAsPlayer )
+		{
+			if ( !hasParent )
+			{
+				// drying on ground
+				AddWet( delta * GameConstants.WETNESS_RATE_DRYING_GROUND );
+
+				// cooling on ground
+				if ( ( GetTemperature() != GetTemperatureMin() ) && !IsFireplace() )
+				{
+					AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_GROUND );
+				}
+			}
+			else
+			{
+				if ( refParentIB )
+				{
+					if ( refParentIB.GetWet() >= GameConstants.STATE_SOAKING_WET )
+					{
+						// parent is wet
+						// wetting
+						AddWet( delta * GameConstants.WETNESS_RATE_WETTING_INSIDE );
+					}
+					else
+					{
+						// parent is dry (or not wet enough)
+						if ( ( refParentIB.GetLiquidType() != 0 ) && ( refParentIB.GetQuantity() > 0 ) )
+						{
+							// parent has liquid inside
+							// wetting (to max)
+							AddWet( delta * GameConstants.WETNESS_RATE_WETTING_LIQUID );
+						}
+						else
+						{
+							// parent is not a liquid container
+							// drying
+							AddWet( delta * GameConstants.WETNESS_RATE_DRYING_INSIDE );
+						}
+					}
+					// cooling of an item inside other
+					if ( ( GetTemperature() > refParentIB.GetTemperature() ) && !IsFireplace() )
+					{
+						AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_INSIDE );
+					}
+				}
+			}
+		}
+	}
+	
+	void HierarchyCheck( out bool hasParent, out bool hasRootAsPlayer, out ItemBase refParentIB )
+	{
+		// hierarchy check for an item to decide whether it has some parent and it is in some player inventory
+		if ( !GetHierarchyRootPlayer() )
+		{
+			hasParent = false;
+			hasRootAsPlayer = false;
+			
+			EntityAI parent = GetHierarchyParent();
+			if ( parent ) 
+			{
+				hasParent = true;
+				refParentIB = ItemBase.Cast( parent );
+			}
+		}
+		else
+		{
+			hasParent = true;
+			hasRootAsPlayer = true;
+		}
+	}
+	
+	protected void ProcessDecay( float delta, bool hasRootAsPlayer )
+	{
+		// this is stub, implemented on Edible_Base
+	}
+	
+	protected bool CanDecay()
+	{
+		// return true used on selected food clases so they can decay
+		return false;
+	}
+	
+	protected bool CanProcessDecay()
+	{
+		// this is stub, implemented on Edible_Base class
+		// used to determine whether it is still necessary for the food to decay
+		return false;
+	}
+	
+	override void OnCEUpdate()
+	{
+		super.OnCEUpdate();
+
+		bool hasParent = false, hasRootAsPlayer = false;
+		ItemBase refParentIB;
+		
+		if ( GetCEApi().GetCEGlobalInt( "WorldWetTempUpdate" ) == 1 )
+		{
+			HierarchyCheck( hasParent, hasRootAsPlayer, refParentIB );
+			ProcessItemWetnessAndTemperature( m_ElapsedSinceLastUpdate, hasParent, hasRootAsPlayer, refParentIB );
+			
+			if ( GetCEApi().GetCEGlobalInt( "FoodDecay" ) == 1 )
+			{
+				if ( CanDecay() && CanProcessDecay() )
+					ProcessDecay( m_ElapsedSinceLastUpdate, hasRootAsPlayer );	
+			}
 		}
 	}
 }

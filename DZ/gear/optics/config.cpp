@@ -61,7 +61,7 @@ class CfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{

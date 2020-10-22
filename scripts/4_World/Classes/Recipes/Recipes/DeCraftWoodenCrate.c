@@ -37,7 +37,7 @@ class DeCraftWoodenCrate extends RecipeBase
 		InsertIngredient(1,"Hatchet");
 		InsertIngredient(1,"FirefighterAxe");
 		
-		m_IngredientAddHealth[1] = -10;// 0 = do nothing
+		m_IngredientAddHealth[1] = -20;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;// 0 = do nothing
 		m_IngredientDestroy[1] = false;// false = do nothing
@@ -124,7 +124,14 @@ class DeCraftWoodenCrate extends RecipeBase
 				results[0].SetHealth( results[0].GetMaxHealth() * Math.RandomFloat( 0.05, 0.2 ));
 				results[1].SetQuantity(Math.RandomIntInclusive( 1, 4 ));
 				results[1].SetHealth( results[1].GetMaxHealth() * Math.RandomFloat( 0.05, 0.2 ));
-			break;					
+			break;
+
+			default:
+				results[0].SetQuantity(Math.RandomIntInclusive( 1, 2 ));
+				results[0].SetHealth( results[0].GetMaxHealth() * Math.RandomFloat( 0.05, 0.2 ));
+				results[1].SetQuantity(Math.RandomIntInclusive( 1, 4 ));
+				results[1].SetHealth( results[1].GetMaxHealth() * Math.RandomFloat( 0.05, 0.2 ));
+			break;
 		}
 		
 		/*

@@ -10,8 +10,8 @@ enum ConstructionMaterialType
 
 class Construction
 {
-	const float REPAIR_MATERIAL_PERCENTAGE = 0.15;
-	const float DECONSTURCT_MATERIAL_LOSS = 0.2;
+	static const float REPAIR_MATERIAL_PERCENTAGE = 0.15;
+	static const float DECONSTURCT_MATERIAL_LOSS = 0.2;
 	protected ref map<string, ref ConstructionPart> m_ConstructionParts;	//string - part name; int - 0-not constructed, 1-constructed
 	protected BaseBuildingBase 	m_Parent;
 	
@@ -72,7 +72,7 @@ class Construction
 	}
 	
 	//BuildPart
-	void BuildPartServer( string part_name, int action_id )
+	void BuildPartServer( notnull Man player, string part_name, int action_id )
 	{
 		bsbDebugPrint("[bsb] Construction BuildPartServer | " + part_name);
 		//reset DamageZone health
@@ -89,7 +89,7 @@ class Construction
 		DestroyCollisionTrigger();
 
 		//call event
-		GetParent().OnPartBuiltServer( part_name, action_id );
+		GetParent().OnPartBuiltServer( player, part_name, action_id );
 	}
 	
 	//DismantlePart
@@ -278,7 +278,7 @@ class Construction
 	}
 
 	//CONSTRUCTION
-	ConstructionPart GetConstructionPartToBuild( string part_name, ItemBase tool )
+	/*ConstructionPart GetConstructionPartToBuild( string part_name, ItemBase tool )
 	{
 		if ( CanBuildPart( part_name, tool ) )
 		{
@@ -286,11 +286,11 @@ class Construction
 		}
 		
 		return NULL;
-	}
+	}*/
 	
-	bool CanBuildPart( string part_name, ItemBase tool )
+	bool CanBuildPart( string part_name, ItemBase tool, bool use_tool )
 	{
-		if ( !IsPartConstructed( part_name ) && HasRequiredPart( part_name ) && !HasConflictPart( part_name ) && HasMaterials( part_name ) && CanUseToolToBuildPart( part_name, tool ) )
+		if ( !IsPartConstructed( part_name ) && HasRequiredPart( part_name ) && !HasConflictPart( part_name ) && HasMaterials( part_name ) && (!use_tool || CanUseToolToBuildPart( part_name, tool )) )
 		{
 			return true;
 		}
@@ -299,7 +299,7 @@ class Construction
 	}
 	
 	//Get all construction parts that can be build (at that current time)
-	void GetConstructionPartsToBuild( string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool, out string real_constructionTarget )
+	void GetConstructionPartsToBuild( string main_part_name, out array<ConstructionPart> construction_parts, ItemBase tool, out string real_constructionTarget, bool use_tool )
 	{
 		construction_parts.Clear();
 		string part_name;
@@ -311,7 +311,7 @@ class Construction
 			key = m_ConstructionParts.GetKey( i );
 			value = m_ConstructionParts.Get( key );
 		
-			if ( main_part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool ) )
+			if ( main_part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool, use_tool ) )
 			{
 				construction_parts.Insert( value );
 			}
@@ -320,7 +320,6 @@ class Construction
 			{
 				part_name = value.GetMainPartName();
 			}
-			
 		}
 		
 		if( construction_parts.Count() == 0 && part_name )
@@ -330,14 +329,12 @@ class Construction
 				key = m_ConstructionParts.GetKey( i );
 				value = m_ConstructionParts.Get( key );
 		
-				if ( part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool ) )
+				if ( part_name == value.GetMainPartName() && CanBuildPart( value.GetPartName(), tool, use_tool ) )
 				{
 					construction_parts.Insert( value );
 				}
 			}
-		
 		}
-		
 	}
 	
 	//Returns (first found) base construction part
@@ -693,136 +690,13 @@ class Construction
 	protected void ReceiveMaterialsServer( notnull Man player, string part_name, string damagezone_name )
 	{
 		ConstructionPart construction_part = GetConstructionPart( part_name );
+		bool is_base = construction_part.IsBase();
 		string main_part_name = construction_part.GetMainPartName();
 		string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " "+ "Construction" + " " + main_part_name + " " + part_name + " " + "Materials";
 		
 		if ( GetGame().ConfigIsExisting( cfg_path ) )
 		{
-			int	child_count = GetGame().ConfigGetChildrenCount( cfg_path );
-			
-			for ( int i = 0; i < child_count; i++ )
-			{
-				string child_name;
-				GetGame().ConfigGetChildName( cfg_path, i, child_name );
-				
-				//get type, quantity from material
-				string config_path;
-				string type;
-				string slot_name;
-				config_path = cfg_path + " " + child_name + " " + "type";
-				GetGame().ConfigGetText( config_path, type );
-				config_path = cfg_path + " " + child_name + " " + "slot_name";
-				GetGame().ConfigGetText( config_path, slot_name );
-				config_path = cfg_path + " " + child_name + " " + "quantity";
-				float quantity = GetGame().ConfigGetFloat( config_path );
-				config_path = cfg_path + " " + child_name + " " + "lockable";
-				bool lockable = GetGame().ConfigGetInt( config_path );
-				
-				//receive material quantity
-				ItemBase attachment = ItemBase.Cast( GetParent().FindAttachmentBySlotName( slot_name ) );
-				int slot_id;
-				
-				//material still attached
-				if ( lockable )			//if lockable 
-				{
-					if ( attachment )
-					{
-						InventoryLocation src = new InventoryLocation;
-						attachment.GetInventory().GetCurrentInventoryLocation( src );
-						bsbDebugPrint("[bsb] " + Object.GetDebugName( GetParent()) + " DropNonUsableMaterials UNlocking slot=" + src.GetSlot() );
-						GetParent().GetInventory().SetSlotLock( src.GetSlot() , false );
-						
-						//detach if base
-						if ( construction_part.IsBase() )
-						{
-							if ( GetGame().IsMultiplayer() )
-							{
-								InventoryLocation dst = new InventoryLocation;
-								GameInventory.SetGroundPosByOwner( player, src.GetItem(), dst );
-								player.ServerTakeToDst( src, dst );
-							}
-							else
-							{
-								GetParent().GetInventory().DropEntity( InventoryMode.PREDICTIVE, GetParent(), attachment );
-							}
-							
-							// @NOTE: cannot use PredictiveTakeToDst as it should be, because immeadiately after this action is finished
-							// the parent object is deleted before the simulation timestep handles the body of PredictiveTakeToDst 
-							//player.PredictiveTakeToDst(src, gnd);
-						}
-					}
-				}
-				else
-				{
-					float pile_health;
-					float qty_coef;
-					vector destination = GetParent().GetPosition();
-					//placed on helper memory point, if available
-					if ( GetParent().MemoryPointExists("" + main_part_name + "_materials") )
-					{
-						destination = GetParent().GetMemoryPointPos("" + main_part_name + "_materials");
-						destination = GetGame().ObjectModelToWorld(GetParent(),destination);
-					}
-					else if ( GetParent().MemoryPointExists(main_part_name) )
-					{
-						destination = GetParent().GetMemoryPointPos(main_part_name);
-						destination = GetGame().ObjectModelToWorld(GetParent(),destination);
-						/*Print(destination);
-						destination[0] = destination[0] + 1;
-						destination[1] = destination[1] + 1;
-						destination[2] = destination[2] + 1;
-						Print(destination);*/
-					}
-					//pile_health = GameConstants.DAMAGE_WORN_VALUE * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
-					pile_health = GetParent().GetHealth01(damagezone_name,"Health") * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
-					qty_coef =  1 - (GetParent().GetHealthLevel(damagezone_name) * DECONSTURCT_MATERIAL_LOSS) - DECONSTURCT_MATERIAL_LOSS;
-					quantity *= qty_coef;
-					quantity = Math.Max(Math.Floor(quantity),1);
-					MiscGameplayFunctions.CreateItemBasePiles(type,destination,quantity,pile_health,true);
-					
-					/*if ( attachment )
-					{
-						float att_quantity = attachment.GetQuantity();
-						float att_max_quantity = attachment.GetQuantityMax();
-						float att_quantity_diff = att_max_quantity - att_quantity; 
-						if ( quantity > att_quantity_diff )
-						{
-							while ( quantity > 0 )
-							{
-								//create material on ground if quantity exceeds max quantity
-								ItemBase received_material = ItemBase.Cast( GetGame().CreateObjectEx( attachment.GetType(), GetParent().GetPosition(), ECE_PLACE_ON_SURFACE ) );
-								if ( quantity > att_max_quantity )
-								{
-									received_material.SetQuantity( att_max_quantity );
-								}
-								else
-								{
-									received_material.SetQuantity( quantity );
-								}
-								
-								quantity -= att_max_quantity;
-							}
-						}
-						else
-						{
-							attachment.AddQuantity( quantity );
-						}
-					}
-					//material slot is empty, create a new material
-					else
-					{
-						//attach item
-						slot_id = InventorySlots.GetSlotIdFromString( slot_name );
-						InventoryLocation attLoc = new InventoryLocation;
-						attLoc.SetAttachment(GetParent(), null, slot_id);
-						attachment = ItemBase.Cast( GetParent().GetInventory().LocationCreateEntity( attLoc, type, ECE_IN_INVENTORY, RF_DEFAULT ) ); // @NOTE: cannot create non-local vehicle here, this would collide with RemoteObjectTreeDel/Cre
-						if ( attachment && quantity > 0 ) 					//object was deleted or the quantity is ignored
-						{
-							attachment.SetQuantity( quantity );
-						}
-					}*/
-				}
-			}
+			StaticConstructionMethods.SpawnConstructionMaterialPiles(GetParent(),player,cfg_path,part_name,damagezone_name,is_base);
 		}
 	}
 	
@@ -875,7 +749,7 @@ class Construction
 		}
 	}
 		
-	protected void DropNonUsableMaterialsServer( Man player, string part_name )
+	void DropNonUsableMaterialsServer( Man player, string part_name )
 	{
 		ConstructionPart construction_part = GetConstructionPart( part_name );
 		
@@ -1107,7 +981,7 @@ class Construction
 			if ( /* IsTriggerColliding() || */ GetGame().IsBoxColliding( Vector( center[0], center[1] + absolute_ofset, center[2] ), GetParent().GetOrientation(), edge_length, excluded_objects, collided_objects ) )
 			{
 				//Debug
-				//DrawDebugCollisionBox( min_max, ARGB( 255, 255, 0, 0 ) );
+				//DrawDebugCollisionBox( min_max, ARGB( 150, 255, 0, 0 ) );
 				//
 				for (int i = 0; i < collided_objects.Count(); i++)
 				{
@@ -1118,7 +992,7 @@ class Construction
 				}
 			}
 			//Debug
-			//DrawDebugCollisionBox( min_max, ARGB( 255, 255, 255, 255 ) );
+			//DrawDebugCollisionBox( min_max, ARGB( 150, 255, 255, 255 ) );
 		}
 		return false;
 	}
@@ -1237,6 +1111,88 @@ class Construction
 	bool IsTriggerColliding()
 	{
 		return m_ConstructionBoxTrigger.IsColliding();
+	}
+}
+
+class StaticConstructionMethods
+{
+	//! spawns material from any construction; 'player' parameter optional
+	static void SpawnConstructionMaterialPiles(notnull EntityAI entity, Man player, string cfg_path, string main_part_name, string damagezone_name = "", bool is_base = false )
+	{
+		int	child_count = GetGame().ConfigGetChildrenCount( cfg_path );
+		
+		for ( int i = 0; i < child_count; i++ )
+		{
+			string child_name;
+			GetGame().ConfigGetChildName( cfg_path, i, child_name );
+			
+			//get type, quantity from material
+			string config_path;
+			string type;
+			string slot_name;
+			config_path = cfg_path + " " + child_name + " " + "type";
+			GetGame().ConfigGetText( config_path, type );
+			config_path = cfg_path + " " + child_name + " " + "slot_name";
+			GetGame().ConfigGetText( config_path, slot_name );
+			config_path = cfg_path + " " + child_name + " " + "quantity";
+			float quantity = GetGame().ConfigGetFloat( config_path );
+			config_path = cfg_path + " " + child_name + " " + "lockable";
+			bool lockable = GetGame().ConfigGetInt( config_path );
+			
+			//receive material quantity
+			ItemBase attachment = ItemBase.Cast( entity.FindAttachmentBySlotName( slot_name ) );
+			int slot_id;
+			
+			//material still attached
+			if ( lockable )			//if lockable 
+			{
+				if ( attachment )
+				{
+					InventoryLocation src = new InventoryLocation;
+					attachment.GetInventory().GetCurrentInventoryLocation( src );
+					bsbDebugPrint("[bsb] " + Object.GetDebugName( entity) + " DropNonUsableMaterials UNlocking slot=" + src.GetSlot() );
+					entity.GetInventory().SetSlotLock( src.GetSlot() , false );
+					
+					//detach if base
+					if ( is_base )
+					{
+						if ( GetGame().IsMultiplayer() && player )
+						{
+							InventoryLocation dst = new InventoryLocation;
+							GameInventory.SetGroundPosByOwner( player, src.GetItem(), dst );
+							player.ServerTakeToDst( src, dst );
+						}
+						else
+						{
+							entity.GetInventory().DropEntity( InventoryMode.PREDICTIVE, entity, attachment );
+						}
+					}
+				}
+			}
+			else
+			{
+				float pile_health;
+				float qty_coef;
+				vector destination = entity.GetPosition();
+				//placed on helper memory point, if available
+				if ( entity.MemoryPointExists("" + main_part_name + "_materials") )
+				{
+					destination = entity.GetMemoryPointPos("" + main_part_name + "_materials");
+					destination = GetGame().ObjectModelToWorld(entity,destination);
+				}
+				else if ( entity.MemoryPointExists(main_part_name) )
+				{
+					destination = entity.GetMemoryPointPos(main_part_name);
+					destination = GetGame().ObjectModelToWorld(entity,destination);
+				}
+				//pile_health = GameConstants.DAMAGE_WORN_VALUE * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
+				pile_health = entity.GetHealth01(damagezone_name,"Health") * MiscGameplayFunctions.GetTypeMaxGlobalHealth(type);
+				qty_coef =  1 - (entity.GetHealthLevel(damagezone_name) * Construction.DECONSTURCT_MATERIAL_LOSS) - Construction.DECONSTURCT_MATERIAL_LOSS;
+				quantity *= qty_coef;
+				quantity = Math.Max(Math.Floor(quantity),1);
+				MiscGameplayFunctions.CreateItemBasePiles(type,destination,quantity,pile_health,true);
+			}
+		}
 	}
 }
 

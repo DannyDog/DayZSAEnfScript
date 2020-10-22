@@ -164,7 +164,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
@@ -292,7 +291,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
@@ -418,7 +416,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
@@ -544,7 +541,6 @@ class CfgAmmo
 			{
 				damage = 7;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -1358,7 +1354,6 @@ class CfgAmmo
 		{
 			type = "Melee";
 			bleedThreshold = 0.3;
-			additionAnimalMeleeMultiplier = 5;
 			class Health
 			{
 				damage = 15;
@@ -1594,7 +1589,6 @@ class CfgAmmo
 		{
 			type = "Melee";
 			bleedThreshold = 0.3;
-			additionAnimalMeleeMultiplier = 5;
 			class Health
 			{
 				damage = 15;
@@ -2075,7 +2069,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -2309,7 +2302,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -2543,7 +2535,6 @@ class CfgAmmo
 			{
 				damage = 0;
 			};
-			additionAnimalMeleeMultiplier = 1.2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -2669,7 +2660,6 @@ class CfgAmmo
 			{
 				damage = 0;
 			};
-			additionAnimalMeleeMultiplier = 1.2;
 		};
 		soundDefault1[] = {"dz\sounds\weapons\hits\melee\bluntmetal\hit_bluntmetal_body_heavy_1",0.56234133,1,60};
 		soundDefault2[] = {"dz\sounds\weapons\hits\melee\bluntmetal\hit_bluntmetal_body_heavy_2",0.56234133,1,60};
@@ -3534,7 +3524,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -3770,7 +3759,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -3897,7 +3885,6 @@ class CfgAmmo
 			{
 				damage = 40;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",1,1,60};
@@ -4024,7 +4011,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 4;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -4151,7 +4137,6 @@ class CfgAmmo
 			{
 				damage = 40;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",1,1,60};
@@ -4276,7 +4261,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -4512,7 +4496,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -4638,7 +4621,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
@@ -4765,7 +4747,6 @@ class CfgAmmo
 			{
 				damage = 12;
 			};
-			additionAnimalMeleeMultiplier = 5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -5001,7 +4982,6 @@ class CfgAmmo
 			{
 				damage = 10;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -5237,7 +5217,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 3;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -5363,7 +5342,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 3;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_01",1,1,60};
@@ -5491,7 +5469,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 4;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -5617,7 +5594,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 5;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
@@ -5745,7 +5721,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -5980,7 +5955,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 4;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -6107,7 +6081,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -6233,7 +6206,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -6360,7 +6332,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",1,1,60};
@@ -6486,7 +6457,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 4;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -6612,7 +6582,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 4;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
@@ -6740,7 +6709,6 @@ class CfgAmmo
 			{
 				damage = 0;
 			};
-			additionAnimalMeleeMultiplier = 5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\long_blade_weapon_hits\long_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -6976,7 +6944,6 @@ class CfgAmmo
 			{
 				damage = 12;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -7212,7 +7179,6 @@ class CfgAmmo
 			{
 				damage = 7;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -7338,7 +7304,6 @@ class CfgAmmo
 			{
 				damage = 12;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",1,1,60};
@@ -7466,7 +7431,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -7593,7 +7557,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",1,1,60};
@@ -7720,7 +7683,6 @@ class CfgAmmo
 			{
 				damage = 12;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -7956,7 +7918,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -8083,7 +8044,6 @@ class CfgAmmo
 			{
 				damage = 40;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -8209,7 +8169,6 @@ class CfgAmmo
 			{
 				damage = 10;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -8335,7 +8294,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -8461,7 +8419,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -8587,7 +8544,6 @@ class CfgAmmo
 			{
 				damage = 34;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -8714,7 +8670,6 @@ class CfgAmmo
 			{
 				damage = 10;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -8841,7 +8796,6 @@ class CfgAmmo
 			{
 				damage = 10;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",1,1,60};
@@ -8968,7 +8922,6 @@ class CfgAmmo
 			{
 				damage = 50;
 			};
-			additionAnimalMeleeMultiplier = 3;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -9095,7 +9048,6 @@ class CfgAmmo
 			{
 				damage = 100;
 			};
-			additionAnimalMeleeMultiplier = 3;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -9222,7 +9174,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -9348,7 +9299,6 @@ class CfgAmmo
 			{
 				damage = 40;
 			};
-			additionAnimalMeleeMultiplier = 1.5;
 		};
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
@@ -9475,7 +9425,6 @@ class CfgAmmo
 			{
 				damage = 12;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_02",0.5,1,60};
@@ -9710,7 +9659,6 @@ class CfgAmmo
 			{
 				damage = 50;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -9836,7 +9784,6 @@ class CfgAmmo
 			{
 				damage = 100;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -9963,7 +9910,6 @@ class CfgAmmo
 			{
 				damage = 5;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -10090,7 +10036,6 @@ class CfgAmmo
 			{
 				damage = 5;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",1,1,60};
@@ -10217,7 +10162,6 @@ class CfgAmmo
 			{
 				damage = 5;
 			};
-			additionAnimalMeleeMultiplier = 1;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_02",0.5,1,60};
@@ -10452,7 +10396,6 @@ class CfgAmmo
 			{
 				damage = 15;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -10688,7 +10631,6 @@ class CfgAmmo
 			{
 				damage = 20;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",0.5,1,60};
@@ -10815,7 +10757,6 @@ class CfgAmmo
 			{
 				damage = 34;
 			};
-			additionAnimalMeleeMultiplier = 2;
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_02",1,1,60};
@@ -10929,7 +10870,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.27;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 7.5;
@@ -11165,7 +11105,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.25;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;
@@ -11401,7 +11340,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.25;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;
@@ -11637,7 +11575,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.2;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;
@@ -11873,7 +11810,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.15;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;
@@ -12109,7 +12045,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.3;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;
@@ -12345,7 +12280,6 @@ class CfgAmmo
 		{
 			type = "Infected";
 			bleedThreshold = 0.35;
-			additionAnimalMeleeMultiplier = 1;
 			class Health
 			{
 				damage = 10;

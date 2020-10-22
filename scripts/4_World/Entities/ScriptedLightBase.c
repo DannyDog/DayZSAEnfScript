@@ -18,7 +18,8 @@ class ScriptedLightBase extends EntityLightSource
 	float 		m_Brightness;
 	float 		m_BrightnessPulse; // flicker effect
 	float 		m_BrightnessPulseSpeed;
-	float 		m_BrightnessPulseAmplitude;
+	float 		m_BrightnessPulseAmplitudeMax;
+	float 		m_BrightnessPulseAmplitudeMin;
 	float 		m_BrightnessTarget;
 	float 		m_BrightnessSpeedOfChange = 1;
 	float 		m_RadiusSpeedOfChange = 1;
@@ -245,7 +246,8 @@ class ScriptedLightBase extends EntityLightSource
 	//! Makes the light destroy itself after the given time in seconds. The light will fade out if it's set to do so with SetFadeOutTime(...)
 	void SetLifetime(float life_in_s)
 	{
-		m_LifetimeEnd = GetGame().GetTime() + life_in_s * 1000;
+		if(GetGame())
+			m_LifetimeEnd = GetGame().GetTime() + life_in_s * 1000;
 	}
 	
 	//! Sets the fade out time in seconds. Fade out begins automatically as the light nears the end of its life time, or when method FadeOut() is called.
@@ -394,15 +396,15 @@ class ScriptedLightBase extends EntityLightSource
 	// Updates flickering light
 	void HandleFlickering(float time, float timeSlice)
 	{
-		if (m_BrightnessPulseAmplitude > 0)
+		if (m_BrightnessPulseAmplitudeMax > 0)
 		{
 			m_BrightnessPulse += ( Math.RandomFloat(-m_BrightnessPulseSpeed, m_BrightnessPulseSpeed) ) * timeSlice;
 			
-			if (m_BrightnessPulse < -m_BrightnessPulseAmplitude+1)
-				m_BrightnessPulse = -m_BrightnessPulseAmplitude+1;
+			if (m_BrightnessPulse < m_BrightnessPulseAmplitudeMin + 1)
+				m_BrightnessPulse = m_BrightnessPulseAmplitudeMin + 1;
 			
-			if (m_BrightnessPulse > m_BrightnessPulseAmplitude+1)
-				m_BrightnessPulse = m_BrightnessPulseAmplitude+1;
+			if (m_BrightnessPulse > m_BrightnessPulseAmplitudeMax + 1)
+				m_BrightnessPulse = m_BrightnessPulseAmplitudeMax + 1;
 			
 		}
 		else
@@ -417,10 +419,21 @@ class ScriptedLightBase extends EntityLightSource
 		m_BrightnessPulseSpeed = speed;
 	}
 	
-	//! Sets the change coefficient of flickering light.
+	//! Sets the change coefficient of flickering light. (0.0 - 1.0 values, result of greater values are period time of light off )
 	void SetFlickerAmplitude(float coef)
 	{
-		m_BrightnessPulseAmplitude = Math.AbsFloat(coef);
+		m_BrightnessPulseAmplitudeMax = Math.AbsFloat(coef);
+		m_BrightnessPulseAmplitudeMin = -Math.AbsFloat(coef);
+	}
+	
+	void SetFlickerAmplitudeMax(float coef)
+	{
+		m_BrightnessPulseAmplitudeMax = coef;
+	}
+	
+	void SetFlickerAmplitudeMin(float coef)
+	{
+		m_BrightnessPulseAmplitudeMin = coef;
 	}
 	
 	//! Returns flicker speed
@@ -429,10 +442,16 @@ class ScriptedLightBase extends EntityLightSource
 		return m_BrightnessPulseSpeed;
 	}
 	
-	//! Returns flicker amplitude
-	float GetFlickerAmplitudeCoef()
+	//! Returns flicker amplitude maximum
+	float GetFlickerAmplitudeCoefMax()
 	{
-		return m_BrightnessPulseAmplitude;
+		return m_BrightnessPulseAmplitudeMax;
+	}
+	
+	//! Returns flicker amplitude minimum
+	float GetFlickerAmplitudeCoefMin()
+	{
+		return m_BrightnessPulseAmplitudeMin;
 	}
 	
 	//! Optimizes shadows by disabling them on this light source while it's within the given radius around the camera.

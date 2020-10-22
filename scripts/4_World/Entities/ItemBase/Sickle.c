@@ -15,5 +15,6 @@ class Sickle extends ToolBase
 		
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionMineBush);
+		AddAction(ActionSkinning);
 	}
 }

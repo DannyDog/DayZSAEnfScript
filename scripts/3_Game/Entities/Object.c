@@ -518,6 +518,12 @@ class Object extends IEntity
 		return false;
 	}
 	
+	//! Returns if this entity can be constructed without tools
+	bool CanUseHandConstruction()
+	{
+		return false;
+	}
+	
 	//! Returns if this entity if a food item
 	bool IsFood()
 	{
@@ -1019,6 +1025,11 @@ class Object extends IEntity
 	}
 	
 	EntityAI ProcessMeleeItemDamage(int mode = 0) {}
+	
+	bool CanBeRepairedToPristine()
+	{
+		return false;
+	}
 	
 	//Debug
 	//----------------------------------------------

@@ -48,3 +48,4 @@ class Mag_Bolts_Quiver: MagazineStorage {};
 class Mag_Dartgun_CO2 : MagazineStorage {};
 class Mag_Groza_20Rnd: MagazineStorage {};
 class Mag_MakarovPB_8Rnd: MagazineStorage {};
+class Mag_VAL_20Rnd: MagazineStorage {};

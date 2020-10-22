@@ -129,9 +129,7 @@ class ActionDigGardenPlot: ActionDeployObject
 		poActionData.m_AlreadyPlaced = true;	
 		action_data.m_MainItem.SoundSynchRemoteReset();
 		
-		//Damage the shovel
-		float dmg = action_data.m_MainItem.GetMaxHealth() * 0.04; //Multiply max health by 'x' amount depending on number of usages wanted (0.04 = 25)
-		action_data.m_MainItem.DecreaseHealth("", "", dmg);
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 20);
 		
 	}
 };

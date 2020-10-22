@@ -242,7 +242,7 @@ class VicinityContainer: CollapsibleContainer
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 
-		if( !item.GetInventory().CanRemoveEntity() || m_ShowedItemIcons.Find( item ) == -1 )
+		if( !item.GetInventory().CanRemoveEntity() )
 			return;
 		
 		if ( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )

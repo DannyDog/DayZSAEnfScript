@@ -218,9 +218,10 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		if (weapon)
 		{
 			secondPart = " on " + Object.GetDebugName(GetEntityInHands()) + " which is in state " + weapon.GetCurrentState();
+			secondPart += " with physical state: J: " + weapon.IsJammed() + " | ";
 			for (int i = 0; i < weapon.GetMuzzleCount(); ++i)
 			{
-				secondPart += "Chamber_" + i + ": " + weapon.IsChamberFull(i) + " " + weapon.IsChamberFiredOut(i) + " " + weapon.IsChamberJammed(i) + " " + weapon.IsChamberEmpty(i) + " | ";
+				secondPart += "Chamber_" + i + ": B(" + weapon.IsChamberFull(i) + ") F(" + weapon.IsChamberFiredOut(i) + ") E(" + weapon.IsChamberEmpty(i) + ") | ";
 				secondPart += "Magazine_" + i + ": " + weapon.GetMagazine(i);
 				if (i < weapon.GetMuzzleCount() - 1)
 					secondPart += " | ";
@@ -546,6 +547,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				{
 					if (!GameInventory.LocationCanMoveEntity(src, dst))
 					{
+						#ifdef DEVELOPER
+							DumpInventoryDebug();
+						#endif
 						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT move cmd=" + typename.EnumToString(InventoryCommandType, type) + " src=" + InventoryLocation.DumpToStringNullSafe(src) + " dst=" + InventoryLocation.DumpToStringNullSafe(dst));
 						return false;
 					}
@@ -757,6 +761,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				{
 					if (false == GameInventory.CanForceSwapEntitiesEx(src1.GetItem(), dst1, src2.GetItem(), dst2))
 					{
+						#ifdef DEVELOPER
+							DumpInventoryDebug();
+						#endif
 						Error("[desync] HandleInputData man=" + Object.GetDebugName(GetManOwner()) + " CANNOT swap cmd=" + typename.EnumToString(InventoryCommandType, type) + " src1=" + InventoryLocation.DumpToStringNullSafe(src1) + " dst1=" + InventoryLocation.DumpToStringNullSafe(dst1) +" | src2=" + InventoryLocation.DumpToStringNullSafe(src2) + " dst2=" + InventoryLocation.DumpToStringNullSafe(dst2));
 						return false;
 					}

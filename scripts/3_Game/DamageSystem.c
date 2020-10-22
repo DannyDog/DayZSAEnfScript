@@ -66,9 +66,13 @@ class DamageSystem
 		components = zoneMap.GetValueArray();
 		for(int i = 0; i < components.Count(); i++)
 		{
-			for(int j = 0; j < components.Get(i).Count(); j++)
+			array<string> inner = components.Get(i);
+			for(int j = 0; j < inner.Count(); j++)
 			{
-				if(components.Get(i).Find(component) != -1)
+				string innerComponentName = inner.Get(j);
+				innerComponentName.ToLower();
+
+				if (innerComponentName == component)
 				{
 					damageZone = zoneMap.GetKey(i);
 					return true;

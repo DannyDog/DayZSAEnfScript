@@ -786,6 +786,12 @@ ImageSetClass {
    Size 26 26
    Flags 0
   }
+  ImageSetDefClass iconHeatBuffer {
+   Name "iconHeatBuffer"
+   Pos 736 120
+   Size 14 14
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass UI {

@@ -624,4 +624,8 @@ class CfgLanguages
 	{
 		name = "#options_language_JA";
 	};
+	class Portuguese
+	{
+		name = "#options_language_PTBR";
+	};
 };

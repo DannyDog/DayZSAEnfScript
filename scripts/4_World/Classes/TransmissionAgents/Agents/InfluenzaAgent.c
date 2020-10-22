@@ -5,7 +5,7 @@ class InfluenzaAgent extends AgentBase
 	override void Init()
 	{
 		m_Type 					= eAgents.INFLUENZA;
-		m_Invasibility 			= 1;
+		m_Invasibility 			= 0.33;
 		m_TransferabilityIn		= 1;
 		m_TransferabilityOut	= 1;
 		m_MaxCount 				= 1000;
@@ -14,7 +14,7 @@ class InfluenzaAgent extends AgentBase
 		m_AutoinfectProbability = CalculateAutoinfectProbability( 0.65 );
 		m_TransferabilityAirOut = 1;
 		m_Potency 				= EStatLevels.MEDIUM;
-		m_DieOffSpeed 			= 1;
+		m_DieOffSpeed 			= 0.66;
 	}
 
 	override bool CanAutoinfectPlayer(PlayerBase player)

@@ -103,7 +103,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -243,7 +243,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -393,7 +393,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -406,7 +406,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 4.5;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -419,7 +419,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 4.5;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -432,7 +432,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 4.5;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -445,7 +445,7 @@ class CfgVehicles
 				soundPos = "doorsTwin4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 1;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -458,7 +458,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -471,7 +471,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -484,7 +484,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -497,7 +497,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -510,7 +510,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -523,7 +523,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -1243,7 +1243,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -1256,7 +1256,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -1269,7 +1269,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -1282,7 +1282,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1295,7 +1295,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1308,7 +1308,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1321,7 +1321,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1334,7 +1334,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1347,7 +1347,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -1951,7 +1951,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -1964,7 +1964,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -1977,7 +1977,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -1990,7 +1990,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -2003,7 +2003,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -2390,7 +2390,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -2403,7 +2403,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -2416,7 +2416,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -2429,7 +2429,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -2748,7 +2748,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -2761,7 +2761,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -2774,7 +2774,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -2787,7 +2787,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -3106,7 +3106,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3119,7 +3119,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3322,7 +3322,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -3335,7 +3335,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3348,7 +3348,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3361,7 +3361,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -3374,7 +3374,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -3387,7 +3387,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -3822,7 +3822,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3835,7 +3835,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -3848,7 +3848,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -3861,7 +3861,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -3874,7 +3874,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -4251,7 +4251,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -4264,7 +4264,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -4277,7 +4277,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -4290,7 +4290,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -4303,7 +4303,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -4680,7 +4680,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -4693,7 +4693,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -4896,7 +4896,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -5041,7 +5041,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -5054,7 +5054,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -5067,7 +5067,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -5328,7 +5328,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -5473,7 +5473,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -5486,7 +5486,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -5499,7 +5499,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -5512,7 +5512,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -5525,7 +5525,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -5902,7 +5902,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.7;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -5915,7 +5915,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.9;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -5928,7 +5928,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -5941,7 +5941,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -5954,7 +5954,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -6341,7 +6341,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -6354,7 +6354,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -6367,7 +6367,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6380,7 +6380,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6393,7 +6393,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6406,7 +6406,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6419,7 +6419,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6922,7 +6922,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -6935,7 +6935,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -6948,7 +6948,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6961,7 +6961,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6974,7 +6974,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -6987,7 +6987,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -7422,7 +7422,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -7435,7 +7435,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -7448,7 +7448,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7461,7 +7461,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7474,7 +7474,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7487,7 +7487,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7922,7 +7922,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7935,7 +7935,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -7948,7 +7948,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -7961,7 +7961,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -7974,7 +7974,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -8351,7 +8351,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -8364,7 +8364,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -8377,7 +8377,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -8390,7 +8390,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -8403,7 +8403,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -8780,7 +8780,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -8920,7 +8920,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9060,7 +9060,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9200,7 +9200,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9394,7 +9394,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9407,7 +9407,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9420,7 +9420,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -9433,7 +9433,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9446,7 +9446,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -9459,7 +9459,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -9472,7 +9472,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -9960,7 +9960,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -9973,7 +9973,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10242,7 +10242,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10255,7 +10255,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10268,7 +10268,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10281,7 +10281,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10666,7 +10666,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -10679,7 +10679,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -10692,7 +10692,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -10948,7 +10948,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -10961,7 +10961,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11243,7 +11243,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11445,7 +11445,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11458,7 +11458,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11471,7 +11471,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11727,7 +11727,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -11740,7 +11740,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11753,7 +11753,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11766,7 +11766,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -11779,7 +11779,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -12151,7 +12151,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -12164,7 +12164,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -12177,7 +12177,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -12190,7 +12190,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -12508,7 +12508,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -12521,7 +12521,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -12534,7 +12534,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -12547,7 +12547,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -12848,7 +12848,7 @@ class CfgVehicles
 			};
 		};
 	};
-	class Land_House_1W09_Yellow: Land_House_1W08
+	class Land_House_1W09_Yellow: Land_House_1W09
 	{
 		model = "\DZ\structures\Residential\Houses\House_1W09_Yellow.p3d";
 	};
@@ -12865,7 +12865,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13009,7 +13009,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -13022,7 +13022,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -13035,7 +13035,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13048,7 +13048,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13061,7 +13061,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -13433,7 +13433,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -13446,7 +13446,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13459,7 +13459,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13498,7 +13498,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -13932,7 +13932,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -13945,7 +13945,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13958,7 +13958,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -13971,7 +13971,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13984,7 +13984,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -13997,7 +13997,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0;
 				soundOpen = "doorMetalGateOpen";
 				soundClose = "doorMetalGateClose";
 				soundLocked = "doorMetalGateRattle";
@@ -14427,7 +14427,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -14440,7 +14440,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -14453,7 +14453,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -14466,7 +14466,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.6;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -14479,7 +14479,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -14492,7 +14492,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -14922,7 +14922,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -14935,7 +14935,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -14948,7 +14948,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -15275,7 +15275,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -15288,7 +15288,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -15301,7 +15301,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15628,7 +15628,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -15641,7 +15641,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15654,7 +15654,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15667,7 +15667,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15680,7 +15680,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15693,7 +15693,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15706,7 +15706,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -15719,7 +15719,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -16336,7 +16336,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -16349,7 +16349,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -16375,7 +16375,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -16689,7 +16689,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -16702,7 +16702,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -16904,7 +16904,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -16917,7 +16917,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -16930,7 +16930,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.6;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -17190,7 +17190,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 1;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -17203,7 +17203,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -17229,7 +17229,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = "0..7";
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -17242,7 +17242,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -17614,7 +17614,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -17640,7 +17640,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -17653,7 +17653,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -17679,7 +17679,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -18109,7 +18109,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -18122,7 +18122,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -18135,7 +18135,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -18148,7 +18148,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -18161,7 +18161,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -18174,7 +18174,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -18187,7 +18187,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -18200,7 +18200,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -18213,7 +18213,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -18857,7 +18857,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodGreenhouseOpen";
 				soundClose = "doorWoodGreenhouseClose";
 				soundLocked = "doorWoodGreenhouseRattle";
@@ -18997,7 +18997,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19202,7 +19202,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.1;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -19228,7 +19228,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19241,7 +19241,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19254,7 +19254,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.6;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19267,7 +19267,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19280,7 +19280,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.6;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19293,7 +19293,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19306,7 +19306,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19319,7 +19319,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19332,7 +19332,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19345,7 +19345,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19358,7 +19358,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19371,7 +19371,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -19384,7 +19384,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.8;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20336,7 +20336,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20349,7 +20349,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20362,7 +20362,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20375,7 +20375,7 @@ class CfgVehicles
 				soundPos = "doorsTwin4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20388,7 +20388,7 @@ class CfgVehicles
 				soundPos = "doorsTwin5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20401,7 +20401,7 @@ class CfgVehicles
 				soundPos = "doorsTwin6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20414,7 +20414,7 @@ class CfgVehicles
 				soundPos = "doorsTwin7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -20427,7 +20427,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20440,7 +20440,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20453,7 +20453,7 @@ class CfgVehicles
 				soundPos = "doors17_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20466,7 +20466,7 @@ class CfgVehicles
 				soundPos = "doors18_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20479,7 +20479,7 @@ class CfgVehicles
 				soundPos = "doors19_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20492,7 +20492,7 @@ class CfgVehicles
 				soundPos = "doors20_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20505,7 +20505,7 @@ class CfgVehicles
 				soundPos = "doors21_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20518,7 +20518,7 @@ class CfgVehicles
 				soundPos = "doors22_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20531,7 +20531,7 @@ class CfgVehicles
 				soundPos = "doors23_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20544,7 +20544,7 @@ class CfgVehicles
 				soundPos = "doors24_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20557,7 +20557,7 @@ class CfgVehicles
 				soundPos = "doors25_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20570,7 +20570,7 @@ class CfgVehicles
 				soundPos = "doors26_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -20583,7 +20583,7 @@ class CfgVehicles
 				soundPos = "doors27_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21825,7 +21825,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -21838,7 +21838,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21851,7 +21851,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21864,7 +21864,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21877,7 +21877,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -21890,7 +21890,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21903,7 +21903,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21916,7 +21916,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -21929,7 +21929,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -21942,7 +21942,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -21955,7 +21955,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -21968,7 +21968,7 @@ class CfgVehicles
 				soundPos = "doorsTwin4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -21981,7 +21981,7 @@ class CfgVehicles
 				soundPos = "doorsTwin5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -22817,7 +22817,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -22830,7 +22830,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22843,7 +22843,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodFrontOpen";
 				soundClose = "doorWoodFrontClose";
 				soundLocked = "doorWoodFrontRattle";
@@ -22856,7 +22856,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22869,7 +22869,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22882,7 +22882,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22895,7 +22895,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22908,7 +22908,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -22921,7 +22921,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22934,7 +22934,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22947,7 +22947,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22960,7 +22960,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22973,7 +22973,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22986,7 +22986,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -22999,7 +22999,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -23951,7 +23951,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -23964,7 +23964,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -23977,7 +23977,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -23990,7 +23990,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24003,7 +24003,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24016,7 +24016,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24029,7 +24029,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24042,7 +24042,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24055,7 +24055,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24068,7 +24068,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -24081,7 +24081,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24094,7 +24094,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -24107,7 +24107,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24120,7 +24120,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24133,7 +24133,7 @@ class CfgVehicles
 				soundPos = "doors17_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24146,7 +24146,7 @@ class CfgVehicles
 				soundPos = "doors18_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24159,7 +24159,7 @@ class CfgVehicles
 				soundPos = "doors19_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24172,7 +24172,7 @@ class CfgVehicles
 				soundPos = "doors20_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -24185,7 +24185,7 @@ class CfgVehicles
 				soundPos = "doors21_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25369,7 +25369,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -25382,7 +25382,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25395,7 +25395,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.6;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25408,7 +25408,7 @@ class CfgVehicles
 				soundPos = "doorsTwin4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.3;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25421,7 +25421,7 @@ class CfgVehicles
 				soundPos = "doorsTwin5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.4;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25434,7 +25434,7 @@ class CfgVehicles
 				soundPos = "doorsTwin6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25447,7 +25447,7 @@ class CfgVehicles
 				soundPos = "doorsTwin7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.7;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -25460,7 +25460,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25473,7 +25473,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25486,7 +25486,7 @@ class CfgVehicles
 				soundPos = "doors17_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25499,7 +25499,7 @@ class CfgVehicles
 				soundPos = "doors18_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25512,7 +25512,7 @@ class CfgVehicles
 				soundPos = "doors19_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25525,7 +25525,7 @@ class CfgVehicles
 				soundPos = "doors20_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25538,7 +25538,7 @@ class CfgVehicles
 				soundPos = "doors21_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25551,7 +25551,7 @@ class CfgVehicles
 				soundPos = "doors22_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25564,7 +25564,7 @@ class CfgVehicles
 				soundPos = "doors23_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25577,7 +25577,7 @@ class CfgVehicles
 				soundPos = "doors24_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25590,7 +25590,7 @@ class CfgVehicles
 				soundPos = "doors25_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25603,7 +25603,7 @@ class CfgVehicles
 				soundPos = "doors26_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25616,7 +25616,7 @@ class CfgVehicles
 				soundPos = "doors27_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25629,7 +25629,7 @@ class CfgVehicles
 				soundPos = "doors28_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25642,7 +25642,7 @@ class CfgVehicles
 				soundPos = "doors29_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25655,7 +25655,7 @@ class CfgVehicles
 				soundPos = "doors30_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25668,7 +25668,7 @@ class CfgVehicles
 				soundPos = "doors31_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25681,7 +25681,7 @@ class CfgVehicles
 				soundPos = "doors32_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25694,7 +25694,7 @@ class CfgVehicles
 				soundPos = "doors33_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25707,7 +25707,7 @@ class CfgVehicles
 				soundPos = "doors34_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25720,7 +25720,7 @@ class CfgVehicles
 				soundPos = "doors35_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25733,7 +25733,7 @@ class CfgVehicles
 				soundPos = "doors36_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -25746,7 +25746,7 @@ class CfgVehicles
 				soundPos = "doors37_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.2;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -27568,7 +27568,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -27709,7 +27709,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalSmallOpen";
 				soundClose = "doorMetalSmallClose";
 				soundLocked = "doorMetalSmallRattle";
@@ -27854,7 +27854,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodNolatchOpen";
 				soundClose = "doorWoodNolatchClose";
 				soundLocked = "doorWoodNolatchRattle";
@@ -27994,7 +27994,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodNolatchOpen";
 				soundClose = "doorWoodNolatchClose";
 				soundLocked = "doorWoodNolatchRattle";
@@ -28134,7 +28134,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodNolatchOpen";
 				soundClose = "doorWoodNolatchClose";
 				soundLocked = "doorWoodNolatchRattle";
@@ -28274,7 +28274,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodNolatchOpen";
 				soundClose = "doorWoodNolatchClose";
 				soundLocked = "doorWoodNolatchRattle";
@@ -28414,7 +28414,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodNolatchOpen";
 				soundClose = "doorWoodNolatchClose";
 				soundLocked = "doorWoodNolatchRattle";
@@ -28554,7 +28554,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodLargeOpen";
 				soundClose = "doorWoodLargeClose";
 				soundLocked = "doorWoodLargeRattle";
@@ -28567,7 +28567,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.5;
+				initOpened = 0.3;
 				soundOpen = "doorWoodLargeOpen";
 				soundClose = "doorWoodLargeClose";
 				soundLocked = "doorWoodLargeRattle";
@@ -28765,7 +28765,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -28778,7 +28778,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -28791,7 +28791,7 @@ class CfgVehicles
 				soundPos = "doorsTwin3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -28804,7 +28804,7 @@ class CfgVehicles
 				soundPos = "doorsTwin4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -28817,7 +28817,7 @@ class CfgVehicles
 				soundPos = "doorsTwin5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorMetalTwinOpen";
 				soundClose = "doorMetalTwinClose";
 				soundLocked = "doorMetalTwinRattle";
@@ -29193,7 +29193,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodTwinOpen";
 				soundClose = "doorWoodTwinClose";
 				soundLocked = "doorWoodTwinRattle";
@@ -29206,7 +29206,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.3;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29219,7 +29219,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29475,7 +29475,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29488,7 +29488,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29501,7 +29501,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29514,7 +29514,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29527,7 +29527,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29540,7 +29540,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29553,7 +29553,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29566,7 +29566,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29579,7 +29579,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29592,7 +29592,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29605,7 +29605,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29618,7 +29618,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29631,7 +29631,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29644,7 +29644,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29657,7 +29657,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29670,7 +29670,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29683,7 +29683,7 @@ class CfgVehicles
 				soundPos = "doors17_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29696,7 +29696,7 @@ class CfgVehicles
 				soundPos = "doors18_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29709,7 +29709,7 @@ class CfgVehicles
 				soundPos = "doors19_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29722,7 +29722,7 @@ class CfgVehicles
 				soundPos = "doors20_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29735,7 +29735,7 @@ class CfgVehicles
 				soundPos = "doors21_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29748,7 +29748,7 @@ class CfgVehicles
 				soundPos = "doors22_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29761,7 +29761,7 @@ class CfgVehicles
 				soundPos = "doors23_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29774,7 +29774,7 @@ class CfgVehicles
 				soundPos = "doors24_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29787,7 +29787,7 @@ class CfgVehicles
 				soundPos = "doors25_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29800,7 +29800,7 @@ class CfgVehicles
 				soundPos = "doors26_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29813,7 +29813,7 @@ class CfgVehicles
 				soundPos = "doors27_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29826,7 +29826,7 @@ class CfgVehicles
 				soundPos = "doors28_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29839,7 +29839,7 @@ class CfgVehicles
 				soundPos = "doors29_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29852,7 +29852,7 @@ class CfgVehicles
 				soundPos = "doors30_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29865,7 +29865,7 @@ class CfgVehicles
 				soundPos = "doors31_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29878,7 +29878,7 @@ class CfgVehicles
 				soundPos = "doors32_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29891,7 +29891,7 @@ class CfgVehicles
 				soundPos = "doors33_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29904,7 +29904,7 @@ class CfgVehicles
 				soundPos = "doors34_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29917,7 +29917,7 @@ class CfgVehicles
 				soundPos = "doors35_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -29930,7 +29930,7 @@ class CfgVehicles
 				soundPos = "doors36_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32100,7 +32100,7 @@ class CfgVehicles
 				soundPos = "doors1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32113,7 +32113,7 @@ class CfgVehicles
 				soundPos = "doors2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32126,7 +32126,7 @@ class CfgVehicles
 				soundPos = "doors3_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32139,7 +32139,7 @@ class CfgVehicles
 				soundPos = "doors4_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32152,7 +32152,7 @@ class CfgVehicles
 				soundPos = "doors5_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32165,7 +32165,7 @@ class CfgVehicles
 				soundPos = "doors6_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32178,7 +32178,7 @@ class CfgVehicles
 				soundPos = "doors7_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32191,7 +32191,7 @@ class CfgVehicles
 				soundPos = "doors8_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32204,7 +32204,7 @@ class CfgVehicles
 				soundPos = "doors9_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32217,7 +32217,7 @@ class CfgVehicles
 				soundPos = "doors10_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32230,7 +32230,7 @@ class CfgVehicles
 				soundPos = "doors11_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32243,7 +32243,7 @@ class CfgVehicles
 				soundPos = "doors12_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32256,7 +32256,7 @@ class CfgVehicles
 				soundPos = "doors13_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32269,7 +32269,7 @@ class CfgVehicles
 				soundPos = "doors14_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32282,7 +32282,7 @@ class CfgVehicles
 				soundPos = "doors15_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32295,7 +32295,7 @@ class CfgVehicles
 				soundPos = "doors16_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32308,7 +32308,7 @@ class CfgVehicles
 				soundPos = "doors17_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32321,7 +32321,7 @@ class CfgVehicles
 				soundPos = "doors18_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32334,7 +32334,7 @@ class CfgVehicles
 				soundPos = "doors19_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32347,7 +32347,7 @@ class CfgVehicles
 				soundPos = "doors20_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32360,7 +32360,7 @@ class CfgVehicles
 				soundPos = "doors21_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32373,7 +32373,7 @@ class CfgVehicles
 				soundPos = "doors22_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32386,7 +32386,7 @@ class CfgVehicles
 				soundPos = "doors23_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32399,7 +32399,7 @@ class CfgVehicles
 				soundPos = "doors24_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32412,7 +32412,7 @@ class CfgVehicles
 				soundPos = "doors25_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32425,7 +32425,7 @@ class CfgVehicles
 				soundPos = "doors26_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32438,7 +32438,7 @@ class CfgVehicles
 				soundPos = "doors27_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32451,7 +32451,7 @@ class CfgVehicles
 				soundPos = "doors28_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32464,7 +32464,7 @@ class CfgVehicles
 				soundPos = "doors29_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32477,7 +32477,7 @@ class CfgVehicles
 				soundPos = "doors30_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32490,7 +32490,7 @@ class CfgVehicles
 				soundPos = "doors31_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32503,7 +32503,7 @@ class CfgVehicles
 				soundPos = "doors32_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32516,7 +32516,7 @@ class CfgVehicles
 				soundPos = "doors33_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32529,7 +32529,7 @@ class CfgVehicles
 				soundPos = "doors34_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";
@@ -32542,7 +32542,7 @@ class CfgVehicles
 				soundPos = "doors35_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0;
+				initOpened = 0.7;
 				soundOpen = "doorWoodSmallOpen";
 				soundClose = "doorWoodSmallClose";
 				soundLocked = "doorWoodSmallRattle";

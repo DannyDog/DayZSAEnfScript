@@ -6,7 +6,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	protected int m_NextStateId = 0; /// counter for InternalID: each state in a fsm is assigned an unique number
 	protected ref array<WeaponStateBase> m_UniqueStates = new array<WeaponStateBase>; /// unique list of states in this machine (automation of save/load)
 
-	protected void SetInternalID (WeaponStateBase state)
+	protected void SetInternalID(WeaponStateBase state)
 	{
 		if (state && state.GetInternalStateID() == -1)
 		{
@@ -22,19 +22,40 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	 * @brief	adds transition into transition table
 	 * As a side effect registers the state(s) into m_UniqueStates
 	 **/
-	override void AddTransition (FSMTransition<WeaponStateBase, WeaponEventBase, WeaponActionBase, WeaponGuardBase> t)
+	override void AddTransition(FSMTransition<WeaponStateBase, WeaponEventBase, WeaponActionBase, WeaponGuardBase> t)
 	{
 		super.AddTransition(t);
 
 		SetInternalID(t.m_srcState);
 		SetInternalID(t.m_dstState);
 	}
+	
+	override protected ProcessEventResult ProcessLocalTransition(FSMTransition<WeaponStateBase, WeaponEventBase, WeaponActionBase, WeaponGuardBase> t, WeaponEventBase e)
+	{
+		ProcessEventResult res = super.ProcessLocalTransition(t, e);
+		ValidateAndRepair();
+		return res;
+	}
+	
+	override WeaponStateBase ProcessAbortEvent(WeaponEventBase e, out ProcessEventResult result)
+	{
+		WeaponStateBase res = super.ProcessAbortEvent(e, result);
+		ValidateAndRepair();
+		return res;
+	}
+	
+	override protected ProcessEventResult ProcessAbortTransition(FSMTransition<WeaponStateBase, WeaponEventBase, WeaponActionBase, WeaponGuardBase> t, WeaponEventBase e)
+	{
+		ProcessEventResult res = super.ProcessAbortTransition(t, e);
+		ValidateAndRepair();
+		return res;
+	}
 
 	/**@fn		FindStateForInternalID
 	 * @brief	retrieve base state that matches given internal id
 	 * @param[in]	id	the id stored in database during save
 	 **/
-	WeaponStateBase FindStateForInternalID (int id)
+	WeaponStateBase FindStateForInternalID(int id)
 	{
 		int state_count = m_UniqueStates.Count();
 		for (int idx = 0; idx < state_count; ++idx)
@@ -50,7 +71,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	 * @brief	load from database - reverse lookup for state from saved id
 	 * @param[in]	id	the id stored in database during save
 	 **/
-	WeaponStableState FindStableStateForID (int id)
+	WeaponStableState FindStableStateForID(int id)
 	{
 		if (id == 0)
 			return null;
@@ -66,7 +87,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		return null;
 	}
 
-	protected bool LoadAndSetCurrentFSMState (ParamsReadContext ctx, int version)
+	protected bool LoadAndSetCurrentFSMState(ParamsReadContext ctx, int version)
 	{
 		int curr_state_id = -1;
 		if (!ctx.Read(curr_state_id))
@@ -79,8 +100,8 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		if (state)
 		{
 			Terminate();
-			wpnDebugPrint("[wpnfsm] synced current state=" + state + " id=" + curr_state_id);
-			m_State = state;
+			wpnDebugPrint("[wpnfsm] synced current state=" + state + " id=" + curr_state_id);	
+			m_State = state;	
 			Start(null, true);
 			return true;
 		}
@@ -93,7 +114,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	/**@fn		LoadCurrentFSMState
 	 * @brief	load current state of fsm
 	 **/
-	bool LoadCurrentFSMState (ParamsReadContext ctx, int version)
+	bool LoadCurrentFSMState(ParamsReadContext ctx, int version)
 	{
 		if (LoadAndSetCurrentFSMState(ctx, version))
 		{
@@ -104,7 +125,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		return false;
 	}
 	
-	bool LoadCurrentUnstableFSMState (ParamsWriteContext ctx, int version)
+	bool LoadCurrentUnstableFSMState(ParamsWriteContext ctx, int version)
 	{
 		if (LoadAndSetCurrentFSMState(ctx, version))
 		{
@@ -124,7 +145,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	/**@fn		SaveCurrentFSMState
 	 * @brief	save current state of fsm
 	 **/
-	bool SaveCurrentFSMState (ParamsWriteContext ctx)
+	bool SaveCurrentFSMState(ParamsWriteContext ctx)
 	{
 		WeaponStateBase state = GetCurrentState();
 		int curr_state_id = state.GetInternalStateID();
@@ -145,7 +166,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		return true;
 	}
 	
-	bool SaveCurrentUnstableFSMState (ParamsWriteContext ctx)
+	bool SaveCurrentUnstableFSMState(ParamsWriteContext ctx)
 	{
 		WeaponStateBase state = GetCurrentState();
 		int curr_state_id = state.GetInternalStateID();
@@ -174,10 +195,102 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		return true;
 	}
 	
+    /**@fn		ValidateAndRepair
+	 * @brief	validate the state of the gun and repair if mismatch
+	 **/
+	void ValidateAndRepair()
+	{
+		Internal_ValidateAndRepair();
+	}
+	
+	/**@fn		Internal_ValidateAndRepair
+	 * @brief	validate the state of the gun and repair if mismatch
+	 * @return	bool whether it performed reparing or not
+	 **/
+	protected bool Internal_ValidateAndRepair()
+	{
+		bool repaired = false;
+		
+		// Only repair stable states
+		WeaponStableState state = WeaponStableState.Cast(m_State);				
+		if (state && state.IsRepairEnabled())
+		{		
+			Weapon_Base weapon = state.m_weapon;
+			if (weapon)
+			{
+				repaired |= ValidateAndRepairHelper(weapon,
+						"MagazineRepair",
+						state.HasMagazine(), ( weapon.GetMagazine(weapon.GetCurrentMuzzle()) != null ),
+						new WeaponEventAttachMagazine, new WeaponEventDetachMagazine,
+						state);
+				
+				repaired |= ValidateAndRepairHelper(weapon,
+						"JammedRepair",
+						state.IsJammed(), weapon.IsJammed(),
+						new WeaponEventTriggerToJam, new WeaponEventUnjam,
+						state);
+				
+				if (weapon.IsJammed())
+					return repaired;
+				
+				// Sadly, multi muzzle and fired out bullets are a bit too tricky
+				if (weapon.GetMuzzleCount() == 1)
+				{
+					repaired |= ValidateAndRepairHelper(weapon,
+						"ChamberRepair",
+						state.HasBullet(), weapon.IsChamberFull(weapon.GetCurrentMuzzle()),
+						new WeaponEventLoad1Bullet, new WeaponEventMechanism,
+						state);
+				}
+			}
+		}
+
+		return repaired;
+	}
+	
+	protected bool ValidateAndRepairHelper(Weapon_Base weapon, string name, bool stateCondition, bool gunCondition, WeaponEventBase e1, WeaponEventBase e2, out WeaponStableState state)
+	{	
+		wpnDebugPrint("[wpnfsm] " + weapon.GetDebugName(weapon) + " ValidateAndRepair - " + name + " - " + m_State + " - state: " + stateCondition + " & weapon: " + gunCondition);
+		
+		if (stateCondition != gunCondition)
+		{
+			Error("[wpnfsm] ValidateAndRepair Attempting to repair: " + weapon.GetDebugName(weapon) + " - " + name + " - " + m_State + " - state: " + stateCondition + " != weapon: " + gunCondition);
+			
+			WeaponStableState repairedState = ValidateAndRepairStateFinder(gunCondition, e1, e2, state);
+			
+			if (repairedState)
+			{
+				Terminate();
+				m_State = repairedState;
+				Start(null, true);
+				state = repairedState;
+				weapon.SyncSelectionState(state.HasBullet(), state.HasMagazine());
+				repairedState.SyncAnimState();
+				wpnDebugPrint("[wpnfsm] " + weapon.GetDebugName(weapon) + " ValidateAndRepair - " + name + " - Result - " + m_State);
+				return true;
+			}
+			else
+				Error("[wpnfsm] " + weapon.GetDebugName(weapon) + " ValidateAndRepair FAILED - " + name + " - " + m_State + " - state: " + stateCondition + " != weapon: " + gunCondition);
+		}
+		
+		return false;
+	}
+	
+	protected WeaponStableState ValidateAndRepairStateFinder(bool condition, WeaponEventBase e1, WeaponEventBase e2, WeaponStableState state)
+	{
+		WeaponStateBase interState;
+		if (condition)
+			interState = FindTransitionState(state, e1);
+		else
+			interState = FindTransitionState(state, e2);
+			
+		return WeaponStableState.Cast(FindGuardedTransitionState(interState, new WeaponEventHumanCommandActionFinished));
+	}
+	
 	/**@fn		OnStoreLoad
 	 * @brief	load state of fsm
 	 **/
-	bool OnStoreLoad (ParamsReadContext ctx, int version)
+	bool OnStoreLoad(ParamsReadContext ctx, int version)
 	{
 		int id = 0;
 		ctx.Read(id);
@@ -185,7 +298,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 		if (state)
 		{
 			Terminate();
-			wpnDebugPrint("[wpnfsm] OnStoreLoad - loading current state=" + state + " id=" + id);
+			wpnDebugPrint("[wpnfsm] OnStoreLoad - loading current state=" + state + " id=" + id);	
 			m_State = state;
 			Start(null, true);
 		}
@@ -207,7 +320,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	 *
 	 * @return	integer id that will be stored to database
 	 **/
-	int GetCurrentStableStateID ()
+	int GetCurrentStableStateID()
 	{
 		// 1) if current state is stable state then return ID directly
 		WeaponStableState state = WeaponStableState.Cast(GetCurrentState());
@@ -231,7 +344,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	/**@fn		GetCurrentStateID
 	 * @brief	return internal identifier of current state
 	 **/
-	int GetInternalStateID ()
+	int GetInternalStateID()
 	{
 		WeaponStateBase curr = GetCurrentState();
 		int id = 0;
@@ -243,7 +356,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	/**@fn		OnStoreSave
 	 * @brief	save state of fsm
 	 **/
-	void OnStoreSave (ParamsWriteContext ctx)
+	void OnStoreSave(ParamsWriteContext ctx)
 	{
 		int id = GetCurrentStableStateID();
 		wpnDebugSpamALot("[wpnfsm] OnStoreSave - saving current state=" + GetCurrentState() + " id=" + id);
@@ -253,7 +366,7 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 	/**@fn		RandomizeFSMState
 	 * @brief	Engine callback - loot randomization of FSM's state. not intended to direct use.
 	 **/
-	void RandomizeFSMState (bool hasBullet, bool hasMagazine, bool isJammed)
+	void RandomizeFSMState(bool hasBullet, bool hasMagazine, bool isJammed)
 	{
 		array<WeaponStableState> candidates = new array<WeaponStableState>;
 		int tc = m_Transitions.Count();
@@ -272,7 +385,8 @@ class WeaponFSM extends HFSMBase<WeaponStateBase, WeaponEventBase, WeaponActionB
 			WeaponStableState selected = candidates.Get(randomIndex);
 			Terminate();
 			m_State = selected;
-			Start(null, true);
+			if (!Internal_ValidateAndRepair())
+				Start(null, true);
 			wpnDebugPrint("[wpnfsm] RandomizeFSMState - randomized current state=" + m_State + " id=" + selected.GetCurrentStateID());
 			selected.SyncAnimState();
 		}

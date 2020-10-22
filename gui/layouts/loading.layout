@@ -180,5 +180,17 @@ FrameWidgetClass LoadingFrame {
     }
    }
   }
+  TextWidgetClass dbg_Layout_name {
+   visible 0
+   position 150 500
+   size 300 50
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   text "loading.layout"
+   font "gui/fonts/sdf_MetronLight24"
+   "exact text" 1
+  }
  }
 }

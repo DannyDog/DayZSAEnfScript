@@ -14,5 +14,9 @@ class Pumpkin : Edible_Base
 	{
 		return true;
 	}
-}
 
+	override bool CanDecay()
+	{
+		return true;
+	}
+}

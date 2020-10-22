@@ -75,6 +75,13 @@ class ParticleList
 	static const int ROADFLARE_BURNING_ENDING		= RegisterParticle("fire_small_roadflare_red_02");
 	static const int ROADFLARE_BURNING_SMOKE		= RegisterParticle("fire_small_roadflare_red_03");
 	
+	// FLARE PROJECTILE
+	static const int FLAREPROJ_FIRE					= RegisterParticle("fire_small_roadflare_red_04");
+	static const int FLAREPROJ_ACTIVATE				= RegisterParticle("fire_small_flare_yellow_01");
+	static const int FLAREPROJ_ACTIVATE_RED			= RegisterParticle("fire_small_flare_red_01");
+	static const int FLAREPROJ_ACTIVATE_GREEN		= RegisterParticle("fire_small_flare_green_01");
+	static const int FLAREPROJ_ACTIVATE_BLUE		= RegisterParticle("fire_small_flare_blue_01");
+	
 	// DIGGING
 	static const int DIGGING_STASH					= RegisterParticle("digging_ground");
 	

@@ -1,28 +1,5 @@
-class TerritoryFlagKit extends ItemBase
-{	
-	ref protected EffectSound 		m_DeployLoopSound;
-	protected bool 					m_DeployedRegularly;
-	
-	void TerritoryFlagKit()
-	{
-		m_DeployLoopSound = new EffectSound;
-		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
-		RegisterNetSyncVariableBool("m_IsDeploySound");
-	}
-	
-	void ~TerritoryFlagKit()
-	{
-		if ( m_DeployLoopSound )
-		{
-			SEffectManager.DestroySound( m_DeployLoopSound );
-		}
-	}
-	
-	override bool IsBasebuildingKit()
-	{
-		return true;
-	}
-	
+class TerritoryFlagKit extends KitBase
+{
 	override bool PlacementCanBeRotated()
 	{
 		return false;
@@ -37,61 +14,7 @@ class TerritoryFlagKit extends ItemBase
 	{
 		return 11.3;
 	}
-	
-	override void EEInit()
-	{
-		super.EEInit();
-		
-		//set visual on init
-		UpdateVisuals();
-		UpdatePhysics();
-		
-		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Call( AssembleKit );
-	}
-	
-	override void EEItemDetached(EntityAI item, string slot_name)
-	{
-		super.EEItemDetached( item, slot_name );
-		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
-		if( player && player.IsPlayerDisconnected() )
-		{
-			return;
-		}
-		if (item && slot_name == "Rope")
-		{
-			if ((GetGame().IsServer() || !GetGame().IsMultiplayer()) && !m_DeployedRegularly)
-			{					
-				DisassembleKit(ItemBase.Cast(item));
-				item.Delete();
-				Delete();
-			}
-		}
-	}
-	
-	override void OnEndPlacement()
-	{
-		m_DeployedRegularly = true;
-	}
-	
-	override void OnPlacementCancelled( Man player )
-	{
-		super.OnPlacementCancelled(player);
-		m_DeployedRegularly = false;
-	}
-	
-	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
-	{
-		super.OnItemLocationChanged( old_owner, new_owner );
-		
-		//update visuals after location change
-		UpdatePhysics();
-	}
-		
-	override bool HasProxyParts()
-	{
-		return true;
-	}
-	
+
 	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
 	{
 		if ( !super.CanReceiveAttachment(attachment, slotId) )
@@ -103,20 +26,7 @@ class TerritoryFlagKit extends ItemBase
 		
 		return true;
 	}
-	
-	//Update visuals and physics
-	void UpdateVisuals()
-	{
-		SetAnimationPhase( "Inventory", 0 );
-		SetAnimationPhase( "Placing", 1 );
-	}
-	
-	void UpdatePhysics()
-	{
-		AddProxyPhysics( "Inventory" );
-		RemoveProxyPhysics( "Placing" );		
-	}
-	
+
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
@@ -141,15 +51,13 @@ class TerritoryFlagKit extends ItemBase
 	// ADVANCED PLACEMENT
 	//================================================================			
 		
-	override void OnPlacementComplete( Man player )
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
 	{
+		super.OnPlacementComplete( player, position, orientation );
+		
 		if ( GetGame().IsServer() )
 		{
 			//Create TerritoryFlag
-			PlayerBase player_base = PlayerBase.Cast( player );
-			vector position = player_base.GetLocalProjectionPosition();
-			vector orientation = player_base.GetLocalProjectionOrientation();
-			
 			TerritoryFlag totem = TerritoryFlag.Cast( GetGame().CreateObjectEx( "TerritoryFlag", GetPosition(), ECE_PLACE_ON_SURFACE ) );
 			totem.SetPosition( position );
 			totem.SetOrientation( orientation );
@@ -160,64 +68,8 @@ class TerritoryFlagKit extends ItemBase
 			SetIsDeploySound( true );
 		}
 	}
-	
-	override bool IsDeployable()
-	{
-		return true;
-	}
-	
-	override bool CanAssignAttachmentsToQuickbar()
-	{
-		return false;
-	}
-	
-	override string GetDeploySoundset()
-	{
-		return "putDown_FenceKit_SoundSet";
-	}
-	
-	override string GetLoopDeploySoundset()
-	{
-		return "BarbedWire_Deploy_loop_SoundSet";
-	}
-	
-	void PlayDeployLoopSound()
-	{
-		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
-		{
-			if ( !m_DeployLoopSound.IsSoundPlaying() )
-			{
-				m_DeployLoopSound = SEffectManager.PlaySound( GetLoopDeploySoundset(), GetPosition() );
-			}
-		}
-	}
-	
-	void StopDeployLoopSound()
-	{
-		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
-		{	
-			m_DeployLoopSound.SetSoundFadeOut(0.5);
-			m_DeployLoopSound.SoundStop();
-		}
-	}
-	
-	override void SetActions()
-	{
-		super.SetActions();
-		
-		AddAction(ActionTogglePlaceObject);
-		AddAction(ActionDeployObject);
-	}
-	
-	void AssembleKit()
-	{
-		if (!IsHologram())
-		{
-			Rope rope = Rope.Cast(GetInventory().CreateAttachment("Rope"));
-		}
-	}
-	
-	void DisassembleKit(ItemBase item)
+
+	override void DisassembleKit(ItemBase item)
 	{
 		if (!IsHologram())
 		{
@@ -226,17 +78,5 @@ class TerritoryFlagKit extends ItemBase
 			Rope rope = Rope.Cast(item);
 			CreateRope(rope);
 		}
-	}
-	
-	void CreateRope(Rope rope)
-	{
-		if (!rope)
-			return;
-		
-		InventoryLocation targetLoc = rope.GetTargetLocation();
-		if (targetLoc && targetLoc.GetType() == InventoryLocationType.ATTACHMENT)
-			return;
-
-		GetGame().CreateObjectEx("Rope",GetPosition(),ECE_PLACE_ON_SURFACE);
 	}
 }

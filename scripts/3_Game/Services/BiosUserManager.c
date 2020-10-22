@@ -253,7 +253,7 @@ class BiosUserManager
 			}
 			else
 			{
-				if( GetGame().GetUIManager() )
+				if( GetGame().GetUIManager() && GetGame().GetInput().IsActiveGamepadSelected() )
 				{
 					GetGame().GetUIManager().CloseMenu( MENU_TITLE_SCREEN );
 					GetGame().GetInput().IdentifyGamepad( GamepadButton.BUTTON_NONE );

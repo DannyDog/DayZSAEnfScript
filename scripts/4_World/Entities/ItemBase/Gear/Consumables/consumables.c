@@ -58,4 +58,12 @@ class SmallStone: ItemBase {};
 class Spraycan_ColorBase: ItemBase {};
 class Spraycan_Black: Spraycan_ColorBase {};
 class Spraycan_Green: Spraycan_ColorBase {};
-class TannedLeather: ItemBase {};
+class TannedLeather: ItemBase
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionAttachToConstruction);
+	}
+};

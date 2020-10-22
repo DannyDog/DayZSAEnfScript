@@ -22,6 +22,7 @@ class CfgPatches
 		requiredAddons[] = {};
 	};
 };
+class Entity;
 class CfgAmmo
 {
 	class ShotgunCore;
@@ -1704,15 +1705,16 @@ class CfgAmmo
 	class Bullet_Flare: Bullet_Base
 	{
 		scope = 2;
-		model = "\dz\weapons\projectiles\tracer_red.p3d";
+		model = "\dz\weapons\projectiles\Flare_Projectile.p3d";
+		proxyShape = "\dz\weapons\projectiles\Flare_SingleRound.p3d";
+		casing = "FxCartridge_Flare";
+		round = "FxRound_Flare";
 		spawnPileType = "Ammo_Flare";
-		casing = "-";
-		round = "-";
-		caliber = 1;
-		airFriction = -0.00215;
-		typicalSpeed = 180;
-		initSpeed = 180;
-		weight = 0.025;
+		caliber = 0.0;
+		airFriction = -0.00815;
+		typicalSpeed = 80;
+		initSpeed = 80;
+		weight = 0.005;
 		soundFly[] = {};
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
@@ -1723,27 +1725,12 @@ class CfgAmmo
 		simulationStep = 0.05;
 		explosive = 0;
 		soundHit[] = {"",0,1};
-		deflecting = 90;
+		SimulationScriptClass = "FlareSimulation";
+		deflecting = 30;
 		timeToLive = 40;
 		explosionTime = 40;
 		radius = 300;
 		soundEngine[] = {"dz\sounds\effects\crafting\fire\flare_1",0.099999994,1,100};
-		class PointLight
-		{
-			color[] = {1,0.4,0.3,1.0};
-			brightness = 1.0;
-			radius = 100;
-			dayLight = 1;
-			position = "";
-			hitpoint = "";
-			selection = "";
-			heatHazeRadius = 0.2;
-			heatHazePower = 0.01;
-			fireEffect = 1;
-			fireEffectOctaves = 4;
-			fireEffectPersistence = 0.99;
-			fireEffectFract = 0.33;
-		};
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1764,6 +1751,34 @@ class CfgAmmo
 			};
 		};
 	};
+	class Bullet_FlareRed: Bullet_Flare
+	{
+		SimulationScriptClass = "FlareSimulation_Red";
+		spawnPileType = "Ammo_FlareRed";
+		casing = "FxCartridge_Flare_Red";
+		round = "FxRound_Flare_Red";
+		proxyShape = "\dz\weapons\projectiles\Flare_SingleRound_Red.p3d";
+	};
+	class Bullet_FlareGreen: Bullet_Flare
+	{
+		SimulationScriptClass = "FlareSimulation_Green";
+		spawnPileType = "Ammo_FlareGreen";
+		casing = "FxCartridge_Flare_Green";
+		round = "FxRound_Flare_Green";
+		proxyShape = "\dz\weapons\projectiles\Flare_SingleRound_Green.p3d";
+	};
+	class Bullet_FlareBlue: Bullet_Flare
+	{
+		SimulationScriptClass = "FlareSimulation_Blue";
+		spawnPileType = "Ammo_FlareBlue";
+		casing = "FxCartridge_Flare_Blue";
+		round = "FxRound_Flare_Blue";
+		proxyShape = "\dz\weapons\projectiles\Flare_SingleRound_Blue.p3d";
+	};
+	class FlareSimulation: Entity{};
+	class FlareSimulation_Red: FlareSimulation{};
+	class FlareSimulation_Green: FlareSimulation{};
+	class FlareSimulation_Blue: FlareSimulation{};
 	class GrenadeM4: Bullet_Base
 	{
 		scope = 2;
@@ -2064,6 +2079,22 @@ class CfgVehicles
 	{
 		model = "\dz\weapons\projectiles\nabojnice_22.p3d";
 	};
+	class FxCartridge_Flare: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound.p3d";
+	};
+	class FxCartridge_Flare_Red: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Red.p3d";
+	};
+	class FxCartridge_Flare_Green: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Green.p3d";
+	};
+	class FxCartridge_Flare_Blue: FxCartridge
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Blue.p3d";
+	};
 	class FxRound: FxCartridge
 	{
 		model = "\dz\weapons\projectiles\556_SingleRound.p3d";
@@ -2121,5 +2152,21 @@ class CfgVehicles
 	class FxRound_arrow_composite: FxRound
 	{
 		model = "\dz\weapons\projectiles\arrow_composite.p3d";
+	};
+	class FxRound_Flare: FxRound
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound.p3d";
+	};
+	class FxRound_Flare_Red: FxRound
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Red.p3d";
+	};
+	class FxRound_Flare_Green: FxRound
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Green.p3d";
+	};
+	class FxRound_Flare_Blue: FxRound
+	{
+		model = "\dz\weapons\projectiles\Flare_SingleRound_Blue.p3d";
 	};
 };

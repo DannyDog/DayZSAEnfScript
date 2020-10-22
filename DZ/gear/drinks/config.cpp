@@ -265,7 +265,7 @@ class CfgVehicles
 		lootCategory = "Crafted";
 		weight = 250;
 		itemSize[] = {2,4};
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;

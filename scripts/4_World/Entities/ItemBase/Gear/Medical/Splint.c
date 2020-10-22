@@ -8,3 +8,11 @@ class Splint: Inventory_Base
 		AddAction(ActionSplintSelf);
 	}
 };
+
+class Splint_Applied: Clothing
+{
+	void ~Splint_Applied()
+	{
+		
+	}
+};

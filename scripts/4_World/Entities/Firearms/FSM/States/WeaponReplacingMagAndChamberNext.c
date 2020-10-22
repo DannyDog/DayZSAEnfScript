@@ -368,9 +368,17 @@ class WeaponReplacingMagAndChamberNext extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(m_swapMags, __ma_, m_attach));
 		m_fsm.AddTransition(new WeaponTransition(  m_attach, __ck_, m_chamber, NULL, new GuardAnd(new WeaponGuardCurrentChamberEmpty(m_weapon), new WeaponGuardHasAmmo(m_weapon))));
 		m_fsm.AddTransition(new WeaponTransition(  m_attach, __ck_, m_onCK));
+		
 		m_fsm.AddTransition(new WeaponTransition(  m_attach, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition( m_chamber, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(    m_onCK, _fin_, NULL));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_swapMags, _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_hideOld,  _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_detach,   _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_eject,    _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start,    _fin_, null));	
 
 		m_fsm.SetInitialState(m_start);
 	}

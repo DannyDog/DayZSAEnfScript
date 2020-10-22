@@ -17,6 +17,7 @@ class PluginPlayerStatus extends PluginBase
 		m_NotifiersIcons.Insert( NTFKEY_BACTERIA, "iconBacteria" );
 		m_NotifiersIcons.Insert( NTFKEY_BLEEDISH, "iconBlood" );
 		m_NotifiersIcons.Insert( NTFKEY_FEVERISH, "iconTemperature" );
+		m_NotifiersIcons.Insert( NTFKEY_FRACTURE, "iconFracture" );
 	}
 	
 	void SetNotifier( int key, int index = 9, string label = "", int color =  0xFFFFFFFF )

@@ -157,12 +157,13 @@ class CfgVehicles
 			{
 				item = "Guts";
 				count = 3;
-				quantityMinMaxCoef[] = {0.5,1};
+				quantityMinMaxCoef[] = {0.5,0.8};
 			};
 			class ObtainedPelt
 			{
 				item = "DeerPelt";
 				count = 1;
+				itemZones[] = {"Zone_Chest","Zone_Belly"};
 				quantityCoef = 1;
 				transferToolDamageCoef = 1;
 			};

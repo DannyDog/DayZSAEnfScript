@@ -350,6 +350,12 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass smoking {
+   Name "smoking"
+   Pos 1710 1020
+   Size 170 170
+   Flags 0
+  }
   ImageSetDefClass barbedwire {
    Name "barbedwire"
    Pos 343 1366
@@ -614,6 +620,36 @@ ImageSetClass {
    Size 170 170
    Flags 0
   }
+  ImageSetDefClass animal_pelt {
+   Name "animal_pelt"
+   Pos 1710 170
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass wooden_sticks {
+   Name "wooden_sticks"
+   Pos 1710 680
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass tarp {
+   Name "tarp"
+   Pos 1710 850
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass barrel {
+   Name "barrel"
+   Pos 1710 1197
+   Size 170 170
+   Flags 0
+  }
+  ImageSetDefClass woodcrate {
+   Name "woodcrate"
+   Pos 1710 1368
+   Size 170 170
+   Flags 0
+  }
  }
  Groups {
   ImageSetGroupClass AttachmentCategory {
@@ -754,6 +790,24 @@ ImageSetClass {
     ImageSetDefClass cat_fp_cooking_grill {
      Name "cat_fp_cooking_grill"
      Pos 340 340
+     Size 170 170
+     Flags 0
+    }
+    ImageSetDefClass cat_fp_tents {
+     Name "cat_fp_tents"
+     Pos 1710 0
+     Size 170 170
+     Flags 0
+    }
+    ImageSetDefClass cat_shelter_support {
+     Name "cat_shelter_support"
+     Pos 1710 510
+     Size 170 170
+     Flags 0
+    }
+    ImageSetDefClass cat_shelter_roof {
+     Name "cat_shelter_roof"
+     Pos 1710 340
      Size 170 170
      Flags 0
     }

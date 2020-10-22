@@ -40,7 +40,7 @@ class SplitFirewood extends RecipeBase
 		InsertIngredient(1,"Hatchet");
 		InsertIngredient(1,"FirefighterAxe");
 		
-		m_IngredientAddHealth[1] = -10;// 0 = do nothing
+		m_IngredientAddHealth[1] = -12;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;// 0 = do nothing
 		m_IngredientDestroy[1] = false;// false = do nothing

@@ -32,6 +32,8 @@ class Pistol_CLO_DIS_BU0_MA0 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class Pistol_CLO_CHG_BU0_MA0 extends WeaponStableState
 {
@@ -41,6 +43,8 @@ class Pistol_CLO_CHG_BU0_MA0 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class Pistol_CLO_CHG_BU1_MA0 extends WeaponStableState
 {
@@ -50,6 +54,8 @@ class Pistol_CLO_CHG_BU1_MA0 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class Pistol_CLO_JAM_BU1_MA0 extends WeaponStateJammed
 {
@@ -60,6 +66,8 @@ class Pistol_CLO_JAM_BU1_MA0 extends WeaponStateJammed
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class Pistol_OPE_DIS_BU0_MA0 extends WeaponStableState
 {
@@ -70,6 +78,8 @@ class Pistol_OPE_DIS_BU0_MA0 extends WeaponStableState
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class Pistol_CLO_CHG_BU0_MA1 extends WeaponStableState
 {
@@ -79,6 +89,8 @@ class Pistol_CLO_CHG_BU0_MA1 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class Pistol_CLO_DIS_BU0_MA1 extends WeaponStableState
 {
@@ -88,6 +100,8 @@ class Pistol_CLO_DIS_BU0_MA1 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class Pistol_CLO_JAM_BU1_MA1 extends WeaponStateJammed
 {
@@ -98,6 +112,8 @@ class Pistol_CLO_JAM_BU1_MA1 extends WeaponStateJammed
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class Pistol_CLO_CHG_BU1_MA1 extends WeaponStableState
 {
@@ -107,6 +123,8 @@ class Pistol_CLO_CHG_BU1_MA1 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class Pistol_OPE_DIS_BU0_MA1 extends WeaponStableState
 {
@@ -117,6 +135,8 @@ class Pistol_OPE_DIS_BU0_MA1 extends WeaponStableState
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 
 

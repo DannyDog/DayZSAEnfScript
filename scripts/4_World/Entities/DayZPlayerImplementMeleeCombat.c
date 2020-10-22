@@ -19,8 +19,9 @@ class DayZPlayerImplementMeleeCombat
 	protected const float				TARGETING_ANGLE_SPRINT	= 15.0;
 	protected const float				TARGETING_MIN_HEIGHT	= -2.0;
 	protected const float				TARGETING_MAX_HEIGHT	= 2.0;
-	protected const float				TARGETING_RAY_RADIUS	= 0.3;
+	protected const float				TARGETING_RAY_RADIUS	= 0.25;
 	protected const float				TARGETING_RAY_DIST		= 5.0;
+	protected const float				TARGETING_RAY_DIST_SHORT= 2.0;
 
 	protected const float 				RANGE_EXTENDER_NORMAL	= 0.65;
 	protected const float 				RANGE_EXTENDER_SPRINT	= 1.35;
@@ -43,7 +44,8 @@ class DayZPlayerImplementMeleeCombat
 	protected bool 						m_SprintAttack;
 	
 	protected vector 					m_RayStart;
-	protected vector	 				m_RayEnd;	
+	protected vector	 				m_RayEnd;
+	protected vector	 				m_RayEndShort;
 
 	protected int 						m_HitZoneIdx;
 	protected string					m_HitZoneName;
@@ -289,39 +291,45 @@ class DayZPlayerImplementMeleeCombat
 		MiscGameplayFunctions.GetHeadBonePos(player, pos);
 		m_RayStart = pos;
 		m_RayEnd = pos + cameraDirection * TARGETING_RAY_DIST;
+		m_RayEndShort = pos + cameraDirection * TARGETING_RAY_DIST_SHORT;
 
 		// raycast
-		vector hitNormal;	
 		ref set<Object> hitObjects = new set<Object>;
-
-		if ( DayZPhysics.RaycastRV( m_RayStart, m_RayEnd, m_HitPositionWS, hitNormal, m_HitZoneIdx, hitObjects, null, player, false, false, ObjIntersectIFire, TARGETING_RAY_RADIUS ) )
+		int hitComponentIndex;
+		float hitFraction;
+		vector start, end, hitNormal, hitPosObstructed;
+		PhxInteractionLayers collisionLayerMask = PhxInteractionLayers.DEFAULT;
+		
+		if ( !DayZPhysics.RaycastRV(m_RayStart, m_RayEndShort, m_HitPositionWS, hitNormal, m_HitZoneIdx, hitObjects, null, player, false, false, ObjIntersectIFire) && !DayZPhysics.RaycastRV(m_RayStart, m_RayEnd, m_HitPositionWS, hitNormal, m_HitZoneIdx, hitObjects, null, player, false, false, ObjIntersectIFire, TARGETING_RAY_RADIUS) )
 		{
-			if( hitObjects.Count() )
+			m_HitZoneIdx = -1;
+			//Print("HitZoneSelection failed");
+		}
+		else if ( hitObjects.Count() > 0 )
+		{
+			cursorTarget = hitObjects.Get(0);
+
+			//! make sure we are in range of the current weapon;				
+			vector playerPos = m_DZPlayer.GetPosition();
+			vector hitPos = m_HitPositionWS;
+			//! 2d only
+			playerPos[1] = 0;
+			hitPos[1] = 0;
+
+			//! just for building and transports (big objects)				
+			if( cursorTarget.IsAnyInherited(m_NonAlignableObjects) && vector.Distance(playerPos, hitPos) <= GetWeaponRange(m_Weapon, GetWeaponMode()))
 			{
-				cursorTarget = hitObjects.Get(0);
-
-				//! make sure we are in range of the current weapon;				
-				vector playerPos = m_DZPlayer.GetPosition();
-				vector hitPos = m_HitPositionWS;
-				//! 2d only
-				playerPos[1] = 0;
-				hitPos[1] = 0;
-
-				//! just for building and transports (big objects)				
-				if( cursorTarget.IsAnyInherited(m_NonAlignableObjects) && vector.Distance(playerPos, hitPos) <= GetWeaponRange(m_Weapon, GetWeaponMode()))
+				//! if no object in cone, set this object from raycast for these special cases
+				if (m_TargetObject == null)
 				{
-					//! if no object in cone, set this object from raycast for these special cases
-					if (m_TargetObject == null)
-					{
-						m_TargetObject = cursorTarget;
-					}
+					m_TargetObject = cursorTarget;
 				}
+			}
 
-				if ( cursorTarget == m_TargetObject )
-				{
-					m_HitZoneName = cursorTarget.GetDamageZoneNameByComponentIndex(m_HitZoneIdx);
-					//Print("hit object: " + m_TargetObject + " | component idx: " + m_HitZoneIdx + " | hitzone name: " + m_HitZoneName);
-				}
+			if ( cursorTarget == m_TargetObject )
+			{
+				m_HitZoneName = cursorTarget.GetDamageZoneNameByComponentIndex(m_HitZoneIdx);
+				//Print("hit object: " + m_TargetObject + " | component idx: " + m_HitZoneIdx + " | hitzone name: " + m_HitZoneName);
 			}
 		}
 		else
@@ -407,6 +415,7 @@ class DayZPlayerImplementMeleeCombat
 				DbgUI.Text("Character: " + m_TargetObject.GetDisplayName());
 				DbgUI.Text("HitZone: " + m_HitZoneName + "(" + m_HitZoneIdx + ")");
 				DbgUI.Text("HitPosWS:" + m_HitPositionWS);
+				DbgUI.Text("Distance:" + vector.Distance(m_HitPositionWS,m_RayStart));
 			}
 		}
 		DbgUI.End();

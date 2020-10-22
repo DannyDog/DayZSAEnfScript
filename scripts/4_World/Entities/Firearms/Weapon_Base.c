@@ -490,9 +490,17 @@ class Weapon_Base extends Weapon
 	
 	void OnFire(int muzzle_index){}
 	
+	void ValidateAndRepair()
+	{
+		m_fsm.ValidateAndRepair();
+	}
+	
 	override void OnInventoryEnter (Man player)
 	{
 		m_PropertyModifierObject = null;
+
+		ValidateAndRepair();
+		
 		super.OnInventoryEnter(player);
 	}
 	

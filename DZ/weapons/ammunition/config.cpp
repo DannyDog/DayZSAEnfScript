@@ -702,7 +702,55 @@ class CfgMagazines
 				class Health
 				{
 					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\pistols\flaregun\data\flaregun_yellow.rvmat"}},{0.7,{"DZ\weapons\pistols\flaregun\data\flaregun_yellow.rvmat"}},{0.5,{"DZ\weapons\pistols\flaregun\data\flaregun_yellow_damage.rvmat"}},{0.3,{"DZ\weapons\pistols\flaregun\data\flaregun_yellow_damage.rvmat"}},{0.0,{"DZ\weapons\pistols\flaregun\data\flaregun_yellow_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Ammo_FlareRed: Ammo_Flare
+	{
+		model = "\dz\weapons\ammunition\Flare_SingleRound_Red.p3d";
+		ammo = "Bullet_FlareRed";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\weapons\pistols\flaregun\data\flaregun.rvmat"}},{0.7,{"DZ\weapons\pistols\flaregun\data\flaregun.rvmat"}},{0.5,{"DZ\weapons\pistols\flaregun\data\flaregun_damage.rvmat"}},{0.3,{"DZ\weapons\pistols\flaregun\data\flaregun_damage.rvmat"}},{0.0,{"DZ\weapons\pistols\flaregun\data\flaregun_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Ammo_FlareGreen: Ammo_Flare
+	{
+		model = "\dz\weapons\ammunition\Flare_SingleRound_Green.p3d";
+		ammo = "Bullet_FlareGreen";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\pistols\flaregun\data\flaregun_green.rvmat"}},{0.7,{"DZ\weapons\pistols\flaregun\data\flaregun_green.rvmat"}},{0.5,{"DZ\weapons\pistols\flaregun\data\flaregun_green_damage.rvmat"}},{0.3,{"DZ\weapons\pistols\flaregun\data\flaregun_green_damage.rvmat"}},{0.0,{"DZ\weapons\pistols\flaregun\data\flaregun_green_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Ammo_FlareBlue: Ammo_Flare
+	{
+		model = "\dz\weapons\ammunition\Flare_SingleRound_Blue.p3d";
+		ammo = "Bullet_FlareBlue";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\pistols\flaregun\data\flaregun_blue.rvmat"}},{0.7,{"DZ\weapons\pistols\flaregun\data\flaregun_blue.rvmat"}},{0.5,{"DZ\weapons\pistols\flaregun\data\flaregun_blue_damage.rvmat"}},{0.3,{"DZ\weapons\pistols\flaregun\data\flaregun_blue_damage.rvmat"}},{0.0,{"DZ\weapons\pistols\flaregun\data\flaregun_blue_destruct.rvmat"}}};
 				};
 			};
 		};

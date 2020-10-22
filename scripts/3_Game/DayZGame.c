@@ -166,6 +166,14 @@ class LoginTimeBase extends UIScriptedMenu
 			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 		#endif
 		#endif
+		
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			layoutRoot.FindAnyWidget("notification_root").Show(true);
+		#endif
+		#endif
+		#endif
 		return layoutRoot;
 	}
 	
@@ -729,8 +737,6 @@ class DayZGame extends CGame
 	float 	m_PreviousEVValue;
 	float 	m_EVValue = 0;
 	
-	ref TIntArray demounit = new TIntArray;
-	
 	static ref ScriptInvoker Event_OnRPC = new ScriptInvoker();
 	
 	private ref Backlit m_Backlit;
@@ -821,6 +827,9 @@ class DayZGame extends CGame
 		m_volume_music = GetSoundScene().GetMusicVolume();
 		m_volume_VOIP = GetSoundScene().GetVOIPVolume();
 		m_volume_radio = GetSoundScene().GetRadioVolume();
+		
+		//m_CharacterData = new MenuDefaultCharacterData;
+		GetMenuDefaultCharacterData();
 	}
 	
 	void RegisterProfilesOptions()
@@ -1427,46 +1436,24 @@ class DayZGame extends CGame
 			CancelLoginTimeCountdown();
 		
 		// tell game to continue
-		StoreLoginData();
+		StoreLoginDataPrepare();
 	}
-	
+		
 	// ------------------------------------------------------------
-	// send additional information to server (must be called)
-	void StoreLoginData()
+	// Serialize and send default character information to server (must be called)
+	void StoreLoginDataPrepare()
 	{
-		int top = -1;
-		int bottom = -1;
-		int shoes = -1;
-		int skin = -1;
+		ScriptReadWriteContext ctx = new ScriptReadWriteContext;
+		//Print("StoreLoginDataPrepare");
 		
-		if (demounit.Count() > 0)
-		{
-			top = demounit.Get(0);
-			bottom = demounit.Get(1);
-			shoes = demounit.Get(2);
-			skin = demounit.Get(3);
-		}
-		
-		ref array<ref Param> params = new array<ref Param>;
-			
-		ref Param topParam = new Param1<int>(top);
-		params.Insert(topParam);
-			
-		ref Param bottomParam = new Param1<int>(bottom);
-		params.Insert(bottomParam);
-
-		ref Param shoesParam = new Param1<int>(shoes);
-		params.Insert(shoesParam);
-		
-		ref Param skinParam = new Param1<int>(skin);
-		params.Insert(skinParam);
-		
-		StoreLoginData(params);
+		//GetMenuData().RequestGetDefaultCharacterData();
+		GetMenuDefaultCharacterData().SerializeCharacterData(ctx.GetWriteContext());
+		StoreLoginData(ctx.GetWriteContext());
 	}
 	
 	// ------------------------------------------------------------
 	void EnterLoginQueue(UIMenuPanel parent)
-	{			 	
+	{
 		m_LoginQueue = LoginQueueBase.Cast( GetUIManager().EnterScriptedMenu(MENU_LOGIN_QUEUE, parent) ); 		
 	}
 	
@@ -2577,16 +2564,6 @@ class DayZGame extends CGame
 	}
 	
 	// ------------------------------------------------------------
-	override void SetCharacterInfo(int top,int bottom,int shoes,int characterName)
-	{
-		if (demounit)	demounit.Clear();
-		demounit.Insert(top);
-		demounit.Insert(bottom);
-		demounit.Insert(shoes);
-		demounit.Insert(characterName);
-	}
-	
-	// ------------------------------------------------------------
 	void ExplosionEffects(Object source, Object directHit, int componentIndex, string surface, vector pos, vector surfNormal,
 		float energyFactor, float explosionFactor, bool isWater, string ammoType)
 	{
@@ -2675,7 +2652,7 @@ class DayZGame extends CGame
 				//GetGame().GetPlayer().GetCurrentCamera().SpawnCameraShake(shake_strenght,3,5,30);
 				GetGame().GetPlayer().GetCurrentCamera().SpawnCameraShake(shake_strenght);
 			}
-			
+			//Print("Distance: " + vector.Distance(source.GetPosition(),pos));
 			ImpactMaterials.EvaluateImpactEffect(directHit, componentIndex, surface, pos, ImpactTypes.UNKNOWN, surfNormal, exitPos, inSpeed, outSpeed, deflected, ammoType, isWater);
 		}
 		
@@ -2763,8 +2740,7 @@ class DayZGame extends CGame
 	{
 		return m_UserFOV;
 	}
-
-	//! TODO: find some better way of accessing options
+	
 	static float GetUserFOVFromConfig()
 	{
 		if (g_Game.GetMissionState() == DayZGame.MISSION_STATE_MAINMENU || g_Game.GetMissionState() == DayZGame.MISSION_STATE_GAME)

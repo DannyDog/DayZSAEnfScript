@@ -12,7 +12,7 @@ class DayZIntroScene : Managed
 
 	void DayZIntroScene()
 	{
-		World w = g_Game.GetWorld();		
+		World w = g_Game.GetWorld();
 		
 		string root_path = "cfgCharacterScenes " + g_Game.GetWorldName();
 		

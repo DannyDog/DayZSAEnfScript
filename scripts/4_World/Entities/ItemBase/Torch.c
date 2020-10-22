@@ -19,7 +19,7 @@ class Torch : ItemBase
 	
 	void Torch()
 	{
-		if ( m_BurnTimePerRag == 0  ||  m_BurnTimePerFullLard == 0  ||  m_MaxConsumableLardQuantity == 0  ||  m_MaxConsumableFuelQuantity == 0 )
+		if ( m_BurnTimePerRag == 0 || m_BurnTimePerFullLard == 0 || m_MaxConsumableLardQuantity == 0 || m_MaxConsumableFuelQuantity == 0 )
 		{
 			string cfg_path = "CfgVehicles " + GetType();
 			m_BurnTimePerRag = GetGame().ConfigGetFloat( cfg_path + " burnTimePerRag" );
@@ -59,7 +59,7 @@ class Torch : ItemBase
 		return CanBeTakenAsCargo();
 	}
 	
-	override bool CanReleaseAttachment (EntityAI attachment)
+	override bool CanReleaseAttachment(EntityAI attachment)
 	{
 		if( !super.CanReleaseAttachment( attachment ) )
 			return false;
@@ -150,6 +150,11 @@ class Torch : ItemBase
 		if ( !GetCompEM().HasEnoughStoredEnergy() )
 			GetCompEM().SwitchOff();
 		;
+	}
+	
+	void SetTorchDecraftResult(string type)
+	{
+		m_DecraftResult = type; //not persistent for the moment
 	}
 	
 	bool ConsumeRag()
@@ -264,7 +269,7 @@ class Torch : ItemBase
 		
 		if (rag)
 		{
-			rag.SetHealth(1);
+			rag.SetHealth(1); //does not actually ruin rags, combining would be impossible
 		}
 	}
 	
@@ -284,7 +289,7 @@ class Torch : ItemBase
 		GetGame().SurfaceGetType ( position[0], position[2], surface_type );
 		bool is_surface_soft = GetGame().IsSurfaceDigable(surface_type);
 		
-		if ( is_surface_soft  &&  !IsRuined() )
+		if ( is_surface_soft && !IsRuined() )
 		{
 			vector ori_rotate = "0 0 0";
 			ori_rotate[0] = Math.RandomFloat(0, 360);
@@ -302,17 +307,17 @@ class Torch : ItemBase
 	{
 		if (GetGame().IsServer())
 		{
-			float q_max = GetCompEM().GetEnergyMax() + m_BurnTimePerRag * 6; // TO DO: Replace 6 by max rag quantity
+			int stack_max = InventorySlots.GetStackMaxForSlotId(InventorySlots.GetSlotIdFromString("Rags"));
+			float q_max = GetCompEM().GetEnergyMax() + m_BurnTimePerRag * stack_max;
 			float q_min = GetCompEM().GetEnergy();
 			
 			ItemBase rag = GetRag();
-			
 			if (rag)
 			{
 				q_min += m_BurnTimePerRag * rag.GetQuantity();
 			}
 			
-			int quant = Math.Round(  (q_min / q_max) * 100  );
+			int quant = Math.Round( (q_min / q_max) * 100 );
 			
 			float wetness = GetWet();
 			float wetness_exposure = GetCompEM().GetWetnessExposure();
@@ -366,11 +371,10 @@ class Torch : ItemBase
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		if ( m_IsBeingDestructed || (player && player.IsPlayerDisconnected()) )
 			return;
-		
-		m_IsBeingDestructed = true;
-		
+				
 		if ( CanTransformIntoStick() )
-		{				
+		{
+			m_IsBeingDestructed = true;
 			if (player)
 			{
 				// Transform object into wooden stick
@@ -421,7 +425,7 @@ class Torch : ItemBase
 		
 		CalculateQuantity();
 		UpdateCheckForReceivingUpgrade();
-
+		
 		TryTransformIntoStick();
 	}
 	
@@ -501,7 +505,7 @@ class Torch : ItemBase
 		}
 	}
 	
-	override void OnWork ( float consumed_energy )
+	override void OnWork( float consumed_energy )
 	{
 		if ( GetGame().IsServer() )
 		{

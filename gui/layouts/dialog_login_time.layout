@@ -198,6 +198,138 @@ WindowWidgetClass TextInputDialogRoot {
    "src alpha" 1
    "no wrap" 1
    stretch 1
+   {
+    TextWidgetClass dbg_Layout_name {
+     visible 0
+     position 150 500
+     size 300 50
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "dialog_login_time.layout"
+     font "gui/fonts/sdf_MetronLight24"
+     "exact text" 1
+    }
+   }
+  }
+  PanelWidgetClass notification_root {
+   visible 0
+   ignorepointer 1
+   color 0 0 0 0.9294
+   position 0 -227.35101
+   size 0.5 243.12401
+   halign center_ref
+   valign center_ref
+   hexactpos 1
+   vexactpos 0
+   hexactsize 0
+   vexactsize 1
+   scriptclass "AutoHeightSpacer"
+   style DayZDefaultPanel
+   "no focus" 1
+   {
+    RichTextWidgetClass notification_part_1_text {
+     clipchildren 1
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scriptclass ""
+     text "#dayz_game_exp_disclaimer_part1"
+     font "gui/fonts/sdf_MetronLight24"
+     "text offset" 18 0
+     "exact text" 1
+     "exact text size" 24
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+     "content offset" 2
+    }
+    RichTextWidgetClass notification_part_2_text {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     scriptclass ""
+     text "#dayz_game_exp_disclaimer_part2"
+     font "gui/fonts/sdf_MetronLight24"
+     "text offset" 18 0
+     "exact text" 1
+     "exact text size" 24
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+     "content offset" 2
+    }
+    RichTextWidgetClass notification_part_3_text {
+     ignorepointer 1
+     keepsafezone 0
+     size 1 1
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     scaled 1
+     scriptclass ""
+     text "#dayz_game_exp_disclaimer_part3"
+     font "gui/fonts/sdf_MetronLight24"
+     "text offset" 18 0
+     "exact text" 1
+     "exact text size" 24
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+     "content offset" 2
+    }
+    RichTextWidgetClass notification_part_4_text {
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     text "#dayz_game_exp_disclaimer_part4"
+     font "gui/fonts/sdf_MetronLight24"
+     "text offset" 18 0
+     "exact text" 1
+     "exact text size" 24
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+     wrap 1
+     "condense whitespace" 1
+     "strip newlines" 1
+     "content offset" 2
+    }
+   }
+   {
+    ScriptParamsClass {
+     AlignChilds 1
+     MinHeight 10
+     MaxHeight 300
+     Gap 1
+     Top 1
+    }
+   }
   }
  }
 }

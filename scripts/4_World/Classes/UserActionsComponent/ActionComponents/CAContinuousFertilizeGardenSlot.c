@@ -40,9 +40,8 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 				float max = slot.GetFertilizerQuantityMax();
 				
 				m_SlotFertilizerNeed = max - consumed_quantity;
-				Print(m_SlotFertilizerNeed);
+				//Print(m_SlotFertilizerNeed);
 			}
-			
 			m_TimeToComplete = (Math.Min(m_SlotFertilizerNeed,m_ItemQuantity))/m_QuantityUsedPerSecond;
 		}
 	}
@@ -55,7 +54,7 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 			return UA_ERROR;
 		}
 		
-		if ( m_ItemQuantity <= 0 )
+		if ( action_data.m_MainItem.GetQuantity() <= (m_SpentQuantity * m_TimeToComplete) )
 		{
 			return UA_FINISHED;
 		}
@@ -68,10 +67,12 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 				GardenBase garden_base;
 				Class.CastTo(garden_base,  action_data.m_Target.GetObject() );
 				string selection = garden_base.GetActionComponentName(action_data.m_Target.GetComponentIndex());
-				
+			
 				if (GetGame().IsServer())
 				{
-					action_data.m_MainItem.AddQuantity( -m_SpentQuantity );					
+					action_data.m_MainItem.AddQuantity( -m_SpentQuantity );		
+					
+				//Print("Current quantity is : " + action_data.m_MainItem.GetQuantity());			
 				}
 				
 				garden_base.Fertilize( action_data.m_Player, action_data.m_MainItem, val, selection );
@@ -80,6 +81,7 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 			}
 			else
 			{
+				Print(m_SlotFertilizerNeed);
 				CalcAndSetQuantity( action_data );
 				OnCompletePogress(action_data);
 				return UA_FINISHED;
@@ -90,6 +92,10 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 	override float GetProgress()
 	{	
 		//float progress = (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
+		if ( m_TimeToComplete == 0) //Prevent division by 0 case
+		{
+			return -1;
+		}
 		return (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
 	}
 };

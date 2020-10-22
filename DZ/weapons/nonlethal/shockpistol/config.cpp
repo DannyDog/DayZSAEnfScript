@@ -33,7 +33,7 @@ class cfgWeapons
 	{
 		scope = 0;
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		value = 0;
 		chamberSize = 1;

@@ -294,6 +294,26 @@ class FireplaceIndoor extends FireplaceBase
 				break;
 		}
 
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = item_base;
+				break;
+
+			case "SmokingB":
+				m_SmokingSlots[1] = item_base;
+				break;
+
+			case "SmokingC":
+				m_SmokingSlots[2] = item_base;
+				break;
+
+			case "SmokingD":
+				m_SmokingSlots[3] = item_base;
+				break;
+		}
+
 		//refresh fireplace visuals
 		RefreshFireplaceVisuals();
 	}
@@ -344,6 +364,26 @@ class FireplaceIndoor extends FireplaceBase
 
 			case "DirectCookingC":
 				m_DirectCookingSlots[2] = NULL;
+				break;
+		}
+
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = NULL;
+				break;
+
+			case "SmokingB":
+				m_SmokingSlots[1] = NULL;
+				break;
+
+			case "SmokingC":
+				m_SmokingSlots[2] = NULL;
+				break;
+
+			case "SmokingD":
+				m_SmokingSlots[3] = NULL;
 				break;
 		}
 

@@ -28,20 +28,6 @@ class CableReel extends ItemBase
 			return true;
 		}
 		
-		/*if ( GetCompEM().GetPluggedDevices()  &&  GetCompEM().GetPluggedDevicesCount() > 0 )
-		{
-			EntityAI powered_device = GetCompEM().GetPluggedDevices().Get(0).Ptr();
-			
-			if ( powered_device  &&  powered_device.IsKindOf ( "BarbedWire" ) )
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}*/
-		
 		bool allow_into_inv = !GetCompEM().IsPlugged();
 		return allow_into_inv;
 	}
@@ -63,24 +49,12 @@ class CableReel extends ItemBase
 			{
 				return true;
 			}
-			
-			/*if ( GetCompEM().GetPluggedDevices()  &&  GetCompEM().GetPluggedDevicesCount() > 0 )
-			{
-				EntityAI powered_device = GetCompEM().GetPluggedDevices().Get(0).Ptr();
-				
-				if ( powered_device  &&  powered_device.IsKindOf ( "BarbedWire" ) )
-				{
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-			}*/
 		}
 		
-		bool allow_into_inv = !GetCompEM().IsPlugged();
-		return allow_into_inv;
+		return true;
+		
+		/*bool allow_into_inv = !GetCompEM().IsPlugged();
+		return allow_into_inv;*/
 	}
 
 	// Event called on item when it is placed in the player(Man) inventory, passes the owner as a parameter
@@ -88,10 +62,15 @@ class CableReel extends ItemBase
 	{
 		super.OnInventoryEnter(player);
 		
-		GetCompEM().UnplugAllDevices();
-		
 		PlayerBase player_PB;
 		Class.CastTo(player_PB, player);
+		if (player_PB.GetItemInHands() == this && GetCompEM().IsPlugged())
+		{
+			//player_PB.TogglePlacingLocal();
+			return;
+		}
+		
+		GetCompEM().UnplugAllDevices();		
 		
 		if ( !player_PB.IsPlacingLocal() )
 		{
@@ -127,7 +106,8 @@ class CableReel extends ItemBase
 				
 		if( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
-			player_PB.GetHologramServer().SetSelectionToRefresh( array_of_selections );
+			if ( player_PB.GetHologramServer() )
+				player_PB.GetHologramServer().SetSelectionToRefresh( array_of_selections );
 		}
 		else
 		{
@@ -135,10 +115,10 @@ class CableReel extends ItemBase
 		}
 	}
 	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
-			
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
+		
 		SetIsPlaceSound( true );
 	}
 	
@@ -150,6 +130,7 @@ class CableReel extends ItemBase
 	override void SetActions()
 	{
 		super.SetActions();
+		RemoveAction(ActionTakeItemToHands);
 		
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionPlugIn);
@@ -159,5 +140,6 @@ class CableReel extends ItemBase
 		AddAction(ActionUnplugThisByCord);
 		AddAction(ActionRepositionPluggedItem);
 		AddAction(ActionPlaceObject);
+		AddAction(ActionTakeItemToHands);
 	}
 }

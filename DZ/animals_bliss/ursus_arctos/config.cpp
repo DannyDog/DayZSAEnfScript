@@ -661,6 +661,8 @@ class CfgVehicles
 			{
 				item = "BearPelt";
 				count = 2;
+				itemZones[] = {"Zone_Pelvis","Zone_Belly"};
+				quantityCoef = 1;
 				transferToolDamageCoef = 1;
 			};
 			class ObtainedSteaks
@@ -681,7 +683,7 @@ class CfgVehicles
 			{
 				item = "Guts";
 				count = 4;
-				quantityMinMaxCoef[] = {0.4,1};
+				quantityMinMaxCoef[] = {0.5,0.8};
 			};
 			class ObtainedBones
 			{

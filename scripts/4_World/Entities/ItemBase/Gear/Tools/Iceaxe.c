@@ -11,5 +11,6 @@ class Iceaxe: Inventory_Base
 		AddAction(ActionDigWorms);
 		AddAction(ActionDismantlePart);
 		AddAction(ActionBuildPart);
+		AddAction(ActionSkinning);
 	}
 };

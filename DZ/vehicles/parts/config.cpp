@@ -45,7 +45,7 @@ class CfgVehicles
 		absorbency = 0;
 		inventorySlot[] = {"TruckBattery","LargeBattery"};
 		rotationFlags = 2;
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -102,7 +102,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 50;
 		varQuantityDestroyOnMin = 0;
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{

@@ -71,6 +71,8 @@ class ActionBuildPart: ActionContinuousBase
 		//hack - gate
 		if(target.GetObject() && !target.GetObject().CanUseConstructionBuild())
 			return false;
+		if( player.IsPlacingLocal() || player.IsPlacingServer() )
+			return false;
 		
 		if( (!GetGame().IsMultiplayer() || GetGame().IsClient()) )
 		{
@@ -110,10 +112,10 @@ class ActionBuildPart: ActionContinuousBase
 		
 		string part_name = BuildPartActionData.Cast(action_data).m_PartType;
 		
-		if ( !construction.IsColliding( part_name ) && construction.CanBuildPart( part_name, action_data.m_MainItem ) )
+		if ( !construction.IsColliding( part_name ) && construction.CanBuildPart( part_name, action_data.m_MainItem, true ) )
 		{
 			//build
-			construction.BuildPartServer( part_name, AT_BUILD_PART );
+			construction.BuildPartServer( action_data.m_Player, part_name, AT_BUILD_PART );
 			
 			//add damage to tool
 			action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );

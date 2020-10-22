@@ -278,12 +278,32 @@ class DayZPlayerUtils
 			// find suitable heap / mag
 			ref array<Magazine> mags = new array<Magazine>;
 			if (DayZPlayerUtils.FindMagazinesForAmmo(player, magTypeName, mags))
-			{				
+			{	
+				int health_lvl = -1;	
+				float test_heatlh = 1 - damage;		
 				int sz = mags.Count();
 				for (int i = 0; i < sz; ++i)
 				{
 					Magazine mag_i = mags.Get(i);
-					if (mag_i.CanAddCartridges(1) && Math.AbsFloat(1 - mag_i.GetHealthLevelValue(mag_i.GetHealthLevel()) - damage) < 0.01)
+					 // add small amout for 
+					
+					if( health_lvl == -1)
+					{
+						if (mag_i.CanAddCartridges(1) /*&& Math.AbsFloat(1 - mag_i.GetHealthLevelValue(mag_i.GetHealthLevel()) - damage) < 0.01*/)
+						{
+							int num_health_lvl = mag_i.GetNumberOfHealthLevels();
+							for( int j = 1; j < num_health_lvl; j++)
+							{
+								if (mag_i.GetHealthLevelValue(j) < test_heatlh )
+								{
+									health_lvl = j - 1;
+									break;
+								}
+							}
+						}
+					}
+					
+					if( mag_i.GetHealthLevel() == health_lvl )
 					{
 						if (mag_i.ServerStoreCartridge(damage, cartTypeName))
 							return true;
@@ -364,22 +384,22 @@ class DayZPlayerUtils
 	{
 		switch (stanceMask)
 		{
-			case stanceMask | DayZPlayerConstants.STANCEMASK_PRONE:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_PRONE:
 				return DayZPlayerConstants.STANCEIDX_PRONE;
 			
-			case stanceMask | DayZPlayerConstants.STANCEMASK_CROUCH:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_CROUCH:
 				return DayZPlayerConstants.STANCEIDX_CROUCH;
 			
-			case stanceMask | DayZPlayerConstants.STANCEMASK_ERECT:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_ERECT:
 				return DayZPlayerConstants.STANCEIDX_ERECT;
 			
-			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDPRONE:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_RAISEDPRONE:
 				return DayZPlayerConstants.STANCEIDX_RAISEDPRONE;
 			
-			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDCROUCH:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_RAISEDCROUCH:
 				return DayZPlayerConstants.STANCEIDX_RAISEDCROUCH;
 			
-			case stanceMask | DayZPlayerConstants.STANCEMASK_RAISEDERECT:
+			case stanceMask & DayZPlayerConstants.STANCEMASK_RAISEDERECT:
 				return DayZPlayerConstants.STANCEIDX_RAISEDERECT;
 		}
 		

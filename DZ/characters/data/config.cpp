@@ -93,7 +93,7 @@ class CfgVehicles
 		handGunBone = "RightHand";
 		weaponBone = "RightHand_Dummy";
 		inventorySlot[] = {"Driver"};
-		attachments[] = {"Head","Shoulder","Melee","Headgear","Mask","Eyewear","Hands","LeftHand","Gloves","Armband","Vest","Body","Back","Hips","Legs","Feet"};
+		attachments[] = {"Head","Shoulder","Melee","Headgear","Mask","Eyewear","Hands","LeftHand","Gloves","Armband","Vest","Body","Back","Hips","Legs","Feet","Splint_Right"};
 		simulation = "dayzplayer";
 		class enfAnimSys
 		{
@@ -120,7 +120,7 @@ class CfgVehicles
 			{
 				item = "Guts";
 				count = 1;
-				quantityMinMaxCoef[] = {0.5,1};
+				quantityMinMaxCoef[] = {0.5,0.8};
 			};
 			class Lard
 			{
@@ -139,8 +139,8 @@ class CfgVehicles
 		{
 			class P3DAttachments
 			{
-				P3DProxies[] = {"spine1","righthand_dummy","spine2","head","rightlegroll","spine3","lefthand","pelvis","leftshoulder","rightshoulder"};
-				BoneNames[] = {"Spine1","RightHand_Dummy","Spine2","Head","RightLegRoll","Spine3","LeftHand","Pelvis","LeftShoulder","RightShoulder"};
+				P3DProxies[] = {"spine1","righthand_dummy","spine2","head","rightlegroll","spine3","lefthand","pelvis","leftshoulder","rightshoulder","rightleg","leftleg"};
+				BoneNames[] = {"Spine1","RightHand_Dummy","Spine2","Head","RightLegRoll","Spine3","LeftHand","Pelvis","LeftShoulder","RightShoulder","RightLeg","LeftLeg"};
 			};
 			class CommandMoveDir
 			{
@@ -4147,7 +4147,7 @@ class CfgVehicles
 				};
 				class Ruger1022_dry
 				{
-					soundSet = "Ruger1022SVD_dry_SoundSet";
+					soundSet = "Ruger1022_dry_SoundSet";
 					id = 1382;
 				};
 				class Ruger1022_pullout
@@ -4224,6 +4224,31 @@ class CfgVehicles
 				{
 					soundSet = "Ruger1022_jam_SoundSet";
 					id = 1397;
+				};
+				class Flare_Gun_charge_open
+				{
+					soundSet = "Flare_Gun_charge_open_SoundSet";
+					id = 1398;
+				};
+				class Flare_Gun_charge_close
+				{
+					soundSet = "Flare_Gun_charge_close_SoundSet";
+					id = 1399;
+				};
+				class Flare_Gun_chamber_load
+				{
+					soundSet = "Flare_Gun_chamber_load_SoundSet";
+					id = 1400;
+				};
+				class Flare_Gun_cocked
+				{
+					soundSet = "Flare_Gun_cocked_SoundSet";
+					id = 1402;
+				};
+				class Flare_Gun_dry
+				{
+					soundSet = "Flare_Gun_dry_SoundSet";
+					id = 1401;
 				};
 				class MagRifle_fill_loop
 				{
@@ -7318,5 +7343,12 @@ class CfgNonAIVehicles
 	{
 		inventorySlot[] = {"LeftHand"};
 		model = "\dz\Characters\Proxies\LHand_DZ.p3d";
+	};
+	class ProxySplintRight_DZ: ProxyAttachment
+	{
+		scope = 2;
+		simulation = "ProxyInventory";
+		inventorySlot = "Splint_Right";
+		model = "\DZ\characters\proxies\SplintRight_DZ.p3d";
 	};
 };

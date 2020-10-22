@@ -120,7 +120,7 @@ class ActionDismantlePart: ActionContinuousBase
 	
 	protected bool DismantleCondition( PlayerBase player, ActionTarget target, ItemBase item, bool camera_check )
 	{	
-		if ( player && !player.IsLeaning() )
+		if ( player && !player.IsLeaning() && !player.IsPlacingLocal() && !player.IsPlacingServer() )
 		{
 			Object target_object = target.GetObject();
 			EntityAI target_entity;

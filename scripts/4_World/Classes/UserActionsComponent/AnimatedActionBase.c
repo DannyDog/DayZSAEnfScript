@@ -165,6 +165,10 @@ class AnimatedActionBase : ActionBase
 	{
 	}*/
 	
+	protected void OnExecute( ActionData action_data )
+	{
+	}
+	
 	protected void OnExecuteServer( ActionData action_data )
 	{
 	}
@@ -176,9 +180,11 @@ class AnimatedActionBase : ActionBase
 	//TODO MW - add comment 
 	void OnAnimationEvent( ActionData action_data )
 	{
-		if(!action_data.m_WasExecuted)
+		if (!action_data.m_WasExecuted)
 		{
-			if(GetGame().IsServer())
+			OnExecute(action_data);
+			
+			if (GetGame().IsServer())
 			{
 				OnExecuteServer(action_data);
 			}

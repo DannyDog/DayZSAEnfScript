@@ -24,6 +24,18 @@ class Truck_01_Chassis extends CarScript
 		return 0;
 	}
 
+	// Override for car-specific light type
+	override CarLightBase CreateFrontLight()
+	{
+		return CarLightBase.Cast( ScriptedLightBase.CreateLight(Truck_01FrontLight) );
+	}
+	
+	// Override for car-specific light type
+	override CarRearLightBase CreateRearLight()
+	{
+		return CarRearLightBase.Cast( ScriptedLightBase.CreateLight(Truck_01RearLight) );
+	}
+	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
@@ -37,26 +49,50 @@ class Truck_01_Chassis extends CarScript
 		{
 			case 0:
 				if ( GetCarDoorsState( "Truck_01_Door_1_1" ) == CarDoorState.DOORS_CLOSED )
-				{
 					return false;
-				}
-			
+
 				return true;
-			break;
 			
 			case 1:
 				if ( GetCarDoorsState( "Truck_01_Door_2_1" ) == CarDoorState.DOORS_CLOSED )
-				{
 					return false;
-				}
-			
+
 				return true;
-			break;
 		}
 
 		return false;
 	}
-	
+
+	override string GetDoorSelectionNameFromSeatPos(int posIdx)
+	{
+		switch( posIdx )
+		{
+			case 0:
+				return "doors_driver";
+			break;
+			case 1:
+				return "doors_codriver";
+			break;
+		}
+
+		return super.GetDoorSelectionNameFromSeatPos(posIdx);
+	}
+
+	override string GetDoorInvSlotNameFromSeatPos(int posIdx)
+	{
+		switch( posIdx )
+		{
+			case 0:
+				return "Truck_01_Door_1_1";
+			break;
+			case 1:
+				return "Truck_01_Door_2_1";
+			break;
+		}
+
+		return super.GetDoorInvSlotNameFromSeatPos(posIdx);
+	}
+
 	override float OnSound( CarSoundCtrl ctrl, float oldValue )
 	{
 		switch ( ctrl )
@@ -88,42 +124,32 @@ class Truck_01_Chassis extends CarScript
 	override int GetCarDoorsState( string slotType )
 	{
 		CarDoor carDoor;
+		Class.CastTo( carDoor, FindAttachmentBySlotName( slotType ) );
+		if ( !carDoor )
+			return CarDoorState.DOORS_MISSING;
 		
 		switch( slotType )
 		{
 			case "Truck_01_Door_1_1":
-				Class.CastTo( carDoor, FindAttachmentBySlotName( slotType ) );
-				if ( carDoor )
-				{
-					if ( GetAnimationPhase("DoorsDriver") > 0.5 )
-					{
-						return CarDoorState.DOORS_OPEN;
-					}
-					else
-					{
-						return CarDoorState.DOORS_CLOSED;
-					}
-				}
-
-				return CarDoorState.DOORS_MISSING;
+				if ( GetAnimationPhase("DoorsDriver") > 0.5 )
+					return CarDoorState.DOORS_OPEN;
+				else
+					return CarDoorState.DOORS_CLOSED;
 			break;
-			
-			case "Truck_01_Door_1_1":
-				Class.CastTo( carDoor, FindAttachmentBySlotName( slotType ) );
-				if ( carDoor )
-				{
-					if ( GetAnimationPhase("DoorsCoDriver") > 0.5 )
-					{
-						return CarDoorState.DOORS_OPEN;
-					}
-					else
-					{
-						return CarDoorState.DOORS_CLOSED;
-					}
-				}
 
-				return CarDoorState.DOORS_MISSING;
+			case "Truck_01_Door_2_1":
+				if ( GetAnimationPhase("DoorsCoDriver") > 0.5 )
+					return CarDoorState.DOORS_OPEN;
+				else
+					return CarDoorState.DOORS_CLOSED;
+
 			break;
+
+			case "Truck_01_Hood":
+				if ( GetAnimationPhase("DoorsHood") > 0.5 )
+					return CarDoorState.DOORS_OPEN;
+				else
+					return CarDoorState.DOORS_CLOSED;
 		}
 		
 		return CarDoorState.DOORS_MISSING;
@@ -148,6 +174,23 @@ class Truck_01_Chassis extends CarScript
 		}
 
 		return "";
+	}
+	
+	override bool CanReachSeatFromSeat( int currentSeat, int nextSeat )
+	{
+		switch( currentSeat )
+		{
+		case 0:
+			if ( nextSeat == 1 )
+				return true;
+			break;
+		case 1:
+			if ( nextSeat == 0 )
+				return true;
+			break;
+		}
+
+		return false;
 	}
 
 	override bool CanReachDoorsFromSeat( string pDoorsSelection, int pCurrentSeat )
@@ -210,6 +253,13 @@ class Truck_01_Chassis extends CarScript
 	{
 		return false;
 	}
+
+	override void SetActions()
+	{
+		super.SetActions();
+
+		AddAction( ActionAnimateCarSelection );
+	}
 	
 	override void OnDebugSpawn()
 	{
@@ -222,10 +272,10 @@ class Truck_01_Chassis extends CarScript
 			entity.GetInventory().CreateInInventory( "Truck_01_Wheel" );
 			entity.GetInventory().CreateInInventory( "Truck_01_Wheel" );
 			
-			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
-			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
-			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
-			entity.GetInventory().CreateInInventory( "V3SWheelDouble" );
+			entity.GetInventory().CreateInInventory( "Truck_01_WheelDouble" );
+			entity.GetInventory().CreateInInventory( "Truck_01_WheelDouble" );
+			entity.GetInventory().CreateInInventory( "Truck_01_WheelDouble" );
+			entity.GetInventory().CreateInInventory( "Truck_01_WheelDouble" );
 
 			entity.GetInventory().CreateInInventory( "TruckBattery" );
 

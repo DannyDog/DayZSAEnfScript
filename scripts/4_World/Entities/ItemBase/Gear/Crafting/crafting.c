@@ -17,10 +17,22 @@ class LongWoodenStick: Inventory_Base
 		super.SetActions();
 		
 		AddAction(ActionClapBearTrapWithThisItem);
-		AddAction(ActionCookOnStick);
 		AddAction(ActionBreakLongWoodenStick);
+		AddAction(ActionAttachToConstruction);
 	}
 };
+
+class SharpWoodenStick: LongWoodenStick
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionCookOnStick);
+	}
+}
+
 class Rope: Inventory_Base
 {
 	ref InventoryLocation m_TargetLocation = new InventoryLocation;
@@ -55,5 +67,16 @@ class Spear : Inventory_Base
 		super.SetActions();
 		
 		AddAction(ActionClapBearTrapWithThisItem);
+	}
+};
+
+class Fabric : Inventory_Base
+{
+	override void SetActions()
+	{
+		super.SetActions();
+		
+		AddAction(ActionRepairTentPart);
+		AddAction(ActionAttachToConstruction);
 	}
 };

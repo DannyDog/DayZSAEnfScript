@@ -298,7 +298,7 @@ class PlayerContainer: CollapsibleContainer
 				{
 					if ( g_Game.IsLeftCtrlDown() )
 					{
-						if( itemAtPos && itemAtPos.GetInventory().CanRemoveEntity() )
+						if( itemAtPos && itemAtPos.GetInventory().CanRemoveEntity() && m_Player.CanDropEntity(itemAtPos) )
 						{
 							if( itemAtPos.GetTargetQuantityMax() < itemAtPos.GetQuantity() )
 								itemAtPos.SplitIntoStackMaxClient( null, -1 );
@@ -1145,6 +1145,7 @@ class PlayerContainer: CollapsibleContainer
 		
 		if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
+			Print("HELLO");
 			m_Player.PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT, item );
 		}
 	}
@@ -1312,20 +1313,20 @@ class PlayerContainer: CollapsibleContainer
 		receiver_item = slots_icon.GetEntity();
 		is_reserved = slots_icon.IsReserved();
 
-		if( !ipw )
+		if ( !ipw )
 		{
 			return;
 		}
 
 		ItemBase item = ItemBase.Cast(ipw.GetItem());
 		PlayerBase real_player = PlayerBase.Cast( GetGame().GetPlayer() );
-		if( !item )
+		if ( !item )
 		{
 			return;
 		}
-		if( receiver_item && !is_reserved )
+		if ( receiver_item && !is_reserved )
 		{
-			if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
+			if ( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
 			{
 				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
 
@@ -1335,7 +1336,7 @@ class PlayerContainer: CollapsibleContainer
 				}
 				return;
 			}
-			else if( receiver_item.GetInventory().CanAddAttachment( item ) )
+			else if ( receiver_item.GetInventory().CanAddAttachment( item ) )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToTargetAttachment( receiver_item, item );
 
@@ -1345,7 +1346,7 @@ class PlayerContainer: CollapsibleContainer
 				}
 				return;
 			}
-			else if( receiver_item.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && !receiver_item.GetInventory().HasEntityInCargo( item ) )
+			else if ( receiver_item.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && !receiver_item.GetInventory().HasEntityInCargo( item ) )
 			{
 				SplitItemUtils.TakeOrSplitToInventory(real_player, receiver_item,item);
 
@@ -1355,16 +1356,16 @@ class PlayerContainer: CollapsibleContainer
 				}
 				return;
 			}
-			else if( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )
+			else if ( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )
 			{
 				( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
 				return;
 			}
 		}
 		
-		if( m_Player.GetInventory().CanAddAttachmentEx( item, slot_id ) )
+		if ( m_Player.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 		{			
-			if(item.GetTargetQuantityMax(slot_id) > stack_max)
+			if (item.GetTargetQuantityMax(slot_id) > stack_max)
 			{
 				item.SplitIntoStackMaxClient( real_player, slot_id );
 			}
@@ -1373,11 +1374,22 @@ class PlayerContainer: CollapsibleContainer
 				real_player.PredictiveTakeEntityToTargetAttachmentEx( m_Player, item, slots_icon.GetSlotID() );
 			}
 		}
-		else if(  m_Player.GetInventory().CanAddAttachment( item ) )
+		else if (  m_Player.GetInventory().CanAddAttachment( item ) )
 		{
-			real_player.PredictiveTakeEntityToTargetAttachment( m_Player, item );
+			float stackable = item.GetTargetQuantityMax(-1);
+		
+			if ( stackable == 0 || stackable >= item.GetQuantity() )
+			{
+				real_player.PredictiveTakeEntityToTargetAttachment( m_Player, item );
+			}
+			else
+			{
+				InventoryLocation il = new InventoryLocation;
+				m_Player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il );
+				ItemBase.Cast(item).SplitIntoStackMaxToInventoryLocationClient( il );
+			}
 		}
-		else if( m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
+		else if(  m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )
 		{
 			SplitItemUtils.TakeOrSplitToInventory(m_Player, m_Player, item);
 		}

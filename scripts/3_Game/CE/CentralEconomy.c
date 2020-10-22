@@ -59,6 +59,31 @@ const int	RF_ORIGINAL				= 128;	// use default placement setuped on object in co
 const int	RF_DECORRECTION			= 256;	// angle correction when spawning InventoryItem at Building angle
 const int	RF_DEFAULT				= 512;	// use default placement setuped on object in config
 
+// -------------------------------------------------------------------------
+// Categories for CEApi.EconomyLog
+//
+class EconomyLogCategories
+{
+	const string Economy				= "economy";
+	const string EconomyRespawn			= "economy_respawn";
+	const string RespawnQueue			= "respawn_queue";
+	const string Container				= "container";
+	const string Matrix					= "matrix";
+	const string UniqueLoot				= "uniqueloot";
+	const string Bind					= "bind";
+	const string SetupFail				= "setupfail";
+	const string Storage				= "storage";
+	const string Classes				= "class";
+	const string Category				= "category";
+	const string Tag					= "tag";
+	const string SCategory				= "s_category";
+	const string STag					= "s_tag";
+	const string SAreaflags				= "s_areaflags";
+	const string SCrafted				= "s_crafted";
+	const string MapGroup				= "map_group";
+	const string MapComplete			= "map_complete";
+	const string InfectedZone			= "infected_zone";
+}
 
 class CEApi
 {
@@ -91,6 +116,8 @@ class CEApi
 
 	proto native void PlatformStatTest();
 
+	//! Outputs log file in csv format to %missionFolder%/%missionName%.%map%/%storage%/log
+	//	Inputs can be found in EconomyLogCategories
 	proto native void EconomyLog( string sLogType );
 	proto native void EconomyMap( string sMapType );
 	proto native void EconomyOutput( string sOutputType, float fRange );

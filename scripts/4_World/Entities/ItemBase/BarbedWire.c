@@ -82,6 +82,7 @@ class BarbedWire extends ItemBase
 		//lock slot
 		m_IsMounted = is_mounted;
 		LockAttachmentSlot( is_mounted );
+		SetTakeable( !is_mounted );
 		
 		//synchronize
 		Synchronize();
@@ -265,7 +266,7 @@ class BarbedWire extends ItemBase
 		m_AreaDamage.SetExtents("-1 0 -0.4", "1 0.7 0.4");
 		m_AreaDamage.SetLoopInterval(0.3);
 		m_AreaDamage.SetHitZones({"RightLeg", "LeftLeg", "RightFoot", "LeftFoot"});
-		m_AreaDamage.SetAmmoName("MeleeDamage");
+		m_AreaDamage.SetAmmoName("BarbedWireHit");
 		m_AreaDamage.Spawn();
 		m_TriggerActive = true;						
 	}
@@ -275,7 +276,7 @@ class BarbedWire extends ItemBase
 		m_AreaDamage = new AreaDamageOneTime(this);
 		m_AreaDamage.SetExtents("-1 0 -0.4", "1 0.7 0.4");
 		m_AreaDamage.SetHitZones({"RightLeg", "LeftLeg", "RightFoot", "LeftFoot"});
-		m_AreaDamage.SetAmmoName("MeleeDamage");
+		m_AreaDamage.SetAmmoName("BarbedWireHit");
 		m_AreaDamage.Spawn();
 		m_TriggerActive = true;
 	}
@@ -411,9 +412,9 @@ class BarbedWire extends ItemBase
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player )
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
 	{
-		super.OnPlacementComplete( player );
+		super.OnPlacementComplete( player, position, orientation );
 		
 		if ( GetGame().IsServer() )
 		{

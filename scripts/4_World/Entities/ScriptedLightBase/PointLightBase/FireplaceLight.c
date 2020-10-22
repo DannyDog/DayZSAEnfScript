@@ -16,6 +16,9 @@ class FireplaceLight extends PointLightBase
 		SetFlickerAmplitude(0.3);
 		SetFlickerSpeed(0.9);
 		SetExteriorMode();
+		EnableHeatHaze(true);
+		SetHeatHazeRadius(0.23);
+		SetHeatHazePower(0.010);
 	}
 	
 	// Use this mode when the light is in tight space like barrel, chimney or improvsed oven

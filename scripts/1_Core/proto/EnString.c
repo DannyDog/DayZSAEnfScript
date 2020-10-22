@@ -409,6 +409,25 @@ class string
 	}
 	
 	/**
+	\brief Sets n-th character in string
+		@code
+			string str = "Hello World";
+			str[4] = "O";
+			Print( str );
+	
+			>> 'HellO World'
+		@endcode
+	*/ 
+	void Set(int n, string _value)
+	{
+	    string pre = value.Substring(0, n);
+	    n += 1;
+	    int length = value.Length() - n;
+	    string post = value.Substring(n, length);
+	    value = pre + _value + post;
+	}
+	
+	/**
 	\brief Gets n-th character from string
 		\param index character index
 		\return \p string character on index-th position in string

@@ -368,8 +368,8 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 130;
 		itemSize[] = {2,2};
-		absorbency = 0.4;
-		heatIsolation = 0.3;
+		varWetMax = 0.49;
+		heatIsolation = 0.5;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale","personality"};
@@ -440,8 +440,8 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 454;
 		itemSize[] = {2,2};
-		absorbency = 0.4;
-		heatIsolation = 0.25;
+		varWetMax = 0.79;
+		heatIsolation = 0.6;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale","personality"};
@@ -508,8 +508,8 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 454;
 		itemSize[] = {2,3};
-		absorbency = 0.0;
-		heatIsolation = 0.25;
+		varWetMax = 0.249;
+		heatIsolation = 0.35;
 		repairableWithKits[] = {5};
 		repairCosts[] = {30.0};
 		class ClothingTypes
@@ -564,8 +564,8 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 100;
 		itemSize[] = {1,1};
-		absorbency = 1;
-		heatIsolation = 0.25;
+		varWetMax = 0.249;
+		heatIsolation = 0.05;
 		repairableWithKits[] = {5};
 		repairCosts[] = {30.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale","personality"};
@@ -634,9 +634,9 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 200;
 		itemSize[] = {2,2};
-		absorbency = 1;
-		heatIsolation = 0.5;
-		repairableWithKits[] = {5};
+		varWetMax = 0.249;
+		heatIsolation = 1;
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale","personality"};
 		class ClothingTypes
@@ -752,8 +752,8 @@ class CfgVehicles
 		rotationFlags = 34;
 		weight = 450;
 		itemSize[] = {2,2};
-		absorbency = 0.4;
-		heatIsolation = 0.6;
+		varWetMax = 0.79;
+		heatIsolation = 0.8;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		class ClothingTypes

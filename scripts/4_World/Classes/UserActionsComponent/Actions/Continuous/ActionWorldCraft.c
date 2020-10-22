@@ -105,18 +105,18 @@ class ActionWorldCraft: ActionContinuousBase
 	override void Start( ActionData action_data ) //Setup on start of action
 	{
 		super.Start(action_data);
-		if ( action_data.m_Player ) action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(true);
 	}
 	
 	override void OnEndServer( ActionData action_data )
 	{
-		if ( action_data.m_Player ) action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(false);
 	}
 	
 	override void OnEndClient( ActionData action_data )
 	{
-		if ( action_data.m_Player ) action_data.m_Player.GetItemAccessor().HideItemInHands(false);
-	}	
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(false);
+	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
@@ -177,6 +177,7 @@ class ActionWorldCraft: ActionContinuousBase
 		
 		if ( !item1 || !item2)
 		{
+			Error("Action WC target not created. RecipeID= " + recipeID + " MainItem= " + item1 + " TargetItem= " + item2);
 			return false;
 		}
 		
@@ -198,7 +199,6 @@ class ActionWorldCraft: ActionContinuousBase
 		action_data_wc.m_MainItem = recive_data_wc.m_MainItem;
 		if (!action_recive_data.m_Target)
 		{
-			Error("Action WC target not created.");
 			action_data.m_Target = new ActionTarget(NULL, NULL, -1, vector.Zero, 0); 
 		}
 		else

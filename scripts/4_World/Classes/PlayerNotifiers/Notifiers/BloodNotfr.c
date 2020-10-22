@@ -1,11 +1,11 @@
 class BloodNotfr: NotifierBase
 {
-	protected const float 	DEC_TRESHOLD_LOW 	= 0;
-	protected const float 	DEC_TRESHOLD_MED 	= -1;
-	protected const float 	DEC_TRESHOLD_HIGH	= -2;
+	protected const float 	DEC_TRESHOLD_LOW 	= -1;
+	protected const float 	DEC_TRESHOLD_MED 	= -12;
+	protected const float 	DEC_TRESHOLD_HIGH	= -22;
 	protected const float 	INC_TRESHOLD_LOW 	= 0;
-	protected const float 	INC_TRESHOLD_MED 	= 1;
-	protected const float 	INC_TRESHOLD_HIGH	= 2;
+	protected const float 	INC_TRESHOLD_MED 	= 3;
+	protected const float 	INC_TRESHOLD_HIGH	= 6;
 
 	void BloodNotfr(NotifiersManager manager)
 	{
@@ -20,6 +20,7 @@ class BloodNotfr: NotifierBase
 	{
 		int tendency = CalculateTendency(delta, INC_TRESHOLD_LOW, INC_TRESHOLD_MED, INC_TRESHOLD_HIGH, DEC_TRESHOLD_LOW, DEC_TRESHOLD_MED, DEC_TRESHOLD_HIGH);
 		
+		//Print( tendency );
 		//PrintString(delta.ToString());
 		//GetVirtualHud().SetStatus(eDisplayElements.DELM_TDCY_BLOOD,tendency);
 		

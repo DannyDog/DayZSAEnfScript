@@ -239,11 +239,11 @@ $AnimGraph 7 {
 		}
 		$Node AnimNodeStateMachine {
 			 "CoDriverVehicle" ""
-			$States 9 {
+			$States 10 {
 				$State {
 					 "Get In" "TagVehicleGetIn" "GetInCoDriver" "IsCommand(CMD_Vehicle_GetIn)" "realtime" 0
 					$EditorData {
-						#EditorPos 14.5 2.3
+						#EditorPos 15.3000002 2.3
 					}
 				}
 				$State {
@@ -267,7 +267,7 @@ $AnimGraph 7 {
 				$State {
 					 "Climb Out" "" "ClimbOutFrontStateMachine" "" "notime" 1
 					$EditorData {
-						#EditorPos 12.0 3.2
+						#EditorPos 12.1999998 3.2
 					}
 				}
 				$State {
@@ -294,8 +294,14 @@ $AnimGraph 7 {
 						#EditorPos 25.8000011 2.2
 					}
 				}
+				$State {
+					 "GettinginDeath" "" "DeathErcG" "" "realtime" 0
+					$EditorData {
+						#EditorPos 13.0 2.3
+					}
+				}
 			}
-			$Transitions 9 {
+			$Transitions 10 {
 				$Transition {
 					 "Get In" "Idle" "RemainingTimeLess(0.01)" "" "" 1 "S"
 				}
@@ -315,13 +321,16 @@ $AnimGraph 7 {
 					 "Idle" "UnconsciousDeath" "IsCommand(CMD_Death) && IsTag(\"TagUnconscious\")" "0.1" "" 1 "S"
 				}
 				$Transition {
-					 "" "Death" "IsCommand(CMD_Death)" "0.2" "" 1 "S"
+					 "" "Death" "IsCommand(CMD_Death) && !IsTag(\"TagVehicleGetIn\")" "0.2" "" 1 "S"
 				}
 				$Transition {
 					 "UnconsciousDeath" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
 				}
 				$Transition {
 					 "Death" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
+				}
+				$Transition {
+					 "Get In" "GettinginDeath" "IsCommand(CMD_Death)" "0.2" "" 1 "S"
 				}
 			}
 			$EditorData {
@@ -391,7 +400,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 35.7999992 0.3
+				#EditorPos 35.7999992 -0.3
 			}
 		}
 		$Node AnimNodeSource {
@@ -399,7 +408,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 53.7999992 0.4
+				#EditorPos 51.6000023 0.4
 			}
 		}
 		$Node AnimNodeSource {
@@ -421,7 +430,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos -9.8000002 0.3
+				#EditorPos -10.9000006 0.3
 			}
 		}
 		$Node AnimNodeBlendTAdd {
@@ -497,7 +506,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos -7.3000002 0.3
+				#EditorPos -8.4000006 0.3
 			}
 		}
 		$Node AnimNodeBlendTAdd {
@@ -566,7 +575,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 		}
 		$Node AnimNodeStateMachine {
 			 "DriverVehicle" ""
-			$States 9 {
+			$States 10 {
 				$State {
 					 "Get In" "TagVehicleGetIn" "GetInDriver" "IsCommand(CMD_Vehicle_GetIn)" "realtime" 0
 					$EditorData {
@@ -606,23 +615,29 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 				$State {
 					 "Death" "" "DriverDeathAnim" "" "realtime" 0
 					$EditorData {
-						#EditorPos -9.8000002 3.2
+						#EditorPos -10.9000006 3.2
 					}
 				}
 				$State {
 					 "UnconsciousDeath" "" "DriverUnconDeathAnim" "" "realtime" 0
 					$EditorData {
-						#EditorPos -7.3000002 3.2
+						#EditorPos -8.4000006 3.2
 					}
 				}
 				$State {
 					 "PulledOut" "" "PulledOutDriver" "" "realtime" 0
 					$EditorData {
-						#EditorPos -8.6000004 2.2
+						#EditorPos -9.6999998 2.2
+					}
+				}
+				$State {
+					 "GettingInDeath" "" "DeathErcG" "" "realtime" 0
+					$EditorData {
+						#EditorPos -6.5999999 2.3
 					}
 				}
 			}
-			$Transitions 9 {
+			$Transitions 10 {
 				$Transition {
 					 "Get In" "Idle" "RemainingTimeLess(0.1)" "0.2" "" 1 "S"
 				}
@@ -642,13 +657,16 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 					 "Idle" "UnconsciousDeath" "IsCommand(CMD_Death) && IsTag(\"TagUnconscious\")" "0.1" "" 1 "S"
 				}
 				$Transition {
-					 "" "Death" "IsCommand(CMD_Death)" "0.1" "" 1 "S"
+					 "" "Death" "IsCommand(CMD_Death) && !IsTag(\"TagVehicleGetIn\")" "0.1" "" 1 "S"
 				}
 				$Transition {
 					 "Death" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
 				}
 				$Transition {
 					 "UnconsciousDeath" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
+				}
+				$Transition {
+					 "Get In" "GettingInDeath" "IsCommand(CMD_Death)" "0.1" "" 1 "S"
 				}
 			}
 			$EditorData {
@@ -663,7 +681,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 				}
 			}
 			$EditorData {
-				#EditorPos 14.5 0.5
+				#EditorPos 15.3000002 0.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -685,7 +703,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 				}
 			}
 			$EditorData {
-				#EditorPos 41.7000008 0.3
+				#EditorPos 41.7000008 -0.3
 			}
 		}
 		$Node AnimNodeSource {
@@ -720,7 +738,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 38.1000023 0.3
+				#EditorPos 38.1000023 -0.3
 			}
 		}
 		$Node AnimNodeSource {
@@ -728,7 +746,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 59.2999992 0.4
+				#EditorPos 54.1000023 0.4
 			}
 		}
 		$Node AnimNodeGroupSelect {
@@ -778,7 +796,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 33.5 0.3
+				#EditorPos 33.5 -0.3
 			}
 		}
 		$Node AnimNodeSource {
@@ -786,7 +804,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 51.2999992 0.4
+				#EditorPos 49.2999992 0.4
 			}
 		}
 		$Node AnimNodeGroupSelect {
@@ -854,7 +872,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 30.1000004 0.4
+				#EditorPos 30.1000004 -0.2
 			}
 		}
 		$Node AnimNodeBlend {
@@ -893,7 +911,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 		}
 		$Node AnimNodeStateMachine {
 			 "PassengerLStateMachine" ""
-			$States 9 {
+			$States 10 {
 				$State {
 					 "Get In" "TagVehicleGetIn" "GetInPassengerL" "IsCommand(CMD_Vehicle_GetIn)" "realtime" 0
 					$EditorData {
@@ -948,8 +966,14 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 						#EditorPos 31.2000008 2.1000001
 					}
 				}
+				$State {
+					 "GettingInDeath" "" "DeathErcG" "" "realtime" 0
+					$EditorData {
+						#EditorPos 43.1000023 1.5
+					}
+				}
 			}
-			$Transitions 9 {
+			$Transitions 10 {
 				$Transition {
 					 "Get In" "Idle" "RemainingTimeLess(0.01)" "" "" 1 "S"
 				}
@@ -969,13 +993,16 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 					 "Idle" "UnconsciousDeath" "IsCommand(CMD_Death) && IsTag(\"TagUnconscious\")" "0.1" "" 1 "S"
 				}
 				$Transition {
-					 "" "Death" "IsCommand(CMD_Death)" "0.1" "" 1 "S"
+					 "" "Death" "IsCommand(CMD_Death) && !IsTag(\"TagVehicleGetIn\")" "0.1" "" 1 "S"
 				}
 				$Transition {
 					 "Death" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
 				}
 				$Transition {
 					 "UnconsciousDeath" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
+				}
+				$Transition {
+					 "Get In" "GettingInDeath" "IsCommand(CMD_Death) && !IsTag(\"TagVehicleGetIn\")" "0.1" "" 1 "S"
 				}
 			}
 			$EditorData {
@@ -995,7 +1022,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 32.1000023 -0.4
+				#EditorPos 32.2999992 -1.6
 			}
 		}
 		$Node AnimNodeBlendTAdd {
@@ -1162,11 +1189,11 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 		}
 		$Node AnimNodeStateMachine {
 			 "PassengerRStateMachine" ""
-			$States 9 {
+			$States 10 {
 				$State {
 					 "Get In" "TagVehicleGetIn" "GetInPassengerR" "IsCommand(CMD_Vehicle_GetIn)" "realtime" 0
 					$EditorData {
-						#EditorPos 57.0 2.3
+						#EditorPos 57.0 2.1000001
 					}
 				}
 				$State {
@@ -1178,13 +1205,13 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 				$State {
 					 "Get Out" "TagVehicleGetOut" "GetOutPassengerR" "" "realtime" 1
 					$EditorData {
-						#EditorPos 59.2999992 2.3
+						#EditorPos 54.1000023 2.1000001
 					}
 				}
 				$State {
 					 "Jump Out" "TagVehicleGetOut" "JumpOutPassengerR" "" "realtime" 1
 					$EditorData {
-						#EditorPos 51.2999992 2.6000001
+						#EditorPos 49.2999992 2.6000001
 					}
 				}
 				$State {
@@ -1196,7 +1223,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 				$State {
 					 "Crawl Out" "TagVehicleGetOut" "CrawlOutPassengerR" "" "realtime" 1
 					$EditorData {
-						#EditorPos 53.7999992 2.3
+						#EditorPos 51.6000023 2.2
 					}
 				}
 				$State {
@@ -1217,8 +1244,14 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 						#EditorPos 63.2000008 2.3
 					}
 				}
+				$State {
+					 "GettingInDeath" "" "DeathErcG" "" "realtime" 0
+					$EditorData {
+						#EditorPos 59.5 2.1000001
+					}
+				}
 			}
-			$Transitions 9 {
+			$Transitions 10 {
 				$Transition {
 					 "Get In" "Idle" "RemainingTimeLess(0.01)" "" "" 1 "S"
 				}
@@ -1238,13 +1271,16 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 					 "Idle" "UnconsciousDeath" "IsCommand(CMD_Death) && IsTag(\"TagUnconscious\")" "0.1" "" 1 "S"
 				}
 				$Transition {
-					 "" "Death" "IsCommand(CMD_Death)" "0.1" "" 1 "S"
+					 "" "Death" "IsCommand(CMD_Death) && !IsTag(\"TagVehicleGetIn\")" "0.1" "" 1 "S"
 				}
 				$Transition {
 					 "UnconsciousDeath" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
 				}
 				$Transition {
 					 "Death" "PulledOut" "IsCommand(CMD_PulledOut)" "" "" 1 "S"
+				}
+				$Transition {
+					 "Get In" "GettingInDeath" "IsCommand(CMD_Death)" "0.1" "" 1 "S"
 				}
 			}
 			$EditorData {
@@ -1344,7 +1380,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos -8.6000004 -0.5
+				#EditorPos -9.6999998 -0.5
 			}
 		}
 		$Node AnimNodeSource {
@@ -1352,7 +1388,7 @@ Y(90): 	X(-90) = 6, X(0) = 7, X(90) = 8"
 			$Predictions {
 			}
 			$EditorData {
-				#EditorPos 29.8000011 -0.4
+				#EditorPos 31.2000008 -0.9
 			}
 		}
 		$Node AnimNodeSource {

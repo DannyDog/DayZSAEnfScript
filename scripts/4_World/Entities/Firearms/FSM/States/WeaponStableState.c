@@ -10,13 +10,23 @@
  * abort the final stable state is forced to set proper animation state
  * according to configuration (@see m_animState)
  **/
+
+enum MuzzleState
+{
+	E	=  0,
+	F	=  1,
+	L	=  2
+}
+
 class WeaponStableState extends WeaponStateBase
 {
 	int m_animState;
+	
+	ref array<MuzzleState> m_muzzleHasBullet = new array<MuzzleState>();
 
-	void WeaponStableState (Weapon_Base w = NULL, WeaponStateBase parent = NULL, int anim_state = -1) { m_animState = anim_state; }
+	void WeaponStableState(Weapon_Base w = NULL, WeaponStateBase parent = NULL, int anim_state = -1) { m_animState = anim_state; InitMuzzleArray(); }
 
-	void SyncAnimState ()
+	void SyncAnimState()
 	{
 		int curr = m_weapon.GetWeaponAnimState();
 		if (curr != m_animState)
@@ -43,32 +53,39 @@ class WeaponStableState extends WeaponStateBase
 		}
 	}
 
-	override void OnEntry (WeaponEventBase e)
+	override void OnEntry(WeaponEventBase e)
 	{
 		super.OnEntry(e);
+		m_weapon.SetJammed(false);
 		if (e)
 			SyncAnimState();
 	}
-	override void OnUpdate (float dt)
+	override void OnUpdate(float dt)
 	{
 		super.OnUpdate(dt);
 		SyncAnimState();
 	}
-	override void OnExit (WeaponEventBase e)
+	override void OnExit(WeaponEventBase e)
 	{
 		m_weapon.ResetWeaponAnimState();
 		super.OnExit(e);
 	}
+	
+	void InitMuzzleArray() {}
 
-	override bool IsIdle () { return true; }
+	override bool IsIdle() { return true; }
 
-	int GetCurrentStateID () { return 0; }
+	int GetCurrentStateID() { return 0; }
+	/// let's not break anything that is not configured for the system
+	bool IsRepairEnabled() { return false; }
 	/// query for bullet
-    bool HasBullet () { return false; }
+    bool HasBullet() { return false; }
 	/// query for magazine
-	bool HasMagazine () { return false; }
+	bool HasMagazine() { return false; }
 	/// query for jammed state
-	bool IsJammed () { return false; }
+	bool IsJammed() { return false; }
+	/// query for bullet in chamber
+	MuzzleState GetMuzzleState(int idx) { return m_muzzleHasBullet[idx]; }
 };
 
 

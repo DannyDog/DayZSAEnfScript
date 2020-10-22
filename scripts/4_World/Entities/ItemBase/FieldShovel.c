@@ -21,6 +21,7 @@ class FieldShovel extends ItemBase
 		AddAction(ActionDigInStash);
 		AddAction(ActionFillObject);
 		AddAction(ActionDigWorms);
+		AddAction(ActionSkinning);
 	}
 	
 }

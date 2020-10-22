@@ -631,16 +631,16 @@ class GardenBase extends BuildingSuper
 	{
 		float nearest_distance = 1000.0;
 		int nearest_slot_index = -1;
-		Print(slot_state);
+		//Print(slot_state);
 		int slots_count = GetGardenSlotsCount();
 		for ( int i = 0; i < slots_count; i++ )
 		{
-			Print(i);
+			//Print(i);
 			Slot slot = m_Slots.Get(i); // Move this line by a scope higher in this function after debugging
 			
 			if (slot)
 			{
-				Print(slot.m_State);
+				//Print(slot.m_State);
 			}
 			
 			vector slot_pos = GetSlotPosition( i );

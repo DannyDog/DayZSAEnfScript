@@ -47,7 +47,8 @@ class CarScript extends Car
 
 	//!
 	protected float m_DrownTime;
-
+	static vector m_DrownEnginePos;
+	
 	//!
 	protected float m_EngineHealth;
 	protected float m_RadiatorHealth;
@@ -70,8 +71,14 @@ class CarScript extends Car
 	protected vector m_coolantPtcPos;
 	
 	protected vector m_fuelPos;
-	
-	static vector m_DrownEnginePos;
+
+	protected vector m_enginePos;
+	protected vector m_frontPos;
+	protected vector m_backPos;
+	protected vector m_side_1_1Pos;
+	protected vector m_side_1_2Pos;
+	protected vector m_side_2_1Pos;
+	protected vector m_side_2_2Pos;	
 	
 	//!Sounds
 	protected bool m_PlayCrashSoundLight;
@@ -163,7 +170,6 @@ class CarScript extends Car
 		else
 			m_enginePtcPos = "0 0 0";		
 
-		
 		if ( MemoryPointExists("ptcCoolantPos") )
 			m_coolantPtcPos = GetMemoryPointPos("ptcCoolantPos");
 		else
@@ -178,7 +184,42 @@ class CarScript extends Car
 			m_DrownEnginePos = GetMemoryPointPos("drown_engine");
 		else
 			m_DrownEnginePos = "0 0 0";
+		
 
+		if ( MemoryPointExists("m_enginePos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_engine");
+		else
+			m_fuelPos = "0 0 0";
+
+		if ( MemoryPointExists("m_frontPos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_front");
+		else
+			m_fuelPos = "0 0 0";
+
+		if ( MemoryPointExists("m_backPos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_back");
+		else
+			m_fuelPos = "0 0 0";		
+				
+		if ( MemoryPointExists("m_side_1_1Pos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_fender_1_1");
+		else
+			m_fuelPos = "0 0 0";
+
+		if ( MemoryPointExists("m_side_1_2Pos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_fender_1_2");
+		else
+			m_fuelPos = "0 0 0";
+		
+		if ( MemoryPointExists("m_side_2_1Pos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_fender_2_1");
+		else
+			m_fuelPos = "0 0 0";
+
+		if ( MemoryPointExists("m_side_2_2Pos") )
+			m_fuelPos = GetMemoryPointPos("dmgZone_fender_2_2");
+		else
+			m_fuelPos = "0 0 0";
 	}
 
 	vector GetEnginePosWS()
@@ -196,6 +237,35 @@ class CarScript extends Car
 		return ModelToWorld( m_fuelPos );
 	}
 	
+	vector GetEnginePointPosWS()
+	{	
+		return ModelToWorld( m_enginePos );
+	}
+	vector GetFrontPointPosWS()
+	{	
+		return ModelToWorld( m_frontPos );
+	}
+	vector GetBackPointPosWS()
+	{	
+		return ModelToWorld( m_backPos );
+	}
+	vector Get_1_1PointPosWS()
+	{	
+		return ModelToWorld( m_side_1_1Pos );
+	}
+	vector Get_1_2PointPosWS()
+	{	
+		return ModelToWorld( m_side_1_2Pos );
+	}
+	vector Get_2_1PointPosWS()
+	{	
+		return ModelToWorld( m_side_2_1Pos );
+	}
+	vector Get_2_2PointPosWS()
+	{	
+		return ModelToWorld( m_side_2_2Pos );
+	}
+
 /*
 	//here we should handle the damage dealt in OnContact event, but maybe we will react even in that event 
 	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
@@ -246,7 +316,7 @@ class CarScript extends Car
 			
 		}
 	}
-
+	
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
@@ -955,8 +1025,10 @@ class CarScript extends Car
 			
 			if ( IsVitalCarBattery() ) 
 				battery = ItemBase.Cast( FindAttachmentBySlotName("CarBattery") );
-			
-			if (battery)
+			else if ( IsVitalTruckBattery() ) 
+				battery = ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );
+
+			if ( battery )
 			{
 				// HEADLIGHTS
 				
@@ -1632,7 +1704,7 @@ class CarScript extends Car
 	{
 		return ( GetGame().GetPlayer() && ( !GetGame().GetPlayer().GetCommand_Vehicle() || GetGame().GetPlayer().GetCommand_Vehicle().GetTransport() == this ) );
 	}
-	
+
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);

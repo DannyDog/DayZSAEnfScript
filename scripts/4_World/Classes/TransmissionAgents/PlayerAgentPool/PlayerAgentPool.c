@@ -72,6 +72,9 @@ class PlayerAgentPool
 				grow_delta = -dieoff_speed * deltaT;
 			}
 			
+			//Print( agent_id );
+			//Print( grow_delta );
+			
 			float old_count = m_VirusPool.Get( agent_id );
 			float new_count = old_count + grow_delta;
 			new_count = Math.Clamp(new_count, 0,max_count);

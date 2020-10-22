@@ -106,7 +106,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		ItemBase item = ItemBase.Cast( attachment );
 		
-		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
+		if ( GetHealthLevel() == GameConstants.STATE_RUINED || GetHierarchyRootPlayer() != null )
 			return false;
 
 		//direct cooking slots
@@ -225,6 +225,26 @@ class BarrelHoles_ColorBase extends FireplaceBase
 				break;
 		}
 
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = item_base;
+				break;
+
+			case "SmokingB":
+				m_SmokingSlots[1] = item_base;
+				break;
+
+			case "SmokingC":
+				m_SmokingSlots[2] = item_base;
+				break;
+
+			case "SmokingD":
+				m_SmokingSlots[3] = item_base;
+				break;
+		}
+
 		//refresh fireplace visuals
 		RefreshFireplaceVisuals();
 	}
@@ -257,7 +277,27 @@ class BarrelHoles_ColorBase extends FireplaceBase
 				m_DirectCookingSlots[2] = NULL;
 				break;
 		}
-		
+
+		// smoking slots
+		switch ( slot_name )
+		{
+			case "SmokingA":
+				m_SmokingSlots[0] = NULL;
+				break;
+
+			case "SmokingB":
+				m_SmokingSlots[1] = NULL;
+				break;
+
+			case "SmokingC":
+				m_SmokingSlots[2] = NULL;
+				break;
+
+			case "SmokingD":
+				m_SmokingSlots[3] = NULL;
+				break;
+		}
+
 		// food on direct cooking slots (removal of sound effects)
 		if ( item_base.IsKindOf( "Edible_Base" ) )
 		{
@@ -362,7 +402,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		//
 		
-		if ( category_name == "CookingEquipment" )
+		if ( ( category_name == "CookingEquipment" ) || ( category_name == "Smoking" ) )
 		{
 			return !IsOpen();
 		}			

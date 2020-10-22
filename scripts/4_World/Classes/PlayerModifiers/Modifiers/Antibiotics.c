@@ -2,7 +2,7 @@ class AntibioticsMdfr: ModifierBase
 {
 	float m_RegenTime;
 	const int ANTIBIOTICS_LIFETIME = 300;
-	const float ANTIBIOTICS_STRENGTH = 4;
+	const float ANTIBIOTICS_STRENGTH = 1;
 	
 	override void Init()
 	{
@@ -10,7 +10,7 @@ class AntibioticsMdfr: ModifierBase
 		m_IsPersistent = true;
 		m_ID 					= eModifiers.MDF_ANTIBIOTICS;
 		m_TickIntervalInactive 	= DEFAULT_TICK_TIME_INACTIVE;
-		m_TickIntervalActive 	= 1;
+		m_TickIntervalActive 	= 3;
 		m_RegenTime = ANTIBIOTICS_LIFETIME;
 	}
 
@@ -32,19 +32,21 @@ class AntibioticsMdfr: ModifierBase
 	
 	override void OnActivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		if ( player.GetNotifiersManager() )
+			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		if ( player.GetNotifiersManager() )
+			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)
 	{
 		float attached_time = GetAttachedTime();
 		
-		if( attached_time >= m_RegenTime )
+		if ( attached_time >= m_RegenTime )
 		{
 			return true;
 		}
@@ -56,6 +58,6 @@ class AntibioticsMdfr: ModifierBase
 
 	override void OnTick(PlayerBase player, float deltaT)
 	{
-		player.AntibioticsAttack(ANTIBIOTICS_STRENGTH * deltaT);
+		player.AntibioticsAttack( ANTIBIOTICS_STRENGTH * deltaT );
 	}
 };

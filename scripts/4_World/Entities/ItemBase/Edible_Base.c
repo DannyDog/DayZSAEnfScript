@@ -4,6 +4,8 @@ class Edible_Base extends ItemBase
 	protected SoundOnVehicle m_SoundCooking;
 	protected string m_SoundPlaying;
 	ref FoodStage m_FoodStage;
+	protected float m_DecayTimer;
+	protected FoodStageType m_LastDecayStage = FoodStageType.NONE;
 
 	//Baking
 	const string SOUND_BAKING_START 		= "bake";		// raw stage
@@ -156,6 +158,10 @@ class Edible_Base extends ItemBase
 		{
 			GetFoodStage().OnStoreSave( ctx );
 		}
+		
+		// food decay
+		ctx.Write( m_DecayTimer );
+		ctx.Write( m_LastDecayStage );
 	}
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
@@ -167,6 +173,20 @@ class Edible_Base extends ItemBase
 		{
 			if ( !GetFoodStage().OnStoreLoad( ctx, version ) )
 			return false;
+		}
+		
+		if ( version >= 115 )
+		{
+			if( !ctx.Read( m_DecayTimer ) )
+			{
+				m_DecayTimer = 0.0;
+				return false;
+			}
+			if( !ctx.Read( m_LastDecayStage ) )
+			{
+				m_LastDecayStage = FoodStageType.NONE;
+				return false;
+			}
 		}
 		
 		return true;
@@ -470,6 +490,169 @@ class Edible_Base extends ItemBase
 			GetGame().ObjectDelete( m_SoundCooking );
 			m_SoundCooking = NULL;
 			m_SoundPlaying = "";
+		}
+	}
+	
+	override bool CanDecay()
+	{
+		return false;
+	}
+	
+	override bool CanProcessDecay()
+	{
+		return ( GetFoodStageType() != FoodStageType.ROTTEN );
+	}
+	
+	override void ProcessDecay( float delta, bool hasRootAsPlayer )
+	{
+		float deltaModifier = 1 + GetHealth01( "", "" );
+		if ( hasRootAsPlayer )
+			deltaModifier += GameConstants.DECAY_RATE_ON_PLAYER;
+		
+		/*Print( "-------------------------" );
+		Print( this );
+		Print( m_DecayTimer );
+		Print( m_LastDecayStage );*/
+		
+		if ( IsFruit() )
+		{
+			// fruit and vegetables
+			if ( m_LastDecayStage != GetFoodStageType() )
+			{
+				switch ( GetFoodStageType() )
+				{
+					case FoodStageType.RAW:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_RAW_FRVG + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_RAW_FRVG * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.RAW;
+						break;
+					
+					case FoodStageType.BOILED:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_BOILED_FRVG + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_BOILED_FRVG * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.BOILED;
+						break;
+					
+					case FoodStageType.BAKED:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_BAKED_FRVG + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_BAKED_FRVG * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.BAKED;
+						break;
+					
+					case FoodStageType.DRIED:
+					case FoodStageType.BURNED:
+					case FoodStageType.ROTTEN:
+					default:
+						m_DecayTimer = -1;
+						m_LastDecayStage = FoodStageType.NONE;
+						return;
+				}
+				
+				//m_DecayTimer = m_DecayTimer / 1000.0;
+			}
+			
+			m_DecayTimer -= ( delta * deltaModifier );
+						
+			if ( m_DecayTimer <= 0 ) 
+			{
+				if ( m_LastDecayStage != FoodStageType.NONE )
+				{
+					// switch to decayed stage
+					if ( ( m_LastDecayStage == FoodStageType.BOILED ) || ( m_LastDecayStage == FoodStageType.BAKED ) )
+					{
+						ChangeFoodStage( FoodStageType.ROTTEN );
+					} 
+					if ( m_LastDecayStage == FoodStageType.RAW )
+					{
+						int rng = Math.RandomIntInclusive( 0, 100 );
+						if ( rng > GameConstants.DECAY_FOOD_FRVG_DRIED_CHANCE )
+						{
+							ChangeFoodStage( FoodStageType.ROTTEN );
+						}
+						else
+						{
+							if ( CanChangeToNewStage( FoodStageType.DRIED ) )
+							{
+								ChangeFoodStage( FoodStageType.DRIED );
+							}
+							else
+							{
+								ChangeFoodStage( FoodStageType.ROTTEN );
+							}
+						}
+					}
+				}
+			}
+
+		}
+		else if ( IsMeat() )
+		{
+			// meat
+			if ( m_LastDecayStage != GetFoodStageType() )
+			{
+				switch ( GetFoodStageType() )
+				{
+					case FoodStageType.RAW:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_RAW_MEAT + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_RAW_MEAT * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.RAW;
+						break;
+					
+					case FoodStageType.BOILED:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_BOILED_MEAT + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_BOILED_MEAT * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.BOILED;
+						break;
+					
+					case FoodStageType.BAKED:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_BAKED_MEAT + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_BAKED_MEAT * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.BAKED;
+						break;
+					
+					case FoodStageType.DRIED:
+						m_DecayTimer = ( GameConstants.DECAY_FOOD_DRIED_MEAT + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_DRIED_MEAT * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+						m_LastDecayStage = FoodStageType.DRIED;
+						break;
+
+					case FoodStageType.BURNED:
+					case FoodStageType.ROTTEN:
+					default:
+						m_DecayTimer = -1;
+						m_LastDecayStage = FoodStageType.NONE;
+						return;
+				}
+				
+				//m_DecayTimer = m_DecayTimer / 1000.0;
+			}
+			
+			m_DecayTimer -= ( delta * deltaModifier );
+			
+			if ( m_DecayTimer <= 0 ) 
+			{
+				if ( m_LastDecayStage != FoodStageType.NONE )
+				{
+					// switch to decayed stage
+					if ( ( m_LastDecayStage == FoodStageType.DRIED ) || ( m_LastDecayStage == FoodStageType.RAW ) || ( m_LastDecayStage == FoodStageType.BOILED ) || ( m_LastDecayStage == FoodStageType.BAKED ) )
+					{
+						ChangeFoodStage( FoodStageType.ROTTEN );
+					}
+				}
+			}
+		}
+		else
+		{
+			// opened cans
+			m_DecayTimer -= ( delta * deltaModifier );
+
+			if ( ( m_DecayTimer <= 0 ) && ( m_LastDecayStage == FoodStageType.NONE ) )
+			{
+				m_DecayTimer = ( GameConstants.DECAY_FOOD_CAN_OPEN + ( Math.RandomFloat01() * ( GameConstants.DECAY_FOOD_DRIED_MEAT * ( GameConstants.DECAY_TIMER_RANDOM_PERCENTAGE / 100.0 ) ) ) );
+				m_LastDecayStage = FoodStageType.RAW;
+				//m_DecayTimer = m_DecayTimer / 1000.0;
+			}
+			else
+			{
+				if ( m_DecayTimer <= 0 )
+				{
+					InsertAgent(eAgents.FOOD_POISON, 1);
+					m_DecayTimer = -1;
+				}
+			}
 		}
 	}
 }

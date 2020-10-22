@@ -16,5 +16,6 @@ class WoodAxe extends ToolBase
 		//AddAction(ActionDestroyPart);
 		//AddAction(ActionSawPlanks);
 		AddAction(ActionUnrestrainTarget);
+		AddAction(ActionSkinning);
 	}
 }

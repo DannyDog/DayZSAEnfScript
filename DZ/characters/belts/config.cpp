@@ -39,6 +39,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Hips"};
 		itemSize[] = {3,1};
 		weight = 20;
+		repairableWithKits[] = {5,2};
+		repairCosts[] = {30.0,25.0};
 		lootCategory = "Crafted";
 		lootTag[] = {"Civilian"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -89,6 +91,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Hips"};
 		itemSize[] = {3,1};
 		weight = 20;
+		repairableWithKits[] = {5,2};
+		repairCosts[] = {30.0,25.0};
 		lootCategory = "Crafted";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0,0,0,1.0,co)","#(argb,8,8,3)color(0,0,0,1.0,co)","#(argb,8,8,3)color(0,0,0,1.0,co)"};
@@ -139,7 +143,7 @@ class CfgVehicles
 		attachments[] = {"Knife"};
 		absorbency = 0.1;
 		heatIsolation = 0.0;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
 		class DamageSystem
 		{
@@ -188,7 +192,7 @@ class CfgVehicles
 		attachments[] = {"Knife"};
 		absorbency = 0.1;
 		heatIsolation = 0.0;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
 		class DamageSystem
 		{
@@ -236,7 +240,7 @@ class CfgVehicles
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\dz\characters\belts\data\belt_leather_co.paa","\dz\characters\belts\data\belt_leather_co.paa","\dz\characters\belts\data\belt_leather_co.paa"};
 		absorbency = 0.1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
 		class DamageSystem
 		{

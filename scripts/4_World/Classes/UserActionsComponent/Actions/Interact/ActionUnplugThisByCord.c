@@ -8,12 +8,7 @@ class ActionUnplugThisByCord: ActionInteractBase
 	{
 		return "#unplug_by_cord";
 	}
-	
-	override typename GetInputType()
-	{
-		return ContinuousInteractActionInput;
-	}
-	
+
 	override bool HasProgress()
 	{
 		return false;

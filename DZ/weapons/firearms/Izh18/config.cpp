@@ -143,6 +143,7 @@ class cfgWeapons
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1.5,1.5,1};
 		firespreadangle = 3;
+		WeaponLength = 0.41;
 		class Single: Mode_SemiAuto
 		{
 			soundSetShot[] = {"IZH18_Shot_SoundSet","IZH18_Tail_SoundSet","IZH18_InteriorTail_SoundSet"};

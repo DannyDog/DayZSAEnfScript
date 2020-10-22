@@ -391,6 +391,7 @@ class CfgSurfaces
 		isDigable = 0;
 		isFertile = 0;
 		chanceForCatch = 0.0;
+		windModifier = 0.0;
 		class Visible
 		{
 			prone = 1;
@@ -408,6 +409,7 @@ class CfgSurfaces
 		isDigable = 1;
 		isFertile = 1;
 		chanceForCatch = 1.0;
+		windModifier = 1.0;
 		class Visible
 		{
 			prone = 1;
@@ -483,6 +485,7 @@ class CfgSurfaces
 		impact = "Hit_Foliage";
 		isDigable = 1;
 		isFertile = 1;
+		windModifier = 0.75;
 		vpSurface = "Forest";
 	};
 	class cp_broadleaf_dense2: cp_broadleaf_dense1
@@ -520,6 +523,7 @@ class CfgSurfaces
 		impact = "Hit_Foliage";
 		isDigable = 1;
 		isFertile = 1;
+		windModifier = 0.75;
 		vpSurface = "Forest";
 	};
 	class cp_conifer_common2: cp_conifer_common1

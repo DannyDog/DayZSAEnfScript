@@ -26,12 +26,12 @@ class ActionCPR: ActionContinuousBase
 	
 	override void OnStartClient(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+		action_data.m_Player.TryHideItemInHands(true);
 	}
 	
 	override void OnStartServer(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+		action_data.m_Player.TryHideItemInHands(true);
 	}
 	
 	override void CreateConditionComponents()  
@@ -54,7 +54,7 @@ class ActionCPR: ActionContinuousBase
 	
 	override void OnFinishProgressClient(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		action_data.m_Player.TryHideItemInHands(false);
 	}
 	
 	override void OnFinishProgressServer(ActionData action_data)
@@ -71,12 +71,12 @@ class ActionCPR: ActionContinuousBase
 	
 	override void OnEndServer( ActionData action_data )
 	{
-		if ( action_data.m_Player ) action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(false);
 	}
 	
 	override void OnEndClient( ActionData action_data )
 	{
-		if ( action_data.m_Player ) action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(false);
 	}
 
 };

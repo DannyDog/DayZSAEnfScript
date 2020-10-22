@@ -38,18 +38,21 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{	
+	{
+		if ( item && item.IsHeavyBehaviour() )
+			return false;
+		
 		return target.GetObject() && target.GetObject().IsWell();
 	}
 
 	override void OnStart(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+		action_data.m_Player.TryHideItemInHands(true);
 	}
 
 	override void OnEnd(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		action_data.m_Player.TryHideItemInHands(false);
 	}
 
 	override void OnFinishProgressServer( ActionData action_data )
@@ -62,9 +65,9 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 			action_data.m_Player.Consume(NULL,amount, EConsumeType.ENVIRO_WELL);
 		}
 		
-		if(action_data.m_Player.HasBloodyHands())
+		if ( action_data.m_Player.HasBloodyHands() && !action_data.m_Player.GetInventory().FindAttachment( InventorySlots.GLOVES ) )
 		{
-			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
+			action_data.m_Player.SetBloodyHandsPenalty();
 		}
 	}
 	

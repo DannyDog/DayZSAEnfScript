@@ -259,7 +259,7 @@ class ActionDeployObject: ActionContinuousBase
 
 		poActionData.m_AlreadyPlaced = true;
 		
-		entity_for_placing.OnPlacementComplete( action_data.m_Player );
+		entity_for_placing.OnPlacementComplete( action_data.m_Player, position, orientation);
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
@@ -288,7 +288,7 @@ class ActionDeployObject: ActionContinuousBase
 			action_data.m_Player.GetHologramServer().CheckPowerSource();
 		
 		action_data.m_Player.PlacingCompleteServer();
-		entity_for_placing.OnPlacementComplete( action_data.m_Player );		
+		entity_for_placing.OnPlacementComplete( action_data.m_Player, position, orientation );		
 		
 		MoveEntityToFinalPosition( action_data, position, orientation );		
 		GetGame().ClearJuncture( action_data.m_Player, entity_for_placing );

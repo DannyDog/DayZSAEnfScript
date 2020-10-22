@@ -659,6 +659,30 @@ class CfgSlots
 		displayName = "DirectCookingC";
 		ghostIcon = "directcooking";
 	};
+	class Slot_SmokingA
+	{
+		name = "SmokingA";
+		displayName = "SmokingA";
+		ghostIcon = "smoking";
+	};
+	class Slot_SmokingB
+	{
+		name = "SmokingB";
+		displayName = "SmokingB";
+		ghostIcon = "smoking";
+	};
+	class Slot_SmokingC
+	{
+		name = "SmokingC";
+		displayName = "SmokingC";
+		ghostIcon = "smoking";
+	};
+	class Slot_SmokingD
+	{
+		name = "SmokingD";
+		displayName = "SmokingD";
+		ghostIcon = "smoking";
+	};
 	class Slot_SeedBase_1
 	{
 		name = "SeedBase_1";
@@ -1458,6 +1482,81 @@ class CfgSlots
 		displayName = "Right Door";
 		ghostIcon = "doorfront";
 	};
+	class Slot_Truck_01_WoodenLogs
+	{
+		name = "Truck_01_WoodenLogs";
+		displayName = "Wooden logs";
+		ghostIcon = "woodenlog";
+		stackMax = 50;
+	};
+	class Slot_Truck_01_WoodenPlanks
+	{
+		name = "Truck_01_WoodenPlanks";
+		displayName = "Wooden planks";
+		ghostIcon = "planks";
+		stackMax = 100;
+	};
+	class Slot_Truck_01_MetalSheets
+	{
+		name = "Truck_01_MetalSheets";
+		displayName = "Metal sheets";
+		ghostIcon = "plates";
+		stackMax = 40;
+	};
+	class Slot_Truck_01_Barrel1
+	{
+		name = "Truck_01_Barrel1";
+		displayName = "Barrel";
+		ghostIcon = "barrel";
+	};
+	class Slot_Truck_01_Barrel2
+	{
+		name = "Truck_01_Barrel2";
+		displayName = "Barrel";
+		ghostIcon = "barrel";
+	};
+	class Slot_Truck_01_Barrel3
+	{
+		name = "Truck_01_Barrel3";
+		displayName = "Barrel";
+		ghostIcon = "barrel";
+	};
+	class Slot_Truck_01_Barrel4
+	{
+		name = "Truck_01_Barrel4";
+		displayName = "Barrel";
+		ghostIcon = "barrel";
+	};
+	class Slot_Truck_01_WoodenCrate1
+	{
+		name = "Truck_01_WoodenCrate1";
+		displayName = "WoodenCrate";
+		ghostIcon = "woodcrate";
+	};
+	class Slot_Truck_01_WoodenCrate2
+	{
+		name = "Truck_01_WoodenCrate2";
+		displayName = "WoodenCrate";
+		ghostIcon = "woodcrate";
+	};
+	class Slot_Truck_01_WoodenCrate3
+	{
+		name = "Truck_01_WoodenCrate3";
+		displayName = "WoodenCrate";
+		ghostIcon = "woodcrate";
+	};
+	class Slot_Truck_01_WoodenCrate4
+	{
+		name = "Truck_01_WoodenCrate4";
+		displayName = "WoodenCrate";
+		ghostIcon = "woodcrate";
+	};
+	class Slot_Truck_01_Cargo2
+	{
+		name = "Truck_01_Cargo2";
+		displayName = "SecondCargo";
+		ghostIcon = "";
+	};
 	class Slot_Truck_02_Wheel_1_1
 	{
 		name = "Truck_02_Wheel_1_1";
@@ -2155,6 +2254,45 @@ class CfgSlots
 		selection = "Material_FPole_Flag";
 		ghostIcon = "tf_flag";
 	};
+	class Slot_Material_Shelter_FrameSticks
+	{
+		name = "Material_Shelter_FrameSticks";
+		displayName = "Material_Shelter_FrameSticks";
+		selection = "Material_Shelter_FrameSticks";
+		ghostIcon = "woodenstick";
+		stackMax = 4;
+	};
+	class Slot_Material_Shelter_Rope
+	{
+		name = "Material_Shelter_Rope";
+		displayName = "Material_Shelter_Rope";
+		selection = "Material_Shelter_Rope";
+		ghostIcon = "rope";
+	};
+	class Slot_Material_Shelter_Leather
+	{
+		name = "Material_Shelter_Leather";
+		displayName = "Material_Shelter_Leather";
+		selection = "Material_Shelter_Leather";
+		ghostIcon = "animal_pelt";
+		stackMax = 2;
+	};
+	class Slot_Material_Shelter_Fabric
+	{
+		name = "Material_Shelter_Fabric";
+		displayName = "Material_Shelter_Fabric";
+		selection = "Material_Shelter_Fabric";
+		ghostIcon = "tarp";
+		stackMax = 1;
+	};
+	class Slot_Material_Shelter_Sticks
+	{
+		name = "Material_Shelter_Sticks";
+		displayName = "Material_Shelter_Sticks";
+		selection = "Material_Shelter_Sticks";
+		ghostIcon = "wooden_sticks";
+		stackMax = 50;
+	};
 	class Slot_LargeBattery
 	{
 		name = "LargeBattery";
@@ -2258,6 +2396,20 @@ class CfgSlots
 		name = "RevolverEjector";
 		displayName = "RevolverEjector";
 		ghostIcon = "";
+		show = "false";
+	};
+	class Slot_Splint_Right
+	{
+		name = "Splint_Right";
+		displayName = "Splint_Right";
+		ghosticon = "";
+		show = "false";
+	};
+	class Slot_Splint_Left
+	{
+		name = "Splint_Left";
+		displayName = "Splint_Left";
+		ghosticon = "";
 		show = "false";
 	};
 };

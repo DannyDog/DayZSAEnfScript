@@ -43,17 +43,21 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 	{	
 		// Other conditions are in CCTWaterSurface
 		// Note: using SurfaceIsPond makes you unable to drink under bridges
-		return true /*g_Game.SurfaceIsPond(pos_cursor[0], pos_cursor[2])*/;
+		//return true /*g_Game.SurfaceIsPond(pos_cursor[0], pos_cursor[2])*/;
+		
+		if ( item && item.IsHeavyBehaviour() )
+			return false;
+		return true;
 	}
 
 	override void OnStart(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(true);
+		action_data.m_Player.TryHideItemInHands(true);
 	}
 
 	override void OnEnd(ActionData action_data)
 	{
-		action_data.m_Player.GetItemAccessor().HideItemInHands(false);
+		action_data.m_Player.TryHideItemInHands(false);
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
@@ -67,9 +71,9 @@ class ActionDrinkPondContinuous: ActionContinuousBase
 	override void OnEndAnimationLoopServer( ActionData action_data )
 	{
 		//Print("OnEndAnimationLoopServer");
-		if(action_data.m_Player.HasBloodyHands())
+		if ( action_data.m_Player.HasBloodyHands() && !action_data.m_Player.GetInventory().FindAttachment( InventorySlots.GLOVES ) )
 		{
-			action_data.m_Player.InsertAgent(eAgents.CHOLERA, 1);
+			action_data.m_Player.SetBloodyHandsPenalty();
 		}
 	}
 	

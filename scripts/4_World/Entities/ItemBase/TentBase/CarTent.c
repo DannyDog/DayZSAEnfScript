@@ -41,11 +41,6 @@ class CarTent extends TentBase
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================
-	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
-	}
 
 	override bool IsDeployable()
 	{

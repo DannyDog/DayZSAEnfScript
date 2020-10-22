@@ -14,6 +14,11 @@ class Lard extends Edible_Base
 	{
 		return true;
 	}
+
+	override bool CanDecay()
+	{
+		return true;
+	}
 	
 	override void SetActions()
 	{

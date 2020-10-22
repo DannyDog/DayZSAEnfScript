@@ -1,7 +1,32 @@
-class ActionPackTent: ActionInteractBase
+class ActionPackTentCB : ActionContinuousBaseCB
+{
+	override void CreateActionComponent()
+	{
+		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT_DEPLOY); //Use same time as Deploy
+	}
+	
+	override void OnAnimationEvent(int pEventID)	
+	{
+		super.OnAnimationEvent( pEventID );
+		
+		switch (pEventID)
+		{
+			case UA_FINISHED:		
+
+			break;
+		}
+	}
+}
+
+class ActionPackTent : ActionContinuousBase
 {
 	void ActionPackTent()
 	{
+		m_CallbackClass		= ActionPackTentCB;
+		m_SpecialtyWeight 	= UASoftSkillsWeight.PRECISE_LOW;
+		m_CommandUID		= 0;
+		m_FullBody			= true;
+		m_StanceMask		= DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
 	}
 
 	override void CreateConditionComponents()  
@@ -27,6 +52,37 @@ class ActionPackTent: ActionInteractBase
 
 	override bool HasProgress()
 	{
+		return true;
+	}
+	
+	override bool HasAlternativeInterrupt()
+	{
+		return true;
+	}
+	
+	override bool ActionConditionContinue( ActionData action_data )
+	{
+		Object targetParent = action_data.m_Target.GetParent();
+		TentBase tent = TentBase.Cast( targetParent );
+		return tent.CanBePacked();
+	}
+	
+	override ActionData CreateActionData()
+	{
+		PlaceObjectActionData action_data = new PlaceObjectActionData;
+		return action_data;
+	}
+	
+	override bool SetupAction(PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL)
+	{	
+		if ( super.SetupAction(player, target, item, action_data, extra_data ))
+		{
+			PlaceObjectActionData poActionData;
+			poActionData = PlaceObjectActionData.Cast(action_data);
+			poActionData.m_AlreadyPlaced = false;
+			m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DEPLOY_2HD; //Call the animation
+			return true;
+		}
 		return false;
 	}
 	
@@ -34,6 +90,12 @@ class ActionPackTent: ActionInteractBase
 	{	
 		Object targetObject = target.GetObject();
 		Object targetParent = target.GetParent();
+		
+		TentBase inventory_tent = TentBase.Cast(targetObject);
+		if (inventory_tent && inventory_tent.GetHierarchyRootPlayer())
+		{
+			return false; //tent is somewhere in player's inventory
+		}
 		
 		if ( player && targetObject && targetParent )
 		{
@@ -76,21 +138,30 @@ class ActionPackTent: ActionInteractBase
 		}
 		return false;
 	}
-
-	override void OnExecuteServer( ActionData action_data )
+	
+	override void OnExecute( ActionData action_data )
 	{
-		Object targetObject = action_data.m_Target.GetObject();
 		Object targetParent = action_data.m_Target.GetParent();
-		vector target_object_pos = targetObject.GetPosition();
-		
-		if ( targetParent && targetParent.IsInherited(TentBase) ) 
+		TentBase tent = TentBase.Cast( targetParent );
+		tent.SetIsBeingPacked(true);
+	}
+	
+	override void OnEnd( ActionData action_data )
+	{
+		Object targetParent = action_data.m_Target.GetParent();
+		TentBase tent = TentBase.Cast( targetParent );
+		tent.SetIsBeingPacked(false);
+	}
+	
+	override void OnFinishProgressServer( ActionData action_data )
+	{
+		//vector offset = Vector(1, 0, 0);
+		Object targetParent = action_data.m_Target.GetParent();
+		TentBase tent = TentBase.Cast( targetParent );
+		if (tent.CanBePacked())
 		{
-			array<string> selections = new array<string>;
-			targetObject.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
-			
-			TentBase tent = TentBase.Cast( targetParent );
 			tent.Pack( true );
-			tent.SetPosition( targetParent.CoordToParent( target_object_pos ) );
+			tent.SetPosition( action_data.m_Player.GetPosition() /*+ offset*/ ); //Add offset to allign tent with player
 			tent.SetOrientation( action_data.m_Player.GetOrientation() );
 			tent.PlaceOnSurface();
 		}

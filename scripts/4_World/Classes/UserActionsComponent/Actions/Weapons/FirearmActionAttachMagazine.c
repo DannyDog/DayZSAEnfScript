@@ -32,9 +32,10 @@ class FirearmActionAttachMagazine : FirearmActionBase
 		if (!super.ActionCondition( player, target, item ))
 			return false;
 		
+		HumanCommandWeapons hcw = player.GetCommandModifier_Weapons();
 		Magazine mag = Magazine.Cast(target.GetObject());	
 		Weapon_Base wpn = Weapon_Base.Cast(item);	
-		return mag && (player.GetWeaponManager().CanAttachMagazine(wpn,mag) || player.GetWeaponManager().CanSwapMagazine(wpn,mag));
+		return mag && (player.GetWeaponManager().CanAttachMagazine(wpn,mag) || player.GetWeaponManager().CanSwapMagazine(wpn,mag)) && (!hcw || hcw.GetRunningAction() != WeaponActions.RELOAD);
 	}
 	
 	override bool ActionConditionContinue( ActionData action_data )
@@ -91,6 +92,10 @@ class FirearmActionAttachMagazineQuick : FirearmActionBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item ) //condition for action
 	{
 		if (!super.ActionCondition( player, target, item ))
+			return false;
+		
+		HumanCommandWeapons hcw = player.GetCommandModifier_Weapons();
+		if (hcw && hcw.GetRunningAction() == WeaponActions.RELOAD)
 			return false;
 		
 		MagazineStorage mag = MagazineStorage.Cast(player.GetWeaponManager().GetPreparedMagazine());

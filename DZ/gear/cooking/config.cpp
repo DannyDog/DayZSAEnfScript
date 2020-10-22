@@ -208,7 +208,7 @@ class CfgVehicles
 		itemSize[] = {4,4};
 		itemsCargoSize[] = {10,4};
 		useEntityHierarchy = "true";
-		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Bark","CookingTripod","Stones","DirectCookingA","DirectCookingB","DirectCookingC"};
+		attachments[] = {"Firewood","WoodenStick","CookingEquipment","Rags","MedicalBandage","Paper","Bark","CookingTripod","Stones","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		class GUIInventoryAttachmentsProps
 		{
 			class CookingEquipment
@@ -219,13 +219,21 @@ class CfgVehicles
 				icon = "cat_fp_cooking";
 				view_index = 1;
 			};
+			class Smoking
+			{
+				name = "$STR_attachment_Smoking";
+				description = "";
+				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
+				icon = "cookingequipment";
+				view_index = 2;
+			};
 			class DirectCooking
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"DirectCookingA","DirectCookingB","DirectCookingC"};
 				icon = "cookingequipment";
-				view_index = 2;
+				view_index = 3;
 			};
 			class Upgrade
 			{
@@ -233,7 +241,7 @@ class CfgVehicles
 				description = "";
 				attachmentSlots[] = {"Stones"};
 				icon = "cat_fp_upgrade";
-				view_index = 3;
+				view_index = 4;
 			};
 			class Fuel
 			{
@@ -241,7 +249,7 @@ class CfgVehicles
 				description = "";
 				attachmentSlots[] = {"Firewood","WoodenStick"};
 				icon = "cat_fp_fuel";
-				view_index = 4;
+				view_index = 5;
 			};
 			class Kindling
 			{
@@ -249,7 +257,7 @@ class CfgVehicles
 				description = "";
 				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
 				icon = "cat_fp_kindling";
-				view_index = 5;
+				view_index = 6;
 			};
 		};
 		hiddenSelections[] = {"ashes","inventory"};
@@ -270,9 +278,16 @@ class CfgVehicles
 		lootCategory = "Crafted";
 		itemSize[] = {4,4};
 		itemsCargoSize[] = {10,4};
-		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB"};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB","SmokingA","SmokingB","SmokingC","SmokingD"};
 		class GUIInventoryAttachmentsProps
 		{
+			class Smoking
+			{
+				name = "$STR_attachment_Smoking";
+				description = "";
+				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
+				icon = "cookingequipment";
+			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
@@ -309,9 +324,16 @@ class CfgVehicles
 		lootCategory = "Crafted";
 		itemSize[] = {4,4};
 		itemsCargoSize[] = {10,4};
-		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA"};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","SmokingA","SmokingB"};
 		class GUIInventoryAttachmentsProps
 		{
+			class Smoking
+			{
+				name = "$STR_attachment_Smoking";
+				description = "";
+				attachmentSlots[] = {"SmokingA","SmokingB"};
+				icon = "cookingequipment";
+			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
@@ -352,13 +374,20 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 0.0;
 		stackedUnit = "";
-		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB","DirectCookingC"};
+		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
 		canBeDigged = 0;
 		physLayer = "item_large";
 		class GUIInventoryAttachmentsProps
 		{
+			class Smoking
+			{
+				name = "$STR_attachment_Smoking";
+				description = "";
+				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
+				icon = "cookingequipment";
+			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";

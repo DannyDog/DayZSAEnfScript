@@ -386,6 +386,7 @@ class PluginDeveloperSync extends PluginBase
 				rpc_params.Insert( new Param2<string, float>( label, value ) );
 			}
 			rpc_params.Insert(new Param2<string, float>( "(NaS)Immunity", player.GetImmunity() ));
+			rpc_params.Insert(new Param2<string, float>( "(NaS)BrokenLegs", player.m_BrokenLegState ));
 		
 			float param_count = (float) rpc_params.Count();
 			rpc_params.InsertAt( new Param2<string, float>( "PARAM_COUNT", param_count ), 0);
@@ -433,6 +434,7 @@ class PluginDeveloperSync extends PluginBase
 			m_PlayerStatsSynced.Insert( new SyncedValue( label, value, false ) );
 		}
 			m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS)Immunity", player.GetImmunity() , false));
+			m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS) BrokenLegs", player.m_BrokenLegState, false));
 	}
 
 	//============================================

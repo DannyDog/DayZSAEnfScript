@@ -33,7 +33,7 @@ class ActionLockDoors: ActionContinuousBase
 		if( !target ) return false;
 		//if( IsDamageDestroyed(action_data.m_Target) ) return false;
 		if( !IsBuilding(target) ) return false;
-		//if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		Building building;
 		if( Class.CastTo(building, target.GetObject()) )
@@ -55,7 +55,7 @@ class ActionLockDoors: ActionContinuousBase
 			if ( doorIndex != -1 )
 			{
 				building.LockDoor(doorIndex);
-			}
+			}		
 		}
 	}
 
@@ -64,20 +64,12 @@ class ActionLockDoors: ActionContinuousBase
 		LockDoor(action_data.m_Target);
 		
 		//Damage the Lockpick
-		float dmg = action_data.m_MainItem.GetMaxHealth() * 0.04; //Multiply max health by 'x' amount depending on number of usages wanted (0.04 = 25)
+		//float dmg = action_data.m_MainItem.GetMaxHealth() * 0.04; //Multiply max health by 'x' amount depending on number of usages wanted (0.04 = 25)
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		if (action_data.m_Player.GetSoftSkillsManager().GetSpecialtyLevel() >= 0)
-		{
-			action_data.m_MainItem.DecreaseHealth("", "", dmg);
-			DebugPrint.Log("Damage without soft skill : " + dmg);
-		}
 		
-		if (action_data.m_Player.GetStatSpecialty().Get() < 0)
-		{
-			dmg = action_data.m_MainItem.GetMaxHealth() * 0.025; //Multiply by 0.025 to get 40 uses out of pristine lockpick
-			action_data.m_MainItem.DecreaseHealth("", "", dmg);
-			DebugPrint.Log("Damage with soft skill : " + dmg);
-		}	
+		float skillLevel = action_data.m_Player.GetSoftSkillsManager().GetSpecialtyLevel();
+		float appliedDamage = 7 + 2*skillLevel; 
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, appliedDamage);
 	}
 };

@@ -31,6 +31,17 @@ class EntityLightSource extends Entity
 	proto native float 			GetRadius();
 	
 	//---------------------------------------------------------------------------
+	// heat haze
+	//---------------------------------------------------------------------------
+	proto native void 			EnableHeatHaze(bool pState);
+	
+	proto native void 			SetHeatHazeRadius(float pValue);
+	proto native float 			GetHeatHazeRadius();
+
+	proto native void 			SetHeatHazePower(float pValue);
+	proto native float 			GetHeatHazePower();
+	
+	//---------------------------------------------------------------------------
 	// colors & brightness
 	//---------------------------------------------------------------------------
 	proto native void   		SetDiffuseColor(float pRed, float pGreen, float pBlue);

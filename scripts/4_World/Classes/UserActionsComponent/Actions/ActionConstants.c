@@ -94,8 +94,9 @@ class UATimeSpent
  */
 class UAMaxDistances
 {
-	const float SMALL = 1.0;
+	const float SMALL = 1.3;
 	const float DEFAULT = 2.0;
+	const float LARGE = 8.0;
 	const float LADDERS = 1.3;
 	const float BASEBUILDING = 20;
 };
@@ -116,12 +117,12 @@ class UASoftSkillsWeight
  */
 class UADamageApplied
 {
-	const float BUILD 		= 5;
-	const float DISMANTLE 	= 40;
-	const float REPAIR 		= 3;
-	const float DESTROY 	= 50;
-	const float SAW_LOCK 	= 34;
-	const float SKINNING 	= 1;
+	const float BUILD 		= 12;
+	const float DISMANTLE 	= 20;
+	const float REPAIR 		= 12;
+	const float DESTROY 	= 30;
+	const float SAW_LOCK 	= 150;
+	const float SKINNING 	= 12;
 };
 
 /**@class	Constants for water type

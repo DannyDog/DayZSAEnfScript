@@ -5,5 +5,6 @@ class Crowbar: Inventory_Base
 		super.SetActions();
 		
 		AddAction(ActionDismantlePart);
+		AddAction(ActionSkinning);
 	}
 };

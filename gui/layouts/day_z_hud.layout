@@ -421,7 +421,7 @@ FrameWidgetClass HudFrameWidget {
      clipchildren 0
      ignorepointer 1
      position 252 0
-     size 350 79
+     size 308.41501 79
      halign right_ref
      valign bottom_ref
      hexactpos 1
@@ -1114,6 +1114,21 @@ FrameWidgetClass HudFrameWidget {
            font "gui/fonts/sdf_MetronLight24"
            "size to text h" 1
            "text halign" center
+          }
+          ImageWidgetClass HeatBuffer {
+           visible 1
+           color 0.8627 0.8627 0.8627 1
+           position -2.7406 -2.01861
+           size 13 13
+           halign right_ref
+           hexactpos 1
+           vexactpos 1
+           hexactsize 1
+           vexactsize 1
+           image0 "set:dayz_gui image:iconHeatBuffer"
+           mode blend
+           "src alpha" 1
+           "no wrap" 1
           }
          }
         }

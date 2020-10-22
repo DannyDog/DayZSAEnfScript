@@ -734,7 +734,7 @@ class MiscGameplayFunctions
 				
 				if ( GetGame().IsMultiplayer() || GetGame().IsServer() )
 				{
-					construction_action_data.RefreshPartsToBuild( main_part_name, item );
+					construction_action_data.RefreshPartsToBuild( main_part_name, item, !targetObject.CanUseHandConstruction() );
 				}
 				ConstructionPart constrution_part = construction_action_data.GetCurrentBuildPart();
 	
@@ -750,7 +750,8 @@ class MiscGameplayFunctions
 				if ( constrution_part )
 				{
 					//camera and position checks
-					if ( base_building.IsPlayerInside( player, constrution_part.GetMainPartName() ) && !player.GetInputController().CameraIsFreeLook() )
+					bool position_check = ( base_building.MustBeBuiltFromOutside() && !base_building.IsPlayerInside(player, constrution_part.GetMainPartName()) ) || ( !base_building.MustBeBuiltFromOutside() && base_building.IsPlayerInside(player, constrution_part.GetMainPartName()) );
+					if ( position_check && !player.GetInputController().CameraIsFreeLook() )
 					{
 						//Camera check (client-only)
 						if ( camera_check )
@@ -770,7 +771,7 @@ class MiscGameplayFunctions
 		return false;
 	}
 	
-	static bool IsUnderRoof(EntityAI entity, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST) 
+	static void IsUnderRoofFromToCalculation(EntityAI entity, out vector from, out vector to, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST)
 	{
 		vector minMax[2];
 		entity.GetCollisionBox(minMax);
@@ -782,10 +783,9 @@ class MiscGameplayFunctions
 		vector size = Vector(0,0,0);
 		size[1] = minMax[1][1] - minMax[0][1];
 
-		vector from = entity.GetPosition() + size;  
+		from = entity.GetPosition() + size;  
 		vector ceiling = "0 0 0";
 		ceiling[1] = height;
-		vector to;
 		if ( entity.HeightCheckOverride() > 0 )
 		{
 			to = entity.GetPosition() + Vector(0, entity.HeightCheckOverride(), 0);
@@ -794,12 +794,26 @@ class MiscGameplayFunctions
 		{
 			to = from + ceiling;
 		}
+	}
+	
+	static bool IsUnderRoof(EntityAI entity, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST) 
+	{
+		return IsUnderRoofEx(entity, height, ObjIntersectView);
+	}
+	
+	static bool IsUnderRoofEx(EntityAI entity, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST, int geometry = ObjIntersectView) 
+	{
+		vector from;  
+		vector to;
+		
+		IsUnderRoofFromToCalculation(entity, from, to, height);
+
 		vector contact_pos;
 		vector contact_dir;
 
 		int contact_component;
 		//set<Object> hit_object = new set<Object>;
-		bool boo = DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, /*hit_object*/NULL, NULL, entity, false, false, ObjIntersectView,0.25 );
+		bool boo = DayZPhysics.RaycastRV( from, to, contact_pos, contact_dir, contact_component, /*hit_object*/NULL, NULL, entity, false, false, geometry,0.25 );
 		
 		/*if (boo)
 		{
@@ -881,7 +895,68 @@ class MiscGameplayFunctions
 				ib.GetInventory().DropEntityInBounds(InventoryMode.SERVER, ib, item, halfExtents, angle, cos, sin);					
 		}
 	}
-	
+
+	static float GetCurrentItemHeatIsolation( ItemBase pItem )
+	{
+		float wetFactor;
+		float healthFactor;
+
+		float heatIsolation = pItem.GetHeatIsolation(); 	//! item heat isolation (from cfg)
+		float itemHealthLabel = pItem.GetHealthLevel();		//! item health (state)
+		float itemWetness = pItem.GetWet();					//! item wetness
+		
+		//! wet factor selection
+		if ( itemWetness >= GameConstants.STATE_DRY && itemWetness < GameConstants.STATE_DAMP )
+		{
+			wetFactor = GameConstants.ENVIRO_ISOLATION_WETFACTOR_DRY;
+		}
+		else if ( itemWetness >= GameConstants.STATE_DAMP && itemWetness < GameConstants.STATE_WET )
+		{
+			wetFactor = GameConstants.ENVIRO_ISOLATION_WETFACTOR_DAMP;
+		}
+		else if ( itemWetness >= GameConstants.STATE_WET && itemWetness < GameConstants.STATE_SOAKING_WET )
+		{
+			wetFactor = GameConstants.ENVIRO_ISOLATION_WETFACTOR_WET;
+		}
+		else if ( itemWetness >= GameConstants.STATE_SOAKING_WET && itemWetness < GameConstants.STATE_DRENCHED )
+		{
+			wetFactor = GameConstants.ENVIRO_ISOLATION_WETFACTOR_SOAKED;
+		}
+		else if ( itemWetness >= GameConstants.STATE_DRENCHED )
+		{
+			wetFactor = GameConstants.ENVIRO_ISOLATION_WETFACTOR_DRENCHED;
+		}
+		
+		//! health factor selection
+		switch (itemHealthLabel)
+		{
+			case GameConstants.STATE_PRISTINE:
+				healthFactor = GameConstants.ENVIRO_ISOLATION_HEALTHFACTOR_PRISTINE;
+			break;
+			
+			case GameConstants.STATE_WORN:
+				healthFactor = GameConstants.ENVIRO_ISOLATION_HEALTHFACTOR_WORN;
+			break;
+			
+			case GameConstants.STATE_DAMAGED:
+				healthFactor = GameConstants.ENVIRO_ISOLATION_HEALTHFACTOR_DAMAGED;
+			break;
+			
+			case GameConstants.STATE_BADLY_DAMAGED:
+				healthFactor = GameConstants.ENVIRO_ISOLATION_HEALTHFACTOR_B_DAMAGED;
+			break;
+			
+			case GameConstants.STATE_RUINED:
+				healthFactor = GameConstants.ENVIRO_ISOLATION_HEALTHFACTOR_RUINED;
+			break;
+		}
+		
+		//! apply fatctors
+		heatIsolation *= healthFactor;
+		heatIsolation *= wetFactor;
+
+		return heatIsolation;
+	}
 	static bool IsObjectObstructed(Object object, bool doDistanceCheck = false, vector distanceCheckPos = "0 0 0", float maxDist = 0)
 	{
 		if (!object)
@@ -915,7 +990,7 @@ class MiscGameplayFunctions
 			PlayerBase vicinity_player = PlayerBase.Cast( entity_ai );
 			if ( vicinity_player )
 			{
-				int bone_index_player = vicinity_player.GetBoneIndexByName( "Pelvis" );
+				int bone_index_player = vicinity_player.GetBoneIndexByName( "spine3" );
 				object_center_pos = vicinity_player.GetBonePositionWS( bone_index_player );
 			}
 		}
@@ -925,7 +1000,8 @@ class MiscGameplayFunctions
 			ZombieBase vicinity_zombie = ZombieBase.Cast( entity_ai );
 			if ( vicinity_zombie )
 			{
-				object_center_pos = vicinity_zombie.ModelToWorld( vicinity_zombie.GetSelectionPositionOld("Pelvis") );
+				int bone_index_zombie = vicinity_zombie.GetBoneIndexByName( "spine3" );
+				object_center_pos = vicinity_zombie.GetBonePositionWS( bone_index_zombie );
 			}
 		}
 		else
@@ -1024,6 +1100,58 @@ class MiscGameplayFunctions
 			
 		return is_obstructed;
 	}
+	
+	//Inflict absolute damage to item (used on tools when completing actions)
+	static void DealAbsoluteDmg(ItemBase item, float dmg)
+	{
+		float totalDmg = dmg;
+		//Print("The damage dealt is : " + totalDmg);
+		item.DecreaseHealth(totalDmg, false);
+		//Print("Current health of item is : " + item.GetHealth());
+	}
+	
+	//Function used to normailze values, enter the used value and the max value (max will become 1)
+	static float Normalize(int val, int maxVal)
+	{
+		float normVal;
+		if (maxVal == 0)
+		{
+			Debug.LogError("Division by 0 is not allowed");
+			return 0;
+		}
+		
+		normVal = val / maxVal;
+		return normVal;
+	}
+	
+	static float Bobbing(float period, float amplitude, float elapsedTime)
+	{
+		//Prevent division by 0
+		if ( period == 0 )
+			period = 1;
+		
+		elapsedTime /= period;
+		
+		float cycle;
+		cycle += elapsedTime;
+		cycle = FModulus(cycle, 360);
+		cycle = Math.Sin(cycle) * amplitude;
+		
+		return cycle;
+	}
+	
+	static float FModulus(float x, float y)
+	{
+		float res;
+		//Prevent division by 0
+		if (y == 0)
+			y = 1;
+		
+		int n = Math.Floor(x/y);
+		res = x - n * y;
+		return res;
+	}
+	
 };
 
 class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda
@@ -1033,7 +1161,10 @@ class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda
 	{
 		InventoryLocation gnd = new InventoryLocation;
 		vector mtx[4];
-		old_item.GetTransform(mtx);
+		if (old_item)
+			old_item.GetTransform(mtx);
+		else
+			player.GetTransform(mtx);
 		gnd.SetGround(NULL, mtx);
 		OverrideNewLocation(gnd);
 	}

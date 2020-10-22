@@ -95,13 +95,13 @@ class ConstructionActionData
 		}
 	}
 	
-	void RefreshPartsToBuild( string main_part_name, ItemBase tool )
+	void RefreshPartsToBuild( string main_part_name, ItemBase tool, bool use_tool = true )
 	{
 		//m_MainPartName = main_part_name;
 		BaseBuildingBase base_building_object = BaseBuildingBase.Cast( m_Target );
 		if ( base_building_object )
 		{
-			base_building_object.GetConstruction().GetConstructionPartsToBuild( main_part_name, m_BuildParts, tool, m_MainPartName );
+			base_building_object.GetConstruction().GetConstructionPartsToBuild( main_part_name, m_BuildParts, tool, m_MainPartName, use_tool );
 		}
 	}
 	

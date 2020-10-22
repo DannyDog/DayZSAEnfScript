@@ -10,5 +10,6 @@ class Hacksaw extends ToolBase
 		AddAction(ActionDismantlePart);
 		//AddAction(ActionDestroyCombinationLock);
 		//AddAction(ActionDestroyPart);
+		AddAction(ActionSkinning);
 	}
 }

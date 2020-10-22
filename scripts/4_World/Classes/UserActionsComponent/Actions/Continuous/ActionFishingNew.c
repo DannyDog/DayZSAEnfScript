@@ -181,7 +181,7 @@ class ActionFishingNew: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined;
-		m_ConditionTarget = new CCTSurface(8);
+		m_ConditionTarget = new CCTWaterSurface(UAMaxDistances.LARGE, UAWaterType.ALL);
 	}
 	
 	override bool HasTarget()
@@ -201,27 +201,14 @@ class ActionFishingNew: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		ItemBase bait;
-		
+		ItemBase bait;		
 		FishingRod_Base_New rod = FishingRod_Base_New.Cast(item);
 		
 		if (rod)
-		{
 			bait = ItemBase.Cast(rod.FindAttachmentBySlotName("Hook"));
-		}
 		
 		if (bait && !bait.IsRuined())
-		{
-			if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				return true;
-			
-			vector pos_cursor = target.GetCursorHitPos();
-			if (pos_cursor == vector.Zero)
-				return false;
-			
-			if ( GetGame().SurfaceIsPond(pos_cursor[0],pos_cursor[2]) || GetGame().SurfaceIsSea(pos_cursor[0],pos_cursor[2]) )
-				return true;
-		}
+			return true;
 		
 		return false;
 	}

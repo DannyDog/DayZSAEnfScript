@@ -1,3 +1,13 @@
+	//------------
+	//Will be used later down the line
+	enum eBrokenLegs
+	{
+		NO_BROKEN_LEGS = 0,
+		BROKEN_LEGS = 1,
+		BROKEN_LEGS_SPLINT = 2,
+	}
+	//-----------
+
 class PlayerBase extends ManBase
 {
 	const int 						SIMPLIFIED_SHOCK_CAP = 63;
@@ -9,6 +19,7 @@ class PlayerBase extends ManBase
 	private bool					m_LiquidTendencyDrain; //client-side only
 	private bool 					m_FlagRaisingTendency;
 	private bool					m_HasBloodyHandsVisible;
+	protected bool					m_HasHeatBuffer;
 	protected bool 					m_PlayerLoaded;
 	protected bool 					m_PlayerDisconnectProcessed;
 	protected bool 					m_ProcessUIWarning;
@@ -39,6 +50,7 @@ class PlayerBase extends ManBase
 	ref VirtualHud 					m_VirtualHud;
 	ref StaminaHandler				m_StaminaHandler;
 	ref InjuryAnimationHandler		m_InjuryHandler;
+	ref ShockHandler				m_ShockHandler; //New shock handler
 	ref SoftSkillsManager			m_SoftSkillsManager;
 	ref StanceIndicator				m_StanceIndicator;
 	ref TransferValues				m_TrasferValues;
@@ -56,6 +68,7 @@ class PlayerBase extends ManBase
 	ref Param1<string> 				m_UAParamMessage;
 	ref DamageDealtEffect			m_DamageDealtEffect;
 	ref FlashbangEffect				m_FlashbangEffect;
+	ref ShockDealtEffect 			m_ShockDealtEffect;
 	ref EffectParticle 				m_FliesEff;
 	ref TInputActionMap				m_InputActionMapControled;
 	ref TInputActionMap				m_InputActionMapAsTarget;
@@ -70,6 +83,7 @@ class PlayerBase extends ManBase
 	ref HeatComfortAnimHandler		m_HCAnimHandler;
 	ref EffectSound					m_SoundFliesEffect;
 	bool 							m_QuickBarHold;
+	bool							m_QuickBarFT = false;
 	Hud 							m_Hud;
 	protected float 				m_dT;
 	protected int 					m_RecipePick;
@@ -85,6 +99,7 @@ class PlayerBase extends ManBase
 	int								m_StaminaState;
 	float							m_UnconsciousTime;
 	int 							m_ShockSimplified;
+	float							m_CurrentShock; //Used to synchronize shock between server and client
 	bool							m_IsRestrained;
 	bool 							m_IsRestrainStarted;
 	bool 							m_IsRestrainPrelocked;
@@ -116,6 +131,12 @@ class PlayerBase extends ManBase
 	bool 							m_HideHairAnimated;
 	string 							m_DecayedTexture;
 	protected ref array<EntityAI>	m_ItemsToDelete;
+	int								m_BrokenLegState = eBrokenLegs.NO_BROKEN_LEGS; //Describe the current leg state
+	int								m_LocalBrokenState = eBrokenLegs.NO_BROKEN_LEGS; //Used to check differences between server and client before sync (MUST BE SYNCHED)
+	//HumanCommandMove 				cm;	//Get the command modifier in order to force stance when legs are broken
+	ref EffectSound 				m_BrokenLegSound;
+	const string 					SOUND_BREAK_LEG = "broken_leg_SoundSet";
+	bool							m_CanPlayBrokenLegSound = false; //Used to check if sound has already been played
 	
 	ref protected RandomGeneratorSyncManager m_RGSManager;
 	
@@ -246,6 +267,7 @@ class PlayerBase extends ManBase
 
 		m_StaminaHandler = new StaminaHandler(this);//current stamina calculation
 		m_InjuryHandler = new InjuryAnimationHandler(this);
+		m_ShockHandler = new ShockHandler(this); //New shock handler
 		m_HCAnimHandler = new HeatComfortAnimHandler(this);
 		if( GetGame().IsServer() )
 		{
@@ -359,6 +381,8 @@ class PlayerBase extends ManBase
 		RegisterNetSyncVariableInt("m_MixedSoundStates", 0, eMixedSoundStates.COUNT - 1);
 		RegisterNetSyncVariableInt("m_CorpseState",PlayerConstants.CORPSE_STATE_FRESH,PlayerConstants.CORPSE_STATE_DECAYED);
 		RegisterNetSyncVariableInt("m_RefreshAnimStateIdx",0,3);
+		RegisterNetSyncVariableInt("m_BrokenLegState", eBrokenLegs.NO_BROKEN_LEGS, eBrokenLegs.BROKEN_LEGS_SPLINT);
+		RegisterNetSyncVariableInt("m_LocalBrokenState", eBrokenLegs.NO_BROKEN_LEGS, eBrokenLegs.BROKEN_LEGS_SPLINT);
 		
 		RegisterNetSyncVariableBool("m_IsUnconscious");
 		RegisterNetSyncVariableBool("m_IsRestrained");
@@ -368,6 +392,10 @@ class PlayerBase extends ManBase
 		//RegisterNetSyncVariableBool("m_LiquidTendencyDrain");
 		RegisterNetSyncVariableBool("m_IsRestrainStarted");
 		RegisterNetSyncVariableBool("m_IsRestrainPrelocked");
+		RegisterNetSyncVariableBool("m_CanPlayBrokenLegSound"); //Temporary
+		RegisterNetSyncVariableBool("m_HasHeatBuffer");
+		
+		RegisterNetSyncVariableFloat("m_CurrentShock"); //Register shock synchronized variable
 		
 		m_OriginalSlidePoseAngle = GetSlidePoseAngle();
 		
@@ -541,6 +569,16 @@ class PlayerBase extends ManBase
 		m_FlashbangEffect = new FlashbangEffect(player, visual);
 	}
 	
+	ShockDealtEffect GetShockEffect()
+	{
+		return m_ShockDealtEffect;
+	}
+	
+	void SpawnShockEffect(float intensity_max)
+	{
+		m_ShockDealtEffect = new ShockDealtEffect(intensity_max);
+	}
+	
 	override void EEKilled( Object killer )
 	{
 		Print(Object.GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " event EEKilled, player has died at STS=" + GetSimulationTimeStamp());
@@ -622,10 +660,24 @@ class PlayerBase extends ManBase
 		if( m_ActionManager )
 			m_ActionManager.Interrupt();
 		
-		if( ammo.ToType().IsInherited(Nonlethal_Base) )
+		if ( ammo.ToType().IsInherited(Nonlethal_Base) )
 		{
 			//Print("PlayerBase | EEHitBy | nonlethal hit");
 			AddHealth("","Health",-ConvertNonlethalDamage(damageResult.GetDamage(dmgZone,"Shock")));
+			if (dmgZone != "Head")
+				AddHealth(dmgZone,"Health",-damageResult.GetDamage(dmgZone,"Shock")); //Also deal damage to zone health, no dmg reduction
+		}
+		
+		if (GetGame().IsServer())
+		{
+			if ( GetHealth("RightLeg", "Health") <= 1 || GetHealth("LeftLeg", "Health") <= 1 || GetHealth("RightFoot", "Health") <= 1 || GetHealth("LeftFoot", "Health") <= 1 )
+			{
+				if ( GetModifiersManager().IsModifierActive( eModifiers.MDF_BROKEN_LEGS ) )//effectively resets the modifier
+				{
+					GetModifiersManager().DeactivateModifier( eModifiers.MDF_BROKEN_LEGS );
+				}
+				GetModifiersManager().ActivateModifier( eModifiers.MDF_BROKEN_LEGS );
+			}
 		}
 		
 		//analytics
@@ -1321,7 +1373,7 @@ class PlayerBase extends ManBase
 		return super.CanSwapItemInCargo(child_entity, new_entity);
 	}
 	
-	override bool CanReceiveAttachment (EntityAI attachment, int slotId)
+	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
 	{
 		ClothingBase headgear = ClothingBase.Cast(GetInventory().FindAttachment(InventorySlots.HEADGEAR));
 		ClothingBase mask = ClothingBase.Cast(GetInventory().FindAttachment(InventorySlots.MASK));
@@ -1339,7 +1391,7 @@ class PlayerBase extends ManBase
 		return super.CanReceiveAttachment(attachment, slotId);
 	}
 	
-	override bool CanReceiveItemIntoHands (EntityAI item_to_hands)
+	override bool CanReceiveItemIntoHands(EntityAI item_to_hands)
 	{
 		if ( IsInVehicle() )
 			return false;
@@ -1350,12 +1402,12 @@ class PlayerBase extends ManBase
 		return super.CanReceiveItemIntoHands(item_to_hands);
 	}
 	
-	override bool CanSaveItemInHands (EntityAI item_in_hands)
+	override bool CanSaveItemInHands(EntityAI item_in_hands)
 	{
 		return super.CanSaveItemInHands(item_in_hands);
 	}
 	
-	override bool CanReleaseFromHands (EntityAI handheld)
+	override bool CanReleaseFromHands(EntityAI handheld)
 	{
 		return super.CanReleaseFromHands(handheld);
 	}
@@ -1496,13 +1548,15 @@ class PlayerBase extends ManBase
 	// Applies splint on all limbs.
 	void ApplySplint()
 	{
-		// The idea is to slightly increase health of broken limb so the player is still limping. Using more splints will help but each time less. 100% recovery can be achieved only through long term healing.
-		
 		float add_health_coef = 0.33;
-		AddHealth("LeftArm", 	"Health",	( GetMaxHealth("LeftArm", "Health")  - GetHealth("LeftArm", "Health")  ) * add_health_coef 	);
-		AddHealth("RightArm",	"Health",	( GetMaxHealth("RightArm", "Health") - GetHealth("RightArm", "Health") ) * add_health_coef 	);
-		AddHealth("LeftLeg", 	"Health",	( GetMaxHealth("LeftLeg", "Health")  - GetHealth("LeftLeg", "Health")  ) * add_health_coef 	);
-		AddHealth("RightLeg",	"Health",	( GetMaxHealth("RightLeg", "Health") - GetHealth("RightLeg", "Health") ) * add_health_coef 	);
+		// The idea is to slightly increase health of broken limb so the player is still limping. Using more splints will help but each time less. 100% recovery can be achieved only through long term healing.
+		if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+		{
+			AddHealth("LeftLeg", 	"Health",	( GetMaxHealth("LeftLeg", "Health")  - GetHealth("LeftLeg", "Health")  ) * add_health_coef 	);
+			AddHealth("RightLeg",	"Health",	( GetMaxHealth("RightLeg", "Health") - GetHealth("RightLeg", "Health") ) * add_health_coef 	);
+			AddHealth("RightFoot",	"Health",	( GetMaxHealth("RightFoot", "Health") - GetHealth("RightFoot", "Health") ) * add_health_coef 	);
+			AddHealth("LeftFoot",	"Health",	( GetMaxHealth("LeftFoot", "Health") - GetHealth("LeftFoot", "Health") ) * add_health_coef 	);
+		}
 	}
 	
 	void ProcessHoldBreath(float dT)
@@ -1633,6 +1687,10 @@ class PlayerBase extends ManBase
 		UpdateHairSelectionVisibility();
 		PreloadDecayTexture();
 		
+		Weapon_Base wpn = Weapon_Base.Cast(GetItemInHands());
+		if (wpn)
+			wpn.ValidateAndRepair();
+		
 		m_PlayerLoaded = true;
 	}
 	
@@ -1673,6 +1731,9 @@ class PlayerBase extends ManBase
 	
 	void PlacingStartLocal(ItemBase item)
 	{
+		if (GetGame().IsMultiplayer() && GetGame().IsServer())
+			return;
+		
 		m_HologramLocal = new Hologram( this, GetLocalProjectionPosition(), item );
 		GetHologramLocal().GetProjectionEntity().OnPlacementStarted( this );
 	}
@@ -1686,9 +1747,9 @@ class PlayerBase extends ManBase
 			GetHologramServer().GetParentEntity().OnPlacementCancelled( this );
 			
 			delete m_HologramServer;
+			return;
 		}
-		
-		if ( entity_in_hands && entity_in_hands.HasEnergyManager() )
+		else if ( entity_in_hands && entity_in_hands.HasEnergyManager() )
 		{
 			if ( entity_in_hands.GetCompEM().IsPlugged() )
 			{
@@ -1705,6 +1766,14 @@ class PlayerBase extends ManBase
 	
 	void PlacingCancelLocal()
 	{
+		EntityAI entity_in_hands = GetHumanInventory().GetEntityInHands();
+		if ( entity_in_hands && entity_in_hands.HasEnergyManager() )
+		{
+			if ( entity_in_hands.GetCompEM().IsPlugged() )
+			{
+				entity_in_hands.OnPlacementCancelled( this );
+			}	
+		}
 		delete m_HologramLocal;
 	}
 	
@@ -1742,13 +1811,13 @@ class PlayerBase extends ManBase
 	
 	bool TogglePlacingServer( int userDataType, ParamsReadContext ctx )
 	{	
-		if ( userDataType == INPUT_UDT_ADVANCED_PLACEMENT )			
-		{			
-			PlacingCancelServer();	
+		if ( userDataType == INPUT_UDT_ADVANCED_PLACEMENT )
+		{
+			PlacingCancelServer();
 			return true;
 		}
 		
-		return false;	
+		return false;
 	}
 	
 	void RequestResetADSSync() //temporary solution, to be solved by special input
@@ -1778,11 +1847,11 @@ class PlayerBase extends ManBase
 		return false;	
 	}
 	
-	void TogglePlacingLocal()
+	void TogglePlacingLocal(ItemBase item = null)
 	{	
 		if ( IsPlacingLocal() )
 		{
-			/*if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT && GetGame().IsMultiplayer() )
+			if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT && GetGame().IsMultiplayer() )
 			{
 				if (ScriptInputUserData.CanStoreInputUserData())
 				{
@@ -1790,13 +1859,16 @@ class PlayerBase extends ManBase
 					ctx.Write(INPUT_UDT_ADVANCED_PLACEMENT);
 					ctx.Send();
 				}
-			}*/
-			
+			}
 			PlacingCancelLocal();
+		}
+		else if (!item)
+		{
+			PlacingStartLocal( GetItemInHands() );
 		}
 		else
 		{
-			PlacingStartLocal( GetItemInHands() );
+			PlacingStartLocal(item);
 		}
 	}
 
@@ -2045,7 +2117,7 @@ class PlayerBase extends ManBase
 			}
 		}
 	}*/
-
+	
 	//--------------------------------------------------------------------------
 	void OnScheduledTick(float deltaTime)
 	{
@@ -2125,21 +2197,18 @@ class PlayerBase extends ManBase
 		float deltaT = (GetGame().GetTime() - m_LastTick) / 1000;
 		if ( m_LastTick < 0 )  deltaT = 0;//first tick protection
 		m_LastTick = GetGame().GetTime();
-
+		
 		//PrintString("deltaT: " + deltaT);
 		//PrintString("at time: " + m_LastTick);
 		OnScheduledTick(deltaT);		
+		
+		
 	}
 	// -------------------------------------------------------------------------
 	override void EEItemIntoHands(EntityAI item)
 	{
 		super.EEItemIntoHands( item );
-		
-		if ( IsPlacingLocal() && Hologram.DoesHaveProjection( ItemBase.Cast(item) ) )
-		{
-			GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(TogglePlacingLocal);
-		}
-		
+
 		Weapon_Base w;
 		if (item && Class.CastTo(w, item))
 		{
@@ -2219,7 +2288,6 @@ class PlayerBase extends ManBase
 		CheckSendSoundEvent();
 		
 		ProcessADDModifier();
-		
 		/*
 		m_IsSwimming = pCurrentCommandID == DayZPlayerConstants.COMMANDID_SWIM;
 		m_IsClimbingLadder pCurrentCommandID != DayZPlayerConstants.COMMANDID_LADDER
@@ -2278,7 +2346,11 @@ class PlayerBase extends ManBase
 		{
 			m_HCAnimHandler.Update(pDt, m_MovementState);
 		}
-		
+		if ( m_ShockHandler )
+		{
+			m_ShockHandler.Update(pDt);
+		}
+			
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer() )
 		{
 			GetPlayerSoundManagerServer().Update();
@@ -2338,7 +2410,7 @@ class PlayerBase extends ManBase
 							int damageHitAnim = 1;
 							float damageHitDir = 0;
 							StartCommand_Damage(damageHitAnim, m_DamageHitDir);
-							GetItemAccessor().HideItemInHands(false);
+							TryHideItemInHands(false,true);
 						}
 						else
 						{
@@ -2361,7 +2433,7 @@ class PlayerBase extends ManBase
 				if (hic.IsQuickBarSingleUse())
 				{
 					OnQuickBarSingleUse(quickBarSlot);
-					Print("PlayerBase.c IsQuickBarSingleUse - slot: " + quickBarSlot.ToString());
+					//Print("PlayerBase.c IsQuickBarSingleUse - slot: " + quickBarSlot.ToString());
 				}
 				if (hic.IsQuickBarContinuousUseStart() && ((!GetGame().IsMultiplayer() || GetGame().IsClient()) && !GetGame().GetUIManager().GetMenu()))
 				{
@@ -2414,6 +2486,7 @@ class PlayerBase extends ManBase
 				m_MapCloseRequestProcessed = true;
 			}
 		}
+		
 #ifdef BOT
 		if (m_Bot)
 			m_Bot.OnUpdate(pDt);
@@ -2520,7 +2593,7 @@ class PlayerBase extends ManBase
 	}
 	
 	void OnUnconsciousStart()
-	{		
+	{
 		CloseInventoryMenu();
 		//if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		
@@ -2540,7 +2613,7 @@ class PlayerBase extends ManBase
 				//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(ServerDropEntity,1000,false,( GetHumanInventory().GetEntityInHands() ));
 			}
 		}
-
+		
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER || !GetGame().IsMultiplayer() )
 		{
 			SetSynchDirty();
@@ -2551,7 +2624,7 @@ class PlayerBase extends ManBase
 			if ( m_AdminLog )
 			{
 				m_AdminLog.UnconStart( this );
-		}
+			}
 		}
 		
 		SetMasterAttenuation("UnconsciousAttenuation");
@@ -2568,7 +2641,7 @@ class PlayerBase extends ManBase
 		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT) 
 		{
 			if (pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH)
-				PPEffects.RemoveUnconsciousnessVignette();
+				PPEffects.SetUnconsciousnessVignette(0);
 			SetInventorySoftLock(false);
 		}
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
@@ -2666,9 +2739,13 @@ class PlayerBase extends ManBase
 			{
 				refill_speed =  PlayerConstants.SHOCK_REFILl_UNCONSCIOUS_SPEED;
 			}
-			else
+			else if (m_BrokenLegState != eBrokenLegs.BROKEN_LEGS || (m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE))//m_MovementState.m_iStanceIdx = DayZPlayerConstants.STANCEIDX_ERECT)
 			{
 				refill_speed =  PlayerConstants.SHOCK_REFILL_CONSCIOUS_SPEED;
+			}
+			else 
+			{
+				refill_speed = 0; //Block shock regen when standing with broken legs
 			}
 			
 			AddHealth("","Shock", pDt * refill_speed );
@@ -2676,9 +2753,203 @@ class PlayerBase extends ManBase
 		
 	}
 	
+	//BrokenLegs
+	// -----------------------
+	
+	//First time activation
+	void SetBrokenLegs(int stateId)
+	{
+		//Raise broken legs flag and force to prone
+		if (stateId != eBrokenLegs.NO_BROKEN_LEGS)
+		{
+			if ( stateId == eBrokenLegs.BROKEN_LEGS )
+			{
+				//Activate the BrokenLegs Notifier
+				m_NotifiersManager.ActivateByType(eNotifiers.NTF_FRACTURE);
+				m_BrokenLegState = eBrokenLegs.BROKEN_LEGS;
+				BrokenLegForceProne(true);
+				SetSynchDirty();
+				m_InjuryHandler.CheckValue(true);
+				
+				DayZPlayerSyncJunctures.SendBrokenLegs(this, m_CanPlayBrokenLegSound, m_BrokenLegState, m_LocalBrokenState);
+			}
+		}
+		else
+		{
+			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
+			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
+		}
+	}
+	
+	//Update of state
+	void UpdateBrokenLegs(int stateId)
+	{
+		//Raise broken legs flag and force to prone
+		if (stateId != eBrokenLegs.NO_BROKEN_LEGS)
+		{
+			if ( stateId == eBrokenLegs.BROKEN_LEGS_SPLINT )
+			{
+				//Activate the BrokenLegs Notifier
+				m_NotifiersManager.ActivateByType(eNotifiers.NTF_FRACTURE);
+				m_BrokenLegState = eBrokenLegs.BROKEN_LEGS_SPLINT;
+				if ( m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE )
+				{
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PRONE_ANIM_OVERRIDE;
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS_SPLINT;
+				}
+				SetSynchDirty();
+				m_InjuryHandler.CheckValue(false);
+				
+				m_LocalBrokenState = m_BrokenLegState;
+				
+				DayZPlayerSyncJunctures.SendBrokenLegs(this, false, m_BrokenLegState, m_LocalBrokenState);
+			}
+			else if ( stateId == eBrokenLegs.BROKEN_LEGS )
+			{
+				//Activate the BrokenLegs Notifier
+				m_NotifiersManager.ActivateByType(eNotifiers.NTF_FRACTURE);
+				m_BrokenLegState = eBrokenLegs.BROKEN_LEGS;
+				
+				//Apply movement anim depending on stance
+				if ( m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE )
+				{
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PRONE_ANIM_OVERRIDE;
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS;
+				}
+				
+				BrokenLegForceProne();
+				BrokenLegWalkShock();
+				SetSynchDirty();
+				m_InjuryHandler.CheckValue(false);
+				
+				DayZPlayerSyncJunctures.SendBrokenLegs(this, false, m_BrokenLegState, m_LocalBrokenState);
+			}
+		}
+		else if (stateId == eBrokenLegs.NO_BROKEN_LEGS)
+		{
+			//Deactivate the modifier
+			m_BrokenLegState = eBrokenLegs.NO_BROKEN_LEGS;
+			m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FRACTURE);
+			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
+			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
+			SetSynchDirty();
+		}
+	}
+	
+	void BreakLegSound()
+	{
+		if (GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT)
+		{
+			if ( m_BrokenLegState == eBrokenLegs.BROKEN_LEGS && m_CanPlayBrokenLegSound )
+			{
+				PlaySoundSet(m_BrokenLegSound, SOUND_BREAK_LEG, 0.1, 0.1);
+				m_CanPlayBrokenLegSound = false;
+				SetSynchDirty();
+			}
+		}
+	}
+
+	//Execute all relevant tests before forcing character to prone
+	void BrokenLegForceProne(bool forceOverride = false)
+	{
+		if (!IsInWater() && !IsSwimming() && !IsClimbingLadder() && !IsInVehicle() && !IsClimbing() && DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_PRONE) )
+		{
+			//Get command move and verify not null
+			HumanCommandMove hcm = GetCommand_Move();
+			if (hcm)
+			{
+				//Force to prone if player tries moving while not prone OR if it is first time legs break
+				if ( (forceOverride == true || m_BrokenLegState != m_LocalBrokenState) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+				{
+					EntityAI attachment;
+					Class.CastTo(attachment, GetItemOnSlot("Splint_Right"));
+					if ( attachment && attachment.GetType() == "Splint_Applied" )
+					{
+						attachment.Delete();
+					}
+					
+					m_CanPlayBrokenLegSound = true;
+					m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
+					m_ShockHandler.CheckValue(true);
+					hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+					SetLegHealth();
+					m_LocalBrokenState = m_BrokenLegState;
+				}
+				else
+					m_CanPlayBrokenLegSound = false;
+			}
+		}
+	}
+	
+	//Used to inflict shock when player is walking (only inflicted on Update timer)
+	void BrokenLegWalkShock()
+	{
+		if (m_MovementState.m_iMovement != 0 && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+		{
+			if (GetHealth("RightLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("RightFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD)
+			{
+				//Inflict "high shock"
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HIGH_SHOCK_WALK);
+			}
+			else if (GetHealth("RightLeg", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("LeftLeg", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("RightFoot", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("LeftFoot", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD)
+			{
+				//Inflict "low shock"
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LOW_SHOCK_WALK);
+			}
+			else
+			{
+				//If neither high nore low, inflict "mid shock"
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_MID_SHOCK_WALK);
+			}
+			m_ShockHandler.CheckValue(true);
+		}
+		else if (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
+		{
+			//Here apply shock if player is standing or crouched and STANDING STILL
+			m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_STAND_SHOCK);
+		}
+	}
+	
+	void DealShock(float dmg)
+	{
+		Param1<float> damage = new Param1<float>(0);
+		damage.param1 = dmg;
+		GetGame().RPCSingleParam(this, ERPCs.RPC_SHOCK, damage, true, GetIdentity());
+	}
+	
+	//Prevent player from picking up heavy items when legs are broken
+	override bool CanPickupHeavyItem(notnull EntityAI item)
+	{
+		if (item.IsHeavyBehaviour() && m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			return false;
+
+		return super.CanPickupHeavyItem(item);
+	}
+	
+	//Set all leg zones' health to 0 in order to limit emergent behaviour and prevent confusion as to how broken legs really work
+	void SetLegHealth()
+	{
+		SetHealth("RightLeg", "", 0);
+		SetHealth("RightFoot", "", 0);
+		SetHealth("LeftLeg", "", 0);
+		SetHealth("LeftFoot", "", 0);
+	}
+	
+	void DropHeavyItem()
+	{
+		ItemBase itemInHands = GetItemInHands();
+		if ( itemInHands && itemInHands.IsHeavyBehaviour() )
+			DropItem(itemInHands);
+	}
+	
+	// -----------------------
+	
+		
 	override void OnCommandSwimStart()
 	{
-		if ( GetItemInHands() ) GetItemAccessor().HideItemInHands(true);
+		if ( GetItemInHands() ) TryHideItemInHands(true);
 		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		CloseInventoryMenu();
 		GetGame().GetMission().PlayerControlEnable(false);
@@ -2691,7 +2962,7 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandSwimFinish()
 	{
-		if ( GetItemInHands() )	GetItemAccessor().HideItemInHands(false);
+		if ( GetItemInHands() )	TryHideItemInHands(false,true);
 		if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 		
 		GetDayZGame().GetBacklit().OnSwimmingStop();
@@ -2701,14 +2972,14 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandLadderStart()
 	{
-		if ( GetItemInHands() ) GetItemAccessor().HideItemInHands(true);
+		if ( GetItemInHands() ) TryHideItemInHands(true);
 		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		CloseInventoryMenu();
 	}
 	
 	override void OnCommandLadderFinish()
 	{
-		if ( GetItemInHands() )	GetItemAccessor().HideItemInHands(false);
+		if ( GetItemInHands() )	TryHideItemInHands(false,true);
 		if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 	}
 	
@@ -2758,7 +3029,7 @@ class PlayerBase extends ManBase
 				itemInHand.GetCompEM().SwitchOff();
 			}
 
-			GetItemAccessor().HideItemInHands(true);
+			TryHideItemInHands(true);
 		}
 
 		if( itemOnHead )
@@ -2781,7 +3052,7 @@ class PlayerBase extends ManBase
 		if ( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 		if ( GetItemInHands() )
 		{
-			GetItemAccessor().HideItemInHands(false);
+			TryHideItemInHands(false,true);
 		}
 		
 		if ( m_IsVehicleSeatDriver )
@@ -2804,6 +3075,7 @@ class PlayerBase extends ManBase
 		RunFightBlendTimer();
 		
 		GetWeaponManager().RefreshAnimationState();
+		
 	}
 	
 	override void OnCommandDeathStart()
@@ -2857,6 +3129,32 @@ class PlayerBase extends ManBase
 			AbortWeaponEvent();
 			GetWeaponManager().RefreshAnimationState();
 		}
+		
+		if (GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
+		{
+			if (newStance == DayZPlayerConstants.STANCEIDX_PRONE)
+			{
+				//Print("Update anim");
+				if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
+				else if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT)
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
+				
+				m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.PRONE_ANIM_OVERRIDE;
+				ForceUpdateInjuredState();
+			}
+			else if (previousStance == DayZPlayerConstants.STANCEIDX_PRONE || previousStance == DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
+			{
+				m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PRONE_ANIM_OVERRIDE;
+				//Print("Update anim 2");
+				if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS;
+				else if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT)
+					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS_SPLINT;
+				
+				ForceUpdateInjuredState();
+			}
+		}
 	}
 	
 	void OnJumpOutVehicleFinish(float carSpeed)
@@ -2906,6 +3204,7 @@ class PlayerBase extends ManBase
 		{
 			m_Hud.Update( timeSlice );
 			//ProcessOpticsPreload();
+			m_Hud.ToggleHeatBufferPlusSign( m_HasHeatBuffer );
 		}
 	}
 
@@ -2925,6 +3224,11 @@ class PlayerBase extends ManBase
 			if( GetFlashbangEffect() )
 			{
 				GetFlashbangEffect().Update(delta_time);
+			}
+			
+			if( GetShockEffect() )
+			{
+				GetShockEffect().Update(delta_time);
 			}
 
 			m_InventoryActionHandler.OnUpdate();
@@ -3023,11 +3327,15 @@ class PlayerBase extends ManBase
 	
 	override bool CanClimb( int climbType, SHumanCommandClimbResult climbRes )
 	{
-		
+		if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+		{
+			return false;
+		}
+			
 		if ( climbType == 1 && !CanConsumeStamina(EStaminaConsumers.VAULT) )
 			return false;
 		
-		if ( climbType == 2 && !CanConsumeStamina(EStaminaConsumers.CLIMB) )
+		if ( climbType == 2 && ( !CanConsumeStamina(EStaminaConsumers.CLIMB) || m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS ) )
 			return false;
 
 		if ( climbType > 0 && m_InjuryHandler && m_InjuryHandler.GetInjuryAnimValue() >= InjuryAnimValues.LVL3)
@@ -3038,6 +3346,11 @@ class PlayerBase extends ManBase
 
 	override bool CanJump()
 	{
+		if (m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS)
+		{	
+			return false;
+		}
+		
 		if (!CanConsumeStamina(EStaminaConsumers.JUMP))
 			return false;
 
@@ -3055,6 +3368,7 @@ class PlayerBase extends ManBase
 		{
 			return false;
 		}*/
+		
 
 		return super.CanJump();
 	}
@@ -3272,24 +3586,25 @@ class PlayerBase extends ManBase
 		
 		ItemBase quickBarItem = ItemBase.Cast(GetQuickBarEntity(slotClicked - 1));
 
-		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT)
+		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT)
 		{
 			ItemBase itemInHands = ItemBase.Cast(GetHumanInventory().GetEntityInHands());
 
-			if( itemInHands != quickBarItem )
+			if ( itemInHands != quickBarItem )
 			{
 				ActionManagerClient amc = ActionManagerClient.Cast(GetActionManager());
 
-				if( amc.CanPerformActionFromQuickbar(itemInHands, quickBarItem) )
+				if ( amc.CanPerformActionFromQuickbar(itemInHands, quickBarItem) )
 				{
 					amc.PerformActionFromQuickbar(itemInHands, quickBarItem);
 				}
 				else
 				{
-					if( IsRaised() || GetCommand_Melee() )
+					if ( IsRaised() || GetCommand_Melee() )
 						return;
-					
+
 					amc.ForceTarget(quickBarItem);
+					m_QuickBarFT = true;
 				}
 			}
 		}
@@ -3303,21 +3618,24 @@ class PlayerBase extends ManBase
 			if (  GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 			{
 				ActionManagerClient am = ActionManagerClient.Cast(GetActionManager());
+				
 				if (m_ActionQBControl)
 				{
 					ActionBase action = am.GetRunningAction(); 
-					if(action)
+					if (action)
 					{
-						if(!action.GetInput().IsActive())
+						if (!action.GetInput().IsActive())
 						{
 							am.EndActionInput();
 						}
 					
 					}
 				}
-				else 
+				
+				if (m_QuickBarFT)
 				{
 					am.ClearForceTarget();
+					m_QuickBarFT = false;
 				}
 			}
 		}
@@ -3575,6 +3893,8 @@ class PlayerBase extends ManBase
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_SERVER:
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_REMOTE:
 				case DayZPlayerInstanceType.INSTANCETYPE_REMOTE:
+					return true; // Might help mitigate "megabugged" (desync)
+				
 					syncDebugPrint("[syncinv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " NeedInventoryJunctureFromServer item=" + Object.GetDebugName(item) + " currPar=" + currParent + " newPar=" + newParent);
 					
 					bool i_owned = GetHumanInventory().HasEntityInInventory(item);
@@ -3800,7 +4120,7 @@ class PlayerBase extends ManBase
 	float GetStatLevelBorders(float stat_value, float critical, float low, float normal, float high, float max)
 	{
 		if(stat_value <= critical)
-		{
+		{	
 			return Math.InverseLerp(0, critical, stat_value);
 		}
 		if(stat_value <= low)
@@ -3854,8 +4174,8 @@ class PlayerBase extends ManBase
 		{
 			float max_health = GetMaxHealth("GlobalHealth", "Health") + 0.01;//addition to prevent divisioin by zero in case of some messup
 			float max_blood = GetMaxHealth("GlobalHealth", "Blood") + 0.01;//addition to prevent divisioin by zero in case of some messup
-			float energy_normalized = GetStatEnergy().GetNormalized();
-			float water_normalized = GetStatWater().GetNormalized();
+			float energy_normalized = GetStatEnergy().Get() / PlayerConstants.SL_ENERGY_HIGH;
+			float water_normalized = GetStatWater().Get() / PlayerConstants.SL_WATER_HIGH;
 			float health_normalized = GetHealth("GlobalHealth", "Health") / max_health;
 			float blood_normalized = GetHealth("GlobalHealth", "Blood") / max_blood;
 			immunity = energy_normalized + water_normalized + health_normalized + blood_normalized;
@@ -3877,6 +4197,12 @@ class PlayerBase extends ManBase
 		{
 			return false;
 		}
+		
+		if (m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS)
+		{
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -4101,6 +4427,21 @@ class PlayerBase extends ManBase
 					m_StaminaHandler.OnRPC(m_StaminaParam.param1, m_StaminaParam.param2, m_StaminaParam.param3);
 				}
 			break; 
+			
+			//TESTING
+			case ERPCs.RPC_SHOCK:
+				if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+				{
+					break;
+				}
+				
+				Param1<float> damage = new Param1<float>(0);
+				//damage.param1 = dmg;
+				if ( ctx.Read(damage) /*&& m_ShockHandler*/ )
+				{
+					GiveShock(-damage.param1);
+				}
+			break;
 		
 			case ERPCs.RPC_CRAFTING_INVENTORY_INSTANT:
 				ref Param3<int, ItemBase, ItemBase> craftParam = new Param3<int, ItemBase, ItemBase>(-1, NULL, NULL);
@@ -5097,6 +5438,11 @@ class PlayerBase extends ManBase
 		SetSynchDirty();
 	}
 	
+	void SetBloodyHandsPenalty()
+	{
+		InsertAgent( eAgents.SALMONELLA, 1 );
+	}
+	
 	bool HasBloodTypeVisible()
 	{
 		return m_HasBloodTypeVisible;
@@ -5181,6 +5527,8 @@ class PlayerBase extends ManBase
 			GetSymptomManager().OnStoreSave(ctx);//save states
 			GetBleedingManagerServer().OnStoreSave(ctx);//save bleeding sources
 			m_PlayerStomach.OnStoreSave(ctx);
+			ctx.Write( m_BrokenLegState );
+			ctx.Write( m_LocalBrokenState );
 		}
 	}
 
@@ -5284,7 +5632,16 @@ class PlayerBase extends ManBase
 					return false;
 				}
 			}
+			
+			//Check for broken leg value
+			if ( version >= 116 && (!ctx.Read( m_BrokenLegState ) || !ctx.Read( m_LocalBrokenState )) )
+			{
+				m_BrokenLegState = eBrokenLegs.NO_BROKEN_LEGS;
+				m_LocalBrokenState = eBrokenLegs.NO_BROKEN_LEGS;
+				return false;
+			}
 		}
+		
 		Print("---- PlayerBase OnStoreLoad SUCCESS ----");
 		return true;
 	}
@@ -5865,8 +6222,8 @@ class PlayerBase extends ManBase
 		}
 		return null;
 	}
-	/*
-	PlayerStat<float> GetStatShock()
+	
+	/*PlayerStat<float> GetStatShock()
 	{
 		if( GetPlayerStats() ) 
 		{
@@ -5979,6 +6336,22 @@ class PlayerBase extends ManBase
 			return stat;
 		}
 		return null;
+	}
+	
+	PlayerStat<float> GetStatHeatBuffer()
+	{
+		if( GetPlayerStats() )
+		{
+			PlayerStat<float> stat = PlayerStat<float>.Cast(GetPlayerStats().GetStatObject(EPlayerStats_current.HEATBUFFER));
+			return stat;
+		}
+		return null;
+	}
+	
+	void ToggleHeatBufferVisibility( bool show )
+	{
+		m_HasHeatBuffer = show;
+		SetSynchDirty();
 	}
 	
 	//! UA Last Message
@@ -6106,7 +6479,14 @@ class PlayerBase extends ManBase
 			case DayZPlayerSyncJunctures.SJ_DELETE_ITEM :
 
 				SetToDelete(pCtx);
-				break;
+				break;	
+			case DayZPlayerSyncJunctures.SJ_BROKEN_LEGS :
+				DayZPlayerSyncJunctures.ReadBrokenLegsParams(pCtx, m_CanPlayBrokenLegSound, m_BrokenLegState, m_LocalBrokenState);
+				BreakLegSound();
+				DropHeavyItem();
+			break;
+			case DayZPlayerSyncJunctures.SJ_SHOCK :
+				DayZPlayerSyncJunctures.ReadShockParams(pCtx, m_CurrentShock);
 		}
 	}
 	
@@ -7084,5 +7464,35 @@ class PlayerBase extends ManBase
 		Print("ProjectileDebugging | speedCoef: " + speedCoef);
 		Print("ProjectileDebugging | GetWorldTime(): " + GetWorldTime());
 		Print("-----------------------------------------------");*/
+	}
+	
+	//Use this method to process additionnal dmg to legs specifically (must use the dmg system to fire relevant events)
+	//Legzone is a dummy to inflict damage once and NOT transfer damage to other zones. All leg zones will drop to 0 anyway
+	void DamageAllLegs(float inputDmg)
+	{
+		array<string> legZones = new array<string>;
+		legZones.Insert("LeftLeg");
+		legZones.Insert("RightLeg");
+		legZones.Insert("RightFoot");
+		legZones.Insert("LeftFoot");
+		
+		for (int i = 0; i < legZones.Count(); i++)
+		{
+			this.DecreaseHealth(legZones[i],"",inputDmg);
+		}
+	}
+	
+	
+	//! tries to hide item in player's hands, some exceptions for various movement states
+	void TryHideItemInHands(bool hide, bool force = false)
+	{
+		if ( !hide && ((!IsSwimming() && !IsClimbingLadder() && !IsInVehicle()) || force) )
+		{
+			GetItemAccessor().HideItemInHands(false);
+		}
+		else
+		{
+			GetItemAccessor().HideItemInHands(true);
+		}
 	}
 }

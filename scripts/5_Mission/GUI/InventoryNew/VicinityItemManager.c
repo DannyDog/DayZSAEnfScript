@@ -100,7 +100,28 @@ class VicinityItemManager
 		if ( entity_ai.IsMan() || entity_ai.IsZombie() || entity_ai.IsZombieMilitary() )
 		{
 			//visibility cone check
-			vector entity_direction = player.GetPosition() - entity_ai.GetPosition();
+			vector object_center_pos = entity_ai.GetPosition();
+			
+			if ( entity_ai && entity_ai.IsMan() )
+			{
+				PlayerBase vicinity_player = PlayerBase.Cast( entity_ai );
+				if ( vicinity_player )
+				{
+					int bone_index_player = vicinity_player.GetBoneIndexByName( "spine3" );
+					object_center_pos = vicinity_player.GetBonePositionWS( bone_index_player );
+				}
+			}
+			else if ( entity_ai && (entity_ai.IsZombie() || entity_ai.IsZombieMilitary()) )
+			{
+				ZombieBase vicinity_zombie = ZombieBase.Cast( entity_ai );
+				if ( vicinity_zombie )
+				{
+					int bone_index_zombie = vicinity_zombie.GetBoneIndexByName( "spine3" );
+					object_center_pos = vicinity_zombie.GetBonePositionWS( bone_index_zombie );
+				}
+			}
+			
+			vector entity_direction = player.GetPosition() - object_center_pos;
 			entity_direction.Normalize();
 			entity_direction[1] = 0; //ignore height
 			

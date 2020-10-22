@@ -247,6 +247,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PurificationTablets1";
 		model = "\dz\gear\medical\Water_purification_tablets.p3d";
 		rotationFlags = 17;
+		canBeSplit = 1;
 		varQuantityInit = 10;
 		varQuantityMin = 0;
 		varQuantityMax = 10;
@@ -305,6 +306,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_CharcoalTablets1";
 		model = "\dz\gear\medical\charcoal_tablets.p3d";
 		rotationFlags = 17;
+		canBeSplit = 1;
 		varQuantityInit = 12;
 		varQuantityMin = 0;
 		varQuantityMax = 12;
@@ -365,6 +367,7 @@ class CfgVehicles
 		model = "\dz\gear\medical\painkillers2.p3d";
 		rotationFlags = 17;
 		itemSize[] = {1,2};
+		canBeSplit = 1;
 		varQuantityInit = 12;
 		varQuantityMin = 0;
 		varQuantityMax = 12;
@@ -481,6 +484,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_TetracyclineAntibiotics1";
 		model = "\dz\gear\medical\tetracycline.p3d";
 		rotationFlags = 17;
+		canBeSplit = 1;
 		varQuantityInit = 12;
 		varQuantityMin = 0;
 		varQuantityMax = 12;
@@ -1240,16 +1244,25 @@ class CfgVehicles
 			};
 		};
 	};
-	class Splint: Inventory_Base
+	class Clothing_Base;
+	class Clothing: Clothing_Base{};
+	class Splint_Applied: Clothing
 	{
 		scope = 2;
 		displayName = "$STR_CfgVehicles_Splint0";
 		descriptionShort = "$STR_CfgVehicles_Splint1";
-		model = "\dz\gear\medical\improvised_fixture.p3d";
+		model = "\dz\gear\medical\Improvised_fixture.p3d";
+		inventorySlot[] = {"Splint_Right"};
+		simulation = "clothing";
 		rotationFlags = 17;
 		itemSize[] = {2,4};
 		weight = 540;
 		absorbency = 0.3;
+		class ClothingTypes
+		{
+			male = "\dz\gear\medical\improvised_fixture_m.p3d";
+			female = "\dz\gear\medical\improvised_fixture_f.p3d";
+		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1268,6 +1281,46 @@ class CfgVehicles
 				source = "user";
 				animPeriod = 0.5;
 				initPhase = 1;
+			};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeLightBlunt";
+				range = 1.4;
+			};
+			class Heavy
+			{
+				ammo = "MeleeLightBlunt_Heavy";
+				range = 1.4;
+			};
+			class Sprint
+			{
+				ammo = "MeleeLightBlunt_Heavy";
+				range = 3.3;
+			};
+		};
+	};
+	class Splint: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_Splint0";
+		descriptionShort = "$STR_CfgVehicles_Splint1";
+		model = "\dz\gear\medical\Improvised_fixture.p3d";
+		rotationFlags = 17;
+		itemSize[] = {2,4};
+		weight = 540;
+		absorbency = 0.3;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 70;
+					healthLevels[] = {{1.0,{"DZ\gear\medical\data\improvised_fixture.rvmat"}},{0.7,{"DZ\gear\medical\data\improvised_fixture.rvmat"}},{0.5,{"DZ\gear\medical\data\improvised_fixture_damage.rvmat"}},{0.3,{"DZ\gear\medical\data\improvised_fixture_damage.rvmat"}},{0.0,{"DZ\gear\medical\data\improvised_fixture_destruct.rvmat"}}};
+				};
 			};
 		};
 		class MeleeModes
@@ -1344,7 +1397,7 @@ class CfgVehicles
 			};
 		};
 		attachments[] = {"BatteryD"};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -1423,5 +1476,15 @@ class CfgVehicles
 		scope = 2;
 		displayName = "$STR_CfgVehicles_CigarettePack_Partyzanka0";
 		hiddenSelectionsTextures[] = {"DZ\gear\medical\Data\pack_of_cigs_partyzanka_co.paa","DZ\gear\medical\Data\pack_of_cigs_partyzanka_co.paa"};
+	};
+};
+class CfgNonAIVehicles
+{
+	class ProxyAttachment;
+	class Proxyimprovised_fixture: ProxyAttachment
+	{
+		scope = 2;
+		model = "\dz\gear\medical\improvised_fixture.p3d";
+		inventorySlot[] = {"Splint"};
 	};
 };

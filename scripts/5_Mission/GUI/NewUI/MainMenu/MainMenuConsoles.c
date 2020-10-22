@@ -80,8 +80,11 @@ class MainMenuConsole extends UIScriptedMenu
 		ref array<ref ModInfo> modArray = new array<ref ModInfo>;
 		
 		GetGame().GetModInfos( modArray );
-		modArray.Remove( modArray.Count() - 1 );
-		modArray.Invert();
+		if ( modArray.Count() > 0 )
+		{
+			modArray.Remove( modArray.Count() - 1 );
+			modArray.Invert();
+		}
 		
 		if( m_ModsDetailed )
 			delete m_ModsDetailed;

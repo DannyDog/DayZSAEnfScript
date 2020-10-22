@@ -1,0 +1,8 @@
+ParticleSprite {
+ AlbedoMap "{856E111BF3EA99A3}Graphics/Particles/sprites/flare_light_ca.edds" 
+ Color 1 1 1 0
+ Diffuse 1 1 1 0
+ Ambient 1 1 1 0
+ Emissive 1 1 1 1
+ Sort overlay
+}

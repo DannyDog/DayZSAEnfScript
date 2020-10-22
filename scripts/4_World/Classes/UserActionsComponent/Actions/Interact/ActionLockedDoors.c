@@ -22,7 +22,7 @@ class ActionLockedDoors: ActionInteractBase
 		if( !target ) return false;
 		//if( IsDamageDestroyed(action_data.m_Target) ) return false;
 		if( !IsBuilding(target) ) return false;
-		//if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		Building building;
 		if( Class.CastTo(building, target.GetObject()) )
@@ -36,26 +36,16 @@ class ActionLockedDoors: ActionInteractBase
 		return false;
 	}
 
-	void OnExecute( ActionData action_data )
+	override void OnExecute( ActionData action_data )
 	{
 		Building building;
-		if( Class.CastTo(building, action_data.m_Target.GetObject()) )
+		if ( Class.CastTo(building, action_data.m_Target.GetObject()) )
 		{
 			int doorIndex = building.GetDoorIndex(action_data.m_Target.GetComponentIndex());
-			if( doorIndex != -1 )
+			if ( doorIndex != -1 )
 			{
 				building.OpenDoor(doorIndex);
 			}
 		}
-	}
-
-	override void OnExecuteClient( ActionData action_data )
-	{
-		OnExecute(action_data);
-	}
-	
-	override void OnExecuteServer( ActionData action_data )
-	{
-		OnExecute(action_data);
 	}
 };

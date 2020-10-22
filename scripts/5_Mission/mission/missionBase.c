@@ -27,24 +27,7 @@ class MissionBase extends MissionBaseWorld
 
 		if (GetGame().IsServer())
 		{
-			string worldName = "empty";
-			GetGame().GetWorldName(worldName);
-			worldName.ToLower();
-
-			switch ( worldName )
-			{
-				case "chernarusplus":
-					m_WorldData = new ChernarusPlusData;
-					break;
-
-				case "enoch":
-					m_WorldData = new EnochData;
-					break;
-
-				default:
-					m_WorldData = new ChernarusPlusData;
-					break;
-			}
+			InitialiseWorldData();
 		}
 		else
 		{
@@ -63,6 +46,28 @@ class MissionBase extends MissionBaseWorld
 		}
 	}
 	
+	void InitialiseWorldData()
+	{
+		string worldName = "empty";
+		GetGame().GetWorldName(worldName);
+		worldName.ToLower();
+
+		switch ( worldName )
+		{
+			case "chernarusplus":
+				m_WorldData = new ChernarusPlusData;
+				break;
+
+			case "enoch":
+				m_WorldData = new EnochData;
+				break;
+
+			default:
+				m_WorldData = new ChernarusPlusData;
+				break;
+		}
+	}
+
 	override WorldLighting GetWorldLighting()
 	{
 		return m_WorldLighting;

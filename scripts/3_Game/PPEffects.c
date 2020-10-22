@@ -3,6 +3,9 @@ class PPEffects
 	// COLORIZE IDs
 	static const int COLORIZE_NV = 100;
 	
+	//CONSTANTS
+	static const float COLOR_SHOCK = 0.1;//shock color value (relative) //todo
+	
 	//-------------------------------------------------------
 	// BLUR START
 	//-------------------------------------------------------
@@ -12,19 +15,32 @@ class PPEffects
 	static int 		m_BlurMenu;
 	static int 		m_BlurOptics;
 	static int 		m_BlurFlashbang;
+	static int 		m_BlurShock;
 	
 	static int	 	m_BurlapBlindness;
 	static int 		m_DyingEffect;
+	static int 		m_ShockEffect;
+	
+	static int 		m_ChromAbbOptic;
+	//static int 		m_ChromAbbShock;
+	
+	static int 		m_VignetteUnconscious;
+	static int 		m_VignetteShock;
+	static int 		m_VignetteTunnel;
+	static int 		m_VignetteMenu;
 	
 	static float	m_BloodSaturation;
 	
 	static ref array<float> m_BlurValues;
+	static ref array<float> m_ChromAbbValues;
+	static ref array<int> m_VignetteEffects;
+	static ref map<int, ref array<float>> m_VignetteValues;
 	static ref map<int, ref array<float>> m_ColorValues;
 	static ref array<float> m_ColorEffect;
 	static ref map<int, ref array<float>> m_ColorizeEffects;
 	
-	static float m_UnconsciousVignetteColor[4];
-	static float m_UnconsciousVignetteIntesity;
+	//static float m_UnconsciousVignetteColor[4];
+	//static float m_UnconsciousVignetteIntesity;
 	
 	static float m_ColorValueTotal[4] = {0,0,0,0};
 	static float m_ColorOverlayTotal;
@@ -38,9 +54,28 @@ class PPEffects
 		{
 			delete m_BlurValues;
 		}
+		if ( m_ChromAbbValues )
+		{
+			delete m_ChromAbbValues;
+		}
+		if ( m_VignetteEffects )
+		{
+			delete m_VignetteEffects;
+		}
+		if ( m_VignetteValues )
+		{
+			delete m_VignetteValues;
+		}
+		if ( m_ColorEffect )
+		{
+			delete m_ColorEffect;
+		}
 		
 		m_MatColors = GetGame().GetWorld().GetMaterial("graphics/materials/postprocess/glow");
 		m_BlurValues = new array<float>;
+		m_ChromAbbValues = new array<float>;
+		m_VignetteEffects = new array<int>;
+		m_VignetteValues = new map<int, ref array<float>>;
 		
 		// add new blur effects here
 		m_BlurInventory		= RegisterBlurEffect();
@@ -50,10 +85,15 @@ class PPEffects
 		m_BlurOptics 		= RegisterBlurEffect();
 		m_BlurFlashbang		= RegisterBlurEffect();
 		
-		if ( m_ColorEffect )
-		{
-			delete m_ColorEffect;
-		}
+		// add chromatic abberation effects here
+		m_ChromAbbOptic 	= RegisterChromAbbEffect();
+		//m_ChromAbbShock 	= RegisterChromAbbEffect();
+		
+		// add vignette effects here
+		m_VignetteUnconscious 	= RegisterVignetteEffect();
+		m_VignetteShock 		= RegisterVignetteEffect();
+		m_VignetteTunnel 		= RegisterVignetteEffect();
+		m_VignetteMenu 			= RegisterVignetteEffect();
 		
 		m_ColorEffect = new array<float>;
 		m_ColorValues = new map<int, ref array<float>>;
@@ -61,6 +101,7 @@ class PPEffects
 		// add new color effects here
 		m_BurlapBlindness 	= RegisterColorEffect();
 		m_DyingEffect 		= RegisterColorEffect();
+		m_ShockEffect 		= RegisterColorEffect();
 		
 		// ------------------------NV-related stuff below------------------------
 		ref array<float> colorizeDefault = {0.0, 0.0, 0.0};
@@ -82,9 +123,9 @@ class PPEffects
 				m_BlurValues[i] = 0;
 			}
 			UpdateBlur();
-		}	
+		}
 	}
-		
+	
 	static void SetBlurValue(int index, float value)
 	{
 		if ( m_BlurValues && index < m_BlurValues.Count() )
@@ -178,9 +219,92 @@ class PPEffects
 		UpdateBlur();
 	}
 	
+	static void SetBlurShock(float value)
+	{
+		SetBlurValue(m_BlurShock, value);
+		UpdateBlur();
+	}
+	
 	//-------------------------------------------------------
 	// BLUR END
 	//-------------------------------------------------------
+	
+	//-------------------------------------------------------
+	// CHROMATIC ABBERATION
+	//-------------------------------------------------------
+	static int RegisterChromAbbEffect()
+	{
+		return m_ChromAbbValues.Insert(0);
+	}
+	
+	static void ResetChromAbbEffects()
+	{	
+		if( m_ChromAbbValues )
+		{
+			for ( int i = 0; i < m_ChromAbbValues.Count(); ++i )
+			{
+				m_ChromAbbValues[i] = 0;
+			}
+			UpdateChromAbb();
+		}	
+	}
+	
+	static void SetChromAbbValue(int index, float value)
+	{
+		if ( m_ChromAbbValues && index < m_ChromAbbValues.Count() )
+		{
+			m_ChromAbbValues[index] = value;
+		}
+		else
+		{
+			Print("Error: PPEffects: m_ChromAbbValues with index: "+ index +" is not registered.");
+		}
+	}
+	
+	static void SetChromAbb(float value)
+	{
+		if (GetGame())
+		{
+			if (m_MatColors)
+			{
+				//Print("SetChromAbb: " + value);
+				m_MatColors.SetParam("MaxChromAbberation", value);
+				//SetVignette(value,0,255,0);
+			}
+		}
+	}
+	//-------------------------------------------------------
+	//! updates the chromatic abberation post process effect where the resulting chromabb is an aggregate of all individual chromabb effect values
+	static void UpdateChromAbb()
+	{		
+		float chromabb_value_total = 0;
+		if( m_ChromAbbValues )
+		{
+			for ( int i = 0; i < m_ChromAbbValues.Count(); ++i )
+			{
+				chromabb_value_total += m_ChromAbbValues[i]; //currently additive!
+			}
+		}
+		
+		SetChromAbb( chromabb_value_total );
+	}
+	
+	static void SetChromAbbOptic(float value)
+	{
+		SetChromAbbValue(m_ChromAbbOptic, value);
+		UpdateChromAbb();
+	}
+	
+	/*static void SetChromAbbShock(float value)
+	{
+		SetChromAbbValue(m_ChromAbbShock, value);
+		UpdateChromAbb();
+	}*/
+	
+	//-------------------------------------------------------
+	// CHROMATIC ABBERATION END
+	//-------------------------------------------------------
+	
 	/*
 	static void SetOverlayColor(float r, float g, float b, float a)
 	{
@@ -197,7 +321,7 @@ class PPEffects
 	}*/
 	
 	static void ResetColorEffects()
-	{	
+	{
 		if( m_ColorEffect )
 		{
 			for ( int i = 0; i < m_ColorEffect.Count(); ++i )
@@ -211,7 +335,7 @@ class PPEffects
 	static void SetColorValue(int index, float r, float g, float b, float a, float overlay)
 	{
 		if ( index < m_ColorEffect.Count() )
-		{		
+		{
 			ref array<float> values = {r,g,b,a,overlay};
 			
 			m_ColorValues.Set(index, values);
@@ -268,19 +392,13 @@ class PPEffects
 	static void SetLensEffect(float lens, float chromAbb, float centerX, float centerY)
 	{
 		PerformSetLensEffect(lens, chromAbb, centerX, centerY);
-		/*Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
-                matHDR.SetParam("LensDistort", lens);
-                matHDR.SetParam("MaxChromAbberation", chromAbb);
-                matHDR.SetParam("LensCenterX", centerX);
-                matHDR.SetParam("LensCenterY", centerY);*/
 	}
 
 	//!added for convenience
 	static void PerformSetLensEffect(float lens, float chromAbb, float centerX, float centerY)
 	{
-		//Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
         m_MatColors.SetParam("LensDistort", lens);
-        m_MatColors.SetParam("MaxChromAbberation", chromAbb);
+		SetChromAbbOptic(chromAbb);
         m_MatColors.SetParam("LensCenterX", centerX);
         m_MatColors.SetParam("LensCenterY", centerY);
 	}
@@ -288,11 +406,11 @@ class PPEffects
 	/*!
 	set vignette
 	\param intensity <0, 1>, intensity of effect, 0 = disable
-	\param R	
-	\param G	
-	\param B	
+	\param R
+	\param G
+	\param B
 	*/
-	static void SetVignette(float intensity, float R, float G, float B)
+	static void SetVignette(float intensity, float R, float G, float B, float A)
 	{
 		//Material matHDR = GetGame().GetWorld().GetMaterial("Graphics/Materials/postprocess/glow");
 
@@ -300,16 +418,67 @@ class PPEffects
 		color[0] = R;
 		color[1] = G;
 		color[2] = B;
-		color[3] = 0;
+		color[3] = A;
 
 		m_MatColors.SetParam("Vignette", intensity);
 		m_MatColors.SetParam("VignetteColor", color);
 	}
-
-
-	static void ResetVignette()
+	
+	static void SetVignetteEffectValue(int index, float intensity, float r, float g, float b, float a)
 	{
-		SetVignette(0,0,0,0);
+		if ( index < m_VignetteEffects.Count() )
+		{
+			ref array<float> values = {intensity,r,g,b,a};
+			
+			m_VignetteValues.Set(index, values);
+		}
+		else
+		{
+			Print("Error: PPEffects: m_ColorValues with index: "+ index +" is not registered.");
+		}
+	}
+	
+	static int RegisterVignetteEffect()
+	{
+		return m_VignetteEffects.Insert(0);
+	}
+	
+	static void SetUnconsciousnessVignette(float value)
+	{
+		SetVignetteEffectValue(m_VignetteUnconscious, value, 0,0,0,0); //todo
+		UpdateVignette();
+	}
+	
+	static void SetShockVignette(float value)
+	{
+		SetVignetteEffectValue(m_VignetteShock, value, 0,0,0,0); //todo
+		UpdateVignette();
+	}
+	
+	static void SetTunnelVignette(float value)
+	{
+		SetVignetteEffectValue(m_VignetteTunnel, value, 0,0,0,0); //todo
+		UpdateVignette();
+	}
+	
+	static void SetMenuVignette(float value)
+	{
+		SetVignetteEffectValue(m_VignetteMenu, value, 0,0,0,0); //todo
+		UpdateVignette();
+	}
+
+	static void ResetVignettes()
+	{
+		if( m_VignetteValues )
+		{
+			for ( int i = 0; i < m_VignetteValues.Count(); ++i )
+			{
+				ref array<float> values = {0,0,0,0,0};
+			
+				m_VignetteValues.Set(i, values);
+			}
+			UpdateVignette();
+		}
 	}
 
 	static void OverrideDOF(bool enable, float focusDistance, float focusLength, float focusLengthNear, float blur, float focusDepthOffset)
@@ -321,7 +490,7 @@ class PPEffects
 	{
 		GetGame().AddPPMask(ndcX, ndcY, ndcRadius, ndcBlur);
 	}
-
+	
 	static void ResetPPMask()
 	{
 		if( GetGame() ) GetGame().ResetPPMask();
@@ -336,7 +505,7 @@ class PPEffects
 	{
 		SetLensEffect(0,0,0,0);
 	}
-
+	
 	static void HitEffect(float value)
 	{
 		float m_HitEffectColor[4];
@@ -358,6 +527,12 @@ class PPEffects
 		m_MatColors.SetParam("OverlayFactor", 0.05);
 	}
 	
+	static void SetShockEffectColor(float value)
+	{
+		SetColorValue(m_ShockEffect, COLOR_SHOCK, COLOR_SHOCK, COLOR_SHOCK, 1, value);
+		UpdateColor();
+	}
+	
 	static void FlashbangEffect(float value)
 	{
 		float hitEffectColor[4];
@@ -365,7 +540,7 @@ class PPEffects
 		hitEffectColor[1] = 1;
 		hitEffectColor[2] = 1;
 		hitEffectColor[3] = Math.Lerp(Math.Clamp(m_ColorValueTotal[0],0,1), 1, value);
-
+		
 		m_MatColors.SetParam("OverlayColor", hitEffectColor);
 		m_MatColors.SetParam("OverlayFactor", 0.75);
 	}
@@ -406,14 +581,42 @@ class PPEffects
 		float color[4];
 		float intesity;
 		
-		color[0] = m_UnconsciousVignetteColor[0]/*+add_additional_modifiers_here*/;
-		color[1] = m_UnconsciousVignetteColor[1]/*+add_additional_modifiers_here*/;
-		color[2] = m_UnconsciousVignetteColor[2]/*+add_additional_modifiers_here*/;
+		float intensity_value_total = 0; //use just the highest?
+		if( m_VignetteEffects )
+		{
+			for ( int i = 0; i < m_VignetteEffects.Count(); ++i )
+			{
+				if (m_VignetteValues.Get(i))
+				{
+					/*color[0] = m_VignetteValues.Get(i)[1]; //red
+					color[1] = m_VignetteValues.Get(i)[2]; //green
+					color[2] = m_VignetteValues.Get(i)[3]; //blue
+					color[3] = m_VignetteValues.Get(i)[4]; //alpha*/
+					color[0] = m_VignetteValues.Get(i).Get(1); //red
+					color[1] = m_VignetteValues.Get(i).Get(2); //green
+					color[2] = m_VignetteValues.Get(i).Get(3); //blue
+					color[3] = m_VignetteValues.Get(i).Get(4); //alpha
+					
+					intesity = m_VignetteValues.Get(i).Get(0);
+					//Print(intesity);
+					intensity_value_total += intesity;
+					//Print(intensity_value_total);
+					//Print("m_VignetteValues found, count: " + m_VignetteValues.Count());
+				}
+				else
+				{
+					//Print("no m_VignetteValues");
+				}
+			}
+		}
 		
-		intesity = m_UnconsciousVignetteIntesity/*+add_additional_modifiers_here*/;
+		/*color[0] = m_UnconsciousVignetteColor[0];
+		color[1] = m_UnconsciousVignetteColor[1];
+		color[2] = m_UnconsciousVignetteColor[2];
 		
-		SetVignette( intesity, color[0], color[1], color[2] );
+		intesity = m_UnconsciousVignetteIntesity;*/
 		
+		SetVignette( intensity_value_total, color[0], color[1], color[2], color[3] );
 	}
 
 	static void SetBloodSaturation(float value)
@@ -422,7 +625,7 @@ class PPEffects
 		UpdateSaturation();
 	}
 	
-	static void SetUnconsciousnessVignette(float value)
+	/*static void SetUnconsciousnessVignette(float value)
 	{
 		m_UnconsciousVignetteIntesity = value;
 		UpdateVignette();
@@ -432,7 +635,7 @@ class PPEffects
 	{
 		m_UnconsciousVignetteIntesity = 0;
 		UpdateVignette();
-	}
+	}*/
 	
 	// appropriate parts of the code will call these functions
 	static void SetColorizationNV(float r, float g, float b)
@@ -528,12 +731,12 @@ class PPEffects
 	{
 		ResetBlurEffects();
 		ResetColorEffects();
-		ResetVignette();
+		ResetVignettes();
 		ResetPPMask();
 		ResetDOFOverride();
 		ResetLensEffect();
 		SetBloodSaturation(1);
-		RemoveUnconsciousnessVignette();
+		//RemoveUnconsciousnessVignette();
 		ResetColorize();
 	}	
 };

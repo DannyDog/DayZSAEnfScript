@@ -75,7 +75,7 @@ class CfgVehicles
 		rotationFlags = 17;
 		itemSize[] = {1,3};
 		weight = 280;
-		inventorySlot[] = {"Rope","Material_FPole_Rope"};
+		inventorySlot[] = {"Rope","Material_FPole_Rope","Material_Shelter_Rope"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -137,7 +137,8 @@ class CfgVehicles
 		OnRestrainChange = "Rope";
 		StruggleLength = 10;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3};
+		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3};
+		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -291,7 +292,8 @@ class CfgVehicles
 		OnRestrainChange = "MetalWire";
 		StruggleLength = 15;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Hacksaw","15","Pliers","25"};
+		CanBeUnrestrainedBy[] = {"Hacksaw","15","Pliers","25","HandSaw","15"};
+		CanBeUnrestrainedByDMG[] = {20,20,20};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -336,13 +338,13 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WoodenStick0";
 		descriptionShort = "$STR_CfgVehicles_WoodenStick1";
 		model = "\dz\gear\crafting\bp_wooden_stick.p3d";
-		inventorySlot[] = {"WoodenStick"};
+		inventorySlot[] = {"WoodenStick","Material_Shelter_Sticks"};
 		weight = 220;
 		itemSize[] = {5,1};
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 10.0;
+		varQuantityMax = 50.0;
 		varQuantityDestroyOnMin = 1;
 		varStackMax = 5.0;
 		absorbency = 0.9;
@@ -538,6 +540,36 @@ class CfgVehicles
 		scope = 2;
 		displayName = "$STR_CfgVehicles_LongWoodenStick0";
 		descriptionShort = "$STR_CfgVehicles_LongWoodenStick1";
+		model = "\dz\gear\crafting\Wooden_stick_blunt.p3d";
+		rotationFlags = 17;
+		weight = 670;
+		itemSize[] = {1,8};
+		canBeSplit = 1;
+		varQuantityInit = 1.0;
+		varQuantityMin = 0.0;
+		varQuantityMax = 10.0;
+		varQuantityDestroyOnMin = 1;
+		varStackMax = 1.0;
+		inventorySlot[] = {"Shoulder","Melee","Material_FPole_MagicStick","Material_Shelter_FrameSticks"};
+		itemBehaviour = 1;
+		absorbency = 0.9;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{"DZ\gear\crafting\data\Wooden_stick.rvmat"}},{0.7,{"DZ\gear\crafting\data\Wooden_stick.rvmat"}},{0.5,{"DZ\gear\crafting\data\Wooden_stick_damage.rvmat"}},{0.3,{"DZ\gear\crafting\data\Wooden_stick_damage.rvmat"}},{0.0,{"DZ\gear\crafting\data\Wooden_stick_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class SharpWoodenStick: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_SharpLongWoodenStick0";
+		descriptionShort = "$STR_CfgVehicles_SharpLongWoodenStick1";
 		model = "\dz\gear\crafting\Wooden_stick.p3d";
 		rotationFlags = 17;
 		weight = 670;
@@ -548,6 +580,7 @@ class CfgVehicles
 		varQuantityMax = 1.0;
 		varQuantityDestroyOnMin = 1;
 		inventorySlot[] = {"Shoulder","Melee"};
+		suicideAnim = "spear";
 		itemBehaviour = 1;
 		attachments[] = {"Ingredient"};
 		absorbency = 0.9;

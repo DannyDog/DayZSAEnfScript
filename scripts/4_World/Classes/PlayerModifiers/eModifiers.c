@@ -42,6 +42,7 @@ enum eModifiers
 	MDF_MORPHINE,
 	MDF_PAINKILLERS,
 	MDF_EPINEPHRINE,
+	MDF_HEATBUFFER,
 	// ---------------only count bellow
 	COUNT,
 }

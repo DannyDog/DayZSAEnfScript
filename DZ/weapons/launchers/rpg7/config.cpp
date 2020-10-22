@@ -57,7 +57,7 @@ class cfgWeapons
 		weight = 7000;
 		itemSize[] = {4,1};
 		absorbency = 0.0;
-		repairableWithKits[] = {5,1};
+		repairableWithKits[] = {1};
 		repairCosts[] = {30.0,25.0};
 		modelOptics = "-";
 		cameraDir = "look";

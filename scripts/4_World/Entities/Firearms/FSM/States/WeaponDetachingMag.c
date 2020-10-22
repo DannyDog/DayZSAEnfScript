@@ -127,6 +127,10 @@ class WeaponDetachingMag extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(m_start, __md_, m_store));
 		m_fsm.AddTransition(new WeaponTransition(m_store, __mh_, m_hideM));
 		m_fsm.AddTransition(new WeaponTransition(m_hideM, _fin_, NULL));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_store  , _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , _fin_, null));	
 
 		m_fsm.SetInitialState(m_start);
 	}

@@ -386,10 +386,15 @@ class WeaponChambering extends WeaponStateBase
 
 		m_fsm = new WeaponFSM(this); // @NOTE: set owner of the submachine fsm
 		m_fsm.AddTransition(new WeaponTransition(m_start  , __be_, m_eject));
-		m_fsm.AddTransition(new WeaponTransition(m_start  , __bs_, m_chamber));
-		m_fsm.AddTransition(new WeaponTransition(m_eject  , __bs_, m_chamber));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , __bs_, m_chamber));			
+		m_fsm.AddTransition(new WeaponTransition(m_eject  , __bs_, m_chamber));		
 		m_fsm.AddTransition(new WeaponTransition(m_chamber, __bc_, m_w4t));
-		m_fsm.AddTransition(new WeaponTransition(m_w4t    , _fin_, NULL));
+		m_fsm.AddTransition(new WeaponTransition(m_w4t    , _fin_, null));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_chamber, _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_eject  , _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , _fin_, null));	
 
 		m_fsm.SetInitialState(m_start);
 	}
@@ -653,6 +658,10 @@ class ChamberMultiBullet extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(m_w4sb2  , _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(m_chamber  , _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(m_endLoop  , _fin_, NULL));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_eject  , _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , _fin_, null));	
 		
 		m_fsm.SetInitialState(m_start);
 	}
@@ -962,10 +971,14 @@ class WeaponMagnumChambering extends WeaponStateBase
 		//m_fsm.AddTransition(new WeaponTransition(m_w4sb2, 	__bh_, m_hideB));
 		m_fsm.AddTransition(new WeaponTransition(m_w4sb2, 	__cr_, m_rotate));
 		
-		
-
 		m_fsm.AddTransition(new WeaponTransition(m_endLoop, _fin_, NULL));
 		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_w4sb2, 	_fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_chamber, _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_rotate,  _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_eject  , _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , _fin_, null));		
 
 		m_fsm.SetInitialState(m_start);
 	}

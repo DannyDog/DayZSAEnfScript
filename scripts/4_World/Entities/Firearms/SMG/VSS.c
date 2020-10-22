@@ -39,3 +39,5 @@ class VSS_Base : RifleBoltFree_Base
 		return super.CanEnterIronsights();
 	}
 };
+
+class VSS : VSS_Base {};

@@ -66,7 +66,7 @@ class CfgVehicles
 		inputRange[] = {2.0,5.0,10.0};
 		range = 5000;
 		attachments[] = {"BatteryD"};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -126,7 +126,7 @@ class CfgVehicles
 		inputRange = 8;
 		range = 50000;
 		attachments[] = {"CarBattery"};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -218,7 +218,7 @@ class CfgVehicles
 		simulation = "ItemRadio";
 		attachments[] = {"BatteryD"};
 		oldpower = 0;
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{

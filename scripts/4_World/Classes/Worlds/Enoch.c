@@ -31,9 +31,14 @@ class EnochData extends WorldData
 	override void Init()
 	{
 		super.Init();
-		
-		m_DayTemperature = 12;
-		m_NightTemperature = 5;
+
+		// new temperature curve settings
+		m_Sunrise_Jan = 8.4;
+		m_Sunset_Jan = 15.63;
+		m_Sunrise_Jul = 3.65;
+		m_Sunset_Jul = 20.35;
+		m_MaxTemps = {-2.5,-2.1,2.3,9,15.5,19.4,20.9,20.4,16,10.5,4.2,0.1};
+		m_MinTemps = {-7,-7.4,-4.1,1.5,7,11.3,13.4,13.1,9.3,5.3,0.8,-3.6};
 	}
 	
 	override bool WeatherOnBeforeChange( EWeatherPhenomenon type, float actual, float change, float time )

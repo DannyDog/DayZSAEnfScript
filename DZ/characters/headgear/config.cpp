@@ -32,7 +32,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BallisticHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_BallisticHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\HelmetMich_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -40,8 +40,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 1000;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.13;
+		varWetMax = 0.249;
+		heatIsolation = 0.3;
 		noMask = 0;
 		headSelectionsToHide[] = {"Clipping_HelmetMich"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -175,8 +175,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 110;
 		itemSize[] = {3,2};
-		absorbency = 0.8;
-		heatIsolation = 0.25;
+		varWetMax = 1.0;
+		heatIsolation = 0.2;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_baseballcap"};
@@ -271,7 +271,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ZSh3PilotHelmet0";
 		descriptionShort = "$STR_CfgVehicles_ZSh3PilotHelmet1";
 		model = "\DZ\characters\headgear\HeloHelmet_ground.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -280,8 +280,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 1450;
 		itemSize[] = {4,4};
-		absorbency = 0;
-		heatIsolation = 1.0;
+		varWetMax = 0.49;
+		heatIsolation = 0.3;
 		noMask = 0;
 		headSelectionsToHide[] = {"Clipping_HeloHelmet"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -351,7 +351,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -403,7 +403,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ConstructionHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_ConstructionHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\ConstructionHelmet_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -412,8 +412,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 470;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.25;
+		varWetMax = 0.249;
+		heatIsolation = 0.1;
 		noMask = 0;
 		noEyewear = 0;
 		headSelectionsToHide[] = {"Clipping_ConstructionHelmet"};
@@ -438,7 +438,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -483,7 +483,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -557,8 +557,8 @@ class CfgVehicles
 		rotationFlags = 1;
 		weight = 510;
 		itemSize[] = {2,2};
-		absorbency = 1;
-		heatIsolation = 0.7;
+		varWetMax = 1.0;
+		heatIsolation = 0.3;
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"dz\characters\headgear\data\head_sack_co.paa","dz\characters\headgear\data\head_sack_co.paa","dz\characters\headgear\data\head_sack_co.paa"};
 		class DamageSystem
@@ -612,8 +612,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 90;
 		itemSize[] = {3,2};
-		absorbency = 0.8;
-		heatIsolation = 0.3;
+		varWetMax = 1.0;
+		heatIsolation = 0.7;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_BeanieHat"};
@@ -709,8 +709,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 320;
 		itemSize[] = {3,2};
-		absorbency = 0.8;
-		heatIsolation = 0.9;
+		varWetMax = 1.0;
+		heatIsolation = 1;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_ushanka"};
@@ -778,7 +778,7 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 500;
 		itemSize[] = {2,2};
-		absorbency = 0;
+		varWetMax = 0.049;
 		heatIsolation = 1;
 		noMask = 1;
 		noEyewear = 1;
@@ -842,7 +842,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MotoHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MotoHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\MotoHelmet_ground.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -850,8 +850,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 1210;
 		itemSize[] = {4,4};
-		absorbency = 0;
-		heatIsolation = 1;
+		varWetMax = 0.49;
+		heatIsolation = 0.7;
 		noMask = 1;
 		noEyewear = 1;
 		headSelectionsToHide[] = {"Clipping_MotoHelmet"};
@@ -885,7 +885,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -930,7 +930,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -1010,7 +1010,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_MotoHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_MotoHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\MotoHelmet_ground.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -1018,8 +1018,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 1210;
 		itemSize[] = {4,4};
-		absorbency = 0;
-		heatIsolation = 1;
+		varWetMax = 0.49;
+		heatIsolation = 0.7;
 		noMask = 1;
 		noEyewear = 1;
 		headSelectionsToHide[] = {"Clipping_MotoHelmet"};
@@ -1053,7 +1053,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -1098,7 +1098,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -1185,7 +1185,8 @@ class CfgVehicles
 		rotationFlags = 1;
 		weight = 200;
 		itemSize[] = {2,2};
-		absorbency = 0;
+		varWetMax = 0.249;
+		heatIsolation = 0;
 		headSelectionsToHide[] = {"Clipping_HeadTorch"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale","bulb","reflector","glass","reflector_far"};
 		hiddenSelectionsTextures[] = {"dz\gear\tools\data\flashlight_old_co.paa","dz\gear\tools\data\flashlight_old_co.paa","dz\gear\tools\data\flashlight_glass.paa","dz\gear\tools\data\flashlight_old_co.paa"};
@@ -1206,7 +1207,7 @@ class CfgVehicles
 			male = "\DZ\characters\headgear\HeadTorch_m.p3d";
 			female = "\DZ\characters\headgear\HeadTorch_f.p3d";
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -1258,8 +1259,8 @@ class CfgVehicles
 		weight = 120;
 		itemSize[] = {3,1};
 		ragQuantity = 1;
-		absorbency = 0.9;
-		heatIsolation = 0.6;
+		varWetMax = 1.0;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_BandanaHead","Clipping_BandanaFace"};
@@ -1353,8 +1354,8 @@ class CfgVehicles
 		weight = 120;
 		itemSize[] = {3,1};
 		ragQuantity = 1;
-		absorbency = 0.9;
-		heatIsolation = 0.6;
+		varWetMax = 1.0;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_BandanaHead"};
@@ -1447,8 +1448,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 160;
 		itemSize[] = {3,2};
-		absorbency = 0.6;
-		heatIsolation = 0.95;
+		varWetMax = 1.0;
+		heatIsolation = 0.8;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_RadarCap"};
@@ -1527,8 +1528,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 230;
 		itemSize[] = {3,1};
-		absorbency = 0.7;
-		heatIsolation = 0.15;
+		varWetMax = 1.0;
+		heatIsolation = 0.2;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_MilitaryBeret_xx"};
@@ -1635,8 +1636,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 240;
 		itemSize[] = {3,2};
-		absorbency = 0.7;
-		heatIsolation = 0.15;
+		varWetMax = 1.0;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_FlatCap"};
@@ -1733,8 +1734,8 @@ class CfgVehicles
 		rotationFlags = 17;
 		weight = 110;
 		itemSize[] = {3,2};
-		absorbency = 0.8;
-		heatIsolation = 0.15;
+		varWetMax = 1.0;
+		heatIsolation = 0.9;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_ZmijovkaCap"};
@@ -1802,8 +1803,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 370;
 		itemSize[] = {3,2};
-		absorbency = 0.3;
-		heatIsolation = 0.25;
+		varWetMax = 0.49;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_CowboyHat"};
@@ -1883,7 +1884,7 @@ class CfgVehicles
 		weight = 170;
 		itemSize[] = {3,2};
 		attachments[] = {"Hook"};
-		absorbency = 0.7;
+		varWetMax = 1.0;
 		heatIsolation = 0.3;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
@@ -2003,8 +2004,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 340;
 		itemSize[] = {3,2};
-		absorbency = 0.5;
-		heatIsolation = 0.25;
+		varWetMax = 0.79;
+		heatIsolation = 0.2;
 		visibilityModifier = 0.98;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
@@ -2057,8 +2058,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 320;
 		itemSize[] = {3,2};
-		absorbency = 0.4;
-		heatIsolation = 0.25;
+		varWetMax = 0.79;
+		heatIsolation = 0.2;
 		visibilityModifier = 0.98;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
@@ -2111,8 +2112,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 140;
 		itemSize[] = {3,1};
-		absorbency = 0.5;
-		heatIsolation = 0.15;
+		varWetMax = 1.0;
+		heatIsolation = 0.2;
 		visibilityModifier = 0.98;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
@@ -2167,9 +2168,9 @@ class CfgVehicles
 		itemSize[] = {4,3};
 		noMask = 0;
 		noEyewear = 0;
-		absorbency = 0.4;
-		heatIsolation = 1;
-		visibilityModifier = 0.98;
+		varWetMax = 1.0;
+		heatIsolation = 0.9;
+		visibilityModifier = 0.9;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_TankerHelmet"};
@@ -2214,7 +2215,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GorkaHelmet0";
 		descriptionShort = "$STR_CfgVehicles_GorkaHelmet1";
 		model = "\DZ\characters\headgear\Maska_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		attachments[] = {"Glass"};
@@ -2224,8 +2225,8 @@ class CfgVehicles
 		weight = 1100;
 		itemSize[] = {4,4};
 		color = "Green";
-		absorbency = 0;
-		heatIsolation = 1;
+		varWetMax = 0.49;
+		heatIsolation = 0.8;
 		noMask = 0;
 		headSelectionsToHide[] = {"Clipping_Maska"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -2255,7 +2256,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2300,7 +2301,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2346,7 +2347,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_FirefightersHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_FirefightersHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\FireHelmet_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -2354,8 +2355,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 870;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 1;
+		varWetMax = 0.249;
+		heatIsolation = 0.5;
 		headSelectionsToHide[] = {"Clipping_FireHelmet"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -2378,7 +2379,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2423,7 +2424,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2474,7 +2475,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_SkateHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_SkateHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\ProtecSkateHelmet2_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -2482,8 +2483,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 460;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.15;
+		varWetMax = 0.249;
+		heatIsolation = 0.1;
 		noMask = 0;
 		noEyewear = 0;
 		headSelectionsToHide[] = {"Clipping_ProtecSkateHelmet2"};
@@ -2508,7 +2509,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2553,7 +2554,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -2619,7 +2620,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_WeldingMask0";
 		descriptionShort = "$STR_CfgVehicles_WeldingMask1";
 		model = "\DZ\characters\masks\Welding_Mask_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -2627,8 +2628,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 2200;
 		itemSize[] = {3,4};
-		absorbency = 0;
-		heatIsolation = 0.3;
+		varWetMax = 0.249;
+		heatIsolation = 0.1;
 		visibilityModifier = 0.85;
 		noMask = 1;
 		noEyewear = 1;
@@ -2687,8 +2688,8 @@ class CfgVehicles
 		rotationFlags = 17;
 		weight = 80;
 		itemSize[] = {3,2};
-		absorbency = 0.9;
-		heatIsolation = 0.25;
+		varWetMax = 1.0;
+		heatIsolation = 0.1;
 		headSelectionsToHide[] = {"Clipping_prison_cap"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\DZ\characters\headgear\data\prison_cap_co.paa","\DZ\characters\headgear\data\prison_cap_co.paa","\DZ\characters\headgear\data\prison_cap_co.paa"};
@@ -2737,8 +2738,8 @@ class CfgVehicles
 		rotationFlags = 2;
 		weight = 410;
 		itemSize[] = {4,3};
-		absorbency = 0.9;
-		heatIsolation = 1.0;
+		varWetMax = 1.0;
+		heatIsolation = 1;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_GhillieHood"};
@@ -2832,8 +2833,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 320;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.45;
+		varWetMax = 0.249;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		noMask = 0;
@@ -2959,8 +2960,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 460;
 		itemSize[] = {3,1};
-		absorbency = 0;
-		heatIsolation = 0.2;
+		varWetMax = 1.0;
+		heatIsolation = 0.1;
 		headSelectionsToHide[] = {"Clipping_MedicalScrubs_Hat"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -3019,7 +3020,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_GreatHelm0";
 		descriptionShort = "$STR_CfgVehicles_GreatHelm1";
 		model = "\DZ\characters\headgear\greathelm_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
@@ -3027,8 +3028,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 2000;
 		itemSize[] = {4,4};
-		absorbency = 0;
-		heatIsolation = 0.2;
+		varWetMax = 0.249;
+		heatIsolation = 0.3;
 		noMask = 1;
 		noEyewear = 1;
 		headSelectionsToHide[] = {"Clipping_grathelm"};
@@ -3054,7 +3055,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3099,7 +3100,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3142,7 +3143,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Ssh68Helmet0";
 		descriptionShort = "$STR_CfgVehicles_Ssh68Helmet1";
 		model = "\DZ\characters\headgear\Ssh68Helmet_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
@@ -3151,8 +3152,8 @@ class CfgVehicles
 		rotationFlags = 16;
 		weight = 1500;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.13;
+		varWetMax = 0.249;
+		heatIsolation = 0.2;
 		visibilityModifier = 0.7;
 		noMask = 0;
 		headSelectionsToHide[] = {"Clipping_Ssh68Helmet"};
@@ -3178,7 +3179,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3223,7 +3224,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3259,7 +3260,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_DirtBikeHelmet_ColorBase0";
 		descriptionShort = "$STR_CfgVehicles_DirtBikeHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\MxHelmet_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
@@ -3267,8 +3268,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 1600;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 1;
+		varWetMax = 0.249;
+		heatIsolation = 0.5;
 		noMask = 0;
 		noEyewear = 0;
 		attachments[] = {"DBHelmetVisor","DBHelmetMouth"};
@@ -3294,7 +3295,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3339,7 +3340,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3417,7 +3418,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_DirtBikeHelmet_Visor0";
 		descriptionShort = "$STR_CfgVehicles_DirtBikeHelmet_Visor1";
 		model = "\dz\characters\headgear\MxHelmet_visor.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		rotationFlags = 34;
 		itemSize[] = {3,1};
@@ -3469,8 +3470,8 @@ class CfgVehicles
 		itemSize[] = {3,2};
 		repairableWithKits[] = {5};
 		repairCosts[] = {30.0};
-		absorbency = 0;
-		heatIsolation = 0.5;
+		varWetMax = 0.249;
+		heatIsolation = 0.4;
 		headSelectionsToHide[] = {"Clipping_NBC_Hood"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -3516,7 +3517,7 @@ class CfgVehicles
 		displayName = "$STR_cfgvehicles_hockeyhelmet0";
 		descriptionShort = "$STR_cfgvehicles_hockeyhelmet1";
 		model = "\DZ\characters\headgear\Hockey_helmet_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -3524,8 +3525,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 610;
 		itemSize[] = {4,3};
-		absorbency = 0;
-		heatIsolation = 0.3;
+		varWetMax = 0.249;
+		heatIsolation = 0.1;
 		noMask = 0;
 		noEyewear = 0;
 		headSelectionsToHide[] = {"Clipping_Hockey_hekmet"};
@@ -3550,7 +3551,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3595,7 +3596,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3662,8 +3663,8 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Headgear"};
 		weight = 450;
 		itemSize[] = {3,2};
-		absorbency = 0.95;
-		heatIsolation = 0.2;
+		varWetMax = 0.049;
+		heatIsolation = 1;
 		visibilityModifier = 1;
 		noMask = 0;
 		headSelectionsToHide[] = {"Clipping_SantasHat"};
@@ -3692,7 +3693,7 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Mich2001Helmet0";
 		descriptionShort = "$STR_CfgVehicles_Mich2001Helmet1";
 		model = "\DZ\characters\headgear\Mich2001_g.p3d";
-		repairableWithKits[] = {5,8};
+		repairableWithKits[] = {8};
 		repairCosts[] = {30.0,25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
@@ -3703,8 +3704,8 @@ class CfgVehicles
 		weight = 1200;
 		itemSize[] = {4,3};
 		noMask = 0;
-		absorbency = 0;
-		heatIsolation = 0.8;
+		varWetMax = 0.249;
+		heatIsolation = 0.25;
 		visibilityModifier = 0.95;
 		headSelectionsToHide[] = {"Clipping_Mich2001"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -3729,7 +3730,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{
@@ -3774,7 +3775,7 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0;
+						damage = 0.0;
 					};
 					class Shock
 					{

@@ -40,6 +40,7 @@ class ActionData
 class ActionBase : ActionBase_Basic
 {	
 	//STATIC DATA
+	protected int					m_RefreshReservationTimerValue = 140;
 	// Configurable action parameters
 	protected string				m_Sound; //sound played at the beggining of action
 
@@ -126,7 +127,7 @@ class ActionBase : ActionBase_Basic
 		action_data.m_MainItem = item;
 		action_data.m_PossibleStanceMask = GetStanceMask(player);
 		action_data.m_ReservedInventoryLocations = new array<ref InventoryLocation>;
-		action_data.m_RefreshReservationTimer = 150;
+		action_data.m_RefreshReservationTimer = m_RefreshReservationTimerValue;
 		action_data.m_WasExecuted = false;
 		action_data.m_WasActionStarted = false;
 		action_data.m_ReciveEndInput = false;
@@ -324,6 +325,7 @@ class ActionBase : ActionBase_Basic
 	{
 		int componentIndex = -1;
 		int proxyBoneIdx = -1;
+		vector cursorHitPos = vector.Zero;
 
 		array<string> selectionNames = new array<string>();
 
@@ -344,6 +346,8 @@ class ActionBase : ActionBase_Basic
 			ctx.Write(targetParent);
 			componentIndex = action_data.m_Target.GetComponentIndex();
 			ctx.Write(componentIndex);
+			cursorHitPos = action_data.m_Target.GetCursorHitPos();
+			ctx.Write(cursorHitPos);
 		}
 		else if( HasTarget() && IsUsingProxies() )
 		{
@@ -381,6 +385,7 @@ class ActionBase : ActionBase_Basic
 		Object actionTargetParent = null;
 		int componentIndex = -1;
 		int proxyBoneIdx = -1;
+		vector cursorHitPos = vector.Zero;
 		ItemBase mainItem = null;
 		
 		ref ActionTarget target;
@@ -402,8 +407,11 @@ class ActionBase : ActionBase_Basic
 			if ( !ctx.Read(componentIndex) )
 				return false;
 			
-			target = new ActionTarget(actionTargetObject, actionTargetParent, componentIndex, vector.Zero, 0);
-						
+			if ( !ctx.Read(cursorHitPos) )
+				return false;
+			
+			target = new ActionTarget(actionTargetObject, actionTargetParent, componentIndex, cursorHitPos, 0);
+			
 			action_recive_data.m_Target = target;
 		}
 		else if( HasTarget() && IsUsingProxies() )
@@ -914,13 +922,13 @@ class ActionBase : ActionBase_Basic
 	{
 		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
-			if(action_data.m_RefreshReservationTimer > 0)
+			if (action_data.m_RefreshReservationTimer > 0)
 			{
 				action_data.m_RefreshReservationTimer--;
 			}
 			else
 			{
-				action_data.m_RefreshReservationTimer = 150;
+				action_data.m_RefreshReservationTimer = m_RefreshReservationTimerValue;
 				RefreshReservations(action_data);
 			}
 		}

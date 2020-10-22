@@ -84,11 +84,11 @@ class WoodBase extends Plant
 		{
 			if ( item && item.KindOf("Knife") )
 			{
-				return 3;
+				return 20;
 			}
 			else if ( item && item.KindOf("Axe") )
 			{
-				return 2;
+				return 20;
 			}
 			else
 			{
@@ -99,11 +99,11 @@ class WoodBase extends Plant
 		{
 			if ( item && item.KindOf("Knife") )
 			{
-				return 10;
+				return 30;
 			}
 			else if ( item && item.KindOf("Axe") )
 			{
-				return 5;
+				return 30;
 			}
 			else
 			{

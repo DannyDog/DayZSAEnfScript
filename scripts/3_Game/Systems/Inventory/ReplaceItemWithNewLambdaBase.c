@@ -57,7 +57,19 @@ class ReplaceItemWithNewLambdaBase
 					vector m4[4];
 					Math3D.MatrixIdentity4(m4);
 					m4[3] = m_NewLocation.GetPos();
-					m_NewLocation.SetGround(null,m4);
+					string path = "" + CFG_VEHICLESPATH + " " + m_NewItemType + " inherit_rotation";
+					bool keep_rotation = GetGame().ConfigIsExisting(path) && GetGame().ConfigGetInt(path) > 0;
+					
+					if (m_OldLocation.GetType() == InventoryLocationType.GROUND && keep_rotation)
+					{
+						float dir[4];
+						m_OldLocation.GetDir(dir);
+						m_NewLocation.SetGroundEx(null,m_NewLocation.GetPos(),dir);
+					}
+					else
+					{
+						m_NewLocation.SetGround(null,m4);
+					}
 				}
 			}
 			return true;
@@ -112,11 +124,15 @@ class ReplaceItemWithNewLambdaBase
 	{
 		if (WantCreateNewEntity())
 		{
-			VerifyItemTypeBySlotType(); //TODO move to child class just to be safe?
+			VerifyItemTypeBySlotType();
 			EntityAI new_item;
 			if (m_NewLocation.GetType() == InventoryLocationType.GROUND)
 			{
 				new_item = EntityAI.Cast(GetGame().CreateObjectEx(m_NewItemType,m_NewLocation.GetPos(),ECE_PLACE_ON_SURFACE|ECE_LOCAL));
+				string path = "" + CFG_VEHICLESPATH + " " + m_NewItemType + " inherit_rotation";
+				bool keep_rotation = GetGame().ConfigIsExisting(path) && GetGame().ConfigGetInt(path) > 0;
+				if (keep_rotation)
+					new_item.SetOrientation(m_OldItem.GetOrientation()); //this one actually works...debug InventoryLocation
 			}
 			else
 			{

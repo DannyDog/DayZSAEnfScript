@@ -26,11 +26,11 @@ class CraftSplint extends RecipeBase
 		//ingredient 1
 		InsertIngredient(0,"BandageDressing");//you can insert multiple ingredients this way
 		InsertIngredient(0,"Rag");//you can insert multiple ingredients this way
-		InsertIngredient(0,"DuctTape");//you can insert multiple ingredients this way
+		//InsertIngredient(0,"DuctTape");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[0] = 0;// 0 = do nothing
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
-		m_IngredientAddQuantity[0] = -1;// 0 = do nothing
+		m_IngredientAddQuantity[0] = 0;// 0 = do nothing
 		m_IngredientDestroy[0] = false;//true = destroy, false = do nothing
 		m_IngredientUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
@@ -59,11 +59,42 @@ class CraftSplint extends RecipeBase
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)//final check for recipe's validity
 	{
+		ItemBase ingredient1 = ingredients[0];
+		if (ingredient1.Type() == BandageDressing)
+		{
+			if (ingredient1.GetQuantity() == ingredient1.GetQuantityMax())
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		if (ingredient1.Type() == Rag)
+		{
+			if (ingredient1.GetQuantity() >= 4)
+				return true;
+			
+			return false;
+		}
 		return true;
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
 		Debug.Log("Recipe Do method called","recipes");
+		
+		ItemBase ingredient1 = ingredients[0];
+		
+		if (ingredients[0].Type() == Rag)
+		{
+			//Print("Are we getting here?");
+			ingredient1.AddQuantity(-4);
+		}
+		
+		if (ingredients[0].Type() == BandageDressing)
+		{
+			//Print("We also get here then");
+			ingredient1.AddQuantity(-ingredient1.GetQuantityMax());
+		}
 	}
 };

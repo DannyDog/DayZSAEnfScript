@@ -174,6 +174,12 @@ class HatchbackWheel_Ruined extends CarWheel {};
 class CivSedanWheel extends CarWheel {};
 class CivSedanWheel_Ruined extends CarWheel {};
 
+class Truck_01_Wheel extends CarWheel {};
+class Truck_01_Wheel_Ruined extends CarWheel {};
+
+class Truck_01_WheelDouble extends CarWheel {};
+class Truck_01_WheelDouble_Ruined extends CarWheel {};
+
 class CarDoor extends InventoryItemSuper
 {
 
@@ -184,8 +190,8 @@ class CarDoor extends InventoryItemSuper
 		
 		bool isPresent = GetInventory().GetCurrentInventoryLocation( loc );
 		
-		if ( !isPresent )
-		 return false;
+		if ( !isPresent || loc.GetSlot() == -1 )
+			return false;
 		
 		string slotName = InventorySlots.GetSlotName( loc.GetSlot() );
 
@@ -361,6 +367,13 @@ class CivSedanDoors_BackRight_Wine extends CivSedanDoors_BackRight {};
 class CivSedanHood_Wine extends CivSedanHood {};
 class CivSedanTrunk_Wine extends CivSedanTrunk {};
 
+//-------------------------------------
+class Truck_01_Door_1_1 extends CarDoor {};
+class Truck_01_Door_2_1 extends CarDoor {};
+class Truck_01_Door_Hood extends CarDoor {};
+class Truck_01_Door_Trunk extends CarDoor {};
+ 
+
 class CarRadiator extends InventoryItemSuper
 {
 
@@ -498,70 +511,11 @@ class SparkPlug extends ItemBase
 
 
 //-----------------------------------------------------------------------------
-class Clothing extends ItemBase
+class Clothing_Base extends ItemBase
 {
 	override bool IsClothing()
 	{
 		return true;
-	}
-
-	// Conditions	
-	override bool CanPutInCargo( EntityAI parent )
-	{
-		if ( !super.CanPutInCargo( parent ) )
-			return false;
-		
-		bool is_hidden_stash_exception = false;
-		
-		if ( parent.IsInherited( UndergroundStash ) )
-			is_hidden_stash_exception = true;
-		
-		if ( GetNumberOfItems() == 0 || !parent || parent.IsMan() || is_hidden_stash_exception )
-		{
-			EntityAI cargoParent = parent.GetHierarchyParent();
-			Clothing parentClothing = Clothing.Cast(parent);
-			if (cargoParent)
-				return !(parent.IsClothing() && cargoParent.IsClothing()) || ( parentClothing && parentClothing.SmershException(cargoParent) );
-			
-			return true;
-		}
-		
-		return false;
-	}
-	
-	override bool CanReceiveItemIntoCargo( EntityAI item )
-	{
-		if (!super.CanReceiveItemIntoCargo(item))
-			return false;
-		
-		EntityAI hierarchyParent = GetHierarchyParent();
-		return !hierarchyParent || hierarchyParent.IsMan() || SmershException(hierarchyParent);
-	}
-	
-	//Kind of a hack but I don't have enough time left to do larger scale reworks, sorry
-	bool SmershException(EntityAI hierarchyParent)
-	{
-		EntityAI hp = hierarchyParent.GetHierarchyParent();
-		if (hp)
-		{
-			if (!hp.IsMan())
-				return false;
-		}
-		
-		return IsInherited(SmershBag) && hierarchyParent.IsInherited(SmershVest);
-	}
-	
-	override bool CanLoadItemIntoCargo(EntityAI item)
-	{
-		if (!super.CanLoadItemIntoCargo(item))
-			return false;
-		
-		EntityAI parent = GetHierarchyParent();
-		
-		if ( parent && parent.IsInherited( UndergroundStash ) )
-			return true;
-				
-		return !parent || parent.IsMan() || SmershException(parent);
 	}
 
 	float GetItemVisibility()
@@ -616,8 +570,6 @@ class Clothing extends ItemBase
 	{
 	}
 };
-
-typedef Clothing ClothingBase;
 
 //-----------------------------------------------------------------------------
 class Box_Base extends InventoryItemSuper

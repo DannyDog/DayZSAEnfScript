@@ -19,6 +19,8 @@ class CharacterCreationMenu extends UIScriptedMenu
 	protected ref OptionSelectorMultistateCharacterMenu		m_BottomSelector;
 	protected ref OptionSelectorMultistateCharacterMenu		m_ShoesSelector;
 	
+	int m_OriginalCharacterID;
+	
 	void CharacterCreationMenu()
 	{
 		MissionMainMenu mission = MissionMainMenu.Cast( GetGame().GetMission() );
@@ -64,14 +66,14 @@ class CharacterCreationMenu extends UIScriptedMenu
 		#endif
 		m_Version.SetText( version );
 		
-		#ifdef PLATFORM_CONSOLE
 		if( m_Scene && m_Scene.GetIntroCharacter() )
 		{
-			
-			m_Scene.GetIntroCharacter().SetToDefaultCharacter();
-			m_Scene.GetIntroCharacter().LoadCharacterData( m_Scene.GetIntroCharacter().GetCharacterObj().GetPosition(), m_Scene.GetIntroCharacter().GetCharacterObj().GetDirection(), true );
+			m_OriginalCharacterID = m_Scene.GetIntroCharacter().GetCharacterID();
+			#ifdef PLATFORM_CONSOLE
+				m_Scene.GetIntroCharacter().SetToDefaultCharacter();
+				m_Scene.GetIntroCharacter().LoadCharacterData( m_Scene.GetIntroCharacter().GetCharacterObj().GetPosition(), m_Scene.GetIntroCharacter().GetCharacterObj().GetDirection(), true );
+			#endif;
 		}
-		#endif;
 		
 		m_NameSelector		= new OptionSelectorEditbox( layoutRoot.FindAnyWidget( "character_name_setting_option" ), m_Scene.GetIntroCharacter().GetCharacterName(), null, false );
 		m_GenderSelector	= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_gender_setting_option" ), 0, null, false, m_Scene.GetIntroCharacter().GetCharGenderList() );
@@ -86,24 +88,24 @@ class CharacterCreationMenu extends UIScriptedMenu
 			m_SkinSelector	= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_head_setting_option" ), 0, null, false, m_Scene.GetIntroCharacter().GetCharList( ECharGender.Male ) );
 		}
 		
-		m_TopSelector		= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_top_setting_option" ), 0, null, false, m_Scene.GetIntroCharacter().GetCharShirtsList() );
-		m_BottomSelector	= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_bottom_setting_option" ), 0, null, false, m_Scene.GetIntroCharacter().GetCharPantsList() );
-		m_ShoesSelector		= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_shoes_setting_option" ), 0, null, false, m_Scene.GetIntroCharacter().GetCharShoesList() );
+		m_TopSelector		= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_top_setting_option" ), 0, null, false, DefaultCharacterCreationMethods.GetConfigAttachmentTypes(InventorySlots.BODY) );
+		m_BottomSelector	= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_bottom_setting_option" ), 0, null, false, DefaultCharacterCreationMethods.GetConfigAttachmentTypes(InventorySlots.LEGS) );
+		m_ShoesSelector		= new OptionSelectorMultistateCharacterMenu( layoutRoot.FindAnyWidget( "character_shoes_setting_option" ), 0, null, false, DefaultCharacterCreationMethods.GetConfigAttachmentTypes(InventorySlots.FEET) );
 		
 		PlayerBase scene_char = GetPlayerObj();
 		if( scene_char )
 		{
 			Object obj = scene_char.GetInventory().FindAttachment(InventorySlots.BODY);
 			if( obj )
-				m_TopSelector.SetValue( obj.GetType() );
+				m_TopSelector.SetValue( obj.GetType(), false );
 			
 			obj = scene_char.GetInventory().FindAttachment(InventorySlots.LEGS);
 			if( obj )
-				m_BottomSelector.SetValue( obj.GetType() );
+				m_BottomSelector.SetValue( obj.GetType(), false );
 			
 			obj = scene_char.GetInventory().FindAttachment(InventorySlots.FEET);
 			if( obj )
-				m_ShoesSelector.SetValue( obj.GetType() );
+				m_ShoesSelector.SetValue( obj.GetType(), false );
 			
 			m_SkinSelector.SetValue( scene_char.GetType() );
 		}
@@ -162,8 +164,6 @@ class CharacterCreationMenu extends UIScriptedMenu
 	//Button Events
 	void Apply()
 	{
-		//g_Game.SetPlayerGameName( m_PlayerName.GetText() );
-		m_Scene.GetIntroCharacter().SaveCharacterSetup();
 		if ( m_Scene.GetIntroCharacter().IsDefaultCharacter() )
 		{
 			m_Scene.GetIntroCharacter().SaveDefaultCharacter();
@@ -175,13 +175,15 @@ class CharacterCreationMenu extends UIScriptedMenu
 		
 		m_Scene.GetIntroCharacter().SaveCharName(name);
 		
-		//SaveCharacters
-		
 		GetGame().GetUIManager().Back();
 	}
 	
 	void Back()
 	{
+		//bring back DefaultCharacter, if it exists (it should), or a previously played one.
+		GetGame().GetMenuData().RequestGetDefaultCharacterData();
+		m_Scene.GetIntroCharacter().SetCharacterID(m_OriginalCharacterID);
+		m_Scene.GetIntroCharacter().CreateNewCharacterById(m_Scene.GetIntroCharacter().GetCharacterID());
 		GetGame().GetUIManager().Back();
 	}
 	
@@ -189,29 +191,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		if (m_Scene.GetIntroCharacter().IsDefaultCharacter())
 		{
-			m_Scene.GetIntroCharacter().SetAttachment( m_TopSelector.GetStringValue(), InventorySlots.BODY );
-			m_Scene.GetIntroCharacter().SetAttachment( m_BottomSelector.GetStringValue(), InventorySlots.LEGS );
-			m_Scene.GetIntroCharacter().SetAttachment( m_ShoesSelector.GetStringValue(), InventorySlots.FEET );
-			
-			#ifndef PLATFORM_CONSOLE
-			if (g_Game.IsNewCharacter())
-			#endif
-			{
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.SHOULDER);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.BOW);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.MELEE);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.VEST);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.HIPS);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.BACK);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.HEADGEAR);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.MASK);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.EYEWEAR);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.GLOVES);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.ARMBAND);
-				m_Scene.GetIntroCharacter().SetAttachment("", InventorySlots.HANDS);
-			}
-			
-			//GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater( m_Scene.SceneCharacterSetPos, 250 );
+			GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
 		}
 	}
 	
@@ -235,9 +215,11 @@ class CharacterCreationMenu extends UIScriptedMenu
 			m_SkinSelector.SetRandomValue();
 		}
 		
-		m_TopSelector.SetRandomValue();
-		m_BottomSelector.SetRandomValue();
-		m_ShoesSelector.SetRandomValue();
+		GetGame().GetMenuDefaultCharacterData().GenerateRandomEquip();
+		
+		m_TopSelector.SetValue(GetGame().GetMenuDefaultCharacterData().GetAttachmentMap().Get(InventorySlots.BODY),false);
+		m_BottomSelector.SetValue(GetGame().GetMenuDefaultCharacterData().GetAttachmentMap().Get(InventorySlots.LEGS),false);
+		m_ShoesSelector.SetValue(GetGame().GetMenuDefaultCharacterData().GetAttachmentMap().Get(InventorySlots.FEET),false);
 		
 		SetCharacter();
 		
@@ -262,28 +244,34 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	void SkinChanged()
 	{
-		m_Scene.GetIntroCharacter().CreateNewCharacterByName( m_SkinSelector.GetStringValue() );
+		m_Scene.GetIntroCharacter().CreateNewCharacterByName( m_SkinSelector.GetStringValue(), false );
 		
 		layoutRoot.FindAnyWidget( "character_root" ).Show( m_Scene.GetIntroCharacter().IsDefaultCharacter() );
 	}
 	
 	void TopChanged()
 	{
-		m_Scene.GetIntroCharacter().SetAttachment( m_TopSelector.GetStringValue(), InventorySlots.BODY );
+		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.BODY,m_TopSelector.GetStringValue());
+		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		//m_Scene.GetIntroCharacter().SetAttachment( m_TopSelector.GetStringValue(), InventorySlots.BODY );
 	}
 	
 	void BottomChanged()
 	{
-		m_Scene.GetIntroCharacter().SetAttachment( m_BottomSelector.GetStringValue(), InventorySlots.LEGS );
+		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.LEGS,m_BottomSelector.GetStringValue());
+		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		//m_Scene.GetIntroCharacter().SetAttachment( m_BottomSelector.GetStringValue(), InventorySlots.LEGS );
 	}
 	
 	void ShoesChanged()
 	{
-		m_Scene.GetIntroCharacter().SetAttachment( m_ShoesSelector.GetStringValue(), InventorySlots.FEET );
+		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.FEET,m_ShoesSelector.GetStringValue());
+		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		//m_Scene.GetIntroCharacter().SetAttachment( m_ShoesSelector.GetStringValue(), InventorySlots.FEET );
 	}
 	
 	override bool OnKeyPress( Widget w, int x, int y, int key )
-	{		
+	{
 		super.OnKeyPress( w, x, y, key );
 		return false;
 	}
@@ -507,9 +495,6 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	void ColorNormal( Widget w )
 	{
-		//Print("ColorNormal -> "+ w.GetName());
-		//DumpStack();
-		
 		if( w.IsInherited( ButtonWidget ) )
 		{
 			ButtonWidget button = ButtonWidget.Cast( w );

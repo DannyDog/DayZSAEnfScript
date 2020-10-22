@@ -51,7 +51,7 @@ class SharpenStick extends RecipeBase
 		InsertIngredient(1,"Mosin_Bayonet");
 		InsertIngredient(1,"SKS_Bayonet");
 		
-		m_IngredientAddHealth[1] = -5;
+		m_IngredientAddHealth[1] = -12;
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;
 		m_IngredientDestroy[1] = 0;

@@ -549,6 +549,7 @@ class RecipeBase
 	
 	bool CanDo(ItemBase ingredients[], PlayerBase player)
 	{
+		Debug.Log("Called Can Do on a recipe id:" + m_ID.ToString(),"recipes");
 		return true;
 	}
 

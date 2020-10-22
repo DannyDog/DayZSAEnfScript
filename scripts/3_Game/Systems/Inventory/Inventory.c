@@ -38,6 +38,21 @@ class GameInventory
 	 * @return	entity associated with this inventory
 	 **/
 	proto native EntityAI GetInventoryOwner ();
+	
+#ifdef DEVELOPER
+	/**
+	 * @fn		DumpInventoryDebug
+	 * @brief	dump out failed inventory operations of the current inventory
+	 **/
+	proto native void DumpInventoryDebug ();
+	
+	/**
+	 * @fn		DumpStaticInventoryDebug
+	 * @brief	dump out a more global list of failed inventory operations
+	 **/
+	static proto native void DumpStaticInventoryDebug ();
+#endif
+	
 	/**
 	 * @fn		HasEntityInInventory
 	 * @brief	query inventory if item is somewhere

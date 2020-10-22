@@ -80,7 +80,7 @@ class ModifiersManager
 		AddModifier(new BleedingCheckMdfr);
 		//AddModifier(new Blinded);
 		//AddModifier(new BrokenArms);
-		//AddModifier(new BrokenLegs);
+		AddModifier(new BrokenLegsMdfr); // <-- Broken legs are here
 		AddModifier(new VomitStuffedMdfr);
 		AddModifier(new BurningMdfr);
 		AddModifier(new FeverMdfr);
@@ -107,6 +107,7 @@ class ModifiersManager
 		AddModifier(new MorphineMdfr);
 		AddModifier(new PainKillersMdfr);
 		AddModifier(new EpinephrineMdfr);
+		AddModifier(new HeatBufferMdfr);
 	}
 
 	void SetModifiers(bool enable)

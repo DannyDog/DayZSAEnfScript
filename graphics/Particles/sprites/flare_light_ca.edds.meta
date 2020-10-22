@@ -1,0 +1,17 @@
+MetaFileClass {
+ Name "{856E111BF3EA99A3}Graphics/Particles/sprites/flare_light_ca.tga"
+ Author "4930"
+ ChangeDate 331557203
+ Configurations {
+  TGAResourceClass PC {
+   SourceFile "flare_light_ca.tga"
+   Conversion DXTCompression
+  }
+  TGAResourceClass XBOX_ONE : PC {
+  }
+  TGAResourceClass PS4 : PC {
+  }
+  TGAResourceClass LINUX : PC {
+  }
+ }
+}

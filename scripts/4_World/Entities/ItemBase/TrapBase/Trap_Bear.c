@@ -47,9 +47,9 @@ class BearTrap extends TrapBase
 			}
 				
 			// Damage random leg since we don't know what part of player's body was caught in the trap.
-			string damageZoneRand = "LeftFoot";
+			string damageZoneRand = "LeftLeg";
 			if ( Math.RandomIntInclusive(0, 1) == 1 )
-				damageZoneRand = "RightFoot";
+				damageZoneRand = "RightLeg";
 				
 			OnServerSteppedOn(victimPB, damageZoneRand);
 		}
@@ -69,15 +69,15 @@ class BearTrap extends TrapBase
 	
 	void OnServerSteppedOn(PlayerBase victim, string damageZone)
 	{
+		CauseVictimToStartLimping( victim, damageZone );
 		victim.ProcessDirectDamage(DT_CLOSE_COMBAT, this, damageZone, "BearTrapHit", "0 0 0", 1);
-		CauseVictimToStartLimping( victim );
 	}
 	
 	// Causes the player to start limping. This is temporary and should at some point be replaced by broken legs
-	void CauseVictimToStartLimping( PlayerBase victim )
+	void CauseVictimToStartLimping( PlayerBase victim, string damagedZone )
 	{
-		float target_health = victim.GetHealth() * 0.2;
-		victim.SetHealth(target_health);
+		float damage = victim.GetMaxHealth(); //deal 100% damage to break legs
+		victim.DamageAllLegs(damage); 
 	}
 		
 	void PlaySoundBiteLeg()
@@ -107,14 +107,16 @@ class BearTrap extends TrapBase
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player ) 
-	{		
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
+		
 		if ( GetGame().IsServer() )
 		{
 			PlayerBase player_PB = PlayerBase.Cast( player );
 			StartActivate( player_PB );
 			
-			m_TrapTrigger.SetPosition( player_PB.GetLocalProjectionPosition() );
+			m_TrapTrigger.SetPosition( position );
 		}	
 	}
 	

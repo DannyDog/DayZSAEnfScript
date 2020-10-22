@@ -64,7 +64,7 @@ class CfgVehicles
 			{
 				item = "SmallGuts";
 				count = 0;
-				quantityMinMaxCoef[] = {0.5,1};
+				quantityMinMaxCoef[] = {0.5,0.8};
 			};
 			class ObtainedBones
 			{

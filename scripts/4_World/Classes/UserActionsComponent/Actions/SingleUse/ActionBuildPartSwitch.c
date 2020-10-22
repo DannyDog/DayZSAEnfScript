@@ -42,7 +42,7 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 				construction_action_data.SetTarget( target_object );
 				
 				string main_part_name = target_object.GetActionComponentName( target.GetComponentIndex() );
-				construction_action_data.RefreshPartsToBuild( main_part_name, item );
+				construction_action_data.RefreshPartsToBuild( main_part_name, item, !target_object.CanUseHandConstruction() );
 				
 				if ( construction_action_data.GetConstructionPartsCount() > 1 )
 				{

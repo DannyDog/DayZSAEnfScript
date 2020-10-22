@@ -68,7 +68,7 @@ class CfgVehicles
 				soundPos = "doorsTwin1_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.7;
+				initOpened = 0.3;
 				soundOpen = "doorWoodChurchLargeOpen";
 				soundClose = "doorWoodChurchLargeClose";
 				soundLocked = "doorWoodChurchLargeRattle";
@@ -81,7 +81,7 @@ class CfgVehicles
 				soundPos = "doorsTwin2_action";
 				animPeriod = 1;
 				initPhase = 0;
-				initOpened = 0.7;
+				initOpened = 0.3;
 				soundOpen = "doorWoodChurchLargeOpen";
 				soundClose = "doorWoodChurchLargeClose";
 				soundLocked = "doorWoodChurchLargeRattle";

@@ -1,5 +1,12 @@
 class VitaminBottle : Edible_Base
 {
+	//Specify this item can only be combined but not split
+	override void InitItemVariables()
+	{
+		super.InitItemVariables();
+		can_this_be_combined = true;
+	}
+	
 	override void OnConsume(float amount, PlayerBase consumer)
 	{
 		if( consumer.GetModifiersManager().IsModifierActive(eModifiers.MDF_IMMUNITYBOOST ) )//effectively resets the timer

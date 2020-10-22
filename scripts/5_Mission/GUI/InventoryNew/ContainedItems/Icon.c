@@ -537,7 +537,18 @@ class Icon: LayoutHolder
 		}
 		if( combinationFlags & InventoryCombinationFlags.ADD_AS_ATTACHMENT )
 		{
-			m_player.PredictiveTakeEntityToTargetAttachment(m_am_entity1, m_am_entity2);
+			float stackable = m_am_entity2.GetTargetQuantityMax(-1);
+		
+			if ( stackable == 0 || stackable >= m_am_entity2.GetQuantity() )
+			{
+				m_player.PredictiveTakeEntityToTargetAttachment(m_am_entity1, m_am_entity2);
+			}
+			else
+			{
+				InventoryLocation il = new InventoryLocation;
+				m_am_entity1.GetInventory().FindFreeLocationFor( m_am_entity2, FindInventoryLocationType.ATTACHMENT, il );
+				ItemBase.Cast(m_am_entity2).SplitIntoStackMaxToInventoryLocationClient( il );
+			}
 		}
 		if( combinationFlags & InventoryCombinationFlags.ADD_AS_CARGO )
 		{
@@ -920,19 +931,25 @@ class Icon: LayoutHolder
 		}
 		else if (!m_Lock)
 		{
-			if( button == MouseState.MIDDLE )
+			if ( button == MouseState.MIDDLE )
 			{
 				InspectItem( m_Item );
 			}
 			else if ( button == MouseState.LEFT )
 			{
 				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-				if(g_Game.IsLeftCtrlDown())
+				if (g_Game.IsLeftCtrlDown())
 				{
-					if( m_Item.GetInventory().CanRemoveEntity() )
+					if ( m_Item.GetInventory().CanRemoveEntity() )
 					{
-						if( m_Item.GetTargetQuantityMax() < m_Item.GetQuantity() )
+						ActionManagerClient mngr_client;
+						ActionTarget atrg;
+						if ( m_Item.GetTargetQuantityMax() < m_Item.GetQuantity() )
 							m_Item.SplitIntoStackMaxClient( null, -1 );
+						else if ( player && player.GetItemInHands() == m_Item && CastTo(mngr_client, player.GetActionManager()) && mngr_client.GetAction(ActionDropItem).Can(player, atrg, m_Item) )
+						{
+							mngr_client.PerformActionStart(mngr_client.GetAction(ActionDropItem), atrg, m_Item);
+						}
 						else
 							player.PhysicalPredictiveDropItem( m_Item );
 						ItemManager.GetInstance().SetWidgetDraggable( w, false );	

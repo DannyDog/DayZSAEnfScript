@@ -15,6 +15,7 @@ enum eNotifiers
 	//NTF_AGENT_INFECTION,
 	NTF_PILLS,
 	NTF_HEARTBEAT,
+	NTF_FRACTURE,
 	//----------------------------
 	NTF_COUNT,// !!! LAST ITEM !!!
 
@@ -48,6 +49,7 @@ class NotifiersManager
 		//m_Notifiers.Insert(new AgentsNotfr(this));
 		m_Notifiers.Insert(new PillsNotfr(this));
 		m_Notifiers.Insert(new HeartbeatNotfr(this));
+		m_Notifiers.Insert(new FracturedLegNotfr(this)); //New addition
 		
 		m_MinTickTime = MIN_TICK_NOTIFIERS;
 	}

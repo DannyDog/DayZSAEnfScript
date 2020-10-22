@@ -34,13 +34,15 @@ class CfgVehicles
 		model = "\dz\gear\containers\55galDrum.p3d";
 		overrideDrawArea = "8.0";
 		forceFarBubble = "true";
-		slopeTolerance = 0.3;
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {45,45,45};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
 		quantityBar = 1;
 		carveNavmesh = 1;
 		canBeDigged = 0;
 		heavyItem = 1;
+		inventorySlot[] = {"Truck_01_Barrel1","Truck_01_Barrel2","Truck_01_Barrel3","Truck_01_Barrel4"};
 		weight = 10000;
 		itemSize[] = {10,15};
 		itemBehaviour = 0;
@@ -505,7 +507,7 @@ class CfgVehicles
 		itemsCargoSize[] = {4,5};
 		allowOwnedCargoManipulation = 1;
 		canBeDigged = 1;
-		absorbency = 0;
+		varWetMax = 0.05;
 		heatIsolation = 1;
 		repairableWithKits[] = {5,6};
 		repairCosts[] = {30.0,25.0};

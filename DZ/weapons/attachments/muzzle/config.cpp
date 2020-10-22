@@ -63,7 +63,6 @@ class cfgVehicles
 		inventorySlot[] = {"weaponBayonetAK"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
-		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
@@ -129,7 +128,6 @@ class cfgVehicles
 		inventorySlot[] = {"weaponBayonet"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
-		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
@@ -195,7 +193,6 @@ class cfgVehicles
 		inventorySlot[] = {"weaponBayonetMosin"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
-		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};
@@ -261,7 +258,6 @@ class cfgVehicles
 		inventorySlot[] = {"weaponBayonetSKS"};
 		dispersionModifier = 0.0001;
 		dispersionCondition = "true";
-		canSkinBodies = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		itemInfo[] = {"Knife"};

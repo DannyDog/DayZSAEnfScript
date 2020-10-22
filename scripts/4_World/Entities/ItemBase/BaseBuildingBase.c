@@ -519,7 +519,7 @@ class BaseBuildingBase extends ItemBase
 	
 	//CONSTRUCTION EVENTS
 	//Build
-	void OnPartBuiltServer( string part_name, int action_id )
+	void OnPartBuiltServer( notnull Man player, string part_name, int action_id )
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
@@ -921,7 +921,13 @@ class BaseBuildingBase extends ItemBase
 	{
 		return true;
 	}
-		
+	
+	//! Some buildings can only be built from outside
+	bool MustBeBuiltFromOutside()
+	{
+		return false;
+	}
+	
 	//camera direction check
 	bool IsFacingCamera( string selection )
 	{
@@ -1041,7 +1047,7 @@ class BaseBuildingBase extends ItemBase
 	
 	override bool IsIgnoredByConstruction()
 	{
-		return false;
+		return true;
 	}
 	
 	//================================================================

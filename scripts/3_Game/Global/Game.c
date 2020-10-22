@@ -17,6 +17,7 @@ class CGame
 	//analytics	
 	ref AnalyticsManagerServer 	m_AnalyticsManagerServer;
 	ref AnalyticsManagerClient 	m_AnalyticsManagerClient;	
+	ref MenuDefaultCharacterData 		m_CharacterData;
 	
 	void CGame()
 	{
@@ -27,8 +28,10 @@ class CGame
 		m_AnalyticsManagerServer = new AnalyticsManagerServer;
 		m_AnalyticsManagerClient = new AnalyticsManagerClient;
 		
+		//m_CharacterData = new MenuCharacrerData;
+		
 		// actual script version - increase by one when you make changes
-		StorageVersion(114);
+		StorageVersion(116);
 	}
 	
 	private void ~CGame();
@@ -560,6 +563,7 @@ class CGame
 	@param type of objects to create
 	@param pos position where to create object
 	@param create_local if True, object is not spawned on clients only on server
+
 	@param init_ai if creating object is LightAI class, by this param is initialised AI or not
 	\return new Object
 	*/
@@ -682,7 +686,7 @@ class CGame
 	proto native void		GetPlayers( out array<Man> players );
 	
 	//! Stores login userdata as parameters which are sent to server	
-	proto native void		StoreLoginData(notnull array<ref Param> params);
+	proto native void		StoreLoginData(ParamsWriteContext ctx);
 	
 	//! Returns the direction where the mouse points, from the camera view
 	proto native vector		GetPointerDirection();
@@ -1171,10 +1175,6 @@ class CGame
 	
 	//!outputs array of all valid survivor class names
 	TStringArray ListAvailableCharacters() {}
-	
-	//TODO implement into character creator
-	//!saves new character's equipment and type to g_Game
-	void SetCharacterInfo(int top,int bottom,int shoes,int characterName) {}
 
 	bool IsInventoryOpen()
 	{
@@ -1196,6 +1196,20 @@ class CGame
 		return false;
 	}
 	
+	MenuDefaultCharacterData GetMenuDefaultCharacterData(bool fill_data = true)
+	{
+		//Print("GetMenuDefaultCharacterData");
+		//DumpStack();
+		//if used on server, creates an empty container to be filled by received data
+		if (!m_CharacterData)
+		{
+			m_CharacterData = new MenuDefaultCharacterData;
+			if (fill_data)
+				GetGame().GetMenuData().RequestGetDefaultCharacterData(); //fills the structure
+		}
+		return m_CharacterData;
+	}
+	
 	//Analytics Manager
 	AnalyticsManagerServer GetAnalyticsServer()
 	{
@@ -1205,5 +1219,5 @@ class CGame
 	AnalyticsManagerClient GetAnalyticsClient()
 	{
 		return m_AnalyticsManagerClient;
-	}		
+	}
 };

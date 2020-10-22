@@ -10,5 +10,6 @@ class HandSaw: Inventory_Base
 		AddAction(ActionDismantlePart);
 		//AddAction(ActionDestroyCombinationLock);
 		//AddAction(ActionDestroyPart);
+		AddAction(ActionSkinning);
 	}
 };

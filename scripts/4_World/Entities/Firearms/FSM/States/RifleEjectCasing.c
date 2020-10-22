@@ -28,6 +28,10 @@ class RifleEjectCasing extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(m_start, __be_, m_eject));
 		m_fsm.AddTransition(new WeaponTransition(m_eject, __bh_, m_hideB));
 		m_fsm.AddTransition(new WeaponTransition(m_hideB, _fin_, NULL));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_eject  , _fin_, null));
+		m_fsm.AddTransition(new WeaponTransition(m_start  , _fin_, null));	
 
 		m_fsm.SetInitialState(m_start);
 	}

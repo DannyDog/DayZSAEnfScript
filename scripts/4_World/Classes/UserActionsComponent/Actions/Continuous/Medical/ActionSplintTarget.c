@@ -32,9 +32,38 @@ class ActionSplintTarget: ActionContinuousBase
 		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
 		action_data.m_MainItem.TransferModifiers(ntarget);
 		ntarget.ApplySplint();
-		//ntarget.m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FRACTURE);
-		action_data.m_MainItem.Delete();
+		
+		ItemBase new_item = ItemBase.Cast(ntarget.GetInventory().CreateInInventory("Splint_Applied"));
+		if ( new_item )
+		{
+			MiscGameplayFunctions.TransferItemProperties(action_data.m_MainItem,new_item,true,false,true);
+			action_data.m_MainItem.Delete();
+			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+		}
+		
+		ntarget.m_BrokenLegState = eBrokenLegs.BROKEN_LEGS_SPLINT;
+		//action_data.m_MainItem.Delete();
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+	}
+	
+	override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item)
+	{
+		PlayerBase ntarget = PlayerBase.Cast( target.GetObject() );
+		if (ntarget.m_BrokenLegState != eBrokenLegs.BROKEN_LEGS || IsWearingSplint(ntarget))
+		{
+			return false;
+		}
+		return super.ActionCondition(player, target, item);
+	
+	}
+	
+	bool IsWearingSplint( PlayerBase player )
+	{
+		if ( player.GetItemOnSlot("Splint_Right") )
+		{
+			return true;
+		}
+		return false;		
 	}
 };

@@ -202,6 +202,9 @@ class WeaponUnjamming extends WeaponStateBase
 		m_fsm.AddTransition(new WeaponTransition(  m_eject, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(    m_w4t, _fin_, NULL));
 		m_fsm.AddTransition(new WeaponTransition(m_chamber, _fin_, NULL));
+		
+		// Safety exits
+		m_fsm.AddTransition(new WeaponTransition(m_start,    _fin_, null));	
 
 		m_fsm.SetInitialState(m_start);
 	}

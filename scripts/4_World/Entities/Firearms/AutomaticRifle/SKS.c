@@ -22,6 +22,8 @@ class SKS_CLO_BU0 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 
 };
 class SKS_CLO_BU1 extends WeaponStableState
@@ -32,6 +34,8 @@ class SKS_CLO_BU1 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class SKS_OPN_BU0 extends WeaponStableState
 {
@@ -39,9 +43,11 @@ class SKS_OPN_BU0 extends WeaponStableState
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } open nobull"); }
 	override int GetCurrentStateID () { return SKSStableStateID.SKS_OPN_BU0; }
 	override bool HasBullet () { return false; }
-	override bool HasMagazine () { return true; }
+	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class SKS_JAM_BU1 extends WeaponStateJammed
 {
@@ -52,6 +58,8 @@ class SKS_JAM_BU1 extends WeaponStateJammed
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 
 /**@class		Rifle_Base

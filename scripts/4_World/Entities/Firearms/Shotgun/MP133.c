@@ -20,15 +20,19 @@ class PumpShotgunEmpty extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class PumpShotgunFireout extends WeaponStableState
 {
 	override void OnEntry (WeaponEventBase e) { wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " { Fireout F"); super.OnEntry(e); }
 	override void OnExit (WeaponEventBase e) { super.OnExit(e); wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " } Fireout F"); }
 	override int GetCurrentStateID () { return PumpShotgunStableStateID.Fireout; }
-	override bool HasBullet () { return false; }
+	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class PumpShotgunLoaded extends WeaponStableState
 {
@@ -38,6 +42,8 @@ class PumpShotgunLoaded extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class PumpShotgunJammed extends WeaponStateJammed
 {
@@ -48,6 +54,8 @@ class PumpShotgunJammed extends WeaponStateJammed
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 
 /**@class	Mp133Shotgun_Base

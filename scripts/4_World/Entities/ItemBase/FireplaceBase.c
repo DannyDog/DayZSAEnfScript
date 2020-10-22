@@ -74,6 +74,9 @@ class FireplaceBase extends ItemBase
 	const int 	TIMER_COOLING_UPDATE_INTERVAL 		= 2;		//! update interval duration of cooling process (seconds)
 	//! direct cooking slots
 	const int   DIRECT_COOKING_SLOT_COUNT			= 3;
+	const float	DIRECT_COOKING_SPEED				= 2.5;		// per second
+	const int   SMOKING_SLOT_COUNT					= 4;
+	const float SMOKING_SPEED 						= 1;		// per second
 
 	// stage lifetimes
 	const int   LIFETIME_FIREPLACE_STONE_CIRCLE		= 172800;
@@ -92,6 +95,7 @@ class FireplaceBase extends ItemBase
 	//Attachments
 	protected ItemBase m_CookingEquipment;
 	protected ItemBase m_DirectCookingSlots[DIRECT_COOKING_SLOT_COUNT];
+	protected ItemBase m_SmokingSlots[SMOKING_SLOT_COUNT];
 	protected ref FireConsumable m_ItemToConsume;
 	
 	//Particles - default for FireplaceBase
@@ -440,6 +444,18 @@ class FireplaceBase extends ItemBase
 		for (int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++)
 		{
 			if ( m_DirectCookingSlots[i] )
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool SmokingSlotsInUse()
+	{
+		for (int i = 0; i < SMOKING_SLOT_COUNT; i++)
+		{
+			if ( m_SmokingSlots[i] )
 			{
 				return true;
 			}
@@ -1719,12 +1735,12 @@ class FireplaceBase extends ItemBase
 			m_CookingEquipment.SetTemperature( cook_equip_temp );
 		}
 
+		float cook_item_temp;
+		int i;
 		// manage cooking on direct cooking slots
 		if ( DirectCookingSlotsInUse() )
 		{
-			float cook_item_temp;
-
-			for ( int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
+			for ( i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
 			{
 				if ( m_DirectCookingSlots[i] )
 				{
@@ -1733,6 +1749,18 @@ class FireplaceBase extends ItemBase
 					{
 						CookOnDirectSlot( m_DirectCookingSlots[i], cook_item_temp, temperature );
 					}
+				}
+			}
+		}
+
+		// manage smoking slots
+		if ( SmokingSlotsInUse() )
+		{
+			for ( i = 0; i < SMOKING_SLOT_COUNT; i++ )
+			{
+				if ( m_SmokingSlots[i] )
+				{
+					SmokeOnSmokingSlot( m_SmokingSlots[i], cook_item_temp, temperature );
 				}
 			}
 		}
@@ -1853,12 +1881,14 @@ class FireplaceBase extends ItemBase
 					CookWithEquipment();
 				}
 			}
+
+			float cook_item_temp;
+			int i;
+
 			// manage cooking on direct cooking slots
 			if ( DirectCookingSlotsInUse() )
 			{
-				float cook_item_temp;
-
-				for ( int i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
+				for ( i = 0; i < DIRECT_COOKING_SLOT_COUNT; i++ )
 				{
 					if ( m_DirectCookingSlots[i] )
 					{
@@ -1867,6 +1897,18 @@ class FireplaceBase extends ItemBase
 						{
 							CookOnDirectSlot( m_DirectCookingSlots[i], cook_item_temp, temperature );
 						}
+					}
+				}
+			}
+
+			// manage smoking slots
+			if ( SmokingSlotsInUse() )
+			{
+				for ( i = 0; i < SMOKING_SLOT_COUNT; i++ )
+				{
+					if ( m_SmokingSlots[i] )
+					{
+						SmokeOnSmokingSlot( m_SmokingSlots[i], cook_item_temp, temperature );
 					}
 				}
 			}
@@ -1983,13 +2025,27 @@ class FireplaceBase extends ItemBase
 			Edible_Base ingr = Edible_Base.Cast( slot_item );
 			if ( ingr )
 			{
-				m_CookingProcess.CookOnStick( ingr, 2.0 );
+				m_CookingProcess.CookOnStick( ingr, FireplaceBase.TIMER_HEATING_UPDATE_INTERVAL * FireplaceBase.DIRECT_COOKING_SPEED );
 			}
 			return;
 		}
-		
 	}
-
+	
+	protected void SmokeOnSmokingSlot( ItemBase slot_item, float temp_equip, float temp_ext )
+	{
+		if ( m_CookingProcess == NULL )
+		{
+			m_CookingProcess = new Cooking();
+		}
+		
+		// smoking slots accept only individual meat/fruit/veg items
+		Edible_Base ingr = Edible_Base.Cast( slot_item );
+		if ( ingr )
+		{
+			m_CookingProcess.SmokeItem( ingr, FireplaceBase.TIMER_HEATING_UPDATE_INTERVAL * FireplaceBase.SMOKING_SPEED );
+		}
+	}
+	
 	//================================================================
 	// FIRE VICINITY
 	//================================================================
@@ -2390,7 +2446,7 @@ class FireplaceBase extends ItemBase
 	//Action condition for dismantling oven
 	bool CanDismantleOven()
 	{
-		if ( IsOven() && !IsBurning() && !DirectCookingSlotsInUse() && GetTemperature() <= MAX_TEMPERATURE_TO_DISMANTLE_OVEN )
+		if ( IsOven() && !IsBurning() && !DirectCookingSlotsInUse() && !SmokingSlotsInUse() && GetTemperature() <= MAX_TEMPERATURE_TO_DISMANTLE_OVEN )
 		{
 			return true;
 		}
@@ -2438,19 +2494,15 @@ class FireplaceBase extends ItemBase
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
-			
-		PlayerBase player_base = PlayerBase.Cast( player );
-		vector position = player_base.GetLocalProjectionPosition();
-		vector orientation = player_base.GetLocalProjectionOrientation();
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
 		
 		if ( GetGame().IsMultiplayer()  &&  GetGame().IsServer() || !GetGame().IsMultiplayer() )
 		{
 			//remove grass
 			Object cc_object = GetGame().CreateObjectEx( OBJECT_CLUTTER_CUTTER , position, ECE_PLACE_ON_SURFACE );
-			cc_object.SetOrientation ( orientation );
+			cc_object.SetOrientation( orientation );
 			GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( GetGame().ObjectDelete, 1000, false, cc_object );
 			
 			SetIsPlaceSound( true );

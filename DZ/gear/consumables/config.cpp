@@ -134,7 +134,8 @@ class CfgVehicles
 		varQuantityMax = 100.0;
 		quantityShow = 0;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3};
+		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3};
+		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -873,7 +874,7 @@ class CfgVehicles
 		descriptionShort = "";
 		animClass = "NoFireClass";
 		absorbency = 0.3;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
 		class AnimEvents
 		{
@@ -901,6 +902,7 @@ class CfgVehicles
 		weight = 420;
 		itemSize[] = {5,3};
 		peltGain = 6;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -921,6 +923,7 @@ class CfgVehicles
 		weight = 220;
 		itemSize[] = {3,2};
 		peltGain = 1;
+		leatherYield = 1;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -942,6 +945,7 @@ class CfgVehicles
 		weight = 960;
 		itemSize[] = {7,3};
 		peltGain = 12;
+		leatherYield = 8;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -963,6 +967,7 @@ class CfgVehicles
 		weight = 420;
 		itemSize[] = {5,3};
 		peltGain = 6;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -984,6 +989,7 @@ class CfgVehicles
 		weight = 420;
 		itemSize[] = {6,3};
 		peltGain = 8;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1005,6 +1011,7 @@ class CfgVehicles
 		weight = 380;
 		itemSize[] = {5,3};
 		peltGain = 4;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1026,6 +1033,7 @@ class CfgVehicles
 		weight = 1200;
 		itemSize[] = {8,4};
 		peltGain = 10;
+		leatherYield = 12;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1047,6 +1055,7 @@ class CfgVehicles
 		weight = 1200;
 		itemSize[] = {5,3};
 		peltGain = 6;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1068,6 +1077,7 @@ class CfgVehicles
 		weight = 1200;
 		itemSize[] = {5,3};
 		peltGain = 4;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1088,6 +1098,7 @@ class CfgVehicles
 		weight = 1200;
 		itemSize[] = {4,3};
 		peltGain = 10;
+		leatherYield = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1108,6 +1119,7 @@ class CfgVehicles
 		weight = 600;
 		itemSize[] = {4,3};
 		peltGain = 2;
+		leatherYield = 2;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1128,14 +1140,15 @@ class CfgVehicles
 		model = "\dz\gear\consumables\tanned_leather.p3d";
 		weight = 500;
 		absorbency = 0.3;
-		itemSize[] = {5,2};
+		itemSize[] = {4,3};
 		canBeSplit = 1;
 		varQuantityInit = 8.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 8.0;
 		varQuantityDestroyOnMin = 1;
-		repairableWithKits[] = {5,3};
+		repairableWithKits[] = {3};
 		repairCosts[] = {30.0,25.0};
+		inventorySlot[] = {"Material_Shelter_Leather"};
 		class DamageSystem
 		{
 			class GlobalHealth

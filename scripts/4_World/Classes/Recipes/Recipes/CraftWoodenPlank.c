@@ -35,7 +35,7 @@ class CraftWoodenPlank extends RecipeBase
 		InsertIngredient(1,"Hacksaw");
 		InsertIngredient(1,"HandSaw");
 		
-		m_IngredientAddHealth[1] = -5;// 0 = do nothing
+		m_IngredientAddHealth[1] = -7;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = 0;// 0 = do nothing
 		m_IngredientDestroy[1] = false;// false = do nothing

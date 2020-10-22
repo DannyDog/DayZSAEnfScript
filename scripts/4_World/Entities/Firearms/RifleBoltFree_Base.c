@@ -23,6 +23,8 @@ class RBF_CLO_BU0_MA0 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class RBF_CLO_BU1_MA0 extends WeaponStableState
 {
@@ -32,6 +34,8 @@ class RBF_CLO_BU1_MA0 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class RBF_CLO_BU1_MA1 extends WeaponStableState
 {
@@ -41,6 +45,8 @@ class RBF_CLO_BU1_MA1 extends WeaponStableState
 	override bool HasBullet () { return true; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.L}; }
 };
 class RBF_CLO_BU0_MA1 extends WeaponStableState
 {
@@ -50,6 +56,8 @@ class RBF_CLO_BU0_MA1 extends WeaponStableState
 	override bool HasBullet () { return false; }
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return false; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.E}; }
 };
 class RBF_JAM_BU1_MA0 extends WeaponStateJammed
 {
@@ -60,6 +68,8 @@ class RBF_JAM_BU1_MA0 extends WeaponStateJammed
 	override bool HasMagazine () { return false; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 class RBF_JAM_BU1_MA1 extends WeaponStateJammed
 {
@@ -70,6 +80,8 @@ class RBF_JAM_BU1_MA1 extends WeaponStateJammed
 	override bool HasMagazine () { return true; }
 	override bool IsJammed () { return true; }
 	override bool IsBoltOpen () { return true; }
+	override bool IsRepairEnabled () { return true; }
+	override void InitMuzzleArray () { m_muzzleHasBullet = {MuzzleState.F}; }
 };
 
 

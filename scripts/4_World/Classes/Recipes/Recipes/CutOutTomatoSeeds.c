@@ -38,15 +38,11 @@ class CutOutTomatoSeeds extends RecipeBase
 		InsertIngredient(1,"HandSaw");
 		InsertIngredient(1,"KitchenKnife");
 		InsertIngredient(1,"SteakKnife");
-		InsertIngredient(1,"HayHook");
 		InsertIngredient(1,"StoneKnife");
 		InsertIngredient(1,"Cleaver");
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
-		InsertIngredient(1,"Screwdriver");
-		InsertIngredient(1,"Crowbar");
-		InsertIngredient(1,"Pickaxe");
 		InsertIngredient(1,"WoodAxe");
 		InsertIngredient(1,"Hatchet");
 		InsertIngredient(1,"FirefighterAxe");

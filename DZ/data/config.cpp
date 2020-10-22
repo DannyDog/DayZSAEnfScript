@@ -1175,11 +1175,19 @@ class cfgCharacterCreation
 	gender[] = {"Female","Male"};
 	personalityMale[] = {"Mirek","Boris","Cyril","Denis","Elias","Francis","Guo","Hassan","Indar","Jose","Kaito","Lewis","Manua","Niki","Oliver","Peter","Quinn","Rolf","Seth","Taiki"};
 	personalityFemale[] = {"Eva","Frida","Gabi","Helga","Irena","Judy","Keiko","Linda","Maria","Naomi"};
+	shoulder[] = {};
+	melee[] = {};
+	headgear[] = {};
+	mask[] = {};
+	eyewear[] = {};
+	gloves[] = {};
+	armband[] = {};
 	top[] = {"TShirt_Beige","TShirt_Black","TShirt_Blue","TShirt_Green","TShirt_OrangeWhiteStripes","TShirt_Red","TShirt_RedBlackStripes","TShirt_White","TShirt_Grey"};
+	vests[] = {};
+	backpacks[] = {};
+	hips[] = {};
 	bottom[] = {"CanvasPantsMidi_Beige","CanvasPantsMidi_Blue","CanvasPantsMidi_Grey","CanvasPantsMidi_Red","CanvasPantsMidi_Violet"};
 	shoe[] = {"AthleticShoes_Black","AthleticShoes_Blue","AthleticShoes_Brown","AthleticShoes_Green","AthleticShoes_Grey"};
-	maleCustom[] = {};
-	femaleCustom[] = {};
 };
 class cfgCharacterScenes
 {
@@ -2012,9 +2020,9 @@ class CfgVehicles
 		heatIsolation = 0;
 		heatReduction = 0;
 		coldReduction = 0;
-		slopeTolerance = 0.05;
+		slopeTolerance = 0.2;
 		alignHologramToTerain = 1;
-		yawPitchRollLimit[] = {10,10,10};
+		yawPitchRollLimit[] = {12,12,12};
 		spawnDamageRange[] = {0.0,0.6};
 		canBeSplit = 0;
 		stackedUnit = "pc.";
@@ -2034,8 +2042,8 @@ class CfgVehicles
 		destroyOnEmpty = 1;
 		varQuantityDestroyOnMin = 1;
 		varWetInit = 0;
-		varWetMin = 0;
-		varWetMax = 1;
+		varWetMin = 0.049;
+		varWetMax = 0.249;
 		varTemperatureInit = 0;
 		varTemperatureMin = 0;
 		varTemperatureMax = 1;
@@ -2114,6 +2122,7 @@ class CfgVehicles
 	{
 		itemSize[] = {2,2};
 		isMeleeWeapon = 0;
+		yawPitchRollLimit[] = {60,60,60};
 	};
 	class Grenade_Base: Inventory_Base
 	{
@@ -2520,6 +2529,22 @@ class cfgAmmoTypes
 	class AType_Bullet_762x54Tracer
 	{
 		name = "Bullet_762x54Tracer";
+	};
+	class AType_Bullet_Flare
+	{
+		name = "Bullet_Flare";
+	};
+	class AType_Bullet_FlareRed
+	{
+		name = "Bullet_FlareRed";
+	};
+	class AType_Bullet_FlareGreen
+	{
+		name = "Bullet_FlareGreen";
+	};
+	class AType_Bullet_FlareBlue
+	{
+		name = "Bullet_FlareBlue";
 	};
 };
 class OpticsInfoDefault;

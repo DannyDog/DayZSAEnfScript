@@ -530,47 +530,50 @@ class GameConstants
 	const float	ENVIRO_TICKS_TO_WETNESS_CALCULATION 	= 2;	  	//! each X (ticks) is processed wetness on items on player
 	const float ENVIRO_TICK_ROOF_RC_CHECK 				= 10;	  	//! in secs. how often we should check if player is under the roof (raycast)
 	const float ENVIRO_WET_INCREMENT 					= 0.01;	  	//! amount of wetness added to items wet value each tick if is raining
-	const float ENVIRO_DRY_INCREMENT 					= 0.001; 	//! amount of wetness subtracted from items wet value each tick if is not raining due to player heat
-	const float ENVIRO_SUN_INCREMENT 					= 0.002;	//! amount of wetness subtracted from items wet value each tick if is not raining due to sun
-	const float ENVIRO_CLOUD_DRY_EFFECT 				= 0.1;		//! how many % of ENVIRO_SUN_INCREMENT is reduced by cloudy sky
-	const float ENVIRO_CLOUDS_TEMP_EFFECT 				= 0.1;		//! how many % of environment temperature can be lowered by clouds
-	const float ENVIRO_FOG_TEMP_EFFECT 					= 0.2;		//! how many % of environment temperature can be lowered by fog
+	const float ENVIRO_DRY_INCREMENT 					= 0.00005; 	//! amount of wetness subtracted from items wet value each tick if is not raining due to player heat
+	const float ENVIRO_SUN_INCREMENT 					= 0.002;	//! (not used) amount of wetness subtracted from items wet value each tick if is not raining due to sun
+	const float ENVIRO_FIRE_INCREMENT					= 23.5;		//! how much is the generic temp effect increased when player is next to a fireplace
+	const float ENVIRO_CLOUD_DRY_EFFECT 				= 0.7;		//! how many % of ENVIRO_SUN_INCREMENT is reduced by cloudy sky
+	const float ENVIRO_FOG_DRY_EFFECT 					= 0.9;		//! how many % of ENVIRO_SUN_INCREMENT is reduced by fog
+	const float ENVIRO_CLOUDS_TEMP_EFFECT 				= 0.35;		//! how many % of environment temperature can be lowered by clouds
+	const float ENVIRO_FOG_TEMP_EFFECT 					= 0.24;		//! how many % of environment temperature can be lowered by fog
 	const float ENVIRO_WET_PENALTY 						= 0.5;		//! at which state of item wetness (0-1) will heat isolation start having negative effect on heat comfort of item
 	const float ENVIRO_WET_PASSTHROUGH_COEF 			= 0.1;		//! how many times slower is wetting/drying items in backpacks
 	const float ENVIRO_ITEM_HEAT_TRANSFER_COEF 			= 0.01;		//! converts temperature of items to entities heatcomfort gain
 	const float ENVIRO_WATER_TEMPERATURE_COEF 			= 0.5;		//! how many time is water colder than air
-	const float ENVIRO_DEFAULT_ENTITY_HEAT 				= 0.5;		//! heat entity generates if not moving
-	const float ENVIRO_TEMPERATURE_HEIGHT_REDUCTION 	= 0.0065;	//! amount of ?C reduced for each 100 meteres of height above water level
-	const float ENVIRO_TEMPERATURE_INSIDE_COEF 			= 1.25;		//! increases temp in interiors
-	const float ENVIRO_TEMPERATURE_UNDERROOF_COEF		= 1.1;
+	const float ENVIRO_DEFAULT_ENTITY_HEAT 				= 2.5;		//! heat entity generates if not moving
+	const float ENVIRO_TEMPERATURE_HEIGHT_REDUCTION 	= 0.01;		//! amount of ?C reduced for each 100 meteres of height above water level
+	const float ENVIRO_TEMPERATURE_INSIDE_COEF 			= 0.085;	//! increases temp in interiors
+	const float ENVIRO_TEMPERATURE_UNDERROOF_COEF		= 0.072;
+	const float ENVIRO_TEMPERATURE_WIND_COEF			= 8.5;		//! windchill effect on base temperature
 	const float ENVIRO_WIND_EFFECT 						= 0.25;		//! amount of % wind affect drying/wetting
 	const float ENVIRO_HIGH_NOON 						= 12;		//! when is sun highest on sky
 	
 	const float ENVIRO_HEATCOMFORT_HEADPARTS_WEIGHT		= 0.3;		//! how much this head parts (clothing) affects final heatcomfort
 	const float ENVIRO_HEATCOMFORT_BODYPARTS_WEIGHT		= 1.0;		//! how much this body parts (clothing) affects final heatcomfort
 	const float ENVIRO_HEATCOMFORT_FEETPARTS_WEIGHT		= 0.5;		//! how much this feet parts (clothing) affects final heatcomfort
+	const float ENVIRO_HEATISOLATION_BACK_WEIGHT		= 0.45;		//! weight of back for the sum of heat isolation
+	const float ENVIRO_HEATISOLATION_VEST_WEIGHT		= 0.64;		//! weight of vest for the sum of heat isolation
 	const float ENVIRO_LOW_TEMP_LIMIT					= -40;		//! lowest temperature(deg Celsius) where the player gets lowest possible heat comfort (-1)
 	const float ENVIRO_HIGH_TEMP_LIMIT					= 50;		//! highest temperature(deg Celsius) where the player gets highest possible heat comfort (1)
-	const float ENVIRO_PLAYER_COMFORT_TEMP				= 23;		//! comfort temperature of environment for the player
+	const float ENVIRO_PLAYER_COMFORT_TEMP				= 28;		//! comfort temperature of environment for the player
+	const float ENVIRO_TEMP_EFFECT_ON_PLAYER			= 70;		//! impact of enviro temperature on player (lower value = higher, cannot be zero or below!)
+	const float ENVIRO_PLAYER_HEATBUFFER_DECREASE		= 0.34;		//! Multiplier of enviro temperature for heat buffer decrease (after its static timer runs out)
+	const float ENVIRO_PLAYER_HEATBUFFER_INCREASE		= 0.51;		//! How much heat buffer increases per one enviro tick
+	const float ENVIRO_PLAYER_HEATBUFFER_TICK			= 0.011;	//! Heat buffer static timer tick (set for 2s enviro tick, 180s to 1.0)
 	
 	//! impact of item wetness to the heat isolation
 	const float ENVIRO_ISOLATION_WETFACTOR_DRY			= 1.0;
-	const float ENVIRO_ISOLATION_WETFACTOR_DAMP			= 0.75;
-	const float ENVIRO_ISOLATION_WETFACTOR_WET			= 0.5;
-	const float ENVIRO_ISOLATION_WETFACTOR_SOAKED		= 0.0;
-	const float ENVIRO_ISOLATION_WETFACTOR_DRENCHED 	= -1.0;
+	const float ENVIRO_ISOLATION_WETFACTOR_DAMP			= 0.9;
+	const float ENVIRO_ISOLATION_WETFACTOR_WET			= 0.75;
+	const float ENVIRO_ISOLATION_WETFACTOR_SOAKED		= 0.5;
+	const float ENVIRO_ISOLATION_WETFACTOR_DRENCHED 	= 0.0;
 	//! impact of item health (state) to the heat isolation
 	const float ENVIRO_ISOLATION_HEALTHFACTOR_PRISTINE  = 1.0;
 	const float ENVIRO_ISOLATION_HEALTHFACTOR_WORN		= 0.9;
-	const float ENVIRO_ISOLATION_HEALTHFACTOR_DAMAGED	= 0.75;
+	const float ENVIRO_ISOLATION_HEALTHFACTOR_DAMAGED	= 0.8;
 	const float ENVIRO_ISOLATION_HEALTHFACTOR_B_DAMAGED = 0.5;
 	const float ENVIRO_ISOLATION_HEALTHFACTOR_RUINED  	= 0.0;
-	//! impact of item health (state) to absorbency
-	const float ENVIRO_ABSORBENCY_HEALTHFACTOR_PRISTINE  = 1.0;
-	const float ENVIRO_ABSORBENCY_HEALTHFACTOR_WORN		 = 0.9;
-	const float ENVIRO_ABSORBENCY_HEALTHFACTOR_DAMAGED	 = 0.75;
-	const float ENVIRO_ABSORBENCY_HEALTHFACTOR_B_DAMAGED = 0.5;
-	const float ENVIRO_ABSORBENCY_HEALTHFACTOR_RUINED  	 = 0.0;
 	/** @}*/
 	
 	/**
@@ -620,6 +623,20 @@ class GameConstants
 	const float STATE_DRY			= 0;
 	/** @}*/
 	
+	const float WETNESS_RATE_WETTING_INSIDE = 0.0020;
+	const float WETNESS_RATE_WETTING_LIQUID = 0.015;
+	const float WETNESS_RATE_DRYING_INSIDE  = -0.0016;
+	const float WETNESS_RATE_DRYING_GROUND  = -0.0008;
+	
+	const float TEMPERATURE_RATE_COOLING_INSIDE = -0.17;
+	const float TEMPERATURE_RATE_COOLING_GROUND = -0.34;
+	const float TEMPERATURE_RATE_COOLING_PLAYER = -1.7; // celsius per second
+	
+	const float HEATISO_THRESHOLD_BAD = 0.2;
+	const float HEATISO_THRESHOLD_LOW = 0.4;
+	const float HEATISO_THRESHOLD_MEDIUM = 0.6;
+	const float HEATISO_THRESHOLD_HIGH = 0.8;
+	
 	/**
 	 * \defgroup Barel related functions constants
 	 * \desc Barel related functions constants
@@ -667,7 +684,21 @@ class GameConstants
 	const int REFRESHER_MAX_DURATION_DEFAULT		= 3600 * 24 * 40; 	//max duration of refresher in seconds - 40 days (+ 5 days final refresh )
 	const int REFRESHER_FREQUENCY_DEFAULT 			= 3600 * 24 * 5;	//frequency of lifetime refreshes/refresher time decreases - 5 days 
 	const float REFRESHER_RADIUS 					= 60; 				//meters
-	
-	
 	// lifetime of refresher itself is in db (3600 * 24 * 7 = 604800 )
+	
+	/**
+	 * \defgroup Food decay constants
+	 * \desc Constants for decay of various types of food.
+	 */
+	const float DECAY_FOOD_RAW_MEAT = 21600;
+	const float DECAY_FOOD_RAW_FRVG = 43200;
+	const float DECAY_FOOD_BOILED_MEAT = 259200;
+	const float DECAY_FOOD_BOILED_FRVG = 172800;
+	const float DECAY_FOOD_BAKED_MEAT = 345600;
+	const float DECAY_FOOD_BAKED_FRVG = 259200;
+	const float DECAY_FOOD_DRIED_MEAT = 691200;
+	const float DECAY_FOOD_CAN_OPEN = 172800;
+	const int DECAY_FOOD_FRVG_DRIED_CHANCE = 43;
+	const int DECAY_TIMER_RANDOM_PERCENTAGE = 25;
+	const float DECAY_RATE_ON_PLAYER = 2.5;
 }

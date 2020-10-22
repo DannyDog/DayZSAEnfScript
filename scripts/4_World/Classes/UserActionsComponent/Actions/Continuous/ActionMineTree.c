@@ -19,9 +19,9 @@ class ActionMineTree: ActionContinuousBase
 		m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_HIGH;
 	}
 	
-	override void CreateConditionComponents()  
+	override void CreateConditionComponents()
 	{	
-		m_ConditionTarget = new CCTCursor(UAMaxDistances.DEFAULT);
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.SMALL);
 		m_ConditionItem = new CCINonRuined;
 	}
 	
@@ -29,12 +29,9 @@ class ActionMineTree: ActionContinuousBase
 	{
 		return "#cut_down_tree";
 	}
-
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-			return true;
-		
 		Object targetObject = target.GetObject();
 		return targetObject.IsTree() && targetObject.IsCuttable();
 	}
@@ -42,18 +39,7 @@ class ActionMineTree: ActionContinuousBase
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		// TODO switch WoodenPlank item for logs, once those are ready
-		//ItemBase wooden_logs = ItemBase.Cast(GetGame().CreateObject("WoodenPlank",action_data.m_Player.GetPosition(), false));
-		//wooden_logs.SetQuantity(1);
-		
 		// "hiding" of map item
 		//action_data.m_Target.GetObject().SetOrigin("0 0 0");
-	}
-	
-	override void OnFinishProgressClient( ActionData action_data )
-	{
-		/*if (action_data && action_data.m_Target)
-		{
-		}*/
 	}
 };

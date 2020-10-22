@@ -23,7 +23,7 @@ class ActionConsumeSingle: ActionSingleUseBase
 	
 	override void CreateConditionComponents()  
 	{
-		m_ConditionItem = new CCINotEmpty;
+		m_ConditionItem = new CCINotRuinedAndEmpty;
 		m_ConditionTarget = new CCTSelf;
 	}
 	
@@ -54,9 +54,14 @@ class ActionConsumeSingle: ActionSingleUseBase
 	
 	override void OnEndServer( ActionData action_data )
 	{
-		if ( action_data.m_MainItem && action_data.m_MainItem.GetQuantity() <= 0 )
+		if ( action_data.m_MainItem && ( action_data.m_MainItem.GetQuantity() <= 0 ) )
 		{
-			action_data.m_MainItem.SetQuantity(0);
+			action_data.m_MainItem.SetQuantity( 0 );
+		}
+		
+		if ( action_data.m_Player.HasBloodyHands() && !action_data.m_Player.GetInventory().FindAttachment( InventorySlots.GLOVES ) )
+		{
+			action_data.m_Player.SetBloodyHandsPenalty();
 		}
 	}
 };

@@ -29,12 +29,12 @@ class PlayerConstants
 	static const float SL_ENERGY_CRITICAL = 0;
 	static const float SL_ENERGY_LOW = 200;
 	static const float SL_ENERGY_NORMAL = 400;
-	static const float SL_ENERGY_HIGH = 800;
+	static const float SL_ENERGY_HIGH = 4000;	// max is 20000 (playerstats)
 	
 	static const float SL_WATER_CRITICAL = 0;
 	static const float SL_WATER_LOW = 300;
 	static const float SL_WATER_NORMAL = 600;
-	static const float SL_WATER_HIGH = 1200;
+	static const float SL_WATER_HIGH = 2400;	// max is 5000 (playerstats)
 	//----------------------------------------------------------
 	//						STAT LEVELS END
 	//----------------------------------------------------------
@@ -91,6 +91,7 @@ class PlayerConstants
 	
 	static const float SALINE_BLOOD_REGEN_PER_SEC			= 3;	//boost for blood regen per second, independent on BLOOD_REGEN_SPEED
 	static const float SALINE_LIQUID_AMOUNT					= 500;
+	static const float SALINE_WATER_REGEN_PER_SEC 			= 2.1;
 	
 	static const float HEMOLYTIC_BLOOD_DRAIN_PER_SEC		= 7;	//hemolytic reaction blood drain per second
 	static const float HEMOLYTIC_BLOODLOSS_AMOUNT			= 500;
@@ -183,4 +184,18 @@ class PlayerConstants
 	static const int 	CORPSE_STATE_DECAYED = 2;
 	//----------------------------------------------------------
 	static const float 	CAMERA_THRESHOLD_PITCH = -70.0;
+	
+	//----------------------------------------------------------
+	//						BROKEN LEGS SHOCK
+	//----------------------------------------------------------
+	static const float 	BROKEN_LEGS_INITIAL_SHOCK = 20;				//Inflicted shock on modifier start
+	static const float 	BROKEN_LEGS_LOW_SHOCK_WALK = 4;				//Inflicted shock on modifier update with almost healthy legs 
+	static const float 	BROKEN_LEGS_MID_SHOCK_WALK = 6;				//Inflicted shock on modifier update with mid health legs
+	static const float 	BROKEN_LEGS_HIGH_SHOCK_WALK = 8;			//Inflicted shock on modifier update with low health legs
+	static const float 	BROKEN_LEGS_LIGHT_MELEE_SHOCK = 20; 		//Inflicted shock per light weapon swing
+	static const float 	BROKEN_LEGS_HEAVY_MELEE_SHOCK = 35; 		//Inflicted shock per heavy weapon swing
+	static const float	BROKEN_LEGS_LOW_HEALTH_THRESHOLD = 20;		//Amount of health BELOW which legs have "low health"
+	static const float	BROKEN_LEGS_HIGH_HEALTH_THRESHOLD = 80;		//Amount of health OVER which legs have "low health"
+	static const int	BROKEN_LEGS_FALL_STEP_COUNT = 10;			//Number of steps before falling over
+	static const float	BROKEN_LEGS_STAND_SHOCK = 0;				//Shock dealt when standing with broken legs
 }

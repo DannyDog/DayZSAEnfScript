@@ -12,5 +12,6 @@ class Screwdriver extends Inventory_Base
 		AddAction(ActionBurnSewTarget);
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionBurnSewSelf);
+		AddAction(ActionSkinning);
 	}
 }

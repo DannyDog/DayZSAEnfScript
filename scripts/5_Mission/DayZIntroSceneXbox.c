@@ -38,7 +38,6 @@ class DayZIntroSceneXbox: Managed
 		Print("DayZIntroSceneXbox Start");
 		
 		m_MenuData = g_Game.GetMenuData();
-		m_MenuData.LoadCharactersLocal();
 		
 		m_LastPlayedCharacterID = m_MenuData.GetLastPlayedCharacter();
 		m_CharacterPos = "0 0 0";
@@ -74,7 +73,8 @@ class DayZIntroSceneXbox: Managed
 		m_SceneCamera.SetActive(true);
 		
 		//Vignette
-		PPEffects.SetVignette(0.3, 0, 0, 0);
+		PPEffects.Init();
+		PPEffects.SetMenuVignette(0.3);
 		
 		// Character Setup
 		vector cam_dir = m_SceneCamera.GetDirection();

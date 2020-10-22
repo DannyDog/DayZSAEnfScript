@@ -34,11 +34,12 @@ class CraftLongTorch extends RecipeBase
 		
 		//ingredient 2
 		InsertIngredient(1,"LongWoodenStick");//you can insert multiple ingredients this way
+		InsertIngredient(1,"SharpWoodenStick");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[1] = 0;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[1] = -1;// 0 = do nothing
-		m_IngredientDestroy[1] = true;// false = do nothing
+		m_IngredientDestroy[1] = false;// false = do nothing
 		m_IngredientUseSoftSkills[1] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		//----------------------------------------------------------------------------------------------------------------------
 		
@@ -66,8 +67,9 @@ class CraftLongTorch extends RecipeBase
 		
 		ItemBase rag = ingredients[0];
 		Torch torch = Torch.Cast(results[0]);
+		torch.SetTorchDecraftResult(ingredients[1].GetType());
 		
-		if ( GetGame().IsMultiplayer()  &&  GetGame().IsServer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
 			player.ServerTakeEntityToTargetAttachment(torch, rag);
 			torch.StandUp();

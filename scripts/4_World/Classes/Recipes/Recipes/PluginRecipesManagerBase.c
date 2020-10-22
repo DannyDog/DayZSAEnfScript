@@ -17,6 +17,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftFireplace);
 		RegisterRecipe(new CraftLongTorch);
 		//RegisterRecipe(new SharpenStick);
+		RegisterRecipe(new SharpenLongStick);
 		RegisterRecipe(new PokeHolesBarrel);
 		RegisterRecipe(new CraftBaseBallBatNailed);
 		RegisterRecipe(new CraftGhillieHood);
@@ -43,13 +44,15 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftCourierBag);
 		RegisterRecipe(new CraftImprovisedBag);
 		RegisterRecipe(new CraftImprovisedLeatherBag);
+		RegisterRecipe(new CraftLeatherSack);
 		RegisterRecipe(new DeCraftLeatherCourierBag);
 		RegisterRecipe(new DeCraftCourierBag);
 		RegisterRecipe(new DeCraftImprovisedBag);
 		RegisterRecipe(new DeCraftImprovisedLeatherBag);
+		RegisterRecipe(new DeCraftLeatherSack);
 		RegisterRecipe(new SplitLongWoodenStick);
 		RegisterRecipe(new SplitFirewood);
-		//RegisterRecipe(new CraftSplint);
+		RegisterRecipe(new CraftSplint); // craft splint
 		RegisterRecipe(new DeCraftSplint);
 		RegisterRecipe(new CraftHandDrillKit);
 		//RegisterRecipe(new CraftSpear);
@@ -106,6 +109,10 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new DeCraftFishingRod);
 		RegisterRecipe(new DeCraftWoodenCrate);
 		RegisterRecipe(new CraftTerritoryFlagKit);
+		RegisterRecipe(new CraftTannedLeather);
+		RegisterRecipe(new CraftShelterKit);
+		RegisterRecipe(new CraftTruck01DoubleWheel);
+		RegisterRecipe(new DeCraftTruck01DoubleWheel);
 		
 		//"paint" recipes
 		/*RegisterRecipe(new PaintFirefighterAxe);

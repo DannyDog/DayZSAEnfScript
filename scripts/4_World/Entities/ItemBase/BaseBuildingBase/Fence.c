@@ -292,11 +292,11 @@ class Fence extends BaseBuildingBase
 	
 	//--- BUILD EVENTS
 	//CONSTRUCTION EVENTS
-	override void OnPartBuiltServer( string part_name, int action_id )
+	override void OnPartBuiltServer( notnull Man player, string part_name, int action_id )
 	{
 		ConstructionPart constrution_part = GetConstruction().GetConstructionPart( part_name );
 		
-		super.OnPartBuiltServer( part_name, action_id );
+		super.OnPartBuiltServer( player, part_name, action_id );
 		
 		SetGateState( CheckGateState() );
 		

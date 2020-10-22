@@ -70,9 +70,14 @@ class Transport extends EntityAI
 	
 	override bool IsHealthVisible()
 	{
-		return false;
+		return true;
 	}
 
+	override bool ShowZonesHealth()
+	{
+		return true;
+	}
+	
 	int GetAnimInstance()
 	{
 		Error("GetAnimInstance() not implemented");

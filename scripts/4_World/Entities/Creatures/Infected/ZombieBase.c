@@ -853,7 +853,7 @@ class ZombieBase extends DayZInfected
 		
 		if( !IsAlive() )
 		{
-			dBodySetInteractionLayer(this, PhxInteractionLayers.AI_NO_COLLISION);
+			dBodySetInteractionLayer(this, PhxInteractionLayers.RAGDOLL);
 			EvaluateDeathAnimation(source, dmgZone, ammo, m_DeathType, m_DamageHitDirection);
 		}
 		else

@@ -90,9 +90,19 @@ class ActionAttachToConstruction: ActionSingleUseBase
 				//combine
 				attachment.CombineItemsClient( item );
 			}
-			else
+			else// if( target_entity.GetInventory().CanAddAttachmentEx( item, slot_id ) )
 			{
-				action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx( target_entity, item, slot_id );
+				ItemBase item_base	= ItemBase.Cast( item );
+				float stackable	= item_base.GetTargetQuantityMax( slot_id );
+				
+				if( stackable == 0 || stackable >= item_base.GetQuantity() )
+				{
+					action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx(target_entity, item, slot_id);
+				}
+				else if( stackable != 0 && stackable < item_base.GetQuantity() )
+				{
+					item_base.SplitIntoStackMaxClient( target_entity, slot_id );
+				}
 			}
 		}
 	}

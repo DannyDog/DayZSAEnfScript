@@ -399,6 +399,42 @@ class HFSMBase<Class FSMStateBase, Class FSMEventBase, Class FSMActionBase, Clas
 		}
 		return -1;
 	}
+	
+	FSMStateBase FindTransitionState(FSMStateBase s, FSMEventBase e)
+	{
+		FSMStateBase curr_state = s;
+
+		int count = m_Transitions.Count();
+		for (int i = 0; i < count; ++i)
+		{
+			FSMTransition<FSMStateBase, FSMEventBase, FSMActionBase, FSMGuardBase> t = m_Transitions.Get(i);
+			if ((t.m_srcState == curr_state) && (t.m_event != NULL) && (t.m_event.Type() == e.Type()))
+			{
+				return t.m_dstState;
+			}
+		}
+		return null;
+	}
+	
+	FSMStateBase FindGuardedTransitionState(FSMStateBase s, FSMEventBase e)
+	{
+		FSMStateBase curr_state = s;
+
+		int count = m_Transitions.Count();
+		for (int i = 0; i < count; ++i)
+		{
+			FSMTransition<FSMStateBase, FSMEventBase, FSMActionBase, FSMGuardBase> t = m_Transitions.Get(i);
+			if ((t.m_srcState == curr_state) && (t.m_event != NULL) && (t.m_event.Type() == e.Type()))
+			{
+				bool hasGuard = t.m_guard != NULL;
+				if (!hasGuard || (hasGuard && t.m_guard.GuardCondition(e)))		// 1) exec guard (if any)
+				{
+					return t.m_dstState;
+				}
+			}
+		}
+		return null;
+	}
 
 	protected int FindFirstCompletionTransition ()
 	{
@@ -447,7 +483,7 @@ class HFSMBase<Class FSMStateBase, Class FSMEventBase, Class FSMActionBase, Clas
 		{
 			m_State.OnEntry(e);		// 4a) call onEntry on new state
 
-				if (GetOwnerState())
+			if (GetOwnerState())
 				GetOwnerState().OnSubMachineChanged(t.m_srcState, t.m_dstState);	// 5a) notify owner state about change in submachine
 			
 			if (m_State)

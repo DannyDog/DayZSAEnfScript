@@ -34,9 +34,9 @@ class ActionSawPlanksCB : ActionContinuousBaseCB
 
 class ActionSawPlanks: ActionContinuousBase
 {
-	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 3; // any other item, including hacksaw
-	static const int DECREASE_HEALTH_OF_TOOL_AXE = 3; // axes
-	static const int DECREASE_FUEL_OF_CHAINSAW = 9; // chainsaw fuel in ml
+	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 20; // any other item, including hacksaw
+	//static const int DECREASE_HEALTH_OF_TOOL_AXE = 20; // axes
+	//static const int DECREASE_FUEL_OF_CHAINSAW = 20; // chainsaw fuel in ml
 	
 	static const int YIELD = 3;
 	ItemBase m_Planks;
@@ -131,7 +131,8 @@ class ActionSawPlanks: ActionContinuousBase
 		
 		string item_type = item.GetType();
 		
-		switch(item_type)
+		item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_DEFAULT, GetSpecialtyWeight() ));
+		/*switch(item_type)
 		{
 			case "WoodAxe": 
 				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_AXE, GetSpecialtyWeight() ));
@@ -162,8 +163,8 @@ class ActionSawPlanks: ActionContinuousBase
 		
 			default: // Hacksaw and other
 				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_DEFAULT, GetSpecialtyWeight() ));
-			break
-		}
+			break;
+		}*/
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

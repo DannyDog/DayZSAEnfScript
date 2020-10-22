@@ -100,6 +100,14 @@ class ActionManagerBase
 		return NULL;
 	}
 	
+	ItemBase GetRunningActionMainitem()
+	{
+		if ( m_CurrentActionData )
+			return m_CurrentActionData.m_MainItem;
+		
+		return null;
+	}
+	
 	void EnableActions(bool enable)
 	{
 		m_ActionsEnabled = enable;

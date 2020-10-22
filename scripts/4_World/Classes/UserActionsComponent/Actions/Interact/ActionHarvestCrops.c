@@ -23,7 +23,7 @@ class ActionHarvestCrops: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTCursor;
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.SMALL);
 	}
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )

@@ -60,6 +60,7 @@ class DbgUI
 {
 	static proto native void DoUnitTest(); ///< Creates all possible DbgUI widgets. Just for the testing purposes.
 	static proto native void Text(string label);
+	static proto native void ColoredText(int color, string label);
 	static proto void Check(string label, out bool checked);
 	static proto void Combo(string label, out int selection, TStringArray elems);
 	static proto void List(string label, out int selection, TStringArray elems);

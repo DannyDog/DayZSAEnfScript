@@ -8,5 +8,6 @@ class WoodenStick extends ItemBase
 		AddAction(ActionCreateIndoorOven);
 		AddAction(ActionAttach);
 		AddAction(ActionDetach);
+		AddAction(ActionAttachToConstruction);
 	}
 }

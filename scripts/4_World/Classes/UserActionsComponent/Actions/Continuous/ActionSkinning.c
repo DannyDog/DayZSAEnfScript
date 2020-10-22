@@ -92,7 +92,7 @@ class ActionSkinning: ActionContinuousBase
 			// This section drops all clothes (and attachments) from the dead player before deleting their body
 			PlayerBase body_PB = PlayerBase.Cast(body);
 			
-			if (body_PB.IsRestrained())
+			if (body_PB.IsRestrained() && body_PB.GetHumanInventory().GetEntityInHands())
 			{
 				MiscGameplayFunctions.TransformRestrainItem(body_PB.GetHumanInventory().GetEntityInHands(), null, action_data.m_Player, body_PB);
 				/*
@@ -162,20 +162,39 @@ class ActionSkinning: ActionContinuousBase
 				GetGame().ConfigGetFloatArray( cfg_skinning_organ_class + "countByZone", itemCount);
 
 				if ( itemCount.Count() > 0 )
-					item_count = 0;
-
-				for ( int z = 0; z < itemZones.Count(); z++ )
 				{
-					zoneDmg = targetObject.GetHealth01(itemZones[z], "Health");
-					zoneDmg *= itemCount[z]; //just re-using variable
-					item_count += Math.Floor( zoneDmg ) ;
+					item_count = 0;
+					for ( int z = 0; z < itemZones.Count(); z++ )
+					{
+						zoneDmg = targetObject.GetHealth01(itemZones[z], "Health");
+						zoneDmg *= itemCount[z]; //just re-using variable
+						item_count += Math.Floor( zoneDmg ) ;
+					}
 				}
 
 				for ( int i2 = 0; i2 < item_count; i2++ )
 				{
 					ItemBase spawn_result = CreateOrgan( action_data.m_Player, body_pos, item_to_spawn, cfg_skinning_organ_class, action_data.m_MainItem );
-					action_data.m_MainItem.DecreaseHealth("","",UADamageApplied.SKINNING); // wear out tool
 
+					//Damage pelts based on the average values on itemZones
+					//It only works if the "quantityCoef" in the config is more than 0 
+					float qtCoeff = GetGame().ConfigGetFloat( cfg_skinning_organ_class + "quantityCoef");
+					if(qtCoeff > 0)
+					{
+						float avgDmgZones = 0;
+						for(int c2 = 0; c2 < itemZones.Count(); c2++ )
+						{
+							avgDmgZones += targetObject.GetHealth01(itemZones[c2], "Health");
+						}
+						
+						avgDmgZones = avgDmgZones/itemZones.Count(); // Evaluate the average Health
+						
+						if(spawn_result)
+							spawn_result.SetHealth01("","", avgDmgZones);
+					}	
+				
+				
+				
 					// handle fat/guts from human bodies
 					if ( ( item_to_spawn == "Lard" ) || ( item_to_spawn == "Guts" ) )
 					{
@@ -185,8 +204,13 @@ class ActionSkinning: ActionContinuousBase
 						}
 					}
 				}
+				
+				/*action_data.m_MainItem.DecreaseHealth("","",UADamageApplied.SKINNING); // wear out tool			
+				Print(action_data.m_MainItem.GetHealth01());*/
 			}
 		}	
+		
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, UADamageApplied.SKINNING);
 		
 		PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
 		module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, true );

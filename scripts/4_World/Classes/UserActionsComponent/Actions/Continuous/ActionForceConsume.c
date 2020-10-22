@@ -29,9 +29,19 @@ class ActionForceConsume: ActionContinuousBase
 	
 	override void OnEndServer( ActionData action_data )
 	{	
-		if ( action_data.m_MainItem && action_data.m_MainItem.GetQuantity() <= 0.01 ) 
+		if ( action_data.m_MainItem && ( action_data.m_MainItem.GetQuantity() <= 0.01 ) )
 		{
-			action_data.m_MainItem.SetQuantity(0);
+			action_data.m_MainItem.SetQuantity( 0 );
+		}
+		
+		if ( action_data.m_Player.HasBloodyHands() && !action_data.m_Player.GetInventory().FindAttachment( InventorySlots.GLOVES ) )
+		{
+			Object targetPlayer = action_data.m_Target.GetObject();
+			PlayerBase target = PlayerBase.Cast( targetPlayer );
+			if ( target )
+			{
+				target.SetBloodyHandsPenalty();
+			}
 		}
 	}
 	

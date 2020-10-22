@@ -611,6 +611,7 @@ class SHumanCommandClimbResult
 	bool		m_bIsClimb;	
 	bool		m_bIsClimbOver;
 	bool		m_bFinishWithFall;
+	bool		m_bHasParent;
 
 	float		m_fClimbHeight;
 	

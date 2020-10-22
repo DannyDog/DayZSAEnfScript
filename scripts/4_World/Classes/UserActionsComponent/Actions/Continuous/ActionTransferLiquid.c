@@ -14,7 +14,10 @@ class ActionTransferLiquidCB : ActionContinuousBaseCB
 	
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousQuantityLiquidTransfer(UAQuantityConsumed.DRAIN_LIQUID, TIME_TO_REPEAT, TransferLiquidActionData.Cast(m_ActionData).m_Tendency);
+		if (TransferLiquidActionData.Cast(m_ActionData))
+			m_ActionData.m_ActionComponent = new CAContinuousQuantityLiquidTransfer(UAQuantityConsumed.DRAIN_LIQUID, TIME_TO_REPEAT, TransferLiquidActionData.Cast(m_ActionData).m_Tendency);
+		else
+			m_ActionData.m_ActionComponent = new CAContinuousQuantityLiquidTransfer(UAQuantityConsumed.DRAIN_LIQUID, TIME_TO_REPEAT);
 	}
 	
 	override void OnAnimationEvent(int pEventID)	
@@ -28,12 +31,14 @@ class ActionTransferLiquidCB : ActionContinuousBaseCB
 				{
 					Bottle_Base vessel_in_hands = Bottle_Base.Cast( m_ActionData.m_Target.GetObject() );
 					Param1<bool> play = new Param1<bool>( true );
-					if (TransferLiquidActionData.Cast(m_ActionData).m_Tendency)
-						GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.EMPTYING, play, true );
-					else
-						GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.POURING, play, true );
+					if (TransferLiquidActionData.Cast(m_ActionData))
+					{
+						if (TransferLiquidActionData.Cast(m_ActionData).m_Tendency == true)
+							GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.EMPTYING, play, true );
+						else if (!TransferLiquidActionData.Cast(m_ActionData).m_Tendency == false)
+							GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.POURING, play, true );
+					}
 				}
-
 			break;
 		}
 	}
@@ -128,6 +133,12 @@ class ActionTransferLiquid: ActionContinuousBase
 	override void OnStartClient( ActionData action_data )
 	{
 		TransferLiquidActionData.Cast(action_data).m_Tendency = action_data.m_Player.GetLiquidTendencyDrain();
+	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		if (!GetGame().IsMultiplayer())
+			TransferLiquidActionData.Cast(action_data).m_Tendency = action_data.m_Player.GetLiquidTendencyDrain();
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )

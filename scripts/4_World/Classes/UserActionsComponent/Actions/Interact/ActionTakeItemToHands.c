@@ -48,54 +48,24 @@ class ActionTakeItemToHands: ActionInteractBase
 		return true;
 	}
 	
-	override void OnExecuteServer( ActionData action_data )
+	override void OnExecute( ActionData action_data )
 	{
-		if (GetGame().IsMultiplayer())
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 			return;
-		
-		InventoryLocation il = new InventoryLocation;
-		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		ClearInventoryReservation(action_data);
-		
-		/*il.SetHands(action_data.m_Player,ntarget);
-		
-		InventoryLocation targetInventoryLocation = new InventoryLocation;
-		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);*/
-		
-		float stackable = ntarget.GetTargetQuantityMax(-1);
-		
-		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
-		{
-			//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
-			action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
-		}
-		else
-		{
-			ClearInventoryReservation(action_data);
-			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
-		}
-	}
 	
-	override void OnExecuteClient( ActionData action_data )
-	{
-		InventoryLocation il = new InventoryLocation;
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
 		ClearInventoryReservation(action_data);
 		
-		/*il.SetHands(action_data.m_Player,ntarget);
-		
-		InventoryLocation targetInventoryLocation = new InventoryLocation;
-		ntarget.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);*/
-		
 		float stackable = ntarget.GetTargetQuantityMax(-1);
 		
-		if( stackable == 0 || stackable >= ntarget.GetQuantity() )
+		if ( stackable == 0 || stackable >= ntarget.GetQuantity() )
 		{
-			//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
 			action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
 		}
 		else
 		{
+			InventoryLocation il = new InventoryLocation;
+			il.SetHands(action_data.m_Player, ntarget);
 			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
 		}
 	}

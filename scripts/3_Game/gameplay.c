@@ -572,6 +572,7 @@ class Hud: Managed
 	bool IsXboxDebugCursorEnabled();
 	void ShowVehicleInfo();
 	void HideVehicleInfo();
+	void ToggleHeatBufferPlusSign( bool show );
 	
 	void ShowQuickbarUI( bool show );
 	void ShowQuickbarPlayer( bool show );
@@ -710,20 +711,280 @@ class MenuData: Managed
 	proto native int 	GetLastServerPort(int index);
 	proto void 			GetLastServerName(int index, out string address);
 	
+	proto void 			RequestSetDefaultCharacterData();
+	proto bool			RequestGetDefaultCharacterData();
+	
+	//! Actual DefaultCharacter saving
+	void OnSetDefaultCharacter(ParamsWriteContext ctx)
+	{
+		//Print("OnSetDefaultCharacter");
+		
+		if (!GetMenuDefaultCharacterDataInstance()/* || GetGame().IsServer()*/)
+		{
+			Error("MenuData | OnSetDefaultCharacter - failed to get data class!");
+			return;
+		}
+		
+		GetMenuDefaultCharacterDataInstance().SerializeCharacterData(ctx);
+		SaveCharactersLocal();
+	}
+	
+	//! Actual DefaultCharacter loading
+	bool OnGetDefaultCharacter(ParamsReadContext ctx)
+	{
+		//Print("OnGetDefaultCharacter");
+		
+		if (!GetMenuDefaultCharacterDataInstance())
+		{
+			Error("MenuData | OnGetDefaultCharacter - failed to get data class!");
+			return false;
+		}
+		
+		if (GetMenuDefaultCharacterDataInstance().DeserializeCharacterData(ctx))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	proto void 			GetCharacterName(int index, out string name);
 	proto native void 	SetCharacterName(int index, string newName);
 	// save character is set as last played character 
 	proto native void 	SaveCharacter(bool localPlayer, bool verified);
 	proto native void 	SaveDefaultCharacter(Man character);
 	
+	//! Saves characters menu data to file
 	proto native void 	SaveCharactersLocal();
+	//! Loads characters menu data from file
 	proto native void 	LoadCharactersLocal();
 	proto native void 	ClearCharacters();
+	
+	MenuDefaultCharacterData GetMenuDefaultCharacterDataInstance()
+	{
+		return GetGame().GetMenuDefaultCharacterData();
+	}
 	
 	//proto native void	GetCharacterStringList(int characterID, string name, out TStringArray values);
 	//proto bool			GetCharacterString(int characterID,string name, out string value);
 };
 
+//used to hold 'default character' data
+class MenuDefaultCharacterData
+{
+	//const int MODE_SERVER = 0;
+	//const int MODE_CLIENT = 1;
+	
+	string m_CharacterType;
+	ref map<int,string> m_AttachmentsMap;
+	
+	void MenuDefaultCharacterData()
+	{
+		Init();
+	}
+	
+	void Init()
+	{
+		//Print("MenuDefaultCharacterData | Init");
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
+		{
+			//Print("MenuDefaultCharacterData | m_MenuData: " + GetGame().GetMenuData());
+			GetGame().GetMenuData().LoadCharactersLocal();
+		}
+		m_AttachmentsMap = new map<int,string>;
+	}
+	
+	void ClearAttachmentsMap()
+	{
+		m_AttachmentsMap.Clear();
+	}
+	
+	void SetDefaultAttachment(int slotID, string type)
+	{
+		m_AttachmentsMap.Set(slotID,type); //using 'Set' instead of 'Insert' for convenience
+	}
+	
+	void GenerateRandomEquip()
+	{
+		ClearAttachmentsMap();
+		
+		int slot_ID;
+		string attachment_type;
+		for (int i = 0; i < DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Count(); i++)
+		{
+			slot_ID = DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Get(i);
+			if (DefaultCharacterCreationMethods.GetConfigArrayCountFromSlotID(slot_ID) > 0)
+			{
+				attachment_type = DefaultCharacterCreationMethods.GetConfigAttachmentTypes(slot_ID).GetRandomElement();
+				//if (attachment_type != "")
+					SetDefaultAttachment(slot_ID,attachment_type);
+			}
+		}
+	}
+	
+	void EquipDefaultCharacter(Man player)
+	{
+		if (!player)
+		{
+			Print("WARNING - trying to equip non-existent object! | MenuDefaultCharacterData::EquipDefaultCharacter");
+			return;
+		}
+		
+		int slot_ID;
+		string attachment_type;
+		string current_attachment_type;
+		EntityAI current_attachment_object;
+		
+		for (int i = 0; i < m_AttachmentsMap.Count(); i++)
+		{
+			attachment_type = "";
+			current_attachment_type = "";
+			slot_ID = m_AttachmentsMap.GetKey(i);
+			attachment_type = m_AttachmentsMap.GetElement(i); //Get(i)
+			current_attachment_object = player.GetInventory().FindAttachment(slot_ID);
+			
+			if (current_attachment_object)
+			{
+				current_attachment_type = current_attachment_object.GetType();
+			}
+			if (current_attachment_type != attachment_type)
+			{
+				if (current_attachment_object)
+					g_Game.ObjectDelete(current_attachment_object);
+				if (attachment_type != "")
+					player.GetInventory().CreateAttachmentEx(attachment_type,slot_ID);
+			}
+		}
+	}
+	
+	//!serializes data into a param array to be used by "StoreLoginData(notnull array<ref Param> params);" 
+	void SerializeCharacterData(ParamsWriteContext ctx)
+	{
+		//Print("SerializeCharacterData");
+		ctx.Write(m_CharacterType);
+		ctx.Write(m_AttachmentsMap);
+		//Print(m_CharacterType);
+		//DumpAttMapContents();
+	}
+	
+	bool DeserializeCharacterData(ParamsReadContext ctx)
+	{
+		//Print("DeserializeCharacterData");
+		if (!ctx.Read(m_CharacterType))
+			return false;
+		if (!ctx.Read(m_AttachmentsMap))
+			return false;
+		
+		//Print(m_CharacterType);
+		//DumpAttMapContents();
+		return true;
+	}
+	
+	void SetCharacterType(string character_type)
+	{
+		m_CharacterType = character_type;
+	}
+	
+	string GetCharacterType()
+	{
+		return m_CharacterType;
+	}
+	
+	ref map<int,string> GetAttachmentMap()
+	{
+		return m_AttachmentsMap;
+	}
+	
+	//DEBUG
+	void DumpAttMapContents()
+	{
+		int debugID;
+		string debugType;
+		Print("-----------");
+		Print("m_AttachmentsMap contents:");
+		for (int j = 0; j < m_AttachmentsMap.Count(); j++)
+		{
+			debugID = m_AttachmentsMap.GetKey(j);
+			debugType = m_AttachmentsMap.GetElement(j);
+			Print("index " + j);
+			Print("debugID: " + debugID);
+			Print("debugType: " + debugType);
+		}
+		Print("-----------");
+	}
+}
+
+class DefaultCharacterCreationMethods
+{
+	static ref array<int> m_AttachmentSlots = {
+		InventorySlots.SHOULDER,
+		InventorySlots.MELEE,
+		InventorySlots.HEADGEAR,
+		InventorySlots.MASK,
+		InventorySlots.EYEWEAR,
+		InventorySlots.GLOVES,
+		InventorySlots.ARMBAND,
+		InventorySlots.BODY,
+		InventorySlots.VEST,
+		InventorySlots.BACK,
+		InventorySlots.HIPS,
+		InventorySlots.LEGS,
+		InventorySlots.FEET
+	};
+	//conversion nescesssary for legacy reasons...
+	static ref array<string> m_ConfigArrayNames = {
+		"shoulder",
+		"melee",
+		"headgear",
+		"mask",
+		"eyewear",
+		"gloves",
+		"armband",
+		"top",
+		"vests",
+		"backpacks",
+		"hips",
+		"bottom",
+		"shoe"
+	};
+	
+	const static string m_Path = "cfgCharacterCreation";
+	
+	//! Returns config path of att. slot category, empty if undefined
+	static string GetPathFromSlotID(int slot_ID)
+	{
+		int idx = m_AttachmentSlots.Find(slot_ID);
+		string path = "" + m_Path + " " + m_ConfigArrayNames.Get(idx);
+		return path;
+	}
+	
+	//! How many 'default equip' types are listed in the corresponding array
+	static int GetConfigArrayCountFromSlotID(int slot_ID)
+	{
+		TStringArray types = new TStringArray;
+		GetGame().ConfigGetTextArray(GetPathFromSlotID(slot_ID),types);
+		return types.Count();
+	}
+	
+	//! Lists all configured types (if any) for the appropriate attachment
+	static ref array<string> GetConfigAttachmentTypes(int slot_ID)
+	{
+		TStringArray types = new TStringArray;
+		GetGame().ConfigGetTextArray(GetPathFromSlotID(slot_ID),types);
+		return types;
+	}
+	
+	//! Lists all customizable InventorySlots
+	static ref array<int> GetAttachmentSlotsArray()
+	{
+		return m_AttachmentSlots;
+	}
+	
+	//! for conversion of slot ID to config array's string
+	static ref array<string> GetConfigArrayNames()
+	{
+		return m_ConfigArrayNames;
+	}
+}
 
 // -------------------------------------------------------------------------
 /*

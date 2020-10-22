@@ -91,13 +91,15 @@ class LandMineTrap extends TrapBase
 	// ADVANCED PLACEMENT
 	//================================================================
 		
-	override void OnPlacementComplete( Man player ) 
-	{		
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
+		
 		if ( GetGame().IsServer() )
 		{
 			PlayerBase player_PB = PlayerBase.Cast( player );
 			StartActivate( player_PB );
-		}		
+		}
 	}
 	
 	override bool IsDeployable()

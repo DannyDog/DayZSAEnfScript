@@ -21,7 +21,7 @@ class ActionPlaceOvenIndoor: ActionSingleUseBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( !target ) return false;
-		//if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		Object target_object = target.GetObject();
 		string action_selection = target_object.GetActionComponentName( target.GetComponentIndex() );

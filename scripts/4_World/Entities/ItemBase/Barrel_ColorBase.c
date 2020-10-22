@@ -26,11 +26,6 @@ class Barrel_ColorBase : DeployableContainer_Base
 		GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
 	}
 	
-	/*override bool IsHeavyBehaviour()
-	{
-		return true;
-	}*/
-	
 	override int GetDamageSystemVersionChange()
 	{
 		return 110;
@@ -516,9 +511,9 @@ class Barrel_ColorBase : DeployableContainer_Base
 	// ADVANCED PLACEMENT
 	//================================================================
 	
-	override void OnPlacementComplete( Man player )
-	{		
-		super.OnPlacementComplete( player );
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
 			
 		SetIsPlaceSound( true );
 	}

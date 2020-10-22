@@ -237,12 +237,32 @@ class MissionGameplay extends MissionBase
 		//UAInput input = GetUApi().GetInputByID(GetUApi().DeterminePressedButton());
 		
 		//TODO should be switchable
-		if( playerPB )
+		if ( playerPB )
 		{
-			if( playerPB.GetHologramLocal() )
+			#ifdef DEVELOPER
+			if ( DiagMenu.GetBool(DiagMenuIDs.DM_HOLOGRAM) )
+			{
+				DbgUI.BeginCleanupScope();
+				DbgUI.Begin("Hologram Debug", 5, 5);
+			}
+			#endif
+			
+			if ( playerPB.GetHologramLocal() )
 			{
 				playerPB.GetHologramLocal().UpdateHologram( timeslice );
 			}
+			#ifdef DEVELOPER
+			else if ( DiagMenu.GetBool(DiagMenuIDs.DM_HOLOGRAM) )
+			{	
+				DbgUI.Text("No active Hologram");
+			}
+			
+			if ( DiagMenu.GetBool(DiagMenuIDs.DM_HOLOGRAM) )
+			{		
+				DbgUI.End();
+				DbgUI.EndCleanupScope();
+			}
+			#endif
 			
 			/*if( !menu && m_ControlDisabled && !playerPB.GetCommand_Melee2() )
 			{
@@ -593,6 +613,9 @@ class MissionGameplay extends MissionBase
 		
 		SEffectManager.Event_OnFrameUpdate(timeslice);
 		
+		if (!GetGame().IsMultiplayer())
+			m_WorldData.UpdateBaseEnvTemperature( timeslice );
+
 #ifdef DEVELOPER
 		DisplayHairDebug();
 #endif

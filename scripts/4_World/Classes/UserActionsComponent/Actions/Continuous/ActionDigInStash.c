@@ -148,7 +148,10 @@ class ActionDigInStash: ActionContinuousBase
 		{
 			Error("ERROR! ActionDigStash: Stash not spawned!");
 		}
-
+		
+		//Apply tool damage
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 20);				
+		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
 };

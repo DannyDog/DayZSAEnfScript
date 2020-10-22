@@ -32,7 +32,7 @@ class DayZIntroScenePC : DayZIntroScene
 			m_Radius_original = m_Radius;
 		}
 		
-		PPEffects.SetVignette(0.5, 0, 0, 0);
+		PPEffects.SetMenuVignette(0.5);
 	}
 
 	// ------------------------------------------------------------

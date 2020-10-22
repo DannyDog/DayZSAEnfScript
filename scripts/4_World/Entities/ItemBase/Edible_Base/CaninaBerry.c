@@ -14,6 +14,11 @@ class CaninaBerry extends Edible_Base
 	{
 		return true;
 	}
+
+	override bool CanDecay()
+	{
+		return true;
+	}
 	
 	bool ConditionAttach ( EntityAI parent )
 	{

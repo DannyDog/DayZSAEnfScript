@@ -636,7 +636,7 @@ GridSpacerWidgetClass server_browser_list_entry_root {
          vexactpos 1
          hexactsize 0
          vexactsize 0
-         text "Expand"
+         text "#str_server_browser_list_entry_root_detailed_info_detail_info_panel_mod_expand0"
         }
        }
       }

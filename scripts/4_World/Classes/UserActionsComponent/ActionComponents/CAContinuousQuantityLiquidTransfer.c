@@ -1,6 +1,6 @@
 class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 {
-	protected bool 					m_TendencyDrain; //true == drain, false == pour
+	protected int 					m_TendencyDrain; //1 == drain, 0 == pour, -1 == cancel!
 	protected float 				m_ItemQuantity;
 	protected float 				m_SpentQuantity;
 	protected float 				m_SpentQuantity_total;
@@ -11,7 +11,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	protected float 				m_DefaultTimeStep;
 	protected ref Param1<float>		m_SpentUnits;
 	
-	void CAContinuousQuantityLiquidTransfer( float quantity_used_per_second, float time_to_progress, bool drain )
+	void CAContinuousQuantityLiquidTransfer( float quantity_used_per_second, float time_to_progress, int drain = -1) //-1 used as a safeguard; if no valid value arrives, callback is canceled
 	{
 		m_QuantityUsedPerSecond = quantity_used_per_second;
 		m_DefaultTimeStep = time_to_progress;
@@ -34,7 +34,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 			m_SpentUnits.param1 = 0;
 		}
 		
-		if ( m_TendencyDrain )
+		if ( m_TendencyDrain == 1 )
 		{
 			if ( target_item.GetQuantity() > (action_data.m_MainItem.GetQuantityMax() - action_data.m_MainItem.GetQuantity()) )
 			{
@@ -47,7 +47,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 				m_ItemQuantity = m_ItemMaxQuantity; //target_item.GetQuantity();
 			}
 		}
-		else
+		else if ( m_TendencyDrain == 0)
 		{
 			if ( action_data.m_MainItem.GetQuantity() > (target_item.GetQuantityMax() - target_item.GetQuantity()) )
 			{
@@ -67,7 +67,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	{
 		ItemBase target_item = ItemBase.Cast(action_data.m_Target.GetObject());
 		
-		if ( !action_data.m_Player )
+		if ( !action_data.m_Player || m_TendencyDrain == -1 )
 		{
 			return UA_ERROR;
 		}
@@ -103,7 +103,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	
 	override int Cancel( ActionData action_data )
 	{
-		if ( !action_data.m_Player )
+		if ( !action_data.m_Player || m_TendencyDrain == -1 )
 		{
 			return UA_ERROR;
 		}

@@ -137,7 +137,10 @@ class OptionSelectorMultistateCharacterMenu extends OptionSelectorMultistate
 		}
 		else if (appendix != "")
 		{
-			m_SelectedOption.SetText("" + value + " " + appendix); //characters
+			if (value == "")
+				m_SelectedOption.SetText("NO ITEM - localization needed!");
+			else
+				m_SelectedOption.SetText("" + displayname + " " + appendix); //characters
 		}
 		else
 		{
@@ -154,11 +157,13 @@ class OptionSelectorMultistateCharacterMenu extends OptionSelectorMultistate
 		}
 		
 		class_name = value;
+		int index = m_Options.Find( value ); //TODO - design better way to differentiate between items
 		if ( InheritsFrom(class_name, "Clothing_Base") )
 		{
-			SetDisplayNameText(class_name,"");
+			//todo
+			SetDisplayNameText(class_name,index.ToString());
 		}
-		else if (InheritsFrom(class_name,"SurvivorBase"));
+		else if (InheritsFrom(class_name,"SurvivorBase"))
 		{
 			if (InheritsFrom(class_name,"SurvivorMale_Base"))
 			{
@@ -171,6 +176,11 @@ class OptionSelectorMultistateCharacterMenu extends OptionSelectorMultistate
 			}
 			//m_SelectedOption.SetText(class_name);
 			//SetDisplayNameText(class_name,m_SelectedOptionIndex.ToString());
+		}
+		else
+		{
+			//todo
+			SetDisplayNameText(class_name,index.ToString());
 		}
 	}
 	

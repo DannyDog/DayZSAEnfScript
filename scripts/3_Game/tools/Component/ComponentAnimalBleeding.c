@@ -25,17 +25,10 @@ class ComponentAnimalBleeding : Component
 			m_ThisEntityAI.SetHealth( "", "", 0 );
 		}	
 		
-		float animal_melee_multiplier = GetGame().ConfigGetFloat( "CfgAmmo " + ammo + " DamageApplied " + "additionAnimalMeleeMultiplier" );
-		
-		if ( animal_melee_multiplier == 0 )
-		{
-			return;
-		}
-		
 		float health_damage_inflicted = damage_result.GetDamage( zone_name, "Health");
 		float blood_damage_inflicted = damage_result.GetDamage( zone_name, "Blood");	
-		float wound_healt_damage = health_damage_inflicted * animal_melee_multiplier;
-		float wound_blood_damage = health_damage_inflicted * animal_melee_multiplier;
+		float wound_healt_damage = health_damage_inflicted;
+		float wound_blood_damage = health_damage_inflicted;
 		
 		m_ThisEntityAI.DecreaseHealth( "", "Health", wound_healt_damage );
 		m_ThisEntityAI.DecreaseHealth( "", "Blood", wound_blood_damage );

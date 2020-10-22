@@ -43,7 +43,8 @@ class CfgVehicles
 		bounding = "BSphere";
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
-		slopeTolerance = 0.3;
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {12,12,12};
 		hiddenSelections[] = {"bags","camo","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.470588,0.470588,0.470588,1.0,co)","dz\gear\camping\data\tent_pristine_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_packed.rvmat","dz\gear\camping\data\tent_medium_pitched.rvmat"};
@@ -176,7 +177,7 @@ class CfgVehicles
 					{
 						hitpoints = 600;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
 					};
 					class ArmorType
 					{
@@ -230,20 +231,12 @@ class CfgVehicles
 		};
 		class GUIInventoryAttachmentsProps
 		{
-			class CamoNet
+			class Attachments
 			{
-				name = "$STR_attachment_camonet0";
+				name = "$STR_attachment_accessories";
 				description = "";
-				attachmentSlots[] = {"CamoNet"};
-				icon = "cat_camonet";
-				view_index = 1;
-			};
-			class XmasLights
-			{
-				name = "$STR_attachment_XmasLights0";
-				description = "";
-				attachmentSlots[] = {"Lights"};
-				icon = "cat_christmaslights";
+				attachmentSlots[] = {"CamoNet","Lights"};
+				icon = "cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -420,7 +413,8 @@ class CfgVehicles
 		bounding = "BSphere";
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
-		slopeTolerance = 0.35;
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {12,12,12};
 		hiddenSelections[] = {"entrancec","camo","bags","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\tent_door_co.paa","","dz\gear\camping\data\bagpack_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_door.rvmat","dz\gear\camping\data\large_tent.rvmat","dz\gear\camping\data\bagpack.rvmat"};
@@ -554,7 +548,7 @@ class CfgVehicles
 					{
 						hitpoints = 2000;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden","hidden"}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}}};
 					};
 					class ArmorType
 					{
@@ -589,7 +583,7 @@ class CfgVehicles
 					{
 						hitpoints = 2000;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
 					};
 					class ArmorType
 					{
@@ -671,20 +665,12 @@ class CfgVehicles
 		};
 		class GUIInventoryAttachmentsProps
 		{
-			class CamoNet
+			class Attachments
 			{
-				name = "$STR_attachment_camonet0";
+				name = "$STR_attachment_accessories";
 				description = "";
-				attachmentSlots[] = {"CamoNet"};
-				icon = "cat_camonet";
-				view_index = 1;
-			};
-			class XmasLights
-			{
-				name = "$STR_attachment_XmasLights0";
-				description = "";
-				attachmentSlots[] = {"Lights"};
-				icon = "cat_christmaslights";
+				attachmentSlots[] = {"CamoNet","Lights"};
+				icon = "cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -933,7 +919,8 @@ class CfgVehicles
 		bounding = "BSphere";
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
-		slopeTolerance = 0.45;
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {15,15,15};
 		hiddenSelections[] = {"bags","camo","xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\car_tent_packed_co.paa","dz\gear\camping\data\tent_pristine_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\car_tent_packed.rvmat","dz\gear\camping\data\car_tent.rvmat"};
@@ -1067,7 +1054,7 @@ class CfgVehicles
 					{
 						hitpoints = 1700;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
 					};
 					class ArmorType
 					{
@@ -1121,20 +1108,12 @@ class CfgVehicles
 		};
 		class GUIInventoryAttachmentsProps
 		{
-			class CamoNet
+			class Attachments
 			{
-				name = "$STR_attachment_camonet0";
+				name = "$STR_attachment_accessories";
 				description = "";
-				attachmentSlots[] = {"CamoNet"};
-				icon = "cat_camonet";
-				view_index = 1;
-			};
-			class XmasLights
-			{
-				name = "$STR_attachment_XmasLights0";
-				description = "";
-				attachmentSlots[] = {"Lights"};
-				icon = "cat_christmaslights";
+				attachmentSlots[] = {"CamoNet","Lights"};
+				icon = "cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -1276,7 +1255,8 @@ class CfgVehicles
 		bounding = "BSphere";
 		overrideDrawArea = "3.0";
 		forceFarBubble = "true";
-		slopeTolerance = 0.35;
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {15,15,15};
 		weight = 10000;
 		itemSize[] = {9,4};
 		itemsCargoSize[] = {10,15};
@@ -1410,7 +1390,7 @@ class CfgVehicles
 					{
 						hitpoints = 1400;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
 					};
 					class ArmorType
 					{
@@ -1488,12 +1468,12 @@ class CfgVehicles
 		};
 		class GUIInventoryAttachmentsProps
 		{
-			class CamoNet
+			class Attachments
 			{
-				name = "$STR_attachment_camonet0";
+				name = "$STR_attachment_accessories";
 				description = "";
 				attachmentSlots[] = {"CamoNet","Lights"};
-				icon = "cat_camonet";
+				icon = "cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -1792,278 +1772,6 @@ class CfgVehicles
 	class PartyTent_BluePlacing: PartyTentPlacing{};
 	class PartyTent_BrownPlacing: PartyTentPlacing{};
 	class PartyTent_LunaparkPlacing: PartyTentPlacing{};
-	class ImprovisedShelterPitched: WorldContainer_Base
-	{
-		scope = 2;
-		displayName = "$STR_CfgVehicles_ImprovisedShelterPitched0";
-		descriptionShort = "$STR_CfgVehicles_ImprovisedShelterPitched1";
-		model = "\DZ\gear\camping\improvised_tent_01.p3d";
-		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
-		hiddenSelectionsTextures[] = {};
-		hiddenSelectionsMaterials[] = {};
-		openable = 0;
-		itemSize[] = {2,6};
-		itemsCargoSize[] = {3,2};
-		lootCategory = "Crafted";
-		overrideDrawArea = "3.0";
-		carveNavmesh = 1;
-		placement = "ForceSlopeOnTerrain";
-		physLayer = "item_large";
-		attachments[] = {"CamoNet","Lights"};
-		rotationFlags = 2;
-		class DamageSystem
-		{
-			class GlobalHealth
-			{
-				class Health
-				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
-				class FragGrenade
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
-			};
-		};
-		class PointLights
-		{
-			class PointLight
-			{
-				color[] = {1.0,1.0,1.0,0.05};
-				ambient[] = {0.01,0.01,0.01,0.01};
-				position = "light";
-				hitpoint = "bulb";
-				selection = "bulb";
-				size = 0;
-				radius = 5;
-				brightness = 0.001;
-				dayLight = 1;
-				heatHazeRadius = 0.0;
-				heatHazePower = 0.0;
-				fireEffect = 0;
-				fireEffectOctaves = 0;
-				fireEffectPersistence = 0;
-				fireEffectFract = 0;
-			};
-		};
-		class AnimationSources
-		{
-			class xlights
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_r
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_g
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_b
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_y
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class cord_folded
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class cord_plugged
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class camonet
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-		};
-	};
-	class AdvancedImprovisedShelterPitched: WorldContainer_Base
-	{
-		scope = 2;
-		displayName = "$STR_CfgVehicles_AdvancedImprovisedShelterPitched0";
-		descriptionShort = "$STR_CfgVehicles_AdvancedImprovisedShelterPitched1";
-		model = "\DZ\gear\camping\improvised_tent_02.p3d";
-		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
-		hiddenSelectionsTextures[] = {};
-		hiddenSelectionsMaterials[] = {};
-		openable = 0;
-		itemSize[] = {2,6};
-		itemsCargoSize[] = {5,2};
-		lootCategory = "Crafted";
-		overrideDrawArea = "3.0";
-		carveNavmesh = 1;
-		physLayer = "item_large";
-		placement = "ForceSlopeOnTerrain";
-		attachments[] = {"CamoNet","Lights"};
-		rotationFlags = 2;
-		class DamageSystem
-		{
-			class GlobalHealth
-			{
-				class Health
-				{
-					hitpoints = 100;
-					healthLevels[] = {{1.0,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.7,{"DZ\gear\camping\data\car_tent_packed.rvmat"}},{0.5,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\car_tent_packed_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\car_tent_packed_destruct.rvmat"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
-				class FragGrenade
-				{
-					class Health
-					{
-						damage = 0;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0;
-					};
-				};
-			};
-		};
-		class PointLights
-		{
-			class PointLight
-			{
-				color[] = {1.0,1.0,1.0,0.05};
-				ambient[] = {0.01,0.01,0.01,0.01};
-				position = "light";
-				hitpoint = "bulb";
-				selection = "bulb";
-				size = 0;
-				radius = 5;
-				brightness = 0.001;
-				dayLight = 1;
-				heatHazeRadius = 0.0;
-				heatHazePower = 0.0;
-				fireEffect = 0;
-				fireEffectOctaves = 0;
-				fireEffectPersistence = 0;
-				fireEffectFract = 0;
-			};
-		};
-		class AnimationSources
-		{
-			class xlights
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_r
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_g
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_b
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class xlights_glass_y
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class cord_folded
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class cord_plugged
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-			class camonet
-			{
-				source = "user";
-				initPhase = 1;
-				animPeriod = 0.01;
-			};
-		};
-	};
 	class CamoNetShelter: Inventory_Base
 	{
 		scope = 2;
@@ -6158,7 +5866,8 @@ class CfgVehicles
 		OnRestrainChange = "BarbedWire";
 		StruggleLength = 20;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Hacksaw","15","Pliers","25"};
+		CanBeUnrestrainedBy[] = {"Hacksaw","15","Pliers","25","HandSaw","15"};
+		CanBeUnrestrainedByDMG[] = {20,20,20};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -6244,6 +5953,8 @@ class CfgVehicles
 		model = "\DZ\gear\camping\sea_chest.p3d";
 		hologramMaterial = "sea_chest";
 		hologramMaterialPath = "dz\gear\camping\data";
+		slopeTolerance = 0.4;
+		yawPitchRollLimit[] = {45,45,45};
 		weight = 10000;
 		itemBehaviour = 0;
 		itemSize[] = {10,10};
@@ -6322,6 +6033,9 @@ class CfgVehicles
 		model = "\DZ\gear\camping\wooden_case.p3d";
 		hologramMaterial = "wooden_case";
 		hologramMaterialPath = "dz\gear\camping\data";
+		slopeTolerance = 0.4;
+		yawPitchRollLimit[] = {45,45,45};
+		inventorySlot[] = {"Truck_01_WoodenCrate1","Truck_01_WoodenCrate2","Truck_01_WoodenCrate3","Truck_01_WoodenCrate4"};
 		weight = 10000;
 		itemSize[] = {10,5};
 		itemBehaviour = 0;
@@ -6454,8 +6168,9 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Spotlight0";
 		descriptionShort = "$STR_CfgVehicles_Spotlight1";
 		model = "\dz\gear\camping\spotlight.p3d";
-		slopeTolerance = 0.3;
-		hiddenSelections[] = {"placing","cord_folded","cord_plugged","glass_unfolded","reflector_unfolded"};
+		slopeTolerance = 0.15;
+		yawPitchRollLimit[] = {18,18,18};
+		hiddenSelections[] = {"placing","cord_folded","cord_plugged","glass_unfolded","reflector_unfolded","glass_folded","reflector_folded"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\spotlight_co.paa","dz\gear\camping\data\plug_yellow_co.paa","dz\gear\camping\data\plug_yellow_co.paa","dz\gear\camping\data\spotlight_glass_ca.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\spotlight.rvmat","dz\gear\camping\data\plug.rvmat","dz\gear\camping\data\plug.rvmat","dz\gear\camping\data\spotlight_glass.rvmat"};
 		hologramMaterial = "spotlight";
@@ -6475,7 +6190,7 @@ class CfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -6679,7 +6394,7 @@ class CfgVehicles
 		weight = 1700;
 		itemSize[] = {7,10};
 		rotationFlags = 2;
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -6703,7 +6418,8 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PowerGenerator1";
 		model = "\DZ\gear\camping\power_generator.p3d";
 		rotationFlags = 2;
-		slopeTolerance = 0.3;
+		slopeTolerance = 0.4;
+		yawPitchRollLimit[] = {45,45,45};
 		weight = 45000;
 		itemSize[] = {10,10};
 		itemBehaviour = 0;
@@ -6727,7 +6443,7 @@ class CfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -6831,10 +6547,11 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_CableReel1";
 		model = "\dz\gear\camping\cable_reel.p3d";
 		inventorySlot[] = {"CableReel"};
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {45,45,45};
 		weight = 5000;
 		itemSize[] = {3,4};
 		itemBehaviour = 2;
-		slopeTolerance = 0.3;
 		rotationFlags = 2;
 		hiddenSelections[] = {"socket_1_plugged","cord_plugged","cord_folded","placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\cable_reel_co.paa","dz\gear\camping\data\cable_reel_co.paa","dz\gear\camping\data\cable_reel_co.paa","dz\gear\camping\data\cable_reel_co.paa"};
@@ -6919,6 +6636,8 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_BatteryCharger0";
 		descriptionShort = "$STR_CfgVehicles_BatteryCharger1";
 		model = "\dz\gear\camping\battery_charger.p3d";
+		slopeTolerance = 0.15;
+		yawPitchRollLimit[] = {45,45,45};
 		attachments[] = {"CarBattery","TruckBattery"};
 		weight = 5000;
 		itemSize[] = {3,3};
@@ -6930,7 +6649,6 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat","dz\gear\camping\data\battery_charger.rvmat"};
 		hologramMaterial = "battery_charger";
 		hologramMaterialPath = "dz\gear\camping\data";
-		slopeTolerance = 0.3;
 		ChargeEnergyPerSecond = 1;
 		class DamageSystem
 		{
@@ -6943,7 +6661,7 @@ class CfgVehicles
 				};
 			};
 		};
-		repairableWithKits[] = {5,7};
+		repairableWithKits[] = {7};
 		repairCosts[] = {30.0,25.0};
 		class EnergyManager
 		{
@@ -7051,6 +6769,8 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_HescoBox1";
 		model = "\dz\gear\camping\hbox_base.p3d";
 		forceFarBubble = "true";
+		slopeTolerance = 0.15;
+		yawPitchRollLimit[] = {45,45,45};
 		weight = 5000;
 		itemSize[] = {10,10};
 		carveNavmesh = 1;
@@ -7058,7 +6778,6 @@ class CfgVehicles
 		createProxyPhysicsOnInit = "false";
 		createdProxiesOnInit[] = {"Deployed"};
 		physLayer = "item_large";
-		slopeTolerance = 0.3;
 		hiddenSelections[] = {"placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\hbox_filled_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\hbox_filled.rvmat"};
@@ -7129,6 +6848,606 @@ class CfgVehicles
 				animPeriod = 0.01;
 				initPhase = 1;
 			};
+		};
+	};
+	class Fabric: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_Folded_Fabric0";
+		descriptionShort = "$STR_CfgVehicles_Folded_Fabric1";
+		model = "\dz\gear\camping\fabric_ground.p3d";
+		weight = 220;
+		absorbency = 0.3;
+		itemSize[] = {3,3};
+		canBeSplit = 1;
+		varQuantityInit = 1.0;
+		varQuantityMin = 0.0;
+		varQuantityMax = 4.0;
+		inventorySlot[] = {"Material_Shelter_Fabric"};
+	};
+	class ShelterKit: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_ShelterKit0";
+		descriptionShort = "$STR_CfgVehicles_ShelterKit1";
+		model = "\DZ\gear\camping\watchtower_kit.p3d";
+		rotationFlags = 17;
+		itemSize[] = {1,5};
+		weight = 280;
+		itemBehaviour = 1;
+		attachments[] = {"Rope"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
+				};
+				class GlobalArmor
+				{
+					class Projectile
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+					class FragGrenade
+					{
+						class Health
+						{
+							damage = 0;
+						};
+						class Blood
+						{
+							damage = 0;
+						};
+						class Shock
+						{
+							damage = 0;
+						};
+					};
+				};
+			};
+		};
+		class AnimationSources
+		{
+			class AnimSourceShown
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class AnimSourceHidden
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Inventory: AnimSourceHidden{};
+			class Placing: AnimSourceHidden{};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class crafting_1
+				{
+					soundSet = "FenceKit_crafting_1_SoundSet";
+					id = 1111;
+				};
+				class crafting_2
+				{
+					soundSet = "FenceKit_crafting_2_SoundSet";
+					id = 1112;
+				};
+				class crafting_3
+				{
+					soundSet = "FenceKit_crafting_3_SoundSet";
+					id = 1113;
+				};
+				class crafting_4
+				{
+					soundSet = "FenceKit_crafting_4_SoundSet";
+					id = 1114;
+				};
+				class crafting_5
+				{
+					soundSet = "FenceKit_crafting_5_SoundSet";
+					id = 1115;
+				};
+			};
+		};
+	};
+	class ShelterKitPlacing: ShelterKit
+	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
+		scope = 2;
+		model = "\DZ\gear\camping\shelter_kit_placing.p3d";
+		storageCategory = 10;
+		hiddenSelections[] = {"placing"};
+		hiddenSelectionsTextures[] = {"dz\gear\consumables\data\pile_of_planks_co.tga"};
+		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\fence_pile_of_planks.rvmat"};
+		hologramMaterial = "tent_medium";
+		hologramMaterialPath = "dz\gear\camping\data";
+		alignHologramToTerain = 1;
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {15,15,15};
+	};
+	class ShelterSite: BaseBuildingBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_ShelterSite0";
+		descriptionShort = "$STR_CfgVehicles_ShelterSite1";
+		model = "\DZ\gear\camping\sheltersite.p3d";
+		bounding = "BSphere";
+		overrideDrawArea = "3.0";
+		forceFarBubble = "true";
+		handheld = "false";
+		lootCategory = "Crafted";
+		carveNavmesh = 1;
+		weight = 10000;
+		itemSize[] = {2,3};
+		physLayer = "item_large";
+		createProxyPhysicsOnInit = "false";
+		rotationFlags = 2;
+		attachments[] = {"Material_Shelter_FrameSticks","Material_Shelter_Leather","Material_Shelter_Fabric","Material_Shelter_Sticks"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Base
+			{
+				name = "$STR_CfgVehicles_Fence_Att_Category_Base";
+				description = "";
+				attachmentSlots[] = {"Material_Shelter_FrameSticks"};
+				icon = "cat_shelter_support";
+				selection = "site";
+			};
+			class Material
+			{
+				name = "$STR_CfgVehicles_Fence_Att_Category_Materials";
+				description = "";
+				attachmentSlots[] = {"Material_Shelter_Leather","Material_Shelter_Fabric","Material_Shelter_Sticks"};
+				icon = "cat_shelter_roof";
+				selection = "site";
+			};
+		};
+		class Construction
+		{
+			class site
+			{
+				class leather
+				{
+					name = "leather";
+					is_base = 1;
+					id = 1;
+					required_parts[] = {};
+					conflicted_parts[] = {"fabric","stick"};
+					collision_data[] = {"leather_min","leather_max"};
+					build_action_type = 16;
+					dismantle_action_type = 16;
+					material_type = 1;
+					class Materials
+					{
+						class Material1
+						{
+							type = "LongWoodenStick";
+							slot_name = "Material_Shelter_FrameSticks";
+							quantity = 4;
+							lockable = 0;
+						};
+						class Material2
+						{
+							type = "TannedLeather";
+							slot_name = "Material_Shelter_Leather";
+							quantity = 2;
+							lockable = 0;
+						};
+					};
+				};
+				class fabric
+				{
+					name = "fabric";
+					is_base = 1;
+					id = 2;
+					required_parts[] = {};
+					conflicted_parts[] = {"leather","stick"};
+					collision_data[] = {"fabric_min","fabric_max"};
+					build_action_type = 16;
+					dismantle_action_type = 16;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "LongWoodenStick";
+							slot_name = "Material_Shelter_FrameSticks";
+							quantity = 4;
+							lockable = 0;
+						};
+						class Material2
+						{
+							type = "Folded_Fabric";
+							slot_name = "Material_Shelter_Fabric";
+							quantity = 1;
+							lockable = 0;
+						};
+					};
+				};
+				class stick
+				{
+					name = "stick";
+					is_base = 1;
+					id = 3;
+					required_parts[] = {};
+					conflicted_parts[] = {"leather","fabric"};
+					collision_data[] = {"stick_min","stick_max"};
+					build_action_type = 16;
+					dismantle_action_type = 16;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "LongWoodenStick";
+							slot_name = "Material_Shelter_FrameSticks";
+							quantity = 4;
+							lockable = 0;
+						};
+						class Material2
+						{
+							type = "WoodenStick";
+							slot_name = "Material_Shelter_Sticks";
+							quantity = 50;
+							lockable = 0;
+						};
+					};
+				};
+			};
+		};
+		class AnimationSources
+		{
+			class AnimSourceHidden
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Material_Shelter_FrameSticks: AnimSourceHidden{};
+			class Material_Shelter_Leather: AnimSourceHidden{};
+			class Material_Shelter_Fabric: AnimSourceHidden{};
+			class Material_Shelter_Sticks: AnimSourceHidden{};
+		};
+	};
+	class ShelterBase: TentBase
+	{
+		scope = 0;
+		model = "\DZ\gear\camping\shelter_fabric.p3d";
+		bounding = "BSphere";
+		overrideDrawArea = "3.0";
+		forceFarBubble = "true";
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {15,15,15};
+		hiddenSelections[] = {"xlights_glass_r","xlights_glass_g","xlights_glass_b","xlights_glass_y"};
+		openable = 0;
+		carveNavmesh = 1;
+		inherit_rotation = 1;
+		weight = 10000;
+		itemSize[] = {8,4};
+		itemsCargoSize[] = {6,14};
+		itemBehaviour = 2;
+		lootCategory = "Tents";
+		placement = "ForceSlopeOnTerrain";
+		physLayer = "item_large";
+		rotationFlags = 2;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 600;
+					healthLevels[] = {{1.0,{""}},{0.7,{""}},{0.5,{""}},{0.3,{""}},{0.0,{""}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.3;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 8;
+					};
+				};
+			};
+		};
+		class PointLights
+		{
+			class PointLight
+			{
+				color[] = {1.0,1.0,1.0,0.05};
+				ambient[] = {0.01,0.01,0.01,0.01};
+				position = "light";
+				hitpoint = "bulb";
+				selection = "bulb";
+				size = 0;
+				radius = 5;
+				brightness = 0.001;
+				dayLight = 1;
+				heatHazeRadius = 0.0;
+				heatHazePower = 0.0;
+				fireEffect = 0;
+				fireEffectOctaves = 0;
+				fireEffectPersistence = 0;
+				fireEffectFract = 0;
+			};
+		};
+		class AnimationSources
+		{
+			class CamoNet
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+			class Xlights
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_r
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_g
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_b
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Xlights_glass_y
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Cord_folded
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+			class Cord_plugged
+			{
+				source = "user";
+				initPhase = 1;
+				animPeriod = 0.01;
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class movement_walk
+				{
+					soundSet = "mediumtent_movement_walk_SoundSet";
+					id = 1;
+				};
+				class movement_run
+				{
+					soundSet = "mediumtent_movement_run_SoundSet";
+					id = 3;
+				};
+				class movement_sprint
+				{
+					soundSet = "mediumtent_movement_sprint_SoundSet";
+					id = 5;
+				};
+				class pickUpItem_Light
+				{
+					soundSet = "pickUpTentLight_SoundSet";
+					id = 796;
+				};
+				class pickUpItem
+				{
+					soundSet = "pickUpTent_SoundSet";
+					id = 797;
+				};
+				class mediumtent_drop
+				{
+					soundset = "mediumtent_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
+	class ShelterFabric: ShelterBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_ShelterFabric0";
+		descriptionShort = "$STR_CfgVehicles_ShelterFabric1";
+		model = "\DZ\gear\camping\shelter_fabric.p3d";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 500;
+					healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_destruct_co.paa"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.3;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 8;
+					};
+				};
+			};
+		};
+	};
+	class ShelterLeather: ShelterBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_ShelterLeather0";
+		descriptionShort = "$STR_CfgVehicles_ShelterLeather1";
+		model = "\DZ\gear\camping\shelter_leather.p3d";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 600;
+					healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_destruct_co.paa"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.3;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 8;
+					};
+				};
+			};
+		};
+	};
+	class ShelterStick: ShelterBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_ShelterStick0";
+		descriptionShort = "$STR_CfgVehicles_ShelterStick1";
+		model = "\DZ\gear\camping\shelter_stick.p3d";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 400;
+					healthLevels[] = {{1.0,{"dz\characters\backpacks\data\ghillie_green_co.paa","dz\gear\camping\data\improvised_tent_construction_co.paa","dz\gear\camping\data\improvised_tent_construction_01.rvmat","dz\gear\crafting\data\bp_wooden_stick.rvmat","dz\plants\tree\data\t_piceaabies_leaves_ca.paa"}},{0.7,{"#(argb,8,8,3)color(0.0,1,0.5,1.0,co)","#(argb,8,8,3)color(0.0,1,0.5,1.0,co)","DZ\gear\camping\Data\wooden_log_damage.rvmat","DZ\gear\camping\Data\wooden_log_damage.rvmat","#(argb,8,8,3)color(0.0,1,0.5,1.0,co)"}},{0.5,{"#(argb,8,8,3)color(0.0,1,1,1.0,co)","#(argb,8,8,3)color(0.0,1,1,1.0,co)","DZ\gear\camping\Data\wooden_log_damage.rvmat","DZ\gear\camping\Data\wooden_log_damage.rvmat","#(argb,8,8,3)color(0.0,1,1,1.0,co)"}},{0.3,{"#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)","#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)","DZ\gear\camping\Data\wooden_log_destruct.rvmat","DZ\gear\camping\Data\wooden_log_destruct.rvmat","#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)"}},{0.0,{"#(argb,8,8,3)color(1,0.0,0.0,1.0,co)","#(argb,8,8,3)color(1,0.0,0.0,1.0,co)","DZ\gear\camping\Data\wooden_log_destruct.rvmat","DZ\gear\camping\Data\wooden_log_destruct.rvmat","#(argb,8,8,3)color(1,0.0,0.0,1.0,co)"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.3;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 8;
+					};
+				};
+			};
+			componentNames[] = {""};
 		};
 	};
 	class TerritoryFlag: BaseBuildingBase
@@ -7826,5 +8145,25 @@ class CfgNonAIVehicles
 				initPhase = 1;
 			};
 		};
+	};
+	class ProxyWooden_stick_blunt: ProxyBaseBuilding
+	{
+		model = "\dz\gear\crafting\Wooden_stick_blunt.p3d";
+		inventorySlot[] = {"Material_Shelter_FrameSticks"};
+	};
+	class Proxytanned_leather: ProxyBaseBuilding
+	{
+		model = "\dz\gear\consumables\tanned_leather.p3d";
+		inventorySlot[] = {"Material_Shelter_Leather"};
+	};
+	class Proxyfabric_ground: ProxyBaseBuilding
+	{
+		model = "\dz\gear\camping\fabric_ground.p3d";
+		inventorySlot[] = {"Material_Shelter_Fabric"};
+	};
+	class Proxybp_wooden_stick: ProxyBaseBuilding
+	{
+		model = "\dz\gear\crafting\bp_wooden_stick.p3d";
+		inventorySlot[] = {"Material_Shelter_Sticks"};
 	};
 };

@@ -74,13 +74,13 @@ class GardenPlot extends GardenBase
 		RefreshSlots();
 	}
 	
-	override void OnPlacementComplete( Man player )
-	{				
-		super.OnPlacementComplete( player );
+	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
+	{
+		super.OnPlacementComplete( player, position, orientation );
 				
 		PlayerBase player_base = PlayerBase.Cast( player );
-		vector position = player_base.GetLocalProjectionPosition();
-		vector orientation = player_base.GetLocalProjectionOrientation();
+		//vector pos = player_base.GetLocalProjectionPosition();
+		//vector ori = player_base.GetLocalProjectionOrientation();
 			
 		if ( GetGame().IsMultiplayer()  &&  GetGame().IsServer() || !GetGame().IsMultiplayer() )
 		{

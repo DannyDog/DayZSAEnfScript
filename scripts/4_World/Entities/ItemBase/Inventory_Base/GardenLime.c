@@ -1,4 +1,4 @@
-class GardenLime extends Inventory_Base
+class GardenLime extends ItemBase
 {
 	override bool CanPutAsAttachment( EntityAI parent )
 	{

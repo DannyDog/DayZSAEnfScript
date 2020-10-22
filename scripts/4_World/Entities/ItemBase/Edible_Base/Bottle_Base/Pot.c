@@ -50,19 +50,20 @@ class Pot extends Bottle_Base
 		return "pour_End_Water_Pot_SoundSet";
 	}
 	
+	bool IsCargoException( EntityAI item )
+	{
+		return ( item.IsKindOf( GetType() ) || item.IsKindOf( "FryingPan" ) || item.IsKindOf( "SmallProtectorCase" ) || ( item.IsKindOf( "PortableGasStove" ) && item.FindAttachmentBySlotName("CookingEquipment") ) );
+	}
+	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo( parent ) )
-		{
+		if ( !super.CanPutInCargo( parent ) )
 			return false;
-		}	
 		
-		if ( !parent.IsKindOf( "FryingPan" ) || !parent.IsKindOf( this.GetType() ) )
-		{
-			return true;
-		}
+		if ( IsCargoException( parent ) )
+			return false;
 		
-		return false;
+		return true;
 	}
 	
 	override bool CanReceiveItemIntoCargo(EntityAI item)
@@ -70,7 +71,7 @@ class Pot extends Bottle_Base
 		if ( !super.CanReceiveItemIntoCargo( item ) )
 			return false;
 
-		if ( item.IsKindOf( "FryingPan" ) || item.IsKindOf( GetType() ) )
+		if ( IsCargoException( item ) )
 			return false;
 
 		return true;
@@ -81,13 +82,13 @@ class Pot extends Bottle_Base
 		if ( !super.CanLoadItemIntoCargo( item ) )
 			return false;
 
-		if ( item.IsKindOf( "FryingPan" ) || item.IsKindOf( GetType() ) )
+		if ( IsCargoException( item ) )
 			return false;
 
 		return true;
 	}
 	
-	override void EECargoIn(EntityAI item)
+	/*override void EECargoIn(EntityAI item)
 	{
 		super.EECargoIn(item);
 
@@ -99,20 +100,7 @@ class Pot extends Bottle_Base
 				SoakItem(item);
 			}
 		}
-	}
-	
-	//! sets wetness of item too its max
-	protected void SoakItem(EntityAI item)
-	{
-		ItemBase itemIB;
-		if (Class.CastTo(itemIB, item))
-		{
-			if (itemIB.GetAbsorbency() > 0)
-			{
-				itemIB.SetWet(itemIB.GetWetMax());
-			}
-		}
-	}
+	}*/
 	
 	override bool IsOpen()
 	{

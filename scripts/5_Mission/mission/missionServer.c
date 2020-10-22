@@ -9,20 +9,12 @@ class MissionServer extends MissionBase
 	ref map<PlayerBase, ref LogoutInfo> m_LogoutPlayers;
 	const int SCHEDULER_PLAYERS_PER_TICK = 5;
 	int m_currentPlayer;
-	int m_top = -1;
-	int m_bottom = -1;
-	int m_shoes = -1;
-	int m_skin = -1;
+	int m_RespawnMode;
 	
 	PlayerBase m_player;
 	MissionBase m_mission;
 	PluginAdditionalInfo m_moduleDefaultCharacter;
 	
-	ref TStringArray topsArray;
-	ref TStringArray pantsArray;
-	ref TStringArray shoesArray;
-	ref TStringArray backpackArray  = {"TaloonBag_Blue","TaloonBag_Green","TaloonBag_Orange","TaloonBag_Violet"}; //only for testing equips, will remove eventually
-		
 	void MissionServer()
 	{
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.UpdatePlayersStats, 30000, true);
@@ -34,47 +26,24 @@ class MissionServer extends MissionBase
 		UpdatePlayersStats();
 		m_Players = new array<Man>;
 		m_LogoutPlayers = new map<PlayerBase, ref LogoutInfo>;
-		
-		InitEquipArrays();
 	}
-
+	
 	void ~MissionServer()
 	{
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(this.UpdatePlayersStats);
-	}
-
-	void InitEquipArrays()
-	{
-		topsArray = new TStringArray;
-		pantsArray = new TStringArray;
-		shoesArray = new TStringArray;
-		
-		string root_path = "cfgCharacterCreation";
-		
-		g_Game.ConfigGetTextArray(root_path + " top", topsArray);
-		g_Game.ConfigGetTextArray(root_path + " bottom", pantsArray);
-		g_Game.ConfigGetTextArray(root_path + " shoe", shoesArray);
 	}
 	
 	override void OnInit()
 	{
 		super.OnInit();
-
-		/*
-		// example
-		Print("This is Server mission");
-		
-		Print("vytvaram triggeraaaaaa");
-		vector player_pos = "2558 16 2854";
-		g_Game.CreateObject("ItemTrigger", player_pos, false);
-		//SpawnItems();*/
 	}
 	
 	override void OnUpdate(float timeslice)
 	{
 		UpdateDummyScheduler();
 		TickScheduler(timeslice);
-		UpdateLogoutPlayers();
+		UpdateLogoutPlayers();		
+		m_WorldData.UpdateBaseEnvTemperature( timeslice );	// re-calculate base enviro temperature
 	}
 
 	override bool IsServer()
@@ -160,7 +129,6 @@ class MissionServer extends MissionBase
 		case ClientNewEventTypeID:
 			ClientNewEventParams newParams;
 			Class.CastTo(newParams, params);
-			
 			player = OnClientNewEvent(newParams.param1, newParams.param2, newParams.param3);
 			if (!player)
 			{
@@ -177,7 +145,6 @@ class MissionServer extends MissionBase
 		case ClientReadyEventTypeID:
 			ClientReadyEventParams readyParams;
 			Class.CastTo(readyParams, params);
-			
 			identity = readyParams.param1;
 			Class.CastTo(player, readyParams.param2);
 			if (!player)
@@ -197,7 +164,6 @@ class MissionServer extends MissionBase
 		case ClientRespawnEventTypeID:
 			ClientRespawnEventParams respawnParams;
 			Class.CastTo(respawnParams, params);
-			
 			identity = respawnParams.param1;
 			Class.CastTo(player, respawnParams.param2);
 			if (!player)
@@ -317,37 +283,16 @@ class MissionServer extends MissionBase
 		}
 	}
 	
-	//saves them for the whole mission
-	void ProcessLoginData(ParamsReadContext ctx, out int top, out int bottom, out int shoes, out int skin)
+	//! returns whether received data is valid, ctx can be filled on client in StoreLoginData()
+	bool ProcessLoginData(ParamsReadContext ctx)
 	{
-		ref Param1<int> topParam = new Param1<int>(-1);
-		if (ctx.Read(topParam))
-		{
-			top = topParam.param1;
-		}
-		
-		ref Param1<int> bottomParam = new Param1<int>(-1);
-		if (ctx.Read(bottomParam))
-		{
-			bottom = bottomParam.param1;
-		}
-		
-		ref Param1<int> shoesParam = new Param1<int>(-1);
-		if (ctx.Read(shoesParam))
-		{
-			shoes = shoesParam.param1;
-		}
-		
-		ref Param1<int> skinParam = new Param1<int>(-1);
-		if (ctx.Read(skinParam))
-		{
-			skin = skinParam.param1;
-		}
+		//creates temporary server-side structure for handling default character spawn
+		return GetGame().GetMenuDefaultCharacterData(false).DeserializeCharacterData(ctx);
 	}
 	
 	//
 	PlayerBase CreateCharacter(PlayerIdentity identity, vector pos, ParamsReadContext ctx, string characterName)
-	{		
+	{
 		Entity playerEnt;
 		playerEnt = GetGame().CreatePlayer(identity, characterName, pos, 0, "NONE");//Creates random player
 		Class.CastTo(m_player, playerEnt);
@@ -358,28 +303,34 @@ class MissionServer extends MissionBase
 		//moduleDefaultCharacter.FileDelete(moduleDefaultCharacter.GetFileName());
 	}
 	
-	void EquipCharacter()
+	//! Spawns character equip from received data. Checks validity against config, randomizes if invalid value and config array not empty.
+	void EquipCharacter(MenuDefaultCharacterData char_data)
 	{
-		//Creates random starting clothes - fallback
-		if (m_top == -1 || m_bottom == -1 || m_shoes == -1 || m_skin == -1)
+		int slot_ID;
+		string attachment_type;
+		for (int i = 0; i < DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Count(); i++)
 		{
-			EntityAI item = m_player.GetInventory().CreateInInventory(topsArray.GetRandomElement());
-			EntityAI item2 = m_player.GetInventory().CreateInInventory(pantsArray.GetRandomElement());
-			EntityAI item3 = m_player.GetInventory().CreateInInventory(shoesArray.GetRandomElement());
+			slot_ID = DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Get(i);
+			attachment_type = "";
+			if ( !char_data.GetAttachmentMap().Find(slot_ID,attachment_type) || m_RespawnMode > 0 )
+			{
+				//randomize
+				if ( DefaultCharacterCreationMethods.GetConfigArrayCountFromSlotID(slot_ID) > 0 )
+				{
+					attachment_type = DefaultCharacterCreationMethods.GetConfigAttachmentTypes(slot_ID).GetRandomElement();
+				}
+				else //undefined, moving on
+					continue;
+			}
 			
-			StartingEquipSetup(m_player, false);
+			if (attachment_type != "")
+				m_player.GetInventory().CreateAttachmentEx(attachment_type,slot_ID);
 		}
-		//Creates clothes from DayZIntroScene's m_demoUnit
-		else
-		{
-			item = m_player.GetInventory().CreateInInventory(topsArray.Get(m_top));
-			item2 = m_player.GetInventory().CreateInInventory(pantsArray.Get(m_bottom));
-			item3 = m_player.GetInventory().CreateInInventory(shoesArray.Get(m_shoes));
-			
-			StartingEquipSetup(m_player, true);
-		}
+		
+		StartingEquipSetup(m_player, true);
 	}
 	
+	//! can be overriden to manually set up starting equip. 'clothesChosen' is legacy parameter, does nothing.
 	void StartingEquipSetup(PlayerBase player, bool clothesChosen)
 	{
 	}
@@ -387,22 +338,20 @@ class MissionServer extends MissionBase
 	PlayerBase OnClientNewEvent(PlayerIdentity identity, vector pos, ParamsReadContext ctx)
 	{
 		string characterName;
+		m_RespawnMode = GetGame().ServerConfigGetInt("setRespawnMode"); //todo - init somewhere safe
 		// get login data for new character
-		// note: ctx can be filled on client in StoreLoginData()
-		ProcessLoginData(ctx, m_top, m_bottom, m_shoes, m_skin);
-				
-		if (m_top == -1 || m_bottom == -1 || m_shoes == -1 || m_skin == -1)
+		if ( ProcessLoginData(ctx) && (m_RespawnMode < 1) && GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1 )
 		{
-			characterName = GetGame().CreateRandomPlayer();
+			characterName = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
 		}
 		else
 		{
-			characterName = GetGame().ListAvailableCharacters().Get(m_skin);
+			characterName = GetGame().CreateRandomPlayer();
 		}
 		
 		if (CreateCharacter(identity, pos, ctx, characterName))
 		{
-			EquipCharacter();
+			EquipCharacter(GetGame().GetMenuDefaultCharacterData());
 		}
 		
 		return m_player;

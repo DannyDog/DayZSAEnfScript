@@ -78,7 +78,8 @@ class CfgVehicles
 		weight = 12000;
 		itemBehaviour = 2;
 		lootTag[] = {"Hunting","Forester","Work"};
-		slopeTolerance = 0.3;
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {60,60,60};
 		hiddenSelections[] = {"placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\traps\data\beartrap_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\traps\data\beartrap.rvmat"};
@@ -157,7 +158,8 @@ class CfgVehicles
 		weight = 1670;
 		itemSize[] = {2,2};
 		itemBehaviour = 1;
-		slopeTolerance = 0.3;
+		slopeTolerance = 0.15;
+		yawPitchRollLimit[] = {60,60,60};
 		hiddenSelections[] = {"placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\traps\data\landmine_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\traps\data\landmine.rvmat"};
@@ -220,6 +222,8 @@ class CfgVehicles
 		model = "\dz\gear\tools\improvised_fish_trap.p3d";
 		lootCategory = "Crafted";
 		rotationFlags = 17;
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {20,20,20};
 		weight = 60;
 		itemSize[] = {2,3};
 		itemsCargoSize[] = {1,2};
@@ -272,6 +276,8 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_FishNetTrap1";
 		model = "\dz\gear\traps\fishnettrap.p3d";
 		lootCategory = "Crafted";
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {20,20,20};
 		weight = 60;
 		itemSize[] = {2,3};
 		itemsCargoSize[] = {2,3};
@@ -318,10 +324,11 @@ class CfgVehicles
 		rotationFlags = 16;
 		lootCategory = "Crafted";
 		attachments[] = {"tripWireAttachment"};
+		slopeTolerance = 0.3;
+		yawPitchRollLimit[] = {60,60,60};
 		weight = 60;
 		itemSize[] = {2,3};
 		itemBehaviour = 1;
-		slopeTolerance = 0.3;
 		hiddenSelections[] = {"placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\crafting\data\rabbit_snare_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\crafting\data\rabbit_snare.rvmat"};
@@ -388,6 +395,8 @@ class CfgVehicles
 		model = "\dz\gear\crafting\rabbit_snare.p3d";
 		rotationFlags = 16;
 		lootCategory = "Crafted";
+		slopeTolerance = 0.2;
+		yawPitchRollLimit[] = {45,45,45};
 		weight = 240;
 		itemSize[] = {2,2};
 		itemBehaviour = 1;

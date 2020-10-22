@@ -20,10 +20,14 @@ class ActionEmptyMagazineCB : ActionContinuousBaseCB
 		{
 			case UA_ANIM_EVENT:
 				{
+					if (!m_ActionData.m_MainItem)
+						break;
+				
 					EmptyMagazineActionData emActionData = EmptyMagazineActionData.Cast(m_ActionData);
 		
 					Magazine mag;
-					Class.CastTo(mag, m_ActionData.m_MainItem);
+					if (!Class.CastTo(mag, m_ActionData.m_MainItem))
+						break;
 					
 					//float dmg;
 					//string bulletType;
@@ -148,10 +152,21 @@ class ActionEmptyMagazine: ActionContinuousBase
 		return true;
 	}
 	
+	bool CanEmpty(ItemBase item)
+	{
+		Magazine mag;
+		return ( item && Class.CastTo(mag, item) && mag.GetAmmoCount() > 0 );
+	}
+	
+	override bool ActionConditionContinue( ActionData action_data )
+	{	
+		return CanEmpty(action_data.m_MainItem);
+	}
+	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
 		Magazine itm;
-		return ( Class.CastTo(itm, item) && itm.GetAmmoCount() > 0 );
+		return CanEmpty(item);
 	}
 
 	override bool HasTarget()

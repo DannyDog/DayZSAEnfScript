@@ -339,17 +339,6 @@ class InspectMenuNew extends UIScriptedMenu
 	static void UpdateItemInfoWetness(Widget root_widget, EntityAI item)
 	{
 		if ( item.IsInherited( ZombieBase ) || item.IsInherited( Car ) ) return;
-		/*		
-		_bagwet = 1;
-		if(!isNull (itemParent _item) && (itemParent _item) isKindOf "ClothingBase")then{
-		_bagwet = getNumber(configFile >> "cfgVehicles" >> typeOf (itemParent _item) >> "absorbency");
-		};
-	
-		//wetness setting
-		if(!isNull (itemParent _item) && _bagwet > 0 && _pwetness > 0)then{
-		_wetness=getNumber(_config >> "absorbency") min _pwetness;
-		};
-		*/
 		float wetness = 0;
 		
 		if ( item.IsInherited(ItemBase) )
@@ -357,15 +346,7 @@ class InspectMenuNew extends UIScriptedMenu
 			ItemBase item_IB = ItemBase.Cast( item );
 			wetness = item_IB.GetWet();
 		}
-		
-		float bagwet = 1;
-	
-		EntityAI parent = item.GetHierarchyParent();
-		if (parent && parent.IsClothing())
-		{
-			bagwet = parent.ConfigGetFloat("absorbency");
-		}
-		
+
 		if( wetness < GameConstants.STATE_DAMP )
 		{
 			WidgetTrySetText(root_widget, "ItemWetnessWidget", "");
@@ -457,7 +438,34 @@ class InspectMenuNew extends UIScriptedMenu
 			}
 			else
 			{
-				WidgetTrySetText( root_widget, "ItemQuantityWidget", "" );
+				if ( item.IsInherited( ClothingBase ) )
+				{
+					float heatIsolation = MiscGameplayFunctions.GetCurrentItemHeatIsolation( item_base );
+					if ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_BAD )
+					{
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_bad" + " " + "#inv_inspect_isolation", GetTemperatureColor( 10 ) );
+					}
+					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_BAD ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_LOW ) )
+					{
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_low" + " " + "#inv_inspect_isolation", GetTemperatureColor( 20 ) );
+					}
+					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_LOW ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_MEDIUM ) )
+					{
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_medium" + " " + "#inv_inspect_isolation", GetTemperatureColor( 30 ) );
+					}
+					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_MEDIUM ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_HIGH ) )
+					{
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_high" + " " + "#inv_inspect_isolation", GetTemperatureColor( 50 ) );
+					}
+					else
+					{
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_excel" + " " + "#inv_inspect_isolation", GetTemperatureColor( 70 ) );
+					}
+				}
+				else
+				{
+					WidgetTrySetText( root_widget, "ItemQuantityWidget", "" );
+				}
 			}
 		}
 	}

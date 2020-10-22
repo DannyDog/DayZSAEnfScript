@@ -642,6 +642,7 @@ class CfgSurfaces
 		impact = "Hit_Foliage";
 		isDigable = 1;
 		isFertile = 1;
+		windModifier = 0.75;
 		vpSurface = "Forest";
 	};
 	class en_forestdec: DZ_SurfacesExt
@@ -664,6 +665,7 @@ class CfgSurfaces
 		impact = "Hit_Foliage";
 		isDigable = 1;
 		isFertile = 1;
+		windModifier = 0.75;
 		vpSurface = "Forest";
 	};
 	class en_soil: DZ_SurfacesExt
