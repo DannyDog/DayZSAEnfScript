@@ -10,7 +10,7 @@ class ActionBuildShelter: ActionBuildPart
 		//m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_HIGH;
 	}
 	
-	override void CreateConditionComponents()  
+	override void CreateConditionComponents()
 	{
 		m_ConditionItem = new CCINone;
 		m_ConditionTarget = new CCTCursor;
@@ -26,11 +26,25 @@ class ActionBuildShelter: ActionBuildPart
 			
 			if ( constrution_part )
 			{
-				return "#build" + " " + constrution_part.GetName();
+				string ret = "";
+				switch (constrution_part.GetName())
+				{
+					case "leather":
+						ret = "#build_shelter_leather";
+					break;
+					
+					case "fabric":
+						ret = "#build_shelter_fabric";
+					break;
+					
+					case "stick":
+						ret = "#build_shelter_stick";
+					break;
+				}
 			}
 		}
 		
-		return "";
+		return ret;
 	}
 	
 	override typename GetInputType()

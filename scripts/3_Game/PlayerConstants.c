@@ -125,6 +125,9 @@ class PlayerConstants
 	static const float HEALTH_REGEN_MIN						= 0.005;	//health regen rate at BLOOD_THRESHOLD_FATAL blood level
 	static const float HEALTH_REGEN_MAX						= 0.03;		//health regen rate at MAXIMUM blood level
 	
+	static const float LEG_HEALTH_REGEN						= 1;		//Leg health regen when leg is NOT BROKEN
+	static const float LEG_HEALTH_REGEN_BROKEN				= 0.18;		//Leg health regen when BROKEN OR SPLINTED
+	
 	static const float UNCONSCIOUS_THRESHOLD				= 25.0;		//player goes unconscious when we get under this threshold
 	static const float CONSCIOUS_THRESHOLD					= 50.0;		//player regains consciousness when he gets above this threshold
 	
@@ -194,8 +197,8 @@ class PlayerConstants
 	static const float 	BROKEN_LEGS_HIGH_SHOCK_WALK = 8;			//Inflicted shock on modifier update with low health legs
 	static const float 	BROKEN_LEGS_LIGHT_MELEE_SHOCK = 20; 		//Inflicted shock per light weapon swing
 	static const float 	BROKEN_LEGS_HEAVY_MELEE_SHOCK = 35; 		//Inflicted shock per heavy weapon swing
-	static const float	BROKEN_LEGS_LOW_HEALTH_THRESHOLD = 20;		//Amount of health BELOW which legs have "low health"
-	static const float	BROKEN_LEGS_HIGH_HEALTH_THRESHOLD = 80;		//Amount of health OVER which legs have "low health"
+	static const float	BROKEN_LEGS_LOW_HEALTH_THRESHOLD = 25;		//Amount of health BELOW which legs have "low health"
+	static const float	BROKEN_LEGS_HIGH_HEALTH_THRESHOLD = 75;		//Amount of health OVER which legs have "low health"
 	static const int	BROKEN_LEGS_FALL_STEP_COUNT = 10;			//Number of steps before falling over
 	static const float	BROKEN_LEGS_STAND_SHOCK = 0;				//Shock dealt when standing with broken legs
 }

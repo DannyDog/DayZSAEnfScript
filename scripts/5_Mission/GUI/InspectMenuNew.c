@@ -443,23 +443,23 @@ class InspectMenuNew extends UIScriptedMenu
 					float heatIsolation = MiscGameplayFunctions.GetCurrentItemHeatIsolation( item_base );
 					if ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_BAD )
 					{
-						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_bad" + " " + "#inv_inspect_isolation", GetTemperatureColor( 10 ) );
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_bad", GetTemperatureColor( 10 ) );
 					}
 					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_BAD ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_LOW ) )
 					{
-						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_low" + " " + "#inv_inspect_isolation", GetTemperatureColor( 20 ) );
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_low", GetTemperatureColor( 20 ) );
 					}
 					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_LOW ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_MEDIUM ) )
 					{
-						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_medium" + " " + "#inv_inspect_isolation", GetTemperatureColor( 30 ) );
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_medium", GetTemperatureColor( 30 ) );
 					}
 					else if ( ( heatIsolation > GameConstants.HEATISO_THRESHOLD_MEDIUM ) && ( heatIsolation <= GameConstants.HEATISO_THRESHOLD_HIGH ) )
 					{
-						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_high" + " " + "#inv_inspect_isolation", GetTemperatureColor( 50 ) );
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_high", GetTemperatureColor( 50 ) );
 					}
 					else
 					{
-						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_excel" + " " + "#inv_inspect_isolation", GetTemperatureColor( 70 ) );
+						WidgetTrySetText( root_widget, "ItemQuantityWidget", "#inv_inspect_iso_excel", GetTemperatureColor( 70 ) );
 					}
 				}
 				else

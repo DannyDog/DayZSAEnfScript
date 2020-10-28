@@ -1547,7 +1547,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 80;
+					hitpoints = 85;
 					healthLevels[] = {{1.0,{"DZ\gear\tools\data\kitchenknife.rvmat"}},{0.7,{"DZ\gear\tools\data\kitchenknife.rvmat"}},{0.5,{"DZ\gear\tools\data\kitchenknife_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\kitchenknife_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\kitchenknife_destruct.rvmat"}}};
 				};
 			};
@@ -1621,7 +1621,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 65;
 					healthLevels[] = {{1.0,{"DZ\gear\tools\data\small_steak_knife.rvmat"}},{0.7,{"DZ\gear\tools\data\small_steak_knife.rvmat"}},{0.5,{"DZ\gear\tools\data\small_steak_knife_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\small_steak_knife_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\small_steak_knife_destruct.rvmat"}}};
 				};
 			};
@@ -1738,7 +1738,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 25;
+					hitpoints = 45;
 					healthLevels[] = {{1.0,{"DZ\gear\tools\data\stone.rvmat"}},{0.7,{"DZ\gear\tools\data\stone.rvmat"}},{0.5,{"DZ\gear\tools\data\stone_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\stone_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\stone_destruct.rvmat"}}};
 				};
 			};

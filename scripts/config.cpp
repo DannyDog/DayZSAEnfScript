@@ -2275,7 +2275,7 @@ class CfgSlots
 		displayName = "Material_Shelter_Leather";
 		selection = "Material_Shelter_Leather";
 		ghostIcon = "animal_pelt";
-		stackMax = 2;
+		stackMax = 8;
 	};
 	class Slot_Material_Shelter_Fabric
 	{
@@ -2283,7 +2283,7 @@ class CfgSlots
 		displayName = "Material_Shelter_Fabric";
 		selection = "Material_Shelter_Fabric";
 		ghostIcon = "tarp";
-		stackMax = 1;
+		stackMax = 4;
 	};
 	class Slot_Material_Shelter_Sticks
 	{

@@ -69,7 +69,7 @@ class ActionBuildPart: ActionContinuousBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		//hack - gate
-		if(target.GetObject() && !target.GetObject().CanUseConstructionBuild())
+		if(target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
 			return false;
 		if( player.IsPlacingLocal() || player.IsPlacingServer() )
 			return false;

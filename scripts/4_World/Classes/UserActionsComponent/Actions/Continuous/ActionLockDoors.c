@@ -69,7 +69,7 @@ class ActionLockDoors: ActionContinuousBase
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		
 		float skillLevel = action_data.m_Player.GetSoftSkillsManager().GetSpecialtyLevel();
-		float appliedDamage = 7 + 2*skillLevel; 
+		float appliedDamage = 5 + 2*skillLevel; 
 		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, appliedDamage);
 	}
 };

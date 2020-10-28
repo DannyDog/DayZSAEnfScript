@@ -1126,7 +1126,7 @@ class CfgVehicles
 		weight = 400;
 		ragQuantity = 3;
 		varWetMax = 0.249;
-		heatIsolation = 0.55;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		quickBarBonus = 2;

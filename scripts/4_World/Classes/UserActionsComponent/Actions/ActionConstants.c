@@ -117,12 +117,12 @@ class UASoftSkillsWeight
  */
 class UADamageApplied
 {
-	const float BUILD 		= 12;
-	const float DISMANTLE 	= 20;
-	const float REPAIR 		= 12;
-	const float DESTROY 	= 30;
+	const float BUILD 		= 10;
+	const float DISMANTLE 	= 10;
+	const float REPAIR 		= 10;
+	const float DESTROY 	= 25;
 	const float SAW_LOCK 	= 150;
-	const float SKINNING 	= 12;
+	const float SKINNING 	= 4;
 };
 
 /**@class	Constants for water type

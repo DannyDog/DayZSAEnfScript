@@ -34,7 +34,7 @@ class ActionSawPlanksCB : ActionContinuousBaseCB
 
 class ActionSawPlanks: ActionContinuousBase
 {
-	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 20; // any other item, including hacksaw
+	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 10; // any other item, including hacksaw
 	//static const int DECREASE_HEALTH_OF_TOOL_AXE = 20; // axes
 	//static const int DECREASE_FUEL_OF_CHAINSAW = 20; // chainsaw fuel in ml
 	

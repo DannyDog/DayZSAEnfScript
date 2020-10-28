@@ -1070,7 +1070,7 @@ class CfgVehicles
 		quickBarBonus = 1;
 		ragQuantity = 5;
 		varWetMax = 0.249;
-		absorbency = 0;
+		heatIsolation = 0.25;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "ChemlonDress";
@@ -1362,7 +1362,7 @@ class CfgVehicles
 		itemsCargoSize[] = {7,6};
 		quickBarBonus = 2;
 		varWetMax = 0.249;
-		heatIsolation = 0.55;
+		heatIsolation = 0.4;
 		repairableWithKits[] = {5,2};
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "ChemlonDress";

@@ -19,6 +19,7 @@ class FlareLight extends PointLightBase
 		SetDancingShadowsMovementSpeed( 0.5 );
 		SetDancingShadowsAmplitude( 0.15 );
 		//SetLifetime( 50 );
+		EnableLinear( true );
 		EnableHeatHaze( true );
 		SetHeatHazeRadius( 0.1 );
 		SetHeatHazePower( 0.02 );

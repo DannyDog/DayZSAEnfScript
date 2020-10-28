@@ -680,6 +680,9 @@ class PlayerBase extends ManBase
 			}
 		}
 		
+		//m_ShockHandler.SetShock(damageResult.GetDamage("", "Shock")); //TESTING
+		m_ShockHandler.CheckValue(true);
+		
 		//analytics
 		GetGame().GetAnalyticsServer().OnEntityHit( source, this );
 	}
@@ -2856,10 +2859,7 @@ class PlayerBase extends ManBase
 	{
 		if (!IsInWater() && !IsSwimming() && !IsClimbingLadder() && !IsInVehicle() && !IsClimbing() && DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_PRONE) )
 		{
-			//Get command move and verify not null
-			HumanCommandMove hcm = GetCommand_Move();
-			if (hcm)
-			{
+			
 				//Force to prone if player tries moving while not prone OR if it is first time legs break
 				if ( (forceOverride == true || m_BrokenLegState != m_LocalBrokenState) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
 				{
@@ -2873,20 +2873,26 @@ class PlayerBase extends ManBase
 					m_CanPlayBrokenLegSound = true;
 					m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
 					m_ShockHandler.CheckValue(true);
-					hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+					//Get command move and verify not null
+					HumanCommandMove hcm = StartCommand_Move();  
+					hcm = GetCommand_Move(); 
+					if (hcm)
+					{
+						hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+					}
 					SetLegHealth();
 					m_LocalBrokenState = m_BrokenLegState;
 				}
 				else
 					m_CanPlayBrokenLegSound = false;
-			}
+			
 		}
 	}
 	
 	//Used to inflict shock when player is walking (only inflicted on Update timer)
 	void BrokenLegWalkShock()
 	{
-		if (m_MovementState.m_iMovement != 0 && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+		if ( (m_MovementState.m_iMovement != 0 && m_MovementState.m_iMovement != 1) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
 		{
 			if (GetHealth("RightLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("RightFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD)
 			{
@@ -7494,5 +7500,128 @@ class PlayerBase extends ManBase
 		{
 			GetItemAccessor().HideItemInHands(true);
 		}
+	}
+	
+	//!
+	bool CheckAndExecuteStackSplit(FindInventoryLocationType flags, notnull EntityAI item, notnull EntityAI target)
+	{
+		float stackable = item.GetTargetQuantityMax();
+		if ( !(stackable == 0 || stackable >= item.GetQuantity()) )
+		{
+			InventoryLocation il = new InventoryLocation;
+			if ( target && target.GetInventory().FindFreeLocationFor( item, flags, il ) )
+			{
+				ItemBase itemB;
+				if ( CastTo(itemB, item) )
+				{
+					itemB.SplitIntoStackMaxToInventoryLocationClient( il );
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	bool CheckAndExecuteStackSplitToInventoryLocation(InventoryLocation il, notnull EntityAI item)
+	{
+		float stackable = item.GetTargetQuantityMax();
+		if ( !(stackable == 0 || stackable >= item.GetQuantity()) )
+		{
+			ItemBase itemB;
+			if ( CastTo(itemB, item) )
+			{
+				itemB.SplitIntoStackMaxToInventoryLocationClient( il );
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	override protected bool TakeEntityToInventoryImpl(InventoryMode mode, FindInventoryLocationType flags, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(flags, item, this) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2Inv(SPLIT) item=" + GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityToInventoryImpl(mode, flags, item);
+	}
+	
+	override protected bool TakeEntityToCargoImpl(InventoryMode mode, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(FindInventoryLocationType.CARGO, item, this) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2Cgo(SPLIT) item=" +GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityToCargoImpl(mode, item);
+	}
+	
+	override protected bool TakeEntityAsAttachmentImpl(InventoryMode mode, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(FindInventoryLocationType.ATTACHMENT, item, this) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2Att(SPLIT) item=" + GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityAsAttachmentImpl(mode, item);
+	}
+	
+	override void TakeEntityToHandsImpl(InventoryMode mode, EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(FindInventoryLocationType.HANDS, item, this) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2Hands(SPLIT) item=" + GetDebugName(item));
+			return;
+		}
+		
+		super.TakeEntityToHandsImpl(mode, item);
+	}
+	
+	override protected bool TakeEntityToTargetInventoryImpl(InventoryMode mode, notnull EntityAI target, FindInventoryLocationType flags, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(flags, item, target) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2TargetInv(SPLIT) item=" + GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityToTargetInventoryImpl(mode, target, flags, item);
+	}
+	
+	override protected bool TakeEntityToTargetCargoImpl(InventoryMode mode, notnull EntityAI target, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(FindInventoryLocationType.CARGO, item, target) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2TargetCgo(SPLIT) item=" + GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityToTargetCargoImpl(mode, target, item);
+	}
+	
+	override protected bool TakeEntityToTargetAttachmentImpl(InventoryMode mode, notnull EntityAI target, notnull EntityAI item)
+	{
+		if ( CheckAndExecuteStackSplit(FindInventoryLocationType.ATTACHMENT, item, target) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2TargetAtt(SPLIT) item=" + GetDebugName(item));
+			return true;
+		}
+		
+		return super.TakeEntityToTargetAttachmentImpl(mode, target, item);
+	}
+	
+	override protected bool TakeToDstImpl(InventoryMode mode, notnull InventoryLocation src, notnull InventoryLocation dst)
+	{
+		if ( CheckAndExecuteStackSplitToInventoryLocation(dst, dst.GetItem()) )
+		{
+			syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " Take2Dst(SPLIT) item=" + GetDebugName(dst.GetItem()));
+			return true;
+		}
+		
+		return super.TakeToDstImpl(mode, src, dst);
 	}
 }

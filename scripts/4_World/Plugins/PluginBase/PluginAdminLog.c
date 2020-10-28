@@ -351,4 +351,9 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 			LogPrint( "#####" );
 		}
 	}
+	
+	void DirectAdminLogPrint(string str)
+	{
+		LogPrint(str);
+	}
 }

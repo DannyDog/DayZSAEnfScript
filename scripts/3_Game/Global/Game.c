@@ -614,8 +614,9 @@ class CGame
 	
 	// inventory
 	proto native bool	AddInventoryJuncture(Man player, notnull EntityAI item, InventoryLocation dst, bool test_dst_occupancy, int timeout_ms);
-	proto native bool 	HasInventoryJunctureDestination (Man player, notnull InventoryLocation dst);
+	proto native bool 	HasInventoryJunctureDestination(Man player, notnull InventoryLocation dst);
 	proto native bool	AddActionJuncture(Man player, notnull EntityAI item, int timeout_ms);
+	proto native bool	ExtendActionJuncture(Man player, notnull EntityAI item, int timeout_ms);
 	proto native bool	ClearJuncture(Man player, notnull EntityAI item);
 
 	// support

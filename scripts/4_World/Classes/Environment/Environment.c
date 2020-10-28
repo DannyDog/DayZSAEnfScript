@@ -177,13 +177,13 @@ class Environment
 					}
 
 					//! setting of wetness/dryiness of player
-					if( m_ItemsWetnessMax < GameConstants.STATE_DRENCHED && m_Player.GetStatWet().Get() == 1 )
+					if ( ( m_ItemsWetnessMax < GameConstants.STATE_WET ) && ( m_Player.GetStatWet().Get() == 1 ) )
 					{
-						m_Player.GetStatWet().Set(0);
+						m_Player.GetStatWet().Set( 0 );
 					}
-					else if( m_ItemsWetnessMax >= GameConstants.STATE_DRENCHED && m_Player.GetStatWet().Get() == 0 )
+					else if ( ( m_ItemsWetnessMax >= GameConstants.STATE_WET ) && ( m_Player.GetStatWet().Get() == 0 ) )
 					{
-						m_Player.GetStatWet().Set(1);
+						m_Player.GetStatWet().Set( 1 );
 					}
 
 					m_WetDryTick = 0;
@@ -532,6 +532,9 @@ class Environment
 					{
 						isParentWet = true;
 					}
+					
+					if ( ( pItem.GetWet() > m_ItemsWetnessMax ) && ( parent == m_Player ) )
+						m_ItemsWetnessMax = pItem.GetWet();
 				}
 			}
 			
@@ -595,6 +598,9 @@ class Environment
 							hasLiquid = true;
 						}
 					}
+					
+					if ( ( pItem.GetWet() > m_ItemsWetnessMax ) && ( parent == m_Player ) )
+						m_ItemsWetnessMax = pItem.GetWet();
 				}
 			}
 			

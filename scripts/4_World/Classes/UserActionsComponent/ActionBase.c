@@ -32,6 +32,7 @@ class ActionData
 	int 								m_PossibleStanceMask;
 	ref array<ref InventoryLocation>	m_ReservedInventoryLocations;
 	int									m_RefreshReservationTimer;
+	int									m_RefreshJunctureTimer;
 	bool								m_WasExecuted;
 	bool								m_WasActionStarted;
 	bool								m_ReciveEndInput;
@@ -79,6 +80,7 @@ class ActionBase : ActionBase_Basic
 		m_ActionID = 0;
 		InitConditionMask();
 	}
+	
 	void InitConditionMask()
 	{
 		m_ConditionMask = ActionConditionMask.ACM_NO_EXEPTION;
@@ -319,6 +321,11 @@ class ActionBase : ActionBase_Basic
 	
 	void ApplyModifiers( ActionData action_data ) // method that is planned to be called after every succesful completion of action to transfer diseases and other modifiers, now is called before oncompletes
 	{
+	}
+	
+	int GetRefreshReservationTimerValue()
+	{
+		return m_RefreshReservationTimerValue;
 	}
 
 	void WriteToContext(ParamsWriteContext ctx, ActionData action_data)

@@ -46,18 +46,18 @@ class HealthRegenMdfr: ModifierBase
 			//Leg regen when legs are NOT BROKEN
 			if ( player.m_BrokenLegState == eBrokenLegs.NO_BROKEN_LEGS )
 			{
-				player.AddHealth("RightLeg","Health",(regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER)*3);
-				player.AddHealth("RightFoot","Health",(regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER)*3);
-				player.AddHealth("LeftLeg","Health",(regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER)*3);
-				player.AddHealth("LeftFoot","Health",(regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER)*3);
+				player.AddHealth("RightLeg","Health", PlayerConstants.LEG_HEALTH_REGEN);
+				player.AddHealth("RightFoot","Health", PlayerConstants.LEG_HEALTH_REGEN);
+				player.AddHealth("LeftLeg","Health", PlayerConstants.LEG_HEALTH_REGEN);
+				player.AddHealth("LeftFoot","Health", PlayerConstants.LEG_HEALTH_REGEN);
 			}
-			else //if ( player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT )
+			else
 			{
 				//Leg regen when legs are BROKEN or SPLINTED
-				player.AddHealth("RightLeg","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
-				player.AddHealth("RightFoot","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
-				player.AddHealth("LeftLeg","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
-				player.AddHealth("LeftFoot","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
+				player.AddHealth("RightLeg","Health", PlayerConstants.LEG_HEALTH_REGEN_BROKEN);
+				player.AddHealth("RightFoot","Health",PlayerConstants.LEG_HEALTH_REGEN_BROKEN);
+				player.AddHealth("LeftLeg","Health", PlayerConstants.LEG_HEALTH_REGEN_BROKEN);
+				player.AddHealth("LeftFoot","Health", PlayerConstants.LEG_HEALTH_REGEN_BROKEN);
 			}
 			
 			player.AddHealth("Torso","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);

@@ -540,9 +540,9 @@ class GameConstants
 	const float ENVIRO_WET_PENALTY 						= 0.5;		//! at which state of item wetness (0-1) will heat isolation start having negative effect on heat comfort of item
 	const float ENVIRO_WET_PASSTHROUGH_COEF 			= 0.1;		//! how many times slower is wetting/drying items in backpacks
 	const float ENVIRO_ITEM_HEAT_TRANSFER_COEF 			= 0.01;		//! converts temperature of items to entities heatcomfort gain
-	const float ENVIRO_WATER_TEMPERATURE_COEF 			= 0.5;		//! how many time is water colder than air
+	const float ENVIRO_WATER_TEMPERATURE_COEF 			= 1.5;		//! how many time is water colder than air
 	const float ENVIRO_DEFAULT_ENTITY_HEAT 				= 2.5;		//! heat entity generates if not moving
-	const float ENVIRO_TEMPERATURE_HEIGHT_REDUCTION 	= 0.01;		//! amount of ?C reduced for each 100 meteres of height above water level
+	const float ENVIRO_TEMPERATURE_HEIGHT_REDUCTION 	= 0.02;		//! amount of ?C reduced for each 100 meteres of height above water level
 	const float ENVIRO_TEMPERATURE_INSIDE_COEF 			= 0.085;	//! increases temp in interiors
 	const float ENVIRO_TEMPERATURE_UNDERROOF_COEF		= 0.072;
 	const float ENVIRO_TEMPERATURE_WIND_COEF			= 8.5;		//! windchill effect on base temperature
@@ -556,7 +556,7 @@ class GameConstants
 	const float ENVIRO_HEATISOLATION_VEST_WEIGHT		= 0.64;		//! weight of vest for the sum of heat isolation
 	const float ENVIRO_LOW_TEMP_LIMIT					= -40;		//! lowest temperature(deg Celsius) where the player gets lowest possible heat comfort (-1)
 	const float ENVIRO_HIGH_TEMP_LIMIT					= 50;		//! highest temperature(deg Celsius) where the player gets highest possible heat comfort (1)
-	const float ENVIRO_PLAYER_COMFORT_TEMP				= 28;		//! comfort temperature of environment for the player
+	const float ENVIRO_PLAYER_COMFORT_TEMP				= 26;		//! comfort temperature of environment for the player
 	const float ENVIRO_TEMP_EFFECT_ON_PLAYER			= 70;		//! impact of enviro temperature on player (lower value = higher, cannot be zero or below!)
 	const float ENVIRO_PLAYER_HEATBUFFER_DECREASE		= 0.34;		//! Multiplier of enviro temperature for heat buffer decrease (after its static timer runs out)
 	const float ENVIRO_PLAYER_HEATBUFFER_INCREASE		= 0.51;		//! How much heat buffer increases per one enviro tick
@@ -630,7 +630,7 @@ class GameConstants
 	
 	const float TEMPERATURE_RATE_COOLING_INSIDE = -0.17;
 	const float TEMPERATURE_RATE_COOLING_GROUND = -0.34;
-	const float TEMPERATURE_RATE_COOLING_PLAYER = -1.7; // celsius per second
+	const float TEMPERATURE_RATE_COOLING_PLAYER = -0.35; // celsius per second
 	
 	const float HEATISO_THRESHOLD_BAD = 0.2;
 	const float HEATISO_THRESHOLD_LOW = 0.4;

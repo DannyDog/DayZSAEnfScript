@@ -93,34 +93,30 @@ class InjuryAnimationHandler
 			CheckValue();
 			m_TimeSinceLastTick = 0;
 		}
-		
-		//Define on what health condition legs are broken NOTE : Leave some margin to take into account health regen
-		/*if (m_Player.GetHealth("RightLeg", "Health") <= 1 || m_Player.GetHealth("LeftLeg", "Health") <= 1 || m_Player.GetHealth("RightFoot", "Health") <= 1 || m_Player.GetHealth("LeftFoot", "Health") <= 1)
-		{
-			if ( m_Player.GetModifiersManager().IsModifierActive( eModifiers.MDF_BROKEN_LEGS ) )//effectively resets the modifier
-			{
-				m_Player.GetModifiersManager().DeactivateModifier( eModifiers.MDF_BROKEN_LEGS );
-			}
-			m_Player.GetModifiersManager().ActivateModifier( eModifiers.MDF_BROKEN_LEGS );
-		}*/
-		
 	}
 
 	eInjuryHandlerLevels GetOverrideLevel(eInjuryHandlerLevels unchanged_level)
 	{
 		eInjuryHandlerLevels override_level = unchanged_level;
 		
-		if(m_ForceInjuryAnimMask & eInjuryOverrides.MORPHINE && override_level > eInjuryHandlerLevels.PRISTINE)
+		//Whatever the case, prone will always use PRISTINE anim level as alternative anim level(s) are not interesting gameplaywise
+		if ( m_ForceInjuryAnimMask & eInjuryOverrides.PRONE_ANIM_OVERRIDE && override_level > eInjuryHandlerLevels.PRISTINE )
+		{
+			override_level = eInjuryHandlerLevels.PRISTINE;
+			return override_level;
+		}
+		
+		if (m_ForceInjuryAnimMask & eInjuryOverrides.MORPHINE && override_level > eInjuryHandlerLevels.PRISTINE)
 		{
 			override_level = eInjuryHandlerLevels.PRISTINE;
 		}
 		
-		if(m_ForceInjuryAnimMask & eInjuryOverrides.PAIN_KILLERS_LVL1 && override_level > eInjuryHandlerLevels.WORN)
+		if (m_ForceInjuryAnimMask & eInjuryOverrides.PAIN_KILLERS_LVL1 && override_level > eInjuryHandlerLevels.WORN)
 		{
 			override_level = eInjuryHandlerLevels.WORN;
 		}
 		
-		if(m_ForceInjuryAnimMask & eInjuryOverrides.PAIN_KILLERS_LVL0 && override_level > eInjuryHandlerLevels.DAMAGED)
+		if (m_ForceInjuryAnimMask & eInjuryOverrides.PAIN_KILLERS_LVL0 && override_level > eInjuryHandlerLevels.DAMAGED)
 		{
 			override_level = eInjuryHandlerLevels.DAMAGED;
 		}
@@ -138,12 +134,15 @@ class InjuryAnimationHandler
 		
 		if ( m_ForceInjuryAnimMask & eInjuryOverrides.BROKEN_LEGS && override_level < eInjuryHandlerLevels.RUINED )
 		{
-			override_level = eInjuryHandlerLevels.RUINED;
-		}
-		
-		if ( m_ForceInjuryAnimMask & eInjuryOverrides.PRONE_ANIM_OVERRIDE && override_level > eInjuryHandlerLevels.PRISTINE )
-		{
-			override_level = eInjuryHandlerLevels.PRISTINE;
+			//Average leg health used to determine which animation to use
+			float avgLegHealth = m_Player.GetHealth("RightLeg","") + m_Player.GetHealth("LeftLeg","") + m_Player.GetHealth("RightFoot","") + m_Player.GetHealth("LeftFoot","");
+			avgLegHealth *= 0.25; //divide by 4 to make the average leg health;
+			if (avgLegHealth <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD)
+				override_level = eInjuryHandlerLevels.RUINED;
+			else if (avgLegHealth >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD)
+				override_level = eInjuryHandlerLevels.WORN;
+			else
+				override_level = eInjuryHandlerLevels.DAMAGED;
 		}
 		
 		return override_level;

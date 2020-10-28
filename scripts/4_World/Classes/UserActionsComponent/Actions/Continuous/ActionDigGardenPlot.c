@@ -129,7 +129,7 @@ class ActionDigGardenPlot: ActionDeployObject
 		poActionData.m_AlreadyPlaced = true;	
 		action_data.m_MainItem.SoundSynchRemoteReset();
 		
-		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 20);
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 17);
 		
 	}
 };

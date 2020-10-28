@@ -59,6 +59,12 @@ class ShelterSite extends BaseBuildingBase
 		{
 			GetConstruction().DropNonUsableMaterialsServer( player, part_name );
 			MiscGameplayFunctions.TurnItemIntoItem(this, shelter_type, PlayerBase.Cast(player));
+			
+			PluginAdminLog admin_log = PluginAdminLog.Cast( GetPlugin(PluginAdminLog) );
+			if (admin_log)
+			{
+				admin_log.DirectAdminLogPrint(" built " + shelter_type + " with Hands ");
+			}
 		}
 		//super.OnPartBuiltServer( part_name, action_id );
 	}

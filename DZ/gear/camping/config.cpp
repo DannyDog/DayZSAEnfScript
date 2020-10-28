@@ -7079,7 +7079,7 @@ class CfgVehicles
 						{
 							type = "TannedLeather";
 							slot_name = "Material_Shelter_Leather";
-							quantity = 2;
+							quantity = 8;
 							lockable = 0;
 						};
 					};
@@ -7106,9 +7106,9 @@ class CfgVehicles
 						};
 						class Material2
 						{
-							type = "Folded_Fabric";
+							type = "Fabric";
 							slot_name = "Material_Shelter_Fabric";
-							quantity = 1;
+							quantity = 4;
 							lockable = 0;
 						};
 					};
@@ -7173,7 +7173,7 @@ class CfgVehicles
 		inherit_rotation = 1;
 		weight = 10000;
 		itemSize[] = {8,4};
-		itemsCargoSize[] = {6,14};
+		itemsCargoSize[] = {10,10};
 		itemBehaviour = 2;
 		lootCategory = "Tents";
 		placement = "ForceSlopeOnTerrain";

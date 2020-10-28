@@ -386,6 +386,8 @@ class MiscGameplayFunctions
 		max_stack_size = g_Game.ConfigGetInt("cfgVehicles " + item_name + " varStackMax");
 		if( max_stack_size < 1)
 			max_stack_size = g_Game.ConfigGetInt("cfgVehicles " + item_name + " varQuantityMax");
+		if( max_stack_size < 1)
+			max_stack_size = 1;
 		
 		int full_piles_count = Math.Floor(quantity/max_stack_size);
 		int rest = quantity - (full_piles_count*max_stack_size);

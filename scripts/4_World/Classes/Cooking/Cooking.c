@@ -314,6 +314,7 @@ class Cooking
 				if ( item_to_cook.GetCookingTime() >= next_stage_cooking_properties.Get( 1 ) )
 				{
 					item_to_cook.ChangeFoodStage( FoodStageType.DRIED );
+					item_to_cook.RemoveAllAgentsExcept(eAgents.BRAIN);
 				}
 			}
 			else

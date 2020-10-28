@@ -2766,7 +2766,10 @@ class ItemBase extends InventoryItem
 			return false;
 		}
 		
-		bool on_min_value = value <= (GetQuantityMin() + 0.001); //workaround, items with "varQuantityDestroyOnMin = true;" get destroyed
+		float min = GetQuantityMin();
+		float max = GetQuantityMax();
+		
+		bool on_min_value = value <= (min + 0.001); //workaround, items with "varQuantityDestroyOnMin = true;" get destroyed
 		
 		if( on_min_value )
 		{
@@ -2775,12 +2778,14 @@ class ItemBase extends InventoryItem
 				bool dstr = ConfigGetBool("varQuantityDestroyOnMin");
 				if( dstr )
 				{
+					m_VarQuantity = Math.Clamp(value, min, max);
 					this.Delete();
 					return true;
 				}
 			}
 			else if( destroy_forced )
 			{
+				m_VarQuantity = Math.Clamp(value, min, max);
 				this.Delete();
 				return true;
 			}
@@ -2788,8 +2793,7 @@ class ItemBase extends InventoryItem
 			RemoveAllAgents();//we remove all agents when we got to the min value, but the item is not getting deleted
 		}
 		
-		float min = GetQuantityMin();
-		float max = GetQuantityMax();
+
 		/*
 		if(QUANTITY_DEBUG_REMOVE_ME)
 		{

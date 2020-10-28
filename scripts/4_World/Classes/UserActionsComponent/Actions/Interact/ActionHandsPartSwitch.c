@@ -7,7 +7,7 @@ class ActionHandsPartSwitch: ActionSingleUseBase
 	override void CreateConditionComponents()  
 	{		
 		m_ConditionItem = new CCINone; //'CCINotPresent' to perfom with empty hands only
-		m_ConditionTarget = new CCTNonRuined(UAMaxDistances.BASEBUILDING);
+		m_ConditionTarget = new CCTCursor;
 	}
 		
 	override bool IsInstant()
@@ -51,23 +51,16 @@ class ActionHandsPartSwitch: ActionSingleUseBase
 				
 				if ( construction_action_data.GetConstructionPartsCount() > 1 )
 				{
-					if ( base_building.IsPlayerInside( player, main_part_name ) && !player.GetInputController().CameraIsFreeLook() )
+					//Check validity of recipes
+					int valid_recipes;
+					for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
 					{
-						//Camera check (client-only)
-						if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) && base_building.IsFacingCamera( main_part_name ))
-							return false;
-
-						//Check validity of recipes
-						int valid_recipes;
-						for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
-						{
-							string name = construction_action_data.GetBuildPartAtIndex(i).GetPartName();
-							if (MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item, name))
-								valid_recipes++;
-						}
-						if (valid_recipes > 1)
-							return true;
+						string name = construction_action_data.GetBuildPartAtIndex(i).GetPartName();
+						if (MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item, name))
+							valid_recipes++;
 					}
+					if (valid_recipes > 1)
+						return true;
 				}
 			}
 		}

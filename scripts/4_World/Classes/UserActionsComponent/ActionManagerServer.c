@@ -267,9 +267,28 @@ class ActionManagerServer: ActionManagerBase
 		}
 	
 		if (m_CurrentActionData)
-		{
+		{			
 			if (m_CurrentActionData.m_State != UA_AM_PENDING && m_CurrentActionData.m_State != UA_AM_REJECTED && m_CurrentActionData.m_State != UA_AM_ACCEPTED)
+			{
 				m_CurrentActionData.m_Action.OnUpdateServer(m_CurrentActionData);
+				
+				if (m_CurrentActionData.m_RefreshJunctureTimer > 0)
+				{
+					m_CurrentActionData.m_RefreshJunctureTimer--;
+				}
+				else
+				{
+					m_CurrentActionData.m_RefreshJunctureTimer = m_CurrentActionData.m_Action.GetRefreshReservationTimerValue();
+					if ( m_CurrentActionData.m_Target )
+					{
+						EntityAI targetEntity;
+						if ( targetEntity.CastTo(targetEntity, m_CurrentActionData.m_Target.GetObject()) && !Building.Cast(targetEntity) )
+						{
+							GetGame().ExtendActionJuncture(m_CurrentActionData.m_Player, targetEntity, 10000);
+						}
+					}
+				}
+			}
 			
 			//Debug.Log("m_CurrentActionData.m_State: " + m_CurrentActionData.m_State +" m_ActionWantEnd: " + m_ActionWantEndRequest );
 			switch (m_CurrentActionData.m_State)

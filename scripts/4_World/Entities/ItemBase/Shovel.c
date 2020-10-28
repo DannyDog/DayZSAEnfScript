@@ -26,6 +26,5 @@ class Shovel extends ItemBase
 		AddAction(ActionDigInStash);
 		AddAction(ActionFillObject);
 		AddAction(ActionDigWorms);
-		AddAction(ActionSkinning);
 	}
 }
