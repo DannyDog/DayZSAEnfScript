@@ -495,7 +495,7 @@ class CfgVehicles
 		class SimulationModule: SimulationModule
 		{
 			drive = "DRIVE_AWD";
-			airDragCoefficient = 0.995;
+			airDragFrontTotal = 0.995;
 			class Steering
 			{
 				increaseSpeed[] = {0,45,60,23,100,12};
@@ -1676,7 +1676,7 @@ class CfgVehicles
 		class SimulationModule: SimulationModule
 		{
 			drive = "DRIVE_RWD";
-			airDragCoefficient = 0.928;
+			airDragFrontTotal = 0.928;
 			class Steering
 			{
 				increaseSpeed[] = {0,50,30,40,60,25,120,5};
@@ -3011,7 +3011,7 @@ class CfgVehicles
 		class SimulationModule: SimulationModule
 		{
 			drive = "DRIVE_FWD";
-			airDragCoefficient = 0.79;
+			airDragFrontTotal = 0.79;
 			class Steering
 			{
 				increaseSpeed[] = {0,50,60,30,100,15};
@@ -4422,7 +4422,7 @@ class CfgVehicles
 		class SimulationModule: SimulationModule
 		{
 			drive = "DRIVE_RWD";
-			airDragCoefficient = 0.73;
+			airDragFrontTotal = 0.73;
 			class Steering
 			{
 				increaseSpeed[] = {0,45,60,25,100,10};
@@ -5570,6 +5570,7 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "$STR_V3SWheel0";
+		descriptionShort = "$STR_V3SWheel1";
 		model = "\DZ\vehicles\wheeled\Truck_01\proxy\Truck_01_Wheel.p3d";
 		weight = 30000;
 		itemSize[] = {10,10};
@@ -5577,7 +5578,8 @@ class CfgVehicles
 		inventorySlot[] = {"Truck_01_Wheel_1_1","Truck_01_Wheel_2_1","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2"};
 		rotationFlags = 12;
 		physLayer = "item_large";
-		tyreRollResistance = 0.025;
+		tyreRollDrag = 10;
+		tyreRollResistance = 0.07;
 		tyreTread = 0.95;
 		radiusByDamage[] = {0,0.465,0.3,0.38,0.9998,0.35,0.9999,0.28};
 		radius = 0.465;
@@ -5609,6 +5611,7 @@ class CfgVehicles
 	class Truck_01_WheelDouble: Truck_01_Wheel
 	{
 		displayName = "$STR_V3SWheelDouble0";
+		descriptionShort = "$STR_V3SWheelDouble1";
 		model = "\DZ\vehicles\wheeled\Truck_01\proxy\Truck_01_WheelDouble.p3d";
 		weight = 50000;
 		inventorySlot[] = {"Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3"};
@@ -5639,13 +5642,14 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "$STR_V3SDoors_Driver0";
+		descriptionShort = "$STR_V3SDoors_Driver1";
 		model = "\DZ\vehicles\wheeled\Truck_01\proxy\Truck_01_Door_1_1.p3d";
 		weight = 15000;
 		itemSize[] = {10,10};
 		inventorySlot[] = {"Truck_01_Door_1_1"};
 		rotationFlags = 8;
 		hiddenSelections[] = {"dmgZone_doors","camo_door"};
-		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -5688,6 +5692,7 @@ class CfgVehicles
 	class Truck_01_Door_2_1: Truck_01_Door_1_1
 	{
 		displayName = "$STR_V3SDoors_CoDriver0";
+		descriptionShort = "$STR_V3SDoors_CoDriver1";
 		model = "\DZ\vehicles\wheeled\Truck_01\proxy\Truck_01_Door_2_1.p3d";
 		inventorySlot[] = {"Truck_01_Door_2_1"};
 		rotationFlags = 4;
@@ -5696,11 +5701,12 @@ class CfgVehicles
 	{
 		scope = 2;
 		displayName = "$STR_V3SHood0";
+		descriptionShort = "$STR_V3SHood1";
 		model = "\DZ\vehicles\wheeled\Truck_01\proxy\Truck_01_Hood.p3d";
 		inventorySlot[] = {"Truck_01_Hood"};
 		rotationFlags = 2;
 		hiddenSelections[] = {"dmgZone_doors","camo_door"};
-		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -5720,7 +5726,7 @@ class CfgVehicles
 		displayName = "Truck 01 Base";
 		attachments[] = {"TruckBattery","Reflector_1_1","Reflector_2_1","Truck_01_Door_1_1","Truck_01_Door_2_1","Truck_01_Hood","Truck_01_Wheel_1_1","Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_1","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2"};
 		hiddenSelections[] = {"light_1_1","light_2_1","light_brake_1_2","light_brake_2_2","light_reverse_1_2","light_reverse_2_2","light_1_2","light_2_2","light_dashboard","dmgZone_chassis","dmgZone_front","dmgZone_back","dmgZone_roof","dmgZone_fueltank","dmgZone_fender_1_1","dmgZone_fender_1_2","dmgZone_fender_2_1","dmgZone_fender_2_2","dmgZone_wood"};
-		hiddenSelectionsTextures[] = {"","","","","","","","","","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)","#(argb,8,8,3)color(0.521569,0.568627,0.407843,1.0,co)"};
+		hiddenSelectionsTextures[] = {"","","","","","","","","","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)","#(argb,8,8,3)color(0.521569,0.427451,0.054902,1.0,co)"};
 		dashboardMatOn = "dz\vehicles\wheeled\Truck_01\data\Truck_01_dashboard_light.rvmat";
 		dashboardMatOff = "dz\vehicles\wheeled\Truck_01\data\Truck_01_dashboard.rvmat";
 		frontReflectorMatOn = "dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_lights.rvmat";
@@ -5735,8 +5741,9 @@ class CfgVehicles
 		fuelConsumption = 30;
 		class SimulationModule: SimulationModule
 		{
-			drive = "DRIVE_642";
-			airDragCoefficient = 0.51;
+			drive = "DRIVE_662";
+			centralDiffRatio = 2.15;
+			airDragFrontTotal = 0.8;
 			class Steering
 			{
 				increaseSpeed[] = {0,25,50,15};
@@ -5745,42 +5752,43 @@ class CfgVehicles
 			};
 			class Throttle
 			{
-				reactionTime = 1.0;
-				defaultThrust = 0.85;
-				gentleThrust = 0.7;
-				turboCoef = 3.0;
+				reactionTime = 0.5;
+				defaultThrust = 0.9;
+				gentleThrust = 0.75;
+				turboCoef = 1.5;
 				gentleCoef = 0.5;
 			};
-			braking[] = {0.0,0.1,0.5,0.3,2.5,0.4,3.0,1.0};
+			braking[] = {0.0,0.3,0.15,0.4,0.5,0.5,3.0,1.0};
 			class Engine
 			{
-				inertia = 20.2;
+				inertia = 22.5;
 				powerMax = 72;
-				powerRpm = 2100;
+				powerRpm = 1900;
+				steepness = 18;
 				torqueMax = 360;
 				torqueRpm = 1400;
-				rpmIdle = 600;
-				rpmMin = 650;
-				rpmClutch = 700;
-				rpmRedline = 2600;
-				rpmMax = 3000;
+				rpmIdle = 700;
+				rpmMin = 750;
+				rpmClutch = 850;
+				rpmRedline = 2100;
+				rpmMax = 2500;
 			};
 			class Gearbox
 			{
 				reverse = 6.28;
 				ratios[] = {6.19,3.13,1.75,1.0};
-				timeToUncoupleClutch = 0.3;
-				timeToCoupleClutch = 0.1;
-				maxClutchTorque = 400;
+				timeToUncoupleClutch = 0.25;
+				timeToCoupleClutch = 1.75;
+				maxClutchTorque = 450;
 			};
 			class Axles: Axles
 			{
 				class Front: Front
 				{
 					maxSteeringAngle = 35;
-					finalRatio = 6.84;
-					brakeBias = 0.5;
-					brakeForce = 8000;
+					finalRatio = 3.9;
+					brakeBias = 0.4;
+					brakeForce = 7000;
 					wheelHubMass = 25;
 					wheelHubRadius = 0.3;
 					wheelHubRatio = 2.14;
@@ -5809,18 +5817,17 @@ class CfgVehicles
 				class Middle: Rear
 				{
 					maxSteeringAngle = 0;
-					finalRatio = 6.84;
-					brakeBias = 0.25;
-					brakeForce = 7500;
+					finalRatio = 3.9;
+					brakeBias = 0.3;
+					brakeForce = 8000;
 					wheelHubMass = 45;
 					wheelHubRadius = 0.3;
 					wheelHubRatio = 2.14;
 					class Suspension
 					{
-						swayBar = 1700;
-						stiffness = 50000;
-						compression = 3000;
-						damping = 7000;
+						stiffness = 55000;
+						compression = 2500;
+						damping = 8000;
 						travelMaxUp = 0.095;
 						travelMaxDown = 0.125;
 					};
@@ -5847,17 +5854,17 @@ class CfgVehicles
 				class Rear: Rear
 				{
 					maxSteeringAngle = 0;
-					finalRatio = 6.84;
-					brakeBias = 0.25;
-					brakeForce = 7500;
+					finalRatio = 3.9;
+					brakeBias = 0.3;
+					brakeForce = 8000;
 					wheelHubMass = 45;
 					wheelHubRadius = 0.3;
 					wheelHubRatio = 2.14;
 					class Suspension
 					{
-						stiffness = 50000;
-						compression = 3000;
-						damping = 7000;
+						stiffness = 55000;
+						compression = 2500;
+						damping = 8000;
 						travelMaxUp = 0.095;
 						travelMaxDown = 0.125;
 					};
@@ -6147,6 +6154,252 @@ class CfgVehicles
 				description = "";
 				icon = "cat_vehicle_chassis";
 				attachmentSlots[] = {"Truck_01_Wheel_1_1","Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_1","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2"};
+			};
+		};
+	};
+	class Truck_01_Covered: Truck_01_Base
+	{
+		scope = 2;
+		displayName = "$STR_v3s_covered0";
+		model = "\dz\vehicles\wheeled\Truck_01\Truck_01_Covered.p3d";
+		attachments[] = {"TruckBattery","Reflector_1_1","Reflector_2_1","Truck_01_Door_1_1","Truck_01_Door_2_1","Truck_01_Hood","Truck_01_Wheel_1_1","Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_1","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2","Truck_01_WoodenLogs","Truck_01_WoodenPlanks","Truck_01_MetalSheets","Truck_01_Barrel1","Truck_01_Barrel2","Truck_01_Barrel3","Truck_01_Barrel4","Truck_01_WoodenCrate1","Truck_01_WoodenCrate2","Truck_01_WoodenCrate3","Truck_01_WoodenCrate4"};
+		class Cargo
+		{
+			itemsCargoSize[] = {10,60};
+			allowOwnedCargoManipulation = 1;
+			openable = 0;
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Engine
+			{
+				name = "$STR_attachment_Engine0";
+				description = "";
+				icon = "cat_vehicle_engine";
+				attachmentSlots[] = {"TruckBattery"};
+			};
+			class Body
+			{
+				name = "$STR_attachment_Body0";
+				description = "";
+				icon = "cat_vehicle_body";
+				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","Truck_01_Door_1_1","Truck_01_Door_2_1","Truck_01_Hood"};
+			};
+			class Chassis
+			{
+				name = "$STR_attachment_Chassis0";
+				description = "";
+				icon = "cat_vehicle_chassis";
+				attachmentSlots[] = {"Truck_01_Wheel_1_1","Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_1","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2"};
+			};
+			class BaseBuildingAttachments
+			{
+				name = "$STR_cfgvehicles_fence_att_category_materials";
+				description = "";
+				icon = "cat_common_cargo";
+				attachmentSlots[] = {"Truck_01_WoodenLogs","Truck_01_WoodenPlanks","Truck_01_MetalSheets"};
+			};
+			class BaseBuildingContainers
+			{
+				name = "$STR_attachment_containers0";
+				description = "";
+				icon = "cat_common_cargo";
+				attachmentSlots[] = {"Truck_01_Barrel1","Truck_01_Barrel2","Truck_01_Barrel3","Truck_01_Barrel4","Truck_01_WoodenCrate1","Truck_01_WoodenCrate2","Truck_01_WoodenCrate3","Truck_01_WoodenCrate4"};
+			};
+		};
+	};
+	class Truck_01_Covered_Blue: Truck_01_Covered
+	{
+		hiddenSelectionsTextures[] = {"","","","","","","","","","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)"};
+	};
+	class Truck_01_Door_1_1_Blue: Truck_01_Door_1_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Door_2_1_Blue: Truck_01_Door_2_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Hood_Blue: Truck_01_Hood
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)","#(argb,8,8,3)color(0.407843,0.572549,0.866667,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth
+			{
+				class Health: Health
+				{
+					RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+					healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Truck_01_Covered_Orange: Truck_01_Covered
+	{
+		hiddenSelectionsTextures[] = {"","","","","","","","","","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)"};
+	};
+	class Truck_01_Door_1_1_Orange: Truck_01_Door_1_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Door_2_1_Orange: Truck_01_Door_2_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Hood_Orange: Truck_01_Hood
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)","#(argb,8,8,3)color(1,0.745098,0.4,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth
+			{
+				class Health: Health
+				{
+					RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+					healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Truck_01_Covered_Grey: Truck_01_Covered
+	{
+		hiddenSelectionsTextures[] = {"","","","","","","","","","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)"};
+	};
+	class Truck_01_Door_1_1_Grey: Truck_01_Door_1_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Door_2_1_Grey: Truck_01_Door_2_1
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth{};
+			class DamageZones: DamageZones
+			{
+				class Window: Window
+				{
+					class Health: Health{};
+				};
+				class Doors: Doors
+				{
+					class Health: Health
+					{
+						RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+					};
+				};
+			};
+		};
+	};
+	class Truck_01_Hood_Grey: Truck_01_Hood
+	{
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)","#(argb,8,8,3)color(0.7,0.745098,0.7,1.0,co)"};
+		class DamageSystem: DamageSystem
+		{
+			class GlobalHealth: GlobalHealth
+			{
+				class Health: Health
+				{
+					RefTexsMats[] = {"dz\vehicles\wheeled\truck_01\data\truck_01_door.rvmat"};
+					healthLevels[] = {{1.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.7,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door.rvmat"}},{0.5,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\truck_01\data\Truck_01_door_destruct.rvmat"}}};
+				};
 			};
 		};
 	};

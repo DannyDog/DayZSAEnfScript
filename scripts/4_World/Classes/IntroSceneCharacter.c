@@ -1,7 +1,7 @@
 class IntroSceneCharacter extends Managed
 {
 	protected int			m_CharacterId;
-	protected string		m_CharacterNam;
+	protected string		m_CharacterType;
 	protected MenuData		m_CharacterDta;
 	protected PlayerBase	m_CharacterObj;
 	protected vector		m_CharacterPos;
@@ -208,8 +208,8 @@ class IntroSceneCharacter extends Managed
 	//==============================================
 	void CreateNewCharacterByName( string character_name, bool randomize_equip = true )
 	{
-		m_CharacterNam = character_name;
-		GetGame().GetMenuDefaultCharacterData().SetCharacterType(m_CharacterNam);
+		m_CharacterType = character_name;
+		GetGame().GetMenuDefaultCharacterData().SetCharacterType(m_CharacterType);
 		if (randomize_equip)
 			GetGame().GetMenuDefaultCharacterData().GenerateRandomEquip();
 		
@@ -220,8 +220,8 @@ class IntroSceneCharacter extends Managed
 	{
 		CharacterUnload();
 		//m_CharacterDta.RequestGetDefaultCharacterData();
-		m_CharacterNam = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
-		if (m_CharacterNam != "")
+		m_CharacterType = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
+		if (m_CharacterType != "")
 		{
 			CreateNewCharacter();
 		}
@@ -236,7 +236,8 @@ class IntroSceneCharacter extends Managed
 		{
 			string default_name = Widget.TranslateString( GameConstants.DEFAULT_CHARACTER_NAME );
 			CreateNewCharacterRandom();
-			m_CharacterDta.SetCharacterName(GameConstants.DEFAULT_CHARACTER_MENU_ID, default_name);
+			//m_CharacterDta.SetCharacterName(GameConstants.DEFAULT_CHARACTER_MENU_ID, default_name);
+			GetGame().GetMenuDefaultCharacterData().SetCharacterName(GameConstants.DEFAULT_CHARACTER_NAME);
 		}
 	}
 	
@@ -255,7 +256,7 @@ class IntroSceneCharacter extends Managed
 		CharacterUnload();
 		
 		// Create Character
-		m_CharacterObj = PlayerBase.Cast(g_Game.CreateObjectEx(m_CharacterNam, m_CharacterPos, ECE_PLACE_ON_SURFACE));
+		m_CharacterObj = PlayerBase.Cast(g_Game.CreateObjectEx(m_CharacterType, m_CharacterPos, ECE_PLACE_ON_SURFACE));
 		
 		if (m_CharacterObj)
 		{
@@ -425,14 +426,28 @@ class IntroSceneCharacter extends Managed
 	string GetCharacterNameById(int char_id )
 	{
 		string character_name;
-		 m_CharacterDta.GetCharacterName(char_id, character_name);
+		if (char_id == GameConstants.DEFAULT_CHARACTER_MENU_ID)
+		{
+			character_name = GetGame().GetMenuDefaultCharacterData().GetCharacterName();
+		}
+		else
+		{
+			m_CharacterDta.GetCharacterName(char_id, character_name);
+		}
 		return character_name;
 	}
 	
 	string GetCharacterName()
 	{
 		string character_name;
-		 m_CharacterDta.GetCharacterName(m_CharacterId, character_name);
+		if (IsDefaultCharacter())
+		{
+			character_name = GetGame().GetMenuDefaultCharacterData().GetCharacterName();
+		}
+		else
+		{
+			m_CharacterDta.GetCharacterName(m_CharacterId, character_name);
+		}
 		return character_name;
 	}
 	
@@ -441,7 +456,14 @@ class IntroSceneCharacter extends Managed
 	//==============================================
 	void SaveCharName( string name )
 	{
-		m_CharacterDta.SetCharacterName(m_CharacterId, name);
+		if (IsDefaultCharacter())
+		{
+			GetGame().GetMenuDefaultCharacterData().SetCharacterName(name);
+		}
+		else
+		{
+			m_CharacterDta.SetCharacterName(m_CharacterId, name);
+		}
 		m_CharacterDta.SaveCharactersLocal();
 	}
 	

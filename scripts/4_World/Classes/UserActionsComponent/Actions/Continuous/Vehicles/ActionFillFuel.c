@@ -35,20 +35,20 @@ class ActionFillFuel: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if( !target || !IsTransport(target) )
+		if ( !target || !IsTransport(target) )
 			return false;
 
-		if( item.GetQuantity() <= 0 )
+		if ( item.GetQuantity() <= 0 )
 			return false;
 
-		if( item.GetLiquidType() != LIQUID_GASOLINE )
+		if ( item.GetLiquidType() != LIQUID_GASOLINE )
 			return false;
 
 		Car car = Car.Cast( target.GetObject() );
-		if( !car )
+		if ( !car )
 			return false;
 		
-		if( car.GetFluidFraction( CarFluid.FUEL ) >= 0.98 )
+		if ( car.GetFluidFraction( CarFluid.FUEL ) >= 0.98 )
 			return false;
 
 		array<string> selections = new array<string>;
@@ -56,15 +56,15 @@ class ActionFillFuel: ActionContinuousBase
 
 		CarScript carS = CarScript.Cast(car);
 		
-		if( carS )
+		if ( carS )
 		{
 			for (int s = 0; s < selections.Count(); s++)
 			{
 				if ( selections[s] == carS.GetActionCompNameFuel() )
 				{
-					float dist = vector.Distance( carS.GetRefillPointPosWS(), player.GetPosition() );
+					float dist = vector.DistanceSq( carS.GetRefillPointPosWS(), player.GetPosition() );
 
-					if ( dist < carS.GetActionDistanceFuel() )
+					if ( dist < carS.GetActionDistanceFuel() * carS.GetActionDistanceFuel() )
 						return true;
 				}
 			}

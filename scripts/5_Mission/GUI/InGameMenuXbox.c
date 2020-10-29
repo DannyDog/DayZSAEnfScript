@@ -336,19 +336,27 @@ class InGameMenuXbox extends UIScriptedMenu
 			g_Game.CancelLoginTimeCountdown();
 		}
 		else if ( code == IDC_INT_RETRY && result == DBB_YES )
-		{			
-			GameRetry();
-			return true;
+		{		
+			if ( GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM )
+			{
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetUIManager().EnterScriptedMenu,MENU_RESPAWN_DIALOGUE,this);
+			}
+			else
+			{
+				GameRetry(true);
+				return true;
+			}	
 		}
 		
 		return false;
 	}
 	
-	void GameRetry()
+	void GameRetry(bool random)
 	{
 		if ( GetGame().IsMultiplayer() )
 		{
 			GetGame().GetUIManager().CloseAll();
+			GetGame().GetMenuDefaultCharacterData(false).SetRandomCharacterForced(random); //todo
 			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().RespawnPlayer);
 			//turns off dead screen, hides HUD for countdown
 			//---------------------------------------------------
@@ -369,6 +377,12 @@ class InGameMenuXbox extends UIScriptedMenu
 			GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().RestartMission);
 		}
 		//Close();
+	}
+	
+	void MenuRequestRespawn(UIScriptedMenu menu, bool random)
+	{
+		if (RespawnDialogue.Cast(menu))
+			GameRetry(random);
 	}
 	
 	bool IsLocalPlayer( string uid )

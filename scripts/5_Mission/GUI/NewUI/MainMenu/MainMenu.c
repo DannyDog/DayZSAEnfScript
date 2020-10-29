@@ -346,7 +346,7 @@ class MainMenu extends UIScriptedMenu
 			return;
 		
 		SetFocus( null );
-		//OnChangeCharacter();
+		OnChangeCharacter(false);
 		LoadMods();
 		return;
 		/*
@@ -384,16 +384,6 @@ class MainMenu extends UIScriptedMenu
 	
 	void Play()
 	{
-		if (m_ScenePC && m_ScenePC.GetIntroCharacter())
-		{
-			//saves new, unplayed demounit for further use
-			if (CanSaveDefaultCharacter())
-			{
-				//todo - save default char here if none exists?
-				//m_ScenePC.GetIntroCharacter().SaveCharacterSetup();
-			}
-		}
-	
 		if( !g_Game.IsNewCharacter() )
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallByName(this, "ConnectLastSession");
@@ -463,12 +453,15 @@ class MainMenu extends UIScriptedMenu
 		}
 	}
 	
-	void OnChangeCharacter()
+	void OnChangeCharacter(bool create_character = true)
 	{
 		if ( m_ScenePC && m_ScenePC.GetIntroCharacter() )
 		{
 			int charID = m_ScenePC.GetIntroCharacter().GetCharacterID();
-			m_ScenePC.GetIntroCharacter().CreateNewCharacterById( charID );
+			if (create_character)
+			{
+				m_ScenePC.GetIntroCharacter().CreateNewCharacterById( charID );
+			}
 			m_PlayerName.SetText( m_ScenePC.GetIntroCharacter().GetCharacterNameById( charID ) );
 			
 			Widget w = m_CustomizeCharacter.FindAnyWidget(m_CustomizeCharacter.GetName() + "_label");

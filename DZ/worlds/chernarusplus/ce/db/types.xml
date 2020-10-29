@@ -462,10 +462,10 @@
         <usage name="Hunting"/>
     </type>
     <type name="AmmoBox_12gaRubberSlug_10Rnd">
-        <nominal>40</nominal>
-        <lifetime>28800</lifetime>
+        <nominal>20</nominal>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
-        <min>30</min>
+        <min>10</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -545,8 +545,8 @@
         <usage name="Village"/>
     </type>
     <type name="AmmoBox_380_35rnd">
-        <nominal>35</nominal>
-        <lifetime>28800</lifetime>
+        <nominal>30</nominal>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>20</min>
         <quantmin>-1</quantmin>
@@ -3155,8 +3155,8 @@
     </type>
     <type name="CZ61">
         <nominal>20</nominal>
-        <lifetime>28800</lifetime>
-        <restock>1800</restock>
+        <lifetime>7200</lifetime>
+        <restock>180</restock>
         <min>10</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
@@ -4137,7 +4137,7 @@
         <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>20</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -6305,7 +6305,7 @@
     </type>
     <type name="Glock19">
         <nominal>40</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>20</min>
         <quantmin>-1</quantmin>
@@ -6883,7 +6883,7 @@
         <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>20</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -7368,7 +7368,7 @@
         <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>20</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -9605,8 +9605,8 @@
     </type>
     <type name="Mag_CZ61_20Rnd">
         <nominal>20</nominal>
-        <lifetime>28800</lifetime>
-        <restock>1800</restock>
+        <lifetime>7200</lifetime>
+        <restock>180</restock>
         <min>10</min>
         <quantmin>20</quantmin>
         <quantmax>100</quantmax>
@@ -9677,8 +9677,8 @@
     </type>
     <type name="Mag_Glock_15Rnd">
         <nominal>30</nominal>
-        <lifetime>14400</lifetime>
-        <restock>1800</restock>
+        <lifetime>7200</lifetime>
+        <restock>180</restock>
         <min>20</min>
         <quantmin>20</quantmin>
         <quantmax>90</quantmax>
@@ -10761,7 +10761,7 @@
     </type>
     <type name="Mp133Shotgun">
         <nominal>20</nominal>
-        <lifetime>28800</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>15</min>
         <quantmin>-1</quantmin>
@@ -11673,7 +11673,7 @@
     </type>
     <type name="PoliceCap">
         <nominal>10</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>5</min>
         <quantmin>-1</quantmin>
@@ -11686,7 +11686,7 @@
     </type>
     <type name="PoliceJacket">
         <nominal>20</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>10</min>
         <quantmin>-1</quantmin>
@@ -11698,7 +11698,7 @@
     </type>
     <type name="PoliceJacketOrel">
         <nominal>15</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>5</min>
         <quantmin>-1</quantmin>
@@ -11710,7 +11710,7 @@
     </type>
     <type name="PolicePants">
         <nominal>20</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>10</min>
         <quantmin>-1</quantmin>
@@ -11722,7 +11722,7 @@
     </type>
     <type name="PolicePantsOrel">
         <nominal>15</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>5</min>
         <quantmin>-1</quantmin>
@@ -11734,7 +11734,7 @@
     </type>
     <type name="PoliceVest">
         <nominal>20</nominal>
-        <lifetime>14400</lifetime>
+        <lifetime>7200</lifetime>
         <restock>0</restock>
         <min>10</min>
         <quantmin>-1</quantmin>
@@ -13175,7 +13175,7 @@
         <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>20</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -14984,7 +14984,7 @@
         <flags count_in_cargo="0" count_in_hoarder="0" count_in_map="1" count_in_player="0" crafted="0" deloot="0"/>
     </type>
     <type name="Truck_01_Door_1_1">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -14997,7 +14997,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Door_1_1_Blue">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15010,7 +15010,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Door_1_1_Orange">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15023,7 +15023,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Door_2_1">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15036,7 +15036,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Door_2_1_Blue">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15049,7 +15049,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Door_2_1_Orange">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15062,7 +15062,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Hood">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15075,7 +15075,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Hood_Blue">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15088,7 +15088,7 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Hood_Orange">
-        <nominal>20</nominal>
+        <nominal>15</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
         <min>10</min>
@@ -15101,10 +15101,10 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_Wheel">
-        <nominal>20</nominal>
+        <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>10</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>
@@ -15114,10 +15114,10 @@
         <usage name="Farm"/>
     </type>
     <type name="Truck_01_WheelDouble">
-        <nominal>20</nominal>
+        <nominal>40</nominal>
         <lifetime>28800</lifetime>
         <restock>0</restock>
-        <min>10</min>
+        <min>30</min>
         <quantmin>-1</quantmin>
         <quantmax>-1</quantmax>
         <cost>100</cost>

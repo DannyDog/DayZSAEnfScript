@@ -300,7 +300,6 @@ class MissionServer extends MissionBase
 		GetGame().SelectPlayer(identity, m_player);
 	
 		return m_player;
-		//moduleDefaultCharacter.FileDelete(moduleDefaultCharacter.GetFileName());
 	}
 	
 	//! Spawns character equip from received data. Checks validity against config, randomizes if invalid value and config array not empty.
@@ -312,7 +311,7 @@ class MissionServer extends MissionBase
 		{
 			slot_ID = DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Get(i);
 			attachment_type = "";
-			if ( !char_data.GetAttachmentMap().Find(slot_ID,attachment_type) || m_RespawnMode > 0 )
+			if ( !char_data.GetAttachmentMap().Find(slot_ID,attachment_type) || m_RespawnMode != GameConstants.RESPAWN_MODE_CUSTOM )
 			{
 				//randomize
 				if ( DefaultCharacterCreationMethods.GetConfigArrayCountFromSlotID(slot_ID) > 0 )
@@ -337,19 +336,21 @@ class MissionServer extends MissionBase
 	
 	PlayerBase OnClientNewEvent(PlayerIdentity identity, vector pos, ParamsReadContext ctx)
 	{
-		string characterName;
+		string characterType;
 		m_RespawnMode = GetGame().ServerConfigGetInt("setRespawnMode"); //todo - init somewhere safe
+		SyncRespawnModeInfo(identity);
 		// get login data for new character
-		if ( ProcessLoginData(ctx) && (m_RespawnMode < 1) && GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1 )
+		if ( ProcessLoginData(ctx) && (m_RespawnMode == GameConstants.RESPAWN_MODE_CUSTOM) && GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1 && !GetGame().GetMenuDefaultCharacterData(false).IsRandomCharacterForced() )
 		{
-			characterName = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
+			characterType = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
 		}
 		else
 		{
-			characterName = GetGame().CreateRandomPlayer();
+			characterType = GetGame().CreateRandomPlayer();
+			GetGame().GetMenuDefaultCharacterData().GenerateRandomEquip();
 		}
 		
-		if (CreateCharacter(identity, pos, ctx, characterName))
+		if (CreateCharacter(identity, pos, ctx, characterType))
 		{
 			EquipCharacter(GetGame().GetMenuDefaultCharacterData());
 		}
@@ -531,4 +532,11 @@ class MissionServer extends MissionBase
 		}
 	}
 	//--------------------------------------------------
+	
+	void SyncRespawnModeInfo(PlayerIdentity identity)
+	{
+		ScriptRPC rpc = new ScriptRPC();
+		rpc.Write(m_RespawnMode);
+		rpc.Send(null, ERPCs.RPC_SERVER_RESPAWN_MODE, true, identity);
+	}
 }

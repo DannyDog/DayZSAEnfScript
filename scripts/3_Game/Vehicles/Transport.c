@@ -78,6 +78,16 @@ class Transport extends EntityAI
 		return true;
 	}
 	
+	float GetTransportCameraDistance()
+	{
+		return 4.0;
+	}
+	
+	vector GetTransportCameraOffset()
+	{
+		return "0 1.3 0";
+	}
+	
 	int GetAnimInstance()
 	{
 		Error("GetAnimInstance() not implemented");
@@ -99,9 +109,8 @@ class Transport extends EntityAI
 	bool CrewCanGetThrough( int posIdx )
 	{
 		return false;
-
 	}
-
+	
 	bool CanReachSeatFromSeat( int currentSeat, int nextSeat )
 	{
 		return false;

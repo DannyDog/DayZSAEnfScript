@@ -81,6 +81,15 @@ class CarScript extends Car
 	protected vector m_side_2_2Pos;	
 	
 	//!Sounds
+	string m_EngineStartOK = "";
+	string m_EngineStartBattery = "";
+	string m_EngineStartPlug = "";
+	string m_EngineStartFuel = "";
+	string m_EngineStopFuel = "";
+	
+	string m_CarDoorOpenSound = "";
+	string m_CarDoorCloseSound = "";
+	
 	protected bool m_PlayCrashSoundLight;
 	protected bool m_PlayCrashSoundHeavy;
 	
@@ -183,43 +192,42 @@ class CarScript extends Car
 		if ( MemoryPointExists("drown_engine") )
 			m_DrownEnginePos = GetMemoryPointPos("drown_engine");
 		else
-			m_DrownEnginePos = "0 0 0";
-		
+			m_DrownEnginePos = "0 0 0";	
 
-		if ( MemoryPointExists("m_enginePos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_engine");
+		if ( MemoryPointExists("dmgZone_engine") )
+			m_enginePos = GetMemoryPointPos("dmgZone_engine");
 		else
-			m_fuelPos = "0 0 0";
+			m_enginePos = "0 0 0";
 
-		if ( MemoryPointExists("m_frontPos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_front");
+		if ( MemoryPointExists("dmgZone_front") )
+			m_frontPos = GetMemoryPointPos("dmgZone_front");
 		else
-			m_fuelPos = "0 0 0";
+			m_frontPos = "0 0 0";
 
-		if ( MemoryPointExists("m_backPos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_back");
+		if ( MemoryPointExists("dmgZone_back") )
+			m_backPos = GetMemoryPointPos("dmgZone_back");
 		else
-			m_fuelPos = "0 0 0";		
+			m_backPos = "0 0 0";		
 				
-		if ( MemoryPointExists("m_side_1_1Pos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_fender_1_1");
+		if ( MemoryPointExists("dmgZone_fender_1_1") )
+			m_side_1_1Pos = GetMemoryPointPos("dmgZone_fender_1_1");
 		else
-			m_fuelPos = "0 0 0";
+			m_side_1_1Pos = "0 0 0";
 
-		if ( MemoryPointExists("m_side_1_2Pos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_fender_1_2");
+		if ( MemoryPointExists("dmgZone_fender_1_2") )
+			m_side_1_2Pos = GetMemoryPointPos("dmgZone_fender_1_2");
 		else
-			m_fuelPos = "0 0 0";
+			m_side_1_2Pos = "0 0 0";
 		
-		if ( MemoryPointExists("m_side_2_1Pos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_fender_2_1");
+		if ( MemoryPointExists("dmgZone_fender_2_1") )
+			m_side_2_1Pos = GetMemoryPointPos("dmgZone_fender_2_1");
 		else
-			m_fuelPos = "0 0 0";
+			m_side_2_1Pos = "0 0 0";
 
-		if ( MemoryPointExists("m_side_2_2Pos") )
-			m_fuelPos = GetMemoryPointPos("dmgZone_fender_2_2");
+		if ( MemoryPointExists("dmgZone_fender_2_2") )
+			m_side_2_2Pos = GetMemoryPointPos("dmgZone_fender_2_2");
 		else
-			m_fuelPos = "0 0 0";
+			m_side_2_2Pos = "0 0 0";
 	}
 
 	vector GetEnginePosWS()
@@ -233,7 +241,7 @@ class CarScript extends Car
 	}
 
 	vector GetRefillPointPosWS()
-	{	
+	{
 		return ModelToWorld( m_fuelPos );
 	}
 	

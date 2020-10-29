@@ -60,10 +60,17 @@ class CraftTruck01DoubleWheel extends RecipeBase
 		ItemBase ingredient1 = ingredients[0];
 		ItemBase ingredient2 = ingredients[1];
 		
-		if ( !ingredient1.GetHierarchyParent() && !ingredient2.GetHierarchyParent())
-			return true;
+		if ( !ingredient1.GetHierarchyParent() || ingredient1.GetHierarchyParent() == ingredient1.GetHierarchyRootPlayer() ) 
+		{
+			if ( !ingredient2.GetHierarchyParent() || ingredient2.GetHierarchyParent() == ingredient2.GetHierarchyRootPlayer() )
+				return true;
+			else
+				return false;
+		}
 		else
+		{
 			return false;
+		}
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion

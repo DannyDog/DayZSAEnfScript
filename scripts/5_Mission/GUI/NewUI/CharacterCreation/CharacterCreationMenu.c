@@ -1,16 +1,27 @@
 class CharacterCreationMenu extends UIScriptedMenu
 {
-	#ifdef PLATFORM_WINDOWS
-	DayZIntroScenePC										m_Scene;
-	#else
+	#ifdef PLATFORM_CONSOLE
 	DayZIntroSceneXbox										m_Scene;
+	protected Widget										m_ConsoleSave;//save_consoleIcon
+	protected bool 											m_CharacterSaved;
+	#else
+	DayZIntroScenePC										m_Scene;
 	#endif
+	
+	const int 												TOOLTIP_ID_SAVE = 1;
+	const int 												TOOLTIP_ID_APPLY = 2;
 	
 	protected Widget										m_CharacterRotationFrame;
 	protected Widget										m_Apply;
+	protected Widget										m_Save;
 	protected Widget										m_RandomizeCharacter;
 	protected Widget										m_BackButton;
+	protected Widget										m_PlayedCharacterInfo;
 	protected TextWidget									m_Version;
+	protected Widget										m_DetailsRoot; //tooltips
+	protected TextWidget									m_DetailsLabel;
+	protected RichTextWidget								m_DetailsText;
+	protected TextWidget 									m_CharacterHeaderText;
 	
 	protected ref OptionSelectorEditbox						m_NameSelector;
 	protected ref OptionSelectorMultistateCharacterMenu		m_GenderSelector;
@@ -25,10 +36,10 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		MissionMainMenu mission = MissionMainMenu.Cast( GetGame().GetMission() );
 		
-		#ifdef PLATFORM_WINDOWS
-		m_Scene = mission.GetIntroScenePC();
-		#else
+		#ifdef PLATFORM_CONSOLE
 		m_Scene = mission.GetIntroSceneXbox();
+		#else
+		m_Scene = mission.GetIntroScenePC();
 		#endif
 		
 		m_Scene.ResetIntroCamera();
@@ -36,26 +47,30 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	PlayerBase GetPlayerObj()
 	{
-		#ifdef PLATFORM_WINDOWS
 		return m_Scene.GetIntroCharacter().GetCharacterObj();
-		#else
-		return m_Scene.GetIntroCharacter().GetCharacterObj();
-		#endif
 	}
 	
 	override Widget Init()
 	{
 		#ifdef PLATFORM_CONSOLE
 			layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/character_creation/xbox/character_creation.layout" );
+			m_CharacterSaved 				= false;
+			m_ConsoleSave 					= layoutRoot.FindAnyWidget( "save_console" );
 		#else
 			layoutRoot = GetGame().GetWorkspace().CreateWidgets( "gui/layouts/new_ui/character_creation/pc/character_creation.layout" );
 		#endif
 		
 		m_CharacterRotationFrame			= layoutRoot.FindAnyWidget( "character_rotation_frame" );
 		m_Apply								= layoutRoot.FindAnyWidget( "apply" );
+		m_Save 								= layoutRoot.FindAnyWidget( "save" );
 		m_RandomizeCharacter				= layoutRoot.FindAnyWidget( "randomize_character" );
 		m_BackButton						= layoutRoot.FindAnyWidget( "back" );
 		m_Version							= TextWidget.Cast( layoutRoot.FindAnyWidget( "version" ) );
+		m_DetailsRoot 						= layoutRoot.FindAnyWidget( "menu_details_tooltip" );
+		m_DetailsLabel						= TextWidget.Cast( m_DetailsRoot.FindAnyWidget( "menu_details_label" ) );
+		m_DetailsText						= RichTextWidget.Cast( m_DetailsRoot.FindAnyWidget( "menu_details_tooltip_content" ) );
+		m_CharacterHeaderText 				= TextWidget.Cast(layoutRoot.FindAnyWidget( "char_header_text" ));
+		m_PlayedCharacterInfo 				= layoutRoot.FindAnyWidget( "played_char_info" );
 		
 		string version;
 		GetGame().GetVersion( version );
@@ -69,10 +84,10 @@ class CharacterCreationMenu extends UIScriptedMenu
 		if( m_Scene && m_Scene.GetIntroCharacter() )
 		{
 			m_OriginalCharacterID = m_Scene.GetIntroCharacter().GetCharacterID();
-			#ifdef PLATFORM_CONSOLE
-				m_Scene.GetIntroCharacter().SetToDefaultCharacter();
+			/*#ifdef PLATFORM_CONSOLE
+				//m_Scene.GetIntroCharacter().SetToDefaultCharacter();
 				m_Scene.GetIntroCharacter().LoadCharacterData( m_Scene.GetIntroCharacter().GetCharacterObj().GetPosition(), m_Scene.GetIntroCharacter().GetCharacterObj().GetDirection(), true );
-			#endif;
+			#endif;*/
 		}
 		
 		m_NameSelector		= new OptionSelectorEditbox( layoutRoot.FindAnyWidget( "character_name_setting_option" ), m_Scene.GetIntroCharacter().GetCharacterName(), null, false );
@@ -132,16 +147,16 @@ class CharacterCreationMenu extends UIScriptedMenu
 		
 			ImageWidget toolbar_a = layoutRoot.FindAnyWidget( "SelectIcon" );
 			ImageWidget toolbar_b = layoutRoot.FindAnyWidget( "BackIcon" );
-			ImageWidget toolbar_b2 = layoutRoot.FindAnyWidget( "BackIcon0" );
+			//ImageWidget toolbar_b2 = layoutRoot.FindAnyWidget( "BackIcon0" );
 			ImageWidget toolbar_x = layoutRoot.FindAnyWidget( "RandomizeIcon" );
-			ImageWidget toolbar_x2 = layoutRoot.FindAnyWidget( "RandomizeIcon0" );
-			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "ResetIcon" );
-			ImageWidget toolbar_y2 = layoutRoot.FindAnyWidget( "ResetIcon0" );
+			//ImageWidget toolbar_x2 = layoutRoot.FindAnyWidget( "RandomizeIcon0" );
+			ImageWidget toolbar_y = layoutRoot.FindAnyWidget( "save_consoleIcon" );
+			ImageWidget toolbar_y2 = layoutRoot.FindAnyWidget( "save_consoleIcon0" );
 			toolbar_a.LoadImageFile( 0, "set:playstation_buttons image:" + confirm );
 			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
-			toolbar_b2.LoadImageFile( 0, "set:playstation_buttons image:" + back );
+			//toolbar_b2.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 			toolbar_x.LoadImageFile( 0, "set:playstation_buttons image:square" );
-			toolbar_x2.LoadImageFile( 0, "set:playstation_buttons image:square" );
+			//toolbar_x2.LoadImageFile( 0, "set:playstation_buttons image:square" );
 			toolbar_y.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 			toolbar_y2.LoadImageFile( 0, "set:playstation_buttons image:triangle" );
 		#endif
@@ -162,12 +177,34 @@ class CharacterCreationMenu extends UIScriptedMenu
 	}
 	
 	//Button Events
+	//! renames character
 	void Apply()
+	{
+		if ( !m_Scene.GetIntroCharacter().IsDefaultCharacter() )
+		{
+			string name = m_NameSelector.GetValue();
+			if( name == "" )
+				name = GameConstants.DEFAULT_CHARACTER_NAME;
+			
+			m_Scene.GetIntroCharacter().SaveCharName(name);
+		}
+		
+		MainMenu menu_main = MainMenu.Cast(GetGame().GetUIManager().FindMenu(MENU_MAIN));
+		if (menu_main)
+		{
+			menu_main.OnChangeCharacter(false);
+		}
+		GetGame().GetUIManager().Back();
+	}
+	
+	//! saves default character
+	void Save()
 	{
 		if ( m_Scene.GetIntroCharacter().IsDefaultCharacter() )
 		{
 			m_Scene.GetIntroCharacter().SaveDefaultCharacter();
 			m_Scene.GetIntroCharacter().SetToDefaultCharacter();
+			SetCharacterSaved(true);
 		}
 		string name = m_NameSelector.GetValue();
 		if( name == "" )
@@ -175,13 +212,19 @@ class CharacterCreationMenu extends UIScriptedMenu
 		
 		m_Scene.GetIntroCharacter().SaveCharName(name);
 		
-		GetGame().GetUIManager().Back();
+		//GetGame().GetUIManager().Back();
 	}
 	
 	void Back()
 	{
 		//bring back DefaultCharacter, if it exists (it should), or a previously played one.
 		GetGame().GetMenuData().RequestGetDefaultCharacterData();
+		#ifdef PLATFORM_CONSOLE
+			if (m_OriginalCharacterID != GameConstants.DEFAULT_CHARACTER_MENU_ID && m_CharacterSaved)
+			{
+				m_OriginalCharacterID = GameConstants.DEFAULT_CHARACTER_MENU_ID;
+			}
+		#endif
 		m_Scene.GetIntroCharacter().SetCharacterID(m_OriginalCharacterID);
 		m_Scene.GetIntroCharacter().CreateNewCharacterById(m_Scene.GetIntroCharacter().GetCharacterID());
 		GetGame().GetUIManager().Back();
@@ -221,6 +264,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 		m_BottomSelector.SetValue(GetGame().GetMenuDefaultCharacterData().GetAttachmentMap().Get(InventorySlots.LEGS),false);
 		m_ShoesSelector.SetValue(GetGame().GetMenuDefaultCharacterData().GetAttachmentMap().Get(InventorySlots.FEET),false);
 		
+		Refresh();
 		SetCharacter();
 		
 		CheckNewOptions();
@@ -240,19 +284,22 @@ class CharacterCreationMenu extends UIScriptedMenu
 		
 		m_SkinSelector.LoadNewValues( m_Scene.GetIntroCharacter().GetCharList( gender ) , 0 );
 		m_SkinSelector.SetRandomValue();
+		SetCharacterSaved(false);
 	}
 	
 	void SkinChanged()
 	{
 		m_Scene.GetIntroCharacter().CreateNewCharacterByName( m_SkinSelector.GetStringValue(), false );
+		SetCharacterSaved(false);
 		
-		layoutRoot.FindAnyWidget( "character_root" ).Show( m_Scene.GetIntroCharacter().IsDefaultCharacter() );
+		//layoutRoot.FindAnyWidget( "character_root" ).Show( m_Scene.GetIntroCharacter().IsDefaultCharacter() );
 	}
 	
 	void TopChanged()
 	{
 		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.BODY,m_TopSelector.GetStringValue());
 		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		SetCharacterSaved(false);
 		//m_Scene.GetIntroCharacter().SetAttachment( m_TopSelector.GetStringValue(), InventorySlots.BODY );
 	}
 	
@@ -260,6 +307,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.LEGS,m_BottomSelector.GetStringValue());
 		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		SetCharacterSaved(false);
 		//m_Scene.GetIntroCharacter().SetAttachment( m_BottomSelector.GetStringValue(), InventorySlots.LEGS );
 	}
 	
@@ -267,6 +315,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		GetGame().GetMenuDefaultCharacterData().SetDefaultAttachment(InventorySlots.FEET,m_ShoesSelector.GetStringValue());
 		GetGame().GetMenuDefaultCharacterData().EquipDefaultCharacter(m_Scene.GetIntroCharacter().GetCharacterObj());
+		SetCharacterSaved(false);
 		//m_Scene.GetIntroCharacter().SetAttachment( m_ShoesSelector.GetStringValue(), InventorySlots.FEET );
 	}
 	
@@ -281,6 +330,12 @@ class CharacterCreationMenu extends UIScriptedMenu
 		if( w == m_Apply )
 		{
 			Apply();
+			return true;
+		}
+		else if (w == m_Save )
+		{
+			Save();
+			GetGame().GetUIManager().Back();
 			return true;
 		}
 		else if ( w == m_RandomizeCharacter )
@@ -320,7 +375,28 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	override bool OnMouseEnter( Widget w, int x, int y )
 	{
+		string tooltip_header = "";
+		string tooltip_text = "";
 		ColorHighlight( w );
+		//Print(w.GetName());
+		switch (w.GetUserID())//hack-ish solution, implement generic tooltip handler!
+		{
+			case TOOLTIP_ID_APPLY:
+				tooltip_header = "#layout_main_menu_rename";
+				tooltip_text = "#layout_character_creation_apply_tooltip";
+			break;
+			
+			case TOOLTIP_ID_SAVE:
+				tooltip_header = "#layout_character_creation_save_character";
+				tooltip_text = "#layout_character_creation_save_tooltip";
+			break;
+			
+			/*default:
+				tooltip_header = "boop";
+				tooltip_text = "the snoot";
+			break;*/
+		}
+		SetTooltipTexts(w, tooltip_header, tooltip_text);
 		return true;
 	}
 	
@@ -334,11 +410,27 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	override bool OnFocus( Widget w, int x, int y )
 	{
+		string tooltip_header = "";
+		string tooltip_text = "";
 		if( IsFocusable( w ) )
 		{
 			ColorHighlight( w );
+			switch (w.GetUserID())//hack-ish solution, implement generic tooltip handler! Plus console menu does not use button widgets?
+			{
+				case TOOLTIP_ID_APPLY:
+					tooltip_header = "#layout_main_menu_rename";
+					tooltip_text = "#layout_character_creation_apply_tooltip";
+				break;
+				
+				case TOOLTIP_ID_SAVE:
+					tooltip_header = "#layout_character_creation_save_character";
+					tooltip_text = "#layout_character_creation_save_tooltip";
+				break;
+			}
+			SetTooltipTexts(w, tooltip_header, tooltip_text);
 			return true;
 		}
+		SetTooltipTexts(w);
 		return false;
 	}
 	
@@ -356,19 +448,60 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		if( w )
 		{
-			return ( w == m_Apply || w == m_RandomizeCharacter || w == m_BackButton );
+			return ( w == m_Apply || w == m_Save || w == m_RandomizeCharacter || w == m_BackButton );
 		}
 		return false;
+	}
+	
+	void SetTooltipTexts(Widget w, string header = "", string desc = "")
+	{
+		#ifndef PLATFORM_CONSOLE
+			bool show = header != "" && desc != "";
+			m_DetailsRoot.Show( show );
+			m_DetailsLabel.SetText( header );
+			m_DetailsText.SetText( desc );
+			
+			//moves the widget to parent, setting is relative to widget alignment, case-specific implementation (getter missing!!!)
+			if (show)
+			{
+				float parent_pos_x, parent_pos_y;
+				float parent_size_x, parent_size_y;
+				float layout_size_x, layout_size_y;
+				
+				w.GetScreenPos(parent_pos_x,parent_pos_y);
+				w.GetScreenSize(parent_size_x,parent_size_y);
+				layoutRoot.GetScreenSize(layout_size_x,layout_size_y);
+				
+				/*Print("w.GetScreenPos: " + parent_pos_x + " | " + parent_pos_y);
+				Print("w.GetScreenSize: " + parent_size_x + " | " + parent_size_y);
+				Print("layoutRoot.GetScreenSize: " + layout_size_x + " | " + layout_size_y);
+				Print("---------------");*/
+				float set_x = layout_size_x - parent_pos_x;
+				float set_y = layout_size_y - parent_pos_y - parent_size_y;
+				//Print("result: " + set_x + ":" + set_y);
+				m_DetailsRoot.SetPos(set_x,set_y,true);
+			}
+			
+			m_DetailsText.Update();
+			m_DetailsLabel.Update();
+			m_DetailsRoot.Update();
+		#endif
 	}
 	
 	void CheckNewOptions()
 	{
 		bool show_widgets = m_Scene.GetIntroCharacter().IsDefaultCharacter();
+		bool was_visible = layoutRoot.FindAnyWidget( "character_gender_button" ).IsVisible();
 		layoutRoot.FindAnyWidget( "character_gender_button" ).Show( show_widgets );
 		layoutRoot.FindAnyWidget( "character_head_button" ).Show( show_widgets );
 		layoutRoot.FindAnyWidget( "character_top_button" ).Show( show_widgets );
 		layoutRoot.FindAnyWidget( "character_bottom_button" ).Show( show_widgets );
 		layoutRoot.FindAnyWidget( "character_shoes_button" ).Show( show_widgets );
+		
+		if (!was_visible && show_widgets)
+			m_GenderSelector.Focus();
+		if (!show_widgets)
+			SetFocus(m_RandomizeCharacter);
 	}
 	
 	override void OnShow()
@@ -377,6 +510,9 @@ class CharacterCreationMenu extends UIScriptedMenu
 		m_GenderSelector.Focus();
 		layoutRoot.FindAnyWidget( "play_panel_root" ).Show( GetGame().GetInput().IsEnabledMouseAndKeyboard() );
 		layoutRoot.FindAnyWidget( "toolbar_bg" ).Show( !GetGame().GetInput().IsEnabledMouseAndKeyboard() );
+		
+		//layoutRoot.FindAnyWidget( "play_panel_root" ).Show( true );
+		//layoutRoot.FindAnyWidget( "toolbar_bg" ).Show( true );
 #endif
 		CheckNewOptions();
 		
@@ -413,9 +549,25 @@ class CharacterCreationMenu extends UIScriptedMenu
 		GetGame().GetVersion( version );
 		#ifdef PLATFORM_CONSOLE
 			version = "#main_menu_version" + " " + version + " (" + g_Game.GetDatabaseID() + ")";
+			m_ConsoleSave.Show(!m_CharacterSaved && m_Scene.GetIntroCharacter().IsDefaultCharacter());
+			m_Apply.Show(m_CharacterSaved || !m_Scene.GetIntroCharacter().IsDefaultCharacter());
+			m_Save.Show(!m_CharacterSaved && m_Scene.GetIntroCharacter().IsDefaultCharacter());
 		#else
 			version = "#main_menu_version" + " " + version;
+			m_Apply.Show(!m_Scene.GetIntroCharacter().IsDefaultCharacter());
+			m_Save.Show(m_Scene.GetIntroCharacter().IsDefaultCharacter());
 		#endif
+		m_PlayedCharacterInfo.Show(!m_Scene.GetIntroCharacter().IsDefaultCharacter());
+		
+		if (m_Scene.GetIntroCharacter().IsDefaultCharacter())
+		{
+			m_CharacterHeaderText.SetText("#character_menu_header");
+		}
+		else
+		{
+			m_CharacterHeaderText.SetText("#server_browser_prev_play_filter");
+		}
+		
 		m_Version.SetText( version );
 	}
 	
@@ -423,17 +575,23 @@ class CharacterCreationMenu extends UIScriptedMenu
 	{
 		if ( GetGame().GetInput().LocalPress("UAUIBack",false) )
 		{
-			#ifdef PLATFORM_CONSOLE
-			Apply();
-			#else
 			Back();
-			#endif
 		}
 		
 		if ( GetGame().GetInput().LocalPress("UAUICtrlX",false) )
 		{
 			RandomizeCharacter();
 		}
+		
+		#ifdef PLATFORM_CONSOLE
+		if ( GetGame().GetInput().LocalPress("UAUICtrlY",false) )
+		{
+			if ( m_Scene.GetIntroCharacter().IsDefaultCharacter() && !m_CharacterSaved )
+			{
+				Save();
+			}
+		}
+		#endif
 	}
 	
 	override void OnHide()
@@ -544,7 +702,7 @@ class CharacterCreationMenu extends UIScriptedMenu
 	
 	void ColorDisable( Widget w )
 	{
-		#ifdef PLATFORM_WINDOWS
+		#ifndef PLATFORM_CONSOLE
 		SetFocus( null );
 		#endif
 		
@@ -556,5 +714,13 @@ class CharacterCreationMenu extends UIScriptedMenu
 				button.SetTextColor( ColorManager.COLOR_DISABLED_TEXT );
 			}
 		}
+	}
+	
+	void SetCharacterSaved(bool state)
+	{
+		#ifdef PLATFORM_CONSOLE
+			m_CharacterSaved = state;
+			Refresh();
+		#endif
 	}
 }

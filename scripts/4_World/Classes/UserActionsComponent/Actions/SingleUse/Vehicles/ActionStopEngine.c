@@ -42,7 +42,7 @@ class ActionStopEngine: ActionSingleUseBase
 	override void OnExecuteServer( ActionData action_data )
 	{
 		HumanCommandVehicle vehCmd = action_data.m_Player.GetCommand_Vehicle();
-		Car car;
+		CarScript car;
 
 		if ( vehCmd )
 		{
@@ -53,7 +53,7 @@ class ActionStopEngine: ActionSingleUseBase
 				{
 					car.EngineStop();
 					if ( !GetGame().IsMultiplayer() )
-						SEffectManager.PlaySound("offroad_engine_stop_fuel_SoundSet", car.GetPosition() );
+						SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
 				}
 			}
 		}	
@@ -62,7 +62,7 @@ class ActionStopEngine: ActionSingleUseBase
 	override void OnExecuteClient( ActionData action_data )
 	{
 		HumanCommandVehicle vehCmd = action_data.m_Player.GetCommand_Vehicle();
-		Car car;
+		CarScript car;
 
 		if ( vehCmd )
 		{
@@ -72,7 +72,7 @@ class ActionStopEngine: ActionSingleUseBase
 				if ( Class.CastTo(car, trans) )
 				{
 					car.EngineStop();
-					SEffectManager.PlaySound("offroad_engine_stop_fuel_SoundSet", car.GetPosition() );
+					SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
 				}
 			}
 		}

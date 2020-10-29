@@ -166,9 +166,9 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style Colorable
        "next left" "none"
-       "next right" "none"
-       "next up" ""
-       "next down" ""
+       "next right" "back"
+       "next up" "character_shoes_button"
+       "next down" "character_head_button"
        {
         GridSpacerWidgetClass character_gender_button_panel {
          ignorepointer 1
@@ -247,9 +247,9 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style Colorable
        "next left" "none"
-       "next right" "none"
-       "next up" ""
-       "next down" ""
+       "next right" "back"
+       "next up" "character_gender_button"
+       "next down" "character_top_button"
        {
         GridSpacerWidgetClass character_head_button_panel {
          ignorepointer 1
@@ -327,9 +327,9 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style Colorable
        "next left" "none"
-       "next right" "none"
-       "next up" ""
-       "next down" ""
+       "next right" "back"
+       "next up" "character_head_button"
+       "next down" "character_bottom_button"
        {
         GridSpacerWidgetClass character_top_button_panel {
          ignorepointer 1
@@ -407,9 +407,9 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style Colorable
        "next left" "none"
-       "next right" "none"
-       "next up" ""
-       "next down" ""
+       "next right" "back"
+       "next up" "character_top_button"
+       "next down" "character_shoes_button"
        {
         GridSpacerWidgetClass character_bottom_button_panel {
          ignorepointer 1
@@ -557,6 +557,50 @@ FrameWidgetClass character_creation_root {
          style rover_sim_colorable
         }
        }
+      }
+     }
+    }
+    PanelWidgetClass played_char_info {
+     visible 1
+     inheritalpha 0
+     ignorepointer 1
+     color 0 0 0 0.549
+     position 0 120
+     size 0.25 50
+     halign center_ref
+     valign bottom_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     scaled 1
+     style DayZDefaultPanel
+     "no focus" 1
+     "next left" ""
+     "next right" ""
+     "next up" ""
+     "next down" ""
+     {
+      RichTextWidgetClass played_char_info_text {
+       visible 1
+       disabled 0
+       ignorepointer 1
+       size 0.95 1
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       style DayZNormal
+       text "#layout_character_previously_played_desc"
+       font "gui/fonts/sdf_MetronLight24"
+       text_proportion 0.8
+       "size to text h" 1
+       "size to text v" 0
+       "text halign" center
+       "text valign" center
+       wrap 1
       }
      }
     }
@@ -831,6 +875,71 @@ FrameWidgetClass character_creation_root {
         }
        }
       }
+      GridSpacerWidgetClass save_console {
+       visible 1
+       clipchildren 0
+       ignorepointer 1
+       size 153 30
+       halign right_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       priority 3
+       "no focus" 1
+       Padding 4
+       Margin 0
+       "Size To Content H" 1
+       "Size To Content V" 1
+       content_halign center
+       content_valign center
+       Columns 2
+       Rows 1
+       {
+        ImageWidgetClass save_consoleIcon {
+         clipchildren 0
+         inheritalpha 0
+         ignorepointer 1
+         position 0 0
+         size 38 38
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         image0 "set:xbox_buttons image:Y"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
+        }
+        TextWidgetClass save_consoleText {
+         clipchildren 0
+         ignorepointer 1
+         position 40 0
+         size 122 36
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         text "#layout_character_creation_save_character"
+         font "gui/fonts/sdf_MetronLight24"
+         "exact text" 1
+         "exact text size" 22
+         "size to text h" 1
+         "size to text v" 0
+         "text halign" center
+         "text valign" center
+        }
+       }
+      }
      }
     }
    }
@@ -890,7 +999,7 @@ FrameWidgetClass character_creation_root {
    }
   }
   WrapSpacerWidgetClass play_panel_root {
-   visible 0
+   visible 1
    ignorepointer 1
    position 100 130
    size 400 200
@@ -926,6 +1035,7 @@ FrameWidgetClass character_creation_root {
      "next down" "exit_button"
      {
       ButtonWidgetClass apply {
+       disabled 1
        color 0.7843 0 0 1
        position 0 0
        size 1 1
@@ -937,14 +1047,63 @@ FrameWidgetClass character_creation_root {
        vexactsize 0
        style DayZDefaultButtonAll
        "no focus" 0
-       "next left" ""
+       "next left" "character_gender_button"
        "next right" ""
        "next up" "back"
        "next down" "randomize_character"
-       text "#layout_character_creation_apply"
+       text "#layout_character_creation_save"
+       text_proportion 0.8
+       font "gui/fonts/sdf_MetronLight72"
+       "disabled text color" 0.502 0.502 0.502 1
+       switch normal
+      }
+      ButtonWidgetClass save {
+       visible 1
+       color 0.7843 0 0 1
+       position 0 0
+       size 1 1
+       halign center_ref
+       valign bottom_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       userID 1
+       style DayZDefaultButtonAll
+       "no focus" 0
+       "next left" "character_gender_button"
+       "next right" ""
+       "next up" "back"
+       "next down" "randomize_character"
+       text "#layout_character_creation_save"
        text_proportion 0.8
        font "gui/fonts/sdf_MetronLight72"
        switch normal
+       {
+        ImageWidgetClass save_consoleIcon0 {
+         clipchildren 0
+         inheritalpha 0
+         ignorepointer 1
+         position 10 0
+         size 38 38
+         halign right_ref
+         valign center_ref
+         hexactpos 1
+         vexactpos 1
+         hexactsize 1
+         vexactsize 1
+         scaled 1
+         image0 "set:xbox_buttons image:Y"
+         mode blend
+         "src alpha" 1
+         "no wrap" 1
+         stretch 0
+         "flip u" 0
+         "flip v" 0
+         filter 1
+         nocache 0
+        }
+       }
       }
      }
     }
@@ -996,10 +1155,10 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style DayZDefaultButtonBottom
        "no focus" 0
-       "next left" ""
+       "next left" "character_gender_button"
        "next right" ""
        "next up" "randomize_character"
-       "next down" "apply"
+       "next down" "save"
        text "#layout_character_creation_back"
        text_proportion 0.55
        font "gui/fonts/sdf_MetronLight24"
@@ -1042,9 +1201,9 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
        style DayZDefaultButtonSides
        "no focus" 0
-       "next left" ""
+       "next left" "character_gender_button"
        "next right" ""
-       "next up" "apply"
+       "next up" "save"
        "next down" "back"
        text "#layout_character_creation_randomize"
        text_proportion 0.55
@@ -1100,6 +1259,132 @@ FrameWidgetClass character_creation_root {
        vexactsize 1
       }
      }
+    }
+   }
+  }
+  GridSpacerWidgetClass menu_details_tooltip {
+   visible 0
+   clipchildren 1
+   ignorepointer 1
+   color 0 0 0 0.549
+   position 500 666
+   size 600 200
+   halign right_ref
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   priority 3
+   style DayZDefaultPanel
+   "no focus" 1
+   Padding 0
+   Margin 0
+   "Size To Content V" 1
+   Columns 1
+   Rows 2
+   {
+    PanelWidgetClass menu_details_tooltip_header {
+     ignorepointer 1
+     color 0 0 0 1
+     size 0.08 36
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     style DayZDefaultPanel
+     {
+      TextWidgetClass menu_details_label {
+       clipchildren 0
+       ignorepointer 1
+       size 0.95 0.5
+       halign center_ref
+       valign center_ref
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       text "This is Sparta"
+       font "gui/fonts/sdf_MetronLight72"
+       text_proportion 0.9
+      }
+     }
+    }
+    GridSpacerWidgetClass menu_details_tooltip_body {
+     ignorepointer 1
+     position 0 0
+     size 0.9 0.571
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     Padding 0
+     Margin 15
+     "Size To Content V" 1
+     Columns 1
+     Rows 1
+     {
+      RichTextWidgetClass menu_details_tooltip_content {
+       clipchildren 0
+       ignorepointer 1
+       position 0 0
+       size 1 1
+       hexactpos 1
+       vexactpos 1
+       hexactsize 0
+       vexactsize 1
+       text "this is details"
+       font "gui/fonts/sdf_MetronLight24"
+       "exact text" 1
+       "exact text size" 16
+       "size to text h" 0
+       "size to text v" 1
+       wrap 1
+       "condense whitespace" 1
+      }
+     }
+    }
+   }
+  }
+  PanelWidgetClass char_header {
+   visible 0
+   inheritalpha 0
+   ignorepointer 1
+   color 0 0 0 0.549
+   position 0 120
+   size 0.25 50
+   halign center_ref
+   valign bottom_ref
+   hexactpos 1
+   vexactpos 1
+   hexactsize 0
+   vexactsize 1
+   style DayZDefaultPanel
+   "no focus" 0
+   "next left" "news_main"
+   "next right" "news_main"
+   "next up" ""
+   "next down" "exit_button"
+   {
+    TextWidgetClass char_header_text {
+     visible 1
+     disabled 0
+     ignorepointer 1
+     size 1 1
+     halign center_ref
+     valign center_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 0
+     style Normal
+     text "glub glub"
+     font "gui/fonts/sdf_MetronLight72"
+     text_proportion 0.8
+     "size to text h" 1
+     "size to text v" 0
+     "text halign" center
+     "text valign" center
     }
    }
   }

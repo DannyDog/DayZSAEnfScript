@@ -197,6 +197,9 @@ class MissionBase extends MissionBaseWorld
 		case MENU_WARNING_ITEMDROP:
 			menu = new ItemDropWarningMenu;
 			break;
+		case MENU_RESPAWN_DIALOGUE:
+			menu = new RespawnDialogue;
+			break;
 		}
 
 		if (menu)

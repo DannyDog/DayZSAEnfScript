@@ -173,7 +173,7 @@ WindowWidgetClass DialogBox {
      hexactsize 1
      vexactsize 1
      style EmptyHighlight
-     text "#message_dialog_cancel"
+     text "#dialog_cancel"
      text_proportion 0.45
      font "gui/fonts/sdf_MetronBook24"
      {

@@ -7015,17 +7015,23 @@ class CfgVehicles
 			};
 			class GlobalArmor
 			{
-				class FragGrenade
+				class Projectile
 				{
 					class Health
 					{
 						damage = 0;
 					};
-					class Blood
+				};
+				class Melee
+				{
+					class Health
 					{
 						damage = 0;
 					};
-					class Shock
+				};
+				class FragGrenade
+				{
+					class Health
 					{
 						damage = 0;
 					};

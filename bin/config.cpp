@@ -1,10 +1,11 @@
 #define _ARMA_
 
-//(18 Enums)
+//(19 Enums)
 enum {
 	destructengine = 2,
 	destructdefault = 6,
 	destructwreck = 7,
+	drive_662 = 4,
 	destructtree = 3,
 	destructtent = 4,
 	drive_fwd = 0,

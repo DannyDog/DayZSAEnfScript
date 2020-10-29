@@ -2,7 +2,6 @@ class ActionCarDoors: ActionInteractBase
 {	
 	protected int m_CommandUIDPerCrewIdx[4];
 	protected bool m_IsOpening = true;
-	protected string m_CarDoorSound = "";
 	
 	void ActionCarDoors()
 	{
@@ -115,7 +114,12 @@ class ActionCarDoors: ActionInteractBase
 		if ( car )
 		{
 			if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
-				SEffectManager.PlaySound(m_CarDoorSound, car.GetPosition());
+			{
+				if ( m_IsOpening )
+					SEffectManager.PlaySound( car.m_CarDoorOpenSound, car.GetPosition());
+				else
+					SEffectManager.PlaySound( car.m_CarDoorCloseSound, car.GetPosition());
+			}
 		}
 	}
 	

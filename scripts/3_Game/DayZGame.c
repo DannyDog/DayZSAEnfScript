@@ -2421,6 +2421,14 @@ class DayZGame extends CGame
 						}
 					}
 				}
+				case ERPCs.RPC_SERVER_RESPAWN_MODE:
+				{
+					int mode;
+					if ( ctx.Read(mode) && !IsServer() )
+					{
+						GetMission().SetRespawnModeClient(mode);
+					}
+				}
 			}
 			// global rpc's handling
 		}

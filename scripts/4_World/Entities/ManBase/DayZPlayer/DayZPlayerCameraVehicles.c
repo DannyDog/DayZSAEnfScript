@@ -25,15 +25,26 @@ class DayZPlayerCamera3rdPersonVehicle extends DayZPlayerCameraBase
 	const float CONST_ANGULAR_LAG_YAW_STRENGTH   = 4;
 	const float CONST_ANGULAR_LAG_PITCH_STRENGTH = 1.5;
 
-	void DayZPlayerCamera3rdPersonVehicle (DayZPlayer pPlayer, HumanInputController pInput)
+	void DayZPlayerCamera3rdPersonVehicle( DayZPlayer pPlayer, HumanInputController pInput )
 	{
 		//Print("new camera: DayZPlayerCamera3rdPersonVehicle");
-		
+
 		m_fDistance 		= 4.0;
 		m_CameraOffsetMS	= "0.0 1.3 0.0";
+		
+		HumanCommandVehicle vehicleCommand = pPlayer.GetCommand_Vehicle();
+		if ( vehicleCommand )
+		{
+			Transport transport = vehicleCommand.GetTransport();
+			if ( transport )
+			{
+				m_fDistance			= transport.GetTransportCameraDistance();
+				m_CameraOffsetMS	= transport.GetTransportCameraOffset();
+			}
+		}
 	}
 	
-	override void 		OnActivate (DayZPlayerCamera pPrevCamera, DayZPlayerCameraResult pPrevCameraResult)
+	override void OnActivate( DayZPlayerCamera pPrevCamera, DayZPlayerCameraResult pPrevCameraResult )
 	{
 		if (pPrevCamera)
 		{
@@ -49,7 +60,7 @@ class DayZPlayerCamera3rdPersonVehicle extends DayZPlayerCameraBase
 		m_fLagOffsetVelocityZ[0] = 0;
 	}
 
-	override void 		OnUpdate(float pDt, out DayZPlayerCameraResult pOutResult)
+	override void OnUpdate( float pDt, out DayZPlayerCameraResult pOutResult )
 	{
 		//! get player transform
 		vector playerTransformWS[4];
@@ -77,7 +88,7 @@ class DayZPlayerCamera3rdPersonVehicle extends DayZPlayerCameraBase
 		vector posDiffLS = vector.Zero;
 		vector orientDiff =  vector.Zero;
 
-		if( vehicle )
+		if ( vehicle )
 		{
 			vector posDiffWS = GetVelocity(vehicle) * pDt;
 			posDiffLS = posDiffWS.InvMultiply3(playerTransformWS);

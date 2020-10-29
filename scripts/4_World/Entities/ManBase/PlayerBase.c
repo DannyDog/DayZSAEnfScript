@@ -2641,10 +2641,20 @@ class PlayerBase extends ManBase
 		//if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 		m_UnconsciousTime = 0;
 		m_UnconsciousVignetteTarget = 2;
-		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT) 
+		if( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT ) 
 		{
-			if (pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH)
+			if ( pCurrentCommandID != DayZPlayerConstants.COMMANDID_DEATH )
+			{
 				PPEffects.SetUnconsciousnessVignette(0);
+				if ( GetGame().GetUIManager().IsDialogVisible() )
+				{
+					GetGame().GetUIManager().CloseDialog();
+				}
+				if ( GetGame().GetUIManager().IsMenuOpen(MENU_RESPAWN_DIALOGUE) )
+				{
+					GetGame().GetUIManager().FindMenu(MENU_RESPAWN_DIALOGUE).Close();
+				}
+			}
 			SetInventorySoftLock(false);
 		}
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
@@ -2655,7 +2665,7 @@ class PlayerBase extends ManBase
 			if ( m_AdminLog )
 			{
 				m_AdminLog.UnconStop( this );
-		}
+			}
 		}
 		
 		SetMasterAttenuation("");
@@ -4728,7 +4738,9 @@ class PlayerBase extends ManBase
 			PPEffects.ResetAll();
 			CheckForBurlap();
 			
-			if ( g_Game.IsNewCharacter() )
+			int char_count = GetGame().GetMenuData().GetCharactersCount() - 1;
+			int idx = GetGame().GetMenuData().GetLastPlayedCharacter();
+			if ( idx == GameConstants.DEFAULT_CHARACTER_MENU_ID || idx > char_count )
 			{
 				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(SetNewCharName);
 			}
@@ -4762,10 +4774,11 @@ class PlayerBase extends ManBase
 	
 	void SetNewCharName()
 	{
-		if ( g_Game.GetMenuData().GetLastPlayedCharacter() > (g_Game.m_OriginalCharactersCount - 1) ) //Checks whether new character has been saved
-		{
-			g_Game.GetMenuData().SetCharacterName(g_Game.GetMenuData().GetLastPlayedCharacter(), g_Game.GetPlayerGameName());
-		}
+		//Print("SetNewCharName");
+		g_Game.GetMenuData().SaveCharacter(false,true);
+		g_Game.GetMenuData().SetCharacterName(g_Game.GetMenuData().GetLastPlayedCharacter(), g_Game.GetMenuDefaultCharacterData(false).GetCharacterName() );
+		//g_Game.GetMenuData().SaveCharacter(false,true);
+		g_Game.GetMenuData().SaveCharactersLocal();
 	}
 
 	void CheckForBurlap()

@@ -171,7 +171,7 @@ class DayZPlayerTypeVoiceSoundLookupTableImpl extends DayZPlayerTypeVoiceSoundLo
 		
 		string cfgPath = "CfgVehicles SurvivorBase AnimEvents SoundVoice ";
 		int childCount = GetGame().ConfigGetChildrenCount(cfgPath);
-		Print("childCount:" + childCount);
+		//Print("childCount:" + childCount);
 		for(int i = 0; i < childCount; i++)
 		{
 			string defName;

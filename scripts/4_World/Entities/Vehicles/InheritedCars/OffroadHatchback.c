@@ -4,11 +4,25 @@ class OffroadHatchback extends CarScript
 	void OffroadHatchback()
 	{
 		m_dmgContactCoef = 0.075;
+	
+		m_EngineStartOK = "offroad_engine_start_SoundSet";
+		m_EngineStartBattery = "offroad_engine_failed_start_battery_SoundSet";
+		m_EngineStartPlug = "offroad_engine_failed_start_sparkplugs_SoundSet";
+		m_EngineStartFuel = "offroad_engine_failed_start_fuel_SoundSet";
+		m_EngineStopFuel = "offroad_engine_stop_fuel_SoundSet";
+		
+		m_CarDoorOpenSound = "offroad_door_open_SoundSet";
+		m_CarDoorCloseSound = "offroad_door_close_SoundSet";
 	}
 	
 	override int GetAnimInstance()
 	{
 		return VehicleAnimInstances.HATCHBACK;
+	}
+	
+	override float GetTransportCameraDistance()
+	{
+		return 3.5;
 	}
 
 	override int GetSeatAnimationType( int posIdx )

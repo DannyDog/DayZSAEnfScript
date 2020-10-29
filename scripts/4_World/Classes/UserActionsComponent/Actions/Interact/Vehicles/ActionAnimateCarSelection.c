@@ -23,8 +23,11 @@ class ActionAnimateCarSelection: ActionInteractBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if( !target ) return false;
-		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		if( !target )
+			return false;
+
+		if( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
+			return false;
 
 		Object targetObject = target.GetObject();
 		Entity targetEnt = Entity.Cast(targetObject);
@@ -40,9 +43,7 @@ class ActionAnimateCarSelection: ActionInteractBase
 			{
 				m_AnimSource = car.GetAnimSourceFromSelection( selections[i]) ;
 				if ( m_AnimSource != "" )
-				{
 					return true;
-				}
 			}
 		}
 

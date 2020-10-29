@@ -3,11 +3,25 @@ class CivilianSedan extends CarScript
 	void CivilianSedan()
 	{
 		m_dmgContactCoef = 0.065;
+		
+		m_EngineStartOK = "CivilianSedan_engine_start_SoundSet";
+		m_EngineStartBattery = "CivilianSedan_engine_failed_start_battery_SoundSet";
+		m_EngineStartPlug = "CivilianSedan_engine_failed_start_sparkplugs_SoundSet";
+		m_EngineStartFuel = "CivilianSedan_engine_failed_start_fuel_SoundSet";
+		m_EngineStopFuel = "offroad_engine_stop_fuel_SoundSet";
+
+		m_CarDoorOpenSound = "offroad_door_open_SoundSet";
+		m_CarDoorCloseSound = "offroad_door_close_SoundSet";
 	}
 	
 	override int GetAnimInstance()
 	{
 		return VehicleAnimInstances.SEDAN;
+	}
+	
+	override float GetTransportCameraDistance()
+	{
+		return 4.5;
 	}
 
 	override int GetSeatAnimationType( int posIdx )

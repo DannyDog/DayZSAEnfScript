@@ -34,6 +34,7 @@ class MissionGameplay extends MissionBase
 	protected bool 					m_ControlDisabled;
 	protected bool 					m_QuickbarHold;
 	protected bool 					m_PlayerRespawning;
+	protected int 					m_RespawnModeClient; //for client-side usage
 	
 	// von control info
 	protected bool					m_VoNActive;
@@ -1212,5 +1213,15 @@ class MissionGameplay extends MissionBase
 	override array<vector> GetActiveRefresherLocations()
 	{
 		return m_ActiveRefresherLocations;
+	}
+	
+	override void SetRespawnModeClient(int mode)
+	{
+		m_RespawnModeClient = mode;
+	}
+	
+	override int GetRespawnModeClient()
+	{
+		return m_RespawnModeClient;
 	}
 }

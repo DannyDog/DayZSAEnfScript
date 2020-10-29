@@ -276,6 +276,7 @@ class ActionConstructor
 		actions.Insert(ActionGetOutTransport);
 		actions.Insert(ActionAnimateSeats); //<- action doesn't work well, add it later
 		actions.Insert(ActionAnimateCarSelection); //<- action doesn't work well, add it later
+		actions.Insert(ActionSidePlateInteract); //Same as previous but specific to v3s to play sounds
 		actions.Insert(ActionDetach);
 		actions.Insert(ActionOpenFence);
 		actions.Insert(ActionCloseFence);

@@ -1,11 +1,13 @@
 class InGameMenu extends UIScriptedMenu
 {
-	string m_ServerInfoText;
+	string 						m_ServerInfoText;
 	
 	protected Widget			m_ContinueButton;
 	protected Widget			m_ExitButton;
 	protected Widget			m_RestartButton;
-	protected Widget			m_RestartDeadButton;
+	protected Widget 			m_RespawnButton;
+	protected Widget			m_RestartDeadRandomButton;
+	protected Widget			m_RestartDeadCustomButton;
 	protected Widget			m_OptionsButton;
 	protected Widget 			m_ServerInfoPanel;
 	protected Widget 			m_FavoriteButton;
@@ -29,21 +31,23 @@ class InGameMenu extends UIScriptedMenu
 	{
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets("gui/layouts/day_z_ingamemenu.layout");
 				
-		m_ContinueButton	= layoutRoot.FindAnyWidget( "continuebtn" );
-		m_ExitButton		= layoutRoot.FindAnyWidget( "exitbtn" );
-		m_RestartButton		= layoutRoot.FindAnyWidget( "restartbtn" );
-		m_RestartDeadButton	= layoutRoot.FindAnyWidget( "restartdeadbtn" );
-		m_OptionsButton		= layoutRoot.FindAnyWidget( "optionsbtn" );
-		m_ModdedWarning		= TextWidget.Cast( layoutRoot.FindAnyWidget( "ModdedWarning" ) );
-		m_HintPanel			= new UiHintPanel(layoutRoot.FindAnyWidget( "hint_frame" ));
-		m_ServerInfoPanel 	= layoutRoot.FindAnyWidget( "server_info" );
-		m_ServerIP 			= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_ip" ) );
-		m_ServerPort 		= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_port" ) );
-		m_ServerName 		= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_name" ) );
-		//m_FavoriteButton 	= layoutRoot.FindAnyWidget( "favorite_button" );
-		m_FavoriteImage 	= layoutRoot.FindAnyWidget( "favorite_image" );
-		m_UnfavoriteImage 	= layoutRoot.FindAnyWidget( "unfavorite_image" );
-		m_CopyInfoButton 	= layoutRoot.FindAnyWidget( "copy_button" );
+		m_ContinueButton			= layoutRoot.FindAnyWidget( "continuebtn" );
+		m_ExitButton				= layoutRoot.FindAnyWidget( "exitbtn" );
+		m_RestartButton				= layoutRoot.FindAnyWidget( "restartbtn" );
+		m_RespawnButton 			= layoutRoot.FindAnyWidget( "respawn_button" );
+		m_RestartDeadRandomButton	= layoutRoot.FindAnyWidget( "respawn_button_random" );
+		m_RestartDeadCustomButton	= layoutRoot.FindAnyWidget( "respawn_button_custom" );
+		m_OptionsButton				= layoutRoot.FindAnyWidget( "optionsbtn" );
+		m_ModdedWarning				= TextWidget.Cast( layoutRoot.FindAnyWidget( "ModdedWarning" ) );
+		m_HintPanel					= new UiHintPanel(layoutRoot.FindAnyWidget( "hint_frame" ));
+		m_ServerInfoPanel 			= layoutRoot.FindAnyWidget( "server_info" );
+		m_ServerIP 					= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_ip" ) );
+		m_ServerPort 				= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_port" ) );
+		m_ServerName 				= TextWidget.Cast( layoutRoot.FindAnyWidget( "server_name" ) );
+		//m_FavoriteButton 			= layoutRoot.FindAnyWidget( "favorite_button" );
+		m_FavoriteImage 			= layoutRoot.FindAnyWidget( "favorite_image" );
+		m_UnfavoriteImage 			= layoutRoot.FindAnyWidget( "unfavorite_image" );
+		m_CopyInfoButton 			= layoutRoot.FindAnyWidget( "copy_button" );
 		
 		if (GetGame().IsMultiplayer())
 		{
@@ -166,9 +170,14 @@ class InGameMenu extends UIScriptedMenu
 			OnClick_Continue();
 			return true;
 		}
-		else if ( w == m_RestartButton || w == m_RestartDeadButton )
+		else if ( w == m_RestartButton )
 		{
 			OnClick_Restart();
+			return true;
+		}
+		else if ( w == m_RespawnButton )
+		{
+			OnClick_Respawn();
 			return true;
 		}
 		else if ( w == m_OptionsButton )
@@ -206,15 +215,28 @@ class InGameMenu extends UIScriptedMenu
 		}
 		else
 		{
-			Man player = GetGame().GetPlayer();
-			
-			if ( player && player.IsUnconscious() )
+			OnClick_Respawn();
+		}
+	}
+	
+	protected void OnClick_Respawn()
+	{
+		Man player = GetGame().GetPlayer();
+		
+		if ( player && player.IsUnconscious() )
+		{
+			GetGame().GetUIManager().ShowDialog("#main_menu_respawn", "#main_menu_respawn_question", IDC_INT_RETRY, DBT_YESNO, DBB_YES, DMT_QUESTION, this);
+		}
+		else
+		{
+			if ( GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM )
 			{
-				GetGame().GetUIManager().ShowDialog("#main_menu_respawn", "#main_menu_respawn_question", IDC_INT_RETRY, DBT_YESNO, DBB_YES, DMT_QUESTION, this);
+				//GetGame().GetUIManager().ShowDialog("Respawning", "Respawn as custom?", IDC_INT_RESPAWN, DBT_YESNOCANCEL, DBB_YES, DMT_QUESTION, this);
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetUIManager().EnterScriptedMenu,MENU_RESPAWN_DIALOGUE,this);
 			}
 			else
 			{
-				GameRespawn();
+				GameRespawn(true);
 			}
 		}
 	}
@@ -249,7 +271,6 @@ class InGameMenu extends UIScriptedMenu
 			}	
 			g_Game.CancelLoginTimeCountdown();
 			return true;
-		
 		}
 		else if ( code == IDC_INT_EXIT && result == DBB_NO )
 		{
@@ -257,10 +278,31 @@ class InGameMenu extends UIScriptedMenu
 		}
 		else if ( code == IDC_INT_RETRY && result == DBB_YES && GetGame().IsMultiplayer() )
 		{
-			GameRespawn();
+			if ( GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM )
+			{
+				//GetGame().GetUIManager().ShowDialog("#main_menu_respawn", "#main_menu_respawn_question", IDC_INT_RESPAWN, DBT_YESNOCANCEL, DBB_YES, DMT_QUESTION, this);	
+				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetUIManager().EnterScriptedMenu,MENU_RESPAWN_DIALOGUE,this);
+			} 
+			else
+			{
+				GameRespawn(true);
+			}
 			return true;
 		}
-	
+		/*else if ( code == IDC_INT_RESPAWN && GetGame().IsMultiplayer())
+		{
+			if (result == DBB_YES)
+			{
+				GameRespawn(false);
+				return true;
+			}
+			else if (result == DBB_NO)
+			{
+				GameRespawn(true);
+				return true;
+			}
+		}*/
+		
 		return false;
 	}
 	
@@ -273,35 +315,47 @@ class InGameMenu extends UIScriptedMenu
 	
 	protected void UpdateGUI()
 	{
+		Man player = GetGame().GetPlayer();
+		bool player_is_alive = false;
+
+		if (player)
+		{
+			int life_state = player.GetPlayerState();
+
+			if (life_state == EPlayerStates.ALIVE)
+			{
+				player_is_alive = true;
+			}
+		}
+		
 		if ( GetGame().IsMultiplayer() )
 		{
-			Man player = GetGame().GetPlayer();
-			bool player_is_alive = false;
-	
-			if (player)
-			{
-				int life_state = player.GetPlayerState();
-	
-				if (life_state == EPlayerStates.ALIVE)
-				{
-					player_is_alive = true;
-				}
-			}
-			
 			m_ContinueButton.Show( player_is_alive );
-			m_RestartButton.Show( (player_is_alive && player.IsUnconscious()) );
-			m_RestartDeadButton.Show( !player_is_alive );
+			m_RestartButton.Show( player_is_alive && player.IsUnconscious() );
+			m_RespawnButton.Show( !player_is_alive );
+			//m_RestartDeadCustomButton.Show( !player_is_alive && GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM );
+			//m_RestartDeadRandomButton.Show( !player_is_alive );
 		}
 		else
 		{
 			m_ContinueButton.Show( player_is_alive );
-			m_RestartButton.Show( (player_is_alive && player.IsUnconscious()) );
-			m_RestartDeadButton.Show( !player_is_alive );
+			m_RestartButton.Show( true );
+			m_RespawnButton.Show( false );
+			//m_RestartDeadCustomButton.Show( false );
+			//m_RestartDeadRandomButton.Show( false );
 		}
 	}
 	
-	protected void GameRespawn()
+	void MenuRequestRespawn(UIScriptedMenu menu, bool random)
 	{
+		if (RespawnDialogue.Cast(menu))
+			GameRespawn(random);
+	}
+	
+	protected void GameRespawn(bool random)
+	{
+		//Print("respawning as random " + random);
+		GetGame().GetMenuDefaultCharacterData(false).SetRandomCharacterForced(random); //todo
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().RespawnPlayer);
 		//turns off dead screen, hides HUD for countdown
 		//---------------------------------------------------
@@ -317,7 +371,7 @@ class InGameMenu extends UIScriptedMenu
 		//---------------------------------------------------
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetMission().Continue);
 		Close();
-	}	
+	}
 	
 	protected void ColorHighlight( Widget w )
 	{

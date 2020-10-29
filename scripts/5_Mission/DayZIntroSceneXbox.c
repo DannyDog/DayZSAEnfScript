@@ -329,6 +329,11 @@ class DayZIntroSceneXbox: Managed
 		//{
 			m_MenuData.SetCharacterName(m_LastPlayedCharacterID, name);			
 		//}
+		if (m_Character.IsDefaultCharacter())
+		{
+			GetGame().GetMenuDefaultCharacterData().SetCharacterName(name);
+		}
+		m_MenuData.SaveCharactersLocal();
 	}
 	
 	// ------------------------------------------------------------

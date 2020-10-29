@@ -4470,60 +4470,65 @@ class CfgVehicles
 					soundset = "offroad_hit_character_SoundSet";
 					id = 2040;
 				};
-				class V3S_Gear
+				class Truck_01_Gear
 				{
-					soundset = "V3S_Gear_SoundSet";
+					soundset = "Truck_01_Gear_SoundSet";
 					id = 2100;
 				};
-				class V3S_Key_On
+				class Truck_01_Key_On
 				{
-					soundset = "V3S_Key_On_SoundSet";
+					soundset = "Truck_01_Key_On_SoundSet";
 					id = 2101;
 				};
-				class V3S_Key_Off
+				class Truck_01_Key_Off
 				{
-					soundset = "V3S_Key_Off_SoundSet";
+					soundset = "Truck_01_Key_Off_SoundSet";
 					id = 2102;
 				};
-				class V3S_lights
+				class Truck_01_lights
 				{
-					soundset = "V3S_lights_SoundSet";
+					soundset = "Truck_01_lights_SoundSet";
 					id = 2103;
 				};
-				class V3S_DriverGetIn
+				class Truck_01_DriverGetIn
 				{
-					soundset = "V3S_DriverGetIn_SoundSet";
+					soundset = "Truck_01_DriverGetIn_SoundSet";
 					id = 2104;
 				};
-				class V3S_DriverGetOut
+				class Truck_01_DriverGetOut
 				{
-					soundset = "V3S_DriverGetOut_SoundSet";
+					soundset = "Truck_01_DriverGetOut_SoundSet";
 					id = 2105;
 				};
-				class V3S_CoDriverGetIn
+				class Truck_01_CoDriverGetIn
 				{
-					soundset = "V3S_CoDriverGetIn_SoundSet";
+					soundset = "Truck_01_CoDriverGetIn_SoundSet";
 					id = 2106;
 				};
-				class V3S_CoDriverGetOut
+				class Truck_01_CoDriverGetOut
 				{
-					soundset = "V3S_CoDriverGetOut_SoundSet";
+					soundset = "Truck_01_CoDriverGetOut_SoundSet";
 					id = 2107;
 				};
-				class V3S_PassengerGetIn
+				class Truck_01_DriverJumpOut
 				{
-					soundset = "V3S_PassengerGetIn_SoundSet";
-					id = 2108;
-				};
-				class V3S_PassengerGetOut
-				{
-					soundset = "V3S_PassengerGetOut_SoundSet";
-					id = 2109;
-				};
-				class V3S_PassengerJumpOut
-				{
-					soundset = "V3S_PassengerJumpOut_SoundSet";
+					soundset = "Offroad_DriverJumpOut_SoundSet";
 					id = 2110;
+				};
+				class Truck_01_CodriverJumpOut
+				{
+					soundset = "Offroad_DriverJumpOut_SoundSet";
+					id = 2111;
+				};
+				class Truck_01_driver_switchSeat
+				{
+					soundset = "Truck_01_driver_switchSeat_SoundSet";
+					id = 2120;
+				};
+				class Truck_01_codriver_switchSeat
+				{
+					soundset = "Truck_01_driver_switchSeat_SoundSet";
+					id = 2121;
 				};
 				class CivilianSedan_Gear
 				{

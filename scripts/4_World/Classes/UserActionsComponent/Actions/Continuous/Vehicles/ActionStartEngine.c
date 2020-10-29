@@ -128,19 +128,19 @@ class ActionStartEngine: ActionContinuousBase
 					{
 						//Now we can play the proper sound
 						EffectSound effectSound = NULL;
-	
+
 						if ( m_FuelCon && m_BeltCon && m_SparkCon && m_BatteryCon )
 						{
-							effectSound = SEffectManager.CreateSound("offroad_engine_start_SoundSet", car.GetPosition() );
+							effectSound = SEffectManager.CreateSound( car.m_EngineStartOK, car.GetPosition() );
 						}
 						else
 						{
 							if ( !m_BatteryCon )
-								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_battery_SoundSet", car.GetPosition() );
+								effectSound = SEffectManager.CreateSound( car.m_EngineStartBattery, car.GetPosition() );
 							else if ( !m_SparkCon )
-								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_sparkplugs_SoundSet", car.GetPosition() );
+								effectSound = SEffectManager.CreateSound( car.m_EngineStartPlug, car.GetPosition() );
 							else if ( !m_FuelCon )
-								effectSound = SEffectManager.CreateSound("offroad_engine_failed_start_fuel_SoundSet", car.GetPosition() );
+								effectSound = SEffectManager.CreateSound( car.m_EngineStartFuel, car.GetPosition() );
 						}
 
 						WaveKind waveKind = WaveKind.WAVEEFFECT;
@@ -152,7 +152,7 @@ class ActionStartEngine: ActionContinuousBase
 						
 						if (effectSound != NULL)
 						{
-							effectSound.SetSoundWaveKind(waveKind);
+							effectSound.SetSoundWaveKind( waveKind );
 							effectSound.SoundPlay();
 						}
 					}

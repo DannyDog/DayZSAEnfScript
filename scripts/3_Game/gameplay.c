@@ -696,6 +696,13 @@ class Mission
 	void SetPlayerRespawning(bool state);
 	bool IsPlayerRespawning();
 	array<vector> GetActiveRefresherLocations();
+	
+	//! for client-side usage
+	void SetRespawnModeClient(int mode);
+	int GetRespawnModeClient()
+	{
+		return -1;
+	}
 };
 
 // -------------------------------------------------------------------------
@@ -774,8 +781,10 @@ class MenuDefaultCharacterData
 	//const int MODE_SERVER = 0;
 	//const int MODE_CLIENT = 1;
 	
-	string m_CharacterType;
-	ref map<int,string> m_AttachmentsMap;
+	string 					m_CharacterName;
+	string 					m_CharacterType;
+	ref map<int,string> 	m_AttachmentsMap;
+	bool 					m_ForceRandomCharacter;
 	
 	void MenuDefaultCharacterData()
 	{
@@ -862,6 +871,8 @@ class MenuDefaultCharacterData
 		//Print("SerializeCharacterData");
 		ctx.Write(m_CharacterType);
 		ctx.Write(m_AttachmentsMap);
+		ctx.Write(m_ForceRandomCharacter);
+		ctx.Write(m_CharacterName);
 		//Print(m_CharacterType);
 		//DumpAttMapContents();
 	}
@@ -873,10 +884,24 @@ class MenuDefaultCharacterData
 			return false;
 		if (!ctx.Read(m_AttachmentsMap))
 			return false;
+		if (!ctx.Read(m_ForceRandomCharacter))
+			return false;
+		if (!ctx.Read(m_CharacterName))
+			return false;
 		
 		//Print(m_CharacterType);
 		//DumpAttMapContents();
 		return true;
+	}
+	
+	void SetCharacterName(string name)
+	{
+		m_CharacterName = name;
+	}
+	
+	string GetCharacterName()
+	{
+		return m_CharacterName;
 	}
 	
 	void SetCharacterType(string character_type)
@@ -887,6 +912,16 @@ class MenuDefaultCharacterData
 	string GetCharacterType()
 	{
 		return m_CharacterType;
+	}
+	
+	void SetRandomCharacterForced(bool state)
+	{
+		m_ForceRandomCharacter = state;
+	}
+	
+	bool IsRandomCharacterForced()
+	{
+		return m_ForceRandomCharacter;
 	}
 	
 	ref map<int,string> GetAttachmentMap()

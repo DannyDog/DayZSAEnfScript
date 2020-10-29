@@ -24,13 +24,14 @@ const int IDC_MAIN_ONLINE			= 124;
 const int IDC_MULTI_REFRESH			= 123;
 const int IDC_MULTI_INVITE			= 126;
 
-
 const int IDC_BOOK_VIEWER_PREV  	= 102;
 const int IDC_BOOK_VIEWER_NEXT  	= 103;
 
 //! ingame menu
-const int IDC_INT_RETRY				= 105;
+const int IDC_INT_RETRY				= 105; //default respawn
+const int IDC_INT_RETRY_CUSTOM		= 106; //custom respawn
 const int IDC_INT_EXIT				= 107;
+//const int IDC_INT_RESPAWN			= 108; //respawn dialogue
 /** @}*/
 
 /**
@@ -78,6 +79,7 @@ const int MENU_CREDITS								= 36;
 const int MENU_INVITE_TIMER							= 37;
 const int MENU_LOGIN_TIME							= 38;
 const int MENU_WARNING_ITEMDROP						= 39;
+const int MENU_RESPAWN_DIALOGUE						= 40;
 
 const int GUI_WINDOW_MISSION_LOADER = 1;
 
@@ -557,7 +559,7 @@ class GameConstants
 	const float ENVIRO_LOW_TEMP_LIMIT					= -40;		//! lowest temperature(deg Celsius) where the player gets lowest possible heat comfort (-1)
 	const float ENVIRO_HIGH_TEMP_LIMIT					= 50;		//! highest temperature(deg Celsius) where the player gets highest possible heat comfort (1)
 	const float ENVIRO_PLAYER_COMFORT_TEMP				= 26;		//! comfort temperature of environment for the player
-	const float ENVIRO_TEMP_EFFECT_ON_PLAYER			= 70;		//! impact of enviro temperature on player (lower value = higher, cannot be zero or below!)
+	const float ENVIRO_TEMP_EFFECT_ON_PLAYER			= 60;		//! impact of enviro temperature on player (lower value = higher, cannot be zero or below!)
 	const float ENVIRO_PLAYER_HEATBUFFER_DECREASE		= 0.34;		//! Multiplier of enviro temperature for heat buffer decrease (after its static timer runs out)
 	const float ENVIRO_PLAYER_HEATBUFFER_INCREASE		= 0.51;		//! How much heat buffer increases per one enviro tick
 	const float ENVIRO_PLAYER_HEATBUFFER_TICK			= 0.011;	//! Heat buffer static timer tick (set for 2s enviro tick, 180s to 1.0)
@@ -701,4 +703,7 @@ class GameConstants
 	const int DECAY_FOOD_FRVG_DRIED_CHANCE = 43;
 	const int DECAY_TIMER_RANDOM_PERCENTAGE = 25;
 	const float DECAY_RATE_ON_PLAYER = 2.5;
+	
+	const int RESPAWN_MODE_CUSTOM = 0;
+	const int RESPAWN_MODE_RANDOM = 1;
 }
