@@ -177,7 +177,7 @@ class CfgVehicles
 					{
 						hitpoints = 600;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_ruined_ca.paa"}}};
 					};
 					class ArmorType
 					{
@@ -548,7 +548,7 @@ class CfgVehicles
 					{
 						hitpoints = 2000;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_door_damage.rvmat","DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_door.rvmat","DZ\gear\camping\data\tent_ruined_ca.paa"}}};
 					};
 					class ArmorType
 					{
@@ -583,7 +583,7 @@ class CfgVehicles
 					{
 						hitpoints = 2000;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_ruined_ca.paa"}}};
 					};
 					class ArmorType
 					{
@@ -1054,7 +1054,7 @@ class CfgVehicles
 					{
 						hitpoints = 1700;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_ruined_ca.paa"}}};
 					};
 					class ArmorType
 					{
@@ -1390,7 +1390,7 @@ class CfgVehicles
 					{
 						hitpoints = 1400;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}}};
+						healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_ruined_ca.paa"}}};
 					};
 					class ArmorType
 					{
@@ -6858,7 +6858,7 @@ class CfgVehicles
 		model = "\dz\gear\camping\fabric_ground.p3d";
 		weight = 220;
 		absorbency = 0.3;
-		itemSize[] = {3,3};
+		itemSize[] = {4,4};
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;

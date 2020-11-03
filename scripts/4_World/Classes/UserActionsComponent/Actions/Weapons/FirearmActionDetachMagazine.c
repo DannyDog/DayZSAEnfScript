@@ -308,10 +308,14 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 				mag = Magazine.Cast(action_data.m_Target.GetObject());
 			
 				action_data.m_Player.GetHumanInventory().ClearUserReservedLocation(wpn);
-				if( ( GetGame().IsClient() || !GetGame().IsMultiplayer() ) && !mag.GetHierarchyParent() )
+				if ( ( GetGame().IsClient() || !GetGame().IsMultiplayer() ) && !mag.GetHierarchyParent() )
 				{
-					action_data.m_Player.GetInventory().ForceSwapEntities(InventoryMode.PREDICTIVE, mag, wpn, action_data_dm.m_ilWeapon);
-					Print(action_data_dm.m_ilWeapon.DumpToString());
+					InventoryMode invMode = InventoryMode.PREDICTIVE;
+					
+					if ( action_data.m_Player.NeedInventoryJunctureFromServer(mag, action_data.m_Player, action_data.m_Player) || action_data.m_Player.NeedInventoryJunctureFromServer(wpn, action_data.m_Player, action_data.m_Player) )
+						invMode = InventoryMode.JUNCTURE;
+				
+					action_data.m_Player.GetInventory().ForceSwapEntities(invMode, mag, wpn, action_data_dm.m_ilWeapon);
 				}
 
 				End( action_data );

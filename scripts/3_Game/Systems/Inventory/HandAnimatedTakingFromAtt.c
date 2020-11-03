@@ -95,6 +95,8 @@ class HandAnimatedTakingFromAtt extends HandStateBase
 	override void OnAbort (HandEventBase e)
 	{
 		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst.GetItem(), m_Dst);
+		if ( GetGame().IsServer() )
+			GetGame().ClearJuncture(e.m_Player, m_Dst.GetItem());
 		m_Dst = null;
 
 		super.OnAbort(e);

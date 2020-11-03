@@ -5,6 +5,7 @@ class Edible_Base extends ItemBase
 	protected string m_SoundPlaying;
 	ref FoodStage m_FoodStage;
 	protected float m_DecayTimer;
+	protected float m_DecayDelta = 0.0;
 	protected FoodStageType m_LastDecayStage = FoodStageType.NONE;
 
 	//Baking
@@ -505,13 +506,14 @@ class Edible_Base extends ItemBase
 	
 	override void ProcessDecay( float delta, bool hasRootAsPlayer )
 	{
-		float deltaModifier = 1 + GetHealth01( "", "" );
+		m_DecayDelta += ( 1 + ( 1 - GetHealth01( "", "" ) ) );
 		if ( hasRootAsPlayer )
-			deltaModifier += GameConstants.DECAY_RATE_ON_PLAYER;
+			m_DecayDelta += GameConstants.DECAY_RATE_ON_PLAYER;
 		
 		/*Print( "-------------------------" );
 		Print( this );
 		Print( m_DecayTimer );
+		Print( m_DecayDelta );
 		Print( m_LastDecayStage );*/
 		
 		if ( IsFruit() )
@@ -548,7 +550,7 @@ class Edible_Base extends ItemBase
 				//m_DecayTimer = m_DecayTimer / 1000.0;
 			}
 			
-			m_DecayTimer -= ( delta * deltaModifier );
+			m_DecayTimer -= ( delta * m_DecayDelta );
 						
 			if ( m_DecayTimer <= 0 ) 
 			{
@@ -620,7 +622,7 @@ class Edible_Base extends ItemBase
 				//m_DecayTimer = m_DecayTimer / 1000.0;
 			}
 			
-			m_DecayTimer -= ( delta * deltaModifier );
+			m_DecayTimer -= ( delta * m_DecayDelta );
 			
 			if ( m_DecayTimer <= 0 ) 
 			{
@@ -637,7 +639,7 @@ class Edible_Base extends ItemBase
 		else
 		{
 			// opened cans
-			m_DecayTimer -= ( delta * deltaModifier );
+			m_DecayTimer -= ( delta * m_DecayDelta );
 
 			if ( ( m_DecayTimer <= 0 ) && ( m_LastDecayStage == FoodStageType.NONE ) )
 			{
@@ -654,6 +656,8 @@ class Edible_Base extends ItemBase
 				}
 			}
 		}
+		
+		m_DecayDelta = 0.0;
 	}
 }
 

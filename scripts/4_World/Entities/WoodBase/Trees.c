@@ -244,11 +244,11 @@ class TreeSoft_t_malusDomestica_1s: TreeSoft
 		m_IsCuttable = true;
 		
 		m_PrimaryDropsAmount = 3;
-		m_SecondaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
 		m_PrimaryOutput = "FireWood";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeSoft_t_malusDomestica_2s: TreeSoft_t_malusDomestica_1s{};
@@ -261,11 +261,11 @@ class TreeSoft_t_PiceaAbies_1f: TreeSoft
 		m_IsCuttable = true;
 		
 		m_PrimaryDropsAmount = 4;
-		m_SecondaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
 		m_PrimaryOutput = "FireWood";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeSoft_t_PiceaAbies_2sb: TreeSoft
@@ -453,12 +453,12 @@ class TreeSoft_t_LarixDecidua_1f: TreeSoft
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 4;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
 		m_PrimaryOutput = "FireWood";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeSoft_t_LarixDecidua_1s: TreeSoft
@@ -468,12 +468,12 @@ class TreeSoft_t_LarixDecidua_1s: TreeSoft
 		super.InitMiningValues();
 		m_IsCuttable = true;
 		
-		m_PrimaryDropsAmount = 4;
-		m_SecondaryDropsAmount = 3;
+		m_PrimaryDropsAmount = 2;
+		m_SecondaryDropsAmount = 2;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_MEDIUM;
 		m_PrimaryOutput = "FireWood";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 //-----------------------------------------------
@@ -1194,11 +1194,11 @@ class TreeHard_t_prunusDomestica_2s: TreeHard
 		m_IsCuttable = true;
 		
 		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeHard_t_pyrusCommunis_3s: TreeHard
@@ -1209,11 +1209,11 @@ class TreeHard_t_pyrusCommunis_3s: TreeHard
 		m_IsCuttable = true;
 		
 		m_PrimaryDropsAmount = 1;
-		m_SecondaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeHard_t_pyrusCommunis_3sb: TreeHard
@@ -1224,11 +1224,11 @@ class TreeHard_t_pyrusCommunis_3sb: TreeHard
 		m_IsCuttable = true;
 		
 		m_PrimaryDropsAmount = 2;
-		m_SecondaryDropsAmount = 3;
+		m_SecondaryDropsAmount = 1;
 		m_ToolDamage = 4.0;
 		m_CycleTimeOverride = GameConstants.MINING_WOOD_SLOW;
 		m_PrimaryOutput = "WoodenLog";
-		m_SecondaryOutput = "WoodenStick";
+		m_SecondaryOutput = "LongWoodenStick";
 	}
 };
 class TreeHard_t_quercusRobur_2d: TreeHard

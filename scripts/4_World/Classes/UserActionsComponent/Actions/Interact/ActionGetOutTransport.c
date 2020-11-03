@@ -396,7 +396,7 @@ class ActionGetOutTransport: ActionBase
 			if (equippedClothes[i] == null)
 				continue;
 
-			equippedClothes[i].DecreaseHealth(got_action_data.m_DmgTaken);
+			equippedClothes[i].DecreaseHealth(got_action_data.m_DmgTaken, false);
 			nbClothes++;
 		}
 	}

@@ -2752,14 +2752,16 @@ class PlayerBase extends ManBase
 			{
 				refill_speed =  PlayerConstants.SHOCK_REFILl_UNCONSCIOUS_SPEED;
 			}
-			else if (m_BrokenLegState != eBrokenLegs.BROKEN_LEGS || (m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE))//m_MovementState.m_iStanceIdx = DayZPlayerConstants.STANCEIDX_ERECT)
+			else if (m_BrokenLegState != eBrokenLegs.BROKEN_LEGS || (m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_PRONE || m_MovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
 			{
 				refill_speed =  PlayerConstants.SHOCK_REFILL_CONSCIOUS_SPEED;
 			}
-			else 
+			else  if ( m_BrokenLegState == eBrokenLegs.BROKEN_LEGS && (IsSwimming() || IsClimbingLadder()) )
 			{
-				refill_speed = 0; //Block shock regen when standing with broken legs
+				refill_speed =  PlayerConstants.SHOCK_REFILl_UNCONSCIOUS_SPEED;
 			}
+			else
+				refill_speed = 0; //Block shock regen when standing with broken legs
 			
 			AddHealth("","Shock", pDt * refill_speed );
 		}
@@ -2869,62 +2871,82 @@ class PlayerBase extends ManBase
 	{
 		if (!IsInWater() && !IsSwimming() && !IsClimbingLadder() && !IsInVehicle() && !IsClimbing() && DayZPlayerUtils.PlayerCanChangeStance(this, DayZPlayerConstants.STANCEIDX_PRONE) )
 		{
-			
-				//Force to prone if player tries moving while not prone OR if it is first time legs break
-				if ( (forceOverride == true || m_BrokenLegState != m_LocalBrokenState) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+			//Force to prone if player tries moving while not prone OR if it is first time legs break
+			if ( (forceOverride == true || m_BrokenLegState != m_LocalBrokenState) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+			{
+				EntityAI attachment;
+				Class.CastTo(attachment, GetItemOnSlot("Splint_Right"));
+				if ( attachment && attachment.GetType() == "Splint_Applied" )
 				{
-					EntityAI attachment;
-					Class.CastTo(attachment, GetItemOnSlot("Splint_Right"));
-					if ( attachment && attachment.GetType() == "Splint_Applied" )
-					{
-						attachment.Delete();
-					}
-					
-					m_CanPlayBrokenLegSound = true;
-					m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
-					m_ShockHandler.CheckValue(true);
-					//Get command move and verify not null
-					HumanCommandMove hcm = StartCommand_Move();  
-					hcm = GetCommand_Move(); 
-					if (hcm)
-					{
-						hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
-					}
-					SetLegHealth();
-					m_LocalBrokenState = m_BrokenLegState;
+					attachment.Delete();
 				}
-				else
-					m_CanPlayBrokenLegSound = false;
-			
+				
+				m_CanPlayBrokenLegSound = true;
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
+				m_ShockHandler.CheckValue(true);
+				//Get command move and verify not null
+				HumanCommandMove hcm = StartCommand_Move();  
+				hcm = GetCommand_Move(); 
+				if (hcm)
+				{
+					hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+				}
+				SetLegHealth();
+				m_LocalBrokenState = m_BrokenLegState;
+			}
+			else
+				m_CanPlayBrokenLegSound = false;
 		}
 	}
 	
 	//Used to inflict shock when player is walking (only inflicted on Update timer)
 	void BrokenLegWalkShock()
 	{
-		if ( (m_MovementState.m_iMovement != 0 && m_MovementState.m_iMovement != 1) && (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE))
+		//No need to pursue here if player is prone as the following logic is not applied
+		if ( m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE )
 		{
-			if (GetHealth("RightLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftLeg", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("RightFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD || GetHealth("LeftFoot", "Health") <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD)
+			float avgLegHealth = GetHealth("RightLeg","") + GetHealth("LeftLeg","") + GetHealth("RightFoot","") + GetHealth("LeftFoot","");
+			avgLegHealth *= 0.25; //divide by 4 to make the average leg health;
+			
+			if (IsSwimming() && m_MovementState.m_iMovement != 0)
 			{
-				//Inflict "high shock"
-				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HIGH_SHOCK_WALK);
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_SHOCK_SWIM);
 			}
-			else if (GetHealth("RightLeg", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("LeftLeg", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("RightFoot", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD || GetHealth("LeftFoot", "Health") >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD)
+			else if (IsClimbingLadder() && m_MovementState.m_iMovement != 0)
 			{
-				//Inflict "low shock"
-				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LOW_SHOCK_WALK);
+				MovingShock(avgLegHealth, PlayerConstants.BROKEN_LEGS_HIGH_SHOCK_WALK, PlayerConstants.BROKEN_LEGS_MID_SHOCK_WALK, PlayerConstants.BROKEN_LEGS_LOW_SHOCK_WALK);
 			}
-			else
+			else if ( (m_MovementState.m_iMovement != 0 && m_MovementState.m_iMovement != 1) )
 			{
-				//If neither high nore low, inflict "mid shock"
-				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_MID_SHOCK_WALK);
+				MovingShock(avgLegHealth, PlayerConstants.BROKEN_LEGS_HIGH_SHOCK_WALK, PlayerConstants.BROKEN_LEGS_MID_SHOCK_WALK, PlayerConstants.BROKEN_LEGS_LOW_SHOCK_WALK);
 			}
+			else 
+			{
+				//Here apply shock if player is standing or crouched and STANDING STILL
+				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_STAND_SHOCK);
+			}
+			
 			m_ShockHandler.CheckValue(true);
 		}
-		else if (m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE && m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_RAISEDPRONE)
+	}
+	
+	//Always use the same thresholds but allow passing of different shock values
+	void MovingShock(float legHealth, float highShock, float midShock, float lowShock)
+	{
+		if (legHealth <= PlayerConstants.BROKEN_LEGS_LOW_HEALTH_THRESHOLD)
 		{
-			//Here apply shock if player is standing or crouched and STANDING STILL
-			m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_STAND_SHOCK);
+			//Inflict "high shock"
+			m_ShockHandler.SetShock(highShock);
+		}
+		else if (legHealth >= PlayerConstants.BROKEN_LEGS_HIGH_HEALTH_THRESHOLD)
+		{
+			//Inflict "low shock"
+			m_ShockHandler.SetShock(lowShock);
+		}
+		else
+		{
+			//If neither high nore low, inflict "mid shock"
+			m_ShockHandler.SetShock(midShock);
 		}
 	}
 	

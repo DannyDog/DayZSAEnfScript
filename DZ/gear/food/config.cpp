@@ -1609,25 +1609,25 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,80,1,0};
+					nutrition_properties[] = {2.5,65,80,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,37.5,40,1,0,16};
+					nutrition_properties[] = {2,35,40,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,87.5,60,1,0};
+					nutrition_properties[] = {1.75,100,60,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,62.5,80,1,0};
+					nutrition_properties[] = {1.5,85,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
@@ -1720,37 +1720,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,80,1,0};
+					nutrition_properties[] = {2.5,65,80,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,37.5,40,1,0,16};
+					nutrition_properties[] = {2,35,40,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,87.5,60,1,0};
+					nutrition_properties[] = {1.75,100,60,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {2,2,2};
-					nutrition_properties[] = {1.5,62.5,80,1,0};
+					nutrition_properties[] = {1.5,85,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {3,3,3};
-					nutrition_properties[] = {0.75,50,8,1,0};
+					nutrition_properties[] = {0.75,75,8,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {4,4,4};
-					nutrition_properties[] = {2,37.5,20,1,0};
+					nutrition_properties[] = {2,35,20,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -1837,7 +1837,7 @@ class CfgVehicles
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,37.5,40,1,0,16};
+					nutrition_properties[] = {2,35,40,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
@@ -1849,7 +1849,7 @@ class CfgVehicles
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,62.5,80,1,0};
+					nutrition_properties[] = {1.5,62.5,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
@@ -1861,7 +1861,7 @@ class CfgVehicles
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {2,37.5,20,1,0};
+					nutrition_properties[] = {2,35,20,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2121,7 +2121,7 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,30,95,1,0};
+					nutrition_properties[] = {2.5,60,95,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
@@ -2133,25 +2133,25 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,55,71.25,1,0};
+					nutrition_properties[] = {1.75,90,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,35,95,1,0};
+					nutrition_properties[] = {1.5,75,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,35,9.5,1,0};
+					nutrition_properties[] = {0.75,65,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {1,4,4};
-					nutrition_properties[] = {2,15,23.75,1,0};
+					nutrition_properties[] = {2,35,23.75,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2205,9 +2205,9 @@ class CfgVehicles
 		itemSize[] = {1,2};
 		stackedUnit = "g";
 		absorbency = 0.2;
-		varQuantityInit = 125;
+		varQuantityInit = 150;
 		varQuantityMin = 0;
-		varQuantityMax = 125;
+		varQuantityMax = 150;
 		quantityBar = 1;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		containsSeedsType = "Cultivation_PepperSeeds";
@@ -2234,37 +2234,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,35,95,1,0};
+					nutrition_properties[] = {2.5,50,95,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,30,47.5,1,0,16};
+					nutrition_properties[] = {2,35,47.5,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,55,71.25,1,0};
+					nutrition_properties[] = {1.75,75,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,45,95,1,0};
+					nutrition_properties[] = {1.5,65,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,40,9.5,1,0};
+					nutrition_properties[] = {0.75,60,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {1,4,4};
-					nutrition_properties[] = {2,30,23.75,1,0};
+					nutrition_properties[] = {2,35,23.75,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2347,37 +2347,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,60,120,1,0};
+					nutrition_properties[] = {2.5,50,65,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,45,78.5,1,0,16};
+					nutrition_properties[] = {2,35,47.5,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,75,101.25,1,0};
+					nutrition_properties[] = {1.75,75,100,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,68,95,1,0};
+					nutrition_properties[] = {1.5,65,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,72,39.5,1,0};
+					nutrition_properties[] = {0.75,55,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {2,15,23.75,1,0};
+					nutrition_properties[] = {2,35,23.75,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2519,9 +2519,9 @@ class CfgVehicles
 		itemSize[] = {3,2};
 		stackedUnit = "g";
 		absorbency = 0.2;
-		varQuantityInit = 200;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 250;
 		quantityBar = 1;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		containsSeedsType = "";
@@ -2548,37 +2548,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,20,95,1,0};
+					nutrition_properties[] = {2.5,50,95,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,15,47.5,1,0,16};
+					nutrition_properties[] = {2,35,47.5,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,70,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {2,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,60,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {2,4,4};
-					nutrition_properties[] = {2,15,23.75,1,0};
+					nutrition_properties[] = {2,35,23.75,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2684,31 +2684,31 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,40,95,1,0};
+					nutrition_properties[] = {2.5,20,95,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,30,47.5,1,0,16};
+					nutrition_properties[] = {2,15,47.5,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,70,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,55,95,1,0};
+					nutrition_properties[] = {1.5,70,95,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {0.75,40,9.5,1,0};
+					nutrition_properties[] = {0.75,20,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -2897,19 +2897,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,87.5,60,1,0};
+					nutrition_properties[] = {1.75,90,40,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,62.5,80,1,0};
+					nutrition_properties[] = {1.5,90,80,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,50,8,1,0};
+					nutrition_properties[] = {0.75,90,8,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -3009,19 +3009,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,87.5,60,1,0};
+					nutrition_properties[] = {1.75,90,40,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,62.5,80,1,0};
+					nutrition_properties[] = {1.5,90,80,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {0.75,50,8,1,0};
+					nutrition_properties[] = {0.75,90,8,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -5603,9 +5603,9 @@ class CfgVehicles
 		model = "\dz\gear\food\mushroom_agaricus.p3d";
 		weight = 0;
 		itemSize[] = {1,2};
-		varQuantityInit = 100;
+		varQuantityInit = 150;
 		varQuantityMin = 0;
-		varQuantityMax = 100;
+		varQuantityMax = 150;
 		stackedUnit = "";
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
@@ -5642,19 +5642,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -5809,9 +5809,9 @@ class CfgVehicles
 		model = "\dz\gear\food\mushroom_macrolepiota.p3d";
 		weight = 0;
 		itemSize[] = {1,2};
-		varQuantityInit = 200;
+		varQuantityInit = 150;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 150;
 		stackedUnit = "";
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		hiddenSelections[] = {"cs_raw","cs_baked","cs_dried"};
@@ -5848,19 +5848,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {2,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -5951,19 +5951,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -6158,19 +6158,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -6222,9 +6222,9 @@ class CfgVehicles
 		model = "\dz\gear\food\Mushroom_boletus.p3d";
 		weight = 0;
 		itemSize[] = {1,2};
-		varQuantityInit = 200;
+		varQuantityInit = 150;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 150;
 		stackedUnit = "";
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		hiddenSelections[] = {"cs_raw","cs_dried"};
@@ -6261,19 +6261,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
@@ -6325,9 +6325,9 @@ class CfgVehicles
 		model = "\dz\gear\food\mushroom_pleurotus.p3d";
 		weight = 0;
 		itemSize[] = {1,2};
-		varQuantityInit = 200;
+		varQuantityInit = 150;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 150;
 		rotationFlags = 1;
 		stackedUnit = "";
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
@@ -6365,19 +6365,19 @@ class CfgVehicles
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,35,71.25,1,0};
+					nutrition_properties[] = {1.75,80,71.25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,25,95,1,0};
+					nutrition_properties[] = {1.5,60,120,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {2,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {0.75,30,9.5,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned

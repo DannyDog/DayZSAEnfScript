@@ -846,7 +846,12 @@ class ZombieContainer: CollapsibleContainer
 							InventoryLocation il_hands_dst = new InventoryLocation;
 							if( GetGame().GetPlayer().GetHumanInventory().FindFreeLocationFor( item_in_hands, FindInventoryLocationType.ANY, il_hands_dst ) )
 							{
-								GetGame().GetPlayer().GetHumanInventory().ForceSwapEntities( InventoryMode.PREDICTIVE, item, item_in_hands, il_hands_dst );
+								InventoryMode invMode = InventoryMode.PREDICTIVE;
+					
+								if ( GetGame().GetPlayer().NeedInventoryJunctureFromServer(item_in_hands, item_in_hands.GetHierarchyParent(), il_hands_dst.GetParent()) || GetGame().GetPlayer().NeedInventoryJunctureFromServer(item, item.GetHierarchyParent(), GetGame().GetPlayer()) )
+									invMode = InventoryMode.JUNCTURE;
+								
+								GetGame().GetPlayer().GetHumanInventory().ForceSwapEntities( InventoryMode.JUNCTURE, item, item_in_hands, il_hands_dst );
 								return true;
 							}
 						}

@@ -211,7 +211,7 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 	{
 		Man player = GetGame().GetPlayer();
 
-		if (!player || player.GetPlayerState() == EPlayerStates.ALIVE)
+		if ( !player || (player.GetPlayerState() == EPlayerStates.ALIVE && !player.IsUnconscious()) )
 			return false;
 		
 		#ifdef PLATFORM_CONSOLE

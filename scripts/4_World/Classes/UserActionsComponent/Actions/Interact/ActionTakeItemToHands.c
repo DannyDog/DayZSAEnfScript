@@ -218,6 +218,12 @@ class ActionSwapItemToHands: ActionTakeItemToHands
 	{
 		EntityAI ntarget = EntityAI.Cast(action_data.m_Target.GetObject());
 		if (action_data.m_Player)
-			action_data.m_Player.TakeEntityToHandsImpl(InventoryMode.PREDICTIVE,ntarget);
+		{
+			InventoryMode invMode = InventoryMode.PREDICTIVE;
+			if (action_data.m_Player.NeedInventoryJunctureFromServer(ntarget, ntarget.GetHierarchyParent(), action_data.m_Player))
+				invMode = InventoryMode.JUNCTURE;
+			
+			action_data.m_Player.TakeEntityToHandsImpl(invMode, ntarget);
+		}
 	}
 }

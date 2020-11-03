@@ -201,6 +201,11 @@ class Man extends EntityAI
 			Print("[inv] PredictiveMoveItemFromHandsToInventory input data not sent yet, cannot allow another input action");
 			return;
 		}
+		
+		InventoryMode invMode = InventoryMode.PREDICTIVE;
+		
+		if (NeedInventoryJunctureFromServer( GetHumanInventory().GetEntityInHands(), this, this))
+			invMode = InventoryMode.JUNCTURE;
 
 		//! returns item to previous location, if available
 		if (GetHumanInventory().GetEntityInHands().m_OldLocation && GetHumanInventory().GetEntityInHands().m_OldLocation.IsValid())
@@ -212,7 +217,7 @@ class Man extends EntityAI
 			{
 				if (GetHumanInventory().LocationCanMoveEntity(invLoc, GetHumanInventory().GetEntityInHands().m_OldLocation))
 				{
-					if (GetHumanInventory().TakeToDst(InventoryMode.PREDICTIVE,invLoc,GetHumanInventory().GetEntityInHands().m_OldLocation))
+					if (GetHumanInventory().TakeToDst(invMode, invLoc,GetHumanInventory().GetEntityInHands().m_OldLocation))
 					{
 						UpdateInventoryMenu();
 						return;
@@ -220,7 +225,8 @@ class Man extends EntityAI
 				}
 			}
 		}
-		GetHumanInventory().TakeEntityToInventory(InventoryMode.PREDICTIVE, FindInventoryLocationType.ATTACHMENT | FindInventoryLocationType.CARGO, GetHumanInventory().GetEntityInHands());
+
+		GetHumanInventory().TakeEntityToInventory(invMode, FindInventoryLocationType.ATTACHMENT | FindInventoryLocationType.CARGO, GetHumanInventory().GetEntityInHands());		
 		UpdateInventoryMenu();
 	}
 

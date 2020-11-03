@@ -152,8 +152,14 @@ class HumanInventory : GameInventory
 	
 	bool ThrowEntity (EntityAI item, vector dir, float force)
 	{
-		if( GetGame().IsMultiplayer() && GetGame().IsServer() )
+		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			return false;
+		
+		DayZPlayer player = DayZPlayer.Cast(item.GetHierarchyRootPlayer());
+		InventoryMode invMode = InventoryMode.PREDICTIVE;
+				
+		if ( player.NeedInventoryJunctureFromServer( item, item.GetHierarchyParent(), null) )
+			invMode = InventoryMode.JUNCTURE;
 		
 		InventoryLocation src = new InventoryLocation;
 		if (item && item.GetInventory() && item.GetInventory().GetCurrentInventoryLocation(src))
@@ -164,13 +170,12 @@ class HumanInventory : GameInventory
 					hndDebugPrint("[inv] HumanInventory::ThrowEntity item=" + item);
 					HandEventThrow throwEvent = new HandEventThrow(GetManOwner(), src);
 					throwEvent.SetForce(dir * force);
-					HandEvent(InventoryMode.PREDICTIVE, throwEvent);
+					HandEvent(invMode, throwEvent);
 					return true;
 
-				//default: return super.DropEntity(InventoryMode.PREDICTIVE, src.GetParent(), item);
+				//default: return super.DropEntity(InventoryMode.JUNCTURE, src.GetParent(), item);
 				default:
-					DayZPlayer player = DayZPlayer.Cast(item.GetHierarchyRootPlayer());
-					DropEntity(InventoryMode.PREDICTIVE,player,item);
+					DropEntity(invMode, player, item);
 					return true;
 			}
 		}

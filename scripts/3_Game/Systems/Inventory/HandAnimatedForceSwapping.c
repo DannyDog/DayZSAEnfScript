@@ -109,6 +109,11 @@ class HandAnimatedForceSwapping extends HandStateBase
 			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src2.GetItem(), m_Src2);
 			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Src1.GetItem(), m_Src1);
 		}
+		else
+		{
+			GetGame().ClearJuncture(e.m_Player, m_Src2.GetItem());
+			GetGame().ClearJuncture(e.m_Player, m_Src1.GetItem());
+		}
 		
 		m_Src1 = null;
 		m_Src2 = null;

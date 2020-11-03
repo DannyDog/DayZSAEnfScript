@@ -1241,7 +1241,10 @@ class EntityAI extends Entity
 	*/
 	bool PredictiveTakeEntityToInventory (FindInventoryLocationType flags, notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityToInventory(InventoryMode.PREDICTIVE, flags, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToInventory(InventoryMode.JUNCTURE, flags, item);
+		else
+			return GetInventory().TakeEntityToInventory(InventoryMode.PREDICTIVE, flags, item);
 	}
 	bool LocalTakeEntityToInventory (FindInventoryLocationType flags, notnull EntityAI item)
 	{
@@ -1253,7 +1256,10 @@ class EntityAI extends Entity
 	}
 	bool PredictiveTakeEntityToTargetInventory (notnull EntityAI target, FindInventoryLocationType flags, notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityToTargetInventory(InventoryMode.PREDICTIVE, target, flags, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToTargetInventory(InventoryMode.JUNCTURE, target, flags, item);
+		else
+			return GetInventory().TakeEntityToTargetInventory(InventoryMode.PREDICTIVE, target, flags, item);
 	}
 	bool LocalTakeEntityToTargetInventory (notnull EntityAI target, FindInventoryLocationType flags, notnull EntityAI item)
 	{
@@ -1268,7 +1274,10 @@ class EntityAI extends Entity
 	*/
 	bool PredictiveTakeEntityToCargo (notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityToCargo(InventoryMode.PREDICTIVE, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToCargo(InventoryMode.JUNCTURE, item);
+		else
+			return GetInventory().TakeEntityToCargo(InventoryMode.PREDICTIVE, item);
 	}
 	bool LocalTakeEntityToCargo (notnull EntityAI item)
 	{
@@ -1281,7 +1290,10 @@ class EntityAI extends Entity
 
 	bool PredictiveTakeEntityToTargetCargo (notnull EntityAI target, notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityToTargetCargo(InventoryMode.PREDICTIVE, target, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToTargetCargo(InventoryMode.JUNCTURE, target, item);
+		else
+			return GetInventory().TakeEntityToTargetCargo(InventoryMode.PREDICTIVE, target, item);
 	}
 	bool LocalTakeEntityToTargetCargo (notnull EntityAI target, notnull EntityAI item)
 	{
@@ -1296,7 +1308,10 @@ class EntityAI extends Entity
 	*/
 	bool PredictiveTakeEntityToCargoEx (notnull EntityAI item, int idx, int row, int col)
 	{
-		return GetInventory().TakeEntityToCargoEx(InventoryMode.PREDICTIVE, item, idx, row, col);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToCargoEx(InventoryMode.JUNCTURE, item, idx, row, col);
+		else
+			return GetInventory().TakeEntityToCargoEx(InventoryMode.PREDICTIVE, item, idx, row, col);
 	}
 	bool LocalTakeEntityToCargoEx (notnull EntityAI item, int idx, int row, int col)
 	{
@@ -1305,7 +1320,10 @@ class EntityAI extends Entity
 
 	bool PredictiveTakeEntityToTargetCargoEx (notnull CargoBase cargo, notnull EntityAI item, int row, int col)
 	{
-		return GetInventory().TakeEntityToTargetCargoEx(InventoryMode.PREDICTIVE, cargo, item, row, col);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityToTargetCargoEx(InventoryMode.JUNCTURE, cargo, item, row, col);
+		else
+			return GetInventory().TakeEntityToTargetCargoEx(InventoryMode.PREDICTIVE, cargo, item, row, col);
 	}
 	bool LocalTakeEntityToTargetCargoEx (notnull CargoBase cargo, notnull EntityAI item, int row, int col)
 	{
@@ -1320,7 +1338,10 @@ class EntityAI extends Entity
 	*/
 	bool PredictiveTakeEntityAsAttachmentEx (notnull EntityAI item, int slot)
 	{
-		return GetInventory().TakeEntityAsAttachmentEx(InventoryMode.PREDICTIVE, item, slot);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityAsAttachmentEx(InventoryMode.JUNCTURE, item, slot);
+		else
+			return GetInventory().TakeEntityAsAttachmentEx(InventoryMode.PREDICTIVE, item, slot);
 	}
 	bool LocalTakeEntityAsAttachmentEx (notnull EntityAI item, int slot)
 	{
@@ -1333,7 +1354,10 @@ class EntityAI extends Entity
 
 	bool PredictiveTakeEntityToTargetAttachmentEx (notnull EntityAI target, notnull EntityAI item, int slot)
 	{
-		return GetInventory().TakeEntityAsTargetAttachmentEx(InventoryMode.PREDICTIVE, target, item, slot);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityAsTargetAttachmentEx(InventoryMode.JUNCTURE, target, item, slot);
+		else
+			return GetInventory().TakeEntityAsTargetAttachmentEx(InventoryMode.PREDICTIVE, target, item, slot);
 	}
 	bool LocalTakeEntityToTargetAttachmentEx (notnull EntityAI target, notnull EntityAI item, int slot)
 	{
@@ -1346,7 +1370,10 @@ class EntityAI extends Entity
 
 	bool PredictiveTakeEntityToTargetAttachment (notnull EntityAI target, notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityAsTargetAttachment(InventoryMode.PREDICTIVE, target, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityAsTargetAttachment(InventoryMode.JUNCTURE, target, item);
+		else
+			return GetInventory().TakeEntityAsTargetAttachment(InventoryMode.PREDICTIVE, target, item);
 	}
 	bool LocalTakeEntityToTargetAttachment (notnull EntityAI target, notnull EntityAI item)
 	{
@@ -1359,7 +1386,10 @@ class EntityAI extends Entity
 
 	bool PredictiveTakeToDst (notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
-		return GetInventory().TakeToDst(InventoryMode.PREDICTIVE, src, dst);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeToDst(InventoryMode.JUNCTURE, src, dst);
+		else
+			return GetInventory().TakeToDst(InventoryMode.PREDICTIVE, src, dst);
 	}
 	bool LocalTakeToDst (notnull InventoryLocation src, notnull InventoryLocation dst)
 	{
@@ -1375,7 +1405,10 @@ class EntityAI extends Entity
 	*/
 	bool PredictiveTakeEntityAsAttachment (notnull EntityAI item)
 	{
-		return GetInventory().TakeEntityAsAttachment(InventoryMode.PREDICTIVE, item);
+		if ( GetGame().IsMultiplayer() )
+			return GetInventory().TakeEntityAsAttachment(InventoryMode.JUNCTURE, item);
+		else
+			return GetInventory().TakeEntityAsAttachment(InventoryMode.PREDICTIVE, item);
 	}
 	bool LocalTakeEntityAsAttachment (notnull EntityAI item)
 	{

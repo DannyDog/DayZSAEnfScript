@@ -113,6 +113,10 @@ class HandAnimatedMovingToAtt extends HandStateBase
 		{
 			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Entity, m_ilEntity);
 		}
+		else
+		{
+			GetGame().ClearJuncture(e.m_Player, m_Entity);
+		}
 		
 		m_Entity = null;
 		m_ilEntity = null;

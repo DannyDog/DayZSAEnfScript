@@ -13,13 +13,13 @@ class CraftTannedLeather extends RecipeBase
 		m_AnywhereInInventory = true;
 		//conditions
 		m_MinDamageIngredient[0] = -1;			//-1 = disable check
-		m_MaxDamageIngredient[0] = -1;			//-1 = disable check
+		m_MaxDamageIngredient[0] = 3;			//-1 = disable check
 		
 		m_MinQuantityIngredient[0] = -1;		//-1 = disable check
 		m_MaxQuantityIngredient[0] = -1;		//-1 = disable check
 		
 		m_MinDamageIngredient[1] = -1;			//-1 = disable check
-		m_MaxDamageIngredient[1] = -1;			//-1 = disable check
+		m_MaxDamageIngredient[1] = 3;			//-1 = disable check
 		
 		m_MinQuantityIngredient[1] = -1;		//-1 = disable check
 		m_MaxQuantityIngredient[1] = -1;		//-1 = disable check
