@@ -67,7 +67,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	{
 		ItemBase target_item = ItemBase.Cast(action_data.m_Target.GetObject());
 		
-		if ( !action_data.m_Player || m_TendencyDrain == -1 )
+		if ( !action_data.m_Player || m_TendencyDrain == -1 || !action_data.m_Target )
 		{
 			return UA_ERROR;
 		}
@@ -103,7 +103,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	
 	override int Cancel( ActionData action_data )
 	{
-		if ( !action_data.m_Player || m_TendencyDrain == -1 )
+		if ( !action_data.m_Player || m_TendencyDrain == -1 || !action_data.m_Target )
 		{
 			return UA_ERROR;
 		}

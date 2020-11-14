@@ -32,7 +32,7 @@ class ActionPackTent : ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTParent(10);
+		m_ConditionTarget = new CCTCursorParent(UAMaxDistances.DEFAULT);
 	}
 
 	override string GetText()
@@ -99,39 +99,17 @@ class ActionPackTent : ActionContinuousBase
 		
 		if ( player && targetObject && targetParent )
 		{
-			float max_action_distance = 1; //m_MaximalActionDistance;
-			if ( targetParent.IsInherited(CarTent) ) 
+			TentBase tent = TentBase.Cast( targetParent );
+			if ( tent.CanBePacked() )
 			{
-				max_action_distance = 5.0;
-			}
-			else if ( targetParent.IsInherited(LargeTent) ) 
-			{
-				max_action_distance = 4.0;
-			}
-			else if ( targetParent.IsInherited(MediumTent) )
-			{
-				max_action_distance = 3.0;
-			}
-			else if ( targetParent.IsInherited(PartyTent) )
-			{
-				max_action_distance = 5.0;
-			}
-
-			float distance = vector.DistanceSq(targetParent.GetPosition(),player.GetPosition());
-			if (  distance <= max_action_distance * max_action_distance )	
-			{
-				TentBase tent = TentBase.Cast( targetParent );
-				if ( tent.CanBePacked() )
-				{
-					array<string> selections = new array<string>;
-					targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
-					
-					for ( int s = 0; s < selections.Count(); s++ )
-					{					
-						if ( selections[s] == "pack" )
-						{
-							return true;
-						}
+				array<string> selections = new array<string>;
+				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
+				
+				for ( int s = 0; s < selections.Count(); s++ )
+				{					
+					if ( selections[s] == "pack" )
+					{
+						return true;
 					}
 				}
 			}

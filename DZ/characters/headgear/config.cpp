@@ -33,7 +33,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_BallisticHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\HelmetMich_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -178,7 +178,7 @@ class CfgVehicles
 		varWetMax = 1.0;
 		heatIsolation = 0.2;
 		repairableWithKits[] = {5,2};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		headSelectionsToHide[] = {"Clipping_baseballcap"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -272,7 +272,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_ZSh3PilotHelmet1";
 		model = "\DZ\characters\headgear\HeloHelmet_ground.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -404,7 +404,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_ConstructionHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\ConstructionHelmet_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -1011,7 +1011,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_MotoHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\MotoHelmet_ground.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -1208,7 +1208,7 @@ class CfgVehicles
 			female = "\DZ\characters\headgear\HeadTorch_f.p3d";
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -2216,7 +2216,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_GorkaHelmet1";
 		model = "\DZ\characters\headgear\Maska_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		attachments[] = {"Glass"};
 		simulation = "clothing";
@@ -2348,7 +2348,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_FirefightersHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\FireHelmet_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -2476,7 +2476,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_SkateHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\ProtecSkateHelmet2_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -2621,7 +2621,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_WeldingMask1";
 		model = "\DZ\characters\masks\Welding_Mask_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -3021,7 +3021,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_GreatHelm1";
 		model = "\DZ\characters\headgear\greathelm_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
@@ -3144,7 +3144,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Ssh68Helmet1";
 		model = "\DZ\characters\headgear\Ssh68Helmet_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
@@ -3261,7 +3261,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_DirtBikeHelmet_ColorBase1";
 		model = "\DZ\characters\headgear\MxHelmet_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		vehicleClass = "Clothing";
 		simulation = "clothing";
@@ -3419,7 +3419,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_DirtBikeHelmet_Visor1";
 		model = "\dz\characters\headgear\MxHelmet_visor.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		rotationFlags = 34;
 		itemSize[] = {3,1};
 		inventorySlot[] = {"DBHelmetVisor"};
@@ -3518,7 +3518,7 @@ class CfgVehicles
 		descriptionShort = "$STR_cfgvehicles_hockeyhelmet1";
 		model = "\DZ\characters\headgear\Hockey_helmet_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";
@@ -3694,7 +3694,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Mich2001Helmet1";
 		model = "\DZ\characters\headgear\Mich2001_g.p3d";
 		repairableWithKits[] = {8};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Headgear"};
 		simulation = "clothing";
 		vehicleClass = "Clothing";

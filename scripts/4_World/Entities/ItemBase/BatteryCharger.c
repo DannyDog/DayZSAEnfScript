@@ -41,6 +41,11 @@ class BatteryCharger extends ItemBase
 		RegisterNetSyncVariableBool("m_IsSoundSynchRemote");
 		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
+	
+	override bool IsElectricAppliance()
+	{
+		return true;
+	}
 
 	override void OnWork( float consumed_energy )
 	{

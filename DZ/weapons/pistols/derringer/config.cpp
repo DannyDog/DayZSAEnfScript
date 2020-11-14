@@ -40,7 +40,7 @@ class cfgWeapons
 		itemSize[] = {2,1};
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		attachments[] = {};
 		modelOptics = "-";
 		distanceZoomMin = 100;

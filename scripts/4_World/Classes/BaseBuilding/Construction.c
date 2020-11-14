@@ -290,11 +290,43 @@ class Construction
 	
 	bool CanBuildPart( string part_name, ItemBase tool, bool use_tool )
 	{
-		if ( !IsPartConstructed( part_name ) && HasRequiredPart( part_name ) && !HasConflictPart( part_name ) && HasMaterials( part_name ) && (!use_tool || CanUseToolToBuildPart( part_name, tool )) )
+		if ( !IsPartConstructed( part_name ) && HasRequiredPart( part_name ) && !HasConflictPart( part_name ) && HasMaterials( part_name ) && (!use_tool || CanUseToolToBuildPart( part_name, tool )) && !MaterialIsRuined(part_name) )
 		{
 			return true;
 		}
 		
+		return false;
+	}
+	
+	bool MaterialIsRuined(string part_name)
+	{
+		string main_part_name = GetConstructionPart( part_name ).GetMainPartName();
+		string cfg_path = "cfgVehicles" + " " + GetParent().GetType() + " "+ "Construction" + " " + main_part_name + " " + part_name + " " + "Materials";
+		
+		if ( GetGame().ConfigIsExisting( cfg_path ) )
+		{
+			int	child_count = GetGame().ConfigGetChildrenCount( cfg_path );
+			
+			for ( int i = 0; i < child_count; i++ )
+			{
+				string child_name;
+				GetGame().ConfigGetChildName( cfg_path, i, child_name );
+				
+				//get type, quantity from material
+				string config_path;
+				string slot_name;
+				config_path = cfg_path + " " + child_name + " " + "slot_name";
+				GetGame().ConfigGetText( config_path, slot_name );
+				config_path = cfg_path + " " + child_name + " " + "quantity";
+				float quantity = GetGame().ConfigGetFloat( config_path );
+				config_path = cfg_path + " " + child_name + " " + "lockable";
+				bool lockable = GetGame().ConfigGetInt( config_path );
+				
+				ItemBase attachment = ItemBase.Cast( GetParent().FindAttachmentBySlotName( slot_name ) );
+				if (attachment.IsRuined())
+					return true;
+			}
+		}
 		return false;
 	}
 	

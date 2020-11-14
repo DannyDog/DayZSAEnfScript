@@ -31,7 +31,7 @@ class CfgMagazines
 		storageCategory = 1;
 		inventorySlot[] = {"magazine","magazine2","magazine3"};
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		handheld = "true";
 		armAction = "Disarm";
 		isMeleeWeapon = 1;

@@ -78,5 +78,6 @@ class Fabric : Inventory_Base
 		
 		AddAction(ActionRepairTentPart);
 		AddAction(ActionAttachToConstruction);
+		AddAction(ActionRepairCarChassis);
 	}
 };

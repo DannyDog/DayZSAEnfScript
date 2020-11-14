@@ -73,7 +73,7 @@ class CfgVehicles
 		};
 		attachments[] = {"BatteryD"};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -384,7 +384,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 125;
 					healthLevels[] = {{1.0,{"DZ\gear\tools\data\Lockpick.rvmat"}},{0.7,{"DZ\gear\tools\data\Lockpick.rvmat"}},{0.5,{"DZ\gear\tools\data\Lockpick_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\Lockpick_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\Lockpick_destruct.rvmat"}}};
 				};
 			};
@@ -938,7 +938,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\Crowbar.p3d";
 		rotationFlags = 12;
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {20.0};
 		build_action_type = 0;
 		dismantle_action_type = 10;
 		weight = 4400;
@@ -1362,7 +1362,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\Screwdriver.p3d";
 		animClass = "Knife";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {5.0};
 		rotationFlags = 17;
 		suicideAnim = "onehanded";
 		RestrainUnlockType = 1;
@@ -1408,7 +1408,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Sickle1";
 		model = "\dz\gear\tools\sickle.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {15.0};
 		rotationFlags = 17;
 		suicideAnim = "woodaxe";
 		RestrainUnlockType = 1;
@@ -1453,7 +1453,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\hacksaw.p3d";
 		action = "GestureMeleeBayonetStab";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {15.0};
 		itemInfo[] = {"Knife"};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
@@ -1531,7 +1531,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\kitchenknife.p3d";
 		animClass = "Knife";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {5.0};
 		itemInfo[] = {"Knife"};
 		inventorySlot[] = {"Knife"};
 		RestrainUnlockType = 1;
@@ -1605,7 +1605,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\steak_knife.p3d";
 		animClass = "Knife";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {5.0};
 		itemInfo[] = {"Knife"};
 		RestrainUnlockType = 1;
 		rotationFlags = 17;
@@ -1679,7 +1679,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\Hay_Hook.p3d";
 		animClass = "Knife";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {8.0};
 		RestrainUnlockType = 1;
 		rotationFlags = 1;
 		suicideAnim = "onehanded";
@@ -1724,7 +1724,7 @@ class CfgVehicles
 		model = "\dz\gear\consumables\Stone_slice.p3d";
 		itemInfo[] = {"Knife"};
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {5.0};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
 		suicideAnim = "onehanded";
@@ -2243,7 +2243,7 @@ class CfgVehicles
 		model = "\dz\gear\tools\Ice_Axe.p3d";
 		rotationFlags = 17;
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {20.0};
 		suicideAnim = "woodaxe";
 		weight = 425;
 		itemSize[] = {2,5};
@@ -2501,7 +2501,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_HandSaw1";
 		model = "\dz\gear\tools\handsaw.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {15.0};
 		itemInfo[] = {"Knife"};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;

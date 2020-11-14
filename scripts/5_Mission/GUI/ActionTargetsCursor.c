@@ -55,6 +55,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	protected PlayerBase 					m_Player;
 	protected ActionTarget 					m_Target;
 	protected ref ATCCachedObject			m_CachedObject;
+	protected Object						m_DisplayInteractTarget;
 
 	protected ActionBase					m_Interact;
 	protected ActionBase					m_ContinuousInteract;
@@ -91,6 +92,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		
 		m_CachedObject 			= new ATCCachedObject;
 		m_Hidden 				= false;
+		m_DisplayInteractTarget	= null;
 	}
 	
 	void ~ActionTargetsCursor() {}
@@ -650,6 +652,11 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		if( m_InteractActionsNum > 0 )
 		{
 			m_Interact = possible_interact_actions[possible_interact_actions_index];
+			m_DisplayInteractTarget = m_Interact.GetDisplayInteractObject(m_Player,m_Target);
+		}
+		else
+		{
+			m_DisplayInteractTarget	= null;
 		}
 		
 		m_ContinuousInteractActionsNum = possible_continuous_interact_actions.Count();
@@ -695,15 +702,21 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	protected string GetItemDesc(ActionBase action)
 	{
 		string desc = "";
-		if(m_Target && m_Target.GetObject())
+		Object tgObject = m_DisplayInteractTarget;
+		if(!tgObject && m_Target)
 		{
-			if( m_Target.GetObject().IsItemBase() || m_Target.GetObject().IsTransport() )
+			tgObject = m_Target.GetObject();
+		}
+		
+		if(tgObject)
+		{
+			if( tgObject.IsItemBase() || tgObject.IsTransport() )
 			{
-				desc = m_Target.GetObject().GetDisplayName();
+				desc = tgObject.GetDisplayName();
 			}
-			else if( !m_Target.GetObject().IsAlive() )
+			else if( !tgObject.IsAlive() )
 			{
-				desc = m_Target.GetObject().GetDisplayName();
+				desc = tgObject.GetDisplayName();
 			}
 		}
 		return desc;
@@ -717,10 +730,15 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		{
 			return health;
 		}
-		if ( m_Target && m_Target.GetObject() )
+		
+		Object tgObject = m_DisplayInteractTarget;
+		if(!tgObject && m_Target)
 		{
-			Object tgObject = m_Target.GetObject();
-
+			tgObject = m_Target.GetObject();
+		}
+		
+		if ( tgObject )
+		{
 			if ( tgObject.IsHealthVisible() )
 			{
 				//bool showZoneHealth = true;
@@ -767,17 +785,22 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 	protected void GetItemQuantity(out int q_type, out float q_cur, out int q_min, out int q_max)
 	{
-		EntityAI entity = null;
 		InventoryItem item = null;
 
 		if(m_Interact && !m_Interact.HasTarget())
 		{
 			return;
-		}	
-		if( Class.CastTo(entity, m_Target.GetObject()) )
+		}
+		
+		Object tgObject = m_DisplayInteractTarget;
+		if(!tgObject && m_Target)
 		{
-			Class.CastTo(item, entity);
-			q_type = QuantityConversions.HasItemQuantity(entity);
+			tgObject = m_Target.GetObject();
+		}
+		
+		if( Class.CastTo(item, tgObject) )
+		{
+			q_type = QuantityConversions.HasItemQuantity(item);
 			if (q_type > 0)
 				QuantityConversions.GetItemQuantity(item, q_cur, q_min, q_max);
 		}
@@ -789,8 +812,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		CargoBase cargo = null;
 		EntityAI entity = null;
 		PlayerBase player;
+		
+		Object tgObject = m_DisplayInteractTarget;
+		if(!tgObject && m_Target)
+		{
+			tgObject = m_Target.GetObject();
+		}
 
-		if( Class.CastTo(entity, m_Target.GetObject()) )
+		if( Class.CastTo(entity,tgObject) )
 		{
 			//! player specific way
 			if (entity.IsInherited(PlayerBase))

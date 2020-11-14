@@ -815,10 +815,16 @@ class ItemBase extends InventoryItem
 			old_player = PlayerBase.Cast(oldLoc.GetParent().GetHierarchyRootPlayer());
 		
 		if ( old_player )
-			old_player.SetEnableQuickBarEntityShortcut(this, false);
+			old_player.UpdateQuickBarEntityVisibility(this);
 		
-		if ( new_player )
-			new_player.SetEnableQuickBarEntityShortcut(this, true);
+		if ( old_player != new_player )
+		{
+			if ( old_player )
+				old_player.SetEnableQuickBarEntityShortcut(this, false);
+			
+			if ( new_player )
+				new_player.SetEnableQuickBarEntityShortcut(this, true);
+		}
 		
 		if (old_player && oldLoc.GetType() == InventoryLocationType.HANDS)
 		{
@@ -847,6 +853,9 @@ class ItemBase extends InventoryItem
 		
 		if (newLoc.GetType() == InventoryLocationType.HANDS)
 		{
+			if (new_player)
+				new_player.ForceStandUpForHeavyItems(newLoc.GetItem());
+			
 			if (new_player == old_player)
 			{
 				if ( oldLoc.GetParent() && !(oldLoc.GetParent() != new_player && oldLoc.GetType() == InventoryLocationType.ATTACHMENT) && new_player.GetHumanInventory().LocationGetEntity(oldLoc) == NULL )
@@ -4025,6 +4034,17 @@ class ItemBase extends InventoryItem
 					ProcessDecay( m_ElapsedSinceLastUpdate, hasRootAsPlayer );	
 			}
 		}
+	}
+	
+	bool IsCargoException4x3( EntityAI item )
+	{
+		return ( item.IsKindOf( "Pot" ) || item.IsKindOf( "FryingPan" ) || item.IsKindOf( "SmallProtectorCase" ) || ( item.IsKindOf( "PortableGasStove" ) && item.FindAttachmentBySlotName("CookingEquipment") ) );
+	}
+	
+		
+	void CopyScriptPropertiesFrom(EntityAI oldItem)
+	{
+		MiscGameplayFunctions.TransferItemProperties(oldItem, this);
 	}
 }
 

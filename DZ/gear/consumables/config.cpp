@@ -875,7 +875,7 @@ class CfgVehicles
 		animClass = "NoFireClass";
 		absorbency = 0.3;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class AnimEvents
 		{
 			class SoundWeapon
@@ -1147,7 +1147,7 @@ class CfgVehicles
 		varQuantityMax = 8.0;
 		varQuantityDestroyOnMin = 1;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Material_Shelter_Leather"};
 		class DamageSystem
 		{
@@ -1507,10 +1507,10 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 10.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 20.0;
+		varQuantityMax = 100.0;
 		varQuantityDestroyOnMin = 1;
 		varStackMax = 10.0;
-		inventorySlot[] = {"Material_WoodenPlanks","Material_L1_WoodenPlanks","Material_L1W1_WoodenPlanks","Material_L1W2_WoodenPlanks","Material_L1W3_WoodenPlanks","Material_L2_WoodenPlanks","Material_L2W1_WoodenPlanks","Material_L2W2_WoodenPlanks","Material_L2W3_WoodenPlanks","Material_L3_WoodenPlanks","Material_L3W1_WoodenPlanks","Material_L3W2_WoodenPlanks","Material_L3W3_WoodenPlanks"};
+		inventorySlot[] = {"Truck_01_WoodenPlanks","Material_WoodenPlanks","Material_L1_WoodenPlanks","Material_L1W1_WoodenPlanks","Material_L1W2_WoodenPlanks","Material_L1W3_WoodenPlanks","Material_L2_WoodenPlanks","Material_L2W1_WoodenPlanks","Material_L2W2_WoodenPlanks","Material_L2W3_WoodenPlanks","Material_L3_WoodenPlanks","Material_L3W1_WoodenPlanks","Material_L3W2_WoodenPlanks","Material_L3W3_WoodenPlanks"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1603,10 +1603,10 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 10.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 20.0;
+		varQuantityMax = 40.0;
 		varQuantityDestroyOnMin = 1;
 		varStackMax = 10.0;
-		inventorySlot[] = {"Material_MetalSheets","Material_L3_MetalSheets","Material_L1W1_MetalSheets","Material_L1W2_MetalSheets","Material_L1W3_MetalSheets","Material_L2W1_MetalSheets","Material_L2W2_MetalSheets","Material_L2W3_MetalSheets","Material_L3W1_MetalSheets","Material_L3W2_MetalSheets","Material_L3W3_MetalSheets"};
+		inventorySlot[] = {"Truck_01_MetalSheets","Material_MetalSheets","Material_L3_MetalSheets","Material_L1W1_MetalSheets","Material_L1W2_MetalSheets","Material_L1W3_MetalSheets","Material_L2W1_MetalSheets","Material_L2W2_MetalSheets","Material_L2W3_MetalSheets","Material_L3W1_MetalSheets","Material_L3W2_MetalSheets","Material_L3W3_MetalSheets"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1632,9 +1632,9 @@ class CfgVehicles
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
-		varQuantityMax = 6.0;
+		varQuantityMax = 50.0;
 		varStackMax = 1.0;
-		inventorySlot[] = {"Material_WoodenLogs","Material_L1_WoodenLogs","Material_L2_WoodenLogs","Material_L3_WoodenLogs","Material_FPole_WoodenLog","Material_FPole_WoodenLog2","Material_FPole_MagicStick"};
+		inventorySlot[] = {"Truck_01_WoodenLogs","Material_WoodenLogs","Material_L1_WoodenLogs","Material_L2_WoodenLogs","Material_L3_WoodenLogs","Material_FPole_WoodenLog","Material_FPole_WoodenLog2","Material_FPole_MagicStick"};
 		class DamageSystem
 		{
 			class GlobalHealth

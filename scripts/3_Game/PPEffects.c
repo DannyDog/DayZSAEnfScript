@@ -326,7 +326,8 @@ class PPEffects
 		{
 			for ( int i = 0; i < m_ColorEffect.Count(); ++i )
 			{
-				m_ColorEffect[i] = 0;
+				//m_ColorEffect[i] = 0;
+				m_ColorValues.Set(i,{0,0,0,0,0});
 			}
 			UpdateColor();
 		}
@@ -529,7 +530,10 @@ class PPEffects
 	
 	static void SetShockEffectColor(float value)
 	{
-		SetColorValue(m_ShockEffect, COLOR_SHOCK, COLOR_SHOCK, COLOR_SHOCK, 1, value);
+		if (value > 0)
+			SetColorValue(m_ShockEffect, COLOR_SHOCK, COLOR_SHOCK, COLOR_SHOCK, 1, value);
+		else
+			SetColorValue(m_ShockEffect, 0, 0, 0, 1, value);
 		UpdateColor();
 	}
 	
@@ -561,7 +565,7 @@ class PPEffects
 	
 	static void SetDeathDarkening(float value) 
 	{
-		//SetColorValue(m_HitColor, 0, 0, 0, 0, 0); //workaround to colour addition of hit effect
+		value = Math.Clamp(value,0,1);
 		SetColorValue(m_DyingEffect, 0, 0, 0, 1, value);
 		UpdateColor();
 		if (value > 0.99)
@@ -598,10 +602,7 @@ class PPEffects
 					color[3] = m_VignetteValues.Get(i).Get(4); //alpha
 					
 					intesity = m_VignetteValues.Get(i).Get(0);
-					//Print(intesity);
 					intensity_value_total += intesity;
-					//Print(intensity_value_total);
-					//Print("m_VignetteValues found, count: " + m_VignetteValues.Count());
 				}
 				else
 				{

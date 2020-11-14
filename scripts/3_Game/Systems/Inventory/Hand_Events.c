@@ -435,12 +435,8 @@ class HandEventSwap extends HandEventBase
 
   		else if (!m_Player.GetHumanInventory().CanAddSwappedEntity(m_Src, m_Src2, m_Dst, m_Dst2))
 			hndDebugPrint("Warning: HandEventSwap.CheckRequest test2 failed");
-		
 		else
-		{
-			CheckAndExecuteForceStandUp();
 			return true;
-		}
 
 		return false;
 	}
@@ -484,8 +480,6 @@ class HandEventForceSwap extends HandEventSwap
 			test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
 			if (!test1)
 				hndDebugPrint("Warning: HandEventForceSwap.CheckRequest test1 failed");
-			else
-				CheckAndExecuteForceStandUp();
 		}
 		return test1;
 	}
@@ -495,7 +489,9 @@ class HandEventForceSwap extends HandEventSwap
 		Print("Warning - CanFSwap #5");
 		bool test2 = GameInventory.CanForceSwapEntitiesEx(m_Src.GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
 		if (!test2)
+		{
 			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+		}
 		return test2;
 	}
 };

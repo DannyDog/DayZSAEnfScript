@@ -375,7 +375,7 @@ class CfgVehicles
 		varWetMax = 1.0;
 		heatIsolation = 0.3;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
@@ -454,7 +454,7 @@ class CfgVehicles
 		varWetMax = 0.49;
 		heatIsolation = 0.9;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
@@ -548,7 +548,7 @@ class CfgVehicles
 		varWetMax = 0.49;
 		heatIsolation = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
@@ -758,7 +758,7 @@ class CfgVehicles
 		weight = 1100;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 0.79;
 		heatIsolation = 0.65;
 		soundAttType = "Boots";
@@ -869,7 +869,7 @@ class CfgVehicles
 		weight = 1230;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 0.49;
 		heatIsolation = 0.8;
 		soundAttType = "Boots";
@@ -981,7 +981,7 @@ class CfgVehicles
 		weight = 780;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 0.79;
 		heatIsolation = 0.25;
 		soundAttType = "Boots";
@@ -1092,7 +1092,7 @@ class CfgVehicles
 		weight = 1100;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		attachments[] = {"Knife"};
 		varWetMax = 0.49;
 		heatIsolation = 0.9;
@@ -1205,7 +1205,7 @@ class CfgVehicles
 		weight = 1350;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 0.49;
 		heatIsolation = 1;
 		soundAttType = "Boots";
@@ -1319,7 +1319,7 @@ class CfgVehicles
 		varWetMax = 1.0;
 		heatIsolation = 0.35;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
@@ -1393,7 +1393,7 @@ class CfgVehicles
 		weight = 380;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 0.249;
 		heatIsolation = 1;
 		soundAttType = "Boots";
@@ -1550,7 +1550,7 @@ class CfgVehicles
 		varWetMax = 1.0;
 		heatIsolation = 0.2;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
@@ -1698,7 +1698,7 @@ class CfgVehicles
 		weight = 520;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		varWetMax = 1.0;
 		heatIsolation = 0.05;
 		soundAttType = "Sneakers";
@@ -1769,7 +1769,7 @@ class CfgVehicles
 		varWetMax = 0.49;
 		heatIsolation = 0.7;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "Boots";
 		class ClothingTypes
 		{

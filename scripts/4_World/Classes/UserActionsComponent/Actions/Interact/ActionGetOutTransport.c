@@ -245,137 +245,25 @@ class ActionGetOutTransport: ActionBase
 
 		// -----------------------------------------------
 		
-		int m_RandNum; //value used for probability evaluation
-		m_RandNum = Math.RandomInt(0, 100);
+		int randNum; //value used for probability evaluation
+		randNum = Math.RandomInt(0, 100);
 		if (got_action_data.m_CarSpeed < LOW_SPEED_VALUE)
 		{
-			if (m_RandNum < 20)
+			if (randNum < 20)
 				player.GiveShock(-got_action_data.m_ShockTaken); //To inflict shock, a negative value must be passed
 
-			m_RandNum = Math.RandomInt(1, 14);
-			switch (m_RandNum)
-			{
-				case 1:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightToeBase");
-				break;
-
-				case 2:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightFoot");
-				break;
-
-				case 3:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftToeBase");
-				break;
-
-				case 4:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftFoot");
-				break;
-
-				case 5:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightUpLegRoll");
-				break;
-
-				case 6:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightUpLeg");
-				break;
-
-				case 7:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightLegRoll");
-				break;
-
-				case 8:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightLeg");
-				break;
-
-				case 9:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftUpLegRoll");
-				break;
-
-				case 10:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftUpLeg");
-				break;
-
-				case 11:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftLegRoll");
-				break;
-
-				case 12:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftLeg");
-				break;
-
-				case 13:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArmRoll");
-				break;
-
-				case 14:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftForeArmRoll");
-				break;
-			}
+			randNum = Math.RandomIntInclusive(0, PlayerBase.m_BleedingSourcesLow.Count() - 1);
+			
+			player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection(PlayerBase.m_BleedingSourcesLow[randNum]);
 		}
 		else if (got_action_data.m_CarSpeed >= LOW_SPEED_VALUE && got_action_data.m_CarSpeed < HIGH_SPEED_VALUE)
 		{
-			if (m_RandNum < 50)
+			if (randNum < 50)
 				player.GiveShock(-got_action_data.m_ShockTaken);
 
-			m_RandNum = Math.RandomInt(1, 14);
-			switch (m_RandNum)
-			{
-				case 1:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArm");
-				break;
-
-				case 2:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightArmRoll");
-				break;
-
-				case 3:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightArm");
-				break;
-
-				case 4:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightShoulder");
-				break;
-
-				case 5:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftForeArm");
-				break;
-
-				case 6:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftArmRoll");
-				break;
-
-				case 7:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftArm");
-				break;
-
-				case 8:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftShoulder");
-				break;
-
-				case 9:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Spine3");
-				break;
-
-				case 10:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Spine2");
-				break;
-
-				case 11:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Spine1");
-				break;
-
-				case 12:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Spine");
-				break;
-
-				case 13:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Pelvis");
-				break;
-
-				case 14:
-					player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Neck");
-				break;
-			}
+			randNum = Math.RandomInt(0, PlayerBase.m_BleedingSourcesUp.Count() - 1);
+			
+			player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection(PlayerBase.m_BleedingSourcesUp[randNum]);
 		}
 		else if (got_action_data.m_CarSpeed >= HIGH_SPEED_VALUE)
 		{
@@ -383,7 +271,7 @@ class ActionGetOutTransport: ActionBase
 			if (!Class.CastTo(helmet, headGear))
 				player.m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("Head");
 
-			if (m_RandNum < 75)
+			if (randNum < 75)
 				player.GiveShock(-got_action_data.m_ShockTaken);
 		}
 		

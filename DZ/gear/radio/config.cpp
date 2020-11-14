@@ -67,7 +67,7 @@ class CfgVehicles
 		range = 5000;
 		attachments[] = {"BatteryD"};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -127,7 +127,7 @@ class CfgVehicles
 		range = 50000;
 		attachments[] = {"CarBattery"};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -219,7 +219,7 @@ class CfgVehicles
 		attachments[] = {"BatteryD"};
 		oldpower = 0;
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;

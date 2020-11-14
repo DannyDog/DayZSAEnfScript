@@ -61,6 +61,11 @@ class Spotlight extends ItemBase
 		}
 	}
 	
+	override bool IsElectricAppliance()
+	{
+		return true;
+	}
+	
 	override void OnInitEnergy()
 	{
 		if ( GetCompEM().IsPlugged() )

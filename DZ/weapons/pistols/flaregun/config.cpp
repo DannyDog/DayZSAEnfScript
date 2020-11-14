@@ -36,7 +36,7 @@ class cfgWeapons
 		weight = 400;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,10,250,4,10};
 		WeaponLength = 0.634148;
 		barrelArmor = 3.125;
@@ -59,6 +59,11 @@ class cfgWeapons
 			reloadTime = 0.13;
 			dispersion = 0.03;
 			magazineSlot = "magazine";
+		};
+		class NoiseShoot
+		{
+			strength = 30.0;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

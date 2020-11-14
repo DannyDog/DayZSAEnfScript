@@ -77,8 +77,8 @@ class HumanInventoryWithFSM : HumanInventory
 			replacingElsewhere.AddTransition(new HandTransition(replacingElsewhere3.m_Replacing, _abt_, m_Empty));
 		
 		m_FSM.AddTransition(new HandTransition(m_Equipped, __Rd_, m_Equipped, new HandActionReplaced, null));
-		m_FSM.AddTransition(new HandTransition(m_Equipped, __W__, m_Equipped, new HandActionSwap, new HandGuardHasItemInHands(GetManOwner())));
-		m_FSM.AddTransition(new HandTransition(m_Equipped, __F__, m_Equipped, new HandActionForceSwap, new HandGuardHasItemInHands(GetManOwner())));
+		m_FSM.AddTransition(new HandTransition(m_Equipped, __W__, m_Equipped, new HandActionSwap, new HandGuardAnd(new HandGuardHasItemInHands(GetManOwner()), new HandGuardCanSwap(GetManOwner()))));
+		m_FSM.AddTransition(new HandTransition(m_Equipped, __F__, m_Equipped, new HandActionForceSwap, new HandGuardAnd(new HandGuardHasItemInHands(GetManOwner()), new HandGuardCanForceSwap(GetManOwner()))));
 
 		// start FSM
 		m_FSM.SetInitialState(m_Empty);

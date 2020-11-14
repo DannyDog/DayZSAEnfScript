@@ -228,6 +228,7 @@ class ActionConstructor
 		actions.Insert(ActionRepairCarPart);
 		actions.Insert(ActionRepairCarChassis);
 		actions.Insert(ActionRepairCarEngine);
+		actions.Insert(ActionRepairShelter);
 		//actions.Insert(ActionEmptyBarrel);
 		
 		// Interact actions
@@ -293,6 +294,12 @@ class ActionConstructor
 		actions.Insert(ActionDeconstructShelter);
 		actions.Insert(ActionBuildShelter);
 		actions.Insert(ActionHandsPartSwitch);
+		actions.Insert(ActionDetachFromTarget);
+		actions.Insert(ActionDetachFromTarget_SpecificSlot_WoodenLogs);
+		actions.Insert(ActionDetachFromTarget_SpecificSlot_WoodenPlanks);
+		actions.Insert(ActionDetachFromTarget_SpecificSlot_MetalSheets);
+		actions.Insert(ActionDetachFromTarget_SpecificSlotsCategory_Barrel);
+		actions.Insert(ActionDetachFromTarget_SpecificSlotsCategory_WoodenCrate);
 		
 		//vehicle actions
 		actions.Insert(ActionSwitchLights);

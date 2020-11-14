@@ -1378,4 +1378,11 @@ class Human extends Man
 	
 	//! gets called on stance change
 	void	OnStanceChange(int previousStance, int newStance);
+	
+	//--------------------------------------------------------
+	// rolling API
+	
+	bool	CanRoll();
+	void	OnRollStart(bool isToTheRight);
+	void	OnRollFinish();
 }

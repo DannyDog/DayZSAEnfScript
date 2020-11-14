@@ -33,6 +33,9 @@ class ActionWashHandsItem: ActionSingleUseBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		//Print(item.GetQuantity());
+		if ( player.GetItemOnSlot("Gloves") )
+			return false;
+		 
 		return player.HasBloodyHands() && ( item.GetQuantity() >= WASH_HANDS_AMOUNT );
 	}
 

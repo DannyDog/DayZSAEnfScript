@@ -9,6 +9,7 @@ class InGameMenuXbox extends UIScriptedMenu
 	protected  string 						m_SelectButtonTextID;
 	protected  string 						m_OpenGameCardButtonTextID;
 	
+	protected bool 							m_PlayerAlive;
 	
 	protected ref PlayerListScriptedWidget	m_ServerInfoPanel;
 	
@@ -69,21 +70,17 @@ class InGameMenuXbox extends UIScriptedMenu
 		m_Version			= TextWidget.Cast( layoutRoot.FindAnyWidget( "version" ) );
 		
 		Man player = GetGame().GetPlayer();
-		bool player_is_alive = false;
 		if (player)
 		{
 			int life_state = player.GetPlayerState();
 
 			if (life_state == EPlayerStates.ALIVE)
 			{
-				player_is_alive = true;
+				m_PlayerAlive = true;
 			}
 		}
 		
-		if ( !player_is_alive )
-		{
-			SetFocus(m_RestartDeadButton);
-		}
+		UpdateMenuFocus();
 		
 		string version;
 		GetGame().GetVersion( version );
@@ -309,7 +306,6 @@ class InGameMenuXbox extends UIScriptedMenu
 		return false;
 	}
 	
-
 	override bool OnModalResult(Widget w, int x, int y, int code, int result)
 	{
 		super.OnModalResult(w, x, y, code, result);
@@ -325,7 +321,7 @@ class InGameMenuXbox extends UIScriptedMenu
 			{
 				// skip logout screen in singleplayer
 				GetGame().GetMission().AbortMission();
-			}	
+			}
 			g_Game.CancelLoginTimeCountdown();
 			
 			return true;	
@@ -335,17 +331,24 @@ class InGameMenuXbox extends UIScriptedMenu
 		{
 			g_Game.CancelLoginTimeCountdown();
 		}
-		else if ( code == IDC_INT_RETRY && result == DBB_YES )
-		{		
-			if ( GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM )
+		else if ( code == IDC_INT_RETRY )
+		{
+			if ( result == DBB_YES )
 			{
-				GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetUIManager().EnterScriptedMenu,MENU_RESPAWN_DIALOGUE,this);
+				if ( GetGame().GetMission().GetRespawnModeClient() == GameConstants.RESPAWN_MODE_CUSTOM )
+				{
+					GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().GetUIManager().EnterScriptedMenu,MENU_RESPAWN_DIALOGUE,this);
+				}
+				else
+				{
+					GameRetry(true);
+					return true;
+				}
 			}
 			else
 			{
-				GameRetry(true);
-				return true;
-			}	
+				UpdateMenuFocus();
+			}
 		}
 		
 		return false;
@@ -437,19 +440,17 @@ class InGameMenuXbox extends UIScriptedMenu
 	void UpdateGUI()
 	{
 		Man player = GetGame().GetPlayer();
-		bool player_is_alive = false;
-
 		if (player)
 		{
 			int life_state = player.GetPlayerState();
 
 			if (life_state == EPlayerStates.ALIVE)
 			{
-				player_is_alive = true;
+				m_PlayerAlive = true;
 			}
 		}
 		
-		if ( player_is_alive )
+		if ( m_PlayerAlive )
 		{
 			m_RestartButton.Show( player.IsUnconscious() );
 		}
@@ -458,8 +459,8 @@ class InGameMenuXbox extends UIScriptedMenu
 			m_RestartButton.Show( false );
 		}
 		
-		m_ContinueButton.Show( player_is_alive );
-		m_RestartDeadButton.Show( !player_is_alive );		
+		m_ContinueButton.Show( m_PlayerAlive );
+		m_RestartDeadButton.Show( !m_PlayerAlive );		
 	}
 	
 	bool IsOnlineOpen()
@@ -513,19 +514,17 @@ class InGameMenuXbox extends UIScriptedMenu
 	{
 		super.OnShow();
 		Man player = GetGame().GetPlayer();
-		bool player_is_alive = false;
-
 		if (player)
 		{
 			int life_state = player.GetPlayerState();
 
 			if (life_state == EPlayerStates.ALIVE)
 			{
-				player_is_alive = true;
+				m_PlayerAlive = true;
 			}
 		}
 		
-		if ( player_is_alive )
+		if ( m_PlayerAlive )
 		{
 			m_RestartButton.Show( player.IsUnconscious() );
 		}
@@ -533,24 +532,10 @@ class InGameMenuXbox extends UIScriptedMenu
 		{
 			m_RestartButton.Show( false );
 		}
-		m_ContinueButton.Show( player_is_alive );
-		m_RestartDeadButton.Show( !player_is_alive );
+		m_ContinueButton.Show( m_PlayerAlive );
+		m_RestartDeadButton.Show( !m_PlayerAlive );
 		
-		if( player_is_alive )
-		{
-			if( player.IsUnconscious() )
-			{
-				SetFocus( m_RestartButton );
-			}
-			else
-			{
-				SetFocus( m_ContinueButton );
-			}
-		}
-		else
-		{
-			SetFocus( m_RestartDeadButton );
-		}
+		UpdateMenuFocus();
 		
 		#ifdef PLATFORM_CONSOLE
 			bool mk = GetGame().GetInput().IsEnabledMouseAndKeyboard();
@@ -802,6 +787,26 @@ class InGameMenuXbox extends UIScriptedMenu
 		if (uiSelectText)
 		{
 			uiSelectText.SetText(m_SelectButtonTextID);
+		}
+	}
+	
+	void UpdateMenuFocus()
+	{
+		Man player = GetGame().GetPlayer();
+		if( m_PlayerAlive )
+		{
+			if( player.IsUnconscious() )
+			{
+				SetFocus( m_RestartButton );
+			}
+			else
+			{
+				SetFocus( m_ContinueButton );
+			}
+		}
+		else
+		{
+			SetFocus( m_RestartDeadButton );
 		}
 	}
 //#endif

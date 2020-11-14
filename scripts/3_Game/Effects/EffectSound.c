@@ -311,6 +311,10 @@ class EffectSound : Effect
 				m_SoundWaveObject.Stop();
 			}
 		}
+		else
+		{
+			SoundReset();
+		}
 	}
 	
 	//=====================================

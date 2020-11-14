@@ -36,7 +36,7 @@ class cfgWeapons
 		weight = 3200;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,10,170,4,10};
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		DisplayMagazine = 0;

@@ -11,10 +11,7 @@ class WeaponStateJammed extends WeaponStableState
 	override void OnEntry (WeaponEventBase e)
 	{
 		super.OnEntry(e);
-		if (e)
-		{
-			m_weapon.SetJammed(true);
-		}
+		m_weapon.SetJammed(true);
 	}
 
 

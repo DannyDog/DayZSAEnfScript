@@ -207,5 +207,41 @@ class HandGuardHasRoomForItem extends HandGuardBase
 	}
 };
 
+class HandGuardCanSwap extends HandGuardBase
+{
+	protected Man m_Player;
+	void HandGuardCanSwap(Man p = NULL) { m_Player = p; }
+
+	override bool GuardCondition(HandEventBase e)
+	{
+		HandEventSwap es = HandEventSwap.Cast(e);
+		
+		if (GameInventory.CanSwapEntitiesEx(es.GetSrc().GetItem(), es.m_Src2.GetItem()))
+			return true;
+
+		hndDebugPrint("[hndfsm] HandGuardCanSwap guard - cannot swap");
+		return false;
+	}
+};
+
+class HandGuardCanForceSwap extends HandGuardBase
+{
+	protected Man m_Player;
+	void HandGuardCanForceSwap(Man p = NULL) { m_Player = p; }
+
+	override bool GuardCondition(HandEventBase e)
+	{
+		HandEventForceSwap es = HandEventForceSwap.Cast(e);
+		
+		if (GameInventory.CanSwapEntitiesEx(es.GetSrc().GetItem(), es.m_Src2.GetItem()))
+			return true; // allow if ordinary swap
+		else if (es.m_Dst2 && GameInventory.CanForceSwapEntitiesEx(es.GetSrc().GetItem(), null, es.m_Src2.GetItem(), es.m_Dst2))
+			return true;
+
+		hndDebugPrint("[hndfsm] HandGuardCanForceSwap guard - cannot forceswap");
+		return false;
+	}
+};
+
 ///@} guards
 

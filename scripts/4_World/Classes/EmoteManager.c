@@ -507,6 +507,8 @@ class EmoteManager
 				                symptom.SetDuration(Math.RandomIntInclusive(4,8));
 				            }
 						}
+						m_Player.SetInventorySoftLock(false);
+						SetEmoteLockState(false);
 					break;
 					
 					default :

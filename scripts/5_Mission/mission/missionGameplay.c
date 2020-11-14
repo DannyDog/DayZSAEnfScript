@@ -955,7 +955,7 @@ class MissionGameplay extends MissionBase
 	override void Continue()
 	{
 		int menu_id = GetGame().GetUIManager().GetMenu().GetID();
-		if ( !IsPaused() || ( menu_id != MENU_INGAME && menu_id != MENU_LOGOUT ) || ( m_Logout && m_Logout.layoutRoot.IsVisible() ) )
+		if ( !IsPaused() || ( menu_id != MENU_INGAME && menu_id != MENU_LOGOUT && menu_id != MENU_RESPAWN_DIALOGUE ) || ( m_Logout && m_Logout.layoutRoot.IsVisible() ) )
 		{
 			return;
 		}

@@ -6,6 +6,11 @@ class XmasLights extends Inventory_Base
 	{
 		TurnOffItem( this );
 	}
+	
+	override bool IsElectricAppliance()
+	{
+		return true;
+	}
 
 	override void OnWorkStart()
 	{

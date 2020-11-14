@@ -27,7 +27,7 @@ class ActionTransferLiquidCB : ActionContinuousBaseCB
 		switch (pEventID)
 		{
 			case UA_ANIM_EVENT:			
-				if ( (!GetGame().IsMultiplayer() || GetGame().IsServer()) && m_ActionData.m_Target && m_ActionData.m_Target.GetObject() )
+				if ( (!GetGame().IsMultiplayer() || GetGame().IsServer()) && m_ActionData && m_ActionData.m_Target && m_ActionData.m_Target.GetObject() )
 				{
 					Bottle_Base vessel_in_hands = Bottle_Base.Cast( m_ActionData.m_Target.GetObject() );
 					Param1<bool> play = new Param1<bool>( true );

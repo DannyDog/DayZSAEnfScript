@@ -36,7 +36,7 @@ class cfgWeapons
 		weight = 2700;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_9x39","Ammo_9x39AP"};

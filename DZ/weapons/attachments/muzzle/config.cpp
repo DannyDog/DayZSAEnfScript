@@ -35,7 +35,7 @@ class cfgVehicles
 		selectionFireAnim = "zasleh";
 		soundIndex = 1;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		muzzlePos = "usti hlavne";
 		barrelArmor = 3000;
 		recoilModifier[] = {1,1,1};
@@ -49,7 +49,7 @@ class cfgVehicles
 		descriptionShort = "$STR_cfgVehicles_AK_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_ak.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
 		rotationFlags = 17;
@@ -114,7 +114,7 @@ class cfgVehicles
 		descriptionShort = "$STR_cfgVehicles_M9A1_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_m9a1.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
 		rotationFlags = 17;
@@ -179,7 +179,7 @@ class cfgVehicles
 		descriptionShort = "$STR_cfgVehicles_Mosin_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_mosin.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
 		rotationFlags = 12;
@@ -244,7 +244,7 @@ class cfgVehicles
 		descriptionShort = "$STR_cfgVehicles_SKS_Bayonet1";
 		model = "\dz\weapons\attachments\muzzle\bayonet_sks.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		animClass = "Knife";
 		suicideAnim = "onehanded";
 		rotationFlags = 17;

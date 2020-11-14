@@ -12,6 +12,11 @@ class CableReel extends ItemBase
 		RegisterNetSyncVariableBool("m_IsPlaceSound");
 	}
 	
+	override bool IsElectricAppliance()
+	{
+		return true;
+	}
+	
 	void ForceIntoHandsNow ( PlayerBase player ) 
 	{
 		m_ForceIntoHands = true;

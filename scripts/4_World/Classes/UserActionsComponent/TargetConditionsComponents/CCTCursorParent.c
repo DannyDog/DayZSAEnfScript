@@ -1,4 +1,4 @@
-class CCTCursor : CCTBase
+class CCTCursorParent : CCTBase
 {
 	protected float m_MaximalActionDistanceSq;
 	
@@ -7,7 +7,7 @@ class CCTCursor : CCTBase
 	const float HEIGHT_CROUCH = 1.05;
 	const float HEIGHT_PRONE = 0.66;
 	
-	void CCTCursor( float maximal_target_distance = UAMaxDistances.DEFAULT )
+	void CCTCursorParent( float maximal_target_distance = UAMaxDistances.DEFAULT )
 	{
 		m_MaximalActionDistanceSq = maximal_target_distance * maximal_target_distance;
 	}

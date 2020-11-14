@@ -449,7 +449,7 @@ class CarScript extends Car
 		if ( !super.CanReleaseAttachment( attachment ) )
 			return false;
 
-		if ( IsMoving() )
+		if ( EngineIsOn() && IsMoving() )
 			return false;
 
 		return true;

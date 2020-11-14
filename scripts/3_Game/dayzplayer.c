@@ -1187,7 +1187,7 @@ class DayZPlayer extends Human
 	void ForceStandUpForHeavyItems(notnull EntityAI item)
 	{
 		InventoryLocation il = new InventoryLocation;
-		if ( item.IsHeavyBehaviour() && item.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.CARGO && IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_CROUCH))
+		if ( item.IsHeavyBehaviour() && IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_CROUCH))
 		{
 			HumanCommandMove cm = GetCommand_Move();
 			if (cm)

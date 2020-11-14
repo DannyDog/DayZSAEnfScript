@@ -122,6 +122,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		
 		//Get worn gloves
 		ClothingBase gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("GLOVES"));
+		PlayerBase player = PlayerBase.Cast(m_DZPlayer);
 				
 		bool isFireWeapon = itemInHands && itemInHands.IsWeapon();
 		bool isNotMeleeWeapon = itemInHands && !itemInHands.IsMeleeWeapon(); // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
@@ -156,7 +157,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				{
 					//! don't allow bash to interfere with actions like chambering or ejecting bullets
 					Weapon_Base weapon = Weapon_Base.Cast(itemInHands);
-					PlayerBase player = PlayerBase.Cast(m_DZPlayer);
+					//PlayerBase player = PlayerBase.Cast(m_DZPlayer);
 					if (weapon.IsWaitingForActionFinish() || player.GetActionManager().GetRunningAction())
 						return false;
 					
@@ -203,24 +204,24 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 
 						m_DZPlayer.StartCommand_Melee2(target, m_HitType == EMeleeHitType.HEAVY, attackByDistance);
-						PlayerBase m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
+						//PlayerBase m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
 						if (m_HitType == EMeleeHitType.HEAVY)
 						{
 							m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_HEAVY);
-							if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+							if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 							{	
-								m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
-								m_PlayerBase.m_ShockHandler.CheckValue(true);
+								player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+								player.m_ShockHandler.CheckValue(true);
 								//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
 							}
 						}
 						else
 						{
 							m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_LIGHT);
-							if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+							if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 							{
-								m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
-								m_PlayerBase.m_ShockHandler.CheckValue(true);
+								player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+								player.m_ShockHandler.CheckValue(true);
 								//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
 							}
 						}	
@@ -299,12 +300,11 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 						
 						//!Testing
-						m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
-						if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+						player = PlayerBase.Cast(m_DZPlayer);
+						if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 						{
-							m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
-							m_PlayerBase.m_ShockHandler.CheckValue(true);
-							//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+							player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_HEAVY_MELEE_SHOCK);
+							player.m_ShockHandler.CheckValue(true);
 						}
 						hmc2.ContinueCombo(true, attackByDistance);
 
@@ -316,13 +316,11 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						GetTargetData(target, targetType);
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 
-						//!Testing
-						m_PlayerBase = PlayerBase.Cast(m_DZPlayer);
-						if (m_PlayerBase.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+						player = PlayerBase.Cast(m_DZPlayer);
+						if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 						{
-							m_PlayerBase.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
-							m_PlayerBase.m_ShockHandler.CheckValue(true);
-							//m_PlayerBase.DealShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+							player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+							player.m_ShockHandler.CheckValue(true);
 						}
 						hmc2.ContinueCombo(false, attackByDistance);
 
@@ -405,6 +403,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				SetCooldown(EVADE_COOLDOWN, EFightLogicCooldownCategory.EVADE);
 				cm.StartMeleeEvadeA(angle);
 				m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_EVADE);
+				
+				//Inflict shock when sidestepping with broken legs
+				if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				{
+					player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+					player.m_ShockHandler.CheckValue(true);
+				}
 			}
 
 			//! stand up when crouching and raised pressed

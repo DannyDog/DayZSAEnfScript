@@ -40,7 +40,7 @@ class cfgWeapons
 		weight = 760;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		modelOptics = "-";
 		distanceZoomMin = 100;
 		distanceZoomMax = 100;

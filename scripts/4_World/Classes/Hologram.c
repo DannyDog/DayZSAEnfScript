@@ -806,7 +806,7 @@ class Hologram
 	
 	bool IsObjectStatic( Object obj )
 	{
-		return obj.IsBuilding() || obj.IsPlainObject() || (obj.IsInherited(BaseBuildingBase) && (m_WatchtowerBlockedComponentNames.Find(obj.GetActionComponentName(m_ContactComponent, "view")) == -1));
+		return obj.IsBuilding() || obj.IsPlainObject() || (!m_Parent.IsInherited(KitBase) && obj.IsInherited(BaseBuildingBase) && (m_WatchtowerBlockedComponentNames.Find(obj.GetActionComponentName(m_ContactComponent, "view")) == -1));
 	}
 
 	bool IsBaseIntact( Object under_left_close, Object under_right_close, Object under_left_far, Object under_right_far )
@@ -1486,27 +1486,20 @@ class Hologram
 		vector player_to_projection_vector;
 		float projection_diameter = GetProjectionDiameter();
 			
-		ground = Vector(0, - Math.Max( projection_diameter, SMALL_PROJECTION_GROUND ), 0);	
-		/*
-		if( projection_diameter < SMALL_PROJECTION_GROUND )
-		{
-			ground = Vector(0, - SMALL_PROJECTION_GROUND, 0);
-		}
-		else
-		{
-			ground = Vector(0, - projection_diameter, 0);
-		}
-		*/
-
+		ground = Vector(0, - Math.Max( projection_diameter, SMALL_PROJECTION_GROUND ), 0);
+		
 		vector to = from + ground;
 		vector contact_pos;
-		//vector contact_dir;
 		int contact_component;
 		
-		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, NULL, NULL, m_Projection, false, false );
-
+		//DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, NULL, NULL, m_Projection, false, false,  );
+		if (!DayZPhysics.RayCastBullet( from,to,PhxInteractionLayers.ROADWAY,m_Projection,null,contact_pos,null,null))
+		{
+			DayZPhysics.RayCastBullet( from,to,PhxInteractionLayers.TERRAIN,m_Projection,null,contact_pos,null,null);
+		}
+		
 		HideWhenClose( contact_pos );
-
+		
 		return contact_pos;
 	}
 

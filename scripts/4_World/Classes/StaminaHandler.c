@@ -238,7 +238,8 @@ class StaminaHandler
 	protected bool 							m_Debug;
 	protected bool							m_StaminaDepleted;
 
-	protected ref Timer						m_CooldownTimer;
+	//protected ref Timer						m_CooldownTimer;
+	protected ref map<int,ref Timer> 			m_TimerMap;
 	protected bool							m_IsInCooldown;
 	
 	protected ref StaminaConsumers			m_StaminaConsumers;
@@ -257,12 +258,14 @@ class StaminaHandler
 		m_StaminaDepletion 	= 0;
 		m_Time 				= 0;
 		m_StaminaDepleted	= false;
-		m_CooldownTimer		= new Timer(CALL_CATEGORY_SYSTEM);
+		//m_CooldownTimer		= new Timer(CALL_CATEGORY_SYSTEM);
 		m_IsInCooldown		= false;
 		m_Debug 			= false;
 
 		RegisterStaminaConsumers();
 		RegisterStaminaModifiers();
+		
+		m_TimerMap = new map<int,ref Timer>;
 	}
 
 	void Update(float deltaT, int pCurrentCommandID)
@@ -420,6 +423,11 @@ class StaminaHandler
 		break;
 			
 		case DayZPlayerConstants.MOVEMENTIDX_IDLE: //idle
+			if (m_Player.IsRolling())
+			{
+				m_StaminaDelta = GameConstants.STAMINA_GAIN_ROLL_PER_SEC;
+				break;
+			}
 			if (!m_IsInCooldown)
 			{
 				m_StaminaDelta = (GameConstants.STAMINA_GAIN_IDLE_PER_SEC + CalcStaminaGainBonus());
@@ -427,7 +435,7 @@ class StaminaHandler
 		break;
 			
 		default:
-			if( !m_IsInCooldown )
+			if ( !m_IsInCooldown )
 			{
 				m_StaminaDelta = GameConstants.STAMINA_GAIN_IDLE_PER_SEC;
 			}
@@ -511,6 +519,7 @@ class StaminaHandler
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.CLIMB, GameConstants.STAMINA_CLIMB_THRESHOLD);
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.MELEE_HEAVY, GameConstants.STAMINA_MELEE_HEAVY_THRESHOLD);
 		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.MELEE_EVADE, GameConstants.STAMINA_MELEE_EVADE_THRESHOLD);
+		m_StaminaConsumers.RegisterConsumer(EStaminaConsumers.ROLL, GameConstants.STAMINA_ROLL_THRESHOLD);
 	}
 
 	protected void RegisterStaminaModifiers()
@@ -526,6 +535,7 @@ class StaminaHandler
 		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.MELEE_HEAVY, GameConstants.STAMINA_DRAIN_MELEE_HEAVY);
 		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.OVERALL_DRAIN, GameConstants.STAMINA_MAX, 5.0);
 		m_StaminaModifiers.RegisterRandomized(EStaminaModifiers.MELEE_EVADE, 3, GameConstants.STAMINA_DRAIN_MELEE_EVADE);
+		m_StaminaModifiers.RegisterFixed(EStaminaModifiers.ROLL, GameConstants.STAMINA_DRAIN_ROLL);
 	}
 
 	protected float CalcStaminaGainBonus()// Calulates stamina regain bonus based on current stamina level (So it's better to wait for stamina to refill completely and avoid overloading)
@@ -564,9 +574,22 @@ class StaminaHandler
 		}
 
 		m_IsInCooldown = true;
-		if( m_CooldownTimer.IsRunning() )
+		/*if( m_CooldownTimer.IsRunning() )
 			m_CooldownTimer.Stop();
-		m_CooldownTimer.Run(time, this, "ResetCooldown",  new Param1<int>( modifier ));
+		m_CooldownTimer.Run(time, this, "ResetCooldown",  new Param1<int>( modifier ));*/
+		
+		Timer timer;
+		if (m_TimerMap.Find(modifier,timer) && timer.IsRunning())
+		{
+			timer.Stop();
+		}
+		else
+		{
+			timer = new ref Timer;
+			m_TimerMap.Set(modifier,timer);
+		}
+		timer.Run(time, this, "ResetCooldown",  new Param1<int>( modifier ));
+		//Print(m_TimerMap.Count());
 	}
 	
 	protected void ResetCooldown(int modifier = -1)
@@ -574,12 +597,18 @@ class StaminaHandler
 		StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
 		if (sm)
 		{
+			//Print(modifier);
 			//Error("Error: No StaminaModifier found! | StaminaHandler | ResetCooldown");
 			sm.SetStartTime(-1);
 			sm.ResetRunTime();
 			sm.SetInUse(false);
 		}
 		m_IsInCooldown = false;
+	}
+	
+	Timer GetCooldownTimer(int modifier)
+	{
+		
 	}
 	
 	// ---------------------------------------------------
@@ -626,7 +655,7 @@ class StaminaHandler
 		float time;
 		StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
 
-		//! select by modifier type and drain stamina
+		// select by modifier type and drain stamina
 		switch (sm.GetType())
 		{
 			case m_StaminaModifiers.FIXED:
@@ -641,32 +670,22 @@ class StaminaHandler
 			case m_StaminaModifiers.LINEAR:
 				if (!sm.IsInUse())
 				{
-				//Print("m_StaminaModifiers.LINEAR");
 					sm.SetStartTime(current_time + ( (PlayerSwayConstants.SWAY_TIME_IN + PlayerSwayConstants.SWAY_TIME_STABLE) / dT ) );
 					sm.SetRunTimeTick(dT);
 					sm.SetInUse(true);
-				//Print("GetStartTime" + sm.GetStartTime());
-				//Print("GetDurationAdjusted" + sm.GetDurationAdjusted());
 				}
 				time = Math.Clamp( ((current_time - sm.GetStartTime()) / sm.GetDurationAdjusted()), 0, 1 );
 				val = Math.Lerp(sm.GetMinValue(), sm.GetMaxValue(), time);
 				m_StaminaDepletion = m_StaminaDepletion + val;
-				/*Print(current_time);
-				Print(time);
-				Print(val);
-				Print("-------------");*/
 			
 			break;
 			
 			case m_StaminaModifiers.EXPONENTIAL:
 				if (!sm.IsInUse())
 				{
-				//Print("m_StaminaModifiers.EXPONENTIAL");
 					sm.SetStartTime(current_time + ( (PlayerSwayConstants.SWAY_TIME_IN + PlayerSwayConstants.SWAY_TIME_STABLE) / dT ) );
 					sm.SetRunTimeTick(dT);
 					sm.SetInUse(true);
-				//Print("GetStartTime" + sm.GetStartTime());
-				//Print("GetDurationAdjusted" + sm.GetDurationAdjusted());
 				}
 				time = Math.Clamp( ((current_time - sm.GetStartTime()) / sm.GetDurationAdjusted()), 0, 1 );
 				float exp;
@@ -680,11 +699,6 @@ class StaminaHandler
 				}
 				val = Math.Pow(sm.GetMinValue(),exp);
 				m_StaminaDepletion = m_StaminaDepletion + val;
-				/*Print(exp);
-				Print(current_time);
-				Print(time);
-				Print(val);
-				Print("-------------");*/
 			
 			break;
 		}

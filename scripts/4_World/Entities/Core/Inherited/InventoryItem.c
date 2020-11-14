@@ -111,12 +111,12 @@ class CarWheel extends InventoryItemSuper
 				newWheel = "Sedan_02_Wheel_Ruined";
 			break;
 
-			case "V3SWheel":
-				newWheel = "V3SWheel_Ruined";
+			case "Truck_01_Wheel":
+				newWheel = "Truck_01_Wheel_Ruined";
 			break;
 
-			case "V3SWheelDouble":
-				newWheel = "V3SWheelDouble_Ruined";
+			case "Truck_01_WheelDouble":
+				newWheel = "Truck_01_WheelDouble_Ruined";
 			break;
 
 
@@ -513,6 +513,11 @@ class SparkPlug extends ItemBase
 //-----------------------------------------------------------------------------
 class Clothing_Base extends ItemBase
 {
+	void ~Clothing_Base()
+	{
+		HandleVoiceEffect(false, PlayerBase.Cast(GetHierarchyRootPlayer()));
+	}
+	
 	override bool IsClothing()
 	{
 		return true;
@@ -559,6 +564,21 @@ class Clothing_Base extends ItemBase
 		}
 	}
 	
+	override void OnWasAttached(EntityAI parent, int slot_id)
+	{
+		super.OnWasAttached(parent, slot_id);
+		
+		if ( slot_id == InventorySlots.HEADGEAR )
+			HandleVoiceEffect(true, PlayerBase.Cast(GetHierarchyRootPlayer()));
+	}
+	
+	override void OnWasDetached(EntityAI parent, int slot_id)
+	{
+		super.OnWasDetached(parent, slot_id);
+		
+		HandleVoiceEffect(false, PlayerBase.Cast(parent));
+	}
+	
 	//! Returns if this entity obsructs player's voice
 	bool IsObstructingVoice()
 	{
@@ -566,8 +586,30 @@ class Clothing_Base extends ItemBase
 	}
 	
 	//! This items has effect on player's voice
+	// Better name for this would have been "MufflePlayer" or "ChangeVoiceEffect" (Too late to change in case a mod already uses this)
 	void MutePlayer(PlayerBase player, bool state)
 	{
+		if ( GetGame() )
+		{	
+			if (( GetGame().IsServer() && GetGame().IsMultiplayer() ) || ( GetGame().GetPlayer() == player ))
+			{
+				GetGame().SetVoiceEffect(player, GetVoiceEffect(), state);
+			}
+		}
+	}
+	
+	//!
+	void HandleVoiceEffect(bool enable, PlayerBase player)
+	{
+		if ( IsObstructingVoice() && player )
+			MutePlayer(player, enable);
+	}
+	
+	//! The voice effect this item uses, default is 0 (none)
+	// Options: (VoiceEffectMumbling = 1, VoiceEffectExtortion = 2, VoiceEffectObstruction = 4)
+	int GetVoiceEffect()
+	{
+		return 0;
 	}
 };
 

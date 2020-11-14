@@ -20,6 +20,7 @@ class MissionServer extends MissionBase
 		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(this.UpdatePlayersStats, 30000, true);
 	
 		int debugMonitorEnable = GetGame().ServerConfigGetInt("enableDebugMonitor");
+		m_RespawnMode = GetGame().ServerConfigGetInt("disableRespawnDialog");
 		GetGame().SetDebugMonitorEnabled(debugMonitorEnable);
 		
 		m_DeadPlayersArray = new array<ref CorpseData>;
@@ -337,7 +338,7 @@ class MissionServer extends MissionBase
 	PlayerBase OnClientNewEvent(PlayerIdentity identity, vector pos, ParamsReadContext ctx)
 	{
 		string characterType;
-		m_RespawnMode = GetGame().ServerConfigGetInt("setRespawnMode"); //todo - init somewhere safe
+		//m_RespawnMode = GetGame().ServerConfigGetInt("setRespawnMode"); //todo - init somewhere safe
 		SyncRespawnModeInfo(identity);
 		// get login data for new character
 		if ( ProcessLoginData(ctx) && (m_RespawnMode == GameConstants.RESPAWN_MODE_CUSTOM) && GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1 && !GetGame().GetMenuDefaultCharacterData(false).IsRandomCharacterForced() )
@@ -533,7 +534,7 @@ class MissionServer extends MissionBase
 	}
 	//--------------------------------------------------
 	
-	void SyncRespawnModeInfo(PlayerIdentity identity)
+	override void SyncRespawnModeInfo(PlayerIdentity identity)
 	{
 		ScriptRPC rpc = new ScriptRPC();
 		rpc.Write(m_RespawnMode);

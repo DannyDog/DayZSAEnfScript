@@ -326,7 +326,7 @@ class HandsContainer: Container
 		if( m_ActiveIndex == 1 )
 		{
 			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-			if( item_in_hands && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() )
+			if( item_in_hands && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() && !GetGame().GetPlayer().GetInventory().HasInventoryReservation(item_in_hands, null)  )
 			{
 				if( GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, item_in_hands ) )
 				{
@@ -345,10 +345,10 @@ class HandsContainer: Container
 	
 	override bool CanEquip()
 	{
-		if( m_ActiveIndex == 1 )
+		if ( m_ActiveIndex == 1 )
 		{
 			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-			if( item_in_hands.IsInherited( Magazine ) )
+			if ( item_in_hands.IsInherited( Magazine ) || GetGame().GetPlayer().GetInventory().HasInventoryReservation(item_in_hands, null)  )
 			{
 				return false;
 			}
@@ -372,18 +372,18 @@ class HandsContainer: Container
 	
 	override bool EquipItem()
 	{
-		if( m_ActiveIndex == 1 )
+		if ( m_ActiveIndex == 1 )
 		{
 			ItemBase item_in_hands = ItemBase.Cast( GetGame().GetPlayer().GetHumanInventory().GetEntityInHands() );
-			if( item_in_hands )
+			if ( item_in_hands )
 			{
-				if( item_in_hands.CanBeSplit() )
+				if ( item_in_hands.CanBeSplit() )
 				{
 					item_in_hands.OnRightClick();
 				}
-				else if( GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() )
+				else if ( GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() && !GetGame().GetPlayer().GetInventory().HasInventoryReservation(item_in_hands, null)  )
 				{
-					if( GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, item_in_hands ) )
+					if ( GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.ATTACHMENT, item_in_hands ) )
 					{
 						m_MainWidget.FindAnyWidget("Selected").Show( false );
 						m_MainWidget.FindAnyWidget("hands_preview_root").SetAlpha( 0.7 );
@@ -465,13 +465,13 @@ class HandsContainer: Container
 	
 	override bool TransferItemToVicinity()
 	{
-		if( m_ActiveIndex == 1 )
+		if ( m_ActiveIndex == 1 )
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 			ItemBase item_in_hands = ItemBase.Cast(player.GetHumanInventory().GetEntityInHands());
-			if( item_in_hands && player.CanDropEntity( item_in_hands ) && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() )
+			if ( item_in_hands && player.CanDropEntity( item_in_hands ) && GetGame().GetPlayer().GetHumanInventory().CanRemoveEntityInHands() && !player.GetInventory().HasInventoryReservation(item_in_hands, null) )
 			{
-				if( item_in_hands.GetTargetQuantityMax() < item_in_hands.GetQuantity() )
+				if ( item_in_hands.GetTargetQuantityMax() < item_in_hands.GetQuantity() )
 					item_in_hands.SplitIntoStackMaxClient( null, -1 );
 				else
 					player.PhysicalPredictiveDropItem( item_in_hands );
@@ -480,7 +480,7 @@ class HandsContainer: Container
 				return true;
 			}
 		}
-		else if( GetFocusedContainer() )
+		else if ( GetFocusedContainer() )
 		{
 				return GetFocusedContainer().TransferItemToVicinity();
 		}

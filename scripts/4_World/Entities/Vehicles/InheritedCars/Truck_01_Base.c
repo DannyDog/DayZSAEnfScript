@@ -279,6 +279,11 @@ class Truck_01_Base extends CarScript
 
 		//AddAction( ActionAnimateCarSelection );
 		AddAction( ActionSidePlateInteract );
+		AddAction(ActionDetachFromTarget_SpecificSlot_WoodenLogs);
+		AddAction(ActionDetachFromTarget_SpecificSlot_WoodenPlanks);
+		AddAction(ActionDetachFromTarget_SpecificSlot_MetalSheets);
+		AddAction(ActionDetachFromTarget_SpecificSlotsCategory_Barrel);
+		AddAction(ActionDetachFromTarget_SpecificSlotsCategory_WoodenCrate);
 	}
 	
 	override void OnDebugSpawn()

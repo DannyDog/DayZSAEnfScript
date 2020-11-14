@@ -37,10 +37,10 @@ class CfgVehicles
 		attachments[] = {"VestHolster","VestPouch","VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		weight = 12000;
 		itemSize[] = {4,4};
-		varWetMax = 0.79;
+		varWetMax = 0.49;
 		heatIsolation = 0.8;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\vests\plate_carrier_m.p3d";
@@ -156,7 +156,7 @@ class CfgVehicles
 		heatIsolation = 0.1;
 		visibilityModifier = 0.7;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\dz\characters\vests\data\smersh_g_co.paa","\dz\characters\vests\data\smersh_co.paa","\dz\characters\vests\data\smersh_co.paa"};
 		class DamageSystem
@@ -216,11 +216,11 @@ class CfgVehicles
 		itemSize[] = {3,2};
 		itemsCargoSize[] = {6,4};
 		quickBarBonus = 2;
-		varWetMax = 0.79;
+		varWetMax = 0.49;
 		heatIsolation = 0.7;
 		visibilityModifier = 0.95;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -347,7 +347,7 @@ class CfgVehicles
 		varWetMax = 0.79;
 		heatIsolation = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -439,7 +439,7 @@ class CfgVehicles
 		varWetMax = 0.79;
 		heatIsolation = 0.6;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\dz\characters\vests\data\policevest_co.paa","\dz\characters\vests\data\policevest_co.paa","\dz\characters\vests\data\policevest_co.paa"};
 		class ClothingTypes
@@ -553,7 +553,7 @@ class CfgVehicles
 		varWetMax = 0.79;
 		heatIsolation = 0;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -603,7 +603,7 @@ class CfgVehicles
 		varWetMax = 0.249;
 		heatIsolation = 0;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\vests\chest_holster_m.p3d";
@@ -651,10 +651,10 @@ class CfgVehicles
 		itemSize[] = {4,3};
 		itemsCargoSize[] = {7,5};
 		quickBarBonus = 3;
-		varWetMax = 1.0;
+		varWetMax = 0.79;
 		heatIsolation = 0.75;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -782,7 +782,7 @@ class CfgVehicles
 		heatIsolation = 1;
 		lootCategory = "Crafted";
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
 		{
@@ -938,7 +938,7 @@ class CfgVehicles
 		varWetMax = 0.79;
 		heatIsolation = 0.35;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\vests\hunter_vest_m.p3d";
@@ -1020,7 +1020,7 @@ class CfgVehicles
 		varWetMax = 0.249;
 		heatIsolation = 0.2;
 		repairableWithKits[] = {5};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\vests\orange_vest_m.p3d";

@@ -5,6 +5,7 @@ class SewingKit: Inventory_Base
 		super.SetActions();
 		
 		AddAction(ActionRepairTent);
+		AddAction(ActionRepairShelter);
 		AddAction(ActionSewTarget);
 		AddAction(ActionSewSelf);
 	}

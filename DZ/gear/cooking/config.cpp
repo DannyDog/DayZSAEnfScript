@@ -46,7 +46,8 @@ class CfgVehicles
 		varQuantityMax = 100.0;
 		varQuantityDestroyOnMin = 0;
 		varTemperatureMax = 1000;
-		absorbency = 0.3;
+		varWetMin = 0.049;
+		varWetMax = 1.0;
 		forceFarBubble = "true";
 		itemBehaviour = 2;
 		class AnimationSources

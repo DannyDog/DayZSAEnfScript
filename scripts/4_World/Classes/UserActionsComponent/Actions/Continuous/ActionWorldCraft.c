@@ -146,47 +146,31 @@ class ActionWorldCraft: ActionContinuousBase
 		am.UnlockInventory(action_data);*/
 	}
 	
-	override void WriteToContext (ParamsWriteContext ctx, ActionData action_data)
+	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)
 	{
-		PlayerBase player;
-		Class.CastTo(player, action_data.m_Player);
-		WorldCraftActionData action_data_wc;
-		Class.CastTo(action_data_wc, action_data);
-
-		ctx.Write(action_data_wc.m_MainItem);
-		ctx.Write(action_data_wc.m_Target.GetObject());
+		super.WriteToContext(ctx, action_data);
+		
+		WorldCraftActionData action_data_wc = WorldCraftActionData.Cast(action_data);
+		
 		ctx.Write(action_data_wc.m_RecipeID);
 	}
 	
 	override bool ReadFromContext(ParamsReadContext ctx, out ActionReciveData action_recive_data )
 	{
-		if(!action_recive_data)
+		if (!action_recive_data)
 		{
 			action_recive_data = new WorldCraftActionReciveData;
 		}
-		WorldCraftActionReciveData recive_data_wc = WorldCraftActionReciveData.Cast(action_recive_data);
-		ItemBase item1 = null;
-		ItemBase item2 = null;
-		int recipeID = -1;
-		if (!ctx.Read(item1))
-				return false;
-		if (!ctx.Read(item2))
-				return false;
+		
+		super.ReadFromContext(ctx, action_recive_data);
+
+		int recipeID;		
 		if (!ctx.Read(recipeID))
-				return false;
-		
-		if ( !item1 || !item2)
-		{
-			Error("Action WC target not created. RecipeID= " + recipeID + " MainItem= " + item1 + " TargetItem= " + item2);
 			return false;
-		}
 		
-		ActionTarget target;
-		target = new ActionTarget(item2 , NULL, -1,vector.Zero, 0);
-					
-		recive_data_wc.m_MainItem = item1;
-		recive_data_wc.m_Target = target;
+		WorldCraftActionReciveData recive_data_wc = WorldCraftActionReciveData.Cast(action_recive_data);
 		recive_data_wc.m_RecipeID = recipeID;
+		
 		return true;
 	}
 	

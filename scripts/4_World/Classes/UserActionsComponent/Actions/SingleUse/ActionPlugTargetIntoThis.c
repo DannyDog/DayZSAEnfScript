@@ -54,21 +54,8 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 		{
 			if ( !target_EAI.GetCompEM().IsPlugged()  &&  item.GetCompEM().CanReceivePlugFrom(target_EAI) )
 			{
-				ActionBase tested_action = player.GetActionManager().GetAction(ActionPlugIn);
-				array<ActionBase_Basic> actions;
-				target_EAI.GetActions(DefaultActionInput,actions);
-				// Check if the target_EAI is a device which is supposed to be plugged into something
-				
-				if ( actions )
-				{
-					for ( int i = 0;  i < actions.Count();  i++ )
-					{
-						if ( actions.Get(i) == tested_action )
-						{
-							return true;
-						}
-					}
-				}
+				//hotfix, re-work entire action!
+				return target_EAI.IsElectricAppliance();
 			}
 			
 			// Special case for vehicle batteries

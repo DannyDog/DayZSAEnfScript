@@ -39,7 +39,7 @@ class CfgVehicles
 		absorbency = 0.0;
 		openItemSpillRange[] = {40,60};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		hiddenSelections[] = {"flame"};
 		hiddenSelectionsTextures[] = {""};
 		class DamageSystem
@@ -93,7 +93,7 @@ class CfgVehicles
 			};
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -164,7 +164,7 @@ class CfgVehicles
 			};
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;

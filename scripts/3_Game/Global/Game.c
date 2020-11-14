@@ -790,7 +790,7 @@ class CGame
 	/**
 	 \brief Enable/disable VoN effect (only on server)
 	@param player in question
-	@param voice effect (VoiceEffectMumbling, VoiceEffectExtortion)
+	@param voice effect (VoiceEffectMumbling = 1, VoiceEffectExtortion = 2, VoiceEffectObstruction = 4)
 	@param enable or disable effect
 	*/
 	proto native void		SetVoiceEffect(Object player, int effect, bool enable);

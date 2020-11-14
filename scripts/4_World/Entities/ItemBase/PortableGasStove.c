@@ -212,6 +212,14 @@ class PortableGasStove extends ItemBase
 		return true;
 	}
 	
+	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
+	{
+		if ( GetHierarchyParent() && !GetHierarchyParent().IsMan() )
+			return false;
+		
+		return super.CanReceiveAttachment(attachment, slotId);
+	}
+	
 	//hands
 	override bool CanPutIntoHands( EntityAI parent )
 	{

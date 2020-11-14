@@ -237,7 +237,7 @@ class cfgVehicles
 		heatIsolation = 0.3;
 		visibilityModifier = 0.8;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		canBeDigged = 1;
 		soundAttType = "Small";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -356,7 +356,7 @@ class cfgVehicles
 		heatIsolation = 0.4;
 		visibilityModifier = 0.75;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		canBeDigged = 1;
 		soundAttType = "Small";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
@@ -1003,7 +1003,7 @@ class cfgVehicles
 		varWetMax = 0.249;
 		heatIsolation = 0.8;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		canBeDigged = 1;
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes

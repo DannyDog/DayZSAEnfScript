@@ -79,7 +79,7 @@ class ShockHandler
 	}
 	
 	//Inflict shock damage
-	void DealShock()
+	private void DealShock()
 	{
 		if (GetGame().IsServer())
 			m_Player.GiveShock(-m_CumulatedShock);

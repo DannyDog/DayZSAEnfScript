@@ -180,7 +180,7 @@ class cfgVehicles
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -242,7 +242,7 @@ class cfgVehicles
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -305,7 +305,7 @@ class cfgVehicles
 			opticSightTexture = "dz\weapons\attachments\optics\data\collimdot_red_ca.paa";
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -368,7 +368,7 @@ class cfgVehicles
 			PPBlurProperties = 0.2;
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -432,7 +432,7 @@ class cfgVehicles
 			PPBlurProperties = 0.2;
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -855,7 +855,7 @@ class cfgVehicles
 			PPBlurProperties = 0.6;
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -920,7 +920,7 @@ class cfgVehicles
 			PPBlurProperties = 0.6;
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -1050,7 +1050,7 @@ class cfgVehicles
 			opticSightTexture = "dz\weapons\attachments\optics\data\red_chevron_ca.paa";
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;

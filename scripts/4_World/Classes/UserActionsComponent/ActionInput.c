@@ -426,7 +426,7 @@ class ContinuousInteractActionInput : ActionInput
 		if(m_SelectActions.Count())
 		{
 			m_selectedActionIndex++;
-			if(m_SelectActions.Count() >= m_selectedActionIndex )
+			if(m_SelectActions.Count() <= m_selectedActionIndex )
 			{
 				m_selectedActionIndex = 0;
 			}

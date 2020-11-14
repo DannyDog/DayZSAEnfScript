@@ -34,6 +34,7 @@ class DeCraftTruck01DoubleWheel extends RecipeBase
 		
 		//ingredient 2
 		InsertIngredient(1,"Crowbar");
+		InsertIngredient(1,"LugWrench");
 		
 		m_IngredientAddHealth[1] = -20;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing

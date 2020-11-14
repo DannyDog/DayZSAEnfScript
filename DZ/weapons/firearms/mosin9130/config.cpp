@@ -39,7 +39,7 @@ class cfgWeapons
 		weight = 4000;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,20,170,4,10};
 		DisplayMagazine = 0;
 		WeaponLength = 1.22271;
@@ -144,7 +144,7 @@ class cfgWeapons
 		weight = 3000;
 		absorbency = 0.1;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		WeaponLength = 0.52;
 		chamberSize = 5;
 		chamberedRound = "";

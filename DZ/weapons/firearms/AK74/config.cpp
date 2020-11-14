@@ -36,7 +36,7 @@ class cfgWeapons
 		weight = 3070;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.56;
 		barrelArmor = 2.743;

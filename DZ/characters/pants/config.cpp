@@ -1698,7 +1698,7 @@ class CfgVehicles
 		varWetMax = 0.249;
 		heatIsolation = 1;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		rotationFlags = 16;
 		quickBarBonus = 2;
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};

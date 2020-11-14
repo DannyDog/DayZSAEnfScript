@@ -703,6 +703,8 @@ class Mission
 	{
 		return -1;
 	}
+	//! server-side
+	void SyncRespawnModeInfo(PlayerIdentity identity) {};
 };
 
 // -------------------------------------------------------------------------

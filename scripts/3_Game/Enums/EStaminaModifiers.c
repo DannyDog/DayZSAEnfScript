@@ -8,4 +8,5 @@ enum EStaminaModifiers
 	OVERALL_DRAIN,
 	VAULT,
 	CLIMB,
+	ROLL,
 }

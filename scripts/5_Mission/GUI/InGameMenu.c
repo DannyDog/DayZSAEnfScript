@@ -355,7 +355,7 @@ class InGameMenu extends UIScriptedMenu
 	protected void GameRespawn(bool random)
 	{
 		//Print("respawning as random " + random);
-		GetGame().GetMenuDefaultCharacterData(false).SetRandomCharacterForced(random); //todo
+		GetGame().GetMenuDefaultCharacterData(false).SetRandomCharacterForced(random);
 		GetGame().GetCallQueue(CALL_CATEGORY_GUI).Call(GetGame().RespawnPlayer);
 		//turns off dead screen, hides HUD for countdown
 		//---------------------------------------------------

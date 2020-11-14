@@ -136,8 +136,6 @@ class QuickBarBase
 //-------------------------------------------------------------
 	bool CanAddAsShortcut(EntityAI entity)
 	{
-		// TODO: Excluding of the kits and fireplace is kinda dirty, find some prettier way to do it
-		// Maybe add event on parent that gets called that will check if the attachment allows it?
 		InventoryLocation loc = new InventoryLocation;
 		entity.GetInventory().GetCurrentInventoryLocation(loc);
 		EntityAI parent = loc.GetParent();

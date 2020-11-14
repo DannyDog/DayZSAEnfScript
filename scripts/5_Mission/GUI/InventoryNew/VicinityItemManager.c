@@ -41,7 +41,7 @@ class VicinityItemManager
 				
 		if ( inventory_item )
 		{
-			if ( m_VicinityItems.Find( inventory_item ) == INDEX_NOT_FOUND && GameInventory.CheckManipulatedObjectsDistances( inventory_item, GetGame().GetPlayer(), VICINITY_CONE_REACH_DISTANCE ) )
+			if ( m_VicinityItems.Find( inventory_item ) == INDEX_NOT_FOUND && GameInventory.CheckManipulatedObjectsDistances( inventory_item, GetGame().GetPlayer(), VICINITY_CONE_REACH_DISTANCE + 1.0 ) )
 			{
 				m_VicinityItems.Insert( inventory_item );
 			}

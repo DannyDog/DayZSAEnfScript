@@ -25,4 +25,10 @@ class WoodenCrate: DeployableContainer_Base
 	{
 		return 110;
 	}
+	
+	override void SetActions()
+	{
+		AddAction(ActionAttachOnSelection);
+		super.SetActions();
+	}
 };

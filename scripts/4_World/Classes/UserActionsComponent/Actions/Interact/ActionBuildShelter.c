@@ -6,8 +6,6 @@ class ActionBuildShelter: ActionBuildPart
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DEPLOY_2HD;
 		m_FullBody = true;
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
-		
-		//m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_HIGH;
 	}
 	
 	override void CreateConditionComponents()
@@ -51,11 +49,6 @@ class ActionBuildShelter: ActionBuildPart
 	{
 		return ContinuousInteractActionInput;
 	}
-	
-	/*override bool IsUsingProxies()
-	{
-		return true;
-	}*/
 	
 	override bool UseMainItem()
 	{
@@ -108,6 +101,18 @@ class ActionBuildShelter: ActionBuildPart
 		return MiscGameplayFunctions.BuildCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
 	}
 	
+	override void OnStart( ActionData action_data )
+	{
+		super.OnStart(action_data);
+		action_data.m_Player.TryHideItemInHands(true);
+	}
+	
+	override void OnEnd( ActionData action_data )
+	{
+		super.OnEnd(action_data);
+		action_data.m_Player.TryHideItemInHands(false);
+	}
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
@@ -119,9 +124,6 @@ class ActionBuildShelter: ActionBuildPart
 		{
 			//build
 			construction.BuildPartServer( action_data.m_Player, part_name, AT_BUILD_PART );
-			
-			//add damage to tool...damage players hands instead?
-			//action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
 		}
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

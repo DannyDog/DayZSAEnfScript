@@ -1420,14 +1420,14 @@ class CfgSlots
 		name = "Truck_01_Wheel_1_2";
 		displayName = "Back Left Wheel";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "doublewheel";
 	};
 	class Slot_Truck_01_Wheel_1_3
 	{
 		name = "Truck_01_Wheel_1_3";
 		displayName = "Middle Right Wheel";
 		selection = "wheel_1_3";
-		ghostIcon = "wheel";
+		ghostIcon = "doublewheel";
 	};
 	class Slot_Truck_01_Wheel_2_1
 	{
@@ -1441,14 +1441,14 @@ class CfgSlots
 		name = "Truck_01_Wheel_2_2";
 		displayName = "Back Right Wheel";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "doublewheel";
 	};
 	class Slot_Truck_01_Wheel_2_3
 	{
 		name = "Truck_01_Wheel_2_3";
 		displayName = "Middle Right Wheel";
 		selection = "wheel_2_3";
-		ghostIcon = "wheel";
+		ghostIcon = "doublewheel";
 	};
 	class Slot_Truck_01_Wheel_Spare_1
 	{
@@ -1550,12 +1550,6 @@ class CfgSlots
 		name = "Truck_01_WoodenCrate4";
 		displayName = "WoodenCrate";
 		ghostIcon = "woodcrate";
-	};
-	class Slot_Truck_01_Cargo2
-	{
-		name = "Truck_01_Cargo2";
-		displayName = "SecondCargo";
-		ghostIcon = "";
 	};
 	class Slot_Truck_02_Wheel_1_1
 	{

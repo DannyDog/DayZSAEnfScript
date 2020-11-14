@@ -35,7 +35,7 @@ class ActionRepairTentPart: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined; //To change?
-		m_ConditionTarget = new CCTParent(10);
+		m_ConditionTarget = new CCTCursorParent(UAMaxDistances.DEFAULT);
 	}
 
 	override string GetText()
@@ -58,60 +58,44 @@ class ActionRepairTentPart: ActionContinuousBase
 		//m_CurrentDamageZone = "";
 		Object targetObject = target.GetObject();
 		Object targetParent = target.GetParent();
-		if ( !targetParent.IsInherited(TentBase) )
+		if ( !targetParent || !targetParent.IsInherited(TentBase) )
 			return false;
 
 		if ( player && targetObject && targetParent )
 		{
-			float max_action_distance = 1; //m_MaximalActionDistance;
-			
-			//TODO: purge this abomination
-			if ( targetParent.IsInherited(CarTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(LargeTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(MediumTent) ) max_action_distance = 6.0;
-			else if ( targetParent.IsInherited(PartyTent) ) max_action_distance = 10.0;
-			
-			float distance = Math.AbsFloat(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
-			
-			if ( distance <= max_action_distance )	
+			array<string> selections = new array<string>;
+			PluginRepairing module_repairing;
+			Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
+			targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
+			TentBase tent = TentBase.Cast( targetParent );
+			if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "" || m_CurrentDamageZone == "Body")
 			{
-				if (GetGame().IsMultiplayer() && GetGame().IsServer())
-					return true;
+				string damageZone = "";
 				
-				array<string> selections = new array<string>;
-				PluginRepairing module_repairing;
-				Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
-				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
-				TentBase tent = TentBase.Cast( targetParent );
-				if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "" || m_CurrentDamageZone == "Body")
+				for (int s = 0; s < selections.Count(); s++)
 				{
-					string damageZone = "";
-					
-					for (int s = 0; s < selections.Count(); s++)
+					if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 					{
-						if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
+						//Print("#" + s + " damageZone: " + damageZone);
+						if (tent.GetHealthLevel("" + damageZone) == GameConstants.STATE_RUINED ) 
 						{
-							//Print("#" + s + " damageZone: " + damageZone);
-							if (tent.GetHealthLevel("" + damageZone) == GameConstants.STATE_RUINED ) 
-							{
-								m_CurrentDamageZone = damageZone;
-								m_LastValidComponentIndex = target.GetComponentIndex();
-								break;
-							}else
-								continue;
-						}
-					}
-					if ( damageZone != "" && m_CurrentDamageZone != "Body" ) //This may seem like a duplicate but is required to work properly
-					{
-						m_CurrentDamageZone = damageZone;
-						m_LastValidComponentIndex = target.GetComponentIndex();
+							m_CurrentDamageZone = damageZone;
+							m_LastValidComponentIndex = target.GetComponentIndex();
+							break;
+						}else
+							continue;
 					}
 				}
-				
-				if ( m_CurrentDamageZone != "" && m_CurrentDamageZone != "Body" && tent.GetHealthLevel("" + damageZone) == GameConstants.STATE_RUINED )
+				if ( damageZone != "" && m_CurrentDamageZone != "Body" ) //This may seem like a duplicate but is required to work properly
 				{
-					return true;
+					m_CurrentDamageZone = damageZone;
+					m_LastValidComponentIndex = target.GetComponentIndex();
 				}
+			}
+			
+			if ( m_CurrentDamageZone != "" && m_CurrentDamageZone != "Body" && tent.GetHealthLevel("" + damageZone) == GameConstants.STATE_RUINED )
+			{
+				return true;
 			}
 		}
 		

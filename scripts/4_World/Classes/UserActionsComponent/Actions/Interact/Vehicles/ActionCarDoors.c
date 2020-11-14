@@ -2,6 +2,10 @@ class ActionCarDoors: ActionInteractBase
 {	
 	protected int m_CommandUIDPerCrewIdx[4];
 	protected bool m_IsOpening = true;
+	// --- Backwards compatibility 1.09 -> 1.10 (But please do not use these)
+	CarScript m_Car = null;
+	string m_AnimSource = "";
+	// ---
 	
 	void ActionCarDoors()
 	{
@@ -170,6 +174,12 @@ class ActionCarDoors: ActionInteractBase
 		{
 			car.SetAnimationPhase(animSource, phase);
 		}
+	}
+	
+	override void OnEnd( ActionData action_data )
+	{
+		if (m_Car || m_AnimSource.Length() > 0)
+			Error("[WARNING] m_Car and m_AnimSource are left for backwards compatibility to not crash mods that are using it, but should no longer be used.");
 	}
 	
 	override bool CanBeUsedInVehicle()

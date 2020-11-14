@@ -53,6 +53,11 @@ class Rag extends ItemBase
 		return Fireplace.CanIgniteEntityAsFireplace( this );
 	}
 	
+	override bool CanAssignToQuickbar()
+	{
+		return (!GetInventory().IsAttachment());
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

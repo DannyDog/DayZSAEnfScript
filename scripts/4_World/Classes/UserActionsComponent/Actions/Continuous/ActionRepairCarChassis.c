@@ -79,7 +79,7 @@ class ActionRepairCarChassis: ActionContinuousBase
 				for ( int s = 0; s < selections.Count(); s++ )
 				{
 					compName = selections[s];
-				
+					
 					//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 					if ( carEntity && DamageSystem.GetDamageZoneFromComponentName( carEntity, compName, damageZone ))
 					{
@@ -91,6 +91,12 @@ class ActionRepairCarChassis: ActionContinuousBase
 							m_LastValidComponentIndex = target.GetComponentIndex();
 							
 							vector repairPos = carEntity.GetPosition();
+						
+							Truck_01_Covered truck = Truck_01_Covered.Cast(car);
+							//Determine if using a "Special" item for repairing
+							WoodenPlank plank = WoodenPlank.Cast(item);
+							Fabric tarp = Fabric.Cast(item);
+						
 							switch( damageZone )
 							{
 								case "dmgZone_front":
@@ -128,10 +134,28 @@ class ActionRepairCarChassis: ActionContinuousBase
 									repairPos = car.GetFrontPointPosWS();
 									break;
 								}
+								case "BackWood":
+								{
+									if (!plank)
+										return false;
+									repairPos = truck.GetBackPointPosWS();
+									break;
+								}
+								case "BackTarp":
+								{
+									if (!tarp)
+										return false;
+									repairPos = truck.GetBackPointPosWS();
+									break;
+								}
 								default:
 									return false;
 								break;
 							}
+							
+							//Prevent planks and tarp from repairing non related areas
+							if ((tarp || plank) && (damageZone != "BackWood" && damageZone != "BackTarp"))
+								return false;
 
 							float dist = vector.Distance( repairPos, player.GetPosition() );
 							if ( dist < MAX_ACTION_DIST)
@@ -149,6 +173,9 @@ class ActionRepairCarChassis: ActionContinuousBase
 	{
 		Object tgObject = action_data.m_Target.GetObject();
 		ItemBase usedItem = action_data.m_MainItem;
+		
+		Fabric usedTarp = Fabric.Cast(usedItem);
+		WoodenPlank usedPlank = WoodenPlank.Cast(usedItem);
 		
 		string damageZone = RepairCarPartActionData.Cast(action_data).m_DamageZone;
 		if ( !GetGame().IsMultiplayer() )
@@ -218,7 +245,10 @@ class ActionRepairCarChassis: ActionContinuousBase
 					if ( usedItem.GetQuantity() > 1 )
 					{
 						int qnt = usedItem.GetQuantity();
-						qnt -= usedItem.GetQuantityMax() * 0.25;
+						if (usedTarp || usedPlank)
+							qnt -= 1;
+						else
+							qnt -= usedItem.GetQuantityMax() * 0.25;
 						usedItem.SetQuantity( qnt );
 					}
 					else

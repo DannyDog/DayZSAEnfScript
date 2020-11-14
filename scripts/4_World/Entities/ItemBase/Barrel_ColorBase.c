@@ -525,10 +525,12 @@ class Barrel_ColorBase : DeployableContainer_Base
 	
 	override void SetActions()
 	{
+		AddAction(ActionAttachOnSelection);
 		super.SetActions();
 		
 		AddAction(ActionOpenBarrel);
 		AddAction(ActionCloseBarrel);
+		
 	}
 };
 

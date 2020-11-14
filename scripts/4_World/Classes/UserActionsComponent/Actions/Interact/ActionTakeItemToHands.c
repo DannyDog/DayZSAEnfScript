@@ -36,8 +36,10 @@ class ActionTakeItemToHands: ActionInteractBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		ItemBase tgt_item = ItemBase.Cast( target.GetObject() );
+		if ( !tgt_item )
+			return false;
 		EntityAI tgt_parent = EntityAI.Cast(tgt_item.GetHierarchyParent());
-		if ( !tgt_item || !tgt_item.IsTakeable() || tgt_item.IsBeingPlaced() || ( tgt_item.GetHierarchyParent() && !BaseBuildingBase.Cast(tgt_item.GetHierarchyParent()) ) || ((tgt_parent && !tgt_item.CanDetachAttachment(tgt_parent)) || (tgt_parent && !tgt_parent.CanReleaseAttachment(tgt_item))) )
+		if ( !tgt_item.IsTakeable() || tgt_item.IsBeingPlaced() || ( tgt_item.GetHierarchyParent() && !BaseBuildingBase.Cast(tgt_parent) ) || ((tgt_parent && !tgt_item.CanDetachAttachment(tgt_parent)) || (tgt_parent && !tgt_parent.CanReleaseAttachment(tgt_item))) )
 			return false;
 		
 		return player.GetInventory().CanAddEntityIntoHands(tgt_item);

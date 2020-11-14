@@ -180,6 +180,11 @@ class ActionBase : ActionBase_Basic
 		m_ConditionItem = new CCIDummy;
 		m_ConditionTarget = new CCTDummy;
 	}
+	
+	Object GetDisplayInteractObject(PlayerBase player, ActionTarget target)
+	{
+		return null;
+	}
 
 	//! Action is performed on target, not with item itself, when set to true.
 	//!   * target will be synced to server
@@ -379,6 +384,8 @@ class ActionBase : ActionBase_Basic
 			ctx.Write(targetParent);
 			componentIndex = action_data.m_Target.GetComponentIndex();
 			ctx.Write(componentIndex);
+			cursorHitPos = action_data.m_Target.GetCursorHitPos();
+			ctx.Write(cursorHitPos);
 		}
 	}
 	
@@ -431,6 +438,9 @@ class ActionBase : ActionBase_Basic
 
 			if ( !ctx.Read(componentIndex) )
 				return false;
+			
+			if ( !ctx.Read(cursorHitPos) )
+				return false;
 
 			//! create target object from proxyBoneIdx synced from client
 			if ( proxyBoneIdx > -1 )
@@ -447,7 +457,7 @@ class ActionBase : ActionBase_Basic
 				return false;
 			}
 			
-			target = new ActionTarget(actionTargetObject, actionTargetParent, componentIndex, vector.Zero, 0);
+			target = new ActionTarget(actionTargetObject, actionTargetParent, componentIndex, cursorHitPos, 0);
 						
 			action_recive_data.m_Target = target;
 		}

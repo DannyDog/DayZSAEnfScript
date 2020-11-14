@@ -7,4 +7,5 @@ enum EStaminaConsumers
 	JUMP,
 	VAULT,
 	CLIMB,
+	ROLL,
 }

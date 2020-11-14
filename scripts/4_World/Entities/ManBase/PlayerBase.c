@@ -70,6 +70,7 @@ class PlayerBase extends ManBase
 	ref FlashbangEffect				m_FlashbangEffect;
 	ref ShockDealtEffect 			m_ShockDealtEffect;
 	ref EffectParticle 				m_FliesEff;
+	ref TInputActionMap				m_InputActionMap; // Backwards compatibility
 	ref TInputActionMap				m_InputActionMapControled;
 	ref TInputActionMap				m_InputActionMapAsTarget;
 	bool							m_ActionsInitialize;
@@ -137,6 +138,9 @@ class PlayerBase extends ManBase
 	ref EffectSound 				m_BrokenLegSound;
 	const string 					SOUND_BREAK_LEG = "broken_leg_SoundSet";
 	bool							m_CanPlayBrokenLegSound = false; //Used to check if sound has already been played
+	
+	static ref array<string>		m_BleedingSourcesLow; //Stores all LOWER body part bleeding sources
+	static ref array<string>		m_BleedingSourcesUp; //Stores all UPPER body part bleeding sources EXCLUDING HEAD
 	
 	ref protected RandomGeneratorSyncManager m_RGSManager;
 	
@@ -368,6 +372,38 @@ class PlayerBase extends ManBase
 		
 		m_ModulePlayerStatus	= PluginPlayerStatus.Cast( GetPlugin(PluginPlayerStatus) );
 		m_ModuleLifespan		= PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
+		
+		m_BleedingSourcesLow = new array<string>;
+		m_BleedingSourcesLow.Insert("RightToeBase");
+		m_BleedingSourcesLow.Insert("RightFoot");
+		m_BleedingSourcesLow.Insert("LeftToeBase");
+		m_BleedingSourcesLow.Insert("LeftFoot");
+		m_BleedingSourcesLow.Insert("RightUpLegRoll");
+		m_BleedingSourcesLow.Insert("RightUpLeg");
+		m_BleedingSourcesLow.Insert("RightLegRoll");
+		m_BleedingSourcesLow.Insert("RightLeg");
+		m_BleedingSourcesLow.Insert("LeftUpLegRoll");
+		m_BleedingSourcesLow.Insert("LeftUpLeg");
+		m_BleedingSourcesLow.Insert("LeftLegRoll");
+		m_BleedingSourcesLow.Insert("LeftLeg");
+		
+		m_BleedingSourcesUp = new array<string>;
+		m_BleedingSourcesUp.Insert("RightForeArmRoll");
+		m_BleedingSourcesUp.Insert("LeftForeArmRoll");
+		m_BleedingSourcesUp.Insert("RightForeArm");
+		m_BleedingSourcesUp.Insert("RightArmRoll");
+		m_BleedingSourcesUp.Insert("RightArm");
+		m_BleedingSourcesUp.Insert("RightShoulder");
+		m_BleedingSourcesUp.Insert("LeftForeArm");
+		m_BleedingSourcesUp.Insert("LeftArmRoll");
+		m_BleedingSourcesUp.Insert("LeftArm");
+		m_BleedingSourcesUp.Insert("LeftShoulder");
+		m_BleedingSourcesUp.Insert("Spine3");
+		m_BleedingSourcesUp.Insert("Spine2");
+		m_BleedingSourcesUp.Insert("Spine1");
+		m_BleedingSourcesUp.Insert("Spine");
+		m_BleedingSourcesUp.Insert("Pelvis");
+		m_BleedingSourcesUp.Insert("Neck");
 		
 		RegisterNetSyncVariableInt("m_LifeSpanState", LifeSpanState.BEARD_NONE, LifeSpanState.COUNT);
 		RegisterNetSyncVariableInt("m_BloodType", 0, 127);
@@ -606,6 +642,14 @@ class PlayerBase extends ManBase
 		{
 			m_CorpseProcessing = true;
 			Print("EEKilled - processing corpse");
+		}
+		
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
+		{
+			if (GetGame().GetMission())
+			{
+				GetGame().GetMission().SyncRespawnModeInfo(GetIdentity());
+			}
 		}
 		
 		super.EEKilled( killer );
@@ -1013,6 +1057,10 @@ class PlayerBase extends ManBase
 		
 	}
 	
+	void SetActions() // Backwards compatibility, not recommended to use
+	{
+	}
+	
 	void SetActionsRemoteTarget( out TInputActionMap InputActionMap)
 	{
 		AddAction(ActionCPR, InputActionMap);
@@ -1023,8 +1071,25 @@ class PlayerBase extends ManBase
 		//AddAction(AT_GIVE_ITEM);
 	}
 	
+	void SetActionsRemoteTarget() // Backwards compatibility, not recommended to use
+	{
+	}
+	
 	void InitializeActions()
 	{
+		// Backwards compatibility
+		if (IsControlledPlayer())
+		{
+			m_InputActionMap = new TInputActionMap;
+			SetActions();
+		}
+		else
+		{
+			m_InputActionMap = new TInputActionMap;
+			SetActionsRemoteTarget();
+		}
+		//////////////////////////
+		
 		m_InputActionMapControled = new TInputActionMap;
 		SetActions(m_InputActionMapControled);
 
@@ -1034,13 +1099,13 @@ class PlayerBase extends ManBase
 	
 	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
 	{
-		if(!m_ActionsInitialize)
+		if (!m_ActionsInitialize)
 		{
 			m_ActionsInitialize = true;
 			InitializeActions();
 		}
 		
-		if(IsControlledPlayer())
+		if (IsControlledPlayer())
 		{
 			actions = m_InputActionMapControled.Get(action_input_type);
 		}
@@ -1049,6 +1114,10 @@ class PlayerBase extends ManBase
 			actions = m_InputActionMapAsTarget.Get(action_input_type);
 		}
 		
+		// Backwards compatibility
+		array<ActionBase_Basic> bcActions = m_InputActionMap.Get(action_input_type);
+		if (bcActions)
+			actions.InsertAll(bcActions);
 	}
 	
 	void AddAction(typename actionName, out TInputActionMap InputActionMap )
@@ -1056,7 +1125,7 @@ class PlayerBase extends ManBase
 		ActionBase action = GetActionManager().GetAction(actionName);
 
 		typename ai = action.GetInputType();
-		if(!ai)
+		if (!ai)
 		{
 			m_ActionsInitialize = false;
 			return;
@@ -1064,12 +1133,17 @@ class PlayerBase extends ManBase
 		
 		ref array<ActionBase_Basic> action_array = InputActionMap.Get( ai );
 		
-		if(!action_array)
+		if (!action_array)
 		{
 			action_array = new array<ActionBase_Basic>;
 			InputActionMap.Insert(ai, action_array);
 		}
 		action_array.Insert(action);
+	}
+	
+	void AddAction(typename actionName) // Backwards compatibility, not recommended to use
+	{
+		AddAction(actionName, m_InputActionMap);
 	}
 	
 	void RemoveAction(typename actionName, out TInputActionMap InputActionMap)
@@ -1078,11 +1152,11 @@ class PlayerBase extends ManBase
 		typename ai = action.GetInputType();
 		ref array<ActionBase_Basic> action_array = InputActionMap.Get( ai );
 		
-		if(action_array)
+		if (action_array)
 		{
-			for(int i = 0; i < action_array.Count(); i++)
+			for (int i = 0; i < action_array.Count(); i++)
 			{
-				if(action == action_array.Get(i))
+				if (action == action_array.Get(i))
 				{
 					action_array.Remove(i);
 				}
@@ -1092,6 +1166,12 @@ class PlayerBase extends ManBase
 		}
 		action_array.Insert(action); 
 	}
+	
+	void RemoveAction(typename actionName) // Backwards compatibility, not recommended to use
+	{
+		RemoveAction(actionName, m_InputActionMap);
+	}
+	
 	int GetCurrentRecipe()
 	{
 		return m_RecipePick;
@@ -1679,6 +1759,7 @@ class PlayerBase extends ManBase
 		{
 			m_Hud.UpdateBloodName();
 			PPEffects.SetDeathDarkening(0);
+			PPEffects.SetShockEffectColor(0);
 			GetGame().GetUIManager().CloseAll();
 			GetGame().GetMission().SetPlayerRespawning(false);
 			//GetGame().GetUIManager().FindMenu(MENU_INGAME);
@@ -2960,7 +3041,7 @@ class PlayerBase extends ManBase
 	//Prevent player from picking up heavy items when legs are broken
 	override bool CanPickupHeavyItem(notnull EntityAI item)
 	{
-		if (item.IsHeavyBehaviour() && m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+		if (item.IsHeavyBehaviour() && (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS || m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT))
 			return false;
 
 		return super.CanPickupHeavyItem(item);
@@ -2980,6 +3061,17 @@ class PlayerBase extends ManBase
 		ItemBase itemInHands = GetItemInHands();
 		if ( itemInHands && itemInHands.IsHeavyBehaviour() )
 			DropItem(itemInHands);
+	}
+	
+	bool IsWearingSplint()
+	{
+		EntityAI attachment;
+		Class.CastTo(attachment, GetItemOnSlot("Splint_Right"));
+		if ( attachment && attachment.GetType() == "Splint_Applied" )
+		{
+			return true;
+		}
+		return false;		
 	}
 	
 	// -----------------------
@@ -3195,6 +3287,31 @@ class PlayerBase extends ManBase
 		}
 	}
 	
+	override bool CanRoll()
+	{
+		if (!CanConsumeStamina(EStaminaConsumers.ROLL)) 
+			return false;
+		
+		if (IsInFBEmoteState() || m_EmoteManager.m_MenuEmote)
+		{
+			return false;
+		}
+		
+		return IsPlayerInStance(DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_RAISEDPRONE);
+	}
+	
+	override void OnRollStart(bool isToTheRight)
+	{
+		DepleteStamina(EStaminaModifiers.ROLL);
+		
+		if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_ROLL_SHOCK);
+	}
+	
+	override void OnRollFinish()
+	{
+	}
+	
 	void OnJumpOutVehicleFinish(float carSpeed)
 	{ 
 		string surfaceType;
@@ -3256,17 +3373,25 @@ class PlayerBase extends ManBase
 		{
 			if( GetDamageDealtEffect() ) 
 			{
-				GetDamageDealtEffect().Update(delta_time);
+				if (IsAlive())
+					GetDamageDealtEffect().Update(delta_time);
+				else
+					delete GetDamageDealtEffect();
 			}
 			
 			if( GetFlashbangEffect() )
-			{
-				GetFlashbangEffect().Update(delta_time);
+			{	if (IsAlive())
+					GetFlashbangEffect().Update(delta_time);
+				else
+					delete GetFlashbangEffect();
 			}
 			
 			if( GetShockEffect() )
 			{
-				GetShockEffect().Update(delta_time);
+				if (IsAlive())
+					GetShockEffect().Update(delta_time);
+				else
+					delete GetShockEffect();
 			}
 
 			m_InventoryActionHandler.OnUpdate();
@@ -4725,11 +4850,16 @@ class PlayerBase extends ManBase
 			
 			SetSynchDirty();
 			
-			//Drop item warning
-			if (GetGame().IsMultiplayer() && m_ProcessUIWarning)
+			if ( GetGame().IsMultiplayer() )
 			{
-				GetGame().RPCSingleParam(this, ERPCs.RPC_WARNING_ITEMDROP, null, true, GetIdentity());
-				m_ProcessUIWarning = false;
+				//Drop item warning
+				if ( m_ProcessUIWarning )
+				{
+					GetGame().RPCSingleParam(this, ERPCs.RPC_WARNING_ITEMDROP, null, true, GetIdentity());
+					m_ProcessUIWarning = false;
+				}
+				
+				GetGame().GetMission().SyncRespawnModeInfo(GetIdentity());
 			}
 		}
 		
@@ -7057,7 +7187,7 @@ class PlayerBase extends ManBase
 	
 	override void PredictiveTakeEntityToHands(EntityAI item)
 	{
-		if ( item.IsHeavyBehaviour() && !m_ActionManager.GetRunningAction() )
+		if ( item.IsHeavyBehaviour() && !m_ActionManager.GetRunningAction() && !item.GetHierarchyParent() )
 		{
 			ActionManagerClient mngr_client;
 			if (CastTo(mngr_client,m_ActionManager))
@@ -7109,7 +7239,7 @@ class PlayerBase extends ManBase
 		if (item2.GetInventory().GetCurrentInventoryLocation(il) && il.GetType() == InventoryLocationType.GROUND)
 			item_ground = item2;
 		
-		return item_hands && item_ground && ( item_ground.IsHeavyBehaviour() || item_ground.ConfigGetString("physLayer") == "item_large" || item_hands.IsHeavyBehaviour() || item_hands.ConfigGetString("physLayer") == "item_large" );
+		return item_hands && item_ground && item_ground.IsHeavyBehaviour();
 	}
 	
 	//! Dynamic hair hiding

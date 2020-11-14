@@ -494,6 +494,8 @@ class DayZAnimal extends DayZCreatureAI
 			{
 				StartCommand_Death(0, 0);
 			}
+			
+			dBodySetInteractionLayer(this, PhxInteractionLayers.RAGDOLL);
 	
 			return true;
 		}

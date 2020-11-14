@@ -6191,7 +6191,7 @@ class CfgVehicles
 			};
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -6395,7 +6395,7 @@ class CfgVehicles
 		itemSize[] = {7,10};
 		rotationFlags = 2;
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -6444,7 +6444,7 @@ class CfgVehicles
 			};
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -6662,7 +6662,7 @@ class CfgVehicles
 			};
 		};
 		repairableWithKits[] = {7};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -7335,6 +7335,8 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ShelterFabric0";
 		descriptionShort = "$STR_CfgVehicles_ShelterFabric1";
 		model = "\DZ\gear\camping\shelter_fabric.p3d";
+		repairableWithKits[] = {5,2};
+		repairCosts[] = {30.0,25.0};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -7377,6 +7379,8 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ShelterLeather0";
 		descriptionShort = "$STR_CfgVehicles_ShelterLeather1";
 		model = "\DZ\gear\camping\shelter_leather.p3d";
+		repairableWithKits[] = {5,3};
+		repairCosts[] = {30.0,25.0};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -7419,6 +7423,8 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_ShelterStick0";
 		descriptionShort = "$STR_CfgVehicles_ShelterStick1";
 		model = "\DZ\gear\camping\shelter_stick.p3d";
+		repairableWithKits[] = {5};
+		repairCosts[] = {25.0};
 		class DamageSystem
 		{
 			class GlobalHealth

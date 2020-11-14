@@ -2,6 +2,11 @@ class Refridgerator extends ItemBase
 {	
 	SoundOnVehicle 	m_SoundLoopEntity;
 	
+	override bool IsElectricAppliance()
+	{
+		return true;
+	}
+	
 	override void OnInitEnergy()
 	{
 		m_SoundLoopEntity = NULL;

@@ -13,9 +13,22 @@ class AttachmentsOutOfReach
 			}
 			else
 			{
+				
 				vector pos_att;
+
 				if( att_slot_name != "" )
-					pos_att = e.GetPosition() + GetAttachmentPosition(e, InventorySlots.GetSlotIdFromString( att_slot_name ) );
+				{
+					if( e.MemoryPointExists(att_slot_name) )
+					{
+						vector mem_point = e.GetMemoryPointPos(att_slot_name);
+						pos_att = e.ModelToWorld(mem_point);
+					}
+					else
+					{
+						pos_att = e.ModelToWorld(GetAttachmentPosition(e, InventorySlots.GetSlotIdFromString( att_slot_name ) ));
+					}
+					
+				}
 				else if( slot_id != -1 )
 					pos_att = e.GetPosition() + GetAttachmentPosition(e, slot_id);
 				
@@ -87,6 +100,16 @@ class AttachmentsOutOfReach
 		
 		GetGame().ConfigGetTextArray(cfg_path, cfg_attachments);
 		
+		if(cfg_attachments)
+		{
+			for(int g = 0; g < cfg_attachments.Count(); g++)
+			{
+				Print("" + g + ") - " + cfg_attachments[g]);
+			}
+		
+		}
+		
+		
 		int child_count = GetGame().ConfigGetChildrenCount("CfgNonAIVehicles");
 		
 		for ( int x = 0; x < child_count; ++x )
@@ -96,6 +119,11 @@ class AttachmentsOutOfReach
 			
 			string inventory_slot_name;
 			GetGame().ConfigGetText("CfgNonAIVehicles "+ child_name +" inventorySlot", inventory_slot_name);
+			
+			int a = 0;
+			Print("---" + x + "] - " + child_name);
+			if(child_name == "Truck_01_WoodenLogs")
+				a++;
 			
 			if ( cfg_attachments.Find( inventory_slot_name ) > 0 )
 			{

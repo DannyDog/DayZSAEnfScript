@@ -57,8 +57,11 @@ class CraftTruck01DoubleWheel extends RecipeBase
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)//final check for recipe's validity
 	{
-		ItemBase ingredient1 = ingredients[0];
-		ItemBase ingredient2 = ingredients[1];
+		Truck_01_Wheel ingredient1 = Truck_01_Wheel.Cast(ingredients[0]);
+		Truck_01_Wheel ingredient2 = Truck_01_Wheel.Cast(ingredients[1]);
+		
+		if (!ingredient1 || !ingredient2)
+			return false;
 		
 		if ( !ingredient1.GetHierarchyParent() || ingredient1.GetHierarchyParent() == ingredient1.GetHierarchyRootPlayer() ) 
 		{

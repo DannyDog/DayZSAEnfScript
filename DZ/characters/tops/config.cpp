@@ -1472,7 +1472,7 @@ class CfgVehicles
 		varWetMax = 0.49;
 		heatIsolation = 0.7;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "LeatherJacket";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -2539,7 +2539,7 @@ class CfgVehicles
 		heatIsolation = 1;
 		durability = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "LeatherJacket";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem
@@ -3895,7 +3895,7 @@ class CfgVehicles
 		varWetMax = 0.249;
 		heatIsolation = 0.5;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		soundAttType = "LeatherJacket";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class DamageSystem

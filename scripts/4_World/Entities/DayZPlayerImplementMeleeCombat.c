@@ -26,6 +26,8 @@ class DayZPlayerImplementMeleeCombat
 	protected const float 				RANGE_EXTENDER_NORMAL	= 0.65;
 	protected const float 				RANGE_EXTENDER_SPRINT	= 1.35;
 	
+	protected const string				DEFAULT_HIT_ZONE 		= "Torso";
+	
 	// members
 	protected DayZPlayerImplement		m_DZPlayer;
 	
@@ -330,6 +332,11 @@ class DayZPlayerImplementMeleeCombat
 			{
 				m_HitZoneName = cursorTarget.GetDamageZoneNameByComponentIndex(m_HitZoneIdx);
 				//Print("hit object: " + m_TargetObject + " | component idx: " + m_HitZoneIdx + " | hitzone name: " + m_HitZoneName);
+			}
+			else
+			{
+				if (m_TargetObject == DayZInfected.Cast(m_TargetObject) || m_TargetObject == PlayerBase.Cast(m_TargetObject))
+					m_HitZoneName = DEFAULT_HIT_ZONE; //Default to torso if no zone is targeted 
 			}
 		}
 		else

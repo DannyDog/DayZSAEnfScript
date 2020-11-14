@@ -28,6 +28,18 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 		
 		return layoutRoot;
 	}
+	
+	override void Update(float timeslice)
+	{
+		super.Update( timeslice );
+		Input input = GetGame().GetInput();
+		if ( input.LocalPress( "UAUIBack", false ) || input.LocalPress( "UAUIMenu", false ))
+		{
+			Close();
+		}
+		//UAUIBack
+		//UAUIMenu
+	}
 
 	override bool OnClick(Widget w, int x, int y, int button)
 	{
@@ -179,32 +191,38 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 	
 	void SetTooltipTexts(Widget w, string header = "", string desc = "")
 	{
-		#ifndef PLATFORM_CONSOLE
-			bool show = header != "" && desc != "";
-			m_DetailsRoot.Show( show );
-			m_DetailsLabel.SetText( header );
-			m_DetailsText.SetText( desc );
+		bool show = header != "" && desc != "";
+		m_DetailsRoot.Show( show );
+		m_DetailsLabel.SetText( header );
+		m_DetailsText.SetText( desc );
+		
+		//moves the widget to parent, setting is relative to widget alignment, case-specific implementation (getter missing!!!)
+		/*if (show)
+		{
+			float parent_pos_x, parent_pos_y;
+			float parent_size_x, parent_size_y;
+			float layout_size_x, layout_size_y;
 			
-			//moves the widget to parent, setting is relative to widget alignment, case-specific implementation (getter missing!!!)
-			/*if (show)
-			{
-				float parent_pos_x, parent_pos_y;
-				float parent_size_x, parent_size_y;
-				float layout_size_x, layout_size_y;
-				
-				w.GetScreenPos(parent_pos_x,parent_pos_y);
-				w.GetScreenSize(parent_size_x,parent_size_y);
-				layoutRoot.GetScreenSize(layout_size_x,layout_size_y);
-				
-				float set_x = layout_size_x - parent_pos_x;
-				float set_y = layout_size_y - parent_pos_y - parent_size_y;
-				m_DetailsRoot.SetPos(set_x,set_y,true);
-			}*/
+			float root_pos_x, root_pos_y;
+			m_DetailsRoot.GetScreenPos(root_pos_x,root_pos_y);
 			
-			m_DetailsText.Update();
-			m_DetailsLabel.Update();
-			m_DetailsRoot.Update();
-		#endif
+			w.GetPos(parent_pos_x,parent_pos_y);
+			w.GetScreenSize(parent_size_x,parent_size_y);
+			layoutRoot.GetScreenSize(layout_size_x,layout_size_y);
+			
+			//Print("w.GetPos: " + parent_pos_x + " | " + parent_pos_y);
+			//Print("w.GetScreenSize: " + parent_size_x + " | " + parent_size_y);
+			//Print("layoutRoot.GetScreenSize: " + layout_size_x + " | " + layout_size_y);
+			//Print("---------------");
+			float set_x = parent_size_x; //constant pos
+			float set_y = 0;
+			//Print("result: " + set_x + " : " + set_y);
+			m_DetailsRoot.SetPos(set_x,set_y,true);
+		}*/
+		
+		m_DetailsText.Update();
+		m_DetailsLabel.Update();
+		m_DetailsRoot.Update();
 	}
 	
 	bool RequestRespawn(bool random)

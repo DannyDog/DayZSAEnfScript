@@ -166,12 +166,15 @@ class KitBase extends ItemBase
 		
 		InventoryLocation targetLoc = rope.GetTargetLocation();
 		if (targetLoc && targetLoc.GetType() != InventoryLocationType.GROUND)
+		{
+			MiscGameplayFunctions.TransferItemProperties(this, rope);
 			return;
+		}
 		
 		EntityAI newRope = EntityAI.Cast(GetGame().CreateObjectEx(rope.GetType(), GetPosition(), ECE_PLACE_ON_SURFACE));
 		
 		if (newRope)
-			MiscGameplayFunctions.TransferItemProperties(rope, newRope);
+			MiscGameplayFunctions.TransferItemProperties(this, newRope);
 		
 		rope.Delete();
 	}

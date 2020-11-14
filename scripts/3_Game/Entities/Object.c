@@ -506,6 +506,12 @@ class Object extends IEntity
 		return false;
 	}
 	
+	//! Returns if this is an appliance, that can be plugged into electric circuit (== not energy source)
+	bool IsElectricAppliance()
+	{
+		return false;
+	}
+	
 	//! Returns if this entity can be constucted,deconstructed (e.g. fence,watchtower)
 	bool CanUseConstruction()
 	{

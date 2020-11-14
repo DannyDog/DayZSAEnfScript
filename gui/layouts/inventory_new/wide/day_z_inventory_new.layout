@@ -9,6 +9,7 @@ FrameWidgetClass inventory_root {
  hexactsize 0
  vexactsize 0
  fixaspect inside
+ priority 1
  {
   FrameWidgetClass InventoryFrameWidget {
    clipchildren 0

@@ -102,7 +102,56 @@ class ActionSkinning: ActionContinuousBase
 				MiscGameplayFunctions.TurnItemInHandsIntoItemEx(body_PB, new UnrestrainSelfPlayer(item_in_hands, new_item_name));
 				*/
 			}
+			//Remove splint if target is wearing one
+			if (body_PB.IsWearingSplint())
+			{
+				EntityAI entity = action_data.m_Player.SpawnEntityOnGroundOnCursorDir("Splint", 0.5);
+				EntityAI attachment;
+				ItemBase new_item = ItemBase.Cast(entity);
+				Class.CastTo(attachment, body_PB.GetItemOnSlot("Splint_Right"));
+				if ( attachment && attachment.GetType() == "Splint_Applied" )
+				{
+					if (new_item)
+					{
+						MiscGameplayFunctions.TransferItemProperties(attachment,new_item);
+						
+						if (GetGame().IsServer())
+						{
+							//Lower health level of splint after use
+							if (new_item.GetHealthLevel() < 4)
+							{
+								int newDmgLevel = new_item.GetHealthLevel() + 1;
+								
+								float max = new_item.GetMaxHealth("","");
+								
+								switch ( newDmgLevel )
+								{
+									case GameConstants.STATE_BADLY_DAMAGED:
+										new_item.SetHealth( "", "", max * GameConstants.DAMAGE_BADLY_DAMAGED_VALUE );
+										break;
 				
+									case GameConstants.STATE_DAMAGED:
+										new_item.SetHealth( "", "", max * GameConstants.DAMAGE_DAMAGED_VALUE );
+										break;
+				
+									case GameConstants.STATE_WORN:
+										new_item.SetHealth( "", "", max * GameConstants.DAMAGE_WORN_VALUE );
+										break;
+									
+									case GameConstants.STATE_RUINED:
+										new_item.SetHealth( "", "", max * GameConstants.DAMAGE_RUINED_VALUE );
+										break;
+									
+									default:
+										break;
+								}
+							}
+						}
+					}
+					attachment.Delete();
+				}
+			}
+			
 			/*
 			DropEquipAndDestroyRootLambda lambda(body_PB, "", action_data.m_Player);
 			action_data.m_Player.ServerReplaceItemWithNew(lambda);

@@ -38,7 +38,7 @@ class cfgWeapons
 		itemSize[] = {9,3};
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer","Mag_308WinSnaploader_2Rnd"};

@@ -6,5 +6,7 @@ class WoodenPlank extends ItemBase
 		
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionAttachToConstruction);
+		AddAction(ActionRepairCarChassis);
+		AddAction(ActionAttachOnSelection);
 	}
 }

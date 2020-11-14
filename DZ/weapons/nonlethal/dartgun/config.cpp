@@ -45,7 +45,7 @@ class cfgWeapons
 		reloadMagazineSound[] = {"dz\sounds\weapons\bows\crossbow_reload",0.05623413,1,30};
 		reloadSound[] = {"dz\sounds\weapons\bows\crossbow_magazine_reload",0.05623413,1,30};
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		modes[] = {"Single"};
 		recoilModifier[] = {1,1,1};
 		modelOptics = "-";

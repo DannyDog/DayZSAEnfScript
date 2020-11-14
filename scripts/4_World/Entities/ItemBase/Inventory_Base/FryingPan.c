@@ -43,18 +43,13 @@ class FryingPan extends Inventory_Base
 	{
 		return true;		
 	}
-	
-	bool IsCargoException( EntityAI item )
-	{
-		return ( item.IsKindOf( GetType() ) || item.IsKindOf( "Pot" ) || item.IsKindOf( "SmallProtectorCase" ) || ( item.IsKindOf( "PortableGasStove" ) && item.FindAttachmentBySlotName("CookingEquipment") ) );
-	}
-	
+
 	override bool CanPutInCargo( EntityAI parent )
 	{
 		if ( !super.CanPutInCargo( parent ) )
 			return false;
 		
-		if ( IsCargoException( parent ) )
+		if ( IsCargoException4x3( parent ) )
 			return false;
 
 		return true;
@@ -65,7 +60,7 @@ class FryingPan extends Inventory_Base
 		if ( !super.CanReceiveItemIntoCargo( item ) )
 			return false;
 
-		if ( IsCargoException( item ) )
+		if ( IsCargoException4x3( item ) )
 			return false;
 
 		return true;
@@ -76,7 +71,7 @@ class FryingPan extends Inventory_Base
 		if ( !super.CanLoadItemIntoCargo( item ) )
 			return false;
 
-		if ( IsCargoException( item ) )
+		if ( IsCargoException4x3( item ) )
 			return false;
 
 		return true;

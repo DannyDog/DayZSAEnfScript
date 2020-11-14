@@ -5,5 +5,6 @@ class MetalPlate extends ItemBase
 		super.SetActions();
 		
 		AddAction(ActionAttachToConstruction);
+		AddAction(ActionAttachOnSelection);
 	}
 }

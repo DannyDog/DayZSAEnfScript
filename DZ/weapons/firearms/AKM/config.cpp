@@ -36,7 +36,7 @@ class cfgWeapons
 		weight = 2140;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		ironsightsExcludingOptics[] = {"KashtanOptic","GrozaOptic","KobraOptic"};
 		WeaponLength = 0.829067;

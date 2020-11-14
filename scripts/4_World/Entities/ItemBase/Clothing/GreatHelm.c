@@ -1,5 +1,5 @@
 class GreatHelm extends ClothingBase
-{
+{	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
 		if(!super.CanPutAsAttachment(parent)) {return false;}
@@ -15,5 +15,15 @@ class GreatHelm extends ClothingBase
 			return true;
 		}
 		return false;
+	}
+	
+	override bool IsObstructingVoice()
+	{
+		return true;
+	}
+	
+	override int GetVoiceEffect()
+	{
+		return VoiceEffectObstruction;
 	}
 }

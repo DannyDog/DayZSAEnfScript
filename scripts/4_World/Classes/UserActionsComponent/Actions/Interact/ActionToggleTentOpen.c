@@ -8,7 +8,7 @@ class ActionToggleTentOpen: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTParent(10);
+		m_ConditionTarget = new CCTCursorParent(UAMaxDistances.DEFAULT);
 	}
 
 	override string GetText()
@@ -28,31 +28,18 @@ class ActionToggleTentOpen: ActionInteractBase
 
 		if ( player && targetObject && targetParent )
 		{
-			float max_action_distance = 1; //m_MaximalActionDistance;
-			
-			//TODO rework into someting less...special
-			if ( targetParent.IsInherited(CarTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(LargeTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(MediumTent) ) max_action_distance = 6.0;
-			else if ( targetParent.IsInherited(PartyTent) ) max_action_distance = 10.0;
-			
-			float distance = Math.AbsFloat(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
-			
-			if (  distance <= max_action_distance )	
+			if ( targetParent.IsInherited(TentBase) ) 
 			{
-				if ( targetParent.IsInherited(TentBase) ) 
+				array<string> selections = new array<string>;
+				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
+				TentBase tent = TentBase.Cast( targetParent );
+				
+				for (int s = 0; s < selections.Count(); s++)
 				{
-					array<string> selections = new array<string>;
-					targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
-					TentBase tent = TentBase.Cast( targetParent );
-					
-					for (int s = 0; s < selections.Count(); s++)
+					if ( tent.CanToggleAnimations(selections[s]) )
 					{
-						if ( tent.CanToggleAnimations(selections[s]) )
-						{
-							//Print("nazov selekcie: " + selections[s]);
-							return true;
-						}
+						//Print("nazov selekcie: " + selections[s]);
+						return true;
 					}
 				}
 			}

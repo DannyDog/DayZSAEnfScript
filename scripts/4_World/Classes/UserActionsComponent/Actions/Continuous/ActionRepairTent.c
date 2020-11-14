@@ -35,7 +35,7 @@ class ActionRepairTent: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined; //?
-		m_ConditionTarget = new CCTParent(10);
+		m_ConditionTarget = new CCTCursorParent(UAMaxDistances.SMALL);
 	}
 
 	override string GetText()
@@ -52,74 +52,46 @@ class ActionRepairTent: ActionContinuousBase
 	{
 		return true;
 	}
-	
-	/*override bool UseMainItem()
-	{
-		return true;
-	}
-	
-	override bool MainItemAlwaysInHands()
-	{
-		return true;
-	}*/
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		//m_CurrentDamageZone = "";
 		Object targetObject = target.GetObject();
 		Object targetParent = target.GetParent();
-		if ( !targetParent.IsInherited(TentBase) )
+		if ( !targetParent || !targetParent.IsInherited(TentBase) )
 			return false;
-		//string damageZone = "";
 
 		if ( player && targetObject && targetParent )
 		{
-			float max_action_distance = 1; //m_MaximalActionDistance;
+			array<string> selections = new array<string>;
+			PluginRepairing module_repairing;
+			Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
+			targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
+			TentBase tent = TentBase.Cast( targetParent );
 			
-			//TODO: purge this abomination
-			if ( targetParent.IsInherited(CarTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(LargeTent) ) max_action_distance = 10.0;
-			else if ( targetParent.IsInherited(MediumTent) ) max_action_distance = 6.0;
-			else if ( targetParent.IsInherited(PartyTent) ) max_action_distance = 10.0;
-			
-			float distance = Math.AbsFloat(vector.Distance(targetParent.GetPosition(),player.GetPosition()));
-			
-			if ( distance <= max_action_distance )	
+			if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "")
 			{
-				if (GetGame().IsMultiplayer() && GetGame().IsServer())
-					return true;
+				string damageZone = "";
 				
-				array<string> selections = new array<string>;
-				PluginRepairing module_repairing;
-				Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
-				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
-				TentBase tent = TentBase.Cast( targetParent );
-				
-				if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "")
+				for (int s = 0; s < selections.Count(); s++)
 				{
-					string damageZone = "";
-					
-					for (int s = 0; s < selections.Count(); s++)
+					if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 					{
-						if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-						{
-							Print("#" + s + " damageZone: " + damageZone);
-							break;
-						}
-					}
-					if ( damageZone != "" )
-					{
-						m_CurrentDamageZone = damageZone;
-						m_LastValidComponentIndex = target.GetComponentIndex();
-						m_LastValidType = targetObject.Type();
+						//Print("#" + s + " damageZone: " + damageZone);
+						break;
 					}
 				}
-				if ( m_CurrentDamageZone != "" )
+				if ( damageZone != "" )
 				{
-					if (module_repairing.CanRepair(item,tent,m_CurrentDamageZone))
-					{
-						return true;
-					}
+					m_CurrentDamageZone = damageZone;
+					m_LastValidComponentIndex = target.GetComponentIndex();
+					m_LastValidType = targetObject.Type();
+				}
+			}
+			if ( m_CurrentDamageZone != "" )
+			{
+				if (module_repairing.CanRepair(item,tent,m_CurrentDamageZone))
+				{
+					return true;
 				}
 			}
 		}
@@ -197,13 +169,11 @@ class ActionRepairTent: ActionContinuousBase
 	{
 		float transfer_to_global_coef = 0;
 		array<string> transfer_zones = new array<string>;
-		//array<float> transfer_coefs = new array<float>;
 		string path = "" + CFG_VEHICLESPATH + " " + item.GetType() + " DamageSystem DamageZones " + damage_zone;
 		PluginRepairing module_repairing;
 		Class.CastTo(module_repairing, GetPlugin(PluginRepairing));
 		
 		GetGame().ConfigGetTextArray("" + path + " transferToZonesNames", transfer_zones);
-		//GetGame().ConfigGetFloatArray("" + path + " transferToZonesCoefs", transfer_coefs);
 		
 		for (int i = 0; i < transfer_zones.Count(); i++)
 		{

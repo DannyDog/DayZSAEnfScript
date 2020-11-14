@@ -1,3 +1,8 @@
+class DetachActionData : ActionData
+{
+	int m_AttSlot;
+}
+
 class ActionDetach: ActionInteractBase
 {
 	string m_ItemName = "";
@@ -12,7 +17,7 @@ class ActionDetach: ActionInteractBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTCursor;
+		m_ConditionTarget = new CCTObject;
 	}	
 	
 	override bool HasProneException()

@@ -297,12 +297,7 @@ class MiscGameplayFunctions
 				if (GameInventory.LocationCanAddEntity(child_dst))
 				{
 					// try to move it to the same exact place in dst
-					player.LocalTakeToDst(child_src, child_dst);
-					/*if (!GameInventory.LocationMoveEntity(child_src, child_dst))
-					{
-						Error("[inv] TransferInventory: Cannot move src to dst even if GameInventory.LocationCanMoveEntity allowed it");
-						drop = true; // failed, drop
-					}*/
+					targetItem.GetInventory().TakeToDst(InventoryMode.LOCAL, child_src, child_dst);
 				}
 				else
 				{
@@ -1154,6 +1149,55 @@ class MiscGameplayFunctions
 		return res;
 	}
 	
+	static void RemoveSplint( PlayerBase player )
+	{
+		EntityAI entity = player.GetInventory().CreateInInventory("Splint");
+		EntityAI attachment;
+		ItemBase new_item = ItemBase.Cast(entity);
+		Class.CastTo(attachment, player.GetItemOnSlot("Splint_Right"));
+		if ( attachment && attachment.GetType() == "Splint_Applied" )
+		{
+			if (new_item)
+			{
+				MiscGameplayFunctions.TransferItemProperties(attachment,new_item);
+				
+				if (GetGame().IsServer())
+				{
+					//Lower health level of splint after use
+					if (new_item.GetHealthLevel() < 4)
+					{
+						int newDmgLevel = new_item.GetHealthLevel() + 1;
+						
+						float max = new_item.GetMaxHealth("","");
+						
+						switch ( newDmgLevel )
+						{
+							case GameConstants.STATE_BADLY_DAMAGED:
+								new_item.SetHealth( "", "", max * GameConstants.DAMAGE_BADLY_DAMAGED_VALUE );
+								break;
+		
+							case GameConstants.STATE_DAMAGED:
+								new_item.SetHealth( "", "", max * GameConstants.DAMAGE_DAMAGED_VALUE );
+								break;
+		
+							case GameConstants.STATE_WORN:
+								new_item.SetHealth( "", "", max * GameConstants.DAMAGE_WORN_VALUE );
+								break;
+							
+							case GameConstants.STATE_RUINED:
+								new_item.SetHealth( "", "", max * GameConstants.DAMAGE_RUINED_VALUE );
+								break;
+							
+							default:
+								break;
+						}
+					}
+				}
+			}
+			
+			attachment.Delete();
+		}
+	}
 };
 
 class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda

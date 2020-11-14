@@ -144,7 +144,7 @@ class CfgVehicles
 		absorbency = 0.1;
 		heatIsolation = 0.0;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -193,7 +193,7 @@ class CfgVehicles
 		absorbency = 0.1;
 		heatIsolation = 0.0;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -241,7 +241,7 @@ class CfgVehicles
 		hiddenSelectionsTextures[] = {"\dz\characters\belts\data\belt_leather_co.paa","\dz\characters\belts\data\belt_leather_co.paa","\dz\characters\belts\data\belt_leather_co.paa"};
 		absorbency = 0.1;
 		repairableWithKits[] = {3};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		class DamageSystem
 		{
 			class GlobalHealth

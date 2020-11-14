@@ -32,7 +32,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_WoodAxe1";
 		model = "\dz\weapons\melee\blade\woodaxe.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {20.0};
 		rotationFlags = 12;
 		weight = 1360;
 		itemSize[] = {2,6};
@@ -126,7 +126,7 @@ class CfgVehicles
 		build_action_type = 10;
 		dismantle_action_type = 74;
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {18.0};
 		rotationFlags = 17;
 		weight = 1133;
 		itemSize[] = {2,4};
@@ -221,7 +221,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_FirefighterAxe1";
 		model = "\dz\weapons\melee\blade\FirefighterAxe.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {20.0};
 		rotationFlags = 12;
 		weight = 1360;
 		itemSize[] = {2,7};
@@ -330,7 +330,7 @@ class CfgVehicles
 		model = "\dz\weapons\melee\blade\meat_cleaver.p3d";
 		inventorySlot[] = {""};
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {15.0};
 		rotationFlags = 17;
 		canSkinBodies = 1;
 		weight = 500;
@@ -545,7 +545,7 @@ class CfgVehicles
 		model = "\dz\weapons\melee\blade\combatknife.p3d";
 		animClass = "Knife";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		inventorySlot[] = {"Knife"};
 		rotationFlags = 17;
 		canSkinBodies = 1;
@@ -742,7 +742,7 @@ class CfgVehicles
 		model = "\dz\weapons\melee\blade\Hunting_knife.p3d";
 		inventorySlot[] = {"Knife"};
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {10.0};
 		rotationFlags = 17;
 		RestrainUnlockType = 1;
 		canSkinBodies = 1;
@@ -959,7 +959,7 @@ class CfgVehicles
 		animClass = "Knife";
 		RestrainUnlockType = 1;
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {12.0};
 		inventorySlot[] = {""};
 		rotationFlags = 17;
 		canSkinBodies = 1;
@@ -1263,7 +1263,7 @@ class CfgVehicles
 		inventorySlot[] = {"Shoulder","Melee"};
 		rotationFlags = 12;
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		build_action_type = 36;
 		dismantle_action_type = 46;
 		itemInfo[] = {"Pickaxe"};
@@ -1361,7 +1361,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_Sword1";
 		model = "\dz\weapons\melee\blade\medieval_sword.p3d";
 		repairableWithKits[] = {4};
-		repairCosts[] = {30.0,25.0};
+		repairCosts[] = {25.0};
 		inventorySlot[] = {"Shoulder","Melee"};
 		RestrainUnlockType = 1;
 		rotationFlags = 12;

@@ -13,27 +13,17 @@ class ActionDeconstructShelter : ActionContinuousBase
 	{
 		m_ConditionTarget = new CCTCursor(UAMaxDistances.DEFAULT);
 		m_ConditionItem = new CCINone;
-/*
-		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTParent(3);
-*/
 	}
 	
 	override string GetText()
 	{
-		return "#pack_tent"; //todo
+		return "#pack_tent";
 	}
 	
 	override typename GetInputType()
 	{
 		return ContinuousInteractActionInput;
 	}
-/*
-	override bool IsUsingProxies()
-	{
-		return true;
-	}
-*/
 	override bool HasProgress()
 	{
 		return true;
@@ -58,7 +48,6 @@ class ActionDeconstructShelter : ActionContinuousBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
 		Object targetObject = target.GetObject();
-		//Object targetParent = target.GetParent();
 		
 		if ( player && targetObject )
 		{
@@ -71,11 +60,27 @@ class ActionDeconstructShelter : ActionContinuousBase
 		return false;
 	}
 	
+	override void OnStart( ActionData action_data )
+	{
+		super.OnStart(action_data);
+		action_data.m_Player.TryHideItemInHands(true);
+	}
+	
+	override void OnEnd( ActionData action_data )
+	{
+		super.OnEnd(action_data);
+		action_data.m_Player.TryHideItemInHands(false);
+	}
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		Object targetObject = action_data.m_Target.GetObject();
-		//Object targetParent = action_data.m_Target.GetParent();
 		ShelterBase shelter = ShelterBase.Cast( targetObject );
 		shelter.Deconstruct();
+	}
+	
+	override string GetAdminLogMessage(ActionData action_data)
+	{
+		return " packed " + action_data.m_Target.GetObject().GetDisplayName() + " with Hands ";
 	}
 };

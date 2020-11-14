@@ -57,19 +57,9 @@ class BrokenLegsMdfr: ModifierBase
 		if ( player.GetHealth("RightLeg", "Health") >= HEALTHY_LEG && player.GetHealth("LeftLeg", "Health") >= HEALTHY_LEG )
 		{
 			player.UpdateBrokenLegs(eBrokenLegs.NO_BROKEN_LEGS);
-			if ( IsWearingSplint(player) )
+			if ( player.IsWearingSplint() )
 			{
-				EntityAI entity = player.GetInventory().CreateInInventory("Splint");
-				EntityAI attachment;
-				ItemBase new_item = ItemBase.Cast(entity);
-				Class.CastTo(attachment, player.GetItemOnSlot("Splint_Right"));
-				if ( attachment && attachment.GetType() == "Splint_Applied" )
-				{
-					if (new_item)
-						MiscGameplayFunctions.TransferItemProperties(attachment,new_item,true,false,true);
-					
-					attachment.Delete();
-				}
+				MiscGameplayFunctions.RemoveSplint(player); //Remove splint when leg is healed
 			}
 			return true;
 		}
@@ -122,7 +112,7 @@ class BrokenLegsMdfr: ModifierBase
 	override void OnTick(PlayerBase player, float deltaT)
 	{
 		elapsedTime += deltaT;
-		if ( player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT || IsWearingSplint(player) )
+		if ( player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT || player.IsWearingSplint() )
 		{
 			currentState = eBrokenLegs.BROKEN_LEGS_SPLINT;
 			if (elapsedTime > TIME_TO_UPDATE)
@@ -144,16 +134,5 @@ class BrokenLegsMdfr: ModifierBase
 				elapsedTime = 0;
 			}
 		}
-	}
-	
-	bool IsWearingSplint( PlayerBase player )
-	{
-		EntityAI attachment;
-		Class.CastTo(attachment, player.GetItemOnSlot("Splint_Right"));
-		if ( attachment && attachment.GetType() == "Splint_Applied" )
-		{
-			return true;
-		}
-		return false;		
 	}
 };

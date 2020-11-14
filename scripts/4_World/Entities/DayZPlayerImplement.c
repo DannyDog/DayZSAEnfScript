@@ -1778,6 +1778,10 @@ class DayZPlayerImplement extends DayZPlayer
 			}
 
 			StartCommand_Move();
+			
+			if ( GetHumanInventory().GetEntityInHands() )
+				ForceStandUpForHeavyItems( GetHumanInventory().GetEntityInHands() );
+			
 			return;
 		};
 	
