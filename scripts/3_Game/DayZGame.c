@@ -743,6 +743,8 @@ class DayZGame extends CGame
 	static ref ScriptInvoker Event_OnRPC = new ScriptInvoker();
 	
 	private ref Backlit m_Backlit;
+	
+	private ref array<string> m_CharClassNames = new array<string>();
 
 	// CGame override functions
 	void DayZGame()
@@ -808,6 +810,19 @@ class DayZGame extends CGame
 		GetCallQueue(CALL_CATEGORY_GUI).Call(DeferredInit);
 		GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(GlobalsInit);
 		//m_isTileSet = true;
+		
+		string path = "cfgVehicles";
+		string child_name = "";
+		int count = ConfigGetChildrenCount( path );
+		
+		for (int p = 0; p < count; ++p)
+		{
+			ConfigGetChildName( path, p, child_name );
+			
+			if (ConfigGetInt(path + " " + child_name + " scope") == 2 && IsKindOf(child_name, "SurvivorBase"))
+				m_CharClassNames.Insert(child_name);
+		}
+		
 		m_IsConnecting = false;
 		m_ConnectFromJoin = false;
 	}
@@ -2525,63 +2540,22 @@ class DayZGame extends CGame
 	// ------------------------------------------------------------
 	override string CreateDefaultPlayer()
 	{				
-		string path = "cfgVehicles";
-		string child_name = ""; 
-		int count = ConfigGetChildrenCount ( path );
-		//array<string> char_class_names = new array<string>;
-		
-		for (int p = 0; p < count; p++)
-		{
-			ConfigGetChildName ( path, p, child_name );
-			
-			if (ConfigGetInt(path + " " + child_name + " scope") == 2 && IsKindOf(child_name,"SurvivorBase"))
-			{
-				//char_class_names.Insert(child_name);
-				return child_name;
-			}
-		}
-		return "";
-		//return char_class_names.Get(0);
+		if ( m_CharClassNames.Count() > 0 )
+			return m_CharClassNames[0];
+		else
+			return "";
 	}
 	
 	// ------------------------------------------------------------
 	override string CreateRandomPlayer()
 	{
-		string path = "cfgVehicles";
-		string child_name = "";
-		int count = ConfigGetChildrenCount ( path );
-		array<string> char_class_names = new array<string>;
-		
-		for (int p = 0; p < count; p++)
-		{
-			ConfigGetChildName ( path, p, child_name );
-			
-			if(ConfigGetInt(path + " " + child_name + " scope") == 2 && IsKindOf(child_name,"SurvivorBase"))
-			{
-				char_class_names.Insert(child_name);
-			}
-		}
-		return char_class_names.GetRandomElement();
+		return m_CharClassNames.GetRandomElement();
 	}
 	
 	// ------------------------------------------------------------
 	override TStringArray ListAvailableCharacters()
 	{
-		string path = "cfgVehicles";
-		string child_name = "";
-		int count = ConfigGetChildrenCount ( path );
-		array<string> char_class_names = new array<string>;
-		
-		for (int p = 0; p < count; p++)
-		{
-			ConfigGetChildName ( path, p, child_name );
-			
-			if (ConfigGetInt(path + " " + child_name + " scope") == 2 && IsKindOf(child_name,"SurvivorBase"))
-			{
-				char_class_names.Insert(child_name);
-			}
-		}
-		return char_class_names;
+		return m_CharClassNames;
 	}
 	
 	// ------------------------------------------------------------

@@ -102,6 +102,11 @@ class Pot extends Bottle_Base
 		return true;
 	}
 	
+	override bool CanHaveWetness()
+	{
+		return true;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

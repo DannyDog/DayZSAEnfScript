@@ -17,7 +17,7 @@ GridSpacerWidgetClass height_wrapper {
  Rows 1
  {
   FrameWidgetClass Icon0 {
-   visible 0
+   visible 1
    clipchildren 1
    ignorepointer 0
    position 0 0

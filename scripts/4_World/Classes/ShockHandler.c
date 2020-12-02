@@ -68,6 +68,10 @@ class ShockHandler
 		}
 	}		
 	
+	float GetCurrentShock()
+	{
+		return m_Player.m_CurrentShock;
+	}
 	
 	float GetShock()
 	{

@@ -1,6 +1,6 @@
 ﻿//<'scripts.pbo' properties via Mikero's dos tools, dll version 7.50>
 product=dayz;
 prefix=scripts;
-version=87383;
+version=87432;
 PboType=Arma Addon;
 //</properties>

@@ -2624,10 +2624,8 @@ class ItemBase extends InventoryItem
 
 		int varFlags = 0;
 		
-		if( m_VariablesMask )
-		{
-			varFlags = varFlags | ItemVariableFlags.FLOAT;
-		}
+		if ( m_VariablesMask )
+			varFlags = ItemVariableFlags.FLOAT;
 
 		//ref Param1<int> pflags = new Param1<int>( varFlags );
 		//CachedObjectsParams.PARAM1_INT.param1 = varFlags;
@@ -2637,11 +2635,8 @@ class ItemBase extends InventoryItem
 		//now serialize the variables
 		
 		//floats
-		if( varFlags & ItemVariableFlags.FLOAT )
-		{
+		if ( m_VariablesMask )
 			WriteVarsToCTX(ctx);
-		}
-
 	}
 
 		
@@ -3353,9 +3348,6 @@ class ItemBase extends InventoryItem
 		float previousValue = m_VarWet;
 		
 		m_VarWet = Math.Clamp(value, min, max);
-		
-		if ( m_VarWet < GameConstants.STATE_DAMP )
-			m_VarWet = GameConstants.STATE_DRY;
 		
 		//UpdateWeight();
 		

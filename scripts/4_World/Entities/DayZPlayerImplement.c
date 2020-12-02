@@ -633,13 +633,13 @@ class DayZPlayerImplement extends DayZPlayer
 	
 	override void OnItemInHandsChanged ()
 	{
-		Print("inv: DayZPlayerImplement::OnItemInHandsChanged: "/* + GetHumanInventory().GetEntityInHands()*/);
+		//Print("inv: DayZPlayerImplement::OnItemInHandsChanged: "/* + GetHumanInventory().GetEntityInHands()*/);
 		StopWeaponEvent();
 		GetItemAccessor().OnItemInHandsChanged();
 		
 		if (!IsAlive())
 		{
-			Print("inv: DayZPlayerImplement::OnItemInHandsChanged - human not alive! calling ResetWeaponInHands");
+			//Print("inv: DayZPlayerImplement::OnItemInHandsChanged - human not alive! calling ResetWeaponInHands");
 			GetItemAccessor().ResetWeaponInHands();
 		}
 	}

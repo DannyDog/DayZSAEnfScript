@@ -2985,7 +2985,7 @@ class PlayerBase extends ManBase
 				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
 				m_ShockHandler.CheckValue(true);
 				
-				if ( m_ShockHandler.GetShock() >= 75 ) //Prevent conflict with unconsciousness by not forcing prone when going uncon (25 shock or less left)
+				if ( m_ShockHandler.GetCurrentShock() >= 25 ) //Prevent conflict with unconsciousness by not forcing prone when going uncon (25 shock or less left)
 				{
 					//Get command move and verify not null
 					HumanCommandMove hcm = StartCommand_Move();  
