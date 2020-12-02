@@ -7,6 +7,11 @@ class Clothing extends Clothing_Base
 	{
 		return true;
 	}
+	
+	override bool CanHaveWetness()
+	{
+		return true;
+	}
 
 	// Conditions	
 	override bool CanPutInCargo( EntityAI parent )

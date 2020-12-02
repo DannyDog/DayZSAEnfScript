@@ -1,4 +1,4 @@
-﻿//<'anims_cfg.pbo' properties via Mikero's dos tools, dll version 7.51>
+﻿//<'anims_cfg.pbo' properties via Mikero's dos tools, dll version 7.50>
 product=dayz;
 prefix=DZ\anims\cfg;
 version=86935;

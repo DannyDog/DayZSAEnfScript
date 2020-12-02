@@ -26,6 +26,8 @@ class ShockHandler
 	void ShockHandler(PlayerBase player)
 	{
 		m_Player = player;
+		m_Player.m_CurrentShock = m_Player.GetMaxHealth("", "Shock");
+		m_PrevVignette = m_Player.m_CurrentShock/100;
 	}
 
 	

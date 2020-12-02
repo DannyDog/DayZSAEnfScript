@@ -742,7 +742,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			if ( tgObject.IsHealthVisible() )
 			{
 				//bool showZoneHealth = true;
-				if ( tgObject.ShowZonesHealth() )
+				if ( tgObject.ShowZonesHealth() && !tgObject.IsDamageDestroyed() )
 				{
 					//
 					string zone = "";

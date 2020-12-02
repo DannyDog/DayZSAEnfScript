@@ -8,36 +8,6 @@ class ActionEmptyBottleBaseCB : ActionContinuousBaseCB
 			EmptiedQuantity = bottle.GetLiquidEmptyRate();
 		m_ActionData.m_ActionComponent = new CAContinuousEmpty(EmptiedQuantity);
 	}
-	
-	override void OnAnimationEvent(int pEventID)	
-	{
-		super.OnAnimationEvent( pEventID );
-				
-		switch (pEventID)
-		{
-			case UA_ANIM_EVENT:			
-				if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
-				{
-					Bottle_Base vessel_in_hands = Bottle_Base.Cast( m_ActionData.m_MainItem );
-					Param1<bool> play = new Param1<bool>( true );
-					GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.EMPTYING, play, true );
-				}
-
-			break;
-		}
-	}
-	
-	override void EndActionComponent()
-	{
-		super.EndActionComponent();
-		
-		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
-		{
-			Bottle_Base target_vessel = Bottle_Base.Cast( m_ActionData.m_MainItem );
-			Param1<bool> play = new Param1<bool>( false );
-			GetGame().RPCSingleParam( target_vessel, SoundTypeBottle.EMPTYING, play, true );
-		}
-	}
 };
 
 class ActionEmptyBottleBase: ActionContinuousBase
@@ -70,10 +40,10 @@ class ActionEmptyBottleBase: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		vector 	pos_cursor = target.GetCursorHitPos();
+		/*vector 	pos_cursor = target.GetCursorHitPos();
 		vector 	pos_head;
 		MiscGameplayFunctions.GetHeadBonePos( player, pos_head );
-		float distance = vector.Distance(pos_cursor, pos_head);
+		float distance = vector.Distance(pos_cursor, pos_head);*/
 				
 		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			return true;
@@ -92,5 +62,25 @@ class ActionEmptyBottleBase: ActionContinuousBase
 			return true;
 		}
 		return false;
+	}
+	
+	override void OnStartAnimationLoop( ActionData action_data )
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			Bottle_Base vessel_in_hands = Bottle_Base.Cast( action_data.m_MainItem );
+			Param1<bool> play = new Param1<bool>( true );
+			GetGame().RPCSingleParam( vessel_in_hands, SoundTypeBottle.EMPTYING, play, true );
+		}
+	}
+	
+	override void OnEndAnimationLoop( ActionData action_data )
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			Bottle_Base target_vessel = Bottle_Base.Cast( action_data.m_MainItem );
+			Param1<bool> play = new Param1<bool>( false );
+			GetGame().RPCSingleParam( target_vessel, SoundTypeBottle.EMPTYING, play, true );
+		}
 	}
 };

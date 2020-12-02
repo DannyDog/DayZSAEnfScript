@@ -1,5 +1,10 @@
 class Heatpack : ItemBase
 {
+	override bool CanHaveTemperature()
+	{
+		return true;
+	}
+	
 	override void OnWorkStart()
 	{
 		if (GetGame().IsServer())

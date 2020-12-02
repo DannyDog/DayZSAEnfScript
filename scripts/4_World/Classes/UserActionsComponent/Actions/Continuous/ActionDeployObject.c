@@ -17,31 +17,7 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 	{
 		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT_DEPLOY);
 	}
-
-	override void OnAnimationEvent(int pEventID)	
-	{
-		super.OnAnimationEvent( pEventID );
-		
-		switch (pEventID)
-		{
-			case UA_ANIM_EVENT:						
-				if ( GetGame().IsServer() )
-				{		
-					m_ActionData.m_MainItem.SoundSynchRemote();
-				}
-			
-				if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
-				{			
-					if ( m_ActionData.m_Player.GetItemInHands() )
-					{
-						DropDuringPlacing();
-					}
-				}
-
-			break;
-		}
-	}
-
+	
 	void DropDuringPlacing()
 	{
 		EntityAI entity_for_placing = m_ActionData.m_MainItem;
@@ -365,6 +341,20 @@ class ActionDeployObject: ActionContinuousBase
 				GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
 			}
 		}
+	}
+	
+	override void OnStartAnimationLoop( ActionData action_data )
+	{			
+		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
+		{			
+			if ( action_data.m_Player.GetItemInHands() )			
+				ActiondeployObjectCB.Cast(action_data.m_Callback).DropDuringPlacing();
+		}
+	}
+	
+	override void OnExecuteServer( ActionData action_data )
+	{
+		action_data.m_MainItem.SoundSynchRemote();
 	}
 
 	override void WriteToContext(ParamsWriteContext ctx, ActionData action_data)

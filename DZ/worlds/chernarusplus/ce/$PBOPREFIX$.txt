@@ -1,4 +1,4 @@
-﻿//<'worlds_chernarusplus_ce.pbo' properties via Mikero's dos tools, dll version 7.51>
+﻿//<'worlds_chernarusplus_ce.pbo' properties via Mikero's dos tools, dll version 7.50>
 product=dayz;
 prefix=DZ\worlds\chernarusplus\ce;
 version=87181;

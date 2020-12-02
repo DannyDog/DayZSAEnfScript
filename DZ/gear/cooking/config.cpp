@@ -375,6 +375,7 @@ class CfgVehicles
 		varQuantityMin = 0.0;
 		varQuantityMax = 0.0;
 		stackedUnit = "";
+		inventorySlot[] = {"Truck_01_Barrel1","Truck_01_Barrel2","Truck_01_Barrel3","Truck_01_Barrel4"};
 		attachments[] = {"Firewood","WoodenStick","Rags","MedicalBandage","Paper","Bark","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;

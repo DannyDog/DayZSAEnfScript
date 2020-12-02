@@ -21,7 +21,13 @@ class ItemBase extends InventoryItem
 	float 	m_VarQuantity;
 	float	m_StoreLoadedQuantity = -1;
 	float 	m_VarTemperature;
+	float 	m_VarTemperatureInit;
+	float 	m_VarTemperatureMin;
+	float 	m_VarTemperatureMax;
 	float 	m_VarWet;
+	float 	m_VarWetInit;
+	float 	m_VarWetMin;
+	float 	m_VarWetMax;
 	float	m_HeatIsolation;
 	float 	m_ItemModelLength;
 	float 	m_ConfigWeight = -1;
@@ -38,6 +44,7 @@ class ItemBase extends InventoryItem
 	bool    m_CanBeMovedOverride;
 	bool 	m_FixDamageSystemInit = false; //can be changed on storage version check
 	bool 	can_this_be_combined = false; //Check if item can be combined
+	bool 	m_CanThisBeSplit = false; //Check if item can be split
 	bool	m_IsStoreLoad = false;
 	string	m_SoundAttType;
 	// items color variables
@@ -126,8 +133,16 @@ class ItemBase extends InventoryItem
 	
 	void InitItemVariables()
 	{
-		m_VarTemperature = GetTemperatureInit();
-		m_VarWet = GetWetInit();
+		m_VarTemperatureInit = ConfigGetFloat("varTemperatureInit");
+		m_VarTemperature = m_VarTemperatureInit;
+		m_VarTemperatureMin = ConfigGetFloat("varTemperatureMin");
+		m_VarTemperatureMax = ConfigGetFloat("varTemperatureMax");
+		
+		m_VarWetInit = ConfigGetFloat("varWetInit");
+		m_VarWet = m_VarWetInit;
+		m_VarWetMin = ConfigGetFloat("varWetMin");
+		m_VarWetMax = ConfigGetFloat("varWetMax");
+		
 		m_VarLiquidType = GetLiquidTypeInit();
 		m_VarQuantity = GetQuantityInit();//should be by the CE, this is just a precaution
 		m_IsBeingPlaced = false;
@@ -141,13 +156,14 @@ class ItemBase extends InventoryItem
 		m_ItemModelLength = GetItemModelLength();
 		
 		//Define if item can be split and set ability to be combined accordingly
-		if (ConfigGetBool("canBeSplit"))
-			can_this_be_combined = ConfigGetBool("canBeSplit");
-		
-		if(ConfigIsExisting("itemBehaviour"))
+		if (ConfigIsExisting("canBeSplit"))
 		{
-			m_ItemBehaviour = ConfigGetInt("itemBehaviour");
+			can_this_be_combined = ConfigGetBool("canBeSplit");
+			m_CanThisBeSplit = can_this_be_combined;
 		}
+		
+		if (ConfigIsExisting("itemBehaviour"))
+			m_ItemBehaviour = ConfigGetInt("itemBehaviour");
 		
 		//RegisterNetSyncVariableInt("m_VariablesMask");
 		if ( HasQuantity() ) RegisterNetSyncVariableFloat("m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
@@ -1320,17 +1336,8 @@ class ItemBase extends InventoryItem
 	//----------------
 	bool CanBeSplit()
 	{
-		if( ConfigGetBool("canBeSplit") )
-		{
-			if( GetQuantity() > 1 )
-			{
-				return true;
-			}
-			else 
-			{
-				return false;
-			}
-		}
+		if ( m_CanThisBeSplit )
+			return ( GetQuantity() > 1 );
 		
 		return false;
 	}
@@ -1736,7 +1743,9 @@ class ItemBase extends InventoryItem
 	
 	override bool CanBeCombined( EntityAI other_item, bool reservation_check = true )
 	{
-		if ( !other_item || GetType() != other_item.GetType() || IsFullQuantity() )
+//S		Print("CanBeCombined - " + this + ": " + GetQuantity() + " + " + other_item + ": " + other_item.GetQuantity());
+		//TODO: delete check zero quantity check after fix double posts hands fsm events
+		if ( !other_item || GetType() != other_item.GetType() || (IsFullQuantity() && other_item.GetQuantity() > 0) )
 			return false;
 
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED || other_item.GetHealthLevel() == GameConstants.STATE_RUINED )	
@@ -1755,7 +1764,8 @@ class ItemBase extends InventoryItem
 		}
 		else
 		{
-			if ( GetQuantity() >= GetQuantityMax() )	
+			//TODO: delete check zero quantity check after fix double posts hands fsm events
+			if ( GetQuantity() >= GetQuantityMax() && other_item.GetQuantity() > 0  )	
 				return false;
 		}
 
@@ -2467,27 +2477,42 @@ class ItemBase extends InventoryItem
 	
 	void WriteVarsToCTX(ParamsWriteContext ctx)
 	{
-		CachedObjectsArrays.ARRAY_FLOAT.Clear();
-		SerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
-		
-		int array_size = CachedObjectsArrays.ARRAY_FLOAT.Count();
-		
-		CachedObjectsParams.PARAM1_INT.param1 = array_size;
-		//ctx.Write(CachedObjectsParams.PARAM1_INT);
-		ctx.Write(array_size);
-		
-		for(int i = 0; i < array_size; i++)
+		ctx.Write(m_VariablesMask);
+
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_QUANTITY) )
 		{
-			//CachedObjectsParams.PARAM1_FLOAT.param1 = CachedObjectsArrays.ARRAY_FLOAT.Get(i);
-			float param = CachedObjectsArrays.ARRAY_FLOAT.Get(i);
-			ctx.Write(param);
-			//ctx.Write(CachedObjectsParams.PARAM1_FLOAT);
+			ctx.Write(m_VarQuantity);
+		}
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_TEMPERATURE) )
+		{
+			ctx.Write(m_VarTemperature);
+		}
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_WET) )
+		{
+			ctx.Write(m_VarWet);
+		}
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_LIQUIDTYPE) )
+		{
+			ctx.Write(m_VarLiquidType);
+		}
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_COLOR) )
+		{
+			ctx.Write(m_ColorComponentR);
+			ctx.Write(m_ColorComponentG);
+			ctx.Write(m_ColorComponentB);
+			ctx.Write(m_ColorComponentA);
 		}
 	}
 	
 	bool ReadVarsFromCTX(ParamsReadContext ctx, int version = -1)//with ID optimization
 	{
 		int numOfItems;
+		int intValue;
 		float value;
 		if( version <= 108 && version!= -1 )
 		{
@@ -2509,7 +2534,7 @@ class ItemBase extends InventoryItem
 			DeSerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
 			return true;
 		}
-		else
+		else if( version <= 116 && version!= -1)
 		{
 			if(!ctx.Read(numOfItems))
 				return false;
@@ -2525,11 +2550,70 @@ class ItemBase extends InventoryItem
 		
 			DeSerializeNumericalVars(CachedObjectsArrays.ARRAY_FLOAT);
 			return true;		
-		
-		
-		
 		}
-		return false;
+		else
+		{			
+			int mask;
+			if ( !ctx.Read(mask) )
+				return false;
+			
+			if( mask & VARIABLE_QUANTITY )
+			{
+				if ( !ctx.Read(value) )
+					return false;
+				
+				if ( m_IsStoreLoad )
+				{
+					m_StoreLoadedQuantity = value;
+				}
+				else
+				{
+					SetQuantity(value, true, false, false, false );
+				}
+			}
+			//--------------------------------------------
+			if( mask & VARIABLE_TEMPERATURE )
+			{
+				if ( !ctx.Read(value) )
+					return false;
+				SetTemperature(value);
+			}
+			//--------------------------------------------
+			if( mask & VARIABLE_WET )
+			{
+				if ( !ctx.Read(value) )
+					return false;
+				SetWet(value);
+			}
+			//--------------------------------------------
+			if( mask & VARIABLE_LIQUIDTYPE )
+			{
+				if ( !ctx.Read(intValue) )
+					return false;
+				SetLiquidType(intValue);
+			}
+			//--------------------------------------------
+			if( mask & VARIABLE_COLOR )
+			{
+				if ( !ctx.Read(intValue) )
+					return false;
+				
+				m_ColorComponentR = intValue;
+				if ( !ctx.Read(value) )
+					return false;
+				
+				m_ColorComponentG = intValue;
+				if ( !ctx.Read(value) )
+					return false;
+				
+				m_ColorComponentB = intValue;
+				if ( !ctx.Read(value) )
+					return false;
+	
+				m_ColorComponentA = intValue;
+			}
+		}
+		return true;
 	}
 	
 	void SaveVariables(ParamsWriteContext ctx)
@@ -2944,7 +3028,7 @@ class ItemBase extends InventoryItem
 			itemQuantity = GetQuantity();
 		}
 
-		if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+		if ( m_CanThisBeSplit ) //quantity determines size of the stack
 		{
 			Weight = ((item_wetness + 1) * m_ConfigWeight * itemQuantity);
 		}
@@ -2966,7 +3050,7 @@ class ItemBase extends InventoryItem
 	
 	override void UpdateWeight(WeightUpdateType updateType = WeightUpdateType.FULL, float weightAdjustment = 0)
 	{
-		float itemWetness = GetWet() + 1;
+		//float itemWetness = GetWet() + 1;
 		float current_quantity;
 		switch (updateType)
 		{
@@ -2974,7 +3058,7 @@ class ItemBase extends InventoryItem
 				{
 					int i = 0;
 					float totalWeight;
-					float item_wetness = this.GetWet();
+					//float item_wetness = this.GetWet();
 		
 					int AttachmentsCount = 0;
 					CargoBase cargo;
@@ -3008,22 +3092,22 @@ class ItemBase extends InventoryItem
 
 					//other
 					{					
-						if (this.ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						if ( m_CanThisBeSplit ) //quantity determines size of the stack
 						{
-							totalWeight += Math.Round((item_wetness + 1) * this.GetQuantity() * m_ConfigWeight);
-							/*Print("this: " + this);
-							Print("this.GetQuantity(): " + this.GetQuantity());
-							Print("totalWeight: " + totalWeight);
-							Print("-----------------------------");*/
+							totalWeight += /*Math.Round((item_wetness + 1) **/ this.GetQuantity() * m_ConfigWeight;
+							//Print("this: " + this);
+							//Print("this.GetQuantity(): " + this.GetQuantity());
+							//Print("totalWeight: " + totalWeight);
+							//Print("-----------------------------");
 						}
 						else if (this.ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 						{
 							int MaxLength = GetQuantityMax();
-							totalWeight += Math.Round(((item_wetness + 1) * m_ConfigWeight * (this.GetQuantity()/MaxLength)));
+							totalWeight += /*Math.Round(((item_wetness + 1) **/ m_ConfigWeight * (this.GetQuantity() / MaxLength);
 						}
 						else //quantity determines weight of item without container (i.e. sardines in a can)
 						{
-							totalWeight += Math.Round((item_wetness + 1) * (this.GetQuantity() + m_ConfigWeight));
+							totalWeight += /*Math.Round((item_wetness + 1) **/ (this.GetQuantity() + m_ConfigWeight);
 						}
 					}
 		
@@ -3043,17 +3127,17 @@ class ItemBase extends InventoryItem
 					{
 						current_quantity = GetQuantity();
 
-						if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						if ( m_CanThisBeSplit ) //quantity determines size of the stack
 						{
-							weightAdjustment = itemWetness * current_quantity * m_ConfigWeight;
+							weightAdjustment = /*itemWetness **/ current_quantity * m_ConfigWeight;
 						}
 						else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 						{
-							weightAdjustment = itemWetness * m_ConfigWeight * (current_quantity/GetQuantityMax());
+							weightAdjustment = /*itemWetness **/ m_ConfigWeight * (current_quantity / GetQuantityMax());
 						}
 						else //quantity determines weight of item without container (i.e. sardines in a can)
 						{
-							weightAdjustment = itemWetness * (current_quantity + m_ConfigWeight);
+							weightAdjustment = /*itemWetness **/ (current_quantity + m_ConfigWeight);
 						}
 					
 						weightAdjustment = Math.Round(weightAdjustment);
@@ -3071,17 +3155,17 @@ class ItemBase extends InventoryItem
 					{
 						current_quantity = GetQuantity();
 
-						if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+						if ( m_CanThisBeSplit ) //quantity determines size of the stack
 						{
-							weightAdjustment = itemWetness * current_quantity * m_ConfigWeight;
+							weightAdjustment = /*itemWetness **/ current_quantity * m_ConfigWeight;
 						}
 						else if (ConfigGetString("stackedUnit") == "cm") //duct tape, at the moment
 						{
-							weightAdjustment = itemWetness * m_ConfigWeight * (current_quantity/GetQuantityMax());
+							weightAdjustment = /*itemWetness **/ m_ConfigWeight * (current_quantity/GetQuantityMax());
 						}
 						else //quantity determines weight of item without container (i.e. sardines in a can)
 						{
-							weightAdjustment = itemWetness * (current_quantity + m_ConfigWeight);
+							weightAdjustment = /*itemWetness **/ (current_quantity + m_ConfigWeight);
 						}
 					
 						weightAdjustment = Math.Round(weightAdjustment);
@@ -3132,7 +3216,7 @@ class ItemBase extends InventoryItem
 		float wetness = 1;
 		if (include_wetness)
 			wetness += GetWet();
-		if (ConfigGetBool("canBeSplit")) //quantity determines size of the stack
+		if ( m_CanThisBeSplit ) //quantity determines size of the stack
 		{
 			weight = wetness * m_ConfigWeight;
 		}
@@ -3208,11 +3292,15 @@ class ItemBase extends InventoryItem
 	void SetTemperature(float value, bool allow_client = false)
 	{
 		if( !IsServerCheck(allow_client) ) return;
-		float min = ConfigGetFloat("varTemperatureMin");
-		float max = ConfigGetFloat("varTemperatureMax");
+		float min = GetTemperatureMin();
+		float max = GetTemperatureMax();
+		
+		float previousValue = m_VarTemperature;
 		
 		m_VarTemperature = Math.Clamp(value, min, max);
-		SetVariableMask(VARIABLE_TEMPERATURE);
+		
+		if ( previousValue != m_VarTemperature )
+			SetVariableMask(VARIABLE_TEMPERATURE);
 	}
 	//----------------------------------------------------------------
 	void AddTemperature(float value)
@@ -3222,8 +3310,7 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	void SetTemperatureMax()
 	{
-		float max = ConfigGetFloat("varTemperatureMax");
-		SetTemperature(max);
+		SetTemperature(m_VarTemperatureMax);
 	}
 	//----------------------------------------------------------------
 	float GetTemperature()
@@ -3233,17 +3320,17 @@ class ItemBase extends InventoryItem
 	
 	float GetTemperatureInit()
 	{
-		return ConfigGetFloat("varTemperatureInit");
+		return m_VarTemperatureInit;
 	}
 	
 	float GetTemperatureMin()
 	{
-		return ConfigGetFloat("varTemperatureMin");
+		return m_VarTemperatureMin;
 	}
 
 	float GetTemperatureMax()
 	{
-		return ConfigGetFloat("varTemperatureMax");
+		return m_VarTemperatureMax;
 	}
 	//----------------------------------------------------------------
 	float GetHeatIsolationInit()
@@ -3257,13 +3344,23 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	void SetWet(float value, bool allow_client = false)
 	{
-		if( !IsServerCheck(allow_client) ) return;
-		float min = ConfigGetFloat("varWetMin");
-		float max = ConfigGetFloat("varWetMax");
+		if ( !IsServerCheck(allow_client) )
+			return;
+		
+		float min = GetWetMin();
+		float max = GetWetMax();
+		
+		float previousValue = m_VarWet;
 		
 		m_VarWet = Math.Clamp(value, min, max);
-		UpdateWeight();
-		SetVariableMask(VARIABLE_WET);
+		
+		if ( m_VarWet < GameConstants.STATE_DAMP )
+			m_VarWet = GameConstants.STATE_DRY;
+		
+		//UpdateWeight();
+		
+		if ( previousValue != m_VarWet )
+			SetVariableMask(VARIABLE_WET);
 	}
 	//----------------------------------------------------------------
 	void AddWet(float value)
@@ -3273,8 +3370,7 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	void SetWetMax()
 	{
-		float max = ConfigGetFloat("varWetMax");
-		SetWet(max);
+		SetWet(m_VarWetMax);
 	}
 	//----------------------------------------------------------------
 	override float GetWet()
@@ -3284,21 +3380,24 @@ class ItemBase extends InventoryItem
 	//----------------------------------------------------------------
 	float GetWetMax()
 	{
-		return ConfigGetFloat("varWetMax");
+		return m_VarWetMax;
 	}
 	//----------------------------------------------------------------
 	float GetWetMin()
 	{
-		return ConfigGetFloat("varWetMin");
+		return m_VarWetMin;
 	}
 	//----------------------------------------------------------------
 	float GetWetInit()
 	{
-		return ConfigGetFloat("varWetInit");
+		return m_VarWetInit;
 	}
 	//----------------------------------------------------------------
 	bool IsServerCheck(bool allow_client)
 	{
+		if (g_Game.IsServer())
+			return true;
+		
 		if(allow_client) return true;
 		if( GetGame().IsClient() && GetGame().IsMultiplayer() ) 
 		{
@@ -3925,76 +4024,71 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	void ProcessItemWetnessAndTemperature( float delta, bool hasParent, bool hasRootAsPlayer, ItemBase refParentIB )
+	void ProcessItemWetness( float delta, bool hasParent, bool hasRootAsPlayer, ItemBase refParentIB )
 	{
 		if ( !hasRootAsPlayer )
 		{
 			if ( !hasParent )
 			{
 				// drying on ground
-				AddWet( delta * GameConstants.WETNESS_RATE_DRYING_GROUND );
-
-				// cooling on ground
-				if ( ( GetTemperature() != GetTemperatureMin() ) && !IsFireplace() )
-				{
-					AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_GROUND );
-				}
+				if ( m_VarWet > m_VarWetMin )
+					AddWet( delta * GameConstants.WETNESS_RATE_DRYING_GROUND );
 			}
-			else
+			else if ( refParentIB )
 			{
-				if ( refParentIB )
-				{
-					if ( refParentIB.GetWet() >= GameConstants.STATE_SOAKING_WET )
-					{
-						// parent is wet
-						// wetting
-						AddWet( delta * GameConstants.WETNESS_RATE_WETTING_INSIDE );
-					}
-					else
-					{
-						// parent is dry (or not wet enough)
-						if ( ( refParentIB.GetLiquidType() != 0 ) && ( refParentIB.GetQuantity() > 0 ) )
-						{
-							// parent has liquid inside
-							// wetting (to max)
-							AddWet( delta * GameConstants.WETNESS_RATE_WETTING_LIQUID );
-						}
-						else
-						{
-							// parent is not a liquid container
-							// drying
-							AddWet( delta * GameConstants.WETNESS_RATE_DRYING_INSIDE );
-						}
-					}
-					// cooling of an item inside other
-					if ( ( GetTemperature() > refParentIB.GetTemperature() ) && !IsFireplace() )
-					{
-						AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_INSIDE );
-					}
-				}
+				// parent is wet
+				if ( ( refParentIB.GetWet() >= GameConstants.STATE_SOAKING_WET ) && ( m_VarWet < m_VarWetMax ) )
+					AddWet( delta * GameConstants.WETNESS_RATE_WETTING_INSIDE );
+				// parent has liquid inside
+				else if ( ( refParentIB.GetLiquidType() != 0 ) && ( refParentIB.GetQuantity() > 0 ) && ( m_VarWet < m_VarWetMax ) )
+					AddWet( delta * GameConstants.WETNESS_RATE_WETTING_LIQUID );
+				// drying
+				else if ( m_VarWet > m_VarWetMin )						
+					AddWet( delta * GameConstants.WETNESS_RATE_DRYING_INSIDE );
 			}
 		}
+	}
+	
+	void ProcessItemTemperature( float delta, bool hasParent, bool hasRootAsPlayer, ItemBase refParentIB )
+	{
+		if ( !hasRootAsPlayer )
+		{
+			if ( !hasParent )
+			{
+				// cooling on ground
+				if ( ( GetTemperature() > GetTemperatureMin() ) && !IsFireplace() )
+					AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_GROUND );
+			}
+			else if ( refParentIB )
+			{
+				// cooling of an item inside other
+				if ( ( GetTemperature() > GetTemperatureMin() ) && !IsFireplace() && ( GetTemperature() > refParentIB.GetTemperature() ) )
+					AddTemperature( delta * GameConstants.TEMPERATURE_RATE_COOLING_INSIDE );
+			}
+		}
+	}
+	
+	// Backwards compatibility
+	void ProcessItemWetnessAndTemperature( float delta, bool hasParent, bool hasRootAsPlayer, ItemBase refParentIB )
+	{
+		ProcessItemWetness(delta, hasParent, hasRootAsPlayer, refParentIB);
+		ProcessItemTemperature(delta, hasParent, hasRootAsPlayer, refParentIB);
 	}
 	
 	void HierarchyCheck( out bool hasParent, out bool hasRootAsPlayer, out ItemBase refParentIB )
 	{
 		// hierarchy check for an item to decide whether it has some parent and it is in some player inventory
-		if ( !GetHierarchyRootPlayer() )
+		EntityAI parent = GetHierarchyParent();
+		if ( !parent )
 		{
 			hasParent = false;
 			hasRootAsPlayer = false;
-			
-			EntityAI parent = GetHierarchyParent();
-			if ( parent ) 
-			{
-				hasParent = true;
-				refParentIB = ItemBase.Cast( parent );
-			}
 		}
 		else
 		{
 			hasParent = true;
-			hasRootAsPlayer = true;
+			hasRootAsPlayer = (GetHierarchyRootPlayer() != null);
+			refParentIB = ItemBase.Cast( parent );
 		}
 	}
 	
@@ -4016,6 +4110,18 @@ class ItemBase extends InventoryItem
 		return false;
 	}
 	
+	protected bool CanHaveWetness()
+	{
+		// return true used on selected items that have a wetness effect
+		return false;
+	}
+	
+	protected bool CanHaveTemperature()
+	{
+		// return true used on selected items that have a temperature effect
+		return false;
+	}
+	
 	override void OnCEUpdate()
 	{
 		super.OnCEUpdate();
@@ -4023,14 +4129,26 @@ class ItemBase extends InventoryItem
 		bool hasParent = false, hasRootAsPlayer = false;
 		ItemBase refParentIB;
 		
-		if ( GetCEApi().GetCEGlobalInt( "WorldWetTempUpdate" ) == 1 )
+		bool wwtu = g_Game.IsWorldWetTempUpdateEnabled();
+		bool foodDecay = g_Game.IsFoodDecayEnabled();
+		
+		if ( wwtu || foodDecay )
 		{
-			HierarchyCheck( hasParent, hasRootAsPlayer, refParentIB );
-			ProcessItemWetnessAndTemperature( m_ElapsedSinceLastUpdate, hasParent, hasRootAsPlayer, refParentIB );
+			bool processWetness = wwtu && CanHaveWetness();
+			bool processTemperature = wwtu && CanHaveTemperature();
+			bool processDecay  = foodDecay && CanDecay() && CanProcessDecay();
 			
-			if ( GetCEApi().GetCEGlobalInt( "FoodDecay" ) == 1 )
+			if ( processWetness || processTemperature || processDecay)
 			{
-				if ( CanDecay() && CanProcessDecay() )
+				HierarchyCheck( hasParent, hasRootAsPlayer, refParentIB );
+			
+				if ( processWetness )
+					ProcessItemWetness( m_ElapsedSinceLastUpdate, hasParent, hasRootAsPlayer, refParentIB );
+				
+				if ( processTemperature )
+					ProcessItemTemperature( m_ElapsedSinceLastUpdate, hasParent, hasRootAsPlayer, refParentIB );
+			
+				if ( processDecay )
 					ProcessDecay( m_ElapsedSinceLastUpdate, hasRootAsPlayer );	
 			}
 		}

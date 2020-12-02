@@ -1164,7 +1164,7 @@ FrameWidgetClass character_creation_root {
        font "gui/fonts/sdf_MetronLight24"
        switch normal
        {
-        ImageWidgetClass BackIcon1 {
+        ImageWidgetClass BackIcon0 {
          clipchildren 0
          inheritalpha 0
          ignorepointer 1

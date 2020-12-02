@@ -890,7 +890,7 @@ class CfgWorlds
 					speed = 0.3;
 					size = 0.55;
 					height = 0.9;
-					through = 0.2;
+					through = 0.3;
 					diffuse = 1.0;
 					cloudDiffuse = 1.0;
 					waves = 0.0;

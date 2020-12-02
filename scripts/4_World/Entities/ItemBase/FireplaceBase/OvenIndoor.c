@@ -279,23 +279,34 @@ class OvenIndoor extends FireplaceBase
 		}
 		
 		// direct cooking slots
+		bool edible_base_attached = false;
 		switch ( slot_name )
 		{
 			case "DirectCookingA":
 				m_DirectCookingSlots[0] = item_base;
+				edible_base_attached = true;
 				break;
-		}
 
-		// smoking slots
-		switch ( slot_name )
-		{
 			case "SmokingA":
 				m_SmokingSlots[0] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "SmokingB":
 				m_SmokingSlots[1] = item_base;
+				edible_base_attached = true;
 				break;
+		}
+		
+		// reset cooking time (to prevent the cooking exploit)
+		if ( GetGame().IsServer() && edible_base_attached )
+		{
+			Edible_Base edBase = Edible_Base.Cast( item_base );
+			if ( edBase )
+			{
+				if ( edBase.GetFoodStage() )
+					edBase.SetCookingTime( 0 );
+			}
 		}
 
 		//refresh fireplace visuals

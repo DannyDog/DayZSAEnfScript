@@ -10,7 +10,7 @@ class ActionInteractBaseCB : ActionBaseCB
 #ifdef DEVELOPER
 		Print("ActionInteractBase.c | OnAnimationEvent | OnAnimationEvent called");
 #endif
-		if ( !m_Interrupted && pEventID == UA_ANIM_EVENT ) 
+		if ( !m_Interrupted && pEventID == UA_ANIM_EVENT && m_ActionData && m_ActionData.m_Action ) 
 		{
 			AnimatedActionBase action = AnimatedActionBase.Cast(m_ActionData.m_Action);
 			action.OnAnimationEvent(m_ActionData);

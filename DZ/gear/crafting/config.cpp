@@ -550,7 +550,7 @@ class CfgVehicles
 		varQuantityMax = 10.0;
 		varQuantityDestroyOnMin = 1;
 		varStackMax = 1.0;
-		inventorySlot[] = {"Shoulder","Melee","Material_FPole_MagicStick","Material_Shelter_FrameSticks"};
+		inventorySlot[] = {"Shoulder","Melee","Material_Shelter_FrameSticks"};
 		itemBehaviour = 1;
 		absorbency = 0.9;
 		class DamageSystem

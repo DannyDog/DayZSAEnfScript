@@ -11,37 +11,6 @@ class ActionActivateTrapCB : ActionContinuousBaseCB
 		
 		RegisterAnimationEvent("CraftingAction", UA_IN_CRAFTING);
 	}
-
-	override void OnAnimationEvent(int pEventID)	
-	{
-		super.OnAnimationEvent( pEventID );
-		
-		switch (pEventID)
-		{
-			case UA_IN_CRAFTING:			
-				if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
-				{
-					TrapBase trap = TrapBase.Cast( m_ActionData.m_Target.GetObject() );
-					Param1<bool> play = new Param1<bool>( true );
-					GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
-				}
-
-			break;
-		}
-	}
-
-	override void EndActionComponent()
-	{
-		super.EndActionComponent();
-				
-				
-		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
-		{
-			TrapBase trap = TrapBase.Cast( m_ActionData.m_Target.GetObject());
-			Param1<bool> play = new Param1<bool>( false );
-			GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
-		}
-	}
 };
 
 class ActionActivateTrap: ActionContinuousBase
@@ -94,6 +63,30 @@ class ActionActivateTrap: ActionContinuousBase
 		}
 		
 		return false;
+	}
+	
+	override void OnStartAnimationLoop( ActionData action_data )
+	{
+		super.OnStartAnimationLoop( action_data );
+
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			TrapBase trap = TrapBase.Cast( action_data.m_Target.GetObject() );
+			Param1<bool> play = new Param1<bool>( true );
+			GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
+		}
+	}
+	
+	override void OnEndAnimationLoop( ActionData action_data )
+	{
+		super.OnEndAnimationLoop( action_data );
+
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			TrapBase trap = TrapBase.Cast( action_data.m_Target.GetObject());
+			Param1<bool> play = new Param1<bool>( false );
+			GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
+		}
 	}
 
 	override void OnFinishProgressServer( ActionData action_data )

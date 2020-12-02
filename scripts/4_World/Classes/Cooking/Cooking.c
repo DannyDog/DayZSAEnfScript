@@ -246,8 +246,6 @@ class Cooking
 			}
 		}
 		
-		//add temperature
-		AddTemperatureToItem( item_to_cook, NULL, food_min_temp );
 		
 		// refresh audio
 		if ( item_to_cook.GetInventory().IsAttachment() )
@@ -259,6 +257,11 @@ class Cooking
 				if ( InventorySlots.GetSlotName( invloc.GetSlot() ) != "Ingredient" )
 				{
 					item_to_cook.MakeSoundsOnClient( true );
+				}
+				else
+				{
+					//add temperature
+					AddTemperatureToItem( item_to_cook, NULL, food_min_temp );
 				}
 			}
 		}

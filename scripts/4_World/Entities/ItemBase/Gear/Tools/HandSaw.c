@@ -11,5 +11,6 @@ class HandSaw: Inventory_Base
 		//AddAction(ActionDestroyCombinationLock);
 		//AddAction(ActionDestroyPart);
 		AddAction(ActionSkinning);
+		AddAction(ActionMineTreeBark);
 	}
 };

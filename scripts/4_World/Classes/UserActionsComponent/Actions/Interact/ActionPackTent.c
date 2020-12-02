@@ -4,18 +4,6 @@ class ActionPackTentCB : ActionContinuousBaseCB
 	{
 		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT_DEPLOY); //Use same time as Deploy
 	}
-	
-	override void OnAnimationEvent(int pEventID)	
-	{
-		super.OnAnimationEvent( pEventID );
-		
-		switch (pEventID)
-		{
-			case UA_FINISHED:		
-
-			break;
-		}
-	}
 }
 
 class ActionPackTent : ActionContinuousBase

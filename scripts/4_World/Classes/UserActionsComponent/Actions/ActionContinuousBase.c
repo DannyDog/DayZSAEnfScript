@@ -39,7 +39,7 @@ class ActionContinuousBaseCB : ActionBaseCB
 	
 	override void OnAnimationEvent(int pEventID)	
 	{
-		if (m_ActionData)
+		if ( m_ActionData && m_ActionData.m_Action )
 		{
 			AnimatedActionBase action = AnimatedActionBase.Cast(m_ActionData.m_Action);
 #ifdef DEVELOPER

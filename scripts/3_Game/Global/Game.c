@@ -1,6 +1,9 @@
 /**
  *  Game Class provide most "world" or global engine API functions.
  */
+
+static int GAME_STORAGE_VERSION = 117;
+
 class CGame
 {
 	// -enNewMenu
@@ -31,7 +34,7 @@ class CGame
 		//m_CharacterData = new MenuCharacrerData;
 		
 		// actual script version - increase by one when you make changes
-		StorageVersion(116);
+		StorageVersion(GAME_STORAGE_VERSION);
 	}
 	
 	private void ~CGame();

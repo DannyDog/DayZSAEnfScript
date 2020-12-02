@@ -242,40 +242,55 @@ class Fireplace extends FireplaceBase
 			}
 		}
 		
-		// direct cooking slots
+		// direct cooking slots, smoking slots
+		bool edible_base_attached = false;
 		switch ( slot_name )
 		{
 			case "DirectCookingA":
 				m_DirectCookingSlots[0] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "DirectCookingB":
 				m_DirectCookingSlots[1] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "DirectCookingC":
 				m_DirectCookingSlots[2] = item_base;
+				edible_base_attached = true;
 				break;
-		}
 
-		// smoking slots
-		switch ( slot_name )
-		{
 			case "SmokingA":
 				m_SmokingSlots[0] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "SmokingB":
 				m_SmokingSlots[1] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "SmokingC":
 				m_SmokingSlots[2] = item_base;
+				edible_base_attached = true;
 				break;
 
 			case "SmokingD":
 				m_SmokingSlots[3] = item_base;
+				edible_base_attached = true;
 				break;
+		}
+		
+		// reset cooking time (to prevent the cooking exploit)
+		if ( GetGame().IsServer() && edible_base_attached )
+		{
+			Edible_Base edBase = Edible_Base.Cast( item_base );
+			if ( edBase )
+			{
+				if ( edBase.GetFoodStage() )
+					edBase.SetCookingTime( 0 );
+			}
 		}
 		
 		//TODO

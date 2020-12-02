@@ -309,8 +309,9 @@ class CfgVehicles
 		radiusByDamage[] = {0,0.362,0.3,0.3,0.9998,0.25,0.9999,0.2};
 		radius = 0.35;
 		width = 0.18;
+		tyreRollDrag = 5;
 		tyreRollResistance = 0.015;
-		tyreTread = 0.8;
+		tyreTread = 0.85;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -495,6 +496,7 @@ class CfgVehicles
 		class SimulationModule: SimulationModule
 		{
 			drive = "DRIVE_AWD";
+			centralDiffRatio = 1.45;
 			airDragFrontTotal = 0.995;
 			class Steering
 			{
@@ -514,6 +516,7 @@ class CfgVehicles
 			class Engine
 			{
 				inertia = 0.15;
+				steepness = 1.5;
 				torqueMax = 114;
 				torqueRpm = 3400;
 				powerMax = 53.7;
@@ -4594,12 +4597,12 @@ class CfgVehicles
 					{
 						hitpoints = 10;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\headlights_glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\glass_i_damage.rvmat"}},{0.3,{}},{0.0,{"dz\vehicles\wheeled\sedan_02\data\glass_i_destruct.rvmat"}}};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_damaged.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_damaged.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_ruined.rvmat"}},{0.0,"Hidden"}};
 					};
 					transferToZonesNames[] = {"Front","Fender_1_1"};
-					transferToZonesCoefs[] = {1.0,1.0};
+					transferToZonesCoefs[] = {0.6,0.3};
 					inventorySlots[] = {"Reflector_1_1","Sedan_02_Wheel_1_1"};
-					inventorySlotsCoefs[] = {1.0,0.3};
+					inventorySlotsCoefs[] = {1.0,0.1};
 				};
 				class Reflector_2_1: Reflector_1_1
 				{
@@ -4759,7 +4762,14 @@ class CfgVehicles
 				name = "$STR_attachment_Engine0";
 				description = "";
 				icon = "cat_vehicle_engine";
-				attachmentSlots[] = {"CarBattery","CarRadiator","SparkPlug"};
+				attachmentSlots[] = {"CarBattery","SparkPlug"};
+			};
+			class Trunk
+			{
+				name = "$STR_attachment_Body0";
+				description = "";
+				icon = "cat_vehicle_body";
+				attachmentSlots[] = {"CarRadiator"};
 			};
 			class Body
 			{
@@ -5591,7 +5601,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 200;
-					healthLevels[] = {{1.0,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire.rvmat","DZ\vehicles\wheeled\Truck_01\data\v3s_rim.rvmat"}},{0.7,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire.rvmat","DZ\vehicles\wheeled\Truck_01\data\v3s_rim.rvmat"}},{0.5,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_damage.rvmat","DZ\vehicles\wheeled\Truck_01\data\v3s_rim_damage.rvmat"}},{0.3,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_damage.rvmat","DZ\vehicles\wheeled\Truck_01\data\v3s_rim_damage.rvmat"}},{0.0,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_destruct.rvmat","DZ\vehicles\wheeled\Truck_01\data\v3s_rim_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire.rvmat","DZ\vehicles\wheeled\Truck_01\data\Truck_01_rim.rvmat"}},{0.7,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire.rvmat","DZ\vehicles\wheeled\Truck_01\data\Truck_01_rim.rvmat"}},{0.5,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_damage.rvmat","DZ\vehicles\wheeled\Truck_01\data\Truck_01_rim_damage.rvmat"}},{0.3,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_damage.rvmat","DZ\vehicles\wheeled\Truck_01\data\Truck_01_rim_damage.rvmat"}},{0.0,{"DZ\vehicles\wheeled\Truck_01\data\Truck_01_tire_destruct.rvmat","DZ\vehicles\wheeled\Truck_01\data\Truck_01_rim_destruct.rvmat"}}};
 				};
 			};
 		};
@@ -5666,9 +5676,9 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 50;
+						hitpoints = 150;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\glass_i.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
 					};
 					componentNames[] = {"dmgZone_window"};
 					fatalInjuryCoef = -1;
@@ -6053,9 +6063,9 @@ class CfgVehicles
 					componentNames[] = {"dmgZone_windowLeft"};
 					class Health
 					{
-						hitpoints = 50;
+						hitpoints = 150;
 						transferToGlobalCoef = 0;
-						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
+						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
 					};
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};

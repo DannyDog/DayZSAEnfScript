@@ -1104,20 +1104,28 @@ class PlayerBase extends ManBase
 			m_ActionsInitialize = true;
 			InitializeActions();
 		}
-		
-		if (IsControlledPlayer())
+
+		// Backwards compatibility
+		array<ActionBase_Basic> bcActions = m_InputActionMap.Get(action_input_type);
+		if (!bcActions)
 		{
-			actions = m_InputActionMapControled.Get(action_input_type);
+			if (IsControlledPlayer())
+				actions = m_InputActionMapControled.Get(action_input_type);
+			else
+				actions = m_InputActionMapAsTarget.Get(action_input_type);
 		}
 		else
 		{
-			actions = m_InputActionMapAsTarget.Get(action_input_type);
-		}
-		
-		// Backwards compatibility
-		array<ActionBase_Basic> bcActions = m_InputActionMap.Get(action_input_type);
-		if (bcActions)
+			if (!actions)
+				actions = new array<ActionBase_Basic>();
+			
+			if (IsControlledPlayer())
+				actions.InsertAll(m_InputActionMapControled.Get(action_input_type));
+			else
+				actions.InsertAll(m_InputActionMapAsTarget.Get(action_input_type));
+			
 			actions.InsertAll(bcActions);
+		}
 	}
 	
 	void AddAction(typename actionName, out TInputActionMap InputActionMap )
@@ -2864,7 +2872,7 @@ class PlayerBase extends ManBase
 				m_NotifiersManager.ActivateByType(eNotifiers.NTF_FRACTURE);
 				m_BrokenLegState = eBrokenLegs.BROKEN_LEGS;
 				BrokenLegForceProne(true);
-				SetSynchDirty();
+				//SetSynchDirty();
 				m_InjuryHandler.CheckValue(true);
 				
 				DayZPlayerSyncJunctures.SendBrokenLegs(this, m_CanPlayBrokenLegSound, m_BrokenLegState, m_LocalBrokenState);
@@ -2872,8 +2880,10 @@ class PlayerBase extends ManBase
 		}
 		else
 		{
+			m_BrokenLegState = eBrokenLegs.NO_BROKEN_LEGS; //Safeguard used to ensure proper state setup
 			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
 			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
+			DayZPlayerSyncJunctures.SendBrokenLegs(this, m_CanPlayBrokenLegSound, m_BrokenLegState, m_LocalBrokenState); //Synchronize one last time before deactivation of state
 		}
 	}
 	
@@ -2894,10 +2904,18 @@ class PlayerBase extends ManBase
 					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
 					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS_SPLINT;
 				}
-				SetSynchDirty();
+				//SetSynchDirty();
 				m_InjuryHandler.CheckValue(false);
 				
 				m_LocalBrokenState = m_BrokenLegState;
+				
+				//Extra safeguard to break out of state if synch failed
+				if (!IsWearingSplint())
+				{
+					Debug.LogError("Player is in state " + m_BrokenLegState + " and is wearing splint : " + IsWearingSplint() + " and modifier is : " + m_ModifiersManager.IsModifierActive(eModifiers.MDF_BROKEN_LEGS));
+					//m_BrokenLegState = eBrokenLegs.NO_BROKEN_LEGS;
+					//m_LocalBrokenState = m_BrokenLegState;
+				}
 				
 				DayZPlayerSyncJunctures.SendBrokenLegs(this, false, m_BrokenLegState, m_LocalBrokenState);
 			}
@@ -2917,7 +2935,7 @@ class PlayerBase extends ManBase
 				
 				BrokenLegForceProne();
 				BrokenLegWalkShock();
-				SetSynchDirty();
+				//SetSynchDirty();
 				m_InjuryHandler.CheckValue(false);
 				
 				DayZPlayerSyncJunctures.SendBrokenLegs(this, false, m_BrokenLegState, m_LocalBrokenState);
@@ -2930,7 +2948,8 @@ class PlayerBase extends ManBase
 			m_NotifiersManager.DeactivateByType(eNotifiers.NTF_FRACTURE);
 			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS;
 			m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.BROKEN_LEGS_SPLINT;
-			SetSynchDirty();
+			DayZPlayerSyncJunctures.SendBrokenLegs(this, false, m_BrokenLegState, m_LocalBrokenState);
+			//SetSynchDirty();
 		}
 	}
 	
@@ -2965,12 +2984,16 @@ class PlayerBase extends ManBase
 				m_CanPlayBrokenLegSound = true;
 				m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_INITIAL_SHOCK);
 				m_ShockHandler.CheckValue(true);
-				//Get command move and verify not null
-				HumanCommandMove hcm = StartCommand_Move();  
-				hcm = GetCommand_Move(); 
-				if (hcm)
+				
+				if ( m_ShockHandler.GetShock() >= 75 ) //Prevent conflict with unconsciousness by not forcing prone when going uncon (25 shock or less left)
 				{
-					hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+					//Get command move and verify not null
+					HumanCommandMove hcm = StartCommand_Move();  
+					hcm = GetCommand_Move(); 
+					if (hcm)
+					{
+						hcm.ForceStance(DayZPlayerConstants.STANCEIDX_PRONE);
+					}
 				}
 				SetLegHealth();
 				m_LocalBrokenState = m_BrokenLegState;
@@ -4056,7 +4079,7 @@ class PlayerBase extends ManBase
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_SERVER:
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_REMOTE:
 				case DayZPlayerInstanceType.INSTANCETYPE_REMOTE:
-					return true; // Might help mitigate "megabugged" (desync)
+					//return true; // Might help mitigate "megabugged" (desync)
 				
 					syncDebugPrint("[syncinv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " NeedInventoryJunctureFromServer item=" + Object.GetDebugName(item) + " currPar=" + currParent + " newPar=" + newParent);
 					

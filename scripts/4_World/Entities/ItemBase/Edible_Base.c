@@ -494,6 +494,11 @@ class Edible_Base extends ItemBase
 		}
 	}
 	
+	override bool CanHaveTemperature()
+	{
+		return true;
+	}
+	
 	override bool CanDecay()
 	{
 		return false;

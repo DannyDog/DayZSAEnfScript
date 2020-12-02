@@ -717,6 +717,9 @@ class DayZGame extends CGame
 	private bool	m_IsLeftAltHolding;
 	private bool	m_IsRightAltHolding;
 	
+	private bool	m_IsWorldWetTempUpdateEnabled = true;
+	private bool	m_IsFoodDecayEnabled = true;
+	
 	static bool		m_ReportModded;
 	private bool	m_IsStressTest;
 	private bool 	m_AimLoggingEnabled;
@@ -803,6 +806,7 @@ class DayZGame extends CGame
 
 		m_DayZProfileOptions = new DayZProfilesOptions;
 		GetCallQueue(CALL_CATEGORY_GUI).Call(DeferredInit);
+		GetCallQueue(CALL_CATEGORY_GAMEPLAY).Call(GlobalsInit);
 		//m_isTileSet = true;
 		m_IsConnecting = false;
 		m_ConnectFromJoin = false;
@@ -831,7 +835,16 @@ class DayZGame extends CGame
 		//m_CharacterData = new MenuDefaultCharacterData;
 		GetMenuDefaultCharacterData();
 	}
-	
+	// ------------------------------------------------------------
+	void GlobalsInit()
+	{
+		if ( GetCEApi() )
+		{
+			m_IsWorldWetTempUpdateEnabled = ( GetCEApi().GetCEGlobalInt( "WorldWetTempUpdate" ) == 1 );
+			m_IsFoodDecayEnabled = ( GetCEApi().GetCEGlobalInt( "FoodDecay" ) == 1 );
+		}
+	}
+	// ------------------------------------------------------------
 	void RegisterProfilesOptions()
 	{
 		m_DayZProfileOptions.RegisterProfileOption(EDayZProfilesOptions.CROSSHAIR, SHOW_CROSSHAIR);
@@ -2796,6 +2809,16 @@ class DayZGame extends CGame
 	float GetPreviousEVValue()
 	{
 		return m_PreviousEVValue;
+	}
+	
+	bool IsWorldWetTempUpdateEnabled()
+	{
+		return m_IsWorldWetTempUpdateEnabled;
+	}
+	
+	bool IsFoodDecayEnabled()
+	{
+		return m_IsFoodDecayEnabled;
 	}
 };
 

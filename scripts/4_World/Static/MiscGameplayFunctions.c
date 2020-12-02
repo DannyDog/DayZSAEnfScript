@@ -266,10 +266,13 @@ class MiscGameplayFunctions
 		}
 		else if ( source.HasEnergyManager() && target.HasEnergyManager() )
 		{
-			target.GetCompEM().SetEnergy(source.GetCompEM().GetEnergy());
+			ComponentEnergyManager ems = source.GetCompEM();
+			ComponentEnergyManager emt = target.GetCompEM();
+			
+			emt.SetEnergy(ems.GetEnergy());
 
-			if (source.GetCompEM().IsSwitchedOn())
-				target.GetCompEM().SwitchOn();
+			if (ems.IsSwitchedOn())
+				emt.SwitchOn();
 		}
 	}
 

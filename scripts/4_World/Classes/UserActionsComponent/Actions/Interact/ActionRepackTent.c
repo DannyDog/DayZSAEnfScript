@@ -3,57 +3,6 @@ class ActionRepackTentCB : ActionContinuousBaseCB
 	override void CreateActionComponent()
 	{
 		m_ActionData.m_ActionComponent = new CAContinuousTime( UATimeSpent.UNPACK );
-	}	
-	
-	override void OnAnimationEvent(int pEventID)	
-	{
-		super.OnAnimationEvent( pEventID );
-		
-		Param1<bool> play;
-		switch (pEventID)
-		{
-			case UA_ANIM_EVENT:	
-				if ( !GetGame().IsMultiplayer() && GetGame().IsServer() )
-				{		
-					if ( m_ActionData.m_Player.GetItemInHands() )
-					{
-						play = new Param1<bool>( true );
-						GetGame().RPCSingleParam( m_ActionData.m_MainItem, SoundTypeTent.REPACK, play, true );
-							
-						DropDuringRepacking();
-					}
-				}
-			
-				if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				{		
-					if ( m_ActionData.m_Player.GetItemInHands() )
-					{
-						play = new Param1<bool>( true );
-						GetGame().RPCSingleParam( m_ActionData.m_MainItem, SoundTypeTent.REPACK, play, true );
-					}
-				}
-			
-				if ( GetGame().IsMultiplayer() && GetGame().IsClient() )
-				{			
-					if ( m_ActionData.m_Player.GetItemInHands() )
-					{
-						DropDuringRepacking();
-					}
-				}
-		
-			break;
-		}	
-	}
-	
-	override void EndActionComponent()
-	{
-		super.EndActionComponent();
-			
-		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
-		{
-			Param1<bool> play = new Param1<bool>( false );
-			GetGame().RPCSingleParam( m_ActionData.m_MainItem, SoundTypeTent.REPACK, play, true );
-		}
 	}
 	
 	void DropDuringRepacking()
@@ -221,6 +170,37 @@ class ActionRepackTent: ActionContinuousBase
 		else
 		{
 			Print("Error: check " + item + " behaviour");
+		}
+	}
+	
+	override void OnStartAnimationLoopClient( ActionData action_data )
+	{					
+		if ( action_data.m_Player.GetItemInHands() )
+			ActionRepackTentCB.Cast(action_data.m_Callback).DropDuringRepacking();
+	}
+	
+	override void OnStartAnimationLoopServer( ActionData action_data )
+	{
+		Param1<bool> play = new Param1<bool>( false );
+		if ( !GetGame().IsMultiplayer() )
+		{		
+			if ( action_data.m_Player.GetItemInHands() )
+				ActionRepackTentCB.Cast(action_data.m_Callback).DropDuringRepacking();
+		}		
+
+		if ( action_data.m_Player.GetItemInHands() )
+		{
+			play = new Param1<bool>( true );
+			GetGame().RPCSingleParam( action_data.m_MainItem, SoundTypeTent.REPACK, play, true );
+		}
+	}
+	
+	override void OnEndAnimationLoop( ActionData action_data )
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			Param1<bool> play = new Param1<bool>( false );
+			GetGame().RPCSingleParam( action_data.m_MainItem, SoundTypeTent.REPACK, play, true );
 		}
 	}
 };

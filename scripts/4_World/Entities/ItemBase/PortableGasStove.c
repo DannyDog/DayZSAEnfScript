@@ -214,7 +214,7 @@ class PortableGasStove extends ItemBase
 	
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )
 	{
-		if ( GetHierarchyParent() && !GetHierarchyParent().IsMan() )
+		if ( GetHierarchyParent() && IsCargoException4x3(GetHierarchyParent()) )
 			return false;
 		
 		return super.CanReceiveAttachment(attachment, slotId);

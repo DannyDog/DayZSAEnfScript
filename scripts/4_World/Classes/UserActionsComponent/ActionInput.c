@@ -558,6 +558,7 @@ class ContinuousDefaultActionInput : ActionInput
 						return;
 					}
 				}
+				possible_actions = null;
 			}
 		}
 		

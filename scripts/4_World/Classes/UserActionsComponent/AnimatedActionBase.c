@@ -180,20 +180,22 @@ class AnimatedActionBase : ActionBase
 	//TODO MW - add comment 
 	void OnAnimationEvent( ActionData action_data )
 	{
-		if (!action_data.m_WasExecuted)
+		if (action_data && !action_data.m_WasExecuted)
 		{
-			OnExecute(action_data);
+			ActionBase action = action_data.m_Action;
 			
-			if (GetGame().IsServer())
+			if (action && ( !action.UseMainItem() || action_data.m_MainItem ) && ( !action.HasTarget() || action_data.m_Target ))
 			{
-				OnExecuteServer(action_data);
+				OnExecute(action_data);
+			
+				if (GetGame().IsServer())
+					OnExecuteServer(action_data);
+				else
+					OnExecuteClient(action_data);
+
+				action_data.m_WasExecuted = true;
+				action_data.m_WasActionStarted  = true;
 			}
-			else
-			{
-				OnExecuteClient(action_data);
-			}
-			action_data.m_WasExecuted = true;
-			action_data.m_WasActionStarted  = true;
 		}
 	}
 	

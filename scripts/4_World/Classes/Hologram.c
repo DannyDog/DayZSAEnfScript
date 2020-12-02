@@ -1010,6 +1010,7 @@ class Hologram
 		vector right_close = m_Projection.CoordToParent( GetRightCloseProjectionVector() );
 		vector left_far = m_Projection.CoordToParent( GetLeftFarProjectionVector() );
 		vector right_far = m_Projection.CoordToParent( GetRightFarProjectionVector() );
+		bool surface_sea_water = IsSurfaceSea(left_close) || IsSurfaceSea(right_close) || IsSurfaceSea(left_far) || IsSurfaceSea(right_far);
 		
 		#ifdef DEVELOPER
 		// I'd rather duplicate this on internal than introduce (even) more raycasts than needed on retail..
@@ -1017,8 +1018,9 @@ class Hologram
 		float rc = g_Game.GetWaterDepth(right_close);
 		float lf = g_Game.GetWaterDepth(left_far);
 		float rf = g_Game.GetWaterDepth(right_far);
-		bool isTrue = (lc > 0 || rc > 0 || lf > 0 || rf > 0);
-		DebugText("IsUnderwater: ", false, isTrue, " | (all must be less than zero) | lc: " + lc + " | rc: " + rc + " | lf: " + lf + " | rf: " + rf);
+		bool isTrue = (lc > 0 || rc > 0 || lf > 0 || rf > 0 || surface_sea_water);
+		DebugText("IsUnderwater: ", false, isTrue, " surface_sea_water: " + surface_sea_water + " | (all must be less than zero) | lc: " + lc + " | rc: " + rc + " | lf: " + lf + " | rf: " + rf);
+		//DebugText("Corner Height: ", false, true, " lc: " + left_close[1] + " | rc: " + right_close[1] + " | lf: " + left_far[1] + " | rf: " + right_far[1]);
 		if (isTrue)
 		{
 			array<bool> conditions = {lc <= 0, rc <= 0, lf <= 0, rf <= 0};
@@ -1026,7 +1028,7 @@ class Hologram
 		}
 		#endif
 		
-		return (g_Game.GetWaterDepth(left_close) > 0 || g_Game.GetWaterDepth(right_close) > 0 || g_Game.GetWaterDepth(left_far) > 0 || g_Game.GetWaterDepth(right_far) > 0);	
+		return (surface_sea_water || g_Game.GetWaterDepth(left_close) > 0 || g_Game.GetWaterDepth(right_close) > 0 || g_Game.GetWaterDepth(left_far) > 0 || g_Game.GetWaterDepth(right_far) > 0);	
 	}
 	
 	bool IsInTerrain()
@@ -1229,6 +1231,12 @@ class Hologram
 	{
 		CGame game = GetGame();
 		return game.SurfaceIsSea( position[0], position[2] ) || game.SurfaceIsPond( position[0], position[2] );
+	}
+	
+	bool IsSurfaceSea( vector position )
+	{
+		CGame game = GetGame();
+		return game.SurfaceIsSea( position[0], position[2] );
 	}
 
 	protected vector GetProjectionEntityPosition( PlayerBase player )
@@ -1492,11 +1500,11 @@ class Hologram
 		vector contact_pos;
 		int contact_component;
 		
-		//DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, NULL, NULL, m_Projection, false, false,  );
-		if (!DayZPhysics.RayCastBullet( from,to,PhxInteractionLayers.ROADWAY,m_Projection,null,contact_pos,null,null))
+		DayZPhysics.RaycastRV( from, to, contact_pos, m_ContactDir, contact_component, NULL, NULL, m_Projection, false, false );
+		/*if (!DayZPhysics.RayCastBullet( from,to,PhxInteractionLayers.ROADWAY|PhxInteractionLayers.TERRAIN,m_Projection,null,contact_pos,null,null))
 		{
 			DayZPhysics.RayCastBullet( from,to,PhxInteractionLayers.TERRAIN,m_Projection,null,contact_pos,null,null);
-		}
+		}*/
 		
 		HideWhenClose( contact_pos );
 		
@@ -1544,15 +1552,15 @@ class Hologram
 		string config_path = "CfgVehicles " + m_Projection.GetType() + " hiddenSelections";
 		ref array<string> hidden_selection_array = new array<string>;
 
-		GetGame().ConfigGetTextArray( config_path, hidden_selection_array );	
+		GetGame().ConfigGetTextArray( config_path, hidden_selection_array );
 
 		for (int i = 0; i < hidden_selection_array.Count(); i++)
 		{
 			if ( hidden_selection_array.Get(i) == selection )
 			{
 				return i;
-			}			
-		}	
+			}
+		}
 
 		return 0;
 	}

@@ -109,7 +109,7 @@ class PlayerStats
 		if( GetPCO(current_version ) )
 		{
 			GetPCO(current_version).OnStoreSave(ctx);
-			Print("Saving stats in version: "+ GetPCO(current_version ).GetVersion());
+			//Print("Saving stats in version: "+ GetPCO(current_version ).GetVersion());
 		}
 		else
 		{

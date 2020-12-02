@@ -93,6 +93,14 @@ class Liquid
 		ItemBase source = source_ent;
 		ItemBase target = target_ent;
 
+		Barrel_ColorBase barrelTarget = Barrel_ColorBase.Cast(target);
+		Barrel_ColorBase barrelSource = Barrel_ColorBase.Cast(source);
+		if ((barrelTarget && !barrelTarget.IsOpen()) || (barrelSource && !barrelSource.IsOpen()))
+		{
+			return false;
+		}
+		
+		
 		
 		float source_quantity = source.GetQuantity();
 		if( source_quantity <= 0 )

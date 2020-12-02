@@ -89,10 +89,16 @@ class Sedan_02 extends CarScript
 		
 		if ( category_name.Contains( "engine" ) )
 		{
-			if ( GetCarDoorsState("Sedan_02_Hood") == CarDoorState.DOORS_CLOSED )
+			if ( GetCarDoorsState("Sedan_02_Trunk") == CarDoorState.DOORS_CLOSED )
 				return false;
 		}
 				
+		if ( category_name.Contains( "trunk" ) )
+		{
+			if ( GetCarDoorsState("Sedan_02_Hood") == CarDoorState.DOORS_CLOSED )
+				return false;
+		}
+
 		return true;
 	}
 	

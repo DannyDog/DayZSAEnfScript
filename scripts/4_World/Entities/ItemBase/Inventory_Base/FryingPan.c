@@ -43,6 +43,11 @@ class FryingPan extends Inventory_Base
 	{
 		return true;		
 	}
+	
+	override bool CanHaveTemperature()
+	{
+		return true;
+	}
 
 	override bool CanPutInCargo( EntityAI parent )
 	{

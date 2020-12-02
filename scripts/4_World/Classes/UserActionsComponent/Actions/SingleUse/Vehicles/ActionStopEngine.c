@@ -10,7 +10,7 @@ class ActionStopEngine: ActionSingleUseBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTCursor;
+		m_ConditionTarget = new CCTNone;
 	}
 
 	override string GetText()
@@ -81,5 +81,10 @@ class ActionStopEngine: ActionSingleUseBase
 	override bool CanBeUsedInVehicle()
 	{
 		return true;
+	}
+	
+	override bool UseMainItem()
+	{
+		return false;
 	}
 };

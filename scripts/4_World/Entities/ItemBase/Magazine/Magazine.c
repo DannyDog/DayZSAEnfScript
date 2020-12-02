@@ -176,7 +176,7 @@ class Magazine : InventoryItemSuper
 	
 	override bool CanBeSplit()
 	{
-		if ( ConfigGetBool("canBeSplit") )
+		if ( m_CanThisBeSplit )
 			return ( GetAmmoCount() > 1 );
 
 		return false;

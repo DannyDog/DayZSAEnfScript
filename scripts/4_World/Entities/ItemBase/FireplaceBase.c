@@ -74,7 +74,7 @@ class FireplaceBase extends ItemBase
 	const int 	TIMER_COOLING_UPDATE_INTERVAL 		= 2;		//! update interval duration of cooling process (seconds)
 	//! direct cooking slots
 	const int   DIRECT_COOKING_SLOT_COUNT			= 3;
-	const float	DIRECT_COOKING_SPEED				= 2.5;		// per second
+	const float	DIRECT_COOKING_SPEED				= 1.5;		// per second
 	const int   SMOKING_SLOT_COUNT					= 4;
 	const float SMOKING_SPEED 						= 1;		// per second
 
@@ -421,6 +421,16 @@ class FireplaceBase extends ItemBase
 	bool IsIndoorOven()
 	{
 		return false;
+	}
+	
+	override bool CanHaveWetness()
+	{
+		return true;
+	}
+	
+	override bool CanHaveTemperature()
+	{
+		return true;
 	}
 	
 	//cooking equipment
