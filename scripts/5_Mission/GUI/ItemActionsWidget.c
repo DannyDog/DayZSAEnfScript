@@ -146,6 +146,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 		SetActionWidget(m_Single, GetActionDesc(m_Single), "ia_single", "ia_single_action_name");
 		SetActionWidget(m_Continuous, GetActionDesc(m_Continuous), "ia_continuous", "ia_continuous_action_name");
 		SetMultipleInteractAction("ia_interact_mlt_wrapper");
+		SetMultipleContinuousInteractAction("continuous_interact_mlt_wrapper");
 	}
 		
 	protected void Update()
@@ -699,6 +700,19 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 			widget.Show(true);
 		else
 			widget.Show(false);
+	}
+	
+	//! shows arrows near the interact action if there are more than one available
+	protected void SetMultipleContinuousInteractAction(string multiActionsWidget)
+	{
+		/*Widget widget;
+
+		widget = m_Root.FindAnyWidget(multiActionsWidget);
+
+		if(m_ContinuousInteractActionsNum > 1)
+			widget.Show(true);
+		else
+			widget.Show(false);*/
 	}
 	
 	protected void SetInteractActionIcon(string actionWidget, string actionIconFrameWidget, string actionIconWidget, string actionIconTextWidget)

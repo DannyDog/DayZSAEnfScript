@@ -16,6 +16,7 @@ class Pickaxe extends ItemBase
 		AddAction(ActionBuildPartSwitch);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
+		AddAction(ActionDismantleGardenPlot);
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionMineRock);
 		AddAction(ActionDismantlePart);

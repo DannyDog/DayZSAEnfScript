@@ -131,7 +131,7 @@ class QuantityConversions
 				return QUANTITY_HIDDEN;
 			}
 			
-			int max = item.ConfigGetInt("varQuantityMax");
+			int max = item.GetQuantityMax();
 			bool bar = item.ConfigGetBool("quantityBar");
 			if ( max > 0 )
 			{
@@ -141,7 +141,14 @@ class QuantityConversions
 				}
 				else
 				{
-					return QUANTITY_COUNT;
+					if (max == 1)
+					{
+						return QUANTITY_HIDDEN;
+					}
+					else
+					{
+						return QUANTITY_COUNT;
+					}
 				}
 			}
 		}

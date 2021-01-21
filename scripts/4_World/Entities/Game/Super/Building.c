@@ -61,8 +61,10 @@ class BuildingBase: Building
 			m_InputActionMap.Insert(ai, action_array);
 		}
 		
-		Print("+ " + this + " add action: " + action + " input " + ai);
-
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog(action.ToString() + " -> " + ai, this.ToString() , "n/a", "Add action" );
+		}
 		action_array.Insert(action);
 	}
 	

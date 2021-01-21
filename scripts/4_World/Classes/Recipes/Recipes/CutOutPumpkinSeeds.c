@@ -35,7 +35,6 @@ class CutOutPumpkinSeeds extends RecipeBase
 		//ingredient 2
 		InsertIngredient(1,"Sickle");//you can insert multiple ingredients this way
 		InsertIngredient(1,"Hacksaw");
-		InsertIngredient(1,"HandSaw");
 		InsertIngredient(1,"KitchenKnife");
 		InsertIngredient(1,"SteakKnife");
 		InsertIngredient(1,"StoneKnife");
@@ -43,14 +42,25 @@ class CutOutPumpkinSeeds extends RecipeBase
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
-		InsertIngredient(1,"WoodAxe");
-		InsertIngredient(1,"Hatchet");
-		InsertIngredient(1,"FirefighterAxe");
-		InsertIngredient(1,"Sword");
 		InsertIngredient(1,"AK_Bayonet");
 		InsertIngredient(1,"M9A1_Bayonet");
 		InsertIngredient(1,"Mosin_Bayonet");
 		InsertIngredient(1,"SKS_Bayonet");
+		InsertIngredient(1,"Shovel");
+		InsertIngredient(1,"Crowbar");
+		InsertIngredient(1,"Hammer");
+		InsertIngredient(1,"Wrench");
+		InsertIngredient(1,"LugWrench");
+		InsertIngredient(1,"Screwdriver");
+		InsertIngredient(1,"SledgeHammer");
+		InsertIngredient(1,"BaseballBat");
+		InsertIngredient(1,"NailedBaseballBat");
+		InsertIngredient(1,"Pickaxe");
+		InsertIngredient(1,"Sword");
+		InsertIngredient(1,"WoodAxe");
+		InsertIngredient(1,"FirefighterAxe");
+		InsertIngredient(1,"Hatchet");
+		InsertIngredient(1,"HandSaw");
 		
 		m_IngredientAddHealth[1] = -0.5;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
@@ -91,6 +101,13 @@ class CutOutPumpkinSeeds extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
+		ItemBase pumpkin_IB = ingredients[0];
+		Pumpkin pumpkin = Pumpkin.Cast(pumpkin_IB);
+		
+		ItemBase slice_IB = results[1];
+		SlicedPumpkin slice = SlicedPumpkin.Cast(slice_IB);
+		
+		MiscGameplayFunctions.TransferItemProperties(pumpkin, slice);
 		Debug.Log("Recipe Do method called","recipes");
 	}
 };

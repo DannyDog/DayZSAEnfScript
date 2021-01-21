@@ -102,6 +102,7 @@
                         "Jakub Palkovič",
                         "Ľuboš Kováč",
                         "Martin Strapko",
+                        "Martin Weiser",
                         "Peter Jánošík",
                         "Pierre Rencurel",
                         "Radek Řáda",
@@ -162,7 +163,6 @@
                         "László Nagy",
                         "Lukáš Igaz",
                         "Marek Zeman",
-					    "Martin Weiser",
                         "Matúš Štefánik",
                         "Mojmír Svoboda",
                         "Ondrej Ritomský",
@@ -524,17 +524,7 @@
                     "SectionLines": [
                         "Anna Buenafe",
                         "Martin Čulák",
-                        "Dustin Hucks"
-                    ]
-                }
-            ]
-        },
-		{
-            "DepartmentName": "",
-            "Sections": [
-                {
-                    "SectionName": "#marketing_specialist",
-                    "SectionLines": [
+                        "Dustin Hucks",
                         "Scott Bowen"
                     ]
                 }
@@ -546,7 +536,9 @@
                 {
                     "SectionName": "#brand_and_pr_management_team",
                     "SectionLines": [
-						"Jakub Vamberský",
+                        "Jakub Vamberský",
+                        "Karolina Havelkova",
+                        "Lynn Thun Zaw",
                         "Miguel Raimundo",
 						"Matěj Smrček",
                         "Michael Christensen",

@@ -6,6 +6,12 @@ class EmoteCB : HumanCommandActionCallback
 	PlayerBase 		m_player;
 	EmoteManager 	m_Manager;
 	
+	void ~EmoteCB()
+	{
+		if (GetGame() && m_player)
+			m_player.RequestHandAnimationStateRefresh();
+	}
+	
 	bool CancelCondition()
 	{
 		return false;
@@ -577,20 +583,16 @@ class EmoteManager
 	
 	protected void HideItemInHands()
 	{
+		m_Player.TryHideItemInHands(true);
 		m_item = m_Player.GetItemInHands();
-		if(m_Callback && m_item)
-		{
-			m_Player.TryHideItemInHands(true);
+		
+		if (m_Callback && m_item)
 			m_ItemToHands = true;
-		}
 	}
 	
 	protected void ShowItemInHands()
 	{
-		if (m_item)
-		{
-			m_Player.TryHideItemInHands(false);
-		}
+		m_Player.TryHideItemInHands(false);
 		m_ItemToHands = false;
 	}
 	

@@ -18,6 +18,18 @@ class LoadingMenu extends UIScriptedMenu
 		
 		m_image.LoadImageFile( 0, GetRandomLoadingBackground() );
 		
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			Widget exp_notifiaction = layoutRoot.FindAnyWidget("notification_root");
+			if (exp_notifiaction)
+			{
+				exp_notifiaction.Show(true);
+			}
+		#endif
+		#endif
+		#endif
+		
 		return layoutRoot;
 	}
 

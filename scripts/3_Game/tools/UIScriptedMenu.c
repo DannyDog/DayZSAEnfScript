@@ -48,6 +48,11 @@ class UIMenuPanel: Managed
 	int GetID()	{
 		return MENU_UNKNOWN;
 	}
+	
+	//! Refresh request, called from anywhere
+	void Refresh()
+	{
+	}
 };
 
 //-----------------------------------------------------------------------------
@@ -195,10 +200,11 @@ class UIScriptedMenu extends UIMenuPanel
 		#endif
 	}
 
+	// Moved to parent
 	//! Refresh request, called from anywhere
-	void Refresh()
-	{
-	}
+	//void Refresh()
+	//{
+	//}
 
 	proto native void SetFadingPanels(Widget panel0, Widget panel1, Widget panel2, Widget panel3, Widget panel4);
 	

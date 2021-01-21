@@ -18,7 +18,13 @@ class ActionBaseCB : HumanCommandActionCallback
 	//Command events
 	override void OnFinish(bool pCanceled)	
 	{
-		PrintString("ActionBase.c | ActionBaseCB | OnFinish called : " + pCanceled.ToString() );	
+		if( LogManager.IsActionLogEnable() )
+		{
+			if( m_ActionData)
+				Debug.ActionLog("Time stamp: " + m_ActionData.m_Player.GetSimulationTimeStamp(), m_ActionData.m_Action.ToString() , "n/a", "OnFinish", m_ActionData.m_Player.ToString() );
+			else
+				Debug.ActionLog("n/a", this.ToString() , "n/a", "OnFinish", "n/a" );
+		}
 		if ( m_SoundObject ) 
 		{
 			GetGame().ObjectDelete(m_SoundObject);
@@ -70,7 +76,10 @@ class ActionBaseCB : HumanCommandActionCallback
 	{
 		if ( GetGame().IsServer() )
 		{
-			PrintString("Interupt in actionbase called - server");
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("n/a", this.ToString() , "n/a", "Interrupt", m_ActionData.m_Player.ToString() );	
+			}
 			if( GetGame().IsMultiplayer() )
 			{
 				DayZPlayerSyncJunctures.SendActionInterrupt(m_ActionData.m_Player);
@@ -186,6 +195,10 @@ class AnimatedActionBase : ActionBase
 			
 			if (action && ( !action.UseMainItem() || action_data.m_MainItem ) && ( !action.HasTarget() || action_data.m_Target ))
 			{
+				if( LogManager.IsActionLogEnable() )
+				{
+					Debug.ActionLog("Time stamp: " + action_data.m_Player.GetSimulationTimeStamp(), this.ToString() , "n/a", "OnExecute", action_data.m_Player.ToString() );
+				}
 				OnExecute(action_data);
 			
 				if (GetGame().IsServer())
@@ -319,7 +332,10 @@ class AnimatedActionBase : ActionBase
 		if ( state == UA_ERROR || !action_data.m_Callback || !action_data.m_Player || !action_data.m_ActionComponent ) //jtomasik - tohle mozna muze byt v CancelCondtion metodu callbacku?
 		{
 #ifdef DEVELOPER
-			Print("ActionBase.c | Do | ABRUPT CANCEL, CONDITIONS NOT MET");
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("ABRUPT CANCEL, CONDITIONS NOT MET", this.ToString() , "n/a", "Do", action_data.m_Player.ToString() );
+			}
 #endif
 			if ( action_data.m_Callback && action_data.m_Player )
 			{			
@@ -327,7 +343,7 @@ class AnimatedActionBase : ActionBase
 			}
 			else
 			{
-				Print("ActionBase.c | Do | PLAYER LOST");
+				Debug.ActionLog("PLAYER LOST", this.ToString() , "n/a", "Do", action_data.m_Player.ToString() );
 			}	
 		}
 		else
@@ -428,7 +444,7 @@ class AnimatedActionBase : ActionBase
 						Do(action_data, UA_CANCEL);
 					}
 				default:
-					PrintString("ActionBase.c | Do | ACTION COMPONENT RETURNED WRONG VALUE: "+state.ToString());
+					Debug.ActionLog("Ation component returned wrong walue", this.ToString() , "n/a", "Do", action_data.m_Player.ToString() );
 					action_data.m_Callback.Interrupt();
 					break;
 			}
@@ -472,7 +488,10 @@ class AnimatedActionBase : ActionBase
 		}
 		else
 		{
-			Print("ActionBase.c | End | ACTION COULD NOT BE FINISHED RIGHT AT THE END");
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("Ation could not be finished right at the end", this.ToString() , "n/a", "End", action_data.m_Player.ToString() );
+			}
 			action_data.m_Callback.Interrupt();
 		}
 		

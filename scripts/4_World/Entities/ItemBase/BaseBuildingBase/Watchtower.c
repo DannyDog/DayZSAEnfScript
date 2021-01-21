@@ -83,6 +83,67 @@ class Watchtower extends BaseBuildingBase
 		return true;
 	}
 	
+	override bool PerformRoofCheckForBase( string partName, PlayerBase player, out bool result )
+	{
+		if (partName != "level_1_base" && partName != "level_2_base" && partName != "level_3_base" && partName != "level_3_roof")
+		{
+			return false;
+		}
+		
+		vector center;
+		vector orientation = GetOrientation();
+		vector edge_length;
+		vector min_max[2];
+		ref array<Object> excluded_objects = new array<Object>;
+		ref array<Object> collided_objects = new array<Object>;
+		
+		excluded_objects.Insert( this );
+		excluded_objects.Insert( player );
+		
+		if ( partName == "level_2_base" )
+		{
+			min_max[0] = GetMemoryPointPos( "level_2_wall_1_down_min" );
+			min_max[1] = GetMemoryPointPos( "level_2_roof_max" );
+		}
+		else if ( partName == "level_3_base" )
+		{
+			min_max[0] = GetMemoryPointPos( "level_3_wall_1_down_min" );
+			min_max[1] = GetMemoryPointPos( "level_3_wall_2_up_max" );
+		}
+		else if ( partName == "level_3_roof" )
+		{
+			min_max[0] = GetMemoryPointPos( "level_3_roof_min" );
+			min_max[1] = GetMemoryPointPos( "level_3_roof_max" );
+		}
+		else
+		{
+			//min_max[0] = GetMemoryPointPos( "level_1_wall_1_up_min" );
+			//min_max[0] = GetMemoryPointPos( "level_1_wall_1_down_min" );
+			min_max[0] = GetMemoryPointPos( "level_1_collisioncheck_min" );
+			min_max[1] = GetMemoryPointPos( "level_1_roof_max" );
+		}
+		center = GetPosition();
+		center[1] = center[1] + ( min_max[1][1] + min_max[0][1] ) / 2;
+		
+		edge_length[0] = min_max[1][0] - min_max[0][0];
+		edge_length[2] = min_max[1][2] - min_max[0][2];
+		edge_length[1] = min_max[1][1] - min_max[0][1];
+		
+		result = false;
+		/*result = */GetGame().IsBoxCollidingGeometry( center, orientation, edge_length, ObjIntersectView, ObjIntersectGeom, excluded_objects, collided_objects );
+		if ( collided_objects.Count() > 0 )
+		{
+			foreach ( Object o : collided_objects )
+			{
+				if (Building.Cast(o))
+				{
+					result = true;
+				}
+			}
+		}
+		return true;
+	}
+	
 	// --- INVENTORY
 	override bool CanDisplayAttachmentSlot( string slot_name )
 	{

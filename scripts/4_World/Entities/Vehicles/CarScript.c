@@ -55,6 +55,8 @@ class CarScript extends Car
 	protected float m_FuelTankHealth;
 	protected float m_BatteryHealth;
 	protected float m_PlugHealth;
+	
+	protected float	m_BatteryConsume = 15; //Battery energy consumption upon engine start
 
 	//! Particles
 	protected ref EffVehicleSmoke m_coolantFx;
@@ -96,6 +98,8 @@ class CarScript extends Car
 	protected bool m_HeadlightsOn;
 	protected bool m_HeadlightsState;
 	protected bool m_BrakesArePressed; // synchronized variable
+	
+	protected bool m_ForceUpdateLights = false;
 	
 	CarLightBase 		m_Headlight;
 	CarRearLightBase 	m_RearLight;
@@ -148,6 +152,7 @@ class CarScript extends Car
 		RegisterNetSyncVariableBool("m_PlayCrashSoundHeavy");
 		RegisterNetSyncVariableBool("m_HeadlightsOn");
 		RegisterNetSyncVariableBool("m_BrakesArePressed");
+		RegisterNetSyncVariableBool("m_ForceUpdateLights");
 		
 		if 	( MemoryPointExists("ptcExhaust_end") )
 		{
@@ -274,18 +279,22 @@ class CarScript extends Car
 		return ModelToWorld( m_side_2_2Pos );
 	}
 
-/*
+
 	//here we should handle the damage dealt in OnContact event, but maybe we will react even in that event 
-	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
+	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
 	{
-		string debugStr = "";
-		Print("CarScript>>> EEHitBy");
-		Print( dmgZone );
-		Print( damageResult );
-		Print( source );
-		debugStr = "Component" + component.ToString();
-		Print(  debugStr  );
-		Print( damageResult.GetDamage(dmgZone, "Health") );
+		super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
+		ForceUpdateLightsStart();
+		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).CallLater( ForceUpdateLightsEnd, 100, false );
+		
+		//string debugStr = "";
+		//Print("CarScript>>> EEHitBy");
+		//Print( dmgZone );
+		//Print( damageResult );
+		//Print( source );
+		//debugStr = "Component" + component.ToString();
+		//Print(  debugStr  );
+		//Print( damageResult.GetDamage(dmgZone, "Health") );
 
 		//if ( dmgZone == "Engine" && GetHealth("Engine","") < 0.1 )
 		//{
@@ -301,7 +310,7 @@ class CarScript extends Car
 		//	}
 		//}
 	}
-*/
+
 
 	override void EEDelete(EntityAI parent)
 	{
@@ -701,6 +710,12 @@ class CarScript extends Car
 				OnBrakesReleased();
 			}
 		}
+		
+		if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) && m_ForceUpdateLights )
+		{
+			UpdateLights();
+			m_ForceUpdateLights = false;
+		}
     }
 	
 	
@@ -949,6 +964,18 @@ class CarScript extends Car
 	//! Gets called everytime the engine starts.
 	override void OnEngineStart()
 	{
+		
+		ItemBase battery;
+		if ( IsVitalCarBattery() ) 
+			battery = ItemBase.Cast( FindAttachmentBySlotName("CarBattery") );
+		else if ( IsVitalTruckBattery() ) 
+			battery = ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );
+		
+		if (GetGame().IsServer() && battery)
+		{
+			battery.GetCompEM().ConsumeEnergy(GetBatteryConsumption());
+		}
+		
 		UpdateLights();
 	}
 
@@ -1660,8 +1687,8 @@ class CarScript extends Car
 	void SetActions()
 	{
 		//AddAction(ActionAnimateCarSelection); not needed now
-		AddAction(ActionOpenCarDoors);
-		AddAction(ActionCloseCarDoors);
+		AddAction(ActionOpenCarDoorsOutside);
+		AddAction(ActionCloseCarDoorsOutside);
 		AddAction(ActionGetInTransport);
 		AddAction(ActionSwitchLights);
 	}
@@ -1690,8 +1717,10 @@ class CarScript extends Car
 			m_InputActionMap.Insert(ai, action_array);
 		}
 		
-		Print("+ " + this + " add action: " + action + " input " + ai);
-
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog(action.ToString() + " -> " + ai, this.ToString() , "n/a", "Add action" );
+		}
 		action_array.Insert(action);
 	}
 	
@@ -1744,5 +1773,23 @@ class CarScript extends Car
 		float amount = Math.RandomFloat(0.0, maxVolume * 0.35 );
 
 		Fill( CarFluid.FUEL, amount );
+	}
+	
+	void ForceUpdateLightsStart()
+	{
+		m_ForceUpdateLights = true;
+		SetSynchDirty();
+	}
+	
+	void ForceUpdateLightsEnd()
+	{
+		m_ForceUpdateLights = false;
+		SetSynchDirty();
+	}
+	
+	//Get the engine start battery consumption
+	float GetBatteryConsumption()
+	{
+		return m_BatteryConsume;
 	}
 };

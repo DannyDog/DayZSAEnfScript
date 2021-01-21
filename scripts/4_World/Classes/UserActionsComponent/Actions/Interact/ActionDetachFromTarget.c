@@ -10,6 +10,11 @@ class ActionDetachFromTarget: ActionInteractBase
 	void ActionDetachFromTarget()
 	{
 	}
+	
+	override typename GetInputType()
+	{
+		return ContinuousInteractActionInput;
+	}
 		
 	override string GetText()
 	{

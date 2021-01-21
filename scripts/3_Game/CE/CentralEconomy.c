@@ -110,6 +110,7 @@ class CEApi
 	proto native void SpawnBuilding( vector vPos, bool bShowCylinders );
 
 	proto native void SpawnEntity( string sClassName, vector vPos, float fRange, int iCount );
+	proto native Object SpawnSingleEntity( string sClassName, vector vPos );
 	proto native void SpawnRotation( string sClassName, vector vPos, float fRange, int iCount, int iFlags );
 	proto native void SpawnPerfTest( string sClassName, int iCount );
 	proto native void CleanMap();

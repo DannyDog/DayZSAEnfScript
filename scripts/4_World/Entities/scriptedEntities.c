@@ -6,16 +6,24 @@ const bool DebugTrigger = false;
 
 class TriggerInsider
 {
-	ref OLinkT insider;
+	ref OLinkT insider; // DEPRICATED
+	protected Object m_Object;
 	int timeStamp;
 	void TriggerInsider(Object obj)
 	{
 		insider = new OLinkT(obj);
+		m_Object = obj;
 	}
+	
+	void ~TriggerInsider()
+    {
+        //delete m_Insider;
+		//delete m_Object;
+    }
 
 	Object GetObject()
 	{
-		return insider.Ptr();
+		return m_Object;
 	}
 };
 
@@ -59,7 +67,7 @@ class Trigger extends ScriptedEntity
 		for(int n = 0; n < m_insiders.Count(); )
 		{
 			TriggerInsider ins = m_insiders.Get(n);
-			if(ins.insider == NULL)
+			if(ins.GetObject() == NULL)
 			{
 				//object has been deleted. Remove it
 				m_insiders.Remove(n);
@@ -70,7 +78,7 @@ class Trigger extends ScriptedEntity
 			if(timeDiff > timeout)
 			{
 				//object left. Remove it
-				OnLeave(ins.insider.Ptr());
+				OnLeave(ins.GetObject());
 				m_insiders.Remove(n);
 				continue;
 			}
@@ -86,7 +94,7 @@ class Trigger extends ScriptedEntity
 		{
 			ins = m_insiders.Get(n);
 			//already in?
-			if(ins.insider.Ptr() == obj)
+			if(ins.GetObject() == obj)
 			{
 				//just update timestamp
 				ins.timeStamp = g_Game.GetTime();

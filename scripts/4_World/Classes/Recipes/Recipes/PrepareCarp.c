@@ -1,4 +1,4 @@
-class PrepareCarp extends RecipeBase
+class PrepareCarp extends PrepareFish
 {	
 	override void Init()
 	{
@@ -106,22 +106,8 @@ class PrepareCarp extends RecipeBase
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
 		// Adjusts quantity of results to the quantity of the 1st ingredient
-		ItemBase item_ingredient;
-		Class.CastTo(item_ingredient, ingredients[0]);
+		super.Do(ingredients, player, results, specialty_weight);
 		
-		float MaxQuantity = item_ingredient.GetQuantityMax();
-		float CurrentQuantity = item_ingredient.GetQuantity();
-		float adjust = CurrentQuantity / MaxQuantity;
-		
-		for (int i=0; i < results.Count(); i++)
-		{
-			ItemBase item_result;
-			Class.CastTo(item_result, results.Get(i));
-			if (m_ResultSetFullQuantity[i] == false)
-			{
-				item_result.SetQuantity(item_result.GetQuantityMax() * adjust);
-			}
-		}
 		Debug.Log("Recipe Do method called","recipes");
 	}
 };

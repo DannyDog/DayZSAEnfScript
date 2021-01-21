@@ -3,9 +3,13 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//Visual animations
 	const string ANIMATION_OPENED 			= "LidOff";
 	const string ANIMATION_CLOSED			= "LidOn";
+	const int SOUND_NONE 					= -1;
+	const int SOUND_OPENING 				= 0;
+	const int SOUND_CLOSING 				= 1;
 	
 	protected bool m_IsOpenedClient			= false;
-
+	protected int m_LastSoundPlayed;
+	
 	protected ref OpenableBehaviour m_Openable;
 	
 	void BarrelHoles_ColorBase()
@@ -27,6 +31,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		ProcessInvulnerabilityCheck("disableContainerDamage");
 		
 		m_LightDistance = 50;
+		m_LastSoundPlayed = SOUND_NONE;
 	}
 	
 	override int GetDamageSystemVersionChange()
@@ -87,15 +92,25 @@ class BarrelHoles_ColorBase extends FireplaceBase
 			RefreshFireParticlesAndSounds( false );
 						
 			//sound sync
-			if ( IsOpen() && IsSoundSynchRemote() )
+			if ( IsSoundSynchRemote() )
 			{
-				SoundBarrelOpenPlay();
+				if ( IsOpen() && m_LastSoundPlayed != SOUND_OPENING )
+				{
+					//DumpStack();
+					SoundBarrelOpenPlay();
+				}
+				
+				if ( !IsOpen() && m_LastSoundPlayed != SOUND_CLOSING )
+				{
+					//DumpStack();
+					SoundBarrelClosePlay();
+				}
+			}
+			else
+			{
+				m_LastSoundPlayed = SOUND_NONE;
 			}
 			
-			if ( !IsOpen() && IsSoundSynchRemote() )
-			{
-				SoundBarrelClosePlay();
-			}
 		}
 
 		UpdateVisualState();
@@ -540,12 +555,14 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
+		m_LastSoundPlayed = SOUND_OPENING;
 	}
 	
 	void SoundBarrelClosePlay()
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
+		m_LastSoundPlayed = SOUND_CLOSING;
 	}
 	
 	void DestroyClutterCutter( Object clutter_cutter )

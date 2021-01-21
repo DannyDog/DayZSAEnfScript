@@ -18,6 +18,7 @@ class Shovel extends ItemBase
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
+		AddAction(ActionDismantleGardenPlot);
 		AddAction(ActionDismantlePart);
 		AddAction(ActionBuildPart);
 		AddAction(ActionBuryBody);

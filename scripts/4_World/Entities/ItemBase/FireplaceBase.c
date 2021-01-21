@@ -49,8 +49,9 @@ class FireplaceBase extends ItemBase
 	const float	PARAM_ITEM_HEAT_TEMP_INCREASE_COEF	= 10;		//! value for calculating temperature increase on each heat update interval (degree Celsius)
 	const float	PARAM_ITEM_HEAT_MIN_TEMP			= 40;		//! minimum temperature for items that can be heated in fireplace cargo or as attachments (degree Celsius)
 	const float PARAM_MAX_ITEM_HEAT_TEMP_INCREASE	= 200;		//! maximum value of temperature of items in fireplace when heating (degree Celsius)
-	const float PARAM_HEAT_RADIUS 					= 3.0;		//! radius in which objects are heated by fire
-	const float PARAM_HEAT_THROUGH_AIR_COEF			= 0.035;	//! value for calculation of heat transfered from fireplace through air to player (environment)
+	const float PARAM_FULL_HEAT_RADIUS 				= 2.0;		//! radius in which objects are fully heated by fire
+	const float PARAM_HEAT_RADIUS 					= 4.0;		//! radius in which objects are heated by fire
+	const float PARAM_HEAT_THROUGH_AIR_COEF			= 0.030;	//! value for calculation of heat transfered from fireplace through air to player (environment)
 	//! 
 	const int 	MIN_STONES_TO_BUILD_CIRCLE			= 8;		//! minimum amount of stones for circle
 	const int 	MIN_STONES_TO_BUILD_OVEN			= 16;		//! minimum amount of stones for oven
@@ -1646,11 +1647,14 @@ class FireplaceBase extends ItemBase
 	//Do heating
 	protected void Heating()
 	{
-		//Debug
+		//!DEBUG
 		/*
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		player.MessageAction ( "Heating..." );
 		*/
+		#ifdef DEVELOPER
+		this.Debug();
+		#endif
 		
 		float wetness = GetWet();
 		float temperature = GetTemperature();
@@ -2194,9 +2198,17 @@ class FireplaceBase extends ItemBase
 				PlayerBase player = PlayerBase.Cast( nearest_object );
 				distance = vector.Distance( player.GetPosition(), GetPosition() );
 				distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
+				float temperature = 0;
 				
 				//! heat transfer through air to player ( anv temperature )
-				float temperature = GetTemperature() * ( PARAM_HEAT_THROUGH_AIR_COEF / distance );
+				if ( distance > PARAM_FULL_HEAT_RADIUS )
+				{
+					float distFactor = 1 - (distance/PARAM_HEAT_RADIUS);
+					temperature = GetTemperature() * ( PARAM_HEAT_THROUGH_AIR_COEF * distFactor);
+				}
+				else
+					temperature = GetTemperature() * ( PARAM_HEAT_THROUGH_AIR_COEF );
+				
 				player.AddToEnvironmentTemperature( temperature );
 			}
 			//! heat transfer to items (no in player possession)
@@ -2353,14 +2365,21 @@ class FireplaceBase extends ItemBase
 	static bool IsEntityOnWaterSurface( notnull EntityAI entity_ai )
 	{
 		vector fireplace_pos = entity_ai.GetPosition();	
-		if( GetGame().SurfaceIsSea( fireplace_pos[0], fireplace_pos[2] ) )
+		if ( GetGame().SurfaceIsSea( fireplace_pos[0], fireplace_pos[2] ) )
 		{
 			return true;
 		}
-		else if( GetGame().SurfaceIsPond( fireplace_pos[0], fireplace_pos[2] ) )
+		else if ( GetGame().SurfaceIsPond( fireplace_pos[0], fireplace_pos[2] ) )
 		{
 			return true;
 		}
+		else
+		{
+			string surface_type;
+			GetGame().SurfaceGetType3D( fireplace_pos[0], fireplace_pos[1] + 1.0, fireplace_pos[2], surface_type );
+			return surface_type.Contains("water");
+		}
+		
 		return false;
 	}
 	bool IsOnWaterSurface()
@@ -2636,4 +2655,80 @@ class FireplaceBase extends ItemBase
 		}
 		m_OvenAttachmentsLockState = lock;
 	}
+	override bool DisassembleOnLastDetach()
+	{
+		return true;
+	}	
+	
+#ifdef DEVELOPER	
+	
+	//================================================================
+	// DEBUG
+	//================================================================
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			ItemBase firewood = ItemBase.Cast(entity.GetInventory().CreateInInventory( "Firewood" ));
+ 			firewood.SetQuantity(firewood.GetQuantityMax());
+			
+			ItemBase sticks = ItemBase.Cast(entity.GetInventory().CreateInInventory( "WoodenStick" ));
+ 			sticks.SetQuantity(sticks.GetQuantityMax());
+			
+			ItemBase stone = ItemBase.Cast(entity.GetInventory().CreateInInventory( "Stone" ));
+ 			stone.SetQuantity(stone.GetQuantityMax());
+			
+			entity.GetInventory().CreateInInventory( "Rag" );
+			
+			
+			entity.SpawnEntityOnGroundPos("PetrolLighter", entity.GetPosition());
+		}
+		
+		//StartFire(true);
+	}
+
+	
+	protected ref array<Shape> dbgTargets = new array<Shape>();
+	
+	void Debug()
+	{
+		bool showSpheres = DiagMenu.GetBool(DiagMenuIDs.DM_SHOW_FIREHEAT_RADIUS);
+		if (showSpheres)
+		{
+			if ( !GetGame().IsMultiplayer() || !GetGame().IsServer() )
+			{
+				//Print("Debug");
+				vector w_pos, w_pos_sphr, w_pos_lend;
+				Object obj;
+		
+				CleanupDebugShapes(dbgTargets);
+		
+				w_pos = this.GetPosition();
+				// sphere pos tweaks
+				w_pos_sphr = w_pos;
+				// line pos tweaks
+				w_pos_lend = w_pos;
+				
+				dbgTargets.Insert( Debug.DrawSphere(w_pos_sphr, PARAM_FULL_HEAT_RADIUS, COLOR_RED_A, ShapeFlags.TRANSP));
+				dbgTargets.Insert( Debug.DrawSphere(w_pos_sphr, PARAM_HEAT_RADIUS, COLOR_YELLOW_A, ShapeFlags.TRANSP));
+			}
+		}
+		else
+			CleanupDebugShapes(dbgTargets);
+	}
+	
+	protected void CleanupDebugShapes(array<Shape> shapes)
+	{
+		for ( int it = 0; it < shapes.Count(); ++it )
+		{
+			Debug.RemoveShape( shapes[it] );
+		}
+
+		shapes.Clear();
+	}
+	
+#endif
 }

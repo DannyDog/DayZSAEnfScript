@@ -238,9 +238,10 @@ class ItemBase extends InventoryItem
 			action_array = new array<ActionBase_Basic>;
 			m_InputActionMap.Insert(ai, action_array);
 		}
-		
-		Debug.Log("+ " + this + " add action: " + action + " input " + ai);
-
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog(action.ToString() + " -> " + ai, this.ToString() , "n/a", "Add action" );
+		}
 		action_array.Insert(action);
 	}
 	
@@ -735,13 +736,20 @@ class ItemBase extends InventoryItem
 	{
 		return false;
 	}
-/*
-	bool CanBeRepairedToPristine()
-	{
-		return false;
-	}
-*/
+	
 	bool CanBeRepairedByCrafting()
+	{
+		return true;
+	}
+	
+	//--- ACTION CONDITIONS
+	//direction
+	bool IsFacingPlayer( PlayerBase player, string selection )
+	{
+		return true;
+	}
+	
+	bool IsPlayerInside( PlayerBase player, string selection )
 	{
 		return true;
 	}
@@ -1117,16 +1125,10 @@ class ItemBase extends InventoryItem
 	}
 	override void OnWasAttached( EntityAI parent, int slot_id )
 	{
-		/*PlayerBase player = PlayerBase.Cast(parent);
-		if (player)
-			//player.SwitchItemTypeAttach(this, slot_id);
-		//{
-		//	player.UpdateQuickBarEntityVisibility(this);
-		//}*/
-		//Print("OnWasAttached: " + GetType());
-		
 		if ( HasQuantity() )
 			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
+		
+		PlayAttachSound(InventorySlots.GetSlotName(slot_id));
 	}
 	
 	override void OnWasDetached( EntityAI parent, int slot_id )
@@ -1135,25 +1137,14 @@ class ItemBase extends InventoryItem
 		{
 			UpdateNetSyncVariableFloat( "m_VarQuantity", GetQuantityMin(), ConfigGetInt("varQuantityMax") );
 		}
-
-		//Print("OnWasDetached: " + GetType());
+		
+		//PlayDetachSound(InventorySlots.GetSlotName(slot_id));
+		
 		PlayerBase player = PlayerBase.Cast(parent);
 		if (player)
 		{
 			if( !GetGame().IsServer() )
 			return;
-			
-			/*if (this.ConfigIsExisting("ChangeIntoOnDetach"))
-			{
-				string str = ChangeIntoOnDetach(slot_id);
-				if (str  != "")
-				//quantity override is needed here, otherwise optional
-				{
-					TurnItemIntoItemLambda lamb = new TurnItemIntoItemLambda(this, str, player);
-					lamb.SetTransferParams(true, true, true, false,1);
-					MiscGameplayFunctions.TurnItemIntoItemEx(player, lamb);
-				}
-			}*/
 		}
 	}
 	
@@ -1426,14 +1417,6 @@ class ItemBase extends InventoryItem
 					return;
 				}
 				
-				EntityAI parent = GetHierarchyParent();
-				
-				if( parent )
-				{
-					new_item = ItemBase.Cast( SpawnEntityOnGroundPos( GetType(), parent.GetWorldPosition() ) );
-					new_item.PlaceOnSurface();
-				}
-				else
 					new_item = ItemBase.Cast( GetGame().CreateObjectEx( GetType(), player.GetWorldPosition(), ECE_PLACE_ON_SURFACE ) );
 				
 				if( new_item )
@@ -1695,12 +1678,13 @@ class ItemBase extends InventoryItem
 	{
 		super.OnRightClick();
 		
-		if ( CanBeSplit() && !GetDayZGame().IsLeftCtrlDown() )
+		if ( CanBeSplit() && !GetDayZGame().IsLeftCtrlDown() && !GetGame().GetPlayer().GetInventory().HasInventoryReservation(this,null) )
 		{
 			if ( GetGame().IsClient() )
 			{
 				if ( ScriptInputUserData.CanStoreInputUserData() )
 				{
+					vector m4[4];
 					PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 					
 					InventoryLocation dst = new InventoryLocation;
@@ -1710,7 +1694,6 @@ class ItemBase extends InventoryItem
 						
 						if (root)
 						{
-							vector m4[4];
 							root.GetTransform(m4);
 							dst.SetGround(this, m4);
 						}
@@ -1720,6 +1703,11 @@ class ItemBase extends InventoryItem
 					else
 					{
 						dst.SetCargo( dst.GetParent(), this, dst.GetIdx(), dst.GetRow(), dst.GetCol(), dst.GetFlip());
+						if( !GetGame().GetPlayer().GetInventory().AddInventoryReservation( null, dst, GameInventory.c_InventoryReservationTimeoutShortMS) )
+						{
+							root.GetTransform(m4);
+							dst.SetGround(this, m4);
+						}
 					}
 					
 					Print(dst.DumpToStringNullSafe(dst));
@@ -1741,11 +1729,11 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
-	override bool CanBeCombined( EntityAI other_item, bool reservation_check = true )
+	override bool CanBeCombined( EntityAI other_item, bool reservation_check = true, bool stack_max_limit = false )
 	{
 //S		Print("CanBeCombined - " + this + ": " + GetQuantity() + " + " + other_item + ": " + other_item.GetQuantity());
 		//TODO: delete check zero quantity check after fix double posts hands fsm events
-		if ( !other_item || GetType() != other_item.GetType() || (IsFullQuantity() && other_item.GetQuantity() > 0) )
+		if ( !other_item || GetType() != other_item.GetType() || (IsFullQuantity() && other_item.GetQuantity() > 0) || other_item == this)
 			return false;
 
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED || other_item.GetHealthLevel() == GameConstants.STATE_RUINED )	
@@ -1761,11 +1749,25 @@ class ItemBase extends InventoryItem
 		{
 			if ( mag.GetAmmoCount() >= mag.GetAmmoMax())
 				return false;
+			
+			if(stack_max_limit)
+			{
+				Magazine other_mag = Magazine.Cast(other_item);
+				if(other_item)
+				{
+					if(mag.GetAmmoCount() + other_mag.GetAmmoCount() > mag.GetAmmoMax())
+						return false;
+				}
+			
+			}
 		}
 		else
 		{
 			//TODO: delete check zero quantity check after fix double posts hands fsm events
 			if ( GetQuantity() >= GetQuantityMax() && other_item.GetQuantity() > 0  )	
+				return false;
+			
+			if (stack_max_limit && (GetQuantity() + other_item.GetQuantity()  > GetQuantityMax()))
 				return false;
 		}
 
@@ -3929,6 +3931,11 @@ class ItemBase extends InventoryItem
 		
 	}
 	
+	string GetDeployFinishSoundset()
+	{
+	
+	}
+	
 	void SetIsPlaceSound( bool is_place_sound )
 	{
 		m_IsPlaceSound = is_place_sound;
@@ -3958,6 +3965,15 @@ class ItemBase extends InventoryItem
 		}
 	}
 	
+	void PlayDeployFinishSound()
+	{
+		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
+		{
+			EffectSound sound =	SEffectManager.PlaySound( GetDeployFinishSoundset(), GetPosition() );
+			sound.SetSoundAutodestroy( true );
+		}
+	}
+	
 	void PlayPlaceSound()
 	{		
 		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
@@ -3970,6 +3986,48 @@ class ItemBase extends InventoryItem
 	bool CanPlayDeployLoopSound()
 	{		
 		return IsBeingPlaced() && IsSoundSynchRemote();
+	}
+	
+	//! Plays sound on item attach. Be advised, the config structure may slightly change in 1.11 update to allow for more complex use.
+	void PlayAttachSound(string slot_type)
+	{
+		if ( GetGame().IsMultiplayer() && GetGame().IsClient() || !GetGame().IsMultiplayer() )
+		{
+			if (ConfigIsExisting("attachSoundSet"))
+			{
+				string cfg_path = "";
+				string soundset = "";
+				string type_name = GetType();
+				
+				TStringArray cfg_soundset_array = new TStringArray;
+				TStringArray cfg_slot_array = new TStringArray;
+				ConfigGetTextArray("attachSoundSet",cfg_soundset_array);
+				ConfigGetTextArray("attachSoundSlot",cfg_slot_array);
+				
+				if (cfg_soundset_array.Count() > 0 && cfg_soundset_array.Count() == cfg_slot_array.Count())
+				{
+					for (int i = 0; i < cfg_soundset_array.Count(); i++)
+					{
+						if (cfg_slot_array[i] == slot_type)
+						{
+							soundset = cfg_soundset_array[i];
+							break;
+						}
+					}
+				}
+				
+				if (soundset != "")
+				{
+					EffectSound sound =	SEffectManager.PlaySound(soundset, GetPosition());
+					sound.SetSoundAutodestroy( true );
+				}
+			}
+		}
+	}
+	
+	void PlayDetachSound(string slot_type)
+	{
+		//TODO - evaluate if needed and devise universal config structure if so
 	}
 	
 	void OnApply(PlayerBase player);
@@ -4089,7 +4147,7 @@ class ItemBase extends InventoryItem
 		// this is stub, implemented on Edible_Base
 	}
 	
-	protected bool CanDecay()
+	bool CanDecay() //Was protected, changed for access from TransferItemVariables method
 	{
 		// return true used on selected food clases so they can decay
 		return false;

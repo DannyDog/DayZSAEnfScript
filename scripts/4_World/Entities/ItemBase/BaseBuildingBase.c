@@ -912,12 +912,12 @@ class BaseBuildingBase extends ItemBase
 	
 	//--- ACTION CONDITIONS
 	//direction
-	bool IsFacingPlayer( PlayerBase player, string selection )
+	override bool IsFacingPlayer( PlayerBase player, string selection )
 	{
 		return true;
 	}
 	
-	bool IsPlayerInside( PlayerBase player, string selection )
+	override bool IsPlayerInside( PlayerBase player, string selection )
 	{
 		return true;
 	}
@@ -932,6 +932,12 @@ class BaseBuildingBase extends ItemBase
 	bool IsFacingCamera( string selection )
 	{
 		return true;
+	}
+	
+	//roof check
+	bool PerformRoofCheckForBase( string partName, PlayerBase player, out bool result )
+	{
+		return false;
 	}
 	
 	//selection->player distance check

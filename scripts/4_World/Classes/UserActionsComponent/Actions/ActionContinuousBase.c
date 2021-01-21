@@ -170,7 +170,10 @@ class ActionContinuousBase : AnimatedActionBase
 	
 	void OnStartAnimationLoop( ActionData action_data )
 	{
-		Print("OnStartAnimationLoop");
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("Time stamp: " + action_data.m_Player.GetSimulationTimeStamp(), this.ToString() , "n/a", "OnStartAnimationLoop", action_data.m_Player.ToString() );
+		}
 		
 		if(GetGame().IsServer())
 		{
@@ -185,6 +188,10 @@ class ActionContinuousBase : AnimatedActionBase
 	
 	void OnEndAnimationLoop( ActionData action_data )
 	{
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("Time stamp: " + action_data.m_Player.GetSimulationTimeStamp(), this.ToString() , "n/a", "OnEndAnimationLoop", action_data.m_Player.ToString() );
+		}
 		if(GetGame().IsServer())
 		{
 			OnEndAnimationLoopServer(action_data);
@@ -197,7 +204,11 @@ class ActionContinuousBase : AnimatedActionBase
 	}
 	
 	void OnFinishProgress( ActionData action_data )
-	{		
+	{	
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("Time stamp: " + action_data.m_Player.GetSimulationTimeStamp(), this.ToString() , "n/a", "OnFinishProgress", action_data.m_Player.ToString() );
+		}	
 		if(GetGame().IsServer())
 		{
 			OnFinishProgressServer(action_data);

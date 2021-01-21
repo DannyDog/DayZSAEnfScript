@@ -115,7 +115,7 @@ class ShockHandler
 	protected void Synchronize()
 	{
 		DayZPlayerSyncJunctures.SendShock(m_Player, m_Player.m_CurrentShock);
-		m_Player.SetSynchDirty();
+		//m_Player.SetSynchDirty();
 	}
 	
 	float SetMultiplier(float mult)

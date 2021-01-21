@@ -117,7 +117,7 @@ class Component
 	//=============================================
 	void LogThis(string msg, string fnc_name = "n/a")
 	{
-		Debug.Log(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.GetType());
+		Debug.Log(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.ToString());
 	}
 
 	//=======================================public
@@ -125,7 +125,7 @@ class Component
 	//=============================================
 	void LogThisWarning(string msg, string fnc_name = "n/a")
 	{
-		Debug.LogWarning(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.GetType());
+		Debug.LogWarning(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.ToString());
 	}
 
 	//=======================================public
@@ -133,7 +133,7 @@ class Component
 	//=============================================
 	void LogThisError(string msg, string fnc_name = "n/a")
 	{
-		Debug.LogError(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.GetType());
+		Debug.LogError(msg, GetCompName(), "n/a", fnc_name, m_ThisEntityAI.ToString());
 	}
 
 	//=======================================public
@@ -157,7 +157,8 @@ class Component
 	//=============================================
 	void Event_OnItemAttached(EntityAI item, string slot_name)
 	{
-		Log("Component=>Event_OnItemAttached");
+		LogThis("" + item + " -> " + slot_name,"Event_OnItemAttached");
+		//Debug.Log("Component=>Event_OnItemAttached: " + item + " -> " + slot_name, );
 	}
 
 	//=======================================public
@@ -165,6 +166,7 @@ class Component
 	//=============================================
 	void Event_OnItemDetached(EntityAI item, string slot_name)
 	{
-		Log("Component=>Event_OnItemDetached");
+		LogThis("" + item + " <- " + slot_name,"Event_OnItemDetached");
+		//Log("Component=>Event_OnItemDetached: " + item + " <- " + slot_name );
 	}
 }

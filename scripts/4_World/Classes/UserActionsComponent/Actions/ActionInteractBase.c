@@ -8,7 +8,11 @@ class ActionInteractBaseCB : ActionBaseCB
 	override void OnAnimationEvent(int pEventID)	
 	{	
 #ifdef DEVELOPER
-		Print("ActionInteractBase.c | OnAnimationEvent | OnAnimationEvent called");
+		if( LogManager.IsActionLogEnable() )
+		{
+			if(m_ActionData)
+				Debug.ActionLog("n/a", m_ActionData.m_Action.ToString() , "n/a", "OnAnimationEvent", m_ActionData.m_Player.ToString() );
+		}
 #endif
 		if ( !m_Interrupted && pEventID == UA_ANIM_EVENT && m_ActionData && m_ActionData.m_Action ) 
 		{
@@ -20,7 +24,10 @@ class ActionInteractBaseCB : ActionBaseCB
 	override void InitActionComponent()
 	{
 #ifdef DEVELOPER
-		Print("ActionInteractBase.c | InitActionComponent | inited");
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("n/a", m_ActionData.m_Action.ToString() , "n/a", "InitActionComponent", m_ActionData.m_Player.ToString() );
+		}
 #endif
 		m_Interrupted = false;
 		m_Canceled = false;

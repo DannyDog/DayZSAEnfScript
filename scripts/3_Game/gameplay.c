@@ -1023,6 +1023,18 @@ class DefaultCharacterCreationMethods
 	}
 }
 
+//! Used for script-based game options. For anything C++ based, you would most likely use "Option Access Type" below
+enum OptionIDsScript
+{
+	OPTION_HUD = 100, //starts at 100 to avoid ID conflict with AT_
+	OPTION_CROSSHAIR,
+	OPTION_GAME_MESSAGES,
+	OPTION_ADMIN_MESSAGES,
+	OPTION_PLAYER_MESSAGES,
+	OPTION_QUICKBAR,
+	OPTION_SERVER_INFO
+};
+
 // -------------------------------------------------------------------------
 /*
 // Option Access Type

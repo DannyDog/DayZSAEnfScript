@@ -397,7 +397,7 @@ class ScriptConsole extends UIScriptedMenu
 		else if ( w == m_ConfigHierarchyTextListbox )
 		{
 			objects_row_index = m_ConfigHierarchyTextListbox.GetSelectedRow();
-			Print(objects_row_index);
+			//Print(objects_row_index);
 
 			if ( objects_row_index > -1 && objects_row_index < m_ConfigHierarchyTextListbox.GetNumItems() )
 			{
@@ -540,7 +540,7 @@ class ScriptConsole extends UIScriptedMenu
 			m_PresetItemsTextListbox.SelectRow(-1);
 			HideItemButtons();
 			ShowItemTransferButtons();
-			m_SelectedObjectText.SetText( "Object : " + GetCurrentObjectName() );
+			m_SelectedObjectText.SetText( GetCurrentObjectName() );
 
 			m_SelectedObject = GetCurrentObjectName();
 			m_LastSelectedObject = m_SelectedObject;
@@ -600,18 +600,30 @@ class ScriptConsole extends UIScriptedMenu
 				else
 				{
 					float distance = m_SpawnDistanceEditBox.GetText().ToFloat();
+					float health = m_DamageEditBox.GetText().ToFloat() * MiscGameplayFunctions.GetTypeMaxGlobalHealth( m_SelectedObject );
+					float quantity = -1;
+					int cfgQuantity = GetGame().ConfigGetInt("CfgVehicles " + m_SelectedObject + " varQuantityMax");
+
+					if ( cfgQuantity > 0 )
+					{
+						quantity = m_QuantityEditBox.GetText().ToFloat() * GetGame().ConfigGetInt("CfgVehicles " + m_SelectedObject + " varQuantityMax");
+						if ( GetGame().ConfigGetFloat("CfgVehicles " + m_SelectedObject + " canBeSplit") )
+						{
+							quantity = m_QuantityEditBox.GetText().ToFloat() * GetGame().ConfigGetInt("CfgVehicles " + m_SelectedObject + " varStackMax");
+						}
+					}
+
 					switch ( w )
 					{
-						
 						case m_SpawnGroundButton:
 						{
-							m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, -1, distance );
+							m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, quantity, distance, health );
 							break;
 						}
 						
 						case m_SpawnSpecial:
 						{
-							m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, -1, distance , -1, true);
+							m_Developer.SpawnEntityOnCursorDir(player, m_SelectedObject, quantity, distance, health, true);
 							break;
 						}
 
@@ -829,12 +841,12 @@ class ScriptConsole extends UIScriptedMenu
 			ChangeFilter();
 			return true;
 		}
-		else if (w == m_QuantityEditBox)
+		else if (w == m_QuantityEditBox && ( GetCurrentItemIndex() >= 0 || GetCurrentPresetName() != "") )
 		{
-			m_ConfigDebugProfile.SetItemQuantity( GetCurrentPresetName(), GetCurrentItemIndex(), m_QuantityEditBox.GetText().ToInt() );
+			m_ConfigDebugProfile.SetItemQuantity( GetCurrentPresetName(), GetCurrentItemIndex(), m_QuantityEditBox.GetText().ToFloat() );
 			return true;
 		}
-		else if (w == m_DamageEditBox)
+		else if (w == m_DamageEditBox && ( GetCurrentItemIndex() >= 0 || GetCurrentPresetName() != "") )
 		{
 			m_ConfigDebugProfile.SetItemHealth( GetCurrentPresetName(), GetCurrentItemIndex(), m_DamageEditBox.GetText().ToFloat() );
 			return true;
@@ -1239,10 +1251,10 @@ class ScriptConsole extends UIScriptedMenu
 		m_ItemMoveUpButton.Show( false );
 		m_ItemMoveDownButton.Show( false );
 
-		m_DamageEditBox.Show( false );
-		m_QuantityEditBox.Show( false );
-		m_ItemDamageLabel.Show( false );
-		m_ItemQuantityLabel.Show( false );
+//		m_DamageEditBox.Show( false );
+//		m_QuantityEditBox.Show( false );
+//		m_ItemDamageLabel.Show( false );
+//		m_ItemQuantityLabel.Show( false );
 	}
 		
 	void ShowItemTransferButtons()

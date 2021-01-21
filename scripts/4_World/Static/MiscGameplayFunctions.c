@@ -257,7 +257,8 @@ class MiscGameplayFunctions
 			
 			target_mag.ServerSetAmmoCount( source_mag.GetAmmoCount() );
 		}
-		else if ( source.IsWeapon() && target.IsWeapon() )
+		
+		if ( source.IsWeapon() && target.IsWeapon() )
 		{
 			Weapon_Base source_wpn = Weapon_Base.Cast(source);
 			Weapon_Base target_wpn = Weapon_Base.Cast(target);
@@ -273,6 +274,13 @@ class MiscGameplayFunctions
 
 			if (ems.IsSwitchedOn())
 				emt.SwitchOn();
+		}
+		else if ( source.CanDecay() && target.CanDecay() )
+		{
+			Edible_Base source_edb = Edible_Base.Cast(source);
+			Edible_Base target_edb = Edible_Base.Cast(target);
+			
+			target_edb.TransferFoodStage(source_edb);
 		}
 	}
 
@@ -713,6 +721,9 @@ class MiscGameplayFunctions
 				ConstructionActionData construction_action_data = player.GetConstructionActionData();
 				if (partName == "")
 					partName = construction_action_data.GetCurrentBuildPart().GetPartName();
+				bool boo;
+				if (base_building.PerformRoofCheckForBase(partName,player,boo) && boo)
+					return false;
 				return !construction.IsColliding( partName );
 			}
 		}
@@ -775,24 +786,29 @@ class MiscGameplayFunctions
 	{
 		vector minMax[2];
 		entity.GetCollisionBox(minMax);
-		/*if (!entity.GetCollisionBox(minMax))
-		{
-			Print("IsUnderRoof | GetCollisionBox");
-		}*/
 
 		vector size = Vector(0,0,0);
-		size[1] = minMax[1][1] - minMax[0][1];
-
+		//size[1] = minMax[1][1] - minMax[0][1];
+		float from_override = entity.HeightStartCheckOverride();
+		if (from_override > 0.0)
+		{
+			size[1] = from_override;
+		}
+		else
+		{
+			size[1] = minMax[1][1] - minMax[0][1];
+		}
+		
 		from = entity.GetPosition() + size;  
-		vector ceiling = "0 0 0";
-		ceiling[1] = height;
 		if ( entity.HeightCheckOverride() > 0 )
 		{
 			to = entity.GetPosition() + Vector(0, entity.HeightCheckOverride(), 0);
 		}
 		else
 		{
-			to = from + ceiling;
+			vector ceiling = "0 0 0";
+			ceiling[1] = height;
+			to = from + ceiling; //+size ??? offset to cast same distance
 		}
 	}
 	
@@ -803,7 +819,7 @@ class MiscGameplayFunctions
 	
 	static bool IsUnderRoofEx(EntityAI entity, float height = GameConstants.ROOF_CHECK_RAYCAST_DIST, int geometry = ObjIntersectView) 
 	{
-		vector from;  
+		vector from;
 		vector to;
 		
 		IsUnderRoofFromToCalculation(entity, from, to, height);
@@ -1039,7 +1055,7 @@ class MiscGameplayFunctions
 								EntityAI proxy_parent = EntityAI.Cast( hit_proxy_objects[0].parent );
 								if ( proxy_parent.GetInventory() && proxy_parent.GetInventory().GetCargo() )
 								{	
-									is_obstructed = true;
+									return true;
 								}
 								else
 								{
@@ -1067,19 +1083,27 @@ class MiscGameplayFunctions
 			if ( hit_object.IsBuilding() )
 			{
 				//Print("!!!!!obstacle building: " + hit_object);
-				is_obstructed = true;
+				return true;
 			}
 	
 			if ( hit_object.IsPlainObject()/* && !ItemBase.Cast(hit_object)*/ )
 			{
 				//Print("!!!!!obstacle plain object: " + hit_object);
-				is_obstructed = true;
+				return true;
 			}
 				
 			if ( hit_object.IsInherited(BaseBuildingBase) )
 			{
 				if (object != hit_object)
-					is_obstructed = true;
+					return true;
+			} 
+			
+			if ( hit_object.IsInherited(ItemBase) )
+			{
+				ItemBase item = ItemBase.Cast(hit_object);
+
+				if (!item.IsPlayerInside(player, ""))
+					return true;
 			} 
 				
 			//4.3. ignore item if items are big and heavy >= OBJECT_OBSTRUCTION_WEIGHT 
@@ -1155,13 +1179,16 @@ class MiscGameplayFunctions
 	static void RemoveSplint( PlayerBase player )
 	{
 		EntityAI entity = player.GetInventory().CreateInInventory("Splint");
+		if (!entity)
+			entity = player.SpawnEntityOnGroundOnCursorDir("Splint", 0.5);
+		
 		EntityAI attachment;
 		ItemBase new_item = ItemBase.Cast(entity);
 		Class.CastTo(attachment, player.GetItemOnSlot("Splint_Right"));
 		if ( attachment && attachment.GetType() == "Splint_Applied" )
 		{
 			if (new_item)
-			{
+			{	
 				MiscGameplayFunctions.TransferItemProperties(attachment,new_item);
 				
 				if (GetGame().IsServer())

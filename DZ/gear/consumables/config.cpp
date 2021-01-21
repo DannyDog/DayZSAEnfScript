@@ -736,7 +736,7 @@ class CfgVehicles
 		{
 			energyAtSpawn = 1200;
 			energyUsagePerSecond = 1;
-			updateInterval = 5;
+			updateInterval = 50;
 			convertEnergyToQuantity = 1;
 		};
 		class AnimationSources
@@ -1160,6 +1160,8 @@ class CfgVehicles
 				};
 			};
 		};
+		attachSoundSet[] = {"Shelter_Site_Attach_Leather_SoundSet"};
+		attachSoundSlot[] = {"Material_Shelter_Leather"};
 		class AnimEvents
 		{
 			class SoundWeapon

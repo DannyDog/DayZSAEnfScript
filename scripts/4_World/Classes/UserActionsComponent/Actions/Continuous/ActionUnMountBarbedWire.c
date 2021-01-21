@@ -40,6 +40,8 @@ class ActionUnmountBarbedWire: ActionContinuousBase
 		if ( targetObject && targetObject.CanUseConstruction() )
 		{
 			BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
+			if(!base_building.IsPlayerInside(player,""))
+				return false;
 			
 			string selection = targetObject.GetActionComponentName( target.GetComponentIndex() );
 			

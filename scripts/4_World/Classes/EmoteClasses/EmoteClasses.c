@@ -162,6 +162,14 @@ class EmoteDance extends EmoteBase
 		m_FullbodyCallbackUID = DayZPlayerConstants.CMD_GESTUREFB_DANCE;
 		m_HideItemInHands = true;
 	}
+	
+	override bool EmoteCondition(int stancemask)
+	{
+		if (m_Player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			return false;
+		
+		return true;
+	}
 }
 
 class EmoteSalute extends EmoteBase
@@ -587,10 +595,16 @@ class EmoteSuicide extends EmoteBase
 		return false;
 	}
 	
-	/*override bool EmoteCondition(int stancemask)
+	override bool EmoteCondition(int stancemask)
 	{
+		Weapon_Base weapon;
+		weapon = Weapon_Base.Cast(m_Player.GetItemInHands());
+		
+		if (weapon)
+			return weapon.ConfigGetBool("isSuicideWeapon");
+		
 		return true;
-	}*/
+	}
 	
 	override void OnBeforeStandardCallbackCreated(int callback_ID, int stancemask, bool is_fullbody)
 	{

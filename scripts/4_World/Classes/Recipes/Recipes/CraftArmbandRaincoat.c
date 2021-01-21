@@ -117,7 +117,11 @@ class CraftArmbandRaincoat extends RecipeBase
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)
 	{
-		return true;
+		ItemBase rainCoat = ingredients[0];
+		if (rainCoat.IsEmpty())
+			return true;
+		else
+			return false;
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)

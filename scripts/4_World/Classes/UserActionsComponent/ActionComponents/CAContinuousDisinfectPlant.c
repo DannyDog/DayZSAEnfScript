@@ -2,6 +2,8 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 {
 	protected float m_PlantNeededSpraying;
 	protected float	m_TimeToComplete;
+	protected float m_SpentQuantityTotal;
+	protected float m_StartQuantity;
 
 	void CAContinuousDisinfectPlant( float quantity_used_per_second )
 	{
@@ -14,6 +16,7 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 		if (Class.CastTo(target_PB, action_data.m_Target.GetObject()))
 		{
 			m_SpentQuantity = 0;
+			m_StartQuantity = action_data.m_MainItem.GetQuantity();
 			if ( !m_SpentUnits )
 			{ 
 				m_SpentUnits = new Param1<float>(0);
@@ -55,11 +58,14 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
 				float transfered_spray = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
 				
+				m_SpentQuantityTotal += m_SpentQuantity;
+				
 				if ( m_Action ) 
 				{
 					PlantBase plant;
 					Class.CastTo(plant,  targetObject );
-					m_Action.SendMessageToClient(action_data.m_Player, plant.StopInfestation( transfered_spray ));
+					plant.SprayPlant(transfered_spray);
+					//m_Action.SendMessageToClient(action_data.m_Player, plant.StopInfestation( transfered_spray ));
 				}
 				
 				CalcAndSetQuantity( action_data );
@@ -77,7 +83,7 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 	
 	override float GetProgress()
 	{	
-		//float progress = (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
-		return (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
+		//return (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
+		return -(m_SpentQuantityTotal / m_StartQuantity);
 	}
 };

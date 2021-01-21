@@ -48,57 +48,6 @@ class ActionCarDoors: ActionInteractBase
 				return ( m_IsOpening && animationPhaseInside <= 0.5 ) || ( !m_IsOpening && animationPhaseInside > 0.5 );
 			}
 		}
-		else
-		{
-			//! reach check from outside of car
-			if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
-				return false;
-
-			//! player is outside of vehicle
-			if ( Class.CastTo(car, target.GetParent()) )
-			{
-				array<string> selections = new array<string>();
-				
-				CarDoor carDoor = CarDoor.Cast(target.GetObject());
-				if (carDoor)
-				{
-					carDoor.GetActionComponentNameList(target.GetComponentIndex(), selections);
-					
-					for (int i = 0; i < selections.Count(); i++)
-					{
-						animSource = car.GetAnimSourceFromSelection(selections[i]);
-						if ( animSource != "" )
-						{
-							//Print(i);
-							//Print(animSource);
-							
-							int idx = car.GetSeatIndexFromDoor(animSource);
-							if (idx != -1 && !car.IsAreaAtDoorFree( idx ))
-								return false;	//! player is looking at one of the doors, can't open if obstructed
-							
-							//! if player is in car and cannot reach doors
-							m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_OPENDOORFW;
-							
-							float animationPhase = car.GetAnimationPhase(animSource);	
-							//! is in reach, should open the door
-							return ( m_IsOpening && animationPhase <= 0.5 ) || ( !m_IsOpening && animationPhase > 0.5 );
-						}
-						/*
-						if ( animSource != "" && car.IsAreaAtDoorFree( car.GetSeatIndexFromDoor(animSource) ) )
-						{
-							//! if player is in car and cannot reach doors
-							m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_OPENDOORFW;
-							
-							float animationPhase = car.GetAnimationPhase(animSource);	
-							//! is in reach, should open the door
-							return ( m_IsOpening && animationPhase <= 0.5 ) || ( !m_IsOpening && animationPhase > 0.5 );
-						}
-						*/
-					}
-				}
-			}
-		}
-		
 		return false;
 	}
 
@@ -109,10 +58,6 @@ class ActionCarDoors: ActionInteractBase
 		if ( player && player.GetCommand_Vehicle() )
 		{
 			car = CarScript.Cast(player.GetCommand_Vehicle().GetTransport());
-		}
-		else
-		{
-			car = CarScript.Cast(action_data.m_Target.GetParent());
 		}
 
 		if ( car )
@@ -150,30 +95,23 @@ class ActionCarDoors: ActionInteractBase
 				animSource = car.GetAnimSourceFromSelection(car.GetDoorSelectionNameFromSeatPos(crewIdx));
 			}
 		}
-		else
-		{
-			car = CarScript.Cast(action_data.m_Target.GetParent());
-			if (car)
-			{
-				array<string> selections = new array<string>();				
-				CarDoor carDoor = CarDoor.Cast(action_data.m_Target.GetObject());
-				if (carDoor)
-				{
-					carDoor.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
-					for (int i = 0; i < selections.Count(); i++)
-					{
-						animSource = car.GetAnimSourceFromSelection(selections[i]);
-						if (animSource != "")
-							break;
-					}
-				}
-			}
-		}
 		
 		if ( car )
 		{
+			car.ForceUpdateLightsStart();
 			car.SetAnimationPhase(animSource, phase);
 		}
+	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		CarScript car;
+		PlayerBase player = action_data.m_Player;
+		if ( player && player.GetCommand_Vehicle() )
+			car = CarScript.Cast(player.GetCommand_Vehicle().GetTransport());
+
+		if ( car )
+			car.ForceUpdateLightsEnd();
 	}
 	
 	override void OnEnd( ActionData action_data )

@@ -555,6 +555,10 @@ class ZombieBase extends DayZInfected
 			{
 				if( m_ActualTarget != NULL )
 				{
+					if (m_ActualTarget.GetMeleeTargetType() == EMeleeTargetType.NONALIGNABLE )
+					{
+						return false;
+					}
 					bool playerInBlockStance = false;
 					vector targetPos = m_ActualTarget.GetPosition();
 					vector hitPosWS = targetPos;

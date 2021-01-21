@@ -601,6 +601,18 @@ class Fence extends BaseBuildingBase
 		}
 	}
 	
+	//Here deal damage to BarbedWire when entity taking damage from it
+	override void PostAreaDamageActions()
+	{
+		/*if (GetBarbedWire1())
+		{
+			//DecreaseHealth("Wall_BarbedWire_1", "", 1000); //why no dmg to wire???
+			//BarbedWire wire = GetBarbedWire1();
+			//wire.PostAreaDamageActions();
+			//Print(GetHealth("BarbedWire1", ""));
+		}*/
+	}
+	
 	//--- ACTION CONDITIONS
 	override bool IsPlayerInside( PlayerBase player, string selection )
 	{

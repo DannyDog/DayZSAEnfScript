@@ -442,6 +442,7 @@ class CZ527_Base : BoltActionRifle_Base
 		HideMagazine();
 
 		m_fsm.Start();
+		
 	}
 	
 	override void SetActions()
@@ -449,5 +450,16 @@ class CZ527_Base : BoltActionRifle_Base
 		super.SetActions();
 		AddAction(FirearmActionDetachMagazine);
 		//AddAction(ActionAdvancedDetachMagazine);
+	}
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "HuntingOptic" );
+			entity.SpawnEntityOnGroundPos("Mag_CZ527_5rnd", entity.GetPosition());
+		}
 	}
 };

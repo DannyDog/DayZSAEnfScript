@@ -150,7 +150,7 @@ class ActionDigInStash: ActionContinuousBase
 		}
 		
 		//Apply tool damage
-		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 17);				
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 10);				
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

@@ -379,15 +379,6 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_pitched.rvmat"};
 		hologramMaterial = "tent_medium";
 		hologramMaterialPath = "dz\gear\camping\data";
-		class AnimationSources
-		{
-			class Placing
-			{
-				source = "user";
-				animPeriod = 0.01;
-				initPhase = 1;
-			};
-		};
 	};
 	class MediumTent_GreenPlacing: MediumTentPlacing{};
 	class MediumTent_OrangePlacing: MediumTentPlacing{};
@@ -887,15 +878,6 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\large_tent.rvmat"};
 		hologramMaterial = "large_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
-		class AnimationSources
-		{
-			class Placing
-			{
-				source = "user";
-				animPeriod = 0.01;
-				initPhase = 1;
-			};
-		};
 	};
 	class LargeTentClutterCutter: Static
 	{
@@ -1236,15 +1218,6 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\car_tent.rvmat"};
 		hologramMaterial = "car_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
-		class AnimationSources
-		{
-			class Placing
-			{
-				source = "user";
-				animPeriod = 0.01;
-				initPhase = 1;
-			};
-		};
 	};
 	class PartyTent: TentBase
 	{
@@ -1381,7 +1354,7 @@ class CfgVehicles
 					};
 					componentNames[] = {"inventory"};
 					transferToZonesNames[] = {"Body","Door1","Door2","Door3","Door4","Door5","Door6"};
-					transferToZonesCoefs[] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+					transferToZonesCoefs[] = {1.0,1.0,1.0,1.0,1.0,1.0,1.0};
 					fatalInjuryCoef = -1;
 				};
 				class Door_Base
@@ -1759,15 +1732,6 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_cloth.rvmat"};
 		hologramMaterial = "party_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
-		class AnimationSources
-		{
-			class Placing
-			{
-				source = "user";
-				animPeriod = 0.01;
-				initPhase = 1;
-			};
-		};
 	};
 	class PartyTent_BluePlacing: PartyTentPlacing{};
 	class PartyTent_BrownPlacing: PartyTentPlacing{};
@@ -2754,106 +2718,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class wall_platform
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Platform";
-					id = 2;
-					required_parts[] = {"base"};
-					conflicted_parts[] = {"wall_gate"};
-					collision_data[] = {"wall_platform_min","wall_platform_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 3;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_Nails";
-							quantity = 15;
-						};
-					};
-				};
-				class wall_platform_stairs_left
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Right";
-					id = 3;
-					required_parts[] = {"wall_platform"};
-					conflicted_parts[] = {};
-					collision_data[] = {};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 3;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_Nails";
-							quantity = 8;
-						};
-					};
-				};
-				class wall_platform_stairs_right
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Left";
-					id = 4;
-					required_parts[] = {"wall_platform"};
-					conflicted_parts[] = {};
-					collision_data[] = {};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 3;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_Nails";
-							quantity = 8;
-						};
-					};
-				};
-				class wall_gate
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Gate";
-					is_gate = 1;
-					id = 5;
-					required_parts[] = {"base","wall_base_down","wall_base_up"};
-					conflicted_parts[] = {"wall_platform"};
-					collision_data[] = {};
-					build_action_type = 1;
-					dismantle_action_type = 1;
-					material_type = 5;
-					class Materials
-					{
-						class Material1
-						{
-							type = "MetalWire";
-							slot_name = "Material_MetalWire";
-							quantity = -1;
-							lockable = 1;
-						};
-					};
-				};
 				class wall_base_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Base_Down";
@@ -3007,6 +2871,106 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class wall_platform
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Platform";
+					id = 2;
+					required_parts[] = {"base"};
+					conflicted_parts[] = {"wall_gate"};
+					collision_data[] = {"wall_platform_min","wall_platform_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 3;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_Nails";
+							quantity = 15;
+						};
+					};
+				};
+				class wall_platform_stairs_left
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Right";
+					id = 3;
+					required_parts[] = {"wall_platform"};
+					conflicted_parts[] = {};
+					collision_data[] = {};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 3;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class wall_platform_stairs_right
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Left";
+					id = 4;
+					required_parts[] = {"wall_platform"};
+					conflicted_parts[] = {};
+					collision_data[] = {};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 3;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class wall_gate
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Gate";
+					is_gate = 1;
+					id = 5;
+					required_parts[] = {"base","wall_base_down","wall_base_up"};
+					conflicted_parts[] = {"wall_platform"};
+					collision_data[] = {};
+					build_action_type = 1;
+					dismantle_action_type = 1;
+					material_type = 5;
+					class Materials
+					{
+						class Material1
+						{
+							type = "MetalWire";
+							slot_name = "Material_MetalWire";
+							quantity = -1;
+							lockable = 1;
 						};
 					};
 				};
@@ -4112,32 +4076,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_1_wall_1_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 5;
-					required_parts[] = {"level_1_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_1_wall_1_up_min","level_1_wall_1_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W1_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W1_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_1_wall_1_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -4145,32 +4083,6 @@ class CfgVehicles
 					required_parts[] = {"level_1_wall_1_base_down"};
 					conflicted_parts[] = {"level_1_wall_1_metal_down"};
 					collision_data[] = {"level_1_wall_1_down_min","level_1_wall_1_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W1_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W1_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_1_wall_1_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 7;
-					required_parts[] = {"level_1_wall_1_base_up"};
-					conflicted_parts[] = {"level_1_wall_1_metal_up"};
-					collision_data[] = {"level_1_wall_1_up_min","level_1_wall_1_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -4213,6 +4125,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L1W1_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_1_wall_1_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 5;
+					required_parts[] = {"level_1_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_1_wall_1_up_min","level_1_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W1_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W1_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_1_wall_1_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 7;
+					required_parts[] = {"level_1_wall_1_base_up"};
+					conflicted_parts[] = {"level_1_wall_1_metal_up"};
+					collision_data[] = {"level_1_wall_1_up_min","level_1_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W1_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W1_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -4271,32 +4235,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_1_wall_2_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 11;
-					required_parts[] = {"level_1_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_1_wall_2_up_min","level_1_wall_2_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W2_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W2_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_1_wall_2_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -4304,32 +4242,6 @@ class CfgVehicles
 					required_parts[] = {"level_1_wall_2_base_down"};
 					conflicted_parts[] = {"level_1_wall_2_metal_down"};
 					collision_data[] = {"level_1_wall_2_down_min","level_1_wall_2_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W2_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W2_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_1_wall_2_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 13;
-					required_parts[] = {"level_1_wall_2_base_up"};
-					conflicted_parts[] = {"level_1_wall_2_metal_up"};
-					collision_data[] = {"level_1_wall_2_up_min","level_1_wall_2_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -4372,6 +4284,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L1W2_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_1_wall_2_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 11;
+					required_parts[] = {"level_1_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_1_wall_2_up_min","level_1_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W2_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W2_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_1_wall_2_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 13;
+					required_parts[] = {"level_1_wall_2_base_up"};
+					conflicted_parts[] = {"level_1_wall_2_metal_up"};
+					collision_data[] = {"level_1_wall_2_up_min","level_1_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W2_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W2_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -4430,32 +4394,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_1_wall_3_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 17;
-					required_parts[] = {"level_1_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_1_wall_3_up_min","level_1_wall_3_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W3_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W3_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_1_wall_3_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -4463,32 +4401,6 @@ class CfgVehicles
 					required_parts[] = {"level_1_wall_3_base_down"};
 					conflicted_parts[] = {"level_1_wall_3_metal_down"};
 					collision_data[] = {"level_1_wall_3_down_min","level_1_wall_3_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L1W3_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L1W3_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_1_wall_3_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 19;
-					required_parts[] = {"level_1_wall_3_base_up"};
-					conflicted_parts[] = {"level_1_wall_3_metal_up"};
-					collision_data[] = {"level_1_wall_3_up_min","level_1_wall_3_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -4531,6 +4443,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L1W3_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_1_wall_3_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 17;
+					required_parts[] = {"level_1_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_1_wall_3_up_min","level_1_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W3_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W3_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_1_wall_3_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 19;
+					required_parts[] = {"level_1_wall_3_base_up"};
+					conflicted_parts[] = {"level_1_wall_3_metal_up"};
+					collision_data[] = {"level_1_wall_3_up_min","level_1_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L1W3_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L1W3_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -4667,32 +4631,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_2_wall_1_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 26;
-					required_parts[] = {"level_2_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_2_wall_1_up_min","level_2_wall_1_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W1_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W1_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_2_wall_1_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -4700,32 +4638,6 @@ class CfgVehicles
 					required_parts[] = {"level_2_wall_1_base_down"};
 					conflicted_parts[] = {"level_2_wall_1_metal_down"};
 					collision_data[] = {"level_2_wall_1_down_min","level_2_wall_1_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W1_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W1_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_2_wall_1_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 28;
-					required_parts[] = {"level_2_wall_1_base_up"};
-					conflicted_parts[] = {"level_2_wall_1_metal_up"};
-					collision_data[] = {"level_2_wall_1_up_min","level_2_wall_1_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -4768,6 +4680,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L2W1_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_2_wall_1_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 26;
+					required_parts[] = {"level_2_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_2_wall_1_up_min","level_2_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W1_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W1_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_2_wall_1_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 28;
+					required_parts[] = {"level_2_wall_1_base_up"};
+					conflicted_parts[] = {"level_2_wall_1_metal_up"};
+					collision_data[] = {"level_2_wall_1_up_min","level_2_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W1_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W1_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -4826,32 +4790,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_2_wall_2_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 32;
-					required_parts[] = {"level_2_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_2_wall_2_up_min","level_2_wall_2_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W2_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W2_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_2_wall_2_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -4859,32 +4797,6 @@ class CfgVehicles
 					required_parts[] = {"level_2_wall_2_base_down"};
 					conflicted_parts[] = {"level_2_wall_2_metal_down"};
 					collision_data[] = {"level_2_wall_2_down_min","level_2_wall_2_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W2_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W2_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_2_wall_2_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 34;
-					required_parts[] = {"level_2_wall_2_base_up"};
-					conflicted_parts[] = {"level_2_wall_2_metal_up"};
-					collision_data[] = {"level_2_wall_2_up_min","level_2_wall_2_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -4927,6 +4839,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L2W2_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_2_wall_2_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 32;
+					required_parts[] = {"level_2_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_2_wall_2_up_min","level_2_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W2_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W2_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_2_wall_2_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 34;
+					required_parts[] = {"level_2_wall_2_base_up"};
+					conflicted_parts[] = {"level_2_wall_2_metal_up"};
+					collision_data[] = {"level_2_wall_2_up_min","level_2_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W2_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W2_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -4985,32 +4949,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_2_wall_3_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 38;
-					required_parts[] = {"level_2_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_2_wall_3_up_min","level_2_wall_3_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W3_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W3_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_2_wall_3_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -5018,32 +4956,6 @@ class CfgVehicles
 					required_parts[] = {"level_2_wall_3_base_down"};
 					conflicted_parts[] = {"level_2_wall_3_metal_down"};
 					collision_data[] = {"level_2_wall_3_down_min","level_2_wall_3_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L2W3_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L2W3_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_2_wall_3_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 40;
-					required_parts[] = {"level_2_wall_3_base_up"};
-					conflicted_parts[] = {"level_2_wall_3_metal_up"};
-					collision_data[] = {"level_2_wall_3_up_min","level_2_wall_3_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -5086,6 +4998,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L2W3_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_2_wall_3_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 38;
+					required_parts[] = {"level_2_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_2_wall_3_up_min","level_2_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W3_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W3_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_2_wall_3_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 40;
+					required_parts[] = {"level_2_wall_3_base_up"};
+					conflicted_parts[] = {"level_2_wall_3_metal_up"};
+					collision_data[] = {"level_2_wall_3_up_min","level_2_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L2W3_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L2W3_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -5201,32 +5165,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_3_wall_1_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 46;
-					required_parts[] = {"level_3_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_3_wall_1_up_min","level_3_wall_1_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W1_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W1_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_3_wall_1_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -5234,32 +5172,6 @@ class CfgVehicles
 					required_parts[] = {"level_3_wall_1_base_down"};
 					conflicted_parts[] = {"level_3_wall_1_metal_down"};
 					collision_data[] = {"level_3_wall_1_down_min","level_3_wall_1_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W1_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W1_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_3_wall_1_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 48;
-					required_parts[] = {"level_3_wall_1_base_up"};
-					conflicted_parts[] = {"level_3_wall_1_metal_up"};
-					collision_data[] = {"level_3_wall_1_up_min","level_3_wall_1_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -5302,6 +5214,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L3W1_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_3_wall_1_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 46;
+					required_parts[] = {"level_3_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_3_wall_1_up_min","level_3_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W1_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W1_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_3_wall_1_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 48;
+					required_parts[] = {"level_3_wall_1_base_up"};
+					conflicted_parts[] = {"level_3_wall_1_metal_up"};
+					collision_data[] = {"level_3_wall_1_up_min","level_3_wall_1_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W1_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W1_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -5360,32 +5324,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_3_wall_2_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 52;
-					required_parts[] = {"level_3_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_3_wall_2_up_min","level_3_wall_2_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W2_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W2_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_3_wall_2_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -5393,32 +5331,6 @@ class CfgVehicles
 					required_parts[] = {"level_3_wall_2_base_down"};
 					conflicted_parts[] = {"level_3_wall_2_metal_down"};
 					collision_data[] = {"level_3_wall_2_down_min","level_3_wall_2_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W2_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W2_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_3_wall_2_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 54;
-					required_parts[] = {"level_3_wall_2_base_up"};
-					conflicted_parts[] = {"level_3_wall_2_metal_up"};
-					collision_data[] = {"level_3_wall_2_up_min","level_3_wall_2_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -5461,6 +5373,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L3W2_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_3_wall_2_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 52;
+					required_parts[] = {"level_3_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_3_wall_2_up_min","level_3_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W2_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W2_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_3_wall_2_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 54;
+					required_parts[] = {"level_3_wall_2_base_up"};
+					conflicted_parts[] = {"level_3_wall_2_metal_up"};
+					collision_data[] = {"level_3_wall_2_up_min","level_3_wall_2_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W2_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W2_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -5519,32 +5483,6 @@ class CfgVehicles
 						};
 					};
 				};
-				class level_3_wall_3_base_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
-					id = 58;
-					required_parts[] = {"level_3_base"};
-					conflicted_parts[] = {};
-					collision_data[] = {"level_3_wall_3_up_min","level_3_wall_3_up_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W3_WoodenPlanks";
-							quantity = 4;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W3_Nails";
-							quantity = 8;
-						};
-					};
-				};
 				class level_3_wall_3_wood_down
 				{
 					name = "$STR_CfgVehicles_Construction_Part_Wood_Down";
@@ -5552,32 +5490,6 @@ class CfgVehicles
 					required_parts[] = {"level_3_wall_3_base_down"};
 					conflicted_parts[] = {"level_3_wall_3_metal_down"};
 					collision_data[] = {"level_3_wall_3_down_min","level_3_wall_3_down_max"};
-					build_action_type = 2;
-					dismantle_action_type = 2;
-					material_type = 2;
-					class Materials
-					{
-						class Material1
-						{
-							type = "WoodenPlank";
-							slot_name = "Material_L3W3_WoodenPlanks";
-							quantity = 5;
-						};
-						class Material2
-						{
-							type = "Nail";
-							slot_name = "Material_L3W3_Nails";
-							quantity = 10;
-						};
-					};
-				};
-				class level_3_wall_3_wood_up
-				{
-					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
-					id = 60;
-					required_parts[] = {"level_3_wall_3_base_up"};
-					conflicted_parts[] = {"level_3_wall_3_metal_up"};
-					collision_data[] = {"level_3_wall_3_up_min","level_3_wall_3_up_max"};
 					build_action_type = 2;
 					dismantle_action_type = 2;
 					material_type = 2;
@@ -5620,6 +5532,58 @@ class CfgVehicles
 							type = "Nail";
 							slot_name = "Material_L3W3_Nails";
 							quantity = 12;
+						};
+					};
+				};
+				class level_3_wall_3_base_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Base_Up";
+					id = 58;
+					required_parts[] = {"level_3_base"};
+					conflicted_parts[] = {};
+					collision_data[] = {"level_3_wall_3_up_min","level_3_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W3_WoodenPlanks";
+							quantity = 4;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W3_Nails";
+							quantity = 8;
+						};
+					};
+				};
+				class level_3_wall_3_wood_up
+				{
+					name = "$STR_CfgVehicles_Construction_Part_Wood_Up";
+					id = 60;
+					required_parts[] = {"level_3_wall_3_base_up"};
+					conflicted_parts[] = {"level_3_wall_3_metal_up"};
+					collision_data[] = {"level_3_wall_3_up_min","level_3_wall_3_up_max"};
+					build_action_type = 2;
+					dismantle_action_type = 2;
+					material_type = 2;
+					class Materials
+					{
+						class Material1
+						{
+							type = "WoodenPlank";
+							slot_name = "Material_L3W3_WoodenPlanks";
+							quantity = 5;
+						};
+						class Material2
+						{
+							type = "Nail";
+							slot_name = "Material_L3W3_Nails";
+							quantity = 10;
 						};
 					};
 				};
@@ -6199,7 +6163,7 @@ class CfgVehicles
 			cordTextureFile = "DZ\gear\camping\Data\plug_yellow_CO.paa";
 			cordLength = 5;
 			plugType = 2;
-			updateInterval = 5;
+			updateInterval = 50;
 		};
 		class Reflectors
 		{
@@ -6342,7 +6306,7 @@ class CfgVehicles
 			cordTextureFile = "DZ\gear\camping\Data\plug_yellow_CO.paa";
 			cordLength = 5;
 			plugType = 2;
-			updateInterval = 5;
+			updateInterval = 50;
 		};
 		class AnimationSources
 		{
@@ -6641,8 +6605,7 @@ class CfgVehicles
 		attachments[] = {"CarBattery","TruckBattery"};
 		weight = 5000;
 		itemSize[] = {3,3};
-		itemBehaviour = 0;
-		heavyItem = 1;
+		itemBehaviour = 1;
 		rotationFlags = 2;
 		hiddenSelections[] = {"light_stand_by","light_charging","light_charged","switch_on","clips_detached","clips_folded","cord_plugged","cord_folded","placing"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa","dz\gear\camping\data\battery_charger_co.paa"};
@@ -6858,12 +6821,25 @@ class CfgVehicles
 		model = "\dz\gear\camping\fabric_ground.p3d";
 		weight = 220;
 		absorbency = 0.3;
-		itemSize[] = {4,4};
+		itemSize[] = {4,3};
 		canBeSplit = 1;
 		varQuantityInit = 1.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 4.0;
 		inventorySlot[] = {"Material_Shelter_Fabric"};
+		attachSoundSet[] = {"Shelter_Site_Attach_Fabric_SoundSet"};
+		attachSoundSlot[] = {"Material_Shelter_Fabric"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 200;
+					healthLevels[] = {{1.0,{"DZ\gear\camping\data\tent_pristine_co.paa"}},{0.7,{"DZ\gear\camping\data\tent_worn_co.paa"}},{0.5,{"DZ\gear\camping\data\tent_damage_co.paa"}},{0.3,{"DZ\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"DZ\gear\camping\data\tent_destruct_co.paa"}}};
+				};
+			};
+		};
 	};
 	class ShelterKit: Inventory_Base
 	{
@@ -7432,31 +7408,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 400;
-					healthLevels[] = {{1.0,{"dz\characters\backpacks\data\ghillie_green_co.paa","dz\gear\camping\data\improvised_tent_construction_co.paa","dz\gear\camping\data\improvised_tent_construction_01.rvmat","dz\gear\crafting\data\bp_wooden_stick.rvmat","dz\plants\tree\data\t_piceaabies_leaves_ca.paa"}},{0.7,{"#(argb,8,8,3)color(0.0,1,0.5,1.0,co)","#(argb,8,8,3)color(0.0,1,0.5,1.0,co)","DZ\gear\camping\Data\wooden_log_damage.rvmat","DZ\gear\camping\Data\wooden_log_damage.rvmat","#(argb,8,8,3)color(0.0,1,0.5,1.0,co)"}},{0.5,{"#(argb,8,8,3)color(0.0,1,1,1.0,co)","#(argb,8,8,3)color(0.0,1,1,1.0,co)","DZ\gear\camping\Data\wooden_log_damage.rvmat","DZ\gear\camping\Data\wooden_log_damage.rvmat","#(argb,8,8,3)color(0.0,1,1,1.0,co)"}},{0.3,{"#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)","#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)","DZ\gear\camping\Data\wooden_log_destruct.rvmat","DZ\gear\camping\Data\wooden_log_destruct.rvmat","#(argb,8,8,3)color(0.5,0.7,0.7,1.0,co)"}},{0.0,{"#(argb,8,8,3)color(1,0.0,0.0,1.0,co)","#(argb,8,8,3)color(1,0.0,0.0,1.0,co)","DZ\gear\camping\Data\wooden_log_destruct.rvmat","DZ\gear\camping\Data\wooden_log_destruct.rvmat","#(argb,8,8,3)color(1,0.0,0.0,1.0,co)"}}};
-				};
-			};
-			class GlobalArmor
-			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0.05;
-					};
-				};
-				class Melee
-				{
-					class Health
-					{
-						damage = 0.3;
-					};
-				};
-				class FragGrenade
-				{
-					class Health
-					{
-						damage = 8;
-					};
+					healthLevels[] = {{1.0,{"dz\characters\backpacks\data\ghillie_green_co.paa","dz\gear\camping\data\improvised_tent_construction_01.rvmat","dz\gear\crafting\data\bp_wooden_stick.rvmat","dz\plants\tree\data\t_piceaabies_leaves_ca.paa"}},{0.7,{"dz\characters\backpacks\data\ghillie_green_damage_co.paa","DZ\gear\camping\Data\wooden_log_damage.rvmat","dz\gear\crafting\data\bp_wooden_stick_damage.rvmat","dz\plants\tree\data\t_piceaabies_leaves_damage_ca.paa"}},{0.5,{"dz\characters\backpacks\data\ghillie_green_damage_co.paa","DZ\gear\camping\Data\wooden_log_damage.rvmat","dz\gear\crafting\data\bp_wooden_stick_damage.rvmat","dz\plants\tree\data\t_piceaabies_leaves_damage_ca.paa"}},{0.3,{"dz\characters\backpacks\data\ghillie_green_destruct_co.paa","DZ\gear\camping\Data\wooden_log_destruct.rvmat","dz\gear\crafting\data\bp_wooden_stick_destruct.rvmat","dz\plants\tree\data\t_piceaabies_leaves_destruct_ca.paa"}},{0.0,{"dz\characters\backpacks\data\ghillie_green_destruct_co.paa","DZ\gear\camping\Data\wooden_log_destruct.rvmat","dz\gear\crafting\data\bp_wooden_stick_destruct.rvmat","dz\plants\tree\data\t_piceaabies_leaves_destruct_ca.paa"}}};
 				};
 			};
 			componentNames[] = {""};
@@ -8029,6 +7981,21 @@ class CfgVehicles
 	{
 		scope = 2;
 		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_brain_co.paa"};
+	};
+	class Flag_Refuge: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_refuge_co.paa"};
+	};
+	class Flag_RSTA: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_rsta_co.paa"};
+	};
+	class Flag_Snake: Flag_Base
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_snake_co.paa"};
 	};
 };
 class CfgNonAIVehicles

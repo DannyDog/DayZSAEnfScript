@@ -93,9 +93,64 @@ class ActionDeployObject: ActionContinuousBase
 		return "#deploy_object";
 	}
 	
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		//Client
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			//Action not allowed if player has broken legs
+			if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				return false;
+			
+			if ( player.IsPlacingLocal() )
+			{
+				if ( !player.GetHologramLocal().IsColliding() )
+				{
+					if ( item.CanBePlaced(player, player.GetHologramLocal().GetProjectionEntity().GetPosition()) )
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		//Server
+		return true;
+	}
+	
 	override bool ActionConditionContinue( ActionData action_data )
 	{
-		return true;
+		//Client
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		{
+			//Action not allowed if player has broken legs
+			if (action_data.m_Player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				return false;
+			
+			return true; //redundant?
+		}
+		//Server
+		else
+		{
+			/*if ( !action_data.m_Player.IsPlacingServer() )
+			{
+				return true;
+			}
+			else*/
+			if (action_data.m_Player.IsPlacingServer())
+			{
+				action_data.m_Player.GetHologramServer().EvaluateCollision();
+				if ( !action_data.m_Player.GetHologramServer().IsColliding() )
+				{
+					if ( action_data.m_MainItem.CanBePlaced(action_data.m_Player, action_data.m_Player.GetHologramServer().GetProjectionEntity().GetPosition()) )
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			return false;
+		}
 	}
 	
 	override ActionData CreateActionData()
@@ -136,50 +191,6 @@ class ActionDeployObject: ActionContinuousBase
 		}
 		return false;
 	}
-	
-	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
-	{
-		//Print("XXXXXX");
-		//Client
-		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
-		{
-			if ( player.IsPlacingLocal() )
-			{
-				//Print("------");
-				if ( !player.GetHologramLocal().IsColliding() )
-				{
-					if ( item.CanBePlaced(player, player.GetHologramLocal().GetProjectionEntity().GetPosition()) )
-					{
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-		//Server
-		return true; 
-	}
-	
-	/*override bool ActionConditionContinue( ActionData action_data )
-	{
-		//Client
-		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
-		{
-			if ( player.IsPlacingLocal() )
-			{
-				if ( !player.GetHologramLocal().IsColliding() )
-				{
-					if ( item.CanBePlaced(player, player.GetHologramLocal().GetProjectionEntity().GetPosition()) )
-					{
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-		//Server
-		return true; 
-	}*/
 	
 	override void OnStartClient( ActionData action_data )
 	{		
@@ -251,11 +262,9 @@ class ActionDeployObject: ActionContinuousBase
 		vector orientation = action_data.m_Player.GetLocalProjectionOrientation();
 		
 		action_data.m_Player.GetHologramServer().EvaluateCollision(action_data.m_MainItem);
-		//action_data.m_Player.GetHologramServer().SetIsColliding(true); //REMOVE
 		if (action_data.m_Player.GetHologramServer().IsColliding())
 		{
-			//Print("!!!IsColliding");
-			//return;
+			return;
 		}
 		
 		action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing );

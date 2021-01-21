@@ -312,7 +312,7 @@ class MissionServer extends MissionBase
 		{
 			slot_ID = DefaultCharacterCreationMethods.GetAttachmentSlotsArray().Get(i);
 			attachment_type = "";
-			if ( !char_data.GetAttachmentMap().Find(slot_ID,attachment_type) || m_RespawnMode != GameConstants.RESPAWN_MODE_CUSTOM )
+			if ( m_RespawnMode != GameConstants.RESPAWN_MODE_CUSTOM || !char_data.GetAttachmentMap().Find(slot_ID,attachment_type) || !VerifyAttachmentType(slot_ID,attachment_type) ) //todo insert verification fn here
 			{
 				//randomize
 				if ( DefaultCharacterCreationMethods.GetConfigArrayCountFromSlotID(slot_ID) > 0 )
@@ -324,7 +324,9 @@ class MissionServer extends MissionBase
 			}
 			
 			if (attachment_type != "")
+			{
 				m_player.GetInventory().CreateAttachmentEx(attachment_type,slot_ID);
+			}
 		}
 		
 		StartingEquipSetup(m_player, true);
@@ -335,15 +337,23 @@ class MissionServer extends MissionBase
 	{
 	}
 	
+	bool VerifyAttachmentType(int slot_ID, string attachment_type)
+	{
+		return DefaultCharacterCreationMethods.GetConfigAttachmentTypes(slot_ID).Find(attachment_type) > -1;
+	}
+	
 	PlayerBase OnClientNewEvent(PlayerIdentity identity, vector pos, ParamsReadContext ctx)
 	{
 		string characterType;
 		//m_RespawnMode = GetGame().ServerConfigGetInt("setRespawnMode"); //todo - init somewhere safe
 		SyncRespawnModeInfo(identity);
 		// get login data for new character
-		if ( ProcessLoginData(ctx) && (m_RespawnMode == GameConstants.RESPAWN_MODE_CUSTOM) && GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1 && !GetGame().GetMenuDefaultCharacterData(false).IsRandomCharacterForced() )
+		if ( ProcessLoginData(ctx) && (m_RespawnMode == GameConstants.RESPAWN_MODE_CUSTOM) && !GetGame().GetMenuDefaultCharacterData(false).IsRandomCharacterForced() )
 		{
-			characterType = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
+			if (GetGame().ListAvailableCharacters().Find(GetGame().GetMenuDefaultCharacterData().GetCharacterType()) > -1)
+				characterType = GetGame().GetMenuDefaultCharacterData().GetCharacterType();
+			else //random type
+				characterType = GetGame().CreateRandomPlayer();
 		}
 		else
 		{

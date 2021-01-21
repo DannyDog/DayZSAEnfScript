@@ -447,7 +447,7 @@ class PluginLifespan extends PluginBase
 		}
 		else
 		{
-			Print("Error! Player class <" + player_class + "> does not contain valid configuration for bloody hands!");
+			//Print("Error! Player class <" + player_class + "> does not contain valid configuration for bloody hands!");
 		}
 	}
 

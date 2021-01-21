@@ -38,4 +38,21 @@ class AKM_Base : RifleBoltFree_Base
 			return true;
 		return super.CanEnterIronsights();
 	}
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "AK_WoodBttstck" );
+			entity.GetInventory().CreateInInventory( "AK_RailHndgrd" );
+			entity.GetInventory().CreateInInventory( "AK_Bayonet" );
+			entity.GetInventory().CreateInInventory( "UniversalLight" );
+			entity.GetInventory().CreateInInventory( "KobraOptic" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.SpawnEntityOnGroundPos("Mag_AKM_Drum75Rnd", entity.GetPosition());
+		}
+	}	
 };

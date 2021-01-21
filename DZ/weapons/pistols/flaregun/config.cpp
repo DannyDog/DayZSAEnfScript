@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,10,250,4,10};
 		WeaponLength = 0.634148;
 		barrelArmor = 3.125;
+		isSuicideWeapon = 0;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {};

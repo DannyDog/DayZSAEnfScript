@@ -89,6 +89,13 @@ class ActionGetInTransport: ActionBase
 				action_data.m_Player.GetInventory().LockInventory(LOCK_FROM_SCRIPT);
 		}
 	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		CarScript car = CarScript.Cast(action_data.m_Target.GetObject());
+		if (car)
+			car.ForceUpdateLightsStart();
+	}
 
 	override bool CanBeUsedInRestrain()
 	{
@@ -122,5 +129,9 @@ class ActionGetInTransport: ActionBase
 	{
 		if ( action_data.m_Player.GetInventory() ) 
 				action_data.m_Player.GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		
+		CarScript car = CarScript.Cast(action_data.m_Target.GetObject());
+		if (car)
+			car.ForceUpdateLightsEnd();
 	}
 };

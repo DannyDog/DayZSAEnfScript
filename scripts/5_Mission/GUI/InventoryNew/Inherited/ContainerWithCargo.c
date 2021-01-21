@@ -246,9 +246,9 @@ class ContainerWithCargo: ClosableContainer
 		#endif
 		
 		#ifdef PLATFORM_CONSOLE
-		if( dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntity(dst))
+		if( dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntityEx(dst))
 		#else
-		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().LocationCanAddEntity(dst))
+		if( m_Entity && c_x > x && c_y > y && m_Entity.GetInventory().LocationCanAddEntityEx(dst))
 		#endif
 		{
 			ItemManager.GetInstance().HideDropzones();
@@ -334,13 +334,14 @@ class ContainerWithCargo: ClosableContainer
 		
 		InventoryLocation src = new InventoryLocation;
 		item.GetInventory().GetCurrentInventoryLocation(src);
-		if(src.CompareLocationOnly(dst))
+
+		if(src.CompareLocationOnly(dst) && src.GetFlip() == dst.GetFlip())
 			return;
 		
 		#ifdef PLATFORM_CONSOLE
-		if(dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntity(dst))
+		if(dst.IsValid() && m_Entity.GetInventory().LocationCanAddEntityEx(dst))
 		#else
-		if( c_x > x && c_y > y && m_Entity.GetInventory().LocationCanAddEntity(dst))
+		if( c_x > x && c_y > y && m_Entity.GetInventory().LocationCanAddEntityEx(dst))
 		#endif
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );

@@ -636,6 +636,11 @@ class Torch : ItemBase
 		super.OnAttachmentQuantityChanged(item);
 		CalculateQuantity();
 	}
+	
+	override bool DisassembleOnLastDetach()
+	{
+		return true;
+	}
 };
 
 class TorchLambda : ReplaceItemWithNewLambdaBase

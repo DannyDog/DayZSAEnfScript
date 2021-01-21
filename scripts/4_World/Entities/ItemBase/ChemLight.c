@@ -133,6 +133,10 @@ class Chemlight_ColorBase : ItemBase
 		
 		if ( GetGame().IsServer() )
 		{
+			//Safeguard if item is turned off by another event than running out of energy
+			if (GetCompEM().GetEnergy() > 0)
+				return;
+			
 			SetHealth(0);
 		}
 	}

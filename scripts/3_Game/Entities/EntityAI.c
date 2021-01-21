@@ -247,6 +247,11 @@ class EntityAI extends Entity
 		
 		return false;
 	}
+	// Change return value to true if last detached item cause disassemble of item - different handlig some inventory operations
+	bool DisassembleOnLastDetach()
+	{
+		return false;
+	}
 	
 	bool IsBasebuildingKit()
 	{
@@ -312,6 +317,12 @@ class EntityAI extends Entity
 			Man attached_to = Man.Cast( GetHierarchyParent() );
 			if (!attached_to || attached_to == player )// Check for exception with attaching a cable reel to an electric fence
 			{
+				//If cord length is 0, item powersource is most likely an attachment and should not be unplugged
+				if (em.GetCordLength() <= 0)
+				{
+					//em.SwitchOff();
+					return;
+				}
 				em.UnplugAllDevices();
 				em.UnplugThis();
 			}
@@ -332,8 +343,14 @@ class EntityAI extends Entity
 		return false;
 	}
 	
-	//! used as script-side override of specific height checks
+	//! used as script-side override of distance for specific height checks
 	float HeightCheckOverride()
+	{
+		return 0.0;
+	}
+	
+	//! used as script-side override of start pos for specific height checks
+	float HeightStartCheckOverride()
 	{
 		return 0.0;
 	}
@@ -960,15 +977,15 @@ class EntityAI extends Entity
 		return true;
 	}
 	
-	bool CanCombineAttachment(notnull EntityAI e, int slot)
+	bool CanCombineAttachment(notnull EntityAI e, int slot, bool stack_max_limit = false)
 	{
 		EntityAI att = GetInventory().FindAttachment(slot);
 		if(att)
-			return att.CanBeCombined(e);
+			return att.CanBeCombined(e, true, stack_max_limit);
 		return false;
 	}	
 	
-	bool CanBeCombined(EntityAI other_item, bool reservation_check = true )
+	bool CanBeCombined(EntityAI other_item, bool reservation_check = true, bool stack_max_limit = false )
 	{
 		return false;
 	}

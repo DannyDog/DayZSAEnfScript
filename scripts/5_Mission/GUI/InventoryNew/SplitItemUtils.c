@@ -12,7 +12,17 @@ class SplitItemUtils
 		{
 			if( item_base.GetTargetQuantityMax(il.GetSlot()) >= item_base.GetQuantity() )
 			{
-				player.PredictiveTakeEntityToTargetInventory(target, FindInventoryLocationType.ANY, item);
+				if( il.GetType() == InventoryLocationType.ATTACHMENT )
+				{
+					player.PredictiveTakeEntityToTargetAttachmentEx(target, item, il.GetSlot());
+				}
+				else
+				{
+					InventoryLocation src = new InventoryLocation;
+					if (item.GetInventory().GetCurrentInventoryLocation(src))
+						player.PredictiveTakeToDst(src, il);
+				
+				}
 			}
 			else
 			{

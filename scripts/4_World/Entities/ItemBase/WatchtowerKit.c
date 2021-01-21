@@ -9,26 +9,6 @@ class WatchtowerKit extends KitBase
 		return super.CanReceiveAttachment(attachment, slotId);
 	}
 
-	override void OnVariablesSynchronized()
-	{
-		super.OnVariablesSynchronized();
-		
-		if ( IsDeploySound() )
-		{
-			PlayDeploySound();
-		}
-		
-		if ( CanPlayDeployLoopSound() )
-		{
-			PlayDeployLoopSound();
-		}
-		
-		if ( m_DeployLoopSound && !CanPlayDeployLoopSound() )
-		{
-			StopDeployLoopSound();
-		}
-	}
-
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================			

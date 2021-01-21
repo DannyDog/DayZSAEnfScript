@@ -73,6 +73,10 @@ class ActionRepairPart: ActionDismantlePart
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
+		//Action not allowed if player has broken legs
+		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			return false;
+		
 		return RepairCondition( player, target, item, true );
 	}
 	

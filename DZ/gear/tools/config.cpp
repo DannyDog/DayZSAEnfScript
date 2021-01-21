@@ -81,7 +81,7 @@ class CfgVehicles
 			energyUsagePerSecond = 0.01;
 			plugType = 1;
 			attachmentAction = 1;
-			updateInterval = 30;
+			updateInterval = 40;
 		};
 		class AnimEvents
 		{
@@ -245,7 +245,7 @@ class CfgVehicles
 		{
 			energyAtSpawn = 1200;
 			energyUsagePerSecond = 1;
-			updateInterval = 10;
+			updateInterval = 40;
 		};
 		class AnimEvents
 		{
@@ -997,6 +997,21 @@ class CfgVehicles
 					soundSet = "Crowbar_end_SoundSet";
 					id = 1120;
 				};
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
 			};
 		};
 	};
@@ -1398,6 +1413,27 @@ class CfgVehicles
 			{
 				ammo = "MeleeScrewdriver_Heavy";
 				range = 3.3;
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
 			};
 		};
 	};

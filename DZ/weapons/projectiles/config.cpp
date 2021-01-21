@@ -800,7 +800,7 @@ class CfgAmmo
 		hit = 8;
 		indirectHit = 0;
 		indirectHitRange = 0;
-		initSpeed = 1000;
+		initSpeed = 910;
 		typicalSpeed = 1000;
 		airFriction = -0.00105;
 		caliber = 0.9;

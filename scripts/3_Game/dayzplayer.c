@@ -1202,5 +1202,7 @@ class DayZPlayer extends Human
 		ForceStandUpForHeavyItems(item1);
 		ForceStandUpForHeavyItems(item2);
 	}
+	
+	void OnThrowingModeChange(bool change_to_enabled){}
 }
 

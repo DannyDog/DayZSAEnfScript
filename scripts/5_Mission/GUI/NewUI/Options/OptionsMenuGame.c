@@ -43,21 +43,20 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_FOVOption					= NumericOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_FIELD_OF_VIEW ) );
 		m_LanguageOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_LANGUAGE ) );
 		
-		
 		m_Root.FindAnyWidget( "fov_setting_option" ).SetUserID( AT_OPTIONS_FIELD_OF_VIEW );
-		m_Root.FindAnyWidget( "hud_setting_option" ).SetUserID( 1 );
-		m_Root.FindAnyWidget( "crosshair_setting_option" ).SetUserID( 2 );
-		m_Root.FindAnyWidget( "game_setting_option" ).SetUserID( 4 );
-		m_Root.FindAnyWidget( "admin_setting_option" ).SetUserID( 5 );
-		m_Root.FindAnyWidget( "player_setting_option" ).SetUserID( 6 );
+		m_Root.FindAnyWidget( "hud_setting_option" ).SetUserID( OptionIDsScript.OPTION_HUD );
+		m_Root.FindAnyWidget( "crosshair_setting_option" ).SetUserID( OptionIDsScript.OPTION_CROSSHAIR );
+		m_Root.FindAnyWidget( "game_setting_option" ).SetUserID( OptionIDsScript.OPTION_GAME_MESSAGES );
+		m_Root.FindAnyWidget( "admin_setting_option" ).SetUserID( OptionIDsScript.OPTION_ADMIN_MESSAGES );
+		m_Root.FindAnyWidget( "player_setting_option" ).SetUserID( OptionIDsScript.OPTION_PLAYER_MESSAGES );
 		m_Root.FindAnyWidget( "language_setting_option" ).SetUserID( AT_OPTIONS_LANGUAGE );
-		m_Root.FindAnyWidget( "serverinfo_setting_option" ).SetUserID( 7 );
 		
 		#ifdef PLATFORM_CONSOLE
 		m_Root.FindAnyWidget( "brightness_setting_option" ).SetUserID( AT_OPTIONS_BRIGHT_SLIDER );
 		#else
 		#ifdef PLATFORM_WINDOWS
-		m_Root.FindAnyWidget( "quickbar_setting_option" ).SetUserID( 3 );
+		m_Root.FindAnyWidget( "quickbar_setting_option" ).SetUserID( OptionIDsScript.OPTION_QUICKBAR );
+		m_Root.FindAnyWidget( "serverinfo_setting_option" ).SetUserID( OptionIDsScript.OPTION_SERVER_INFO );
 		#endif
 		#endif
 		
@@ -109,6 +108,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_Root.FindAnyWidget( "game_settings_scroll" ).SetAlpha( f );
 		
 		m_Root.SetHandler( this );
+		m_DetailsRoot.Show( false );
 	}
 	
 	void ~OptionsMenuGame()
@@ -338,7 +338,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	}
 	
 	override bool OnFocus( Widget w, int x, int y )
-	{		
+	{
 		if( m_Menu )
 		{
 			m_Menu.OnFocus( w, x, y );
@@ -349,7 +349,12 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 			if ( TextMapUpdateWidget( w.GetUserID() ) ) 
 			{
 				return true;
-			}		
+			}
+			
+			if( w.IsInherited( SliderWidget ) )
+			{
+				return true;
+			}
 		}
 		m_DetailsRoot.Show( false );
 		return ( w != null );
@@ -381,27 +386,27 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_TextMap = new map<int, ref Param2<string, string>>;
 		m_TextMap.Insert( AT_OPTIONS_LANGUAGE, new Param2<string, string>( "#options_game_select_language", "#options_game_select_language_desc" ) );
 		m_TextMap.Insert( AT_OPTIONS_FIELD_OF_VIEW, new Param2<string, string>( "#options_game_field_of_view", "#options_game_field_of_view_desc" ) );
-		m_TextMap.Insert( 1, new Param2<string, string>( "#options_game_show_HUD", "#options_game_show_HUD_desc" ) );
-		m_TextMap.Insert( 2, new Param2<string, string>( "#options_game_show_crosshair", "#options_game_show_crosshair_desc" ) );
-		m_TextMap.Insert( 7, new Param2<string, string>( "#options_game_show_serverinfo", "#options_game_show_serverinfo_desc" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_HUD, new Param2<string, string>( "#options_game_show_HUD", "#options_game_show_HUD_desc" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_CROSSHAIR, new Param2<string, string>( "#options_game_show_crosshair", "#options_game_show_crosshair_desc" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_SERVER_INFO, new Param2<string, string>( "#options_game_show_serverinfo", "#options_game_show_serverinfo_desc" ) );
 	
 		#ifdef PLATFORM_WINDOWS
-		m_TextMap.Insert( 3, new Param2<string, string>( "#options_game_show_quickbar",	"#options_game_show_quickbar_desc" ) );
-		m_TextMap.Insert( 4, new Param2<string, string>( "#options_pc_game_messages",	"#options_game_show_game_msg" ) );
-		m_TextMap.Insert( 5, new Param2<string, string>( "#options_pc_admin_mes",		"#options_game_show_admin_msg" ) );
-		m_TextMap.Insert( 6, new Param2<string, string>( "#options_pc_player_messages",	"#options_game_show_player_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_QUICKBAR, new Param2<string, string>( "#options_game_show_quickbar",	"#options_game_show_quickbar_desc" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_GAME_MESSAGES, new Param2<string, string>( "#options_pc_game_messages",	"#options_game_show_game_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_ADMIN_MESSAGES, new Param2<string, string>( "#options_pc_admin_mes",		"#options_game_show_admin_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_PLAYER_MESSAGES, new Param2<string, string>( "#options_pc_player_messages",	"#options_game_show_player_msg" ) );
 		#else
 		#ifdef PLATFORM_XBOX
 		m_TextMap.Insert( AT_OPTIONS_BRIGHT_SLIDER, new Param2<string, string>( "#options_video_brightness", "#options_video_brightness_desc" ) );
-		m_TextMap.Insert( 4, new Param2<string, string>( "#options_xbox_game_messages",	"#options_game_show_game_msg" ) );
-		m_TextMap.Insert( 5, new Param2<string, string>( "#options_xbox_admin_mes",		"#options_game_show_admin_msg" ) );
-		m_TextMap.Insert( 6, new Param2<string, string>( "#options_xbox_player_messages","#options_game_show_player_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_GAME_MESSAGES, new Param2<string, string>( "#options_xbox_game_messages",	"#options_game_show_game_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_ADMIN_MESSAGES, new Param2<string, string>( "#options_xbox_admin_mes",		"#options_game_show_admin_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_PLAYER_MESSAGES, new Param2<string, string>( "#options_xbox_player_messages","#options_game_show_player_msg" ) );
 		#else 
 		#ifdef PLATFORM_PS4
 		m_TextMap.Insert( AT_OPTIONS_BRIGHT_SLIDER, new Param2<string, string>( "#ps4_options_video_brightness", "#ps4_options_video_brightness_desc" ) );
-		m_TextMap.Insert( 4, new Param2<string, string>( "#ps4_options_game_messages",	"#ps4_options_game_show_game_msg" ) );
-		m_TextMap.Insert( 5, new Param2<string, string>( "#ps4_options_admin_mes",		"#ps4_options_game_show_admin_msg" ) );
-		m_TextMap.Insert( 6, new Param2<string, string>( "#ps4_options_player_messages","#ps4_options_game_show_player_msg" ) );		
+		m_TextMap.Insert( OptionIDsScript.OPTION_GAME_MESSAGES, new Param2<string, string>( "#ps4_options_game_messages",	"#ps4_options_game_show_game_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_ADMIN_MESSAGES, new Param2<string, string>( "#ps4_options_admin_mes",		"#ps4_options_game_show_admin_msg" ) );
+		m_TextMap.Insert( OptionIDsScript.OPTION_PLAYER_MESSAGES, new Param2<string, string>( "#ps4_options_player_messages","#ps4_options_game_show_player_msg" ) );		
 		#endif
 		#endif
 		#endif

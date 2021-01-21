@@ -531,7 +531,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 20;
+				damage = 50;
 			};
 			class Blood
 			{
@@ -539,7 +539,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 7;
+				damage = 20;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",0.5,1,60};
@@ -3264,7 +3264,7 @@ class CfgAmmo
 			type = "Melee";
 			class Health
 			{
-				damage = 13;
+				damage = 20;
 			};
 			class Blood
 			{
@@ -3272,7 +3272,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 15;
+				damage = 30;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
@@ -3389,7 +3389,7 @@ class CfgAmmo
 			type = "Melee";
 			class Health
 			{
-				damage = 17;
+				damage = 25;
 			};
 			class Blood
 			{
@@ -3397,7 +3397,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 34;
+				damage = 40;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
@@ -3749,7 +3749,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 17;
+				damage = 25;
 			};
 			class Blood
 			{
@@ -3757,7 +3757,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 20;
+				damage = 25;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
@@ -3875,7 +3875,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -4001,7 +4001,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 17;
+				damage = 30;
 			};
 			class Blood
 			{
@@ -4009,7 +4009,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 20;
+				damage = 30;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",0.5,1,60};
@@ -4127,7 +4127,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 45;
 			};
 			class Blood
 			{
@@ -4135,7 +4135,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 40;
+				damage = 45;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_dirt_hit_01",1,1,60};
@@ -4486,7 +4486,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 30;
 			};
 			class Blood
 			{
@@ -4611,7 +4611,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 34;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -5332,7 +5332,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 34;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -5945,7 +5945,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 34;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -6071,7 +6071,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 55;
+				damage = 60;
 			};
 			class Blood
 			{
@@ -7294,7 +7294,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 30;
 			};
 			class Blood
 			{
@@ -8409,7 +8409,7 @@ class CfgAmmo
 			type = "Melee";
 			class Health
 			{
-				damage = 13;
+				damage = 25;
 			};
 			class Blood
 			{
@@ -8417,7 +8417,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 15;
+				damage = 25;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
@@ -8534,7 +8534,7 @@ class CfgAmmo
 			type = "Melee";
 			class Health
 			{
-				damage = 17;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -8542,7 +8542,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 34;
+				damage = 40;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};
@@ -8660,7 +8660,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 13;
+				damage = 20;
 			};
 			class Blood
 			{
@@ -8786,7 +8786,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 17;
+				damage = 30;
 			};
 			class Blood
 			{
@@ -8794,7 +8794,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 10;
+				damage = 15;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",1,1,60};
@@ -8912,7 +8912,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 55;
 			};
 			class Blood
 			{
@@ -9038,7 +9038,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 34;
+				damage = 70;
 			};
 			class Blood
 			{
@@ -9164,7 +9164,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 17;
+				damage = 25;
 			};
 			class Blood
 			{
@@ -9172,7 +9172,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 20;
+				damage = 25;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
@@ -9289,7 +9289,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -9900,7 +9900,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 10;
+				damage = 17;
 			};
 			class Blood
 			{
@@ -10026,7 +10026,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 13;
+				damage = 25;
 			};
 			class Blood
 			{
@@ -10034,7 +10034,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 5;
+				damage = 10;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\short_blade_weapon_hits\short_blade_weapon_dirt_hit_01",1,1,60};
@@ -10621,7 +10621,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 17;
+				damage = 30;
 			};
 			class Blood
 			{
@@ -10629,7 +10629,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 20;
+				damage = 30;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",0.5,1,60};
@@ -10747,7 +10747,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 25;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -10755,7 +10755,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 34;
+				damage = 40;
 			};
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\blunt_metal_weapon_hits\blunt_metal_weapon_dirt_hit_01",1,1,60};

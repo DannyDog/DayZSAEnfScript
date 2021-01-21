@@ -75,6 +75,12 @@ enum DiagMenuIDs
 	DM_QUICK_FISHING,
 	DM_HOLOGRAM,
 	DM_SHOCK_IMPACT,
+	DM_LOGS_MENU,
+	DM_LOG_ACTIONS,
+	DM_LOG_INVENTORY,
+	DM_LOG_SYMPTOM,
+	DM_SHOW_FIREHEAT_RADIUS, //new debug
+	DM_SHOW_AREADMG_TRIGGER //new debug
 };
 
 enum DebugActionType
@@ -114,6 +120,9 @@ class PluginDiagMenu extends PluginBase
 	bool m_PresenceNotifierDebug	= false;
 	bool m_ShowBleedingSources		= false;
 	bool m_XboxCursor				= true;
+	bool m_DoActionLogs				= false;
+	bool m_DoInventoryLogs			= false;
+	bool m_DoSymptomLogs			= false;
 	float m_SpecialtyLevel			= 0;
 	float m_LifespanLevel			= 0;
 	int  m_DayzPlayerDebugMenu		= -1;
@@ -129,6 +138,10 @@ class PluginDiagMenu extends PluginBase
 	override void OnInit()
 	{
 		if( GetGame().IsMultiplayer() && GetGame().IsServer() ) return; //(only client/local)
+		
+		m_DoActionLogs = IsCLIParam("doActionLog");
+		m_DoActionLogs = IsCLIParam("doInventoryLog");
+		m_DoActionLogs = IsCLIParam("doActionLog");
 		
 		//----------------------
 		m_HairHidingStateMap = new map<int,bool>;
@@ -274,6 +287,8 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_DISABLE_PERSONAL_LIGHT, "", "Disable Personal Light", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_CAM_SHAKE, "lalt+3", "Simulate Cam Shake", "Misc");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_HOLOGRAM, "lctrl+h", "Hologram placing debug", "Misc");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_SHOW_FIREHEAT_RADIUS, "", "Show Fire Radius", "Misc"); 
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_SHOW_AREADMG_TRIGGER, "", "Show Area Damage", "Misc"); 
 					//---------------------------------------------------------------
 					// LEVEL 3
 					//---------------------------------------------------------------
@@ -310,6 +325,18 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_WEAPON_ALLOW_RECOIL, "", "Procedural Recoil", "Weapon");
 				DiagMenu.SetValue(DiagMenuIDs.DM_WEAPON_ALLOW_RECOIL, true);
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_WEAPON_UNLIMITED, "lalt+9", "Unlimited Ammo", "Weapon");
+		
+			//---------------------------------------------------------------
+			// LEVEL 1
+			//---------------------------------------------------------------
+			DiagMenu.RegisterMenu(DiagMenuIDs.DM_LOGS_MENU, "Logs", "Script");
+				//---------------------------------------------------------------
+				// LEVEL 2
+				//---------------------------------------------------------------
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_ACTIONS, "", "Log Action Debug", "Logs");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY, "", "Log Inventory Debug", "Logs");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_SYMPTOM, "", "Log Symptom Debug", "Logs");
+				//DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY, "lalt+7", "BulletImpact", "Logs");
 	}
 	
 	void Update(float deltaT)
@@ -369,6 +396,9 @@ class PluginDiagMenu extends PluginBase
 		CheckPersonalLight();
 		CheckCamShake();
 		CheckVehicleGetOutBox();
+		CheckDoActionLogs();
+		CheckDoInventoryLogs();
+		CheckDoSymptomLogs();
 
 	}
 	//---------------------------------------------
@@ -1227,6 +1257,72 @@ class PluginDiagMenu extends PluginBase
 			DiagMenu.SetValue(DiagMenuIDs.DM_SIMULATE_ERROR_FUNCTION, false);//to prevent constant RPC calls, switch back to false
 		}
 	}
+	//---------------------------------------------
+	void CheckDoActionLogs()
+	{
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_ACTIONS) )
+		{
+			if( !m_DoActionLogs )
+			{
+				SendSetActionLogs(true);
+				LogManager.ActionLogEnable(true);
+				m_DoActionLogs = true;
+			}
+		}
+		else
+		{
+			if( m_DoActionLogs )
+			{
+				SendSetActionLogs(false);
+				LogManager.ActionLogEnable(false);
+				m_DoActionLogs = false;
+			}
+		}
+	}
+	//---------------------------------------------
+	void CheckDoInventoryLogs()
+	{
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_INVENTORY) )
+		{
+			if( !m_DoInventoryLogs )
+			{
+				SendSetInventoryLogs(true);
+				LogManager.InventoryLogEnable(true);
+				m_DoInventoryLogs = true;
+			}
+		}
+		else
+		{
+			if( m_DoInventoryLogs )
+			{
+				SendSetInventoryLogs(false);
+				LogManager.InventoryLogEnable(false);
+				m_DoInventoryLogs = false;
+			}
+		}
+	}
+	//---------------------------------------------
+	void CheckDoSymptomLogs()
+	{
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_SYMPTOM) )
+		{
+			if( !m_DoSymptomLogs )
+			{
+				SendSetSymptomLogs(true);
+				LogManager.SymptomLogEnable(true);
+				m_DoSymptomLogs = true;
+			}
+		}
+		else
+		{
+			if( m_DoSymptomLogs )
+			{
+				SendSetSymptomLogs(false);
+				LogManager.SymptomLogEnable(false);
+				m_DoSymptomLogs = false;
+			}
+		}
+	}
 	
 	//---------------------------------------------
 	void SendDebugActionsRPC()
@@ -1434,6 +1530,27 @@ class PluginDiagMenu extends PluginBase
 			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.DEV_HAIR_LEVEL_HIDE, p2, true, GetGame().GetPlayer().GetIdentity() );
  	}
 	
+	void SendSetActionLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_ACTION_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
+	void SendSetInventoryLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_INVENTORY_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
+	void SendSetSymptomLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_SYMPTOMS_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
 	//---------------------------------------------
 	void OnRPC(PlayerBase player, int rpc_type, ParamsReadContext ctx)
 	{
@@ -1636,6 +1753,21 @@ class PluginDiagMenu extends PluginBase
 				ctx.Read( CachedObjectsParams.PARAM2_INT_INT ); //PARAM2_INT_INT.param2 is BOOL here
 				player.SetHairLevelToHide(CachedObjectsParams.PARAM2_INT_INT.param1,CachedObjectsParams.PARAM2_INT_INT.param2,true);
 				player.UpdateHairSelectionVisibility(true);
+			break;
+			
+			case ERPCs.RPC_DO_ACTION_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.ActionLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
+			break;
+			
+			case ERPCs.RPC_DO_INVENTORY_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.InventoryLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
+			break;
+			
+			case ERPCs.RPC_DO_SYMPTOMS_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.SymptomLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
 			break;
 		}
 	}

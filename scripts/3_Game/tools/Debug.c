@@ -12,11 +12,14 @@
 
 class Debug
 {	
-	static private const string	LOG_DEBUG	= "Debug";
-	static private const string	LOG_INFO	= "Info";
-	static private const string	LOG_WARNING	= "Warning";
-	static private const string	LOG_ERROR	= "Error";
-	static private const string	LOG_DEFAULT	= "n/a";
+	static private const string	LOG_DEBUG			= "Debug";
+	static private const string	LOG_DEBUG_ACTION	= "Debug Action";
+	static private const string	LOG_DEBUG_INVENTORY	= "Debug Inventory";
+	static private const string	LOG_DEBUG_SYMPTOM	= "Debug Symptom";
+	static private const string	LOG_INFO			= "Info";
+	static private const string	LOG_WARNING			= "Warning";
+	static private const string	LOG_ERROR			= "Error";
+	static private const string	LOG_DEFAULT			= "n/a";
 	
 	static private ref array<Shape>	m_DebugShapes;
 	
@@ -119,6 +122,21 @@ class Debug
 	static void	Log(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
 	{
 		LogMessage(LOG_DEBUG, plugin, entity, author, label, message);
+	}
+	
+	static void	ActionLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_ACTION, plugin, entity, author, label, message);
+	}
+	
+	static void	InventoryLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_INVENTORY, plugin, entity, author, label, message);
+	}
+	
+	static void	SymptomLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_SYMPTOM, plugin, entity, author, label, message);
 	}
 	
 	/**
@@ -355,9 +373,8 @@ class Debug
 		}		
 		
 		// Formation output to external file
-		// %date{MM-dd HH:mm:ss} | %Enviroment | %Level | %Module | %Entity | %Author | %Label | %Message | %CallStack	
+		// %date{MM-dd HH:mm:ss} | %Enviroment | %Level | %Module | %Entity | %Author | %Label | %Message	
 		string date			= GetDate();
-		string callStack	= LOG_DEFAULT;
 		string env			= "Client";
 		string msg			= string.Empty;
 		
@@ -366,15 +383,7 @@ class Debug
 			env = "Server";
 		}
 		
-		msg += date			+ " | ";
-		msg += env			+ " | ";
-		msg += level		+ " | ";
-		msg += plugin		+ " | ";
-		msg += entity		+ " | ";
-		msg += author		+ " | ";
-		msg += label		+ " | ";
-		msg += message		+ " | ";
-		msg += callStack;
+		msg = string.Format("%1 | %2 | %3 | %4 | %5 | %6 | %7", date, env, level, plugin, entity, label, message);
 	
 		if ( is_server_log )
 		{
@@ -390,7 +399,10 @@ class Debug
 	
 	static private void	SaveLog(string log_message)
 	{
-		FileHandle file_index = OpenFile(GetFileName(), FileMode.APPEND);
+		Print(log_message);
+
+		//Previous was saved to separate file
+		/*FileHandle file_index = OpenFile(GetFileName(), FileMode.APPEND);
 		
 		if ( file_index == 0 )
 		{
@@ -399,7 +411,7 @@ class Debug
 			
 		FPrintln(file_index, log_message);
 		
-		CloseFile(file_index);
+		CloseFile(file_index);*/
 	}
 	
 	static private void	ClearLogs()
@@ -441,3 +453,48 @@ class Debug
 		return date;
 	}
 };
+
+class LogManager
+{
+	static bool m_DoActionDebugLog;
+	static bool m_DoInventoryDebugLog;
+	static bool m_DoSymptomDebugLog;
+	
+	static void Init()
+	{
+		m_DoActionDebugLog = IsCLIParam("doActionLog");
+		m_DoInventoryDebugLog = IsCLIParam("doInventoryLog");
+		m_DoSymptomDebugLog = IsCLIParam("doSymptomLog");
+	}
+	
+	static bool IsActionLogEnable()
+	{
+		return m_DoActionDebugLog;
+	}
+	
+	static void ActionLogEnable(bool enable)
+	{
+		m_DoActionDebugLog = enable;
+	}
+	
+	static bool IsInventoryLogEnable()
+	{
+		return m_DoInventoryDebugLog;
+	}
+	
+	static void InventoryLogEnable(bool enable)
+	{
+		m_DoInventoryDebugLog = enable;
+	}
+	
+	static bool IsSymptomLogEnable()
+	{
+		return m_DoSymptomDebugLog;
+	}
+	
+	static void SymptomLogEnable(bool enable)
+	{
+		m_DoSymptomDebugLog = enable;
+	}
+	
+}

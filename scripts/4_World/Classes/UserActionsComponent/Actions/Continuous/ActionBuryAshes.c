@@ -30,6 +30,10 @@ class ActionBuryAshes: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		//Action not allowed if player has broken legs
+		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			return false;
+		
 		Fireplace fireplace_target = Fireplace.Cast( target.GetObject() );
 		
 		if ( fireplace_target )

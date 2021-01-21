@@ -60,4 +60,18 @@ class Mich2001Helmet extends HelmetBase
 			}
 		}
 	}*/
+	
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "NVGoggles" );
+			entity.GetInventory().CreateInInventory( "UniversalLight" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+		}
+	}
 };

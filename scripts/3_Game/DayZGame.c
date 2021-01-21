@@ -43,6 +43,14 @@ class LoginQueueBase extends UIScriptedMenu
 			toolbar_b.LoadImageFile( 0, "set:playstation_buttons image:" + back );
 		#endif
 		#endif
+		
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			layoutRoot.FindAnyWidget("notification_root").Show(true);
+		#endif
+		#endif
+		#endif
 		return layoutRoot;
 	}
 	
@@ -319,7 +327,17 @@ class LoadingScreen
 		{
 			m_ProgressText.Show( GetGame().CommandlineGetParam("loadingTest", tmp) );
 		}
-		
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			Widget exp_notifiaction = m_WidgetRoot.FindAnyWidget("notification_root");
+			if (exp_notifiaction)
+			{
+				exp_notifiaction.Show(true);
+			}
+		#endif
+		#endif
+		#endif
 		
 		m_ModdedWarning.Show( g_Game.ReportModded() );
 		m_ImageLogoMid.Show(true);
@@ -1687,6 +1705,14 @@ class DayZGame extends CGame
 				text_widget.SetText( string.Format( text, "<image set=\"playstation_buttons\" name=\"" + confirm + "\" />" ) );
 			#endif
 		}
+		
+		#ifdef PLATFORM_CONSOLE
+		#ifdef PLATFORM_XBOX
+		#ifdef BUILD_EXPERIMENTAL
+			m_IntroMenu.FindAnyWidget("notification_root").Show(true);
+		#endif
+		#endif
+		#endif
 	}
 	
 	void DeleteTitleScreen()
@@ -1960,17 +1986,20 @@ class DayZGame extends CGame
 	
 	void GamepadCheck()
 	{
-		if( GetInput().IsActiveGamepadSelected() )
+#ifndef AUTOTEST
+		if ( GetInput().IsActiveGamepadSelected() )
 		{
+#endif
 			DeleteTitleScreen();
 			SelectUser();
+#ifndef AUTOTEST
 		}
 		else
 		{
-			#ifdef PLATFORM_CONSOLE
-			#ifndef PLATFORM_WINDOWS
+	#ifdef PLATFORM_CONSOLE
+		#ifndef PLATFORM_WINDOWS
 			#ifdef PLATFORM_PS4
-			if( GetUserManager().GetSelectedUser() )
+			if ( GetUserManager().GetSelectedUser() )
 			{
 				int gamepad = GetInput().GetUserGamepad( GetUserManager().GetSelectedUser() );
 				if (gamepad > -1)
@@ -1987,13 +2016,14 @@ class DayZGame extends CGame
 			else
 			#endif
 			{
-				if( !m_IntroMenu && !( GetUIManager().GetMenu() && GetUIManager().GetMenu().GetID() == MENU_TITLE_SCREEN ) )
+				if ( !m_IntroMenu && !( GetUIManager().GetMenu() && GetUIManager().GetMenu().GetID() == MENU_TITLE_SCREEN ) )
 					CreateTitleScreen();
 				GetInput().IdentifyGamepad( GetInput().GetEnterButton() );
 			}
-			#endif
-			#endif
+		#endif
+	#endif
 		}
+#endif
 	}
 	
 	void SelectGamepad()
@@ -2783,6 +2813,20 @@ class DayZGame extends CGame
 	float GetPreviousEVValue()
 	{
 		return m_PreviousEVValue;
+	}
+	
+	int GetCurrentDisplayLanguageIdx()
+	{
+		ListOptionsAccess	language_option;
+		GameOptions options = new GameOptions();
+		language_option = ListOptionsAccess.Cast( options.GetOptionByType( AT_OPTIONS_LANGUAGE ) );
+		int idx = -1;
+		if (language_option)
+		{
+			idx = language_option.GetIndex();
+		}
+		
+		return idx;
 	}
 	
 	bool IsWorldWetTempUpdateEnabled()

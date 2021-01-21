@@ -60,6 +60,12 @@ class GardenBase extends BuildingSuper
 		InitializeSlots();
 	}
 	
+	override void OnVariablesSynchronized()
+	{
+		super.OnVariablesSynchronized();
+		
+	}
+	
 	override bool HasProxyParts()
 	{
 		return true;
@@ -97,6 +103,7 @@ class GardenBase extends BuildingSuper
 			slot.SetGarden(this);
 			slot.m_State = Slot.STATE_DIGGED;
 			m_Slots.Insert( slot );
+			//RegisterNetSyncVariableInt("slot.m_State", 1, 2);
 		}
 	}
 	
@@ -326,7 +333,12 @@ class GardenBase extends BuildingSuper
 			
 			if ( !slot.NeedsWater() )
 			{
-				CreatePlant(slot);
+				//Take some small amount of time before making a plant out of seeds
+				Timer growthTimer = NULL;
+				growthTimer = new Timer( CALL_CATEGORY_SYSTEM );
+				Param createPlantParam = new Param1<Slot>(slot);
+				growthTimer.Run( 0.5, this, "CreatePlant", createPlantParam, false ); //Use a const for timer delay
+				//CreatePlant(slot);
 			}
 		}
 	}
@@ -416,7 +428,7 @@ class GardenBase extends BuildingSuper
 		
 		if ( slot )
 		{
-			if ( slot.m_FertilizerType == ""  ||  slot.m_FertilizerQuantity < slot.m_FertilizerUsage )
+			if ( slot.GetFertilityType() == ""  ||  slot.GetFertilizerQuantity() < slot.m_FertilizerUsage )
 			{
 				return true;
 			}
@@ -526,6 +538,7 @@ class GardenBase extends BuildingSuper
 			
 			if ( plant )
 			{
+				plant.UnlockFromParent();
 				plant.m_MarkForDeletion = true;
 				GetGame().ObjectDelete( plant );
 			}

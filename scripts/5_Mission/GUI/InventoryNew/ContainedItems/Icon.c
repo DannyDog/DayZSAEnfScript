@@ -278,15 +278,23 @@ class Icon: LayoutHolder
 		}
 		
 		InventoryLocation il = new InventoryLocation;
-		if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il ))
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		int index = player.GetHumanInventory().FindUserReservedLocationIndex( m_Item );
+		
+		if(index >= 0)
+		{	
+			player.GetHumanInventory().GetUserReservedLocation( index, il );
+		}
+		
+		if( index < 0 && GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ) )
 		{
-			ColorManager.GetInstance().SetColor( w, ColorManager.FSWAP_COLOR );
+			ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
 			ItemManager.GetInstance().HideDropzones();
 			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
 		}
-		else if( GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ) )
+		else if( GameInventory.CanForceSwapEntitiesEx( w_entity, null, receiver_entity, il ) )
 		{
-			ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
+			ColorManager.GetInstance().SetColor( w, ColorManager.FSWAP_COLOR );
 			ItemManager.GetInstance().HideDropzones();
 			ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
 		}
@@ -942,16 +950,12 @@ class Icon: LayoutHolder
 				{
 					if ( m_Item.GetInventory().CanRemoveEntity() )
 					{
-						ActionManagerClient mngr_client;
-						ActionTarget atrg;
 						if ( m_Item.GetTargetQuantityMax() < m_Item.GetQuantity() )
 							m_Item.SplitIntoStackMaxClient( null, -1 );
-						else if ( player && player.GetItemInHands() == m_Item && CastTo(mngr_client, player.GetActionManager()) && mngr_client.GetAction(ActionDropItem).Can(player, atrg, m_Item) )
+						else if ( player )
 						{
-							mngr_client.PerformActionStart(mngr_client.GetAction(ActionDropItem), atrg, m_Item);
-						}
-						else
 							player.PhysicalPredictiveDropItem( m_Item );
+						}
 						ItemManager.GetInstance().SetWidgetDraggable( w, false );	
 					}
 				}

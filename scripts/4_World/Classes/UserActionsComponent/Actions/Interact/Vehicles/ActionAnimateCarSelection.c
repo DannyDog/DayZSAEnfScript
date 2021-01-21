@@ -60,6 +60,10 @@ class ActionAnimateCarSelection: ActionInteractBase
 			if ( targetEnt.GetAnimationPhase(m_AnimSource) <= 0.5 )
 				targetEnt.SetAnimationPhase(m_AnimSource, 1.0 );
 		}
+		
+		CarScript car;
+		if ( Class.CastTo(car, action_data.m_Target.GetObject()) )
+			car.ForceUpdateLightsStart();
 	}
 
 	override void OnStartClient( ActionData action_data )
@@ -72,5 +76,12 @@ class ActionAnimateCarSelection: ActionInteractBase
 			if ( targetEnt.GetAnimationPhase(m_AnimSource) <= 0.5 )
 				targetEnt.SetAnimationPhase(m_AnimSource, 1.0 );
 		}
+	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		CarScript car;
+		if ( Class.CastTo(car, action_data.m_Target.GetObject()) )
+			car.ForceUpdateLightsEnd();
 	}
 };

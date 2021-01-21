@@ -127,6 +127,11 @@ class OptionsMenuSounds extends ScriptedWidgetEventHandler
 				m_DetailsRoot.Update();
 				return true;
 			}
+			
+			if( w.IsInherited( SliderWidget ) )
+			{
+				return true;
+			}
 		}
 		m_DetailsRoot.Show( false );
 		return ( w != null );

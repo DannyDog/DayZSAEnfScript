@@ -348,6 +348,7 @@ class CfgVehicles
 		rotationFlags = 2;
 		itemSize[] = {3,3};
 		weight = 150;
+		isStrap = 1;
 		class DamageSystem
 		{
 			class GlobalHealth

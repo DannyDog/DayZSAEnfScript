@@ -46,8 +46,8 @@ FrameWidgetClass FrameWidget {
        switch once
       }
       ButtonWidgetClass ItemsButtonWidget {
-       position 0.12 8
-       size 0.1 0.625
+       position 0.12 10
+       size 0.1 0.635
        hexactpos 0
        vexactpos 1
        hexactsize 0
@@ -102,33 +102,10 @@ FrameWidgetClass FrameWidget {
     PanelWidgetClass ItemsPanel {
      visible 1
      inheritalpha 1
-     position 0.00711 0.05556
-     size 0.984 0.87778
+     position 0.004 0.0421
+     size 0.99 0.8778
      style rover_sim_black
      {
-      TextListboxWidgetClass ObjectsList {
-       visible 1
-       position 0.00813 0.07595
-       size 0.28659 0.91139
-       colums ""
-       lines 30
-      }
-      ButtonWidgetClass ButtonSpawnInInv {
-       position 0.8224 0.87098
-       size 0.1577 20
-       vexactsize 1
-       style Default
-       text "Spawn In Inventory"
-       text_proportion 0.8
-      }
-      ButtonWidgetClass ButtonSpawnInGround {
-       position 0.82237 0.84
-       size 0.1577 20
-       vexactsize 1
-       style Default
-       text "Spawn On Ground"
-       text_proportion 0.8
-      }
       EditBoxWidgetClass ObjectFilter {
        inheritalpha 1
        color 1 1 1 1
@@ -143,24 +120,52 @@ FrameWidgetClass FrameWidget {
        font "gui/fonts/system"
        "text color" 1 1 1 1
       }
-      TextListboxWidgetClass PresetList {
-       position 0.38 0.12832
-       size 0.54471 0.32877
-       lines 12
+      TextWidgetClass Item {
+       ignorepointer 0
+       position 0.01 0.078
+       size 0.29 30
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
+       text "ITEM"
+       "exact text" 1
+       "text valign" center
       }
-      TextWidgetClass TextWidget1 {
+      TextListboxWidgetClass ObjectsList {
+       visible 1
+       position 0.01 0.13
+       size 0.29 0.81
+       colums ""
+       lines 30
+      }
+      ButtonWidgetClass ItemNameCopy {
+       position 0.01 0.95
+       size 0.29 20
+       vexactsize 1
+       style Default
+       text "Copy To Clipboard"
+       text_proportion 0.8
+      }
+      TextWidgetClass Presets {
        inheritalpha 0
        color 1 1 1 1
-       position 0.38 0.07979
-       size 0.17073 0.03797
+       position 0.305 0.078
+       size 0.3 30
        halign left
+       vexactsize 1
        text "PRESETS"
        "exact text" 1
        "text halign" left
        "text valign" center
       }
+      TextListboxWidgetClass PresetList {
+       position 0.305 0.13
+       size 0.29 0.5
+       lines 19
+      }
       ButtonWidgetClass NewPresetButton {
-       position 0.62602 0.46835
+       position 0.305 0.65
        size 0.0732 20
        vexactsize 1
        style Default
@@ -168,53 +173,34 @@ FrameWidgetClass FrameWidget {
        text_proportion 0.8
       }
       ButtonWidgetClass SetDefaultPresetButton {
-       position 0.71545 0.46835
+       position 0.38 0.65
        size 0.0732 20
        vexactsize 1
        style Default
        text "Default"
        text_proportion 0.8
       }
-      ButtonWidgetClass RenamePresetButton {
-       position 0.89431 0.46835
-       size 0.0732 20
-       vexactsize 1
-       style Default
-       text "Rename"
-       text_proportion 0.8
-      }
       ButtonWidgetClass DeletePresetButton {
-       position 0.80488 0.46835
+       position 0.45 0.65
        size 0.0732 20
        vexactsize 1
        style Default
        text "Delete"
        text_proportion 0.8
       }
-      ButtonWidgetClass AddToPresetButton {
-       position 0.30081 0.64557
-       size 0.06118 0.05063
+      ButtonWidgetClass RenamePresetButton {
+       position 0.53 0.65
+       size 0.0732 20
+       vexactsize 1
        style Default
-       text ">>"
-       font "gui/fonts/system"
+       text "Rename"
+       text_proportion 0.8
       }
-      ButtonWidgetClass RemoveFromPresetButton {
-       position 0.30081 0.70886
-       size 0.06118 0.05063
-       style Default
-       text "<<"
-       font "gui/fonts/system"
-      }
-      TextListboxWidgetClass PresetItemsList {
-       position 0.38 0.59
-       size 0.31707 0.35443
-       lines 12
-      }
-      TextWidgetClass TextWidget2 {
+      TextWidgetClass PresetItems {
        inheritalpha 0
        color 1 1 1 1
-       position 0.38 0.54
-       size 0.25 20
+       position 0.64 0.078
+       size 0.35 30
        halign left
        vexactsize 1
        text "ITEMS IN PRESETS"
@@ -222,9 +208,28 @@ FrameWidgetClass FrameWidget {
        "text halign" left
        "text valign" center
       }
+      TextListboxWidgetClass PresetItemsList {
+       position 0.64 0.13
+       size 0.29 0.81
+       lines 30
+      }
+      ButtonWidgetClass AddToPresetButton {
+       position 0.605 0.35
+       size 0.035 0.05
+       style Default
+       text ">>"
+       font "gui/fonts/system"
+      }
+      ButtonWidgetClass RemoveFromPresetButton {
+       position 0.605 0.4
+       size 0.035 0.05
+       style Default
+       text "<<"
+       font "gui/fonts/system"
+      }
       ButtonWidgetClass ItemMoveUpButton {
        disabled 0
-       position 0.7 0.59
+       position 0.6945 0.95
        size 0.0732 20
        vexactsize 1
        style Default
@@ -232,117 +237,149 @@ FrameWidgetClass FrameWidget {
       }
       ButtonWidgetClass ItemMoveDownButton {
        disabled 0
-       position 0.7 0.65
+       position 0.7881 0.95
        size 0.0732 20
        vexactsize 1
        style Default
        text "Down"
       }
-      TextWidgetClass DamageLabel {
-       position 0.79 0.59
-       size 0.07317 0.05063
+      ImageWidgetClass ButtonsBackground {
+       ignorepointer 1
+       color 0.0902 0.0784 0.0784 0.3647
+       position 0.305 0.68
+       size 0.3 0.31
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 0
-       text "Health:"
-       "exact text" 1
-       "text valign" center
+       mode blend
       }
-      EditBoxWidgetClass DamageValue {
-       position 0.87 0.59
-       size 32 32
-       valign top
-       hexactpos 0
-       vexactpos 0
-       hexactsize 1
-       vexactsize 1
-       text ""
-      }
-      TextWidgetClass QuantityLabel {
-       position 0.79 0.65
-       size 0.07317 0.05063
+      TextWidgetClass ObjectName {
+       position 0.31 0.69
+       size 0.07 35
        hexactpos 0
        vexactpos 0
        hexactsize 0
-       vexactsize 0
-       text "Quantity:"
-       "exact text" 1
-       "text valign" center
-      }
-      EditBoxWidgetClass QuantityValue {
-       position 0.87 0.65
-       size 48 32
-       valign top
-       hexactpos 0
-       vexactpos 0
-       hexactsize 1
        vexactsize 1
-       text ""
+       text "Object:"
+       "exact text" 0
+       "text valign" center
       }
       TextWidgetClass SelectedObject {
        inheritalpha 0
        color 1 1 1 1
-       position 0.78 0.8
-       size 0.2 20
+       position 0.38 0.69
+       size 0.22 35
        halign left
        hexactpos 0
        vexactpos 0
        vexactsize 1
        draggable 0
        "exact text" 1
-       "text halign" right
+       "text halign" center
        "text valign" center
       }
-      EditBoxWidgetClass SpawnDistance {
-       inheritalpha 1
-       color 1 1 1 1
-       position 0.75 0.84
-       size 0.03401 0.05063
-       halign left
+      TextWidgetClass DamageLabel {
+       position 0.33 0.75
+       size 0.07 30
+       hexactpos 0
+       vexactpos 0
        hexactsize 0
-       vexactsize 0
-       priority 1
-       style Default
-       text "0"
-       "text color" 1 1 1 1
+       vexactsize 1
+       text "Health :"
+       "exact text" 0
+       "text valign" center
+      }
+      EditBoxWidgetClass DamageValue {
+       position 0.45 0.75
+       size 0.05 30
+       valign top
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
+       text "1.0"
+      }
+      TextWidgetClass QuantityLabel {
+       position 0.33 0.79
+       size 0.07 30
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
+       text "Quantity :"
+       "exact text" 0
+       "text valign" center
+      }
+      EditBoxWidgetClass QuantityValue {
+       position 0.45 0.79
+       size 0.05 30
+       valign top
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
+       text "1.0"
       }
       TextWidgetClass DistanceLabel {
        inheritalpha 0
        color 1 1 1 1
-       position 0.79 0.85
-       size 0.02278 0.03797
+       position 0.33 0.83
+       size 0.07 30
        halign left
+       vexactsize 1
        style Normal
-       text "m"
-       "exact text" 1
-       "text halign" left
+       text "Distance :"
+       "exact text" 0
        "text valign" center
       }
-      ButtonWidgetClass ItemNameCopy {
-       position 0.30171 0.46988
-       size 0.2 20
+      EditBoxWidgetClass SpawnDistance {
+       position 0.4491 0.8298
+       size 0.05 30
+       valign top
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
+       text "1.0"
+      }
+      ButtonWidgetClass ButtonSpawnInInv {
+       position 0.31 0.9
+       size 0.14 30
        vexactsize 1
        style Default
-       text "Copy To Clipboard"
+       text "Spawn In Inventory"
        text_proportion 0.8
+       text_halign left
       }
       ButtonWidgetClass SpawnAsAttachment {
-       position 0.8231 0.9045
-       size 0.1577 20
+       position 0.31 0.95
+       size 0.14 30
        vexactsize 1
        style Default
        text "Spawn As Attachment"
        text_proportion 0.8
+       text_halign left
+      }
+      ButtonWidgetClass ButtonSpawnInGround {
+       position 0.45 0.9
+       size 0.14 30
+       vexactsize 1
+       style Default
+       text "Spawn On Ground"
+       text_proportion 0.8
+       text_halign right
       }
       ButtonWidgetClass SpawnSpecial {
-       position 0.8231 0.9381
-       size 0.1577 20
+       position 0.45 0.95
+       size 0.14 30
        hexactpos 0
        vexactpos 0
        hexactsize 0
        vexactsize 1
        text "Spawn Ground Special"
+       text_proportion 0.8
+       text_halign right
       }
      }
     }
@@ -362,7 +399,7 @@ FrameWidgetClass FrameWidget {
      switch once
     }
     PanelWidgetClass ConfigsPanel {
-     visible 0
+     visible 1
      inheritalpha 1
      position 0 0.05556
      size 1.28 0.87778
@@ -406,7 +443,7 @@ FrameWidgetClass FrameWidget {
      }
     }
     PanelWidgetClass EnScriptPanel {
-     visible 0
+     visible 1
      inheritalpha 1
      position 0 0.05556
      size 1.28 0.87778
@@ -746,7 +783,7 @@ FrameWidgetClass FrameWidget {
      }
     }
     PanelWidgetClass OutputPanel {
-     visible 0
+     visible 1
      clipchildren 1
      inheritalpha 1
      position 0.008 0.05556

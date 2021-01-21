@@ -38,6 +38,19 @@ class Saiga_Base : RifleBoltFree_Base
 			return true;
 		return super.CanEnterIronsights();
 	}
+		
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "Saiga_Bttstck" );
+			entity.GetInventory().CreateInInventory( "KobraOptic" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.SpawnEntityOnGroundPos("Mag_Saiga_Drum20Rnd", entity.GetPosition());
+		}
+	}	
 }
 class Saiga : Saiga_Base
 {

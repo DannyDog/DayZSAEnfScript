@@ -26,26 +26,6 @@ class TerritoryFlagKit extends KitBase
 		
 		return true;
 	}
-
-	override void OnVariablesSynchronized()
-	{
-		super.OnVariablesSynchronized();
-		
-		if ( IsDeploySound() )
-		{
-			PlayDeploySound();
-		}
-				
-		if ( CanPlayDeployLoopSound() )
-		{
-			PlayDeployLoopSound();
-		}
-					
-		if ( m_DeployLoopSound && !CanPlayDeployLoopSound() )
-		{
-			StopDeployLoopSound();
-		}
-	}
 	
 	//================================================================
 	// ADVANCED PLACEMENT

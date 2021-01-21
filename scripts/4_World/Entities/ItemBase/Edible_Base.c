@@ -429,6 +429,15 @@ class Edible_Base extends ItemBase
 		return GetFoodStage().CanChangeToNewStage( cooking_method );
 	}
 	
+	//Use this to receive food stage from another Edible_Base
+	void TransferFoodStage( notnull Edible_Base source )
+	{
+		m_LastDecayStage = source.GetLastDecayStage();
+		ChangeFoodStage(source.GetFoodStage().GetFoodStageType());
+		m_DecayTimer = source.GetDecayTimer();
+		m_DecayDelta = source.GetDecayDelta();
+	}
+	
 	//================================================================
 	// COOKING
 	//================================================================
@@ -663,6 +672,25 @@ class Edible_Base extends ItemBase
 		}
 		
 		m_DecayDelta = 0.0;
+	}
+	
+	//================================================================
+	// GENERAL GETTERS
+	//================================================================
+	
+	float GetDecayTimer()
+	{
+		return m_DecayTimer;
+	}
+	
+	float GetDecayDelta()
+	{
+		return m_DecayDelta;
+	}
+	
+	FoodStageType GetLastDecayStage()
+	{
+		return m_LastDecayStage;
 	}
 }
 

@@ -328,4 +328,17 @@ class PowerGenerator extends ItemBase
 		AddAction(ActionTurnOffPowerGenerator);
 		AddAction(ActionPlaceObject);
 	}
+	
+				
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "SparkPlug" );
+		}
+		
+		SetFuel(GetMaxFuel());
+	}
 }

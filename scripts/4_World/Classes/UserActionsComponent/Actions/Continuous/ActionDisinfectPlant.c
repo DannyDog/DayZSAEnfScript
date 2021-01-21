@@ -14,14 +14,14 @@ class ActionDisinfectPlant: ActionContinuousBase
 		m_SpecialtyWeight = UASoftSkillsWeight.PRECISE_LOW;
 		
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_SPRAYPLANT;
-		m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
+		//m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
 		m_FullBody = true;
 	}
 	
 	override void CreateConditionComponents()  
 	{	
 		m_ConditionTarget = new CCTNonRuined(UAMaxDistances.DEFAULT);
-		m_ConditionItem = new CCINonRuined;
+		m_ConditionItem = new CCINotRuinedAndEmpty;
 	}
 		
 	override string GetText()
@@ -29,7 +29,7 @@ class ActionDisinfectPlant: ActionContinuousBase
 		return "#apply";
 	}
 
-	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		PlantBase plant;
 		if ( Class.CastTo(plant,  target.GetObject() ) && !item.IsDamageDestroyed() )
@@ -46,7 +46,7 @@ class ActionDisinfectPlant: ActionContinuousBase
 		return false;
 	}
 
-	override void OnEndServer( ActionData action_data )
+	/*override void OnEndServer( ActionData action_data )
 	{
 		PlantBase plant;
 		if ( Class.CastTo(plant, action_data.m_Target.GetObject()) )
@@ -54,9 +54,31 @@ class ActionDisinfectPlant: ActionContinuousBase
 			Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
 			if(nacdata)
 			{
-				SendMessageToClient(action_data.m_Player,plant.StopInfestation( nacdata.param1 ));
+				float spray = nacdata.param1;
+				plant.SprayPlant(spray);
+				//SendMessageToClient(action_data.m_Player,plant.StopInfestation( nacdata.param1 ));
 				action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 			}
+		}
+	}*/
+	
+	override void OnFinishProgressServer( ActionData action_data)
+	{
+		Object targetObject = action_data.m_Target.GetObject();
+		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
+		if (nacdata)
+		{
+			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+		}
+	}
+	
+	override void OnFinishProgressClient( ActionData action_data)
+	{
+		Object targetObject = action_data.m_Target.GetObject();
+		Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
+		if (nacdata)
+		{
+			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		}
 	}
 };

@@ -15,14 +15,14 @@ class AreaDamageTrigger extends Trigger
 	void ~AreaDamageTrigger()
 	{
 		//! call OnLeave for all insiders when removing trigger
-		for(int n = 0; n < m_insiders.Count(); )
+		for (int n = 0; n < m_insiders.Count(); )
 		{
 			TriggerInsider ins = m_insiders.Get(n);
 			Object insObj = ins.GetObject();
-			if( insObj )
+			if ( insObj )
 			{
 				//object left. Remove it
-				OnLeave(ins.insider.Ptr());
+				OnLeave(insObj);
 				m_insiders.Remove(n);
 				continue;
 			}
@@ -33,13 +33,23 @@ class AreaDamageTrigger extends Trigger
 	
 	override protected void UpdateInsiders(int timeout)
 	{
+		if (!GetGame().IsServer())
+		{
+			return;
+		}
+		
 		vector max = GetPosition() + m_ExtentMax;
 		vector min = GetPosition() + m_ExtentMin;
-
-		for(int n = 0; n < m_insiders.Count(); )
+		
+		//!DEBUG
+		#ifdef DEVELOPER
+		this.Debug(min, max);
+		#endif
+		
+		for (int n = 0; n < m_insiders.Count(); )
 		{
 			TriggerInsider ins = m_insiders.Get(n);
-			if( ins.insider == null )
+			if ( ins.GetObject() == null )
 			{
 				//object has been deleted. Remove it
 				m_insiders.Remove(n);
@@ -47,12 +57,13 @@ class AreaDamageTrigger extends Trigger
 			}
 
 			Object insObj = ins.GetObject();
-			if( insObj && vector.Distance(insObj.GetPosition(), GetPosition()) > (GetRadius(m_ExtentMin, m_ExtentMax) / 2) + 0.2 )
+			float innerDist = (GetRadius(m_ExtentMin, m_ExtentMax) * 0.5) + 0.2;
+			if ( insObj && vector.DistanceSq(insObj.GetPosition(), GetPosition()) > (innerDist * innerDist) )
 			{
-				if(g_Game.GetTime() - ins.timeStamp > 500)
+				if (g_Game.GetTime() - ins.timeStamp > 500)
 				{
 					//object left. Remove it
-					OnLeave(ins.insider.Ptr());
+					OnLeave(ins.GetObject());
 					m_insiders.Remove(n);
 					continue;
 				}
@@ -64,14 +75,19 @@ class AreaDamageTrigger extends Trigger
 
 	override void AddInsider(Object obj)
 	{
-		TriggerInsider ins;
-		if( obj )
+		if (!GetGame().IsServer())
 		{
-			for(int n = 0; n < m_insiders.Count(); n++)
+			return;
+		}
+		
+		TriggerInsider ins;
+		if ( obj )
+		{
+			for (int n = 0; n < m_insiders.Count(); n++)
 			{
 				ins = m_insiders.Get(n);
 				//already in?
-				if( obj && ins.GetObject() == obj )
+				if ( obj && ins.GetObject() == obj )
 				{
 					//just update timestamp
 					//Print("Already in");
@@ -98,12 +114,13 @@ class AreaDamageTrigger extends Trigger
 	override void OnEnter( Object obj )
 	{
 		super.OnEnter( obj );
+		
 
-		//if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			//obj.OnAreaDamageEnter();
 
-			if( m_AreaDamageType )
+			if ( m_AreaDamageType )
 			{
 			 	m_AreaDamageType.OnEnter(obj);
 				//Print("On Enter called!");
@@ -115,12 +132,14 @@ class AreaDamageTrigger extends Trigger
 	{
 		super.OnLeave( obj );
 
-		//if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			//obj.OnAreaDamageLeave();
 
-			if( m_AreaDamageType )
+			if ( m_AreaDamageType )
 			{
+				
+				PrintToRPT("[DAMAGE TRIGGER LEAVE] " + this + " The following Object left : " + obj); 
 		 		m_AreaDamageType.OnLeave(obj);
 				//Print("On Leave called!");
 			}
@@ -131,4 +150,46 @@ class AreaDamageTrigger extends Trigger
 	{
 		m_AreaDamageType = adType;
 	}
+	
+#ifdef DEVELOPER
+	
+	protected ref array<Shape> dbgTargets = new array<Shape>();
+	
+	void Debug(vector pos1, vector pos2)
+	{
+		bool showSpheres = DiagMenu.GetBool(DiagMenuIDs.DM_SHOW_AREADMG_TRIGGER);
+		if (showSpheres)
+		{
+			if ( !GetGame().IsMultiplayer() || !GetGame().IsServer() )
+			{
+				//Print("Debug");
+				vector w_pos, w_pos_sphr, w_pos_lend;
+				Object obj;
+		
+				CleanupDebugShapes(dbgTargets);
+		
+				w_pos = this.GetPosition();
+				// sphere pos tweaks
+				w_pos_sphr = w_pos;
+				// line pos tweaks
+				w_pos_lend = w_pos;
+				
+				dbgTargets.Insert( Debug.DrawBox(pos1, pos2, COLOR_GREEN_A));
+			}
+		}
+		else
+			CleanupDebugShapes(dbgTargets);
+	}
+	
+	protected void CleanupDebugShapes(array<Shape> shapes)
+	{
+		for ( int it = 0; it < shapes.Count(); ++it )
+		{
+			Debug.RemoveShape( shapes[it] );
+		}
+
+		shapes.Clear();
+	}
+	
+#endif
 }

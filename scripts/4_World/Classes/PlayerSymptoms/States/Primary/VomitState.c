@@ -26,7 +26,7 @@ class VomitSymptom extends SymptomBase
 	{
 		m_Player.GetStatToxicity().Set(0);
 		m_Player.m_PlayerStomach.ClearContents();
-		Print("------------ vomit start -------------");
+		//Print("------------ vomit start -------------");
 	}
 	
 	override void OnAnimationFinish()
@@ -45,19 +45,18 @@ class VomitSymptom extends SymptomBase
 	{
 		PlayAnimationFB(DayZPlayerConstants.CMD_ACTIONFB_VOMIT,DayZPlayerConstants.STANCEMASK_CROUCH, GetDuration() );
 		//timer.Run(10, this, "Destroy");
-		Debug.Log("OnGetActivated VomitSymptom called", "PlayerSymptom");
-		
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated");
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated
 	override void OnGetDeactivatedServer(PlayerBase player)
 	{
-		Debug.Log("OnGetDeactivated VomitSymptom called", "PlayerSymptom");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
 	}
 
 	override void OnGetDeactivatedClient(PlayerBase player)
 	{
-		Debug.Log("OnGetDeactivated VomitSymptom called", "PlayerSymptom");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
 	}
 	
 	override SmptAnimMetaBase SpawnAnimMetaObject()

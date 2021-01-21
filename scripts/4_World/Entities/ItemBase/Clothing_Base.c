@@ -71,6 +71,24 @@ class Clothing extends Clothing_Base
 				
 		return !parent || parent.IsMan() || SmershException(parent);
 	}
+	
+	//Method used to specify if a piece of eyeware can be worn under a gas mask
+	bool CanWearUnderMask(EntityAI parent)
+	{
+		bool is_mask_only = false;
+		
+		if ( parent.FindAttachmentBySlotName( "Mask" ) )
+		{
+			is_mask_only = parent.FindAttachmentBySlotName( "Mask" ).ConfigGetBool( "noEyewear" );
+		}
+		
+		if ( ( GetNumberOfItems() == 0 || !parent || parent.IsMan() ) && !is_mask_only )
+		{
+			return true;
+		}
+		return false;	
+	}
+	
 };
 
 typedef Clothing ClothingBase;

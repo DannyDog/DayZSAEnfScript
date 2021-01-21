@@ -147,6 +147,11 @@ class ActionManagerServer: ActionManagerBase
 		target = m_CurrentActionData.m_Target;
 		item = m_CurrentActionData.m_MainItem;
 
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("Item = " + item + ", " + target.DumpToString(), picked_action.ToString() , "n/a", "DeliveredAction", m_Player.ToString() );
+		}
+
 		if( is_target_free && !m_Player.GetCommandModifier_Action() && !m_Player.GetCommand_Action() && !m_Player.IsSprinting() && picked_action && picked_action.Can(m_Player,target,item)) 
 		{
 			accepted = true;
@@ -175,6 +180,10 @@ class ActionManagerServer: ActionManagerBase
 		
 		if( accepted )
 		{
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("Action accepted", picked_action.ToString() , "n/a", "CheckDeliveredAction", m_Player.ToString() );
+			}
 			//Debug.Log("[AM] Action acccepted");
 			if(picked_action.UseAcknowledgment())
 			{
@@ -190,6 +199,10 @@ class ActionManagerServer: ActionManagerBase
 		}
 		else
 		{
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("Action rejected", picked_action.ToString() , "n/a", "CheckDeliveredAction", m_Player.ToString() );
+			}
 			if (picked_action.UseAcknowledgment())
 			{
 				DayZPlayerSyncJunctures.SendActionAcknowledgment(m_Player, m_PendingActionAcknowledgmentID, false);
@@ -238,8 +251,11 @@ class ActionManagerServer: ActionManagerBase
 
 				m_ActionWantEndRequest = false;
 				m_ActionInputWantEnd = false;
-						
-				Debug.Log("[Action DEBUG] Start time stamp ++: " + m_Player.GetSimulationTimeStamp());
+					
+				if( LogManager.IsActionLogEnable() )
+				{	
+					Debug.ActionLog("n/a", m_PendingAction.ToString() , "n/a", "HandlePendingAction", m_Player.ToString() );
+				}
 				if (!m_PendingAction.SetupAction(m_Player,target,m_Player.GetItemInHands(),m_CurrentActionData))
 				{
 					success = false;

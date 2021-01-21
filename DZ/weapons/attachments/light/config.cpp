@@ -60,7 +60,7 @@ class cfgVehicles
 			energyUsagePerSecond = 0.01;
 			plugType = 1;
 			attachmentAction = 1;
-			updateInterval = 30;
+			updateInterval = 40;
 		};
 	};
 	class TLRLight: Switchable_Base
@@ -97,7 +97,7 @@ class cfgVehicles
 			energyUsagePerSecond = 0.01;
 			plugType = 1;
 			attachmentAction = 1;
-			updateInterval = 30;
+			updateInterval = 40;
 		};
 	};
 };

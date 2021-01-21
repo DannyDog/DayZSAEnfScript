@@ -12,6 +12,7 @@ class FarmingHoe: Inventory_Base
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
+		AddAction(ActionDismantleGardenPlot);
 		AddAction(ActionBuryAshes);
 		AddAction(ActionDigWorms);
 	}

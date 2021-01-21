@@ -3,7 +3,7 @@ class DayZPlayerImplementThrowing
 	void DayZPlayerImplementThrowing(DayZPlayer pPlayer)
 	{
 		m_Player = pPlayer;
-		m_bThrowingModeEnabled = false;
+		SetThrowingModeEnabled(false);
 		
 		ResetState();
 	}
@@ -14,7 +14,7 @@ class DayZPlayerImplementThrowing
 		{
 			if( m_bThrowingModeEnabled )
 			{
-				m_bThrowingModeEnabled = false;
+				SetThrowingModeEnabled(false);
 				pHcw.SetThrowingMode(false);
 			}
 			
@@ -22,7 +22,7 @@ class DayZPlayerImplementThrowing
 		}
 		
 		//! current state
-		m_bThrowingModeEnabled = pHcw.IsThrowingMode();
+		SetThrowingModeEnabled(pHcw.IsThrowingMode());
 		
 		//! handle mode change
 		if( pHic.IsThrowingModeChange() && CanChangeThrowingStance(pHic) )
@@ -40,7 +40,7 @@ class DayZPlayerImplementThrowing
 			
 			if( !CanContinueThrowing(pHic) )
 			{
-				m_bThrowingModeEnabled = false;
+				SetThrowingModeEnabled(false);
 				ResetState();
 			
 				pHcw.SetActionProgressParams(0, 0);
@@ -118,6 +118,15 @@ class DayZPlayerImplementThrowing
 		m_fThrowingForce01 = 0;
 		m_bThrowingInProgress = false;
 		m_bThrowingAnimationPlaying = false;
+	}
+	
+	void SetThrowingModeEnabled(bool enable)
+	{
+		if (enable != m_bThrowingModeEnabled)
+		{
+			m_Player.OnThrowingModeChange(enable);
+		}
+		m_bThrowingModeEnabled = enable;
 	}
 	
 	bool IsThrowingModeEnabled()

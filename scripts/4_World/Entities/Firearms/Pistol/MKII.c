@@ -4,4 +4,14 @@ class MKII_Base : Pistol_Base
 	{
 		return new MkiiRecoil(this);
 	}
+	
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.SpawnEntityOnGroundPos("Mag_MKII_10Rnd", entity.GetPosition());
+		}
+	}
 };

@@ -34,25 +34,39 @@ class PumpkinHelmet : Clothing
 		UpdateGlowState();
 	}
 	
+	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
+	{
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
+		UpdateGlowState();
+	}
+	
 	void UpdateGlowState()
 	{
 		// Makes sure PumpkinHelmet doesn't glow when it's attached on head, or it's inside cargo.
 		
 		bool do_glow = true;
-		
-		int id = GetInventory().GetSlotId(0);
-		InventoryLocation IL = new InventoryLocation();
-		GetInventory().GetCurrentInventoryLocation( IL );
-		
-		int id_2 = IL.GetSlot();
-		int id_cargo = IL.GetIdx();
-		
-		if ( id == id_2) // Pumpkin is attached on head
+
+		if ( IsDamageDestroyed() )
+		{
 			do_glow = false;
-		
-		if ( id_cargo != -1 ) // Pumpkin is in cargo
-			do_glow = false;
-		
+		}
+		else
+		{
+			int id = GetInventory().GetSlotId(0);
+			InventoryLocation IL = new InventoryLocation();
+			GetInventory().GetCurrentInventoryLocation( IL );
+			
+			int id_2 = IL.GetSlot();
+			int id_cargo = IL.GetIdx();
+			
+			if ( id == id_2) // Pumpkin is attached on head
+				do_glow = false;
+			
+			if ( id_cargo != -1 ) // Pumpkin is in cargo
+				do_glow = false;
+		}
+
 		SetPilotLight(do_glow);
 	}
 };

@@ -93,7 +93,10 @@ class ActionManagerClient: ActionManagerBase
 						{
 							if ( !m_ActionWantEndRequest_Send && ScriptInputUserData.CanStoreInputUserData() )
 							{
-								Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " ended, STS=" + m_Player.GetSimulationTimeStamp());
+								if( LogManager.IsActionLogEnable() )
+								{	
+									Debug.ActionLog("Time stamp: " + m_Player.GetSimulationTimeStamp(), m_CurrentActionData.m_Action.ToString() , "n/a", "EndRequest", m_CurrentActionData.m_Player.ToString() );
+								}
 								ScriptInputUserData ctx = new ScriptInputUserData;
 								ctx.Write(INPUT_UDT_STANDARD_ACTION_END_REQUEST);
 								ctx.Send();
@@ -117,7 +120,10 @@ class ActionManagerClient: ActionManagerBase
 						{
 							if ( !m_ActionInputWantEnd_Send && ScriptInputUserData.CanStoreInputUserData() )
 							{
-								Debug.Log("Action=" + m_CurrentActionData.m_Action.Type() + " input ended, STS=" + m_Player.GetSimulationTimeStamp());
+								if( LogManager.IsActionLogEnable() )
+								{
+									Debug.ActionLog("Time stamp: " + m_Player.GetSimulationTimeStamp(), m_CurrentActionData.m_Action.ToString() , "n/a", "EndInput", m_CurrentActionData.m_Player.ToString() );
+								}
 								ScriptInputUserData ctxi = new ScriptInputUserData;
 								ctxi.Write(INPUT_UDT_STANDARD_ACTION_INPUT_END);
 								ctxi.Send();
@@ -424,31 +430,36 @@ class ActionManagerClient: ActionManagerBase
 	//TOOD MW In progress
 	protected bool LockInventory(ActionData action_data)
 	{
+		bool success = false;
 		if ( action_data.m_Action.IsInstant() )
 		{
-			Print("[AM][INVL](-) Inventory lock - Not Used");
-				return true;
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("(-) Inventory lock - Not Used", action_data.m_Action.ToString() , "n/a", "LockInventory", action_data.m_Player.ToString() );
+			}
+			success = true;
 		}
 		else
 		{
-			Print("[AM][INVL](X) Inventory lock");
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("(X) Inventory lock", action_data.m_Action.ToString() , "n/a", "LockInventory", action_data.m_Player.ToString() );
+			}
 			if (action_data.m_Action)
-				return action_data.m_Action.InventoryReservation(action_data);
+			{
+				success = action_data.m_Action.InventoryReservation(action_data);
+			}
 		}
-		return false;
+		return success;
 	}
 	void UnlockInventory(ActionData action_data)
 	{
-		//if ( action_data.m_Action.IsInstant() )
-		//{
-		//	Print("[AM][INVL](-) Inventory unlock - Not Used");
-		//}
-		//else
-		//{
-			Print("[AM][INVL](O) Inventory unlock");
-			if (action_data.m_Action)
-				action_data.m_Action.ClearInventoryReservation(action_data);
-		//}
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("(O) Inventory unlock", action_data.m_Action.ToString() , "n/a", "UnlockInventory", action_data.m_Player.ToString() );
+		}
+		if (action_data.m_Action)
+			action_data.m_Action.ClearInventoryReservation(action_data);
 	}
 	
 	protected void ActionStart(ActionBase action, ActionTarget target, ItemBase item, Param extra_data = NULL )
@@ -465,27 +476,37 @@ class ActionManagerClient: ActionManagerBase
 			
 			HandleInputsOnActionStart(action);
 
-			Debug.Log("Action=" + action.Type() + " started, STS=" + m_Player.GetSimulationTimeStamp());
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("Item = " + item + ", " + target.DumpToString(), action.ToString() , "n/a", "ActionStart", m_Player.ToString() );
+			}
 			m_Interrupted = false;
 			if ( GetGame().IsMultiplayer() && !action.IsLocal() )
 			{
 				if (!ScriptInputUserData.CanStoreInputUserData())
 				{
 					DPrint("ScriptInputUserData already posted - ActionManagerClient");
+					
+					if( LogManager.IsActionLogEnable() )
+					{
+						Debug.ActionLog("Cannot start because ScriptInputUserData is already used", action.ToString() , "n/a", "ActionStart", m_Player.ToString() );
+					}
 					return;
 				}
 			}
 			
-			Debug.Log("[Action DEBUG] Start time stamp ++: " + m_Player.GetSimulationTimeStamp());
-			
 			if( !action.SetupAction(m_Player, target, item, m_CurrentActionData, extra_data ))
 			{
-				Print("Can not inicialize action - ActionManagerClient");
+				DPrint("Can not inicialize action" + action + " - ActionManagerClient");
 				m_CurrentActionData = NULL;
 				return;
 			}
-			Debug.Log("[AM] Action data created (" + m_Player + ")");
 			
+			if( LogManager.IsActionLogEnable() )
+			{
+				Debug.ActionLog("Action data created wait to start", action.ToString() , "n/a", "ActionStart", m_Player.ToString() );
+			}
+
 			if ( GetGame().IsMultiplayer() && !action.IsLocal() )
 			{
 				ScriptInputUserData ctx = new ScriptInputUserData;
@@ -637,18 +658,34 @@ class ActionManagerClient: ActionManagerBase
 	override void SelectNextAction()
 	{
 		ActionInput ai = m_RegistredInputsMap.Get(InteractActionInput);
-		if(ai)
+		if(ai && ai.GetPossibleActionsCount() > 1)
 		{
 			ai.SelectNextAction();
+			return;
 		}
+		
+		ai = m_RegistredInputsMap.Get(ContinuousInteractActionInput);
+		if(ai && ai.GetPossibleActionsCount() > 1)
+		{
+			ai.SelectNextAction();
+			return;
+		}		
 	}
 	
 	override void SelectPrevAction()
 	{
 		ActionInput ai = m_RegistredInputsMap.Get(InteractActionInput);
-		if(ai)
+		if(ai && ai.GetPossibleActionsCount() > 1)
 		{
 			ai.SelectPrevAction();
+			return;
+		}
+		
+		ai = m_RegistredInputsMap.Get(ContinuousInteractActionInput);
+		if(ai && ai.GetPossibleActionsCount() > 1)
+		{
+			ai.SelectPrevAction();
+			return;
 		}
 	}
 

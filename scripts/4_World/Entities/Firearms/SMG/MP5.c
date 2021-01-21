@@ -40,6 +40,23 @@ class MP5K_Base : RifleBoltFree_Base
 		return subCommand;
 	}
 	
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "MP5k_StockBttstck" );
+			entity.GetInventory().CreateInInventory( "MP5_RailHndgrd" );
+			entity.GetInventory().CreateInInventory( "MP5_Compensator" );
+			entity.GetInventory().CreateInInventory( "ReflexOptic" );
+			entity.GetInventory().CreateInInventory( "UniversalLight" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.SpawnEntityOnGroundPos("Mag_MP5_30Rnd", entity.GetPosition());
+		}
+	}
+	
 };
 
 

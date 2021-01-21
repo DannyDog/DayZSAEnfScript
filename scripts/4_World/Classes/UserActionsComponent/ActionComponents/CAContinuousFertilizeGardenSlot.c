@@ -2,6 +2,8 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 {
 	protected float m_SlotFertilizerNeed;
 	protected float	m_TimeToComplete;
+	protected float m_SpentQuantityTotal;
+	protected float m_StartQuantity;
 
 	void CAContinuousFertilizeGardenSlot( float quantity_used_per_second )
 	{
@@ -15,6 +17,7 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 		if ( Class.CastTo(target_GB,  action_data.m_Target.GetObject() ) )
 		{
 			m_SpentQuantity = 0;
+			m_StartQuantity = action_data.m_MainItem.GetQuantity();
 			
 			if ( !m_SpentUnits )
 			{
@@ -68,6 +71,8 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 				Class.CastTo(garden_base,  action_data.m_Target.GetObject() );
 				string selection = garden_base.GetActionComponentName(action_data.m_Target.GetComponentIndex());
 			
+				m_SpentQuantityTotal += m_SpentQuantity;
+				
 				if (GetGame().IsServer())
 				{
 					action_data.m_MainItem.AddQuantity( -m_SpentQuantity );		
@@ -81,7 +86,7 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 			}
 			else
 			{
-				Print(m_SlotFertilizerNeed);
+				//Print(m_SlotFertilizerNeed);
 				CalcAndSetQuantity( action_data );
 				OnCompletePogress(action_data);
 				return UA_FINISHED;
@@ -91,11 +96,11 @@ class CAContinuousFertilizeGardenSlot : CAContinuousQuantity
 	
 	override float GetProgress()
 	{	
-		//float progress = (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
-		if ( m_TimeToComplete == 0) //Prevent division by 0 case
+		/*if ( m_TimeToComplete == 0) //Prevent division by 0 case
 		{
 			return -1;
-		}
-		return (m_SpentQuantity*m_QuantityUsedPerSecond)/m_TimeToComplete;
+		}*/
+		return -(m_SpentQuantityTotal / m_StartQuantity);
+		//return (m_SpentQuantity)/m_ItemQuantity;///(m_TimeToComplete * m_QuantityUsedPerSecond)/m_ItemQuantity;
 	}
 };

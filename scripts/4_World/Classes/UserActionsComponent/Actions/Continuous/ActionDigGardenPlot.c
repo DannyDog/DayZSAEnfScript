@@ -37,6 +37,10 @@ class ActionDigGardenPlot: ActionDeployObject
 		//Client
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
+			//Action not allowed if player has broken legs
+			if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				return false;
+			
 			if ( player.IsPlacingLocal() )
 			{
 				Hologram hologram = player.GetHologramLocal();
@@ -129,7 +133,7 @@ class ActionDigGardenPlot: ActionDeployObject
 		poActionData.m_AlreadyPlaced = true;	
 		action_data.m_MainItem.SoundSynchRemoteReset();
 		
-		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 17);
+		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 10);
 		
 	}
 };

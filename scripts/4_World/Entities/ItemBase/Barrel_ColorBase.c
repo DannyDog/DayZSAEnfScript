@@ -448,7 +448,8 @@ class Barrel_ColorBase : DeployableContainer_Base
 					was_colored = true;
 				}
 			}	
-		}	
+		}
+
 		if ( was_colored ) 
 		{
 			if ( rci ) 
@@ -469,32 +470,30 @@ class Barrel_ColorBase : DeployableContainer_Base
 			Lock(30);
 		}
 	}
-	
+
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}		
-		if ( GetNumberOfItems() == 0 && !IsOpen() )
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	override bool CanPutIntoHands(EntityAI parent)
-	{
-		if( !super.CanPutIntoHands( parent ) )
-		{
+		if ( !super.CanPutInCargo( parent ))
 			return false;
-		}
-		if ( GetNumberOfItems() == 0 && !IsOpen() )
-		{
-			return true;
-		}
-		return false;
 
+		if ( GetNumberOfItems() == 0 && !IsOpen() )
+			return true;
+
+		return false;
 	}
 	
-	override bool CanReceiveItemIntoCargo(EntityAI item)
+	override bool CanPutIntoHands( EntityAI parent )
+	{
+		if ( !super.CanPutIntoHands( parent ))
+			return false;
+
+		if ( GetNumberOfItems() == 0 && !IsOpen() )
+			return true;
+
+		return false;
+	}
+	
+	override bool CanReceiveItemIntoCargo( EntityAI item )
 	{
 		if ( IsOpen() )
 			return super.CanReceiveItemIntoCargo( item );
@@ -502,7 +501,7 @@ class Barrel_ColorBase : DeployableContainer_Base
 		return false;
 	}
 	
-	override bool CanReleaseCargo(EntityAI attachment)
+	override bool CanReleaseCargo( EntityAI attachment )
 	{
 		return IsOpen();
 	}

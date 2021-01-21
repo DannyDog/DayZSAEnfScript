@@ -224,5 +224,19 @@ class Mp133Shotgun_Base : Rifle_Base
 
 		
 	}
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "FNP45_MRDSOptic" );	
+			entity.GetInventory().CreateInInventory( "Battery9V" );
+			entity.SpawnEntityOnGroundPos("Ammo_12gaPellets", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Ammo_12gaSlug", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Ammo_12gaRubberSlug", entity.GetPosition());
+		}
+	}
 };
 

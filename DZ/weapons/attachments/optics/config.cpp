@@ -775,7 +775,7 @@ class cfgVehicles
 				class Health
 				{
 					hitpoints = 30;
-					healthLevels[] = {{1.0,{"DZ\weapons\attachments\data\scope_alpha_ca.paa","DZ\weapons\attachments\data\pistol_scope.rvmat"}},{0.7,{}},{0.5,{"DZ\weapons\attachments\data\scope_alpha_damaged_ca.paa","DZ\weapons\attachments\data\pistol_scope_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\weapons\attachments\data\scope_alpha_destroyed_ca.paa","DZ\weapons\attachments\data\pistol_scope_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\data\scope_alpha_clear_ca.paa","DZ\weapons\attachments\data\pistol_scope.rvmat"}},{0.7,{}},{0.5,{"DZ\weapons\attachments\data\scope_alpha_damaged_ca.paa","DZ\weapons\attachments\data\pistol_scope_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\weapons\attachments\data\scope_alpha_destroyed_ca.paa","DZ\weapons\attachments\data\pistol_scope_destruct.rvmat"}}};
 				};
 			};
 		};

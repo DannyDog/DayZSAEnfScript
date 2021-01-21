@@ -149,7 +149,8 @@ class DayZPlayerImplementAiming
 		float kuru_offset_x;
 		float kuru_offset_y;
 		
-		float player_stamina = m_PlayerPb.GetStaminaHandler().GetStaminaNormalized();
+		//float player_stamina = m_PlayerPb.GetStaminaHandler().GetStaminaNormalized();
+		float player_stamina = m_PlayerPb.GetStaminaHandler().GetSyncedStaminaNormalized();
 		float adjusted_sway_multiplier = PlayerSwayConstants.SWAY_MULTIPLIER_DEFAULT;
 		float speed;
 		
@@ -351,7 +352,9 @@ class DayZPlayerImplementAiming
 		if( Math.AbsFloat(m_HorizontalTargetValue - m_HorizontalNoise) < 0.01)
 		{
 			//acquire new target
-			m_MaxVelocity = Math.RandomFloatInclusive(max_velocity_low, max_velocity_high);
+			//m_MaxVelocity = Math.RandomFloatInclusive(max_velocity_low, max_velocity_high);
+			m_MaxVelocity = m_PlayerPb.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSAimingModel, max_velocity_low, max_velocity_high);
+			
 			m_HorizontalTargetValue = (Math.RandomFloat01() - 0.5) * 2 * max_distance;
 			m_HorizontalNoiseVelocity[0] = 0;
 		}
@@ -369,12 +372,19 @@ class DayZPlayerImplementAiming
 	{
 		float weight = level / PlayerBase.SHAKE_LEVEL_MAX;
 		m_ShakeCount++;
-		if(m_ShakeCount > Math.RandomIntInclusive(2, 4))
+		int shakes_threshold = Math.Round(m_PlayerPb.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSAimingModel, 2, 4));
+		//if(m_ShakeCount > Math.RandomIntInclusive(2, 4))
+		if(m_ShakeCount > shakes_threshold)
 		{
 			m_ShakeCount = 0;
-			float modifier = Math.RandomFloatInclusive(0.45,0.9);
+			/*float modifier = Math.RandomFloatInclusive(0.45,0.9);
 			x_axis = modifier * weight * Math.RandomFloat01();
-			y_axis = modifier * weight * Math.RandomFloat01();
+			y_axis = modifier * weight * Math.RandomFloat01();*/
+			
+			float modifier = m_PlayerPb.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSAimingModel, 0.45, 0.9);
+			x_axis = modifier * weight * m_PlayerPb.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSAimingModel, 0, 1);
+			y_axis = modifier * weight * m_PlayerPb.GetRandomGeneratorSyncManager().GetRandomInRange(RandomGeneratorSyncUsage.RGSAimingModel, 0, 1);
+			
 			//Print("applying shakes");
 			//PrintString("x>" + x_axis.ToString()+", y:" + y_axis.ToString());
 		}
@@ -414,7 +424,7 @@ class DayZPlayerImplementAiming
 	void DbgPrintAimingImplement(string val)
 	{
 		if (GetDayZGame().IsAimLogEnabled())
-			Print(val);
+			Print("DayZPlayerImplementAiming | " + val);
 	}
 }
 

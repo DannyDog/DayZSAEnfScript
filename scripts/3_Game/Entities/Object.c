@@ -132,8 +132,8 @@ class Object extends IEntity
 	//! returns action component position by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
 	proto native owned vector GetActionComponentPosition(int componentIndex, string geometry = "");
 
-	//! returns action component name list by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
-	proto native owned void GetActionComponentNameList(int componentIndex, TStringArray nameList, string geometry = "");
+	//! outputs action component name list by given component index, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode). Returns -1 (not found), 0 (found default component only), or 1 (found named component)
+	proto native owned int GetActionComponentNameList(int componentIndex, TStringArray nameList, string geometry = "");
 	
 	//! return true if selection containts action component, 'geometry' can be "fire" or "view" (default "" for mixed/legacy mode)
 	proto native bool IsActionComponentPartOfSelection(int componentIndex, string selectionName, string geometry = "");

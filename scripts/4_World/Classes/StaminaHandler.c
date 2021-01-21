@@ -228,6 +228,7 @@ class StaminaHandler
 	protected float 						m_PlayerLoad;
 	protected float 						m_StaminaDelta;
 	protected float 						m_Stamina;
+	protected float 						m_StaminaSynced; //guaranteed to be identical on server and client
 	protected float 						m_StaminaCap;
 	protected float							m_StaminaDepletion;
 	protected float 						m_Time;
@@ -370,14 +371,30 @@ class StaminaHandler
 			m_StaminaDepletion = 0; // resets depletion modifier
 		}
 	}
-
-	//! called from RPC on playerbase - syncs stamina values on server with client
+	
+	//! deprecated use, StaminaHandler uses SyncJunctures now
 	void OnRPC(float stamina, float stamina_cap, bool cooldown)
 	{
-		if ( Math.AbsFloat(stamina - m_Stamina) > 5 )
+	}
+	
+	//! called from PlayerBase - syncs stamina values on server with client AND sets the value to match on server and client both (m_StaminaSynced guarantees identical values)
+	void OnSyncJuncture(int pJunctureID, ParamsReadContext pCtx)
+	{
+		float stamina;
+		float stamina_cap;
+		bool cooldown;
+		
+		if ( !pCtx.Read(stamina) || !pCtx.Read(stamina_cap) || !pCtx.Read(cooldown) )
+			return;
+		
+		m_Stamina = stamina; //?
+		m_StaminaSynced = stamina;
+		
+		if( !m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 		{
-			m_Stamina = stamina;
+			return;
 		}
+		
 		if ( stamina_cap != m_StaminaCap )
 		{
 			m_StaminaCap = stamina_cap;
@@ -501,10 +518,15 @@ class StaminaHandler
 		if( m_StaminaParams )
 		{
 			m_Player.GetStatStamina().Set(m_Stamina);
-			m_StaminaParams.param1 = m_Stamina;
+			/*m_StaminaParams.param1 = m_Stamina;
 			m_StaminaParams.param2 = m_StaminaCap;
 			m_StaminaParams.param3 = m_IsInCooldown;
-			GetGame().RPCSingleParam(m_Player, ERPCs.RPC_STAMINA, m_StaminaParams, true, m_Player.GetIdentity());
+			GetGame().RPCSingleParam(m_Player, ERPCs.RPC_STAMINA, m_StaminaParams, true, m_Player.GetIdentity());*/
+			ScriptJunctureData pCtx = new ScriptJunctureData;
+			pCtx.Write(m_Stamina);
+			pCtx.Write(m_StaminaCap);
+			pCtx.Write(m_IsInCooldown);
+			m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_STAMINA,pCtx);
 		}
 	}
 	
@@ -624,13 +646,19 @@ class StaminaHandler
 
 	void SetStamina(float stamina_value)
 	{
-		m_Stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
-		SyncStamina(m_Stamina, m_StaminaCap, m_IsInCooldown);
+		//m_Stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
+		float stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
+		SyncStamina(stamina, m_StaminaCap, m_IsInCooldown);
 	}
 	
 	float GetStamina()
 	{
 		return m_Stamina;
+	}
+	
+	float GetSyncedStamina()
+	{
+		return m_StaminaSynced;
 	}
 	
 	float GetStaminaCap()
@@ -646,6 +674,11 @@ class StaminaHandler
 	float GetStaminaNormalized()
 	{	
 		return m_Stamina / GameConstants.STAMINA_MAX;
+	}
+	
+	float GetSyncedStaminaNormalized()
+	{
+		return m_StaminaSynced / GameConstants.STAMINA_MAX;
 	}
 	
 	void DepleteStamina(EStaminaModifiers modifier, float dT = -1)

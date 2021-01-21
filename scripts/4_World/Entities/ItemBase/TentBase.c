@@ -670,7 +670,9 @@ class TentBase extends ItemBase
 			
 			if ( toggle_off == selection || toggle_on == selection )
 			{
-				return true;
+				string zone;
+				DamageSystem.GetDamageZoneFromComponentName(this,selection,zone);
+				return GetHealthLevel(zone) < GameConstants.STATE_RUINED;
 			}
 		}
 		

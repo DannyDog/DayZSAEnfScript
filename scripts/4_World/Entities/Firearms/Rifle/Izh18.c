@@ -12,4 +12,14 @@ class Izh18_Base extends RifleSingleShot_Base
 	{
 		return new Izh18Recoil(this);
 	}
+					
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.SpawnEntityOnGroundPos("Ammo_762x39", entity.GetPosition());
+		}
+	}
 };

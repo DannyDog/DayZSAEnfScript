@@ -28,6 +28,7 @@ class OvenIndoor extends FireplaceBase
 		RegisterNetSyncVariableInt( "m_FirePointIndex", 1, 9 );
 		
 		m_LightDistance = 50;
+		m_RoofAbove = true;
 	}
 	
 	//================================================================

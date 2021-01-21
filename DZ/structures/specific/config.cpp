@@ -2850,6 +2850,11 @@ class CfgVehicles
 		scope = 1;
 		model = "\dz\structures\specific\lunapark\Lunapark_Ferris_wheel.p3d";
 	};
+	class Land_Lunapark_Bumper_Car: HouseNoDestruct
+	{
+		scope = 1;
+		model = "\dz\structures\specific\lunapark\Lunapark_Bumper_Car.p3d";
+	};
 	class Land_Lunapark_Shooting_Gallery: HouseNoDestruct
 	{
 		scope = 1;

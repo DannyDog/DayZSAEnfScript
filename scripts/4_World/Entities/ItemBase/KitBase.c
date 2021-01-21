@@ -46,6 +46,11 @@ class KitBase extends ItemBase
 		{
 			StopDeployLoopSound();
 		}
+		
+		if ( m_DeployedRegularly && IsSoundSynchRemote() )
+		{
+			PlayDeployFinishSound();
+		}
 	}
 	
 	override void EEInit()
@@ -57,6 +62,11 @@ class KitBase extends ItemBase
 		UpdatePhysics();
 		
 		GetGame().GetCallQueue( CALL_CATEGORY_GAMEPLAY ).Call( AssembleKit );
+	}
+	
+	override bool DisassembleOnLastDetach()
+	{
+		return true;
 	}
 	
 	override void EEItemDetached(EntityAI item, string slot_name)
@@ -88,6 +98,7 @@ class KitBase extends ItemBase
 	override void OnEndPlacement()
 	{
 		m_DeployedRegularly = true;
+		SoundSynchRemote();
 	}
 	
 	override void OnPlacementCancelled( Man player )
@@ -113,7 +124,13 @@ class KitBase extends ItemBase
 	
 	override string GetLoopDeploySoundset()
 	{
-		return "BarbedWire_Deploy_loop_SoundSet";
+		//return "BarbedWire_Deploy_loop_SoundSet";
+		return "Shelter_Site_Build_Loop_SoundSet";
+	}
+	
+	override string GetDeployFinishSoundset()
+	{
+		return "";
 	}
 	
 	//Update visuals and physics

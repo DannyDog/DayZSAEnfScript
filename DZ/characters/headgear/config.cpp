@@ -1216,7 +1216,7 @@ class CfgVehicles
 			energyUsagePerSecond = 0.01;
 			plugType = 1;
 			attachmentAction = 1;
-			updateInterval = 30;
+			updateInterval = 40;
 		};
 	};
 	class Headtorch_Grey: Headtorch_ColorBase

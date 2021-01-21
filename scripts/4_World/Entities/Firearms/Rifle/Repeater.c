@@ -238,4 +238,15 @@ class Repeater : Repeater_Base
 	{
 		return new RepeaterRecoil(this);
 	}
+	
+		
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.SpawnEntityOnGroundPos("Ammo_357", entity.GetPosition());
+		}
+	}
 };

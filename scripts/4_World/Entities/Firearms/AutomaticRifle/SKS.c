@@ -263,4 +263,16 @@ class SKS_Base extends Rifle_Base
 		RemoveAction(FirearmActionLoadBulletQuick); // Easy reload
 		AddAction(FirearmActionLoadMultiBulletQuick); // Easy reload
 	}
+	
+		//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "PUScopeOptic" );
+			entity.GetInventory().CreateInInventory( "SKS_Bayonet" );
+			entity.SpawnEntityOnGroundPos("Ammo_762x39", entity.GetPosition());
+		}
+	}
 };

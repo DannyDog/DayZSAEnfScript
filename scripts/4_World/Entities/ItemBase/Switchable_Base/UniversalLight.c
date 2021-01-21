@@ -10,38 +10,31 @@ class UniversalLight extends Switchable_Base
 	static string 		LIGHT_ON_GLASS 		= "dz\\gear\\tools\\data\\flashlight_glass_on.rvmat";
 	static string 		LIGHT_ON_REFLECTOR 	= "dz\\weapons\\attachments\\data\\m4_flashlight_on.rvmat";
 	
+	ref array<int> 		m_AttachmentSlotsCheck;
+	
+	void UniversalLight()
+	{
+		InitAttachmentsSlotsToCheck(m_AttachmentSlotsCheck);
+	}
 	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
-		if(!super.CanPutAsAttachment(parent)) {return false;}
-		bool m4_rishndgrd   = false;
-		bool ak_railhndgrd  = false;
-		bool mp5_railhndgrd = false;
-
-		if ( parent.FindAttachmentBySlotName("weaponHandguardM4") != NULL )
-		{
-			m4_rishndgrd = parent.FindAttachmentBySlotName("weaponHandguardM4").IsKindOf("M4_RISHndgrd");
-		}
+		if ( !super.CanPutAsAttachment(parent) ) {return false;}
 		
-		if ( parent.FindAttachmentBySlotName("weaponHandguardAK") != NULL )
+		bool req_attachment 		= false;
+		bool req_attachment_found   = false;
+		int slot_id;
+		for ( int i = 0; i < parent.GetInventory().GetAttachmentSlotsCount(); i++ )
 		{
-			ak_railhndgrd = parent.FindAttachmentBySlotName("weaponHandguardAK").IsKindOf("AK_RailHndgrd");
+			slot_id = parent.GetInventory().GetAttachmentSlotId(i);
+			if ( m_AttachmentSlotsCheck.Find(slot_id) != -1 )
+			{
+				req_attachment = true;
+				if ( parent.GetInventory().FindAttachment(slot_id) )
+					req_attachment_found = true;
+			}
 		}
-
-		if ( parent.FindAttachmentBySlotName("weaponHandguardMP5") != NULL )
-		{
-			mp5_railhndgrd = parent.FindAttachmentBySlotName("weaponHandguardMP5").IsKindOf("MP5_RailHndgrd");
-		}
-
-		if ( Mich2001Helmet.Cast(parent) ) //attachment on helmet
-			return true;
-		
-		if ( m4_rishndgrd || ak_railhndgrd || mp5_railhndgrd || parent.IsKindOf("UMP45_Base") )
-		{
-			return true;
-		}
-		
-		return false;
+		return !req_attachment || (req_attachment && req_attachment_found);
 	}
 	
 	override void OnWorkStart()
@@ -117,5 +110,17 @@ class UniversalLight extends Switchable_Base
 	override bool IsLightSource()
 	{
 		return true;
+	}
+	
+	//! Enter att slot types to check on attach
+	void InitAttachmentsSlotsToCheck(out array<int> AttSlots)
+	{
+		if (!AttSlots)
+		{
+			AttSlots = new array<int>;
+			AttSlots.Insert(InventorySlots.GetSlotIdFromString("weaponHandguardM4"));
+			AttSlots.Insert(InventorySlots.GetSlotIdFromString("weaponHandguardAK"));
+			AttSlots.Insert(InventorySlots.GetSlotIdFromString("weaponHandguardMP5"));
+		}
 	}
 }

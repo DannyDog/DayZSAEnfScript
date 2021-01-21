@@ -3695,12 +3695,14 @@ class CfgWorlds
 				model = "\core\default\default.p3d";
 				soundSetNear[] = {"",0.31622776,1};
 				soundSetFar[] = {"",0.31622776,1};
+				timeMultiplier = 1.2;
 			};
 			class ThunderboltHeavy
 			{
 				model = "\core\default\default.p3d";
 				soundSetNear[] = {"",0.31622776,1};
 				soundSetFar[] = {"",0.31622776,1};
+				timeMultiplier = 1.5;
 			};
 		};
 		class Rain

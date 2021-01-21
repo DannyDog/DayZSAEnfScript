@@ -1,4 +1,4 @@
-class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
+class RespawnDialogue extends UIScriptedMenu
 {
 	const int 					ID_RESPAWN_CUSTOM = 101;
 	const int 					ID_RESPAWN_RANDOM = 102;
@@ -7,6 +7,9 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 	protected Widget			m_DetailsRoot;
 	protected TextWidget		m_DetailsLabel;
 	protected RichTextWidget	m_DetailsText;
+	
+	//helper
+	protected Widget 			m_CurrentlyHighlighted;
 	
 	void RespawnDialogue()
 	{
@@ -26,6 +29,8 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 		m_DetailsLabel				= TextWidget.Cast( m_DetailsRoot.FindAnyWidget( "menu_details_label" ) );
 		m_DetailsText				= RichTextWidget.Cast( m_DetailsRoot.FindAnyWidget( "menu_details_tooltip_content" ) );
 		
+		Widget custom_respawn 		= layoutRoot.FindAnyWidget("respawn_button_custom");
+		SetFocus(custom_respawn);
 		return layoutRoot;
 	}
 	
@@ -149,7 +154,12 @@ class RespawnDialogue extends UIScriptedMenu//ItemDropWarningMenu
 	{
 		if( !w )
 			return;
-		
+		if( m_CurrentlyHighlighted != w )
+		{
+			if( m_CurrentlyHighlighted )
+				ColorNormal(m_CurrentlyHighlighted);
+			m_CurrentlyHighlighted = w;
+		}
 		ButtonSetColor(w, ARGB(255, 0, 0, 0));
 		ButtonSetTextColor(w, ARGB(255, 255, 0, 0));
 	}

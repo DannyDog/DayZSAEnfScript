@@ -93,7 +93,6 @@
     <input name="UAUIFastTransferToVicinity" />
     <input name="UAUIExpandCollapseContainer" />
     <input name="UAUISelectItem" />
-    <input name="UAUIInspectItem" />
   </context>
 
   <exclude name="gestures">

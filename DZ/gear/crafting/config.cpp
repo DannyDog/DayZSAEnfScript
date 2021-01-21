@@ -378,6 +378,8 @@ class CfgVehicles
 				range = 3.3;
 			};
 		};
+		attachSoundSet[] = {"Shelter_Site_Attach_Wooden_Stick_SoundSet"};
+		attachSoundSlot[] = {"Material_Shelter_Sticks"};
 		class AnimEvents
 		{
 			class SoundWeapon
@@ -445,7 +447,7 @@ class CfgVehicles
 			energyStorageMax = 1800;
 			energyUsagePerSecond = 1;
 			wetnessExposure = 0.5;
-			updateInterval = 4;
+			updateInterval = 30;
 		};
 		class MeleeModes
 		{

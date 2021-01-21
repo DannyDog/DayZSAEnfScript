@@ -49,7 +49,8 @@ class PlantBase extends ItemBase
 		m_DeleteDryPlantTime = (60 * 10) + Math.RandomInt(0, 60 * 2);
 		m_SpoiledRemoveTime = (60 * 20) + Math.RandomInt(0, 60 * 5);
 		
-		m_InfestationChance = 0.0; // Temporarily disabled until its fixed. Infestation is not visualy persistent over server restarts and m_SpoiledRemoveTimer crashes when it's meant to delete the plant.
+		//Must be between 0 and 1
+		m_InfestationChance = 0.2; // Temporarily disabled until its fixed. Infestation is not visualy persistent over server restarts and m_SpoiledRemoveTimer crashes when it's meant to delete the plant.
 		
 		string plant_type = this.GetType();
 		m_GrowthStagesCount = GetGame().ConfigGetInt( "cfgVehicles " + plant_type + " Horticulture GrowthStagesCount" );
@@ -631,7 +632,29 @@ class PlantBase extends ItemBase
 			}
 		}
 	}
+	
+	//NEW METHOD FOR PLANT SPRAYING
+	void SprayPlant( float consumed_quantity )
+	{
+		//Rework this to have something smooth
+		m_SprayQuantity += consumed_quantity;
+		
+		if ( !NeedsSpraying() )
+		{
+			if ( m_InfestationTimer != NULL )
+			{
+				m_InfestationTimer.Stop();
+			}
+			
+			m_IsInfested = false;
+			m_InfestationChance = 0;
+			
+			ChangeInfestation( false );
+			UpdatePlant();
+		}
+	}
 
+	//DEPRECATED
 	string StopInfestation( float consumed_quantity )
 	{
 		m_SprayQuantity += consumed_quantity;

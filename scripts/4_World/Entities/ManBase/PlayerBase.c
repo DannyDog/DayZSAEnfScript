@@ -28,6 +28,7 @@ class PlayerBase extends ManBase
 	private int 					m_StoreLoadVersion;
 	const int 						ACT_STORE_SAVE_VERSION = 4;
 	protected int 					m_LifespanLevelLocal; //control variable for change calls
+	protected int 					m_AnimCommandStarting; //signals the command that is about to start the next frame (e.g. Swim, Fall...)
 
 	private PluginPlayerStatus		m_ModulePlayerStatus;
 	PluginConfigEmotesProfile 		m_ConfigEmotesProfile;
@@ -266,6 +267,7 @@ class PlayerBase extends ManBase
 		m_LoweredNVGHeadset = false;
 		m_AreHandsLocked = false;
 		m_ItemsToDelete = new array<EntityAI>;
+		m_AnimCommandStarting = HumanMoveCommandID.None;
 		
 		m_AnalyticsTimer = new Timer( CALL_CATEGORY_SYSTEM );
 
@@ -1027,6 +1029,8 @@ class PlayerBase extends ManBase
 		AddAction(ActionStartEngine, InputActionMap);
 		AddAction(ActionStopEngine, InputActionMap);
 		AddAction(ActionSwitchSeats, InputActionMap);
+		AddAction(ActionOpenCarDoors,InputActionMap);
+		AddAction(ActionCloseCarDoors,InputActionMap);
 		//AddAction(ActionTakeMaterialToHandsSwitch);
 		AddAction(ActionUncoverHeadSelf, InputActionMap);
 		//AddAction(ActionAttach);
@@ -1474,7 +1478,7 @@ class PlayerBase extends ManBase
 		{
 			return false;
 		}
-		if( ClothingBase.Cast(attachment) && ((attachment.ConfigGetBool("noMask") && mask) || (attachment.ConfigGetBool("noEyewear") && eyewear)) )
+		if( ClothingBase.Cast(attachment) && ((attachment.ConfigGetBool("noMask") && mask) || (attachment.ConfigGetBool("noEyewear") && eyewear && !eyewear.ConfigGetBool("isStrap"))) )
 		{
 			return false;
 		}
@@ -2269,6 +2273,7 @@ class PlayerBase extends ManBase
 			}
 
 		}
+		m_AnimCommandStarting = HumanMoveCommandID.None;
 		
 		//ProcessLiftWeapon();
 		//ProcessOpticsPreload();
@@ -3102,21 +3107,36 @@ class PlayerBase extends ManBase
 		
 	override void OnCommandSwimStart()
 	{
-		if ( GetItemInHands() ) TryHideItemInHands(true);
-		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		if ( GetItemInHands() && GetItemInHands().IsHeavyBehaviour() )
+		{
+			TryHideItemInHands(false);
+			DropHeavyItem();
+		}
+		else
+		{
+			TryHideItemInHands(true);
+		}
+		
+		m_AnimCommandStarting = HumanMoveCommandID.CommandSwim;
+		
+		if ( GetInventory() )
+			GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		
 		CloseInventoryMenu();
 		GetGame().GetMission().PlayerControlEnable(false);
 		GetDayZGame().GetBacklit().OnSwimmingStart();
 		
 		AbortWeaponEvent();
 		GetWeaponManager().DelayedRefreshAnimationState(10);
-		//RequestHandAnimationStateRefresh();
+		RequestHandAnimationStateRefresh();
 	}
 	
 	override void OnCommandSwimFinish()
 	{
-		if ( GetItemInHands() )	TryHideItemInHands(false,true);
-		if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		TryHideItemInHands(false, true);
+		
+		if ( GetInventory() )
+			GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 		
 		GetDayZGame().GetBacklit().OnSwimmingStop();
 		
@@ -3125,20 +3145,30 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandLadderStart()
 	{
-		if ( GetItemInHands() ) TryHideItemInHands(true);
-		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		m_AnimCommandStarting = HumanMoveCommandID.CommandLadder;
+		TryHideItemInHands(true);
+		
+		if ( GetInventory() )
+			GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		
 		CloseInventoryMenu();
 	}
 	
 	override void OnCommandLadderFinish()
 	{
-		if ( GetItemInHands() )	TryHideItemInHands(false,true);
-		if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		TryHideItemInHands(false, true);
+		
+		if ( GetInventory() )
+			GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 	}
 	
 	override void OnCommandFallStart()
 	{
-		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		m_AnimCommandStarting = HumanMoveCommandID.CommandFall;
+		
+		if ( GetInventory() )
+			GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		
 		CloseInventoryMenu();
 		
 		AbortWeaponEvent();		
@@ -3148,13 +3178,19 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandFallFinish()
 	{
-		if( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		if ( GetInventory() )
+			GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		
 		GetWeaponManager().RefreshAnimationState();
 	}
 	
 	override void OnCommandClimbStart()
 	{
-		if( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		m_AnimCommandStarting = HumanMoveCommandID.CommandClimb;
+		
+		if ( GetInventory() )
+			GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		
 		CloseInventoryMenu();
 		
 		AbortWeaponEvent();
@@ -3164,58 +3200,49 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandClimbFinish()
 	{
-		if ( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		if ( GetInventory() )
+			GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
 		
 		GetWeaponManager().RefreshAnimationState();
 	}
 	
 	override void OnCommandVehicleStart()
 	{
-		if ( GetInventory() ) GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		m_AnimCommandStarting = HumanMoveCommandID.CommandVehicle;
+		
+		if ( GetInventory() )
+			GetInventory().LockInventory(LOCK_FROM_SCRIPT);
+		
 		ItemBase itemInHand = GetItemInHands();
 		EntityAI itemOnHead = FindAttachmentBySlotName("Headgear");
 
-		if( itemInHand )
-		{
-			if( itemInHand.GetCompEM() )
-			{
-				itemInHand.GetCompEM().SwitchOff();
-			}
+		if ( itemInHand && itemInHand.GetCompEM() )
+			itemInHand.GetCompEM().SwitchOff();
 
-			TryHideItemInHands(true);
-		}
+		TryHideItemInHands(true);
 
-		if( itemOnHead )
-		{
-			if( itemOnHead.GetCompEM() )
-			{
-				itemOnHead.GetCompEM().SwitchOff();
-			}
-		}
+		if ( itemOnHead && itemOnHead.GetCompEM() )
+			itemOnHead.GetCompEM().SwitchOff();
 		
 		HumanCommandVehicle hcv = GetCommand_Vehicle();
 		if ( hcv && hcv.GetVehicleSeat() == DayZPlayerConstants.VEHICLESEAT_DRIVER )
-		{
 			OnVehicleSeatDriverEnter();
-		}
 	}
 	
 	override void OnCommandVehicleFinish()
 	{
-		if ( GetInventory() ) GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
-		if ( GetItemInHands() )
-		{
-			TryHideItemInHands(false,true);
-		}
+		if ( GetInventory() )
+			GetInventory().UnlockInventory(LOCK_FROM_SCRIPT);
+		
+		TryHideItemInHands(false, true);
 		
 		if ( m_IsVehicleSeatDriver )
-		{
 			OnVehicleSeatDriverLeft();
-		}
 	}	
 	
 	override void OnCommandMelee2Start()
 	{
+		m_AnimCommandStarting = HumanMoveCommandID.CommandMelee2;
 		m_IsFighting = true;
 		
 		AbortWeaponEvent();	
@@ -3233,6 +3260,7 @@ class PlayerBase extends ManBase
 	
 	override void OnCommandDeathStart()
 	{	
+		m_AnimCommandStarting = HumanMoveCommandID.CommandDeath;
 		AbortWeaponEvent();	
 		GetWeaponManager().DelayedRefreshAnimationState(10);
 		RequestHandAnimationStateRefresh();
@@ -3372,6 +3400,15 @@ class PlayerBase extends ManBase
 		ControlSchemeManager.SetControlScheme( EControlSchemeState.None );
 		if( m_Hud )
 			m_Hud.HideVehicleInfo();
+	}
+	
+	override void OnThrowingModeChange(bool change_to_enabled)
+	{
+		if (change_to_enabled)
+		{
+			PlacingCancelLocal();
+			PlacingCancelServer();
+		}
 	}
 	
 	override void EOnFrame(IEntity other, float timeSlice)
@@ -4438,7 +4475,7 @@ class PlayerBase extends ManBase
 	bool IsFalling()
 	{
 		return m_MovementState.m_CommandTypeId == DayZPlayerConstants.COMMANDID_FALL;
-	}	
+	}
 	
 	bool IsInVehicle()
 	{
@@ -4461,7 +4498,16 @@ class PlayerBase extends ManBase
 			return false;
 		}
 	}
-		
+	
+	/*!
+	Returns whether the specified movement command(s) are starting the next frame.
+	Use caution when using this for anything player animation-related, some commands may require the movement state to be truly active (wait until next update)
+	*/
+	bool AnimCommandCheck(HumanMoveCommandID mask)
+	{
+		return m_AnimCommandStarting & mask;
+	}
+	
 	void RunFightBlendTimer()
 	{
 		if (!m_FightEndBlendTimer)
@@ -4604,15 +4650,11 @@ class PlayerBase extends ManBase
 			break;
 */			
 			case ERPCs.RPC_STAMINA:
-				if( !GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
-				{
-					break;
-				}
 				if ( ctx.Read(m_StaminaParam) && m_StaminaHandler )
 				{
 					m_StaminaHandler.OnRPC(m_StaminaParam.param1, m_StaminaParam.param2, m_StaminaParam.param3);
 				}
-			break; 
+			break;
 			
 			//TESTING
 			case ERPCs.RPC_SHOCK:
@@ -4821,7 +4863,7 @@ class PlayerBase extends ManBase
 		
 		if(m_RefreshAnimStateIdx != m_LocalRefreshAnimStateIdx)
 		{
-			RefreshHandAnimationState(396);
+			RefreshHandAnimationState(396); //mean animation blend time
 			m_LocalRefreshAnimStateIdx = m_RefreshAnimStateIdx;
 		}
 	}
@@ -6681,6 +6723,10 @@ class PlayerBase extends ManBase
 			break;
 			case DayZPlayerSyncJunctures.SJ_SHOCK :
 				DayZPlayerSyncJunctures.ReadShockParams(pCtx, m_CurrentShock);
+			break;
+			case DayZPlayerSyncJunctures.SJ_STAMINA :
+				m_StaminaHandler.OnSyncJuncture(pJunctureID, pCtx);
+			break;
 		}
 	}
 	
@@ -7632,7 +7678,7 @@ class PlayerBase extends ManBase
 			ActionManagerClient mngr_client;
 			if (CastTo(mngr_client,m_ActionManager))
 			{
-				ActionTarget atrg;
+				ActionTarget atrg = new ActionTarget(null, null, -1, vector.Zero, -1);
 				if ( mngr_client.GetAction(ActionDropItemSimple).Can(this,atrg,item) )
 				{
 					//Param1<bool> p1 = new Param1<bool>(false);
@@ -7680,7 +7726,8 @@ class PlayerBase extends ManBase
 	//! tries to hide item in player's hands, some exceptions for various movement states
 	void TryHideItemInHands(bool hide, bool force = false)
 	{
-		if ( !hide && ((!IsSwimming() && !IsClimbingLadder() && !IsInVehicle()) || force) )
+		//if ( !hide && ((!IsSwimming() && !IsSwimmingStarting() && !IsClimbingLadder() && !IsClimbingLadderStarting() && !IsInVehicle() && !IsInVehicleStarting()) || force) )
+		if ( !hide && ((!IsSwimming() && !IsClimbingLadder() && !IsInVehicle() && !AnimCommandCheck(HumanMoveCommandID.CommandSwim | HumanMoveCommandID.CommandLadder | HumanMoveCommandID.CommandVehicle)) || force) )
 		{
 			GetItemAccessor().HideItemInHands(false);
 		}

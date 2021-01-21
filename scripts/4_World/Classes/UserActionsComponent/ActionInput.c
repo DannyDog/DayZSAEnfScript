@@ -37,8 +37,6 @@ class ActionInput : ActionInput_Basic
 	
 	void ActionInput()
 	{
-		Debug.Log("+ ActionInput() " + this);
-		
 		m_Active = false;
 		m_Enabled = true;
 		m_ForcedTarget = null;
@@ -51,6 +49,12 @@ class ActionInput : ActionInput_Basic
 	void Init(PlayerBase player, ActionManagerClient am)
 	{
 		m_Player = player;
+		
+		if( LogManager.IsActionLogEnable())
+		{
+			Debug.ActionLog("n/a",this.ToString(), "n/a","Init()", player.ToString());
+		}
+		
 	}
 	
 	void SetEnablity(bool value)
@@ -61,10 +65,14 @@ class ActionInput : ActionInput_Basic
 	protected void SetInput(string input_name)
 	{
 		m_input = GetUApi().GetInputByName(input_name).GetPersistentWrapper();
-		if(m_input && m_input.InputP())
-			Debug.Log("+ input: " + input_name);
-		else
-			Debug.Log("- input: " + input_name);
+		
+		if( LogManager.IsActionLogEnable())
+		{
+			if(m_input && m_input.InputP())
+				Debug.ActionLog("(+) input set to " + input_name ,this.ToString(), "n/a","SetInput()", "n/a");
+			else
+				Debug.ActionLog("(-) input is not set to " + input_name ,this.ToString(), "n/a","SetInput()","n/a");
+		}
 	}
 	
 	int GetInputType()
@@ -247,6 +255,11 @@ class ActionInput : ActionInput_Basic
 	void SelectPrevAction()
 	{}
 	
+	int GetPossibleActionsCount()
+	{
+		return -1;
+	}
+	
 	bool HasInput()
 	{
 		return m_input != NULL;
@@ -401,6 +414,11 @@ class ContinuousInteractActionInput : ActionInput
 	override array<ActionBase> GetPossibleActions()
 	{
 		return m_SelectActions;
+	}
+	
+	override int GetPossibleActionsCount()
+	{
+		return m_SelectActions.Count();
 	}
 	
 	override int GetPossibleActionIndex()

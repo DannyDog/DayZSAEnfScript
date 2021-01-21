@@ -29,15 +29,11 @@ class ImmuneSystemMdfr: ModifierBase
 
 	override void OnTick(PlayerBase player, float deltaT)
 	{
-		Debug.Log("ticking immune system", "agent");
-		float result 	= player.GetImmunity() * deltaT;
-		player.ImmuneSystemTick(result, deltaT);
-		Debug.Log("result: "+result.ToString(), "agent");
-		HandleSickBadge(player);
-	}
-	
-	void HandleSickBadge(PlayerBase player)
-	{
+//		Debug.Log("ticking immune system", "agent");
+//		float result 	= player.GetImmunity() * deltaT;
+//		player.ImmuneSystemTick(result, deltaT);
+//		Debug.Log("result: "+result.ToString(), "agent");
+		
 		if( m_HasDisease != player.HasDisease() )
 		{
 			if(player.HasDisease())
@@ -50,6 +46,8 @@ class ImmuneSystemMdfr: ModifierBase
 			}
 		}	
 		m_HasDisease = player.HasDisease();
+		
 	}
+	
 	
 };

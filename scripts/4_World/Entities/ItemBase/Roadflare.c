@@ -270,6 +270,16 @@ class Roadflare : ItemBase
 		{
 			if ( GetGame().IsServer() )
 			{
+				//Safeguard if item is turned off by another event than running out of energy
+				if (GetCompEM().GetEnergy() > 0)
+				{
+					if (m_Light)
+					{
+						m_Light.FadeOut();
+					}
+					SetBurningState(RoadflareBurningState.NOT_BURNING);
+					return;
+				}
 				SetBurningStateSynchronized(RoadflareBurningState.SMOKE_ONLY);
 				SetHealth("","",0);
 			}

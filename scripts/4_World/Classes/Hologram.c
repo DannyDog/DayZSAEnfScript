@@ -506,6 +506,7 @@ class Hologram
 		center = m_Projection.GetPosition() + relative_ofset + absolute_ofset;
 		edge_length = GetCollisionBoxSize( min_max );
 		excluded_objects.Insert( m_Projection );
+		excluded_objects.Insert( m_Player );
 		if (action_item)
 		{
 			excluded_objects.Insert( action_item );
@@ -513,7 +514,7 @@ class Hologram
 
 		//add is construction check
 		// Base building objects behave in a way that causes this test to generate false positives
-		bool isTrue = GetGame().IsBoxColliding( center, orientation, edge_length, excluded_objects, collided_objects ) && (!collided_objects[0].IsInherited(BaseBuildingBase) || IsFenceOrWatchtowerKit());		
+		bool isTrue = GetGame().IsBoxCollidingGeometry( center, orientation, edge_length, ObjIntersectView, ObjIntersectGeom, excluded_objects, collided_objects )/* && (!collided_objects[0].IsInherited(BaseBuildingBase) || IsFenceOrWatchtowerKit())*/;		
 		#ifdef DEVELOPER	
 		if ( DiagMenu.GetBool(DiagMenuIDs.DM_HOLOGRAM) )
 		{

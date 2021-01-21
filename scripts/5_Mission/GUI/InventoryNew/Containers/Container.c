@@ -231,6 +231,14 @@ class Container extends LayoutHolder
 					att_row.SetDefaultFocus();
 				}
 			}
+			else if(this.IsInherited( VicinitySlotsContainer ))
+			{
+				VicinitySlotsContainer vsc = VicinitySlotsContainer.Cast( this );
+				if( vsc )
+				{
+					vsc.SetDefaultFocus();
+				}
+			}
 			else
 			{
 				if( !ItemManager.GetInstance().IsMicromanagmentMode() )

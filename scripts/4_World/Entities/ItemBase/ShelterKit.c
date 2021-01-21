@@ -14,8 +14,7 @@ class ShelterKit extends KitBase
 
 	//================================================================
 	// ADVANCED PLACEMENT
-	//================================================================			
-
+	//================================================================
 	override void OnPlacementComplete( Man player, vector position = "0 0 0", vector orientation = "0 0 0" )
 	{
 		super.OnPlacementComplete( player, position, orientation );
@@ -43,7 +42,22 @@ class ShelterKit extends KitBase
 	{
 		return 1.6;
 	}
-
+	
+	override string GetDeploySoundset()
+	{
+		return "Shelter_Site_Build_Start_SoundSet";
+	}
+	
+	override string GetLoopDeploySoundset()
+	{
+		return "Shelter_Site_Build_Loop_SoundSet";
+	}
+	
+	override string GetDeployFinishSoundset()
+	{
+		return "Shelter_Site_Build_Finish_SoundSet";
+	}
+	
 	override void DisassembleKit(ItemBase item)
 	{
 		if (!IsHologram())

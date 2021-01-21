@@ -36,6 +36,30 @@ class VicinitySlotsContainer: Container
 		m_ShowedItems = new array<EntityAI>;
 	}
 	
+	void SetDefaultFocus( bool while_micromanagment_mode = false )
+	{
+		if( !while_micromanagment_mode && ItemManager.GetInstance().IsMicromanagmentMode() )
+		{
+			return;
+		}
+		
+		m_FocusedColumn = 0;
+		m_FocusedRow = 0;
+		
+		LayoutHolder cnt = LayoutHolder.Cast( m_Container.Get( m_FocusedRow ) );
+		ItemPreviewWidget item_preview = ItemPreviewWidget.Cast( cnt.GetMainWidget().FindAnyWidget( "Render" + m_FocusedColumn ) );
+		EntityAI focused_item =  item_preview.GetItem();
+
+		if( focused_item )
+		{
+			float x, y;
+			Widget w = cnt.GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn );
+			w.Show( true );
+			w.GetScreenPos( x, y );
+			ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
+		}
+	}
+	
 	EntityAI GetActiveItem()
 	{
 		ItemPreviewWidget ipw = ItemPreviewWidget.Cast( m_Container.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Icon" + m_FocusedColumn ).FindAnyWidget( "Render" + m_FocusedColumn ) );

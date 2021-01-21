@@ -11,6 +11,7 @@ class InventoryMenu extends UIScriptedMenu
 	private ref ContextMenu				m_context_menu;
 	protected bool						m_IsOpened;
 	protected bool						m_OnlyFirstTime;
+	protected int  						m_LastDisplayLanguage;
 	
 	protected static ScreenWidthType	m_WidthType;
 	protected static int				m_Width;
@@ -23,6 +24,7 @@ class InventoryMenu extends UIScriptedMenu
 		m_Inventory.Reset();
 		m_Inventory.UpdateInterval();
 		m_context_menu = new ContextMenu;
+		m_LastDisplayLanguage = g_Game.GetCurrentDisplayLanguageIdx();
 	}
 	
 	override Widget Init()
@@ -95,7 +97,7 @@ class InventoryMenu extends UIScriptedMenu
 	{
 		super.OnShow();
 		m_IsOpened = true;
-		PPEffects.SetBlurInventory(0.5);
+		PPEffects.SetBlurInventory(0);
 		VicinityItemManager.GetInstance().RefreshVicinityItems();
 		
 		if(m_Inventory)
@@ -143,5 +145,15 @@ class InventoryMenu extends UIScriptedMenu
 		ItemManager.GetInstance().SetItemMoving( false );
 		ItemManager.GetInstance().SetSelectedItem( null, null, null );
 		ItemManager.GetInstance().HideTooltip();
+	}
+	
+	int GetLastDisplayLanguage()
+	{
+		return m_LastDisplayLanguage;
+	}
+	
+	bool LanguageChanged()
+	{
+		return g_Game.GetCurrentDisplayLanguageIdx() != m_LastDisplayLanguage;
 	}
 }

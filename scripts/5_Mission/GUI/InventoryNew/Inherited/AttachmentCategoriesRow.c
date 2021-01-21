@@ -4,13 +4,13 @@ class AttachmentCategoriesRow: ClosableContainer
 	protected string									m_RowConfigPath;
 	
 	protected ref array<ref SlotsContainer>				m_Ics;
-	protected ref map<EntityAI, ref CargoContainer>		m_AttachmentCargos;
+	protected ref map<int, ref CargoContainer>		m_AttachmentCargos;
 	
 	void AttachmentCategoriesRow( LayoutHolder parent, int sort = -1 )
 	{
 		ClosableHeader header	= ClosableHeader.Cast( m_Body.Get( 0 ) );
 		m_Ics					= new array<ref SlotsContainer>;
-		m_AttachmentCargos		= new map<EntityAI, ref CargoContainer>;
+		m_AttachmentCargos		= new map<int, ref CargoContainer>;
 		
 		header.GetMainWidget().ClearFlags( WidgetFlags.DRAGGABLE );
 	}
@@ -109,7 +109,7 @@ class AttachmentCategoriesRow: ClosableContainer
 							player.PredictiveSwapEntities( selected_item, prev_item );
 							return true;
 						}
-						else if( m_AttachmentCargos.Contains( prev_item ) )
+						else if( m_AttachmentCargos.Contains( inv_loc.GetSlot() ) )
 						{
 							if( prev_item.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo() ) )
 							{
@@ -244,7 +244,7 @@ class AttachmentCategoriesRow: ClosableContainer
 							player.PredictiveSwapEntities( selected_item, prev_item );
 							return false;
 						}
-						else if( m_AttachmentCargos.Contains( prev_item ) )
+						else if( m_AttachmentCargos.Contains( inv_loc.GetSlot() ) )
 						{
 							if( prev_item.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo() ) )
 							{
@@ -617,10 +617,10 @@ class AttachmentCategoriesRow: ClosableContainer
 				item_base.SplitIntoStackMaxClient( m_Entity, il.GetSlot() );
 			}
 		}
-		else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) /*|| player.GetHumanInventory().HasEntityInHands( item )*/ )
+		/*else if( ( m_Entity.GetInventory().CanAddEntityInCargo( item, item.GetInventory().GetFlipCargo() ) && ( !player.GetInventory().HasEntityInInventory( item ) || !m_Entity.GetInventory().HasEntityInCargo( item )) ) )
 		{
 			SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( GetGame().GetPlayer() ), m_Entity, item );
-		}
+		}*/
 	}
 
 	override void UnfocusAll()
@@ -823,7 +823,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		EntityAI target_entity;
 		CargoBase target_cargo;
 		
-		target_entity		= m_AttachmentCargos.GetKeyByValue( cargo );
+		target_entity		=  cargo.GetEntity() ;
 		if( target_entity )
 		{
 			target_cargo 	= target_entity.GetInventory().GetCargo();
@@ -879,7 +879,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		EntityAI target_entity;
 		CargoBase target_cargo;
 		
-		target_entity	= m_AttachmentCargos.GetKeyByValue( cargo );
+		target_entity	= cargo.GetEntity();
 		if( target_entity )
 		{
 			target_cargo 	= target_entity.GetInventory().GetCargo();
@@ -953,6 +953,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		SlotsIcon icon					= row.GetSlotIcon( id );
 		
 		icon.SetSlotID(slot_id);
+		ref CargoContainer cont;
 		
 		if( !m_Entity.CanDisplayAttachmentSlot( slot_name ) )
 		{
@@ -963,6 +964,12 @@ class AttachmentCategoriesRow: ClosableContainer
 		{
 			icon.Clear();
 			icon.GetMainWidget().Show( true );
+			cont = m_AttachmentCargos.Get(slot_id);
+			if( cont )
+			{
+				m_AttachmentCargos.Remove(slot_id);
+				this.Remove(cont);
+			}
 		}
 		else
 		{
@@ -970,16 +977,24 @@ class AttachmentCategoriesRow: ClosableContainer
 			icon.Init( item );
 			icon.Refresh();
 			
-			if( item.GetInventory().GetCargo() && m_AttachmentCargos )
+			cont = m_AttachmentCargos.Get(slot_id);
+			if( cont && cont.GetEntity() != item)
 			{
-				if( !m_AttachmentCargos.Contains( item ) )
+				m_AttachmentCargos.Remove(slot_id);
+				this.Remove(cont);
+				cont = null;
+			}
+			
+			if( !cont )
+			{
+				if( item.GetInventory().GetCargo() && m_AttachmentCargos )
 				{
-					ref CargoContainer cont = new CargoContainer( this, true );
+					cont = new CargoContainer( this, true );
 					cont.GetRootWidget().SetSort( m_AttachmentCargos.Count() + 10 );
 					cont.SetEntity( item );
 					this.Insert( cont );
 					
-					m_AttachmentCargos.Insert( item, cont );
+					m_AttachmentCargos.Insert( slot_id, cont );
 				}
 			}
 			
@@ -1103,7 +1118,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			
 			icon2.GetGhostSlot().LoadImageFile( 0,"set:dayz_inventory image:" + icon_name2 );
 		}
-		
+		/*
 		array<EntityAI> cargo_attachments = entity.GetAttachmentsWithCargo();
 		for( i = 0; i < m_AttachmentCargos.Count(); i++ )
 		{
@@ -1121,6 +1136,6 @@ class AttachmentCategoriesRow: ClosableContainer
 					m_AttachmentCargos.Get( e ).UpdateInterval();
 				}
 			}
-		}
+		}*/
 	}
 }

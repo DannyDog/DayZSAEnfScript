@@ -263,6 +263,11 @@ class CargoContainer extends Container
 		}
 	}
 	
+	EntityAI GetEntity()
+	{
+		return m_Entity;
+	}
+	
 	void UpdateHeaderText()
 	{
 		Widget header;

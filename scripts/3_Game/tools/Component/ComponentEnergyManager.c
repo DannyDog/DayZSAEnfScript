@@ -17,6 +17,7 @@ Every EntityAI object which uses this API gains these functions:
 
 class ComponentEnergyManager : Component
 {
+	protected const  float DEFAULT_UPDATE_INTERVAL = 15;
 	protected static bool 			m_DebugPlugs = true; // Use this to toggle visualisation of plug connections
 	protected 		Shape			m_DebugPlugArrow;
 	
@@ -200,7 +201,7 @@ class ComponentEnergyManager : Component
 		
 		// Set update interval
 		if ( update_interval <= 0 )
-			update_interval = 1;
+			update_interval = DEFAULT_UPDATE_INTERVAL;
 		
 		SetUpdateInterval( update_interval );
 		

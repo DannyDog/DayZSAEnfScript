@@ -84,12 +84,13 @@ class Car extends Transport
 		GetGame().IsBoxColliding(crewPos, crewDir, Vector(horizontalExtents, playerHeight, vExtents), excluded, collided); 
 		foreach (Object o : collided)
 		{
-			EntityAI e = EntityAI.Cast(o);
-			vector minmax[2];
-			if ( e && e.IsZombie() && e.IsDamageDestroyed() )
+			EntityAI e = EntityAI.Cast(o);			
+			// CanBeSkinned means it is a dead entity which should not block the door
+			if ( IsIgnoredObject(o) )
 				continue;
 			
-			if ( o.GetCollisionBox(minmax) && !o.CanBeSkinned() ) // CanBeSkinned means it is a dead entity which should not block the door
+			vector minmax[2];
+			if ( o.GetCollisionBox(minmax) )
 				return false;
 		}
 		return true;

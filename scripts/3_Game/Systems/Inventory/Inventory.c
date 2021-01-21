@@ -278,6 +278,19 @@ class GameInventory
 	 **/
 	static proto native bool LocationCanAddEntity (notnull InventoryLocation inv_loc);
 	
+	//Added script check to  LocationCanAddEntity
+	static bool LocationCanAddEntityEx(notnull InventoryLocation inv_loc)
+	{
+		EntityAI parent = inv_loc.GetParent();
+		//Addition handling items which are automaticali disassemled to avoid moving attachment to inventory of destroing item
+		if(parent && parent.DisassembleOnLastDetach() )
+		{
+			if( parent.GetInventory().AttachmentCount() == 1 && parent.GetInventory().HasAttachment(inv_loc.GetItem()) )
+				return false;
+		}
+		return LocationCanAddEntity (inv_loc);
+	}
+	
 	/**
 	 * @fn		LocationTestAddEntity
 	 * @brief	test if the entity contained in inv_loc.m_item can be added to ground/attachment/cargo/hands/...
@@ -507,12 +520,26 @@ class GameInventory
 		if( item1.GetQuantity() > item1.GetTargetQuantityMax(slot) )
 			return false;
 		
+		//Addition handling items which are automaticali disassemled to avoid moving attachment to inventory of destroing item	
+		EntityAI parent = EntityAI.Cast(il.GetParent());
+		if(slot != -1 && parent && parent.DisassembleOnLastDetach())
+		{
+			if ( parent.GetInventory().AttachmentCount() == 1 )
+				return false;
+		}
+		
 		item1.GetInventory().GetCurrentInventoryLocation(il);
 		slot = il.GetSlot();
 		
 		if( item2.GetQuantity() > item2.GetTargetQuantityMax(slot) )
 			return false;
-		
+		//Addition handling items which are automaticali disassemled to avoid moving attachment to inventory of destroing item
+		parent = EntityAI.Cast(il.GetParent());
+		if(slot != -1 && parent && parent.DisassembleOnLastDetach())
+		{
+			if ( parent.GetInventory().AttachmentCount() == 1 )
+				return false;
+		}
 		
 		return CanSwapEntities(item1,item2);
 	}

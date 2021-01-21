@@ -87,7 +87,7 @@ class Spotlight extends ItemBase
 	{
 		super.EOnInit(other, extra);
 		
-		if ( !IsHologram() )
+		if ( !IsHologram() ) //todo; object can't know it's a hologram at this point!
 		{
 			UpdateAllSelections();
 			HideSelection(SEL_CORD_FOLDED_F);
@@ -170,14 +170,10 @@ class Spotlight extends ItemBase
 		
 		// When the item is picked up by a player
 		PlayerBase player = PlayerBase.Cast(new_owner);
-		if ( player && player.GetItemInHands() == this && GetCompEM().IsPlugged() )
+		if ( player && player.GetItemInHands() == this )
 		{
-			Fold(true);
+			Fold(GetCompEM().IsPlugged());
 			//player.TogglePlacingLocal();
-		}
-		else
-		{
-			Fold();
 		}
 	}
 
@@ -263,8 +259,6 @@ class Spotlight extends ItemBase
 				}
 			}
 		}
-		//
-		
 	}
 	
 	override void OnIsUnplugged( EntityAI last_energy_source )

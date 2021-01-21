@@ -50,7 +50,8 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 	{		
 		EntityAI target_EAI = EntityAI.Cast( target.GetObject() );
 		
-		if ( target_EAI  &&  item  &&  target_EAI.HasEnergyManager()  &&  item.HasEnergyManager() )
+		//Prevent plugging to items in inventory
+		if ( target_EAI && target_EAI.GetHierarchyRoot() != player &&  item  &&  target_EAI.HasEnergyManager()  &&  item.HasEnergyManager() )
 		{
 			if ( !target_EAI.GetCompEM().IsPlugged()  &&  item.GetCompEM().CanReceivePlugFrom(target_EAI) )
 			{

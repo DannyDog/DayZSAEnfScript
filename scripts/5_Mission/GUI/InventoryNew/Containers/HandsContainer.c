@@ -719,25 +719,8 @@ class HandsContainer: Container
 			else if( slot_owner && slot_owner.GetInventory().CanAddAttachment( w_entity ) )
 			{
 				ItemManager.GetInstance().HideDropzones();
-				if( slot_owner.GetHierarchyRootPlayer() == GetGame().GetPlayer() )
-				{
-					ItemManager.GetInstance().GetRightDropzone().SetAlpha( 1 );
-				}
-				else
-				{
-					ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
-				}
-				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
-			}
-			
-			
-			
-			
-			else if(GameInventory.CanSwapEntitiesEx( receiver_entity, w_entity ))
-			{
-				ColorManager.GetInstance().SetColor( w, ColorManager.SWAP_COLOR );
-				ItemManager.GetInstance().HideDropzones();
 				ItemManager.GetInstance().GetCenterDropzone().SetAlpha( 1 );
+				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
 			}
 			else if( receiver_entity.GetInventory().CanAddAttachment( w_entity ) )
 			{
@@ -751,6 +734,11 @@ class HandsContainer: Container
 					ItemManager.GetInstance().GetLeftDropzone().SetAlpha( 1 );
 				}
 				ColorManager.GetInstance().SetColor( w, ColorManager.GREEN_COLOR );
+			}
+			else
+			{
+				ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
+				ItemManager.GetInstance().ShowSourceDropzone( w_entity );
 			}
 		}
 		else
@@ -1287,7 +1275,7 @@ class HandsContainer: Container
 		
 		InventoryLocation src = new InventoryLocation;
 		item.GetInventory().GetCurrentInventoryLocation(src);
-		if(src.CompareLocationOnly(dst))
+		if(src.CompareLocationOnly(dst) && src.GetFlip() == dst.GetFlip())
 			return;
 		
 		#ifdef PLATFORM_CONSOLE
@@ -1405,15 +1393,18 @@ class HandsContainer: Container
 		}
 		else if( receiver_item )
 		{
-			if( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )
+			if( receiver_item != item )
 			{
-				( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
-			}
-			else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
-			{
-				if( !receiver_item.GetInventory().CanRemoveEntity() )
-					return;
-				GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
+				if( ( ItemBase.Cast( receiver_item ) ).CanBeCombined( ItemBase.Cast( item ) ) )
+				{
+					( ItemBase.Cast( receiver_item ) ).CombineItemsClient( ItemBase.Cast( item ) );
+				}
+				else if( GameInventory.CanSwapEntitiesEx( receiver_item, item ) )
+				{
+					if( !receiver_item.GetInventory().CanRemoveEntity() )
+						return;
+					GetGame().GetPlayer().PredictiveSwapEntities( item, receiver_item );
+				}
 			}
 		}
 		else if( slot_owner && slot_owner.GetInventory().CanAddAttachmentEx( item, slot_id ) )

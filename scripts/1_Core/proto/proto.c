@@ -266,8 +266,32 @@ typedef int[] Material;
 
 class Material
 {
+	/*!
+	set parametr of material by string name
+	\param paramName	name of parameter
+	\param value		value
+	*/
 	proto bool SetParam(string propertyName, void value);
+
+	/*!
+	reset parametr of material to default value
+	\param paramName	name of parameter
+	*/
 	proto native void ResetParam(string propertyName);
+
+	/*!
+	set parametr index for faster access to material properties
+	\param paramName	name of parameter
+	\return parameter index
+	*/
+	proto native int GetParamIndex(string paramName);
+
+	/*!
+	set parametr of material by index
+	\param paramName	name of parameter
+	\param value		value
+	*/
+	proto void SetParamByIndex(int paramIndex, void value);
 };
 //@}
 

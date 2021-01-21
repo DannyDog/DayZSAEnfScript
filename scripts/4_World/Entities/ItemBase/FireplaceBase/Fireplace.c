@@ -88,32 +88,32 @@ class Fireplace extends FireplaceBase
 		//cookware
 		if ( item.Type() == ATTACHMENT_COOKING_POT )
 		{
-			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) || IsOven() ) 
+			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) /*|| IsOven()*/ ) 
 				return true;
 		}
 		if ( item.Type() == ATTACHMENT_FRYING_PAN )
 		{
-			if ( IsOven() ) 
+			//if ( IsOven() ) 
 				return true;
 		}
 
 		// food on direct cooking slots
-		if ( IsOven() )
-		{
+		//if ( IsOven() )
+		//{
 			if ( item.IsKindOf( "Edible_Base" ) )
 				return true;
-		}
+		//}
 		//tripod
 		if ( item.Type() == ATTACHMENT_TRIPOD )
 		{
-			if ( !IsOven() && GetHierarchyParent() == NULL )
+			if ( /*!IsOven() &&*/ GetHierarchyParent() == NULL )
 				return true;
 		}
 		
 		//stones
 		if ( item.Type() == ATTACHMENT_STONES )
 		{
-			if ( GetHierarchyParent() || IsBurning() )
+			if ( GetHierarchyParent() /*|| IsBurning()*/ )
 				return false;
 			
 			return true;
@@ -228,6 +228,15 @@ class Fireplace extends FireplaceBase
 		{
 			//add to consumables
 			AddToFireConsumables( item_base );
+			
+			//We added fuel or kindling, no need to proceed further
+			//No need to update if firewood is already attached
+			if (!IsItemTypeAttached( ATTACHMENT_FIREWOOD ))
+			{
+				if (!IsItemTypeAttached(ATTACHMENT_STICKS) && IsKindling(item_base))
+					RefreshFireplaceVisuals();
+			}
+			return;
 		}
 		
 		//cookware
@@ -485,6 +494,11 @@ class Fireplace extends FireplaceBase
 	override bool CanAssignAttachmentsToQuickbar()
 	{
 		return false;
+	}
+	
+	override float HeightStartCheckOverride()
+	{
+		return 0.32;
 	}
 	
 	//particles

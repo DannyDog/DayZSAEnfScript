@@ -87,6 +87,22 @@ class LandMineTrap extends TrapBase
 		}
 	}
 	
+	override void Explode( int damageType, string ammoType = "")
+	{
+		if (ammoType == "")
+			ammoType = this.ConfigGetString("ammoType");
+		
+		if (ammoType == "")
+			ammoType = "Dummy_Heavy";
+		
+		if ( GetGame().IsServer() )
+		{
+			SynchExplosion();
+			vector offset = Vector(0, 0.5, 0); //Vertical offset applied to landmine explosion (in meters)
+			DamageSystem.ExplosionDamage(this, NULL, ammoType, GetPosition() + offset, damageType); //Offset explosion on Y axis
+		}
+	}
+	
 	//================================================================
 	// ADVANCED PLACEMENT
 	//================================================================

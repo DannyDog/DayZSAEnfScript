@@ -1,7 +1,7 @@
 [WorkbenchPluginAttribute("SVN Blame", "Just for testing", "ctrl+b", "", {"ScriptEditor"})]
 class SVNBlamePlugin: WorkbenchPlugin
 {
-	[Attribute("TortoiseProc /command:blame /path:$path /startrev:1 /endrev:\"-1\" /ignoreeol /ignoreallspaces /line:$line", "editbox")]
+	[Attribute("TortoiseProc /command:blame /path:$path /startrev:1 /endrev:\"HEAD\" /ignoreeol /ignoreallspaces /line:$line", "editbox")]
 	string CommandLine;
 	
 	override void Run()

@@ -785,7 +785,7 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 		
 		InventoryLocation src = new InventoryLocation;
 		item.GetInventory().GetCurrentInventoryLocation(src);
-		if(src.CompareLocationOnly(dst))
+		if(src.CompareLocationOnly(dst) && src.GetFlip() == dst.GetFlip())
 			return;
 		
 		#ifdef PLATFORM_CONSOLE

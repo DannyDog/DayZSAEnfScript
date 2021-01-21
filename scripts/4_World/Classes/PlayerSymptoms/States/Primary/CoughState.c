@@ -33,6 +33,7 @@ class CoughSymptom extends SymptomBase
 	//!gets called once on an Symptom which is being activated
 	override void OnGetActivatedServer(PlayerBase player)
 	{
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated");
 		if( m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE )
 		{
 			PlayAnimationADD(1);
@@ -47,17 +48,18 @@ class CoughSymptom extends SymptomBase
 	//!gets called once on a Symptom which is being activated
 	override void OnGetActivatedClient(PlayerBase player)
 	{
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated");
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated
 	override void OnGetDeactivatedServer(PlayerBase player)
 	{
-		Debug.Log("OnGetDeactivated CoughSymptom called", "PlayerSymptom");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated
 	override void OnGetDeactivatedClient(PlayerBase player)
 	{
-		Debug.Log("OnGetDeactivated CoughSymptom called", "PlayerSymptom");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
 	}
 }

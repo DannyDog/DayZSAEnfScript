@@ -10,7 +10,7 @@ class CCTWaterSurface : CCTBase
 	}
 	
 	override bool Can( PlayerBase player, ActionTarget target )
-	{	
+	{
 		if ( !target || ( target && target.GetObject() ) )
 			return false;
 		
@@ -34,5 +34,10 @@ class CCTWaterSurface : CCTBase
 		
 		// Combine the tests and check the distance
 		return ( vector.DistanceSq(hit_pos, player.GetPosition()) <= m_MaximalActionDistanceSq && (isSeaCheck || surfType.Contains(m_SurfaceType)) );
+	}
+	
+	override bool CanContinue( PlayerBase player, ActionTarget target )
+	{
+		return true;
 	}
 };

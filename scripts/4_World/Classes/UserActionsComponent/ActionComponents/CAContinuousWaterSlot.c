@@ -2,6 +2,8 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 {
 	protected float m_PlantThirstyness;
 	protected float	m_TimeToComplete;
+	protected float m_SpentQuantityTotal;
+	protected float m_StartQuantity;
 
 	void CAContinuousWaterSlot( float quantity_used_per_second )
 	{
@@ -15,7 +17,7 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 		if ( Class.CastTo(target_GB, action_data.m_Target.GetObject()) )
 		{
 			m_SpentQuantity = 0;
-			
+			m_StartQuantity = action_data.m_MainItem.GetQuantity();
 			if ( !m_SpentUnits )
 			{ 
 				m_SpentUnits = new Param1<float>(0);
@@ -72,11 +74,9 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
 				float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
 				slot.GiveWater( water );
-							
-				if ( GetGame().IsServer() )
-				{
-					action_data.m_MainItem.AddQuantity(- m_SpentQuantity);
-				}
+				
+				m_SpentQuantityTotal += m_SpentQuantity;
+				CalcAndSetQuantity( action_data );
 				
 				m_SpentQuantity = 0;
 				
@@ -84,7 +84,7 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			}
 			else
 			{
-				//CalcAndSetQuantity( action_data );
+				CalcAndSetQuantity( action_data );
 				OnCompletePogress(action_data);
 				return UA_FINISHED;
 			}
@@ -92,8 +92,10 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 	}
 	
 	override float GetProgress()
-	{	
-		float progress = m_ItemQuantity / m_ItemMaxQuantity;
+	{		
+		if ( m_ItemQuantity <= 0 )
+			return 1;
+		float progress = -(m_SpentQuantityTotal / m_StartQuantity);
 		return progress;
 	}
 };

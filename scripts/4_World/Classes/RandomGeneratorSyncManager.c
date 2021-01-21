@@ -3,6 +3,7 @@ enum RandomGeneratorSyncUsage
 	RGSRecoil,
 	RGSJam,
 	RGSGeneric,
+	RGSAimingModel,
 	Count,
 }
 

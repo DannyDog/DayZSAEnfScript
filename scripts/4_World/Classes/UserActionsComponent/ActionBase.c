@@ -155,10 +155,21 @@ class ActionBase : ActionBase_Basic
 				ClearInventoryReservation(action_data);
 				return false;
 			}
+			
+			if( LogManager.IsActionLogEnable() )
+			{
+				for( int i = 0; i < action_data.m_ReservedInventoryLocations.Count(); i++)
+				{
+					Debug.ActionLog( InventoryLocation.DumpToStringNullSafe( action_data.m_ReservedInventoryLocations[i] ), action_data.m_Action.ToString() , "n/a", "LockInventoryList", action_data.m_Player.ToString() );
+				}
+			}
 		}
 		
 		return true;
 	}
+	
+	void ActionCleanup( ActionData action_data )
+	{}
 	
 	typename GetInputType()
 	{
@@ -521,6 +532,11 @@ class ActionBase : ActionBase_Basic
 	{
 		action_data.m_State = UA_START;
 		
+		if( LogManager.IsActionLogEnable() )
+		{
+			Debug.ActionLog("Time stamp: " + action_data.m_Player.GetSimulationTimeStamp(), this.ToString() , "n/a", "OnStart", action_data.m_Player.ToString() );
+		}
+		
 		OnStart(action_data);
 		
 		if ( GetGame().IsServer() )
@@ -533,8 +549,6 @@ class ActionBase : ActionBase_Basic
 		}	
 		
 		InformPlayers(action_data.m_Player,action_data.m_Target,UA_START);
-
-		actionDebugPrint("[action] " + Object.GetDebugName(action_data.m_Player) + " started " + ToString() + " item=" + Object.GetDebugName(action_data.m_MainItem));
 	}
 	
 	void End( ActionData action_data )

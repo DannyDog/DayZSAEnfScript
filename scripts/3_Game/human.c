@@ -1090,6 +1090,25 @@ class HumanCommandScript
 	proto native 	void	PostPhys_LockRotation();							//! do not process rotations !
 }
 
+//! used in script-side identification of animation commands on human (swim, fall, move...)
+enum HumanMoveCommandID
+{
+	None,
+	CommandMove,
+	CommandMelee,
+	CommandMelee2,
+	CommandFall,
+	CommandClimb,
+	CommandDeath,
+	CommandUnconscious,
+	CommandDamageFullbody,
+	CommandDamageAdditive,
+	CommandLadder,
+	CommandSwim,
+	CommandVehicle,
+	CommandActionFullbody,
+	CommandActionAdditive
+}
 
 // *************************************************************************************
 // ! Human - human script interface 
@@ -1203,7 +1222,7 @@ class Human extends Man
 
 	//!----- LADDER -----
 
-	//! starts command - unconscious
+	//! starts command - Swim
 	proto native 	HumanCommandSwim			StartCommand_Swim();
 
 	proto native 	HumanCommandSwim 			GetCommand_Swim();

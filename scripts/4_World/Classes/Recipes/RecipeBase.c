@@ -549,13 +549,19 @@ class RecipeBase
 	
 	bool CanDo(ItemBase ingredients[], PlayerBase player)
 	{
-		Debug.Log("Called Can Do on a recipe id:" + m_ID.ToString(),"recipes");
+		//Debug.Log("Called Can Do on a recipe id:" + m_ID.ToString(),"recipes");
+		for ( int i = 0; i < MAX_NUMBER_OF_INGREDIENTS; i++)
+		{
+			if (ingredients[i].GetInventory() && ingredients[i].GetInventory().AttachmentCount() > 0)
+				return false;
+		}
+		
 		return true;
 	}
 
 	void Do(ItemBase ingredients[], PlayerBase player, array<ItemBase> results, float specialty_weight)
 	{
-		Debug.Log("Called Do on a recipe id:" + m_ID.ToString(),"recipes");
+		//Debug.Log("Called Do on a recipe id:" + m_ID.ToString(),"recipes");
 	}
 
 	int GetID()

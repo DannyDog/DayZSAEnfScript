@@ -196,8 +196,8 @@ class PlayerConstants
 	static const float 	BROKEN_LEGS_MID_SHOCK_WALK = 6;				//Inflicted shock on modifier update with mid health legs
 	static const float 	BROKEN_LEGS_HIGH_SHOCK_WALK = 8;			//Inflicted shock on modifier update with low health legs
 	static const float 	BROKEN_LEGS_SHOCK_SWIM = 2;					//Inflicted shock on modifier update when swimming
-	static const float 	BROKEN_LEGS_LIGHT_MELEE_SHOCK = 20; 		//Inflicted shock per light weapon swing
-	static const float 	BROKEN_LEGS_HEAVY_MELEE_SHOCK = 35; 		//Inflicted shock per heavy weapon swing
+	static const float 	BROKEN_LEGS_LIGHT_MELEE_SHOCK = 10; 		//Inflicted shock per light weapon swing
+	static const float 	BROKEN_LEGS_HEAVY_MELEE_SHOCK = 25; 		//Inflicted shock per heavy weapon swing
 	static const float	BROKEN_LEGS_LOW_HEALTH_THRESHOLD = 25;		//Amount of health BELOW which legs have "low health"
 	static const float	BROKEN_LEGS_HIGH_HEALTH_THRESHOLD = 75;		//Amount of health OVER which legs have "low health"
 	//static const int	BROKEN_LEGS_FALL_STEP_COUNT = 10;			//Number of steps before falling over

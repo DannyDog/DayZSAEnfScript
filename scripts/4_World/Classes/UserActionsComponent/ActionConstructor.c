@@ -105,6 +105,7 @@ class ActionConstructor
 		actions.Insert(ActionForceDrinkDisinfectant);	
 		actions.Insert(ActionDrinkDisinfectant2);
 		actions.Insert(ActionDigGardenPlot);
+		actions.Insert(ActionDismantleGardenPlot);
 		actions.Insert(ActionWaterPlant);
 		actions.Insert(ActionFertilizeSlot);
 		actions.Insert(ActionDisinfectPlant);
@@ -272,6 +273,8 @@ class ActionConstructor
 		actions.Insert(ActionTakeFireplaceFromBarrel);
 		actions.Insert(ActionOpenCarDoors);
 		actions.Insert(ActionCloseCarDoors);
+		actions.Insert(ActionOpenCarDoorsOutside);
+		actions.Insert(ActionCloseCarDoorsOutside);
 		actions.Insert(ActionWashHandsWellOne);
 		actions.Insert(ActionWashHandsWaterOne);
 		actions.Insert(ActionGetOutTransport);

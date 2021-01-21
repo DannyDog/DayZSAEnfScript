@@ -60,6 +60,10 @@ class ActionDismantlePart: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{	
+		//Action not allowed if player has broken legs
+		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+			return false;
+		
 		return DismantleCondition( player, target, item, true ) && player.m_MovementState.m_iStanceIdx != DayZPlayerConstants.STANCEIDX_PRONE;
 	}
 	

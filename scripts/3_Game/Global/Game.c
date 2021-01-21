@@ -24,6 +24,7 @@ class CGame
 	
 	void CGame()
 	{
+		LogManager.Init();
 		m_ParamCache = new array<ref Param>;
 		m_ParamCache.Insert(NULL);
 		
@@ -958,7 +959,7 @@ class CGame
 		\param excludeObjects \p array<Object>, objects that should be excluded from collision check
 		\param collidedObjects \p array<Object>, out parameter, objects that collided with OBB
 		\returns \p bool, \p true if at least one object collided with OBB, \p false otherwise
-		\note Object that doesn't have collision geometry will be ignored
+		\note Object that doesn't have collision geometry will be ignored, as this only uses geometry
 		
 		@code
 			vector pos = GetPosition();
@@ -979,6 +980,39 @@ class CGame
 	*/
 	proto native bool		IsBoxColliding(vector center, vector orientation, vector edgeLength, array<Object> excludeObjects, array<Object> collidedObjects = NULL); 
 	
+	/**
+	\brief Finds all objects with geometry iType that are in choosen oriented bounding box (OBB)
+		\param center \p vector, center of OBB
+		\param orientation \p vector, direction (front vector), used for calculation of OBB rotation
+		\param edgeLength \p vector, sizes of whole box
+		\param iPrimaryType \p int, 	type of intersection, possible values ObjIntersectFire(0), ObjIntersectView(1), ObjIntersectGeom(2), ObjIntersectIFire(3), 
+	ObjIntersectNone(4) 
+		\param iSecondaryType \p int, 	type of intersection, possible values ObjIntersectFire(0), ObjIntersectView(1), ObjIntersectGeom(2), ObjIntersectIFire(3), 
+	ObjIntersectNone(4) 
+		\param excludeObjects \p array<Object>, objects that should be excluded from collision check
+		\param collidedObjects \p array<Object>, out parameter, objects that collided with OBB
+		\returns \p bool, \p true if at least one object collided with OBB, \p false otherwise
+		
+		@code
+			vector pos = GetPosition();
+			vector orientation = GetOrientation();
+			vector size = "10 4 8";
+			array<Object> excluded_objects = new array<Object>;
+			excluded_objects.Insert(this);
+			array<Object> nearby_objects = new array<Object>;
+			
+			if(GetGame().IsBoxCollidingGeometry( pos, orientation, size, ObjIntersectView, ObjIntersectGeom, excluded_objects, nearby_objects))
+			{
+				for (int i = 0, c = nearby_objects.Count(); i < c; ++i)
+				{
+					PrintString("object " + i.ToString());
+				}
+			}
+		@endcode
+	*/
+	proto native bool		IsBoxCollidingGeometry(vector center, vector orientation, vector edgeLength, int iPrimaryType, int iSecondaryType, array<Object> excludeObjects, array<Object> collidedObjects = NULL); 
+	
+		
 	//! Returns weather controller object.
 	proto native Weather GetWeather();
 
@@ -1171,10 +1205,10 @@ class CGame
 	*/
 	DragQueue GetDragQueue() {}
 
-	//!returns class name of first valid survivor
+	//!returns class name of first valid survivor (TODO address confusing naming?)
 	string CreateDefaultPlayer() {}
 	
-	//!returns class name of random survivor
+	//!returns class name of random survivor (TODO address confusing naming?)
 	string CreateRandomPlayer() {}
 	
 	//!outputs array of all valid survivor class names

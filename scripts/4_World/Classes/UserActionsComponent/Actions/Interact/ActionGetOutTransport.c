@@ -88,7 +88,7 @@ class ActionGetOutTransport: ActionBase
 	{
 		super.Start( action_data );
 		HumanCommandVehicle vehCommand = action_data.m_Player.GetCommand_Vehicle();
-		if( vehCommand )
+		if ( vehCommand )
 		{
 			Transport trans = vehCommand.GetTransport();
 			
@@ -119,6 +119,24 @@ class ActionGetOutTransport: ActionBase
 					GetDayZGame().GetBacklit().OnLeaveCar();		
 					if ( action_data.m_Player.GetInventory() ) 
 						action_data.m_Player.GetInventory().LockInventory(LOCK_FROM_SCRIPT);							
+				}
+			}
+		}
+	}
+	
+	override void OnStartServer( ActionData action_data )
+	{
+		HumanCommandVehicle vehCommand = action_data.m_Player.GetCommand_Vehicle();
+		if ( vehCommand )
+		{
+			Transport trans = vehCommand.GetTransport();
+			
+			if ( trans )
+			{
+				CarScript car;
+				if ( Class.CastTo(car, trans) )
+				{
+					car.ForceUpdateLightsStart();
 				}
 			}
 		}
@@ -176,19 +194,34 @@ class ActionGetOutTransport: ActionBase
 	override void OnEndServer( ActionData action_data )
 	{
 		GetOutTransportActionData got_action_data = GetOutTransportActionData.Cast(action_data);
-		vector endLocation = action_data.m_Player.GetPosition();
+		vector endLocation = action_data.m_Player.GetPosition() + "0 0.5 0"; // Offset it a little to not hit small objects on the ground
 		
-		vector contact_pos;
-		vector contact_dir;
-		int contact_component;
+		RaycastRVParams rayParams = new RaycastRVParams( got_action_data.m_StartLocation, endLocation, got_action_data.m_Car, 0.3 );
+		rayParams.flags = 0;
+		rayParams.sorted = true;
 		
-		set<Object> result = new set<Object>;
+		array<ref RaycastRVResult> results = new array<ref RaycastRVResult>;
 		
-		if (DayZPhysics.RaycastRV(got_action_data.m_StartLocation, endLocation, contact_pos, contact_dir, contact_component, result, got_action_data.m_Car, action_data.m_Player, false, false, ObjIntersectView, 0.3))
+		if (DayZPhysics.RaycastRVProxy(rayParams, results))
 		{
-			vector offset = got_action_data.m_StartLocation - contact_pos;
-			offset.Normalize();
-			got_action_data.m_Player.SetPosition(contact_pos + offset);
+			Object o = null;
+			vector contactPos;
+			for (int i = 0; i < results.Count(); ++i)
+			{
+				if ( got_action_data.m_Car && results[i].obj && !got_action_data.m_Car.IsIgnoredObject(results[i].obj) )
+				{
+					o = results[i].obj;
+					contactPos = results[i].pos;
+					break;
+				}
+			}
+			
+			if (o)
+			{
+				vector offset = got_action_data.m_StartLocation - contactPos;
+				offset.Normalize();
+				got_action_data.m_Player.SetPosition(contactPos + offset);
+			}
 		}	
 
 		if (got_action_data.m_WasJumpingOut)
@@ -202,6 +235,15 @@ class ActionGetOutTransport: ActionBase
 			vector posMS = player.WorldToModel(player.GetPosition());
 			player.DamageAllLegs(got_action_data.m_DmgTaken); //Additionnal leg specific damage dealing
 			player.ProcessDirectDamage(DT_CUSTOM, player, "", "FallDamage", posMS, got_action_data.m_DmgTaken);
+		}
+
+		if ( got_action_data.m_Car )
+		{
+			CarScript car;
+			if ( Class.CastTo(car, got_action_data.m_Car) )
+			{
+				car.ForceUpdateLightsEnd();
+			}
 		}
 	}
 	

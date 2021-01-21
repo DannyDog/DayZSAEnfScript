@@ -263,6 +263,13 @@ class Math
 		@endcode
 	*/
 	proto native static float Acos(float c);
+	
+	/**
+	\brief Returns angle in radians from tangent
+		\param x \p float Tangent
+		\return \p float - Angle in radians
+	*/
+	proto native static float Atan(float x);
 
 	/**
 	\brief Returns angle in radians from tangent

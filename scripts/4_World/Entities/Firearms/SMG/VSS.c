@@ -38,6 +38,17 @@ class VSS_Base : RifleBoltFree_Base
 			return true;
 		return super.CanEnterIronsights();
 	}
+		
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "PSO1Optic" );	
+			entity.SpawnEntityOnGroundPos("Mag_VSS_10Rnd", entity.GetPosition());
+		}
+	}
 };
 
 class VSS : VSS_Base {};

@@ -1,4 +1,5 @@
 WindowWidgetClass WindowWidget {
+ ignorepointer 1
  color 0.1569 0.6235 0.2745 1
  position 0 0
  size 1 1
@@ -27,6 +28,7 @@ WindowWidgetClass WindowWidget {
     PanelWidgetClass Panel {
      clipchildren 1
      inheritalpha 0
+     ignorepointer 1
      color 0.1176 0.1176 0.1176 0.9804
      size 450 235
      halign center_ref
@@ -40,6 +42,7 @@ WindowWidgetClass WindowWidget {
      {
       TextWidgetClass Caption {
        clipchildren 0
+       ignorepointer 1
        position 0 5
        size 0.85 40
        halign center_ref
@@ -58,6 +61,7 @@ WindowWidgetClass WindowWidget {
        "text valign" center
       }
       PanelWidgetClass SeparatorPanel {
+       ignorepointer 1
        color 0.7569 0.0941 0.0941 1
        position 0 50
        size 0.85 3

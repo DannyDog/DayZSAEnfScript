@@ -186,6 +186,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		SetActionWidget(m_Single, GetActionDesc(m_Single), "single", "single_action_name");
 		SetActionWidget(m_Continuous, GetActionDesc(m_Continuous), "continuous", "continuous_action_name");
 		SetMultipleInteractAction("interact_mlt_wrapper");
+		SetMultipleContinuousInteractAction("continuous_interact_mlt_wrapper");
 	}
 	
 	protected void BuildFixedCursor()
@@ -440,7 +441,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			if(!isTargetForced)
 			{
 				compName = object.GetActionComponentName( compIdx );
-				object.GetActionComponentNameList( compIdx, components );	
+				object.GetActionComponentNameList( compIdx, components );
+				
+				if (object.GetActionComponentNameList( compIdx, components ) == 0 && !object.IsInventoryItem())
+				{
+					m_FixedOnPosition = true;
+					return;
+				}
+				
 				pivotOffset	= object.ConfigGetFloat( "actionTargetPivotOffsetY" );
 				memOffset	= object.ConfigGetFloat( "actionTargetMemOffsetY" );
 	
@@ -450,7 +458,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 				{
 					//! save selection from memory lod
 					lod.GetSelections(memSelections);
-
+					
 					// items with CE_Center mem point
 					if( IsComponentInSelection( memSelections, CE_CENTER_COMP_NAME ) )
 					{
@@ -474,7 +482,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 						//! cache current object and the widget world pos
 						m_CachedObject.Store(object, worldPos, compIdx);
-					}
+					} 
 					//! doors/handles
 					else if( !compName.Contains("ladder") && IsComponentInSelection( memSelections, compName ) )
 					{
@@ -487,7 +495,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 								worldPos = object.ModelToWorld( modelPos );
 
 								m_FixedOnPosition = false;
-								if ( object.GetType() == "Fence" || object.GetType() == "Watchttower" )
+								if ( object.GetType() == "Fence" || object.GetType() == "Watchttower" || object.GetType() == "GardenPlot" )
 									m_FixedOnPosition = true;
 								
 								if ( memOffset != 0.0 )
@@ -663,6 +671,8 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		if( m_ContinuousInteractActionsNum > 0 )
 		{
 			m_ContinuousInteract = possible_continuous_interact_actions[possible_continuous_interact_actions_index];
+			if(m_DisplayInteractTarget == null)
+				m_DisplayInteractTarget = m_ContinuousInteract.GetDisplayInteractObject(m_Player,m_Target);
 		}
 		
 		
@@ -1065,6 +1075,18 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		widget = m_Root.FindAnyWidget(multiActionsWidget);
 
 		if(m_InteractActionsNum > 1)
+			widget.Show(true);
+		else
+			widget.Show(false);	
+	}
+	
+	protected void SetMultipleContinuousInteractAction(string multiActionsWidget)
+	{
+		Widget widget;
+
+		widget = m_Root.FindAnyWidget(multiActionsWidget);
+
+		if(m_ContinuousInteractActionsNum > 1)
 			widget.Show(true);
 		else
 			widget.Show(false);	

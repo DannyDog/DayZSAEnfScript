@@ -44,6 +44,8 @@ class AreaDamageBase
 		
 		m_DamageableTypes	= new array<typename>;
 		m_DamageableTypes.Insert(DayZPlayer);
+		m_DamageableTypes.Insert(DayZInfected);
+		m_DamageableTypes.Insert(DayZAnimal);
 
 		m_AmmoName			= "MeleeDamage";
 		m_DamageType 		= DT_CUSTOM;
@@ -238,9 +240,24 @@ class AreaDamageBase
 		{
 			if( object.IsAnyInherited(m_DamageableTypes) )
 			{
+				//If we are hitting an infected or animal, we increase the damage dealt as they do not bleed
+				//Change is multiplier, keep small as fire damage could one shot AI if multiplier is too high
+				DayZInfected dayzInfected = DayZInfected.Cast(object);
+				DayZAnimal dayzAnimal = DayZAnimal.Cast(object);
 				EntityAI eai = EntityAI.Cast(object);
-
-				eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
+				if ( dayzInfected || dayzAnimal )
+				{
+					if ( hitzone )
+					{
+						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 5);
+					}
+					else
+						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), "", m_AmmoName, "0.5 0.5 0.5", 5);
+				}
+				else
+				{
+					eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
+				}
 				PostDamageActions();
 			}
 		}

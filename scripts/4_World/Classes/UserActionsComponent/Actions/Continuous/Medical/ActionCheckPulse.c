@@ -76,13 +76,16 @@ class ActionCheckPulse: ActionInteractBase
 	override void OnExecuteServer( ActionData action_data )
 	{
 		PlayerBase target_player = PlayerBase.Cast(action_data.m_Target.GetObject());
-		PlayerBase player = action_data.m_Player;
-		CachedObjectsParams.PARAM1_INT.param1 = target_player.GetStatLevelBlood();
-		bool pulse_type = target_player.GetPulseType();
-		if(pulse_type == EPulseType.IRREGULAR)
-			CachedObjectsParams.PARAM1_INT.param1 = CachedObjectsParams.PARAM1_INT.param1 | (1 << TARGET_IRREGULAR_PULSE_BIT);
+		if (target_player)
+		{
+			PlayerBase player = action_data.m_Player;
+			CachedObjectsParams.PARAM1_INT.param1 = target_player.GetStatLevelBlood();
+			bool pulse_type = target_player.GetPulseType();
+			if (pulse_type == EPulseType.IRREGULAR)
+				CachedObjectsParams.PARAM1_INT.param1 = CachedObjectsParams.PARAM1_INT.param1 | (1 << TARGET_IRREGULAR_PULSE_BIT);
 
-		GetGame().RPCSingleParam( player ,ERPCs.RPC_CHECK_PULSE, CachedObjectsParams.PARAM1_INT, true, player.GetIdentity() );
+			GetGame().RPCSingleParam( player ,ERPCs.RPC_CHECK_PULSE, CachedObjectsParams.PARAM1_INT, true, player.GetIdentity() );
+		}
 	}
 	
 	

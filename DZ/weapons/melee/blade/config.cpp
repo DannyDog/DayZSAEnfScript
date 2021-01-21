@@ -114,6 +114,21 @@ class CfgVehicles
 					soundset = "ShoulderR_Show_SoundSet";
 					id = 1211;
 				};
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
 			};
 		};
 	};
@@ -211,6 +226,21 @@ class CfgVehicles
 					soundSet = "WoodHammer_SoundSet";
 					id = 11161;
 				};
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
 			};
 		};
 	};
@@ -304,6 +334,21 @@ class CfgVehicles
 				{
 					soundset = "ShoulderR_Show_SoundSet";
 					id = 1211;
+				};
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
 				};
 			};
 		};
@@ -1350,6 +1395,21 @@ class CfgVehicles
 				{
 					soundset = "ShoulderR_Show_SoundSet";
 					id = 1211;
+				};
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
 				};
 			};
 		};

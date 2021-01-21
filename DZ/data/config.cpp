@@ -2662,6 +2662,7 @@ class cfgWeapons
 		soundAttType = "Rifle";
 		cursor = "aimGunGhost";
 		cursorAim = "aimPistol";
+		isSuicideWeapon = 1;
 		itemSize[] = {6,3};
 		spawnDamageRange[] = {0.0,0.6};
 		damagePerShot = 0.05;
@@ -2759,6 +2760,7 @@ class cfgWeapons
 		cursor = "aimGunGhost";
 		cursorAim = "aimPistol";
 		type = 1;
+		isSuicideWeapon = 1;
 		itemSize[] = {4,2};
 		damagePerShot = 0.1;
 		barrelArmor = 400;

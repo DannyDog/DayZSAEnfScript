@@ -63,7 +63,7 @@ class ActionManagerBase
 	protected int 					m_PendingActionAcknowledgmentID;
 	
 	protected ref ActionData		m_CurrentActionData;
-	
+
 	void ActionManagerBase(PlayerBase player)
 	{
 		m_Player = player;
@@ -112,7 +112,7 @@ class ActionManagerBase
 	{
 		m_ActionsEnabled = enable;
 	}
-	
+
 	void Update(int pCurrentCommandID)
 	{
 		if (m_CurrentActionData)
@@ -273,9 +273,14 @@ class ActionManagerBase
 	
 	void OnActionEnd( )
 	{
+		if( LogManager.IsActionLogEnable() )
+		{
+			if (m_CurrentActionData)
+				Debug.ActionLog("n/a", m_CurrentActionData.m_Action.ToString() , "n/a", "OnActionEnd", m_CurrentActionData.m_Player.ToString() );
+			Debug.ActionLog("Action data cleared ", this.ToString() , "n/a", "ActionEnd", m_CurrentActionData.m_Player.ToString() );
+		}
 		if (m_CurrentActionData)
-			actionDebugPrint("[action] " + Object.GetDebugName(m_CurrentActionData.m_Player) + " end " + m_CurrentActionData.m_Action.ToString() + " item=" + Object.GetDebugName(m_CurrentActionData.m_MainItem));
-		Debug.Log("[AM] Action data cleared (" + m_Player + ")");
+			m_CurrentActionData.m_Action.ActionCleanup(m_CurrentActionData);
 		m_CurrentActionData = NULL;
 		
 		m_Player.ResetActionEndInput();

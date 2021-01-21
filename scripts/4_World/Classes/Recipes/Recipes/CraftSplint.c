@@ -12,7 +12,8 @@ class CraftSplint extends RecipeBase
 		m_MinDamageIngredient[0] = -1;//-1 = disable check
 		m_MaxDamageIngredient[0] = 3;//-1 = disable check
 		
-		m_MinQuantityIngredient[0] = 1;//-1 = disable check
+		//In the context of this recipe Check CanDo method as Rags can be stacked but bandages can't
+		m_MinQuantityIngredient[0] = 1;//-1 = disable check 
 		m_MaxQuantityIngredient[0] = -1;//-1 = disable check
 		
 		m_MinDamageIngredient[1] = -1;//-1 = disable check

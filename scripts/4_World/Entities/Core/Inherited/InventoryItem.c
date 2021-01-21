@@ -371,8 +371,14 @@ class CivSedanTrunk_Wine extends CivSedanTrunk {};
 class Truck_01_Door_1_1 extends CarDoor {};
 class Truck_01_Door_2_1 extends CarDoor {};
 class Truck_01_Door_Hood extends CarDoor {};
-class Truck_01_Door_Trunk extends CarDoor {};
- 
+
+class Truck_01_Door_1_1_Blue extends Truck_01_Door_1_1 {};
+class Truck_01_Door_2_1_Blue extends Truck_01_Door_2_1 {};
+class Truck_01_Door_Hood_Blue extends Truck_01_Door_Hood {};
+
+class Truck_01_Door_1_1_Orange extends Truck_01_Door_1_1 {};
+class Truck_01_Door_2_1_Orange extends Truck_01_Door_2_1 {};
+class Truck_01_Door_Hood_Orange extends Truck_01_Door_Hood {};
 
 class CarRadiator extends InventoryItemSuper
 {

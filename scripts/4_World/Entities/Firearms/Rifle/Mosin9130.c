@@ -24,6 +24,19 @@ class Mosin9130 extends Mosin9130_Base
 	{
 		return new MosinRecoil(this);
 	}
+	
+				
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			entity.GetInventory().CreateInInventory( "Mosin_Compensator" );	
+			entity.GetInventory().CreateInInventory( "PUScopeOptic" );
+			entity.SpawnEntityOnGroundPos("Ammo_762x54", entity.GetPosition());
+		}
+	}
 };
 
 class SawedoffMosin9130_Base extends Mosin9130_Base

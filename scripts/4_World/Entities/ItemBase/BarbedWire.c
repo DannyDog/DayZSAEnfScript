@@ -392,7 +392,11 @@ class BarbedWire extends ItemBase
 		SoundCollision();
 	}
 	
-	override void PostAreaDamageActions() {}
+	override void PostAreaDamageActions() 
+	{
+		//dmg to barbed wire here
+		MiscGameplayFunctions.DealAbsoluteDmg(this, 1000);
+	}
 	// ---------------------------------------------------------	
 	
 	
