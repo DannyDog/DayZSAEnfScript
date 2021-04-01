@@ -1213,6 +1213,8 @@ class CfgVehicles
 				};
 			};
 		};
+		compatibleLocks[] = {2};
+		lockSoundSet = "wrench_loop_SoundSet";
 		class MeleeModes
 		{
 			class Default
@@ -1239,6 +1241,16 @@ class CfgVehicles
 				{
 					soundset = "wrench_drop_SoundSet";
 					id = 898;
+				};
+				class wrench_loop
+				{
+					soundSet = "SledgeWoodHammer_loop_SoundSet";
+					id = 1117;
+				};
+				class wrench_end
+				{
+					soundSet = "SledgeWoodHammer_end_SoundSet";
+					id = 1118;
 				};
 			};
 		};
@@ -1254,6 +1266,8 @@ class CfgVehicles
 		itemSize[] = {1,5};
 		fragility = 0.001;
 		openItemSpillRange[] = {30,60};
+		compatibleLocks[] = {3};
+		lockSoundSet = "wrench_loop_SoundSet";
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1269,17 +1283,17 @@ class CfgVehicles
 		{
 			class Default
 			{
-				ammo = "MeleeWrench";
+				ammo = "MeleePipeWrench";
 				range = 1.7;
 			};
 			class Heavy
 			{
-				ammo = "MeleeWrench_Heavy";
-				range = 1.7;
+				ammo = "MeleePipeWrench_Heavy";
+				range = 1.3;
 			};
 			class Sprint
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleePipeWrench_Heavy";
 				range = 4.1;
 			};
 		};
@@ -1291,6 +1305,16 @@ class CfgVehicles
 				{
 					soundset = "wrench_drop_SoundSet";
 					id = 898;
+				};
+				class wrench_loop
+				{
+					soundSet = "SledgeWoodHammer_loop_SoundSet";
+					id = 1117;
+				};
+				class wrench_end
+				{
+					soundSet = "SledgeWoodHammer_end_SoundSet";
+					id = 1118;
 				};
 			};
 		};
@@ -1323,17 +1347,17 @@ class CfgVehicles
 		{
 			class Default
 			{
-				ammo = "MeleeWrench";
+				ammo = "MeleePipeWrench";
 				range = 1.7;
 			};
 			class Heavy
 			{
-				ammo = "MeleeWrench_Heavy";
-				range = 1.7;
+				ammo = "MeleePipeWrench_Heavy";
+				range = 1.3;
 			};
 			class Sprint
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleePipeWrench_Heavy";
 				range = 4.1;
 			};
 		};
@@ -1397,6 +1421,8 @@ class CfgVehicles
 				};
 			};
 		};
+		lockSoundSet = "wrench_loop_SoundSet";
+		compatibleLocks[] = {1};
 		class MeleeModes
 		{
 			class Default
@@ -1443,13 +1469,15 @@ class CfgVehicles
 		displayName = "$STR_CfgVehicles_Sickle0";
 		descriptionShort = "$STR_CfgVehicles_Sickle1";
 		model = "\dz\gear\tools\sickle.p3d";
+		animClass = "Knife";
+		itemInfo[] = {"Knife"};
 		repairableWithKits[] = {4};
 		repairCosts[] = {15.0};
 		rotationFlags = 17;
-		suicideAnim = "woodaxe";
+		suicideAnim = "sickle";
 		RestrainUnlockType = 1;
 		weight = 550;
-		itemSize[] = {4,3};
+		itemSize[] = {2,3};
 		openItemSpillRange[] = {10,30};
 		class DamageSystem
 		{
@@ -1467,17 +1495,38 @@ class CfgVehicles
 			class Default
 			{
 				ammo = "MeleeSickle";
-				range = 1.3;
+				range = 1.4;
 			};
 			class Heavy
 			{
 				ammo = "MeleeSickle_Heavy";
-				range = 1.3;
+				range = 1.4;
 			};
 			class Sprint
 			{
 				ammo = "MeleeSickle_Heavy";
 				range = 3.3;
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class animalSkinning_in
+				{
+					soundSet = "animalSkinning_in_SoundSet";
+					id = 516;
+				};
+				class animalSkinning
+				{
+					soundSet = "animalSkinning_SoundSet";
+					id = 517;
+				};
+				class animalSkinning_out
+				{
+					soundSet = "animalSkinning_out_SoundSet";
+					id = 518;
+				};
 			};
 		};
 	};
@@ -1872,10 +1921,16 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_FarmingHoe1";
 		model = "\dz\gear\tools\Farming_Hoe.p3d";
 		rotationFlags = 12;
-		weight = 5600;
-		itemSize[] = {2,8};
+		inventorySlot[] = {"Shoulder","Melee"};
+		repairableWithKits[] = {4};
+		repairCosts[] = {20.0};
+		weight = 1600;
+		itemSize[] = {2,7};
 		openItemSpillRange[] = {35,55};
 		isMeleeWeapon = 1;
+		suicideAnim = "hoe";
+		build_action_type = 4;
+		dismantle_action_type = 4;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -1892,12 +1947,12 @@ class CfgVehicles
 			class Default
 			{
 				ammo = "MeleeFarmingHoe";
-				range = 1.5;
+				range = 1.8;
 			};
 			class Heavy
 			{
 				ammo = "MeleeFarmingHoe_Heavy";
-				range = 1.5;
+				range = 1.8;
 			};
 			class Sprint
 			{
@@ -1908,7 +1963,7 @@ class CfgVehicles
 		class Horticulture
 		{
 			ToolAnim = "DIGGINGHOE";
-			DiggingTimeToComplete = 4.0;
+			DiggingTimeToComplete = 1.0;
 		};
 		class AnimEvents
 		{
@@ -2118,17 +2173,17 @@ class CfgVehicles
 		{
 			class Default
 			{
-				ammo = "MeleeWoodBlunt";
+				ammo = "MeleeLightBlunt";
 				range = 1.8;
 			};
 			class Heavy
 			{
-				ammo = "MeleeWoodBlunt_Heavy";
+				ammo = "MeleeLightBlunt_Heavy";
 				range = 1.8;
 			};
 			class Sprint
 			{
-				ammo = "MeleeWoodBlunt_Heavy";
+				ammo = "MeleeLightBlunt_Heavy";
 				range = 3.7;
 			};
 		};
@@ -2330,17 +2385,74 @@ class CfgVehicles
 		model = "\dz\gear\tools\broom.p3d";
 		rotationFlags = 12;
 		weight = 3900;
-		itemSize[] = {2,10};
-		openItemSpillRange[] = {40,70};
+		itemSize[] = {2,8};
+		inventorySlot[] = {"Shoulder","Melee"};
 		class DamageSystem
 		{
 			class GlobalHealth
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\tools\data\broom.rvmat"}},{0.7,{"DZ\gear\tools\data\broom.rvmat"}},{0.5,{"DZ\gear\tools\data\broom_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\broom_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\broom_destruct.rvmat"}}};
 				};
+			};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeWrench";
+				range = 1.4;
+			};
+			class Heavy
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 1.4;
+			};
+			class Sprint
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 3.3;
+			};
+		};
+	};
+	class Broom_Birch: Broom
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_BirchBroom0";
+		descriptionShort = "$STR_CfgVehicles_BirchBroom1";
+		model = "\dz\gear\tools\broom_birch.p3d";
+		rotationFlags = 12;
+		itemSize[] = {2,8};
+		inventorySlot[] = {"Shoulder","Melee"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 40;
+					healthLevels[] = {{1.0,{"DZ\gear\tools\data\broom_birch.rvmat"}},{0.7,{"DZ\gear\tools\data\broom_birch.rvmat"}},{0.5,{"DZ\gear\tools\data\broom_birch_damage.rvmat"}},{0.3,{"DZ\gear\tools\data\broom_birch_damage.rvmat"}},{0.0,{"DZ\gear\tools\data\broom_birch_destruct.rvmat"}}};
+				};
+			};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeWrench";
+				range = 1.4;
+			};
+			class Heavy
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 1.4;
+			};
+			class Sprint
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 3.3;
 			};
 		};
 	};

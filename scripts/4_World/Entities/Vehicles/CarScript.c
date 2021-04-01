@@ -56,7 +56,11 @@ class CarScript extends Car
 	protected float m_BatteryHealth;
 	protected float m_PlugHealth;
 	
-	protected float	m_BatteryConsume = 15; //Battery energy consumption upon engine start
+	protected float	m_BatteryConsume = 15; 				//Battery energy consumption upon engine start
+	protected float m_BatteryContinuousConsume = 0.25; 	//Battery consumption with lights on and engine is off
+	protected float m_BatteryRecharge = 0.15; 			//Battery recharge rate when engine is on
+	private	  float m_BatteryTimer = 0; 				//Used to factor energy consumption / recharging
+	private const float BATTERY_UPDATE_DELAY = 100;
 
 	//! Particles
 	protected ref EffVehicleSmoke m_coolantFx;
@@ -346,7 +350,7 @@ class CarScript extends Car
 		UpdateLights();
 	}
 	
-	override void EEItemAttached ( EntityAI item, string slot_name ) 
+	override void EEItemAttached( EntityAI item, string slot_name ) 
 	{
 		super.EEItemAttached( item, slot_name );
 		if ( GetGame().IsServer() )
@@ -619,7 +623,6 @@ class CarScript extends Car
 		UpdateLights();
 	}
 	
-	
 	override void OnUpdate( float dt )
     {
 /*
@@ -658,6 +661,34 @@ class CarScript extends Car
 		
 		if ( GetGame().IsServer() )
 		{
+			ItemBase battery = GetBattery();
+			if ( battery )
+			{
+				if ( EngineIsOn() )
+				{
+					m_BatteryTimer += dt;
+					if ( m_BatteryTimer >= BATTERY_UPDATE_DELAY )
+					{
+						battery.GetCompEM().ConsumeEnergy(GetBatteryRechargeRate() * m_BatteryTimer);
+						m_BatteryTimer = 0;
+					}
+				}
+				else if ( !EngineIsOn() && IsScriptedLightsOn() )
+				{
+					m_BatteryTimer += dt;
+					if ( m_BatteryTimer >= BATTERY_UPDATE_DELAY )
+					{
+						battery.GetCompEM().ConsumeEnergy(GetBatteryRuntimeConsumption() * m_BatteryTimer);
+						m_BatteryTimer = 0;
+						
+						if ( battery.GetCompEM().GetEnergy() <= 0 )
+						{
+							ToggleHeadlights();
+						}
+					}
+				}
+			}
+			
 			if ( GetGame().GetWaterDepth( GetEnginePosWS() ) > 0 )
 			{
 				m_DrownTime += dt;
@@ -728,7 +759,7 @@ class CarScript extends Car
 			return;
 		}
 		
-		switch( zoneName )
+		switch ( zoneName )
 		{
 /*
 			case "dmgZone_lightsLF":
@@ -760,7 +791,7 @@ class CarScript extends Car
 					else
 					{
 						//Print( GetType() + " >>> " + " BIGHit >>> " + "zoneName: " + zoneName + " >>> - " + dmg.ToString() + " HP >>> in " + GetSpeedometer() + " km/h" );
-						for( int i =0; i < CrewSize(); i++ )
+						for ( int i =0; i < CrewSize(); i++ )
 						{
 							Human crew = CrewMember( i );
 							if ( !crew )
@@ -965,11 +996,11 @@ class CarScript extends Car
 	override void OnEngineStart()
 	{
 		
-		ItemBase battery;
-		if ( IsVitalCarBattery() ) 
+		ItemBase battery = GetBattery();
+		/*if ( IsVitalCarBattery() ) 
 			battery = ItemBase.Cast( FindAttachmentBySlotName("CarBattery") );
 		else if ( IsVitalTruckBattery() ) 
-			battery = ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );
+			battery = ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );*/
 		
 		if (GetGame().IsServer() && battery)
 		{
@@ -1063,7 +1094,7 @@ class CarScript extends Car
 			else if ( IsVitalTruckBattery() ) 
 				battery = ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );
 
-			if ( battery )
+			if ( battery && battery.IsAlive() && battery.GetCompEM().GetEnergy() > 0 )
 			{
 				// HEADLIGHTS
 				
@@ -1550,7 +1581,7 @@ class CarScript extends Car
 		string conPointName = GetDoorConditionPointFromSelection(pSeatSelection);
 		if (conPointName.Length() > 0)
 		{
-			if( MemoryPointExists(conPointName) )
+			if ( MemoryPointExists(conPointName) )
 			{
 				vector conPointMS = GetMemoryPointPos(conPointName);
 				vector conPointWS = ModelToWorld(conPointMS);
@@ -1664,7 +1695,7 @@ class CarScript extends Car
 	void InitializeActions()
 	{
 		m_InputActionMap = m_CarTypeActionsMap.Get( this.Type() );
-		if(!m_InputActionMap)
+		if (!m_InputActionMap)
 		{
 			TInputActionMap iam = new TInputActionMap;
 			m_InputActionMap = iam;
@@ -1675,7 +1706,7 @@ class CarScript extends Car
 	
 	override void GetActions(typename action_input_type, out array<ActionBase_Basic> actions)
 	{
-		if(!m_ActionsInitialize)
+		if (!m_ActionsInitialize)
 		{
 			m_ActionsInitialize = true;
 			InitializeActions();
@@ -1697,27 +1728,27 @@ class CarScript extends Car
 	{
 		ActionBase action = ActionManagerBase.GetAction(actionName);
 
-		if(!action)
+		if (!action)
 		{
 			Debug.LogError("Action " + actionName + " dosn't exist!");
 			return;
 		}		
 		
 		typename ai = action.GetInputType();
-		if(!ai)
+		if (!ai)
 		{
 			m_ActionsInitialize = false;
 			return;
 		}
 		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
 		
-		if(!action_array)
+		if (!action_array)
 		{
 			action_array = new array<ActionBase_Basic>;
 			m_InputActionMap.Insert(ai, action_array);
 		}
 		
-		if( LogManager.IsActionLogEnable() )
+		if ( LogManager.IsActionLogEnable() )
 		{
 			Debug.ActionLog(action.ToString() + " -> " + ai, this.ToString() , "n/a", "Add action" );
 		}
@@ -1731,7 +1762,7 @@ class CarScript extends Car
 		typename ai = action.GetInputType();
 		ref array<ActionBase_Basic> action_array = m_InputActionMap.Get( ai );
 		
-		if(action_array)
+		if (action_array)
 		{
 			action_array.RemoveItem(action);
 		}
@@ -1749,7 +1780,7 @@ class CarScript extends Car
 		if ( newLevel ==  GameConstants.STATE_RUINED )
 		{
 			EffectSound sound_plug;
-			switch( zone )
+			switch ( zone )
 			{
 				case "WindowLR":
 				case "WindowRR":
@@ -1791,5 +1822,25 @@ class CarScript extends Car
 	float GetBatteryConsumption()
 	{
 		return m_BatteryConsume;
+	}
+	
+	float GetBatteryRuntimeConsumption()
+	{
+		return m_BatteryContinuousConsume;
+	}
+	
+	float GetBatteryRechargeRate()
+	{
+		return -m_BatteryRecharge;
+	}
+	
+	ItemBase GetBattery()
+	{
+		if ( IsVitalCarBattery() ) 
+			return ItemBase.Cast( FindAttachmentBySlotName("CarBattery") );
+		else if ( IsVitalTruckBattery() ) 
+			return ItemBase.Cast( FindAttachmentBySlotName("TruckBattery") );
+		
+		return null;
 	}
 };

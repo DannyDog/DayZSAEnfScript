@@ -1,0 +1,137 @@
+EffectDef {
+ Emitors {
+  EmitorDef glows {
+   ShapeType Sphere
+   ShapeSize 0.3125 0 0
+   ConeAngle 360 360 0
+   LOD 0
+   MaxNum 10
+   BirthRate 20
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles 0 0 0
+   Material "{CB7AF4FD8ACBFDFC}Graphics/Particles/materials/glow/glow1.emat"
+   ScaleX 1.2
+   SizeMultiplier 30
+   SizeRND 1
+   RandomRotDir 0
+   RotMultiplier 1
+   StretchMultiplier 0.031
+   VelAngle 0
+   RandomAngle 0
+   Sort 0
+   Velocity 0
+   VelocityRND 0
+   AirResistance 0
+   AirResistanceRND 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   Restitution -1
+   Spring 0
+   Wind 0
+   AnimOnce 0
+   AnimFPS 0
+   LifetimeByAnim 0
+   RandomFrame 0
+   LifeTime 0.4
+   LifeTimeRND 0
+   LifetimeShortening 0
+   Color {
+    0 1 1 1 0.2964 1 1 1 1 0 0 0
+   }
+   Alpha {
+    0 0.43284 1 0
+   }
+   RotationSpeed {
+    0 0
+   }
+   Size {
+    0 0 0.00853 0.11538 1 0.32692
+   }
+   EffectTime 0.1
+   Repeat 0
+   ColorMast {
+    0 1 1 1
+   }
+   AlphaMast {
+    0 1
+   }
+   RotationSpeedMast {
+    0 0
+   }
+   SizeMast {
+    0 1
+   }
+   BRateMast {
+    0 1
+   }
+  }
+  EmitorDef glowcore {
+   ShapeType Sphere
+   ShapeSize 0.09375 0 0
+   ConeAngle 360 360 0
+   LOD 0
+   MaxNum 2
+   BirthRate 30
+   BirthRateRND 0
+   BirthRateVel 0
+   Offset 0 0 0
+   Angles 0 0 0
+   Material "{00D2D6B87126B8FA}Graphics/Particles/materials/flash/electric.emat"
+   SizeMultiplier 30
+   SizeRND 1
+   RandomRotDir 0
+   RotMultiplier 100
+   StretchMultiplier 0.031
+   VelAngle 0
+   RandomAngle 1
+   Sort 0
+   Velocity 0
+   VelocityRND 0
+   AirResistance 0
+   AirResistanceRND 0
+   GravityMultiply 0
+   GravityMultiplyRND 0
+   Restitution -1
+   Spring 0
+   Wind 0
+   AnimOnce 0
+   AnimFPS 0
+   LifetimeByAnim 0
+   RandomFrame 0
+   LifeTime 0.2
+   LifeTimeRND 0
+   LifetimeShortening 0
+   Color {
+    0 1 1 1 0.629 1 1 0.2391 1 0 0 0
+   }
+   Alpha {
+    0 1 1 0.46269
+   }
+   RotationSpeed {
+    0 1
+   }
+   Size {
+    0 0 0.01327 0.17949 1 0.42949
+   }
+   EffectTime 0.1
+   Repeat 0
+   ColorMast {
+    0 1 1 1
+   }
+   AlphaMast {
+    0 1
+   }
+   RotationSpeedMast {
+    0 0
+   }
+   SizeMast {
+    0 1
+   }
+   BRateMast {
+    0 1
+   }
+  }
+ }
+}

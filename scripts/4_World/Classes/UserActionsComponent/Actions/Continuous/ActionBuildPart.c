@@ -68,25 +68,28 @@ class ActionBuildPart: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		//Action not allowed if player has broken legs
 		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 			return false;
 		
 		//hack - gate
-		if(target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
+		if (target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
 			return false;
-		if( player.IsPlacingLocal() || player.IsPlacingServer() )
+		if ( player.IsPlacingLocal() || player.IsPlacingServer() )
 			return false;
 		
-		if( (!GetGame().IsMultiplayer() || GetGame().IsClient()) )
+		if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) )
 		{
 			ConstructionActionData construction_action_data = player.GetConstructionActionData();
 			int start_index = construction_action_data.m_PartIndex;
-			if( construction_action_data.GetConstructionPartsCount() > 0 )
+			if ( construction_action_data.GetConstructionPartsCount() > 0 )
 			{
 				for(int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
 				{
-					if( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item ) )
+					if ( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item ) )
 					{
 						//Print("i: " + i + " | name: " + construction_action_data.GetCurrentBuildPart().GetPartName());
 						return true;
@@ -137,11 +140,11 @@ class ActionBuildPart: ActionContinuousBase
 	//setup
 	override bool SetupAction( PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL )
 	{	
-		if( super.SetupAction( player, target, item, action_data, extra_data ) )
+		if ( super.SetupAction( player, target, item, action_data, extra_data ) )
 		{
 			SetBuildingAnimation( item );
 			
-			if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+			if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 			{
 				ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
 				BuildPartActionData.Cast(action_data).m_PartType = construction_action_data.GetCurrentBuildPart().GetPartName();
@@ -158,6 +161,7 @@ class ActionBuildPart: ActionContinuousBase
 		{
 			case Pickaxe:
 			case Shovel:
+			case FarmingHoe:
 			case FieldShovel:
 				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DIG;
 				break;

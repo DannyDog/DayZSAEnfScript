@@ -962,7 +962,7 @@ class DayZPlayerImplement extends DayZPlayer
 		pAnimHitFullbody = false; // additive anm
 		GetMovementState(m_MovementState);
 
-		switch(pDamageType)
+		switch (pDamageType)
 		{
 			case DT_CLOSE_COMBAT:
 				//! ignore hit impacts in prone (for now)
@@ -979,14 +979,19 @@ class DayZPlayerImplement extends DayZPlayer
 			break;
 			case DT_FIRE_ARM:
 				int impactBehaviour = 0;
-				//! play full body when these coponents were hit
-				if ( pComponent == "Torso" || pComponent == "Head")
+			
+				if ( !IsUnconscious() )
 				{
-					impactBehaviour = GetGame().ConfigGetInt("cfgAmmo " + pAmmoType + " impactBehaviour");
-					float fireDamage = pDamageResult.GetHighestDamage("Health");
-					if( fireDamage > 80.0 && impactBehaviour == 1 )
+					//! play full body when these coponents were hit
+					if ( pComponent == "Torso" || pComponent == "Head")
 					{
-						pAnimHitFullbody = true;
+						impactBehaviour = GetGame().ConfigGetInt("cfgAmmo " + pAmmoType + " impactBehaviour");
+						float fireDamage = pDamageResult.GetHighestDamage("Health");
+						float shockDamage = pDamageResult.GetHighestDamage("Shock");
+						if ( ( fireDamage > 80.0 || shockDamage > 40.0 ) && impactBehaviour == 1 )
+						{
+							pAnimHitFullbody = true;
+						}
 					}
 				}
 
@@ -995,7 +1000,7 @@ class DayZPlayerImplement extends DayZPlayer
 			break;
 			case DT_CUSTOM:
 				pAnimType = GetGame().ConfigGetInt("cfgAmmo " + pAmmoType + " hitAnimation");
-				if( pAnimType == 1 )
+				if ( pAnimType == 1 )
 					pAnimHitFullbody = true;
 				else
 					return false; //! skip evaluation of dmg hit animation
@@ -1031,7 +1036,7 @@ class DayZPlayerImplement extends DayZPlayer
 
 		m_TransportHitRegistered = false;
 		
-		if( !IsAlive() )
+		if ( !IsAlive() )
 		{
 			int animTypeDeath;
 			float animHitDirDeath;
@@ -2653,7 +2658,7 @@ class DayZPlayerImplement extends DayZPlayer
 
 	void AddNoise(NoiseParams noisePar, float noiseMultiplier = 1.0)
 	{
-		if(noisePar != NULL)
+			if(noisePar != NULL)
 			GetGame().GetNoiseSystem().AddNoise(this, noisePar, noiseMultiplier);
 	}
 
@@ -2771,44 +2776,9 @@ class DayZPlayerImplement extends DayZPlayer
 		if(GetGame().IsServer() || !GetGame().IsMultiplayer())
 		{
 			m_StepCounter++;//move outside of server condition if needed on client as well
+
 			float noiseMultiplier = 0;
-			float speedNoiseMultiplier = 0;
-			float bootsNoiseMultiplier = 0;
-			float surfaceNoiseMultiplier = GetSurfaceNoise(); //! gets noise multiplayer base on surface player walks on
-		
 			
-			ref HumanMovementState	hms = new HumanMovementState();
-
-			//! noise multiplier based on player speed
-			GetMovementState(hms);
-
-			switch(AITargetCallbacksPlayer.StanceToMovementIdxTranslation(hms))
-			{
-				case DayZPlayerConstants.MOVEMENTIDX_SPRINT:
-					speedNoiseMultiplier = 1.0;
-					break;
-				case DayZPlayerConstants.MOVEMENTIDX_RUN:
-					speedNoiseMultiplier = 0.66;
-					break;
-				case DayZPlayerConstants.MOVEMENTIDX_WALK:
-					speedNoiseMultiplier = 0.11;
-					break;
-			}
-
-			//! noise multiplier based on type of boots
-			switch(GetBootsType())
-			{
-				case AnimBootsType.Boots:
-					bootsNoiseMultiplier = 1.0;
-					break;
-				case AnimBootsType.Sneakers:
-					bootsNoiseMultiplier = 0.66;
-					break;
-				case AnimBootsType.None:
-					bootsNoiseMultiplier = 0.0;
-					break;
-			}
-
 			NoiseParams noiseParams;
 			if (state.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_ERECT || state.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT)
 				noiseParams = type.GetNoiseParamsStand();
@@ -2821,17 +2791,21 @@ class DayZPlayerImplement extends DayZPlayer
 				Print("OnStepEvent: wrong stance, id: " + state.m_iStanceIdx + "using backup with stand stance (id: 0)");
 				noiseParams = type.GetNoiseParamsStand();
 			}
-			
+			/*
 			//! calcs noise multiplier from players speed, stance and surface under the player when not in idle
 			if (hms.m_iMovement > DayZPlayerConstants.MOVEMENTIDX_IDLE)
 			{
 				noiseMultiplier = (speedNoiseMultiplier + bootsNoiseMultiplier + surfaceNoiseMultiplier) / 3;
-			}
+			}*/
+			
+			noiseMultiplier =  NoiseAIEvaluate.GetNoiseMultiplier(this);
+			
+			AddNoise(noiseParams, noiseMultiplier);
+			
 			if( (m_StepCounter % PlayerConstants.CHECK_EVERY_N_STEP) == 0 )
 			{
 				ProcessFeetDamageServer(pUserInt);
 			}
-			AddNoise(noiseParams, noiseMultiplier);
 		}
 	}
 

@@ -338,7 +338,7 @@ class RadialQuickbarMenu extends UIScriptedMenu
 		}
 		
 		//Add a category switchers
-		if (m_CurrentCategory == RadialQuickbarCategory.DEFAULT && entity)
+		if (m_CurrentCategory == RadialQuickbarCategory.DEFAULT && count > 0)
 		{
 			//items.Insert( new RadialQuickbarItem(last_idx + 1,null,"#toggle_lights",RadialQuickbarCategory.DEFAULT,RadialQuickbarCategory.SPECIALIZED_LIGHTS) );
 			items.InsertAt( new RadialQuickbarItem(32,null,"#toggle_lights",RadialQuickbarCategory.DEFAULT,RadialQuickbarCategory.SPECIALIZED_LIGHTS),0 );

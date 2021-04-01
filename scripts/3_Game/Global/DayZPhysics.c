@@ -187,7 +187,7 @@ class DayZPhysics
 	
 	proto static bool	GetHitSurface(Object other, vector begPos, vector endPos, string surface);
 
-	proto static bool	RaycastRVProxy( notnull RaycastRVParams in, out notnull array< ref RaycastRVResult> results );
+	proto static bool	RaycastRVProxy( notnull RaycastRVParams in, out notnull array< ref RaycastRVResult> results, array< Object > excluded = null );
 
 
 	proto static bool	RayCastBullet(vector begPos, vector endPos, PhxInteractionLayers layerMask, Object ignoreObj, out Object hitObject, out vector hitPosition, out vector hitNormal, out float hitFraction);

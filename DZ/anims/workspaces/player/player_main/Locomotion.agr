@@ -2968,7 +2968,7 @@ chainAxis = -x"
 			 "PneMovementSTM" ""
 			$States 2 {
 				$State {
-					 "Run" "" "PneInjuredBlendT" "MovementSpeed < 3
+					 "Run" "" "PneRunCyclic" "MovementSpeed < 3
 ||
 (
 MovementSpeed == 3 

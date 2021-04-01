@@ -236,6 +236,26 @@ class DayZCreatureAI extends DayZCreature
 			soundObject.SetKind(WaveKind.WAVEEFFECTEX);
 		}
 	}
+	
+	// ================
+	// EASTER EGG
+	// ================
+	
+	//Used for easter egg sound selection
+	bool IsDanger()
+	{
+		return false;
+	}
+	
+	string CaptureSound()
+	{
+		return "";
+	}
+	
+	string ReleaseSound()
+	{
+		return "";
+	}
 }
 
 enum DayZAnimalConstants

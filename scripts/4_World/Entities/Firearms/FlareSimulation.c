@@ -12,7 +12,7 @@ class FlareSimulation : Entity
 		if ( m_FlareLight )
 			m_FlareLight.AttachOnObject(flare);
 		
-		if(m_ParMainFire)
+		if (m_ParMainFire)
 		{
 			m_ParMainFire.Stop();
 		}
@@ -33,15 +33,19 @@ class FlareSimulation : Entity
 	{
 		vector curPos = flare.GetPosition();
 		DayZPlayer player = GetGame().GetPlayer();
-		if (player)
+		if ( player )
 			vector playerPos = player.GetPosition();
-		float dist = Math.Sqrt(vector.DistanceSq(curPos, playerPos));
 		
-		if (dist <= MAX_FARLIGHT_DIST && dist > MIN_FARLIGHT_DIST)
-			m_ParMainFire.SetParameter(0, EmitorParam.SIZE, MiscGameplayFunctions.Normalize(dist, MAX_FARLIGHT_DIST));
-		
-		if (dist <= MIN_FARLIGHT_DIST)
-			TurnOffDistantLight();
+		if ( GetGame().IsClient() )
+		{
+			float dist = vector.DistanceSq(curPos, playerPos);
+			
+			if ( ( dist <= MAX_FARLIGHT_DIST * MAX_FARLIGHT_DIST ) && ( dist > MIN_FARLIGHT_DIST * MIN_FARLIGHT_DIST ) )
+				m_ParMainFire.SetParameter( 0, EmitorParam.SIZE, MiscGameplayFunctions.Normalize(dist, MAX_FARLIGHT_DIST * MAX_FARLIGHT_DIST) );
+			
+			if ( dist <= MIN_FARLIGHT_DIST * MIN_FARLIGHT_DIST )
+				TurnOffDistantLight();
+		}
 	}
 	
 	void TurnOffDistantLight()
@@ -57,13 +61,13 @@ class FlareSimulation : Entity
 	
 	void ~FlareSimulation()
 	{
-		if(m_ParMainFire)
+		if (m_ParMainFire)
 			m_ParMainFire.Stop();
 		
-		if(m_BurningSound)
+		if (m_BurningSound)
 			m_BurningSound.SoundStop();
 		
-		if(m_FlareLight)
+		if (m_FlareLight)
 			m_FlareLight.FadeOut();
 	}
 	
@@ -78,7 +82,7 @@ class FlareSimulation_Red : FlareSimulation
 		if ( m_FlareLight )
 			m_FlareLight.AttachOnObject(flare);
 		
-		if(m_ParMainFire)
+		if (m_ParMainFire)
 		{
 			m_ParMainFire.Stop();
 		}
@@ -99,7 +103,7 @@ class FlareSimulation_Green : FlareSimulation
 		if ( m_FlareLight )
 			m_FlareLight.AttachOnObject(flare);
 		
-		if(m_ParMainFire)
+		if (m_ParMainFire)
 		{
 			m_ParMainFire.Stop();
 		}
@@ -118,7 +122,7 @@ class FlareSimulation_Blue : FlareSimulation
 		if ( m_FlareLight )
 			m_FlareLight.AttachOnObject(flare);
 		
-		if(m_ParMainFire)
+		if (m_ParMainFire)
 		{
 			m_ParMainFire.Stop();
 		}

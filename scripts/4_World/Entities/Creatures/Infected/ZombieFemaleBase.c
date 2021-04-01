@@ -4,6 +4,16 @@ class ZombieFemaleBase extends ZombieBase
 	{
 		return false;
 	}
+	
+	override string CaptureSound()
+	{
+		return "ZmbF_Normal_HeavyHit_Soundset";
+	}
+	
+	override string ReleaseSound()
+	{
+		return "ZmbF_Normal_CallToArmsShort_Soundset";
+	}
 };
 
 class ZmbF_BlueCollarFat_Base extends ZombieFemaleBase

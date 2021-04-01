@@ -17,6 +17,7 @@ class HuntingKnife extends ToolBase
 		AddAction(ActionBurnSewSelf);
 		AddAction(ActionDigWorms);
 		AddAction(ActionShaveTarget);
+		AddAction(ActionDisarmMine);
 		AddAction(ActionShave);
 	}
 }

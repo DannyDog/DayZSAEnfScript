@@ -52,10 +52,10 @@ class ActionCPR: ActionContinuousBase
 		return other_player.IsUnconscious() && !holds_heavy_item;
 	}
 	
-	override void OnFinishProgressClient(ActionData action_data)
+	/*override void OnFinishProgressClient(ActionData action_data)
 	{
 		action_data.m_Player.TryHideItemInHands(false);
-	}
+	}*/
 	
 	override void OnFinishProgressServer(ActionData action_data)
 	{

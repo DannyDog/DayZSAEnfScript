@@ -95,7 +95,7 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		lootCategory = "Crafted";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
-		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0,0,0,1.0,co)","#(argb,8,8,3)color(0,0,0,1.0,co)","#(argb,8,8,3)color(0,0,0,1.0,co)"};
+		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.415686,0.556863,0.34902,1.0,co)","#(argb,8,8,3)color(0.415686,0.556863,0.34902,1.0,co)","#(argb,8,8,3)color(0.415686,0.556863,0.34902,1.0,co)"};
 		class DamageSystem
 		{
 			class GlobalHealth

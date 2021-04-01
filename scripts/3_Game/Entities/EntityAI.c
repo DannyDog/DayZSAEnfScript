@@ -25,20 +25,22 @@ enum WeightUpdateType
 
 class EntityAI extends Entity
 {
-	bool 					m_DeathSyncSent;
-	bool 					m_KilledByHeadshot;
-	bool 					m_PreparedToDelete = false;
-	bool 					m_RefresherViable = false;
-	ref KillerData 			m_KillerData;
+	bool 							m_DeathSyncSent;
+	bool 							m_KilledByHeadshot;
+	bool 							m_PreparedToDelete = false;
+	bool 							m_RefresherViable = false;
+	ref KillerData 					m_KillerData;
 	
-	ref array<EntityAI> 	m_AttachmentsWithCargo;
-	ref array<EntityAI> 	m_AttachmentsWithAttachments;
-	protected ref DamageZoneMap m_DamageZoneMap;
-	ref InventoryLocation 	m_OldLocation;
+	ref array<EntityAI> 			m_AttachmentsWithCargo;
+	ref array<EntityAI> 			m_AttachmentsWithAttachments;
+	ref InventoryLocation 			m_OldLocation;
 	
-	float					m_Weight;
-	private float 			m_LastUpdatedTime;
-	protected float			m_ElapsedSinceLastUpdate;
+	protected ref DamageZoneMap 	m_DamageZoneMap;
+	private ref map<int, string> m_DamageDisplayNameMap = new map<int, string>;
+	
+	float							m_Weight;
+	private float 					m_LastUpdatedTime;
+	protected float					m_ElapsedSinceLastUpdate;
 	
 	bool m_Initialized = false;
 	bool m_TransportHitRegistered = false;
@@ -67,7 +69,7 @@ class EntityAI extends Entity
 	//Called when this item is unreserved (EntityAI item) - attachment
 	protected ref ScriptInvoker		m_OnAttachmentReleaseLock;
 	
-	void EntityAI ()
+	void EntityAI()
 	{
 		// Set up the Energy Manager
 		string type = GetType();
@@ -77,7 +79,6 @@ class EntityAI extends Entity
 		if (is_electic_device) // TO DO: Check if this instance is a hologram (advanced placement). If Yes, then do not create Energy Manager component.
 		{
 			CreateComponent(COMP_TYPE_ENERGY_MANAGER);
-			m_EM = ComponentEnergyManager.Cast(  CreateComponent(COMP_TYPE_ENERGY_MANAGER));
 			RegisterNetSyncVariableBool("m_EM.m_IsSwichedOn");
 			RegisterNetSyncVariableBool("m_EM.m_CanWork");
 			RegisterNetSyncVariableBool("m_EM.m_IsPlugged");
@@ -98,6 +99,7 @@ class EntityAI extends Entity
 		m_ElapsedSinceLastUpdate = 0.0;
 		
 		InitDamageZoneMapping();
+		InitDamageZoneDisplayNameMapping();
 	}
 	
 	void ~EntityAI()
@@ -174,9 +176,58 @@ class EntityAI extends Entity
 		DamageSystem.GetDamageZoneMap(this,m_DamageZoneMap);
 	}
 	
+	//! Initialize map of damage zone display names for more optimized retrieval
+	void InitDamageZoneDisplayNameMapping()
+	{	
+		string path_base;
+		string path;
+		
+		if ( IsWeapon() )
+		{
+			path_base = CFG_WEAPONSPATH;
+		}
+		else if ( IsMagazine() )
+		{
+			path_base = CFG_MAGAZINESPATH;
+		}
+		else
+		{
+			path_base = CFG_VEHICLESPATH;
+		}
+		
+		path_base = string.Format( "%1 %2 DamageSystem DamageZones", path_base, GetType() );
+		
+		if ( !GetGame().ConfigIsExisting(path_base) )
+		{
+			m_DamageDisplayNameMap.Insert( "".Hash(), GetDisplayName() );
+		}
+		else
+		{
+			TStringArray zone_names = new TStringArray;
+			GetDamageZones( zone_names );
+			
+			for ( int i = 0; i < zone_names.Count(); i++ )
+			{
+				path = string.Format( "%1 %2 displayName", path_base, zone_names[i] );
+				
+				string component_name;
+				if ( GetGame().ConfigIsExisting(path) )
+				{
+					GetGame().ConfigGetText(path,component_name);
+					m_DamageDisplayNameMap.Insert( zone_names[i].Hash(), component_name );
+				}
+			}
+		}
+	}
+	
 	DamageZoneMap GetEntityDamageZoneMap()
 	{
 		return m_DamageZoneMap;
+	}
+	
+	map<int, string> GetEntityDamageDisplayNameMap()
+	{
+		return m_DamageDisplayNameMap;
 	}
 
 	//! Log
@@ -240,11 +291,8 @@ class EntityAI extends Entity
 	//! Override this method and make it so it returns whenever this item is on fire right now or not. Evaluated on Server and Client.
 	bool IsIgnited()
 	{
-		ComponentEnergyManager em = GetCompEM();
-		
-		if ( em )
-			return em.IsWorking(); // This code is optional, it's just what's most likely to be used in your items.
-		
+		if (m_EM)
+			return m_EM.IsWorking();
 		return false;
 	}
 	// Change return value to true if last detached item cause disassemble of item - different handlig some inventory operations
@@ -311,20 +359,22 @@ class EntityAI extends Entity
 
 	void OnPlacementCancelled( Man player )
 	{
-		ComponentEnergyManager em = GetCompEM();
-		if ( em )
+		if (m_EM)
 		{
 			Man attached_to = Man.Cast( GetHierarchyParent() );
 			if (!attached_to || attached_to == player )// Check for exception with attaching a cable reel to an electric fence
 			{
 				//If cord length is 0, item powersource is most likely an attachment and should not be unplugged
-				if (em.GetCordLength() <= 0)
+				//if (em.GetCordLength() <= 0)
+				if (m_EM.GetCordLength() <= 0)
 				{
 					//em.SwitchOff();
 					return;
 				}
-				em.UnplugAllDevices();
-				em.UnplugThis();
+				//em.UnplugAllDevices();
+				//em.UnplugThis();
+				m_EM.UnplugAllDevices();
+				m_EM.UnplugThis();
 			}
 		}
 	}
@@ -425,6 +475,11 @@ class EntityAI extends Entity
 	{
 		return IsDamageDestroyed();
 	}
+	
+	bool CanBeTargetedByAI(EntityAI ai)
+	{
+		return !IsDamageDestroyed();
+	}
 
 	/**@brief Delete this object in next frame
 	 * @return \p void
@@ -519,9 +574,8 @@ class EntityAI extends Entity
 	{
 		GetInventory().EEDelete(parent);
 		
-		ComponentEnergyManager em = GetCompEM();		
-		if ( em )
-			em.OnDeviceDestroyed();
+		if (m_EM)
+			m_EM.OnDeviceDestroyed();
 	}
 	
 	void OnItemLocationChanged(EntityAI old_owner, EntityAI new_owner) { }
@@ -633,9 +687,8 @@ class EntityAI extends Entity
 		}		
 		
 		// Energy Manager
-		ComponentEnergyManager em = GetCompEM();
-		if ( em && item.HasEnergyManager() )
-			em.OnAttachmentAdded(item); // Inner code is meant to be executed client and server side to avoid unnecesarry network synchronization
+		if ( m_EM && item.GetCompEM())
+			m_EM.OnAttachmentAdded(item);
 		
 		if ( item.GetInventory().GetCargo() )
 			m_AttachmentsWithCargo.Insert( item );
@@ -672,9 +725,8 @@ class EntityAI extends Entity
 		}
 		
 		// Energy Manager
-		ComponentEnergyManager em = GetCompEM();
-		if ( em && item.HasEnergyManager() )
-			em.OnAttachmentRemoved(item);
+		if (m_EM && item.GetCompEM())
+			m_EM.OnAttachmentRemoved(item);
 		
 		if ( m_AttachmentsWithCargo.Find( item ) > -1 )
 			m_AttachmentsWithCargo.RemoveItem( item );
@@ -800,9 +852,8 @@ class EntityAI extends Entity
 	//! Called when this item enters cargo of some container
 	void OnMovedInsideCargo(EntityAI container)
 	{
-		ComponentEnergyManager em = GetCompEM();
-		if ( em )
-			em.HandleMoveInsideCargo(container);
+		if (m_EM)
+			m_EM.HandleMoveInsideCargo(container);
 	}
 	
 	//! Called when this item exits cargo of some container
@@ -822,13 +873,12 @@ class EntityAI extends Entity
 	{
 		// ENERGY MANAGER
 		// Restore connections between devices which were connected before server restart
-		ComponentEnergyManager em = GetCompEM();		
-		if ( em && em.GetRestorePlugState() )
+		if ( m_EM && m_EM.GetRestorePlugState() )
 		{
-			int b1 = em.GetEnergySourceStorageIDb1();
-			int b2 = em.GetEnergySourceStorageIDb2();
-			int b3 = em.GetEnergySourceStorageIDb3();
-			int b4 = em.GetEnergySourceStorageIDb4();
+			int b1 = m_EM.GetEnergySourceStorageIDb1();
+			int b2 = m_EM.GetEnergySourceStorageIDb2();
+			int b3 = m_EM.GetEnergySourceStorageIDb3();
+			int b4 = m_EM.GetEnergySourceStorageIDb4();
 
 			// get pointer to EntityAI based on this ID
 			EntityAI potential_energy_source = GetGame().GetEntityByPersitentID(b1, b2, b3, b4); // This function is available only in this event!
@@ -847,7 +897,7 @@ class EntityAI extends Entity
 				is_attachment = potential_energy_source.GetInventory().HasAttachment(this);
 			
 			if ( potential_energy_source && potential_energy_source.GetCompEM() /*&& potential_energy_source.HasEnergyManager()*/ && !is_attachment )
-				em.PlugThisInto(potential_energy_source); // restore connection
+				m_EM.PlugThisInto(potential_energy_source); // restore connection
 		}
 	}
 	
@@ -1409,7 +1459,7 @@ class EntityAI extends Entity
 	/**
 	\brief Put item into as attachment
 	*/
-	bool PredictiveTakeEntityAsAttachment (notnull EntityAI item)
+	bool PredictiveTakeEntityAsAttachment(notnull EntityAI item)
 	{
 		if ( GetGame().IsMultiplayer() )
 			return GetInventory().TakeEntityAsAttachment(InventoryMode.JUNCTURE, item);
@@ -1459,11 +1509,11 @@ class EntityAI extends Entity
 	/**
 	\brief Returns if item can be dropped out from this entity
 	*/
-	bool CanDropEntity (notnull EntityAI item) { return true; }
+	bool CanDropEntity(notnull EntityAI item) { return true; }
 
 	/**
 	 **/
-	EntityAI SpawnEntityOnGroundPos (string object_name, vector pos)
+	EntityAI SpawnEntityOnGroundPos(string object_name, vector pos)
 	{
 		InventoryLocation il = new InventoryLocation;
 		vector mat[4];
@@ -1474,7 +1524,7 @@ class EntityAI extends Entity
 	}
 	/**
 	 **/
-	EntityAI SpawnEntityOnGround (string object_name, vector mat[4])
+	EntityAI SpawnEntityOnGround(string object_name, vector mat[4])
 	{
 		InventoryLocation il = new InventoryLocation;
 		il.SetGround(NULL, mat);
@@ -1597,25 +1647,23 @@ class EntityAI extends Entity
 	void OnStoreSave(ParamsWriteContext ctx)
 	{
 		// Saving of energy related states
-		ComponentEnergyManager em = GetCompEM();
-		
-		if ( em )
+		if ( m_EM )
 		{		
 			// Save energy amount
-			ctx.Write( em.GetEnergy() );
+			ctx.Write( m_EM.GetEnergy() );
 			
 			// Save passive/active state
-			ctx.Write( em.IsPassive() );
+			ctx.Write( m_EM.IsPassive() );
 			
 			// Save ON/OFF state
-			ctx.Write( em.IsSwitchedOn() );
+			ctx.Write( m_EM.IsSwitchedOn() );
 			
 			// Save plugged/unplugged state
-			ctx.Write( em.IsPlugged() );
+			ctx.Write( m_EM.IsPlugged() );
 			
 			// ENERGY SOURCE
 			// Save energy source IDs
-			EntityAI energy_source = em.GetEnergySource();
+			EntityAI energy_source = m_EM.GetEnergySource();
 			int b1 = 0;
 			int b2 = 0;
 			int b3 = 0;
@@ -1660,27 +1708,26 @@ class EntityAI extends Entity
 	bool OnStoreLoad (ParamsReadContext ctx, int version)
 	{
 		// Restoring of energy related states
-		ComponentEnergyManager em = GetCompEM();
 		
-		if ( em )
+		if ( m_EM )
 		{
 			// Load energy amount
 			float f_energy = 0;
 			if ( !ctx.Read( f_energy ) )
 				f_energy = 0;
-			em.SetEnergy(f_energy);
+			m_EM.SetEnergy(f_energy);
 			
 			// Load passive/active state
 			bool b_is_passive = false;
 			if ( !ctx.Read( b_is_passive ) )
 				return false;
-			em.SetPassiveState(b_is_passive);
+			m_EM.SetPassiveState(b_is_passive);
 			
 			// Load ON/OFF state
 			bool b_is_on = false;
 			if ( !ctx.Read( b_is_on ) )
 			{
-				em.SwitchOn();
+				m_EM.SwitchOn();
 				return false;
 			}
 			
@@ -1717,14 +1764,14 @@ class EntityAI extends Entity
 				if ( b_is_plugged )
 				{
 					// Because function GetEntityByPersitentID() cannot be called here, ID values must be stored and used later.
-					em.StoreEnergySourceIDs( b1, b2, b3, b4 );
-					em.RestorePlugState(true);
+					m_EM.StoreEnergySourceIDs( b1, b2, b3, b4 );
+					m_EM.RestorePlugState(true);
 				}
 			}
 
 			if (b_is_on)
 			{
-				em.SwitchOn();
+				m_EM.SwitchOn();
 			}
 		}
 		return true;
@@ -1738,24 +1785,23 @@ class EntityAI extends Entity
 	*/
 	void OnVariablesSynchronized()
 	{
-		ComponentEnergyManager em = GetCompEM();
 		
-		if ( em )
+		if ( m_EM )
 		{
 			if ( GetGame().IsMultiplayer() )
 			{
-				bool is_on = em.IsSwitchedOn();
+				bool is_on = m_EM.IsSwitchedOn();
 				
-				if (is_on != em.GetPreviousSwitchState())
+				if (is_on != m_EM.GetPreviousSwitchState())
 				{
 					if (is_on)
-						em.SwitchOn();
+						m_EM.SwitchOn();
 					else
-						em.SwitchOff();
+						m_EM.SwitchOff();
 				}
 				
-				int id_low = GetCompEM().GetEnergySourceNetworkIDLow();
-				int id_High = GetCompEM().GetEnergySourceNetworkIDHigh();
+				int id_low = m_EM.GetEnergySourceNetworkIDLow();
+				int id_High = m_EM.GetEnergySourceNetworkIDHigh();
 				
 				EntityAI energy_source = EntityAI.Cast( GetGame().GetObjectByNetworkId(id_low, id_High) );
 				
@@ -1768,6 +1814,7 @@ class EntityAI extends Entity
 					Print(energy_source.GetCompEM());
 					Print(this);*/
 					
+
 					ComponentEnergyManager esem = energy_source.GetCompEM();
 					
 					if ( !esem )
@@ -1776,16 +1823,16 @@ class EntityAI extends Entity
 						Error("Synchronization error! Object " + object + " has no instance of the Energy Manager component!");
 					}
 					
-					em.PlugThisInto(energy_source);
+					m_EM.PlugThisInto(energy_source);
 					
 				}
 				else
 				{
-					em.UnplugThis();
+					m_EM.UnplugThis();
 				}
 				
-				em.DeviceUpdate();
-				em.StartUpdates();
+				m_EM.DeviceUpdate();
+				m_EM.StartUpdates();
 			}
 		}
 	}
@@ -1884,6 +1931,9 @@ class EntityAI extends Entity
 	//! Use this to access Energy Manager component on your device. Returns NULL if the given object lacks such component.
 	ComponentEnergyManager GetCompEM()
 	{
+		if (m_EM)
+			return m_EM;
+		
 		if ( HasComponent(COMP_TYPE_ENERGY_MANAGER) )
 			return ComponentEnergyManager.Cast( GetComponent(COMP_TYPE_ENERGY_MANAGER) );
 		return NULL;
@@ -2187,13 +2237,24 @@ class EntityAI extends Entity
 		return this;
 	}
 	
+	string GetInvulnerabilityTypeString()
+	{
+		return "";
+	}
+	
 	void ProcessInvulnerabilityCheck(string servercfg_param)
 	{
 		if ( GetGame() && GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
+			
 			int invulnerability = GetGame().ServerConfigGetInt(servercfg_param);
 			if (invulnerability > 0)
+			{
+				//Print("ProcessInvulnerabilityCheck: SetAllowDamage(false)");
 				SetAllowDamage(false);
+			}
+			/*else
+				Print("ProcessInvulnerabilityCheck: nothing happens");*/
 		}
 	}
 

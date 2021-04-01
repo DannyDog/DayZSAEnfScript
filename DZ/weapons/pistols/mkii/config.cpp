@@ -69,8 +69,8 @@ class cfgWeapons
 		};
 		class NoiseShoot
 		{
-			strength = 3.0;
-			type = "shot";
+			strength = 5;
+			type = "sound";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

@@ -105,9 +105,12 @@ class ActionFishingNewCB : ActionContinuousBaseCB
 			}
 			else
 			{
-				string junk_type = m_JunkTypes.Get(Math.RandomInt(0,m_JunkTypes.Count()));
-				fish = ItemBase.Cast(GetGame().CreateObjectEx(junk_type,m_ActionDataFishing.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
-				fish.SetHealth("","Health",fish.GetMaxHealth("","Health") * 0.1);
+				if ( !m_ActionDataFishing.m_IsSurfaceSea )
+				{
+					string junk_type = m_JunkTypes.Get(Math.RandomInt(0,m_JunkTypes.Count()));
+					fish = ItemBase.Cast(GetGame().CreateObjectEx(junk_type,m_ActionDataFishing.m_Player.GetPosition(), ECE_PLACE_ON_SURFACE));
+					fish.SetHealth("","Health",fish.GetMaxHealth("","Health") * 0.1);
+				}
 			}
 			
 			if (fish)

@@ -35,6 +35,7 @@ class CfgVehicles
 		repairableWithKits[] = {6};
 		repairCosts[] = {25.0};
 		simulation = "carwheel";
+		lockType = 3;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -66,6 +67,7 @@ class CfgVehicles
 		itemSize[] = {10,10};
 		weight = 20000;
 		hiddenSelections[] = {"dmgZone_doors"};
+		lockType = 2;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -657,6 +659,7 @@ class CfgVehicles
 						hitpoints = 3000;
 						transferToGlobalCoef = 0;
 					};
+					displayName = "$STR_CfgVehicleDmg_Chassis0";
 					inventorySlots[] = {};
 				};
 				class Front
@@ -670,6 +673,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_1","Fender_2_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.3,0.4};
 					inventorySlots[] = {"NivaHood","CarRadiator","NivaWheel_1_1","NivaWheel_2_1"};
@@ -686,6 +690,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\headlights_glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\glass_i_damage.rvmat"}},{0.3,{}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\glass_i_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Reflector0";
 					transferToZonesNames[] = {"Front","Fender_1_1"};
 					transferToZonesCoefs[] = {1.0,1.0};
 					inventorySlots[] = {"Reflector_1_1","NivaWheel_1_1"};
@@ -709,6 +714,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_2","Fender_2_2","WindowLR","WindowRR"};
 					transferToZonesCoefs[] = {0.3,0.3,0.1,0.1};
 					inventorySlots[] = {"NivaTrunk","NivaWheel_1_2","NivaWheel_2_2"};
@@ -725,6 +731,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Roof0";
 					inventorySlotsCoefs[] = {};
 					inventorySlots[] = {};
 				};
@@ -739,6 +746,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\green\niva_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Fender0";
 					transferToZonesNames[] = {"Front","Reflector_1_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.6,0.2};
 					inventorySlots[] = {"NivaHood","NivaWheel_1_1","NivaDriverDoors"};
@@ -782,6 +790,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass_destruct.rvmat"}},{0.0,"hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -796,6 +805,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\niva_glass_destruct.rvmat"}},{0.0,"hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -815,6 +825,7 @@ class CfgVehicles
 						transferToGlobalCoef = 1;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Engine0";
 					inventorySlots[] = {"CarBattery","SparkPlug"};
 					inventorySlotsCoefs[] = {0.2,0.2};
 				};
@@ -828,6 +839,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_FuelTank0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -863,21 +875,21 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"CarBattery","CarRadiator","SparkPlug"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","NivaHood","NivaTrunk","NivaDriverDoors","NivaCoDriverDoors","NivaWheel_Spare_1"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"NivaWheel_1_1","NivaWheel_1_2","NivaWheel_2_1","NivaWheel_2_2"};
 			};
 		};
@@ -1837,6 +1849,7 @@ class CfgVehicles
 						hitpoints = 3000;
 						transferToGlobalCoef = 0;
 					};
+					displayName = "$STR_CfgVehicleDmg_Chassis0";
 					inventorySlots[] = {};
 				};
 				class Front
@@ -1851,6 +1864,7 @@ class CfgVehicles
 						RefTexsMats[] = {"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr.rvmat"};
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr.rvmat"}},{0.7,{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr.rvmat"}},{0.5,{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_1","Fender_2_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.3,0.4};
 					inventorySlots[] = {"CivSedanHood","CarRadiator","CivSedanWheel_1_1","CivSedanWheel_2_1"};
@@ -1867,6 +1881,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\headlights_glass.rvmat"},{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\glass_i_damage.rvmat"},{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr_damage.rvmat"}},{0.3,{}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\glass_i_destruct.rvmat"},{"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Reflector0";
 					transferToZonesNames[] = {"Front","Fender_1_1"};
 					transferToZonesCoefs[] = {1.0,1.0};
 					inventorySlots[] = {"Reflector_1_1","CivSedanWheel_1_1"};
@@ -1890,6 +1905,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						RefTexsMats[] = {"dz\vehicles\wheeled\civiliansedan\data\civiliansedan_cr.rvmat"};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_2","Fender_2_2"};
 					transferToZonesCoefs[] = {0.3,0.3};
 					inventorySlots[] = {"CivSedanTrunk","CivSedanWheel_1_2","CivSedanWheel_2_2"};
@@ -1906,6 +1922,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan.rvmat"}},{0.7,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan.rvmat"}},{0.5,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Roof0";
 					inventorySlots[] = {};
 				};
 				class Fender_1_1
@@ -1919,6 +1936,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan.rvmat"}},{0.7,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan.rvmat"}},{0.5,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\civiliansedan\data\white\civiliansedan_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Fender0";
 					transferToZonesNames[] = {"Front","Reflector_1_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.6,0.2};
 					inventorySlots[] = {"CivSedanHood","CivSedanWheel_1_1","CivSedanDriverDoors"};
@@ -1962,6 +1980,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\civiliansedan\data\glass.rvmat","dz\vehicles\wheeled\civiliansedan\data\glass_i.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\civiliansedan\data\glass.rvmat","dz\vehicles\wheeled\civiliansedan\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\civiliansedan\data\glass_destruct.rvmat","dz\vehicles\wheeled\civiliansedan\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -1981,6 +2000,7 @@ class CfgVehicles
 						transferToGlobalCoef = 1;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva.rvmat"}},{0.7,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva.rvmat"}},{0.5,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\offroadhatchback\data\engine_niva_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Engine0";
 					inventorySlots[] = {"CarBattery","SparkPlug"};
 					inventorySlotsCoefs[] = {0.1,0.2};
 				};
@@ -1994,6 +2014,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_FuelTank0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -2029,21 +2050,21 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"CarBattery","CarRadiator","SparkPlug"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","CivSedanHood","CivSedanTrunk","CivSedanDriverDoors","CivSedanCoDriverDoors","CivSedanCargo1Doors","CivSedanCargo2Doors"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"CivSedanWheel_1_1","CivSedanWheel_1_2","CivSedanWheel_2_1","CivSedanWheel_2_2"};
 			};
 		};
@@ -3167,6 +3188,7 @@ class CfgVehicles
 						hitpoints = 3000;
 						transferToGlobalCoef = 0;
 					};
+					displayName = "$STR_CfgVehicleDmg_Chassis0";
 					inventorySlots[] = {};
 				};
 				class Front
@@ -3180,6 +3202,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_1","Fender_2_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.3,0.4};
 					inventorySlots[] = {"Hatchback_02_Hood","CarRadiator","Hatchback_02_Wheel_1_1","Hatchback_02_Wheel_2_1"};
@@ -3196,6 +3219,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_windows.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\hatchback_02\data\glass_i_damage.rvmat"}},{0.3,{}},{0.0,{"dz\vehicles\wheeled\hatchback_02\data\glass_i_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Reflector0";
 					transferToZonesNames[] = {"Front","Fender_1_1"};
 					transferToZonesCoefs[] = {1.0,1.0};
 					inventorySlots[] = {"Reflector_1_1","Hatchback_02_Wheel_1_1"};
@@ -3219,6 +3243,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\hatchback_02\data\hatchback_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_2","Fender_2_2"};
 					transferToZonesCoefs[] = {0.3,0.3};
 					inventorySlots[] = {"Hatchback_02_Trunk","Hatchback_02_Wheel_1_2","Hatchback_02_Wheel_2_2"};
@@ -3235,6 +3260,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Roof0";
 					inventorySlots[] = {};
 				};
 				class Fender_1_1
@@ -3248,6 +3274,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\hatchback_02\data\red\hatchback_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Fender0";
 					transferToZonesNames[] = {"Front","Reflector_1_1","Engine"};
 					transferToZonesCoefs[] = {0.3,0.6,0.2};
 					inventorySlots[] = {"Hatchback_02_Hood","Hatchback_02_Wheel_1_1","Hatchback_02_Door_1_1"};
@@ -3291,6 +3318,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\hatchback_02\data\Hatchback_02_Windows.rvmat","dz\vehicles\wheeled\hatchback_02\data\glass_i.rvmat"}},{0.7,{"dz\vehicles\wheeled\hatchback_02\data\Hatchback_02_Windows.rvmat","dz\vehicles\wheeled\hatchback_02\data\glass_i_damage.rvmat"}},{0.5,{"hidden","dz\vehicles\wheeled\hatchback_02\data\glass_i_damage.rvmat"}},{0.3,{"hidden","dz\vehicles\wheeled\hatchback_02\data\glass_i_destruct.rvmat"}},{0.0,"hidden","hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -3305,6 +3333,7 @@ class CfgVehicles
 						transferToGlobalCoef = 1;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Engine0";
 					inventorySlots[] = {"CarBattery","SparkPlug"};
 					inventorySlotsCoefs[] = {0.1,0.2};
 				};
@@ -3318,6 +3347,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_FuelTank0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -3353,21 +3383,21 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"CarBattery","CarRadiator","SparkPlug"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","Hatchback_02_Door_1_1","Hatchback_02_Door_1_2","Hatchback_02_Door_2_1","Hatchback_02_Door_2_2","Hatchback_02_Hood","Hatchback_02_Trunk"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"Hatchback_02_Wheel_1_1","Hatchback_02_Wheel_1_2","Hatchback_02_Wheel_2_1","Hatchback_02_Wheel_2_2"};
 			};
 		};
@@ -4570,6 +4600,7 @@ class CfgVehicles
 						hitpoints = 3000;
 						transferToGlobalCoef = 0;
 					};
+					displayName = "$STR_CfgVehicleDmg_Chassis0";
 					inventorySlots[] = {};
 				};
 				class Front
@@ -4583,6 +4614,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\civiliansedan\data\yellow\sedan_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\civiliansedan\data\yellow\sedan_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\civiliansedan\data\yellow\sedan_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\civiliansedan\data\yellow\sedan_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\civiliansedan\data\yellow\sedan_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_1","Fender_2_1"};
 					transferToZonesCoefs[] = {0.4,0.4};
 					inventorySlots[] = {"CivSedanHood","CarRadiator","Sedan_02_Wheel_1_1","Sedan_02_Wheel_2_1"};
@@ -4599,6 +4631,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_damaged.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_damaged.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\glass_frontlights_ruined.rvmat"}},{0.0,"Hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Reflector0";
 					transferToZonesNames[] = {"Front","Fender_1_1"};
 					transferToZonesCoefs[] = {0.6,0.3};
 					inventorySlots[] = {"Reflector_1_1","Sedan_02_Wheel_1_1"};
@@ -4622,6 +4655,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_2","Fender_2_2","Engine"};
 					transferToZonesCoefs[] = {0.4,0.4,0.6};
 					inventorySlots[] = {"Sedan_02_Trunk","Sedan_02_Wheel_1_2","Sedan_02_Wheel_2_2"};
@@ -4638,6 +4672,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Roof0";
 					inventorySlots[] = {};
 				};
 				class Fender_1_1
@@ -4651,6 +4686,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\sedan_02\data\yellow\sedan_02_body_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Fender0";
 					transferToZonesNames[] = {"Front","Reflector_1_1"};
 					transferToZonesCoefs[] = {0.3,0.6};
 					inventorySlots[] = {"Sedan_02_Hood","Sedan_02_Wheel_1_1","Sedan_02_Door_1_1"};
@@ -4694,6 +4730,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\glass_interior.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -4713,6 +4750,7 @@ class CfgVehicles
 						transferToGlobalCoef = 1;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\sedan_02\data\engine_sedan_02.rvmat"}},{0.7,{"dz\vehicles\wheeled\sedan_02\data\engine_sedan_02.rvmat"}},{0.5,{"dz\vehicles\wheeled\sedan_02\data\engine_sedan_02_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\sedan_02\data\engine_sedan_02_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\sedan_02\data\engine_sedan_02_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Engine0";
 					inventorySlots[] = {"CarBattery","SparkPlug","CarRadiator"};
 					inventorySlotsCoefs[] = {0.2,0.2,0.4};
 				};
@@ -4726,6 +4764,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_FuelTank0";
 					inventorySlots[] = {};
 					inventorySlotsCoefs[] = {};
 				};
@@ -4761,28 +4800,28 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"CarBattery","SparkPlug"};
 			};
 			class Trunk
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"CarRadiator"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","Sedan_02_Door_1_1","Sedan_02_Door_2_1","Sedan_02_Door_1_2","Sedan_02_Door_2_2","Sedan_02_Hood","Sedan_02_Trunk"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"Sedan_02_Wheel_1_1","Sedan_02_Wheel_1_2","Sedan_02_Wheel_2_1","Sedan_02_Wheel_2_2"};
 			};
 		};
@@ -5950,6 +5989,7 @@ class CfgVehicles
 						hitpoints = 3000;
 						transferToGlobalCoef = 0;
 					};
+					displayName = "$STR_CfgVehicleDmg_Chassis0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -5966,6 +6006,7 @@ class CfgVehicles
 						transferToGlobalCoef = 1;
 						healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Engine0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -5982,6 +6023,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab.rvmat"}},{0.7,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab.rvmat"}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Bumper0";
 					transferToZonesNames[] = {"Fender_1_1","Fender_2_1","Engine"};
 					transferToZonesCoefs[] = {0.2,0.2,0.1};
 					inventorySlots[] = {"Truck_01_Hood"};
@@ -5998,6 +6040,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_super.rvmat"}},{0.7,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_super.rvmat"}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_super_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_super_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_super_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_BackWood0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -6014,6 +6057,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\gear\camping\Data\tent_pristine_co.paa"}},{0.7,{"dz\gear\camping\data\tent_worn_co.paa"}},{0.5,{"dz\gear\camping\data\tent_damage_co.paa"}},{0.3,{"dz\gear\camping\data\tent_destruct_co.paa"}},{0.0,{"dz\gear\camping\data\tent_destruct_co.paa"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_BackTarp0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -6030,6 +6074,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cab.rvmat","dz\vehicles\wheeled\Truck_01\data\truck_01_cargo.rvmat"}},{0.7,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cab.rvmat","dz\vehicles\wheeled\Truck_01\data\truck_01_cargo.rvmat"}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cab_damage.rvmat","dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cab_damage.rvmat","dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_cab_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\truck_01_cargo_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Roof0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -6046,6 +6091,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab.rvmat"}},{0.7,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab.rvmat"}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\Truck_01_cab_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Fender0";
 					transferToZonesNames[] = {"Front","Engine","Roof"};
 					transferToZonesCoefs[] = {0.1,0.05,0.15};
 					inventorySlots[] = {"Truck_01_Hood"};
@@ -6067,6 +6113,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat","dz\vehicles\wheeled\Truck_01\data\glass_i_destruct.rvmat"}},{0.0,"hidden"}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Window0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -6098,6 +6145,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_chassis.rvmat"}},{0.7,{"dz\vehicles\wheeled\Truck_01\data\truck_01_chassis.rvmat"}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_chassis_damage.rvmat"}},{0.3,{"dz\vehicles\wheeled\Truck_01\data\truck_01_chassis_damage.rvmat"}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_chassis_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_FuelTank0";
 					transferToZonesNames[] = {};
 					transferToZonesCoefs[] = {};
 					inventorySlots[] = {};
@@ -6114,6 +6162,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass.rvmat"}},{0.7,{}},{0.5,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat"}},{0.3,{}},{0.0,{"dz\vehicles\wheeled\Truck_01\data\truck_01_glass_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicleDmg_Reflector0";
 					transferToZonesNames[] = {"Front","Fender_1_1"};
 					transferToZonesCoefs[] = {1.0,1.0};
 					inventorySlots[] = {"Reflector_1_1"};
@@ -6164,21 +6213,21 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"TruckBattery"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","Truck_01_Door_1_1","Truck_01_Door_2_1","Truck_01_Hood"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"Truck_01_Wheel_1_1","Truck_01_Wheel_2_1","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2","Truck_01_Wheel_1_2","Truck_01_Wheel_2_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_3"};
 			};
 		};
@@ -6201,35 +6250,35 @@ class CfgVehicles
 			{
 				name = "$STR_attachment_Engine0";
 				description = "";
-				icon = "cat_vehicle_engine";
+				icon = "set:dayz_inventory image:cat_vehicle_engine";
 				attachmentSlots[] = {"TruckBattery"};
 			};
 			class Body
 			{
 				name = "$STR_attachment_Body0";
 				description = "";
-				icon = "cat_vehicle_body";
+				icon = "set:dayz_inventory image:cat_vehicle_body";
 				attachmentSlots[] = {"Reflector_1_1","Reflector_2_1","Truck_01_Door_1_1","Truck_01_Door_2_1","Truck_01_Hood"};
 			};
 			class Chassis
 			{
 				name = "$STR_attachment_Chassis0";
 				description = "";
-				icon = "cat_vehicle_chassis";
+				icon = "set:dayz_inventory image:cat_vehicle_chassis";
 				attachmentSlots[] = {"Truck_01_Wheel_1_1","Truck_01_Wheel_1_2","Truck_01_Wheel_1_3","Truck_01_Wheel_2_1","Truck_01_Wheel_2_2","Truck_01_Wheel_2_3","Truck_01_Wheel_Spare_1","Truck_01_Wheel_Spare_2"};
 			};
 			class BaseBuildingAttachments
 			{
 				name = "$STR_cfgvehicles_fence_att_category_materials";
 				description = "";
-				icon = "cat_common_cargo";
+				icon = "set:dayz_inventory image:cat_common_cargo";
 				attachmentSlots[] = {"Truck_01_WoodenLogs","Truck_01_WoodenPlanks","Truck_01_MetalSheets"};
 			};
 			class BaseBuildingContainers
 			{
 				name = "$STR_attachment_containers0";
 				description = "";
-				icon = "cat_common_cargo";
+				icon = "set:dayz_inventory image:cat_common_cargo";
 				attachmentSlots[] = {"Truck_01_Barrel1","Truck_01_Barrel2","Truck_01_Barrel3","Truck_01_Barrel4","Truck_01_WoodenCrate1","Truck_01_WoodenCrate2","Truck_01_WoodenCrate3","Truck_01_WoodenCrate4"};
 			};
 		};

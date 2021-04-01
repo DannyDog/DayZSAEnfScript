@@ -212,6 +212,8 @@ class FirearmActionLoadMultiBulletRadial : FirearmActionBase
 	
 	override void OnStart( ActionData action_data )
 	{
+		super.OnStart(action_data);
+		
 		Magazine mag = Magazine.Cast(action_data.m_Target.GetObject());	
 		action_data.m_Player.GetWeaponManager().LoadMultiBullet(mag, this);
 	}

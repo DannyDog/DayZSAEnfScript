@@ -23,4 +23,13 @@ class AK101_Base : AKM_Base
 	}
 };
 
-class AK101 : AK101_Base {};
+class AK101 : AK101_Base
+{
+	override bool CanEnterIronsights()
+	{
+		ItemOptics optic = GetAttachedOptics();
+		if (optic && PSO1Optic.Cast(optic) || PSO11Optic.Cast(optic) || KazuarOptic.Cast(optic))
+			return true;
+		return super.CanEnterIronsights();
+	}
+};

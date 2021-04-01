@@ -5,5 +5,6 @@ class Broom: Inventory_Base
 		super.SetActions();
 		
 		AddAction(ActionClapBearTrapWithThisItem);
+		AddAction(ActionBreakLongWoodenStick);
 	}
 };

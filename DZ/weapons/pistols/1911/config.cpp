@@ -62,11 +62,16 @@ class cfgWeapons
 			reloadTime = 0.13;
 			recoil = "recoil_1911";
 			recoilProne = "recoil_1911_prone";
-			dispersion = 0.0065;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\colt1911\1911Silenced",1,1,100};
 			soundBeginExt[] = {{"beginSilenced_Pro",1},{"beginSilenced_HomeMade",1}};
+		};
+		class NoiseShoot
+		{
+			strength = 50;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

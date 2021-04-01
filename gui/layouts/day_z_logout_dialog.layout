@@ -99,7 +99,7 @@ WindowWidgetClass LogoutDialogRoot {
      vexactpos 1
      hexactsize 1
      vexactsize 1
-     font "gui/fonts/MetronLight14"
+     font "gui/fonts/sdf_MetronLight72"
      "exact text" 0
      "exact text size" 22
      "size to text h" 1

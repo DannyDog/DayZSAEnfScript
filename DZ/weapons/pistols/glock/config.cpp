@@ -39,7 +39,7 @@ class cfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,10,250,4,10};
 		WeaponLength = 0.63;
-		barrelArmor = 2.593;
+		barrelArmor = 1.5;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_Glock_15Rnd"};
@@ -65,8 +65,13 @@ class cfgWeapons
 			reloadTime = 0.13;
 			recoil = "recoil_Glock";
 			recoilProne = "recoil_Glock_prone";
-			dispersion = 0.005;
+			dispersion = 0.003;
 			magazineSlot = "magazine";
+		};
+		class NoiseShoot
+		{
+			strength = 50;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

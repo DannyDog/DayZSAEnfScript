@@ -231,6 +231,8 @@ class StaminaHandler
 	protected float 						m_StaminaSynced; //guaranteed to be identical on server and client
 	protected float 						m_StaminaCap;
 	protected float							m_StaminaDepletion;
+	protected float 						m_StaminaDepletionMultiplier; //controls depletion rate
+	protected float 						m_StaminaRecoveryMultiplier; //controls recovery rate
 	protected float 						m_Time;
 	protected ref Param3<float,float,bool>	m_StaminaParams; 
 	protected ref HumanMovementState		m_State;
@@ -252,16 +254,18 @@ class StaminaHandler
 		{
 			m_StaminaParams = new Param3<float,float,bool>(0,0, false);		
 		}
-		m_State 			= new HumanMovementState();
-		m_Player 			= player;
-		m_Stamina 			= GameConstants.STAMINA_MAX; 
-		m_StaminaCap 		= GameConstants.STAMINA_MAX;
-		m_StaminaDepletion 	= 0;
-		m_Time 				= 0;
-		m_StaminaDepleted	= false;
-		//m_CooldownTimer		= new Timer(CALL_CATEGORY_SYSTEM);
-		m_IsInCooldown		= false;
-		m_Debug 			= false;
+		m_State 						= new HumanMovementState();
+		m_Player 						= player;
+		m_Stamina 						= GameConstants.STAMINA_MAX; 
+		m_StaminaCap 					= GameConstants.STAMINA_MAX;
+		m_StaminaDepletion 				= 0;
+		m_StaminaDepletionMultiplier 	= 1;
+		m_StaminaRecoveryMultiplier 	= 1;
+		m_Time 							= 0;
+		m_StaminaDepleted				= false;
+		//m_CooldownTimer				= new Timer(CALL_CATEGORY_SYSTEM);
+		m_IsInCooldown					= false;
+		m_Debug 						= false;
 
 		RegisterStaminaConsumers();
 		RegisterStaminaModifiers();
@@ -329,7 +333,13 @@ class StaminaHandler
 			}
 			else
 			{
-				m_Stamina = Math.Max(0,Math.Min((m_Stamina + m_StaminaDelta*deltaT),m_StaminaCap));
+				float temp = m_StaminaDelta*deltaT;
+				if (temp < 0)
+					temp = temp * m_StaminaDepletionMultiplier;
+				else
+					temp = temp * m_StaminaRecoveryMultiplier;
+				
+				m_Stamina = Math.Max(0,Math.Min((m_Stamina + temp),m_StaminaCap));
 				m_Stamina = m_Stamina - m_StaminaDepletion;
 			}
 
@@ -380,29 +390,38 @@ class StaminaHandler
 	//! called from PlayerBase - syncs stamina values on server with client AND sets the value to match on server and client both (m_StaminaSynced guarantees identical values)
 	void OnSyncJuncture(int pJunctureID, ParamsReadContext pCtx)
 	{
-		float stamina;
-		float stamina_cap;
-		bool cooldown;
-		
-		if ( !pCtx.Read(stamina) || !pCtx.Read(stamina_cap) || !pCtx.Read(cooldown) )
-			return;
-		
-		m_Stamina = stamina; //?
-		m_StaminaSynced = stamina;
-		
-		if( !m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+		switch ( pJunctureID )
 		{
-			return;
+			case DayZPlayerSyncJunctures.SJ_STAMINA:
+				float stamina;
+				float stamina_cap;
+				bool cooldown;
+				
+				if ( !pCtx.Read(stamina) || !pCtx.Read(stamina_cap) || !pCtx.Read(cooldown) )
+					return;
+				
+				m_Stamina = stamina; //?
+				m_StaminaSynced = stamina;
+				
+				if( !m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+				{
+					return;
+				}
+				
+				if ( stamina_cap != m_StaminaCap )
+				{
+					m_StaminaCap = stamina_cap;
+				}
+				
+				m_IsInCooldown = cooldown;
+				
+				m_Player.SetStamina(m_Stamina, m_StaminaCap);
+			break;
+			
+			case DayZPlayerSyncJunctures.SJ_STAMINA_MISC:
+				ReadAdditionalStaminaInfo(pCtx);
+			break;
 		}
-		
-		if ( stamina_cap != m_StaminaCap )
-		{
-			m_StaminaCap = stamina_cap;
-		}
-
-		m_IsInCooldown = cooldown;
-		
-		m_Player.SetStamina(m_Stamina, m_StaminaCap);
 	}
 	
 	protected void StaminaProcessor_Move(HumanMovementState pHumanMovementState)
@@ -515,19 +534,35 @@ class StaminaHandler
 	//! stamina sync - server part
 	protected void SyncStamina(float stamina, float stamina_cap, bool cooldown)
 	{
-		if( m_StaminaParams )
-		{
-			m_Player.GetStatStamina().Set(m_Stamina);
-			/*m_StaminaParams.param1 = m_Stamina;
-			m_StaminaParams.param2 = m_StaminaCap;
-			m_StaminaParams.param3 = m_IsInCooldown;
-			GetGame().RPCSingleParam(m_Player, ERPCs.RPC_STAMINA, m_StaminaParams, true, m_Player.GetIdentity());*/
-			ScriptJunctureData pCtx = new ScriptJunctureData;
-			pCtx.Write(m_Stamina);
-			pCtx.Write(m_StaminaCap);
-			pCtx.Write(m_IsInCooldown);
-			m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_STAMINA,pCtx);
-		}
+		m_Player.GetStatStamina().Set(m_Stamina);
+		ScriptJunctureData pCtx = new ScriptJunctureData;
+		pCtx.Write(m_Stamina);
+		pCtx.Write(m_StaminaCap);
+		pCtx.Write(m_IsInCooldown);
+		m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_STAMINA,pCtx);
+	}
+	
+	//! Method to sync more info for stamina manager. Template parameter means it is very extendable for further use
+	protected void SyncAdditionalStaminaInfo(Param par)
+	{
+		Param2<float,float> p = Param2<float,float>.Cast(par);
+		
+		ScriptJunctureData pCtx = new ScriptJunctureData;
+		pCtx.Write(p.param1);
+		pCtx.Write(p.param2);
+		m_Player.SendSyncJuncture(DayZPlayerSyncJunctures.SJ_STAMINA_MISC,pCtx);
+	}
+	
+	//! Order of read parameters must match the order of writing above
+	protected void ReadAdditionalStaminaInfo(ParamsReadContext pCtx)
+	{
+		float mult_dep;
+		float mult_rec;
+		if ( !pCtx.Read(mult_dep) || !pCtx.Read(mult_rec) )
+			return;
+		
+		m_StaminaDepletionMultiplier = mult_dep;
+		m_StaminaRecoveryMultiplier = mult_rec;
 	}
 	
 	protected void RegisterStaminaConsumers()
@@ -646,9 +681,8 @@ class StaminaHandler
 
 	void SetStamina(float stamina_value)
 	{
-		//m_Stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
-		float stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
-		SyncStamina(stamina, m_StaminaCap, m_IsInCooldown);
+		m_Stamina = Math.Clamp(stamina_value, 0, GameConstants.STAMINA_MAX);
+		SyncStamina(m_Stamina, m_StaminaCap, m_IsInCooldown);
 	}
 	
 	float GetStamina()
@@ -679,6 +713,32 @@ class StaminaHandler
 	float GetSyncedStaminaNormalized()
 	{
 		return m_StaminaSynced / GameConstants.STAMINA_MAX;
+	}
+	
+	void SetDepletionMultiplier(float val)
+	{
+		if (m_StaminaDepletionMultiplier < 0)
+			m_StaminaDepletionMultiplier = 0;
+		m_StaminaDepletionMultiplier = val;
+		SyncAdditionalStaminaInfo(new Param2<float,float>(m_StaminaDepletionMultiplier,m_StaminaRecoveryMultiplier));
+	}
+	
+	void SetRecoveryMultiplier(float val)
+	{
+		if (m_StaminaRecoveryMultiplier < 0)
+			m_StaminaRecoveryMultiplier = 0;
+		m_StaminaRecoveryMultiplier = val;
+		SyncAdditionalStaminaInfo(new Param2<float,float>(m_StaminaDepletionMultiplier,m_StaminaRecoveryMultiplier));
+	}
+	
+	float GetDepletionMultiplier()
+	{
+		return m_StaminaDepletionMultiplier;
+	}
+	
+	float GetRecoveryMultiplier()
+	{
+		return m_StaminaRecoveryMultiplier;
 	}
 	
 	void DepleteStamina(EStaminaModifiers modifier, float dT = -1)
@@ -739,5 +799,6 @@ class StaminaHandler
 		//! run cooldown right after depletion
 		SetCooldown(sm.GetCooldown(),modifier);
 		m_StaminaDepletion = Math.Clamp(m_StaminaDepletion, 0, GameConstants.STAMINA_MAX);
+		m_StaminaDepletion = m_StaminaDepletion * m_StaminaDepletionMultiplier;
 	}
 };

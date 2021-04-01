@@ -503,7 +503,7 @@ class Watchtower extends BaseBuildingBase
 				return false;
 			}
 		}
-		
+			
 		return true;
 	}
 	
@@ -515,4 +515,53 @@ class Watchtower extends BaseBuildingBase
 		AddAction(ActionPlaceObject);
 		AddAction(ActionFoldBaseBuildingObject);
 	}	
+	
+		
+	//================================================================
+	// DEBUG
+	//================================================================
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			ItemBase logs = ItemBase.Cast(entity.GetInventory().CreateInInventory( "WoodenLog" ));
+ 			logs.SetQuantity(logs.GetQuantityMax());
+		
+			entity.SpawnEntityOnGroundPos("Shovel", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Pliers", entity.GetPosition());
+
+			for(int i0 = 0; i0 < 30; i0++)
+			{
+				entity.SpawnEntityOnGroundPos("WoodenPlank", entity.GetPosition());		
+			}
+			
+			for(int i1 = 0; i1 < 8; i1++)
+			{
+				entity.SpawnEntityOnGroundPos("WoodenLog", entity.GetPosition());		
+			}
+			
+			for(int i2 = 0; i2 < 15; i2++)
+			{
+				entity.SpawnEntityOnGroundPos("Nail", entity.GetPosition());		
+			}	
+			
+			for(int i3 = 0; i3 < 9; i3++)
+			{
+				entity.SpawnEntityOnGroundPos("CamoNet", entity.GetPosition());		
+			}	
+			
+			for(int i4 = 0; i4 < 6; i4++)
+			{
+				entity.SpawnEntityOnGroundPos("BarbedWire", entity.GetPosition());		
+			}
+		}
+	}
+
 }

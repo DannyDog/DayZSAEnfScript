@@ -13,5 +13,6 @@ class Iceaxe: Inventory_Base
 		AddAction(ActionDismantlePart);
 		AddAction(ActionBuildPart);
 		AddAction(ActionSkinning);
+		AddAction(ActionCreateGreenhouseGardenPlot);
 	}
 };

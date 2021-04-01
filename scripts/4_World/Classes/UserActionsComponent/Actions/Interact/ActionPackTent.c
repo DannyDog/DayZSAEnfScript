@@ -105,6 +105,13 @@ class ActionPackTent : ActionContinuousBase
 		return false;
 	}
 	
+	override void Start( ActionData action_data ) //Setup on start of action
+	{
+		super.Start(action_data);
+		
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(true);
+	}
+	
 	override void OnExecute( ActionData action_data )
 	{
 		Object targetParent = action_data.m_Target.GetParent();
@@ -117,6 +124,7 @@ class ActionPackTent : ActionContinuousBase
 		Object targetParent = action_data.m_Target.GetParent();
 		TentBase tent = TentBase.Cast( targetParent );
 		tent.SetIsBeingPacked(false);
+		if ( action_data.m_Player ) action_data.m_Player.TryHideItemInHands(false);
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )

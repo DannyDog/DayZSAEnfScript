@@ -232,7 +232,7 @@ class Roadflare : ItemBase
 					SetBurningStateSynchronized(RoadflareBurningState.MAIN_BURN);
 				}
 			}
-			else if(m_BurningState == RoadflareBurningState.MAIN_BURN)
+			else if (m_BurningState == RoadflareBurningState.MAIN_BURN)
 			{
 				if ( burning_time >= GetCompEM().GetEnergyMax() - FINAL_BURNING_STATE_TIME )
 				{
@@ -241,7 +241,7 @@ class Roadflare : ItemBase
 			}
 			
 			// Burn containers of this roadflare. This might be removed if lit roadflare can't be put into inventory.
-			EntityAI container_EAI = GetHierarchyParent();
+			/*EntityAI container_EAI = GetHierarchyParent();
 			
 			if ( container_EAI  &&  container_EAI.IsInherited(ItemBase)  &&  !container_EAI.IsInherited(TripwireTrap) )
 			{
@@ -252,7 +252,7 @@ class Roadflare : ItemBase
 					c_size = 1;
 				
 				container_IB.AddHealth("","",-10/c_size);
-			}
+			}*/
 		}
 		
 		UpdateActiveParticles();
@@ -403,11 +403,14 @@ class Roadflare : ItemBase
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}	
-		if ( m_BurningState != RoadflareBurningState.NOT_BURNING )
-		{
+		if ( !super.CanPutInCargo(parent) ) 
 			return false;
-		}
+		
+		if ( parent.IsInherited( FireplaceBase ) )
+			return true;
+		
+		if ( m_BurningState != RoadflareBurningState.NOT_BURNING )
+			return false;
 		
 		return true;
 	}

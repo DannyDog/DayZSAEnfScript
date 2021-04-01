@@ -82,8 +82,8 @@ class AttachmentsWrapper: Container
 		return m_Attachments.IsItemWithQuantityActive();
 	}
 	
-	override EntityAI GetFocusedEntity()
+	override EntityAI GetFocusedItem()
 	{
-		return m_Attachments.GetFocusedEntity();
+		return m_Attachments.GetFocusedItem();
 	}
 }

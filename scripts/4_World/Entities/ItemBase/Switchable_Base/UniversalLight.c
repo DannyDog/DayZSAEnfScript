@@ -22,19 +22,21 @@ class UniversalLight extends Switchable_Base
 		if ( !super.CanPutAsAttachment(parent) ) {return false;}
 		
 		bool req_attachment 		= false;
-		bool req_attachment_found   = false;
+		bool rail_attachment_found   = false;
 		int slot_id;
+		ItemBase attachment;
 		for ( int i = 0; i < parent.GetInventory().GetAttachmentSlotsCount(); i++ )
 		{
 			slot_id = parent.GetInventory().GetAttachmentSlotId(i);
 			if ( m_AttachmentSlotsCheck.Find(slot_id) != -1 )
 			{
 				req_attachment = true;
-				if ( parent.GetInventory().FindAttachment(slot_id) )
-					req_attachment_found = true;
+				attachment = ItemBase.Cast(parent.GetInventory().FindAttachment(slot_id));
+				if ( attachment && attachment.ConfigIsExisting("hasRailFunctionality") && attachment.ConfigGetBool("hasRailFunctionality") )
+					rail_attachment_found = true;
 			}
 		}
-		return !req_attachment || (req_attachment && req_attachment_found);
+		return !req_attachment || (req_attachment && rail_attachment_found);
 	}
 	
 	override void OnWorkStart()

@@ -1,3 +1,4 @@
+//!DEPRECATED
 class ActionAttachPowerSourceToPanel: ActionSingleUseBase
 {
 	void ActionAttachPowerSourceToPanel()
@@ -29,25 +30,26 @@ class ActionAttachPowerSourceToPanel: ActionSingleUseBase
 		return false;
 	}
 
-	protected void OnExecuteImpl ( ActionData action_data )
+	protected void OnExecuteImpl( ActionData action_data )
 	{
 		EntityAI target_entity = EntityAI.Cast( action_data.m_Target.GetObject() );
 		EntityAI item_entity = action_data.m_MainItem;
 		
 		//find inventory location for attachment
 		InventoryLocation target_location = new InventoryLocation;
-		if( target_entity.GetInventory().FindFirstFreeLocationForNewEntity( item_entity.GetType(), FindInventoryLocationType.ATTACHMENT, target_location ) )
+		if ( target_entity.GetInventory().FindFirstFreeLocationForNewEntity( item_entity.GetType(), FindInventoryLocationType.ATTACHMENT, target_location ) )
 		{
 			action_data.m_Player.PredictiveTakeEntityToTargetAttachmentEx( target_entity, item_entity, target_location.GetSlot() );
 		}
 	}
 
-	override void OnExecuteClient ( ActionData action_data )
+	override void OnExecuteClient( ActionData action_data )
 	{
+		ClearInventoryReservationEx(action_data);
 		OnExecuteImpl(action_data);
 	}
 	
-	override void OnExecuteServer ( ActionData action_data )
+	override void OnExecuteServer( ActionData action_data )
 	{
 		if (GetGame().IsMultiplayer())
 			return; // multiplayer handled on client side via OnExecuteClient

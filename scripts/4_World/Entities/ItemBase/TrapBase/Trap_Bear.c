@@ -82,17 +82,20 @@ class BearTrap extends TrapBase
 		
 	void PlaySoundBiteLeg()
 	{
-		SEffectManager.PlaySound("beartrapCloseDamage_SoundSet", this.GetPosition(), 0, 0, false);
+		EffectSound sound = SEffectManager.PlaySound("beartrapCloseDamage_SoundSet", GetPosition(), 0, 0, false);
+		sound.SetSoundAutodestroy( true );
 	}
 	
 	void PlaySoundBiteEmpty()
 	{
-		SEffectManager.PlaySound("beartrapClose_SoundSet", this.GetPosition(), 0, 0, false);
+		EffectSound sound = SEffectManager.PlaySound("beartrapClose_SoundSet", GetPosition(), 0, 0, false);
+		sound.SetSoundAutodestroy( true );
 	}
 	
 	void PlaySoundOpen()
 	{
-		SEffectManager.PlaySound("beartrapOpen_SoundSet", this.GetPosition(), 0, 0, false);
+		EffectSound sound = SEffectManager.PlaySound("beartrapOpen_SoundSet", GetPosition(), 0, 0, false);
+		sound.SetSoundAutodestroy( true );
 	}
 
 	override void OnActivate()

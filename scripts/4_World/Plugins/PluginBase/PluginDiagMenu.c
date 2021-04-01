@@ -77,7 +77,10 @@ enum DiagMenuIDs
 	DM_SHOCK_IMPACT,
 	DM_LOGS_MENU,
 	DM_LOG_ACTIONS,
-	DM_LOG_INVENTORY,
+	DM_LOGS_MENU_INVENTORY,
+	DM_LOG_INVENTORY_MOVE,
+	DM_LOG_INVENTORY_RESERVATION,
+	DM_LOG_INVENTORY_HFSM,
 	DM_LOG_SYMPTOM,
 	DM_SHOW_FIREHEAT_RADIUS, //new debug
 	DM_SHOW_AREADMG_TRIGGER //new debug
@@ -121,7 +124,9 @@ class PluginDiagMenu extends PluginBase
 	bool m_ShowBleedingSources		= false;
 	bool m_XboxCursor				= true;
 	bool m_DoActionLogs				= false;
-	bool m_DoInventoryLogs			= false;
+	bool m_DoInventoryMoveLogs		= false;
+	bool m_DoInventoryReservationLogs	= false;
+	bool m_DoInventoryHFSMLogs		= false;
 	bool m_DoSymptomLogs			= false;
 	float m_SpecialtyLevel			= 0;
 	float m_LifespanLevel			= 0;
@@ -333,10 +338,15 @@ class PluginDiagMenu extends PluginBase
 				//---------------------------------------------------------------
 				// LEVEL 2
 				//---------------------------------------------------------------
-				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_ACTIONS, "", "Log Action Debug", "Logs");
-				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY, "", "Log Inventory Debug", "Logs");
-				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_SYMPTOM, "", "Log Symptom Debug", "Logs");
-				//DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY, "lalt+7", "BulletImpact", "Logs");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_ACTIONS, "", "Log Actions", "Logs");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_SYMPTOM, "", "Log Symptoms", "Logs");
+				DiagMenu.RegisterMenu(DiagMenuIDs.DM_LOGS_MENU_INVENTORY, "InventoryLog", "Logs");
+					//---------------------------------------------------------------
+					// LEVEL 3
+					//---------------------------------------------------------------
+					DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY_MOVE, "", "Log Items move", "InventoryLog");
+					DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY_RESERVATION, "", "Log Reservations", "InventoryLog");
+					DiagMenu.RegisterBool(DiagMenuIDs.DM_LOG_INVENTORY_HFSM, "", "Log HandFSM", "InventoryLog");
 	}
 	
 	void Update(float deltaT)
@@ -1282,22 +1292,58 @@ class PluginDiagMenu extends PluginBase
 	//---------------------------------------------
 	void CheckDoInventoryLogs()
 	{
-		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_INVENTORY) )
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_INVENTORY_MOVE) )
 		{
-			if( !m_DoInventoryLogs )
+			if( !m_DoInventoryMoveLogs )
 			{
-				SendSetInventoryLogs(true);
-				LogManager.InventoryLogEnable(true);
-				m_DoInventoryLogs = true;
+				SendSetInventoryMoveLogs(true);
+				LogManager.InventoryMoveLogEnable(true);
+				m_DoInventoryMoveLogs = true;
 			}
 		}
 		else
 		{
-			if( m_DoInventoryLogs )
+			if( m_DoInventoryMoveLogs )
 			{
-				SendSetInventoryLogs(false);
-				LogManager.InventoryLogEnable(false);
-				m_DoInventoryLogs = false;
+				SendSetInventoryMoveLogs(false);
+				LogManager.InventoryMoveLogEnable(false);
+				m_DoInventoryMoveLogs = false;
+			}
+		}
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_INVENTORY_RESERVATION) )
+		{
+			if( !m_DoInventoryReservationLogs )
+			{
+				SendSetInventoryReservationLogs(true);
+				LogManager.InventoryReservationLogEnable(true);
+				m_DoInventoryReservationLogs = true;
+			}
+		}
+		else
+		{
+			if( m_DoInventoryReservationLogs )
+			{
+				SendSetInventoryReservationLogs(false);
+				LogManager.InventoryReservationLogEnable(false);
+				m_DoInventoryReservationLogs = false;
+			}
+		}
+		if( DiagMenu.GetBool(DiagMenuIDs.DM_LOG_INVENTORY_MOVE) )
+		{
+			if( !m_DoInventoryHFSMLogs )
+			{
+				SendSetInventoryHFSMLogs(true);
+				LogManager.InventoryHFSMLogEnable(true);
+				m_DoInventoryHFSMLogs = true;
+			}
+		}
+		else
+		{
+			if( m_DoInventoryHFSMLogs )
+			{
+				SendSetInventoryHFSMLogs(false);
+				LogManager.InventoryHFSMLogEnable(false);
+				m_DoInventoryHFSMLogs = false;
 			}
 		}
 	}
@@ -1537,18 +1583,32 @@ class PluginDiagMenu extends PluginBase
 			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_ACTION_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
 	}
 	
-	void SendSetInventoryLogs(bool enable)
-	{
-		Param1<bool> p1 = new Param1<bool>(enable);
-		if(GetGame() && GetGame().GetPlayer()) 
-			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_INVENTORY_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
-	}
-	
 	void SendSetSymptomLogs(bool enable)
 	{
 		Param1<bool> p1 = new Param1<bool>(enable);
 		if(GetGame() && GetGame().GetPlayer()) 
 			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_SYMPTOMS_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
+	void SendSetInventoryMoveLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_INV_MOVE_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
+	void SendSetInventoryReservationLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_INV_RESERVATION_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
+	}
+	
+	void SendSetInventoryHFSMLogs(bool enable)
+	{
+		Param1<bool> p1 = new Param1<bool>(enable);
+		if(GetGame() && GetGame().GetPlayer()) 
+			GetGame().RPCSingleParam( GetGame().GetPlayer(),ERPCs.RPC_DO_INV_HFSM_LOGS, p1, true, GetGame().GetPlayer().GetIdentity() );
 	}
 	
 	//---------------------------------------------
@@ -1760,14 +1820,24 @@ class PluginDiagMenu extends PluginBase
 				LogManager.ActionLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
 			break;
 			
-			case ERPCs.RPC_DO_INVENTORY_LOGS:
-				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
-				LogManager.InventoryLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
-			break;
-			
 			case ERPCs.RPC_DO_SYMPTOMS_LOGS:
 				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
 				LogManager.SymptomLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
+			break;
+			
+			case ERPCs.RPC_DO_INV_MOVE_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.InventoryMoveLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
+			break;
+			
+			case ERPCs.RPC_DO_INV_RESERVATION_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.InventoryReservationLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
+			break;
+			
+			case ERPCs.RPC_DO_INV_HFSM_LOGS:
+				ctx.Read(CachedObjectsParams.PARAM1_BOOL);
+				LogManager.InventoryHFSMLogEnable(CachedObjectsParams.PARAM1_BOOL.param1);
 			break;
 		}
 	}

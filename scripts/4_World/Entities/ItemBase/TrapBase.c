@@ -15,6 +15,7 @@ class TrapBase extends ItemBase
 	bool m_AddDeactivationDefect;	// Damage trap after deactivation
 	protected bool m_IsActive;		// True means that the trap is ready to detonate
 	protected bool m_IsInProgress;
+	protected bool m_Disarmed = false; //Used for explosive traps to prevent detonation after destroying through disarm action
 
 	bool m_WasActivatedOrDeactivated;
 
@@ -214,11 +215,11 @@ class TrapBase extends ItemBase
 
 	bool IsPlaceableAtPosition( vector position )
 	{
-		if( GetGame().SurfaceIsSea( position[0], position[2] ) )
+		if ( GetGame().SurfaceIsSea( position[0], position[2] ) )
 		{
 			return false;
 		}
-		else if( GetGame().SurfaceIsPond( position[0], position[2] ) )
+		else if ( GetGame().SurfaceIsPond( position[0], position[2] ) )
 		{
 			return false;
 		}
@@ -247,11 +248,11 @@ class TrapBase extends ItemBase
 						//PlayerBase player = PlayerBase.Cast( victim );
 						//player.MessageStatus( m_InfoDamage );
 					}
-					else if(victim.IsInherited(DayZCreatureAI) )
+					else if (victim.IsInherited(DayZCreatureAI) )
 					{
 						victim.DecreaseHealth( "", "", m_DamageOthers );
 					}
-					else if(victim.IsInherited(ItemBase) )
+					else if (victim.IsInherited(ItemBase) )
 					{
 						ItemBase victim_item = ItemBase.Cast( victim );
 						float damage_coef = 1;
@@ -544,7 +545,7 @@ class TrapBase extends ItemBase
 		m_TrapTrigger.SetParentObject( this );
 	}
 
-	override void OnItemLocationChanged  ( EntityAI old_owner, EntityAI new_owner ) 
+	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged(old_owner, new_owner);
 		
@@ -582,7 +583,7 @@ class TrapBase extends ItemBase
 		}
 	}	
 	
-	override void EEItemDetached (EntityAI item, string slot_name)
+	override void EEItemDetached(EntityAI item, string slot_name)
 	{
 		super.EEItemDetached(item, slot_name);
 		
@@ -594,20 +595,20 @@ class TrapBase extends ItemBase
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
+		if ( !super.CanPutInCargo(parent) ) {return false;}
 		return IsTakeable();
 	}
 	
-	override bool CanPutIntoHands ( EntityAI parent ) 
+	override bool CanPutIntoHands( EntityAI parent ) 
 	{
-		if( !super.CanPutIntoHands( parent ) )
+		if ( !super.CanPutIntoHands( parent ) )
 		{
 			return false;
 		}
 		return IsTakeable();
 	}
 
-	override bool CanRemoveFromHands ( EntityAI parent ) 
+	override bool CanRemoveFromHands( EntityAI parent ) 
 	{
 		return IsTakeable();
 	}
@@ -620,6 +621,28 @@ class TrapBase extends ItemBase
 	override string CanBePlacedFailMessage( Man player, vector position )
 	{
 		return "Trap can't be placed on this surface type.";
+	}
+	
+	//Set if trap can be disarmed using ActionClapBearTrapWithThisItem
+	bool CanBeClapped()
+	{
+		return true;
+	}
+	
+	//Set if trap can be disarmed using ActionDisarmMine
+	bool CanBeDisarmed()
+	{
+		return false;
+	}
+	
+	void SetDisarmed( bool disarmed )
+	{
+		m_Disarmed = disarmed;
+	}
+	
+	bool GetDisarmed()
+	{
+		return m_Disarmed;
 	}
 	
 	//================================================================

@@ -99,10 +99,10 @@ class ActionRepairCarEngine: ActionContinuousBase
 							if ( damageZone != "Engine")
 								return false;
 							else
-								repairPos = car.GetFrontPointPosWS();
+								repairPos = car.GetEnginePosWS();
 							
-							float dist = vector.Distance( repairPos, player.GetPosition() );
-							if ( dist < MAX_ACTION_DIST)
+							float dist = vector.DistanceSq( repairPos, player.GetPosition() );
+							if ( dist < MAX_ACTION_DIST * MAX_ACTION_DIST)
 								return true;
 						}
 					}
@@ -140,7 +140,7 @@ class ActionRepairCarEngine: ActionContinuousBase
 				
 				//TODO:: CHECK
 				//GetHealthLevelValue
-				switch( newDmgLevel )
+				switch ( newDmgLevel )
 				{
 					case GameConstants.STATE_BADLY_DAMAGED:
 						Print( zoneMax * GameConstants.DAMAGE_RUINED_VALUE );
@@ -183,7 +183,7 @@ class ActionRepairCarEngine: ActionContinuousBase
 		super.WriteToContext( ctx, action_data );
 		RepairCarPartActionData repair_action_data;
 
-		if( HasTarget() && Class.CastTo( repair_action_data,action_data ) )
+		if ( HasTarget() && Class.CastTo( repair_action_data,action_data ) )
 		{
 			repair_action_data.m_DamageZone = m_CurrentDamageZone;
 			ctx.Write(repair_action_data.m_DamageZone);
@@ -192,13 +192,13 @@ class ActionRepairCarEngine: ActionContinuousBase
 	
 	override bool ReadFromContext(ParamsReadContext ctx, out ActionReciveData action_recive_data )
 	{
-		if( !action_recive_data )
+		if ( !action_recive_data )
 			action_recive_data = new RepairCarPartActionReciveData;
 
 		super.ReadFromContext( ctx, action_recive_data );
 		RepairCarPartActionReciveData recive_data_repair = RepairCarPartActionReciveData.Cast( action_recive_data );
 
-		if( HasTarget() )
+		if ( HasTarget() )
 		{
 			string zone;
 			if ( !ctx.Read( zone ) )

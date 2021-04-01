@@ -1,5 +1,15 @@
 class ZombieMaleBase extends ZombieBase
 {
+	override string CaptureSound()
+	{
+		return "ZmbM_Normal_HeavyHit_Soundset";
+	}
+	
+	override string ReleaseSound()
+	{
+		return "ZmbM_Normal_CallToArmsShort_Soundset";
+	}
+	
 };
 
 //! Base class for eatch Infected type

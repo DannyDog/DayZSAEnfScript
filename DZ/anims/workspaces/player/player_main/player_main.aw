@@ -1,6 +1,6 @@
 $animWorkspace {
  #animSetTemplate "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
- #NanimSetInstances 111
+ #NanimSetInstances 112
  #animSetInstance "{0F5E6205A5E823C3}DZ/anims/workspaces/player/player_main/player_main.asi"
  #animSetInstance "{F130A5AAAC3B3DF4}DZ/anims/workspaces/player/player_main/player_main_surrender.asi"
  #animSetInstance "{416372172B0AFA90}DZ/anims/workspaces/player/player_main/player_main_rifle.asi"
@@ -112,6 +112,7 @@ $animWorkspace {
  #animSetInstance "{EB5F7BBF7A727CC6}DZ/anims/workspaces/player/player_main/props/player_main_STANAG_mag.asi"
  #animSetInstance "{E8F8448A4BEE7620}DZ/anims/workspaces/player/player_main/weapons/player_main_deagle.asi"
  #animSetInstance "{75EF59C05062BC21}DZ/anims/workspaces/player/player_main/weapons/player_main_as_val.asi"
+ #animSetInstance "{4F433FCAB8105F05}DZ/anims/workspaces/player/player_main/props/player_main_1h_sickle.asi"
  #previewModel "{82410A0A5E1022A1}DZ/anims/workspaces/player/Models/player_f_editorpreview.xob"
  #previewModel "{D470A4E7581CCE23}DZ/anims/workspaces/player/Models/player_m_editorpreview.xob"
  #animGraph "{E23437DEB9E1712D}DZ/anims/workspaces/player/player_main/player_main.agr"

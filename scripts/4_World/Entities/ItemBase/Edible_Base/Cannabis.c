@@ -25,6 +25,6 @@ class Cannabis : Edible_Base
 		super.SetActions();
 		
 		AddAction(ActionForceFeed);
-		AddAction(ActionEatSmall);
+		AddAction(ActionEat);
 	}
 }

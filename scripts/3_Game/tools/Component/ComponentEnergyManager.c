@@ -87,10 +87,20 @@ class ComponentEnergyManager : Component
 			m_DebugPlugs = false;
 		}
 	}
+	
+	void ~ComponentEnergyManager()
+	{
+		if (m_DebugPlugArrow)
+		{
+			m_DebugPlugArrow.Destroy();
+			m_DebugPlugArrow = NULL; 
+		}
+	}
 
 	// Initialization. Energy Manager is ready.
 	override void Event_OnInit()
 	{
+		m_ThisEntityAI.m_EM = this;
 		GetGame().GameScript.CallFunction(m_ThisEntityAI, "OnInitEnergy", NULL, 0);
 	}
 	
@@ -115,6 +125,10 @@ class ComponentEnergyManager : Component
 		{
 			vector from = GetEnergySource().GetPosition() + "0 0.1 0";
 			vector to = m_ThisEntityAI.GetPosition() + "0 0.1 0";
+			
+			//No need to draw an arrow in this situation as it would not be visible
+			if ( vector.DistanceSq(from, to) == 0 )
+				return;
 			
 			if ( m_ThisEntityAI.GetType() == "BarbedWire" ) // Special case for debugging of electric fences. Temporal code until offsets in fences are fixed.
 			{
@@ -663,11 +677,6 @@ class ComponentEnergyManager : Component
 		m_UpdateInterval = value;
 	}
 	
-	
-	
-	
-	
-	
 	// Returns true if this device was plugged into something at the end of previous session
 	bool GetRestorePlugState()
 	{
@@ -1162,7 +1171,6 @@ class ComponentEnergyManager : Component
 			SetEnergy(clamped_energy);
 			StartUpdates();
 			
-			
 			if (energy_was_added)
 				OnEnergyAdded();
 			else
@@ -1220,7 +1228,7 @@ class ComponentEnergyManager : Component
 	//! Energy manager: Returns the device to which the given plug selection belongs to
 	EntityAI GetPlugOwner(string plug_selection_name)
 	{
-		if( m_DeviceByPlugSelection.Contains(plug_selection_name) )
+		if ( m_DeviceByPlugSelection.Contains(plug_selection_name) )
 		{
 			return m_DeviceByPlugSelection.Get(plug_selection_name);
 		}
@@ -1479,7 +1487,7 @@ class ComponentEnergyManager : Component
 	}
 	
 	// Updates socket selections (plugged/unplugged) of the given ID and sets color texture of the plug.
-	protected void UpdateSocketSelections (int socket_id, EntityAI device_to_plug)
+	protected void UpdateSocketSelections(int socket_id, EntityAI device_to_plug)
 	{
 		SetDeviceBySocketID(socket_id, device_to_plug);
 		
@@ -1557,7 +1565,7 @@ class ComponentEnergyManager : Component
 	// Sets the device to which the given plug selection belongs to
 	protected void SetPlugOwner(string selection_name, EntityAI device)
 	{
-		if( m_DeviceByPlugSelection.Contains(selection_name) )
+		if ( m_DeviceByPlugSelection.Contains(selection_name) )
 		{
 			m_DeviceByPlugSelection.Set(selection_name, device);
 		}
@@ -1728,7 +1736,7 @@ class ComponentEnergyManager : Component
 					ClearLastUpdateTime();
 				}
 			}
-			else if(this  &&  m_ThisEntityAI)
+			else if (this  &&  m_ThisEntityAI)
 			{
 				SetPowered( false );
 				StopUpdates();

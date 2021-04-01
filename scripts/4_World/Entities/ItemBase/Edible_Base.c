@@ -432,6 +432,8 @@ class Edible_Base extends ItemBase
 	//Use this to receive food stage from another Edible_Base
 	void TransferFoodStage( notnull Edible_Base source )
 	{
+		if ( !source.HasFoodStage())
+			return;
 		m_LastDecayStage = source.GetLastDecayStage();
 		ChangeFoodStage(source.GetFoodStage().GetFoodStageType());
 		m_DecayTimer = source.GetDecayTimer();

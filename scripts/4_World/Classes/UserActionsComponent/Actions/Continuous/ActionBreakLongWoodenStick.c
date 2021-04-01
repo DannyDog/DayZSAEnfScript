@@ -50,8 +50,15 @@ class ActionBreakLongWoodenStick: ActionContinuousBase
 	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
+		ItemBase startingItem = action_data.m_MainItem;
+		
 		BreakLongWoodenStick lambda = new BreakLongWoodenStick(action_data.m_MainItem, "WoodenStick", action_data.m_Player, 3);
 		action_data.m_Player.ServerReplaceItemInHandsWithNew(lambda);
+		
+		if(LongWoodenStick.Cast(startingItem) == null) // case if it is a broom
+		{
+			action_data.m_Player.SpawnEntityOnGroundPos("LongWoodenStick", action_data.m_Player.GetPosition());
+		}
 	}
 };
 

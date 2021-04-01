@@ -76,7 +76,7 @@ class ActionTakeHybridAttachment: ActionInteractBase
 			}
 			else
 			{
-				action_data.m_Player.GetInventory().AddInventoryReservation( attachment, il, GameInventory.c_InventoryReservationTimeoutMS);
+				action_data.m_Player.GetInventory().AddInventoryReservationEx( attachment, il, GameInventory.c_InventoryReservationTimeoutMS);
 			}
 		}	
 		
@@ -104,7 +104,7 @@ class ActionTakeHybridAttachment: ActionInteractBase
 			InventoryLocation il = action_data.m_ReservedInventoryLocations.Get(0);	
 			InventoryLocation targetInventoryLocation = new InventoryLocation;
 			attachment.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 			//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
 			
 			float stackable = attachment.GetTargetQuantityMax(il.GetSlot());
@@ -133,7 +133,7 @@ class ActionTakeHybridAttachment: ActionInteractBase
 			InventoryLocation il = action_data.m_ReservedInventoryLocations.Get(0);
 			InventoryLocation targetInventoryLocation = new InventoryLocation;
 			attachment.GetInventory().GetCurrentInventoryLocation(targetInventoryLocation);
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 			//SplitItemUtils.TakeOrSplitToInventoryLocation( action_data.m_Player, il );
 			//action_data.m_Player.PredictiveTakeToDst(targetInventoryLocation, il);
 			float stackable = attachment.GetTargetQuantityMax(il.GetSlot());

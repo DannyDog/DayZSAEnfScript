@@ -30,6 +30,9 @@ class ActionDigWorms: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		// Check if player is standing on terrain
 		vector plr_pos = player.GetPosition();
 		float height = GetGame().SurfaceY(plr_pos[0], plr_pos[2]);
@@ -40,7 +43,7 @@ class ActionDigWorms: ActionContinuousBase
 		
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
-			if ( !player.IsPlacingLocal() && player.IsCurrentCameraAimedAtGround() )
+			if ( !player.IsPlacingLocal() /*&& player.IsCurrentCameraAimedAtGround()*/ )
 			{
 				if ( target )
 				{
@@ -49,6 +52,8 @@ class ActionDigWorms: ActionContinuousBase
 					position = target.GetCursorHitPos();
 					
 					GetGame().SurfaceGetType( position[0], position[2], surface_type );
+					
+					//float distance = vector.Distance(plr_pos,position);
 					
 					if ( GetGame().IsSurfaceFertile(surface_type) )
 					{

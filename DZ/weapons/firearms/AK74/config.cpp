@@ -164,6 +164,11 @@ class cfgWeapons
 			dispersion = 0.002;
 			magazineSlot = "magazine";
 		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
+		};
 		class OpticsInfo: OpticsInfoRifle{};
 	};
 	class AK74: AK74_Base

@@ -12,14 +12,16 @@
 
 class Debug
 {	
-	static private const string	LOG_DEBUG			= "Debug";
-	static private const string	LOG_DEBUG_ACTION	= "Debug Action";
-	static private const string	LOG_DEBUG_INVENTORY	= "Debug Inventory";
-	static private const string	LOG_DEBUG_SYMPTOM	= "Debug Symptom";
-	static private const string	LOG_INFO			= "Info";
-	static private const string	LOG_WARNING			= "Warning";
-	static private const string	LOG_ERROR			= "Error";
-	static private const string	LOG_DEFAULT			= "n/a";
+	static private const string	LOG_DEBUG					= "Debug";
+	static private const string	LOG_DEBUG_ACTION			= "Action";
+	static private const string	LOG_DEBUG_SYMPTOM			= "Symptom";
+	static private const string	LOG_DEBUG_INV_MOVE			= "Inv Move";
+	static private const string	LOG_DEBUG_INV_RESERVATION	= "Inv Rrsv";
+	static private const string	LOG_DEBUG_INV_HFSM			= "HFSM";
+	static private const string	LOG_INFO					= "Info";
+	static private const string	LOG_WARNING					= "Warning";
+	static private const string	LOG_ERROR					= "Error";
+	static private const string	LOG_DEFAULT					= "n/a";
 	
 	static private ref array<Shape>	m_DebugShapes;
 	
@@ -97,18 +99,6 @@ class Debug
 			}
 		}
 	}
-
-	static void SetEnabledLogs(bool enable)
-	{
-		m_EnabledLogs = enable;
-	}
-	
-	static bool IsLogsEnabled()
-	{
-		return m_EnabledLogs;
-	}
-
-	
 	/**
 	\brief Prints debug message with normal prio
 		\param msg \p string Debug message for print
@@ -129,14 +119,24 @@ class Debug
 		LogMessage(LOG_DEBUG_ACTION, plugin, entity, author, label, message);
 	}
 	
-	static void	InventoryLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
-	{
-		LogMessage(LOG_DEBUG_INVENTORY, plugin, entity, author, label, message);
-	}
-	
 	static void	SymptomLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
 	{
 		LogMessage(LOG_DEBUG_SYMPTOM, plugin, entity, author, label, message);
+	}
+	
+	static void	InventoryMoveLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_INV_MOVE, plugin, entity, author, label, message);
+	}
+	
+	static void	InventoryReservationLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_INV_RESERVATION, plugin, entity, author, label, message);
+	}
+	
+	static void	InventoryHFSMLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_INV_HFSM, plugin, entity, author, label, message);
 	}
 	
 	/**
@@ -205,7 +205,8 @@ class Debug
 	
 	static void	ReceivedLogMessageFromServer(string message)
 	{
-		SaveLog(message);
+		if( LogManager.IsLogsEnable() )
+			SaveLog(message);
 	}
 	
 	static void ClearScriptLogs(){
@@ -359,18 +360,13 @@ class Debug
 		
 	static private void LogMessage(string level, string plugin, string entity, string author, string label, string message)
 	{
-		if (GetGame() == NULL || GetGame().IsDebug() == false || CGame.IsDoNoLogs())
+		if (GetGame() == NULL || LogManager.IsLogsEnable() == false )
 		{
-			return;		
+			return;
 		}
 		
 		bool is_server_log = ( GetGame().IsServer() && GetGame().IsMultiplayer() );
 		
-		// Script Console checkbox
-		if ( !is_server_log && IsLogsEnabled() == false )
-		{
-			return;
-		}		
 		
 		// Formation output to external file
 		// %date{MM-dd HH:mm:ss} | %Enviroment | %Level | %Module | %Entity | %Author | %Label | %Message	
@@ -388,8 +384,10 @@ class Debug
 		if ( is_server_log )
 		{
 			SaveLog(msg);
+#ifdef DEVELOPER //not sendig log to clients on stable
 			Param1<string> msg_p = new Param1<string>(msg);
 			CallMethod(CALL_ID_SEND_LOG, msg_p);
+#endif
 		}
 		else
 		{
@@ -456,15 +454,37 @@ class Debug
 
 class LogManager
 {
+	static bool m_DoLogs;
 	static bool m_DoActionDebugLog;
-	static bool m_DoInventoryDebugLog;
 	static bool m_DoSymptomDebugLog;
+	static bool m_DoInventoryMoveLog;
+	static bool m_DoInventoryReservationLog;
+	static bool m_DoInventoryHFSMLog;
+	
 	
 	static void Init()
 	{
+#ifdef DEVELOPER 
+		m_DoLogs = true;
+#else
+		m_DoLogs = false;
+#endif
+
 		m_DoActionDebugLog = IsCLIParam("doActionLog");
-		m_DoInventoryDebugLog = IsCLIParam("doInventoryLog");
 		m_DoSymptomDebugLog = IsCLIParam("doSymptomLog");
+		m_DoInventoryMoveLog = IsCLIParam("doInvMoveLog");
+		m_DoInventoryReservationLog = IsCLIParam("doInvReservLog");
+		m_DoInventoryHFSMLog = IsCLIParam("doInvHFSMLog");
+	}
+	
+	static bool IsLogsEnable()
+	{
+		return m_DoLogs;
+	}
+	
+	static void SetLogsEnabled(bool enable)
+	{
+		m_DoLogs = enable;
 	}
 	
 	static bool IsActionLogEnable()
@@ -477,14 +497,34 @@ class LogManager
 		m_DoActionDebugLog = enable;
 	}
 	
-	static bool IsInventoryLogEnable()
+	static bool IsInventoryMoveLogEnable()
 	{
-		return m_DoInventoryDebugLog;
+		return m_DoInventoryMoveLog;
 	}
 	
-	static void InventoryLogEnable(bool enable)
+	static void InventoryMoveLogEnable(bool enable)
 	{
-		m_DoInventoryDebugLog = enable;
+		m_DoInventoryMoveLog = enable;
+	}
+	
+	static bool IsInventoryReservationLogEnable()
+	{
+		return m_DoInventoryReservationLog;
+	}
+	
+	static void InventoryReservationLogEnable(bool enable)
+	{
+		m_DoInventoryReservationLog = enable;
+	}
+	
+	static bool IsInventoryHFSMLogEnable()
+	{
+		return m_DoInventoryHFSMLog;
+	}
+	
+	static void InventoryHFSMLogEnable(bool enable)
+	{
+		m_DoInventoryHFSMLog = enable;
 	}
 	
 	static bool IsSymptomLogEnable()

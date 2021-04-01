@@ -2,6 +2,7 @@
 class InspectMenuNew extends UIScriptedMenu
 {
 	private ItemPreviewWidget m_item_widget;
+	private ItemPreviewWidget m_slot_widget;
 	private int m_characterRotationX;
 	private int m_characterRotationY;
 	private int m_characterScaleDelta;
@@ -167,6 +168,14 @@ class InspectMenuNew extends UIScriptedMenu
 		InspectMenuNew.UpdateItemInfoFoodStage(root_widget, item);
 		
 		Widget content = root_widget.FindAnyWidget("InventoryInfoPanelWidget");
+	}
+	
+	//--------------------------------------------------------------------------
+	static void UpdateSlotInfo(Widget root_widget, string name, string desc = "")
+	{
+		if (!root_widget ) return;
+	
+		WidgetTrySetText(root_widget, "ItemNameWidget", name);
 	}
 
 	//--------------------------------------------------------------------------

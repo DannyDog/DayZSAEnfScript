@@ -4,8 +4,9 @@ class UAQuantityConsumed
 {
 	const float DEFAULT = 1;
 	const float DISINFECT = 10;
-	const float EAT_SMALL = 15;
-	const float EAT_NORMAL = 25;
+	const float EAT_SMALL = 10;
+	const float EAT_NORMAL = 15;
+	const float EAT_BIG = 25;
 	const float FILL_LIQUID = 200;
 	const float POUR_LIQUID = 100;
 	const float DRAIN_LIQUID = 100;
@@ -77,6 +78,7 @@ class UATimeSpent
 	const float UNLOCK = 2;
 	const float UNPACK = 2;
 	const float WASH_HANDS = 3;
+	const float DISARM_MINE = 15;
 	
 	const float MAG_EMPTY = 0.5;
 	const float MAG_LOAD = 0.5;

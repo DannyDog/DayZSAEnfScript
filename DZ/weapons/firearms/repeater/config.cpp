@@ -42,7 +42,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		WeaponLength = 1.1;
 		barrelArmor = 0.54;
-		initSpeedMultiplier = 1.344;
+		initSpeedMultiplier = 1.5;
 		chamberSize = 7;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_357"};
@@ -109,6 +109,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

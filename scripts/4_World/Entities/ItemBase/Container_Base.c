@@ -25,7 +25,12 @@ class DeployableContainer_Base extends Container_Base
 	{
 		m_HalfExtents = vector.Zero;
 		
-		ProcessInvulnerabilityCheck("disableContainerDamage");
+		ProcessInvulnerabilityCheck(GetInvulnerabilityTypeString());
+	}
+	
+	override string GetInvulnerabilityTypeString()
+	{
+		return "disableContainerDamage";
 	}
 	
 	override void SetActions()

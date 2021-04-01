@@ -108,6 +108,7 @@ class Shape
 	proto private void ~Shape();
 
 	proto native void SetMatrix(vector mat[4]);
+	proto native void SetDirection(vector direction);
 	proto native void SetColor(int color);
 	proto native void SetFlags(ShapeFlags flags);
 	proto native void Destroy();

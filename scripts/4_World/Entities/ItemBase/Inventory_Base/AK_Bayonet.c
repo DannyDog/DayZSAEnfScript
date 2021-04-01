@@ -1,4 +1,4 @@
-class AK_Bayonet extends Inventory_Base
+class AK_Bayonet extends ToolBase
 {
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
@@ -38,6 +38,7 @@ class AK_Bayonet extends Inventory_Base
 		AddAction(ActionBurnSewSelf);
 		AddAction(ActionDigWorms);
 		AddAction(ActionShaveTarget);
+		AddAction(ActionDisarmMine);
 		AddAction(ActionShave);
 	}
 }

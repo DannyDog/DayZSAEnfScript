@@ -847,15 +847,17 @@ class PluginDayzPlayerDebug extends PluginBase
 		//! fullbody looping
 		if (pType == 6)
 		{
-			m_ActionsSelector.AddItem("FB L 1HD", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_1HD, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+			m_ActionsSelector.AddItem("FB L 1HD", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_1HD, true, DayZPlayerConstants.STANCEMASK_CROUCH), 0);
 			m_ActionsSelector.AddItem("FB L FIREAXE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_FIREAXE, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
 			m_ActionsSelector.AddItem("FB L PITCHFORK", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_PITCHFORK, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
-			m_ActionsSelector.AddItem("FB L PISTOL", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_PISTOL, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
-			m_ActionsSelector.AddItem("FB L RIFLE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_RIFLE, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+			m_ActionsSelector.AddItem("FB L PISTOL", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_PISTOL, true, DayZPlayerConstants.STANCEMASK_CROUCH), 0);
+			m_ActionsSelector.AddItem("FB L RIFLE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_RIFLE, true, DayZPlayerConstants.STANCEMASK_CROUCH), 0);
 			m_ActionsSelector.AddItem("FB L SWORD", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_SWORD, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
-			m_ActionsSelector.AddItem("FB L UNARMED", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_UNARMED, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+			m_ActionsSelector.AddItem("FB L UNARMED", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_UNARMED, true, DayZPlayerConstants.STANCEMASK_CROUCH), 0);
 			m_ActionsSelector.AddItem("FB L WOODAXE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_WOODAXE, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
 			m_ActionsSelector.AddItem("FB L SPEAR", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_SPEAR, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
+			m_ActionsSelector.AddItem("FB L SICKLE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_SICKLE, true, DayZPlayerConstants.STANCEMASK_CROUCH), 0);
+			m_ActionsSelector.AddItem("FB L HOE", new PluginDayzPlayerDebugUserData(DayZPlayerConstants.CMD_SUICIDEFB_HOE, true, DayZPlayerConstants.STANCEMASK_ERECT), 0);
 		}
 
 	}

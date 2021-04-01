@@ -159,7 +159,7 @@ class ActionManagerClient: ActionManagerBase
 #endif
 			if (!m_CurrentActionData)
 			{
-				if ( m_Player.IsRaised() )
+				if ( m_Player.IsRaised() || GetGame().GetUIManager().IsMenuOpen(MENU_INVENTORY) )
 				{
 					m_Targets.Clear();
 				}
@@ -297,7 +297,7 @@ class ActionManagerClient: ActionManagerBase
 	}
 
 	//--------------------------------------------------------
-	// Alows to set different action to current contextual one //jtomasik - pri injectu budu muset serveru poslat ID injectnute akce
+	// Alows to set different action to current contextual one
 	//--------------------------------------------------------	
 	void InjectAction( ActionBase action, ActionTarget target, ItemBase item)
 	{
@@ -393,6 +393,8 @@ class ActionManagerClient: ActionManagerBase
 	
 	protected void FindContextualUserActions( int pCurrentCommandID )
 	{
+		// TODO: NEEDS OPTIMIZATION (focus on UpdatePossibleActions > CraftingManager::OnUpdate)
+		
 		m_ActionsAvaibale = false;
 		if ( !m_ActionPossible || HasHandInventoryReservation() || GetGame().IsInventoryOpen())
 		{
@@ -459,7 +461,7 @@ class ActionManagerClient: ActionManagerBase
 			Debug.ActionLog("(O) Inventory unlock", action_data.m_Action.ToString() , "n/a", "UnlockInventory", action_data.m_Player.ToString() );
 		}
 		if (action_data.m_Action)
-			action_data.m_Action.ClearInventoryReservation(action_data);
+			action_data.m_Action.ClearInventoryReservationEx(action_data);
 	}
 	
 	protected void ActionStart(ActionBase action, ActionTarget target, ItemBase item, Param extra_data = NULL )

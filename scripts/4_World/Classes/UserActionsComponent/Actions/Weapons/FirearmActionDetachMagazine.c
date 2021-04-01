@@ -50,7 +50,7 @@ class FirearmActionDetachMagazine_Old : FirearmActionBase
 			return false;
 
 		DetachMagActionData action_data_dm = DetachMagActionData.Cast(action_data);
-		if( !action_data.m_Player.GetInventory().AddInventoryReservation(mag,il,10000) )
+		if( !action_data.m_Player.GetInventory().AddInventoryReservationEx(mag,il,10000) )
 			return false;
 			
 		action_data_dm.m_ReservedInventoryLocations.Insert(il);
@@ -185,10 +185,10 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 			return false;
 
 		AdvDetachMagActionData action_data_dm = AdvDetachMagActionData.Cast(action_data);
-		if( !action_data.m_Player.GetInventory().AddInventoryReservation(wpn,ilWpn,10000) )
+		if( !action_data.m_Player.GetInventory().AddInventoryReservationEx(wpn,ilWpn,10000) )
 			return false;
 		
-		if( !action_data.m_Player.GetInventory().AddInventoryReservation(mag,ilMag,10000) )
+		if( !action_data.m_Player.GetInventory().AddInventoryReservationEx(mag,ilMag,10000) )
 			return false;
 			
 		action_data_dm.m_ReservedInventoryLocations.Insert(ilWpn);
@@ -356,7 +356,7 @@ class FirearmActionDetachMagazine : ActionSequentialBase
 	override void OnStartServer( ActionData action_data )
 	{
 		AdvDetachMagActionData action_data_dm = AdvDetachMagActionData.Cast(action_data);
-		GetGame().AddInventoryJuncture(action_data.m_Player, EntityAI.Cast(action_data.m_Target.GetObject()),action_data_dm.m_ilMagazine, true, 10000);
+		GetGame().AddInventoryJunctureEx(action_data.m_Player, EntityAI.Cast(action_data.m_Target.GetObject()),action_data_dm.m_ilMagazine, true, 10000);
 	}
 	
 	override void OnEndServer( ActionData action_data )

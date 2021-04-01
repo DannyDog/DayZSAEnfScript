@@ -20,14 +20,17 @@ class ActionClapBearTrapWithThisItem: ActionSingleUseBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( !target ) return false;
-		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+		if ( !target )
+			return false;
+		
+		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
+			return false;
 
 		TrapBase target_TB;
 
 		if ( Class.CastTo(target_TB,  target.GetObject() ) &&  item )
 		{		
-			if (target_TB.IsActive())
+			if (target_TB.IsActive() && target_TB.CanBeClapped())
 			{
 				return true;
 			}

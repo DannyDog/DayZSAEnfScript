@@ -150,15 +150,15 @@ class PowerGenerator extends ItemBase
 	}
 	
 	// Called when this generator is picked up
-	override void OnItemLocationChanged  ( EntityAI old_owner, EntityAI new_owner ) 
+	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged(old_owner, new_owner);
 		UpdateFuelMeter();
 	}
 	
-	override void EEItemAttached ( EntityAI item, string slot_name )
+	override void EEItemAttached( EntityAI item, string slot_name )
 	{
-		super.EEItemAttached ( item, slot_name );
+		super.EEItemAttached( item, slot_name );
 		
 		ItemBase item_IB = ItemBase.Cast( item );
 		
@@ -169,14 +169,15 @@ class PowerGenerator extends ItemBase
 			
 			if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() )
 			{
-				SEffectManager.PlaySound(SPARKPLUG_ATTACH_SOUND, GetPosition() );
+				EffectSound sound = SEffectManager.PlaySound(SPARKPLUG_ATTACH_SOUND, GetPosition() );
+				sound.SetSoundAutodestroy( true );
 			}
 		}
 	}
 	
-	override void EEItemDetached ( EntityAI item, string slot_name )
+	override void EEItemDetached( EntityAI item, string slot_name )
 	{
-		super.EEItemDetached ( item, slot_name );
+		super.EEItemDetached( item, slot_name );
 		
 		ItemBase item_IB = ItemBase.Cast( item );
 		
@@ -188,7 +189,8 @@ class PowerGenerator extends ItemBase
 			
 			if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() )
 			{
-				SEffectManager.PlaySound(SPARKPLUG_DETACH_SOUND, GetPosition() );
+				EffectSound sound = SEffectManager.PlaySound(SPARKPLUG_DETACH_SOUND, GetPosition() );
+				sound.SetSoundAutodestroy( true );
 			}
 		}
 	}

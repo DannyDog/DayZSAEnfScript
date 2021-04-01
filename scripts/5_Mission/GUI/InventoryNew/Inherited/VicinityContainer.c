@@ -599,7 +599,7 @@ class VicinityContainer: CollapsibleContainer
 				VicinitySlotsContainer c2 = VicinitySlotsContainer.Cast( cont );
 				if( m_VicinityIconsContainer == c2 )
 				{
-					EntityAI e = c2.GetActiveItem();
+					EntityAI e = c2.GetFocusedItem();
 					c = ClosableContainer.Cast( m_ShowedItems.Get( e ) );
 					if( c )
 					{

@@ -1,6 +1,6 @@
 class StuffedStomachMdfr: ModifierBase
 {
-	protected const int	 	STUFFED_TRESHOLD 			= 1500;
+	protected const int	 	STUFFED_TRESHOLD = PlayerConstants.BT_STOMACH_VOLUME_LVL3;
 	override void Init()
 	{
 		m_TrackActivatedTime = false;

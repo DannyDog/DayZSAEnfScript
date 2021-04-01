@@ -111,7 +111,7 @@ class HandAnimatedMovingToAtt extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Entity, m_ilEntity);
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Entity, m_ilEntity);
 		}
 		else
 		{
@@ -128,7 +128,7 @@ class HandAnimatedMovingToAtt extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Entity, m_ilEntity);
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Entity, m_ilEntity);
 		}
 		
 		m_Entity = null;

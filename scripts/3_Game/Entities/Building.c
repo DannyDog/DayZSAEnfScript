@@ -22,6 +22,11 @@ class Building extends EntityAI
 		return true;
 	}
 	
+	override bool CanObstruct()
+	{
+		return true;
+	}
+	
 	override bool IsHealthVisible()
 	{
 		return false;

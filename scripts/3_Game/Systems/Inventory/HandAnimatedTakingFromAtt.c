@@ -87,14 +87,14 @@ class HandAnimatedTakingFromAtt extends HandStateBase
 		m_Hide.m_ActionType = e.GetAnimationID();
 		m_Show.m_ActionType = e.GetAnimationID();
 			
-		e.m_Player.GetHumanInventory().AddInventoryReservation(m_Dst.GetItem(), m_Dst, GameInventory.c_InventoryReservationTimeoutShortMS);
+		e.m_Player.GetHumanInventory().AddInventoryReservationEx(m_Dst.GetItem(), m_Dst, GameInventory.c_InventoryReservationTimeoutShortMS);
 
 		super.OnEntry(e); // @NOTE: super at the end (prevent override from submachine start)
 	}
 
 	override void OnAbort (HandEventBase e)
 	{
-		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst.GetItem(), m_Dst);
+		e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst.GetItem(), m_Dst);
 		if ( GetGame().IsServer() )
 			GetGame().ClearJuncture(e.m_Player, m_Dst.GetItem());
 		m_Dst = null;
@@ -104,7 +104,7 @@ class HandAnimatedTakingFromAtt extends HandStateBase
 
 	override void OnExit (HandEventBase e)
 	{
-		e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst.GetItem(), m_Dst);
+		e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst.GetItem(), m_Dst);
 		m_Dst = null;
 
 		super.OnExit(e);

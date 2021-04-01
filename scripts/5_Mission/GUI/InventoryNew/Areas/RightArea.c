@@ -32,7 +32,7 @@ class RightArea: Container
 		m_FocusedContainer = cont;
 	}
 	
-	EntityAI GetFocusedItem()
+	override EntityAI GetFocusedItem()
 	{
 		EntityAI item = m_PlayerContainer.GetFocusedItem();
 		return item;

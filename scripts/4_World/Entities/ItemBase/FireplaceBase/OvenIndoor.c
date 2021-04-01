@@ -25,7 +25,7 @@ class OvenIndoor extends FireplaceBase
 		RegisterNetSyncVariableFloat( "m_SmokePosX", 0, 0, 2 );
 		RegisterNetSyncVariableFloat( "m_SmokePosY", 0, 0, 2 );
 		RegisterNetSyncVariableFloat( "m_SmokePosZ", 0, 0, 2 );
-		RegisterNetSyncVariableInt( "m_FirePointIndex", 1, 9 );
+		RegisterNetSyncVariableInt( "m_FirePointIndex", 0, 9 );
 		
 		m_LightDistance = 50;
 		m_RoofAbove = true;
@@ -54,7 +54,7 @@ class OvenIndoor extends FireplaceBase
 
 		//--- Fireplace Indoor data ---
 		//fire point name
-		if( !ctx.Read( m_FirePointIndex ) )
+		if ( !ctx.Read( m_FirePointIndex ) )
 		{
 			m_FirePointIndex = 1;		//set default
 			return false;
@@ -176,7 +176,7 @@ class OvenIndoor extends FireplaceBase
 			return true;
 		
 		//direct cooking slots
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 			return true;
 		
 		return false;
@@ -198,7 +198,7 @@ class OvenIndoor extends FireplaceBase
 			return true;
 		
 		//direct cooking slots
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 			return true;
 		
 		return false;
@@ -206,7 +206,7 @@ class OvenIndoor extends FireplaceBase
 
 	override bool CanReleaseAttachment( EntityAI attachment )
 	{
-		if( !super.CanReleaseAttachment( attachment ) )
+		if ( !super.CanReleaseAttachment( attachment ) )
 			return false;
 		
 		ItemBase item = ItemBase.Cast( attachment );
@@ -258,7 +258,7 @@ class OvenIndoor extends FireplaceBase
 		}
 		
 		//direct cooking slots
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 		{
 			return true;
 		}
@@ -380,6 +380,11 @@ class OvenIndoor extends FireplaceBase
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
 			cooking_pot.RemoveAudioVisualsOnClient();	
 		}
+		if ( item_base.Type() == ATTACHMENT_CAULDRON )
+		{	
+			Bottle_Base cauldron = Bottle_Base.Cast( item );
+			cauldron.RemoveAudioVisualsOnClient();	
+		}
 		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
 		{	
 			FryingPan frying_pan = FryingPan.Cast( item );
@@ -426,7 +431,7 @@ class OvenIndoor extends FireplaceBase
 		return false;
 	}
 	
-	override bool CanRemoveFromHands ( EntityAI player ) 
+	override bool CanRemoveFromHands( EntityAI player ) 
 	{
 		return false;
 	}

@@ -1,5 +1,10 @@
-class Lockpick: Inventory_Base
+class Lockpick: ToolBase
 {
+	void Lockpick()
+	{
+		m_MineDisarmRate = 90;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
@@ -7,5 +12,6 @@ class Lockpick: Inventory_Base
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionLockDoors);
 		AddAction(ActionUnlockDoors);
+		AddAction(ActionDisarmMine);
 	}
 };

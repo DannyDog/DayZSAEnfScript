@@ -63,6 +63,7 @@ class ScriptConsole extends UIScriptedMenu
 		m_HudDCharAgents	= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_CharacterAgents") );
 		m_HudDCharDebug		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_CharacterDebug") );
 		m_HudDFreeCamCross	= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_FreeCamCross") );
+		m_HudDVersion		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_Version") );
 
 
 		m_EnfScriptEdit	= MultilineEditBoxWidget.Cast( layoutRoot.FindAnyWidget("MultilineEditBoxWidget0") );
@@ -121,6 +122,7 @@ class ScriptConsole extends UIScriptedMenu
 		m_HudDCharAgents.SetChecked(m_ConfigDebugProfile.GetCharacterAgentsVisible());
 		m_HudDCharDebug.SetChecked(m_ConfigDebugProfile.GetCharacterDebugVisible());
 		m_HudDFreeCamCross.SetChecked(m_ConfigDebugProfile.GetFreeCameraCrosshairVisible());
+		m_HudDVersion.SetChecked(m_ConfigDebugProfile.GetVersionVisible());
 
 		m_LogsEnabled.SetChecked(m_ConfigDebugProfile.GetLogsEnabled());
 
@@ -444,7 +446,7 @@ class ScriptConsole extends UIScriptedMenu
 			if ( m_ConfigDebugProfile )
 			{
 				m_ConfigDebugProfile.SetLogsEnabled(m_LogsEnabled.IsChecked());
-				Debug.SetEnabledLogs(m_LogsEnabled.IsChecked());
+				LogManager.SetLogsEnabled(m_LogsEnabled.IsChecked());
 			}
 
 			return true;
@@ -478,6 +480,18 @@ class ScriptConsole extends UIScriptedMenu
 			if ( m_ConfigDebugProfile )
 			{
 				m_ConfigDebugProfile.SetCharacterStomachVisible(m_HudDCharStomach.IsChecked());
+			}
+
+			// Refresh UI by new settings
+			m_MissionGameplay.GetHudDebug().RefreshByLocalProfile();
+
+			return true;
+		}
+		else if ( w == m_HudDVersion )
+		{
+			if ( m_ConfigDebugProfile )
+			{
+				m_ConfigDebugProfile.SetVersionVisible(m_HudDVersion.IsChecked());
 			}
 
 			// Refresh UI by new settings
@@ -1546,6 +1560,7 @@ class ScriptConsole extends UIScriptedMenu
 	CheckBoxWidget		m_HudDCharAgents;
 	CheckBoxWidget		m_HudDCharDebug;
 	CheckBoxWidget		m_HudDFreeCamCross;
+	CheckBoxWidget		m_HudDVersion;
 	
 	EditBoxWidget m_ObjectFilter;
 	EditBoxWidget m_SpawnDistanceEditBox;

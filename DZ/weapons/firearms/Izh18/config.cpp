@@ -66,7 +66,7 @@ class cfgWeapons
 			reloadTime = 1;
 			recoil = "recoil_izh18";
 			recoilProne = "recoil_izh18_prone";
-			dispersion = 0.001;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
 			soundBeginExt[] = {{"beginSilenced_HomeMade",1}};
@@ -87,6 +87,11 @@ class cfgWeapons
 					overrideParticle = "weapon_dust_izh18_01";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{
@@ -153,7 +158,7 @@ class cfgWeapons
 			begin3[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_close_2",1.7782794,1,1000};
 			soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin2",0.33333};
 			reloadTime = 1;
-			dispersion = 0.08;
+			dispersion = 0.045;
 			recoil = "recoil_izh18sawedoff";
 			recoilProne = "recoil_izh18sawedoff";
 		};

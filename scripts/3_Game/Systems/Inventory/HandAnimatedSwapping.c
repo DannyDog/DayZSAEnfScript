@@ -51,8 +51,8 @@ class HandAnimatedSwapping extends HandStateBase
 			
 			if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 			{
-				e.m_Player.GetHumanInventory().AddInventoryReservation(m_Dst2.GetItem(), m_Dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
-				e.m_Player.GetHumanInventory().AddInventoryReservation(m_Dst1.GetItem(), m_Dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
+				e.m_Player.GetHumanInventory().AddInventoryReservationEx(m_Dst2.GetItem(), m_Dst2, GameInventory.c_InventoryReservationTimeoutShortMS);
+				e.m_Player.GetHumanInventory().AddInventoryReservationEx(m_Dst1.GetItem(), m_Dst1, GameInventory.c_InventoryReservationTimeoutShortMS);
 			}
 		}
 
@@ -63,8 +63,8 @@ class HandAnimatedSwapping extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst2.GetItem(), m_Dst2);
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst1.GetItem(), m_Dst1);
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst2.GetItem(), m_Dst2);
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst1.GetItem(), m_Dst1);
 		}
 		else
 		{
@@ -84,8 +84,8 @@ class HandAnimatedSwapping extends HandStateBase
 	{
 		if( GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst2.GetItem(), m_Dst2);
-			e.m_Player.GetHumanInventory().ClearInventoryReservation(m_Dst1.GetItem(), m_Dst1);		
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst2.GetItem(), m_Dst2);
+			e.m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst1.GetItem(), m_Dst1);		
 		}
 		
 		m_Src1 = null;

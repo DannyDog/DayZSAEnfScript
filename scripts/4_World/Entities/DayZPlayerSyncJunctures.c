@@ -27,6 +27,7 @@ class DayZPlayerSyncJunctures
 	static const int SJ_BROKEN_LEGS						= 21;
 	static const int SJ_SHOCK							= 22;
 	static const int SJ_STAMINA							= 23;
+	static const int SJ_STAMINA_MISC					= 24;
 	
 	//-------------------------------------------------------------
 	//!

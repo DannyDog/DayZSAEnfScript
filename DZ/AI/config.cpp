@@ -841,7 +841,7 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 30;
-				noiseToAlertMultiplier = 0.4;
+				noiseToAlertMultiplier = 1;
 				noiseShotToAlertMultiplier = 1.2;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -1553,7 +1553,7 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 7.0;
+				visionToAlertMultiplier = 20.0;
 				noiseToAlertMultiplier = 1.0;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -2084,7 +2084,7 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 60;
-				noiseToAlertMultiplier = 0.3;
+				noiseToAlertMultiplier = 1;
 				noiseShotToAlertMultiplier = 1.2;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -2602,7 +2602,7 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 25;
-				noiseToAlertMultiplier = 0.7;
+				noiseToAlertMultiplier = 1;
 				noiseShotToAlertMultiplier = 2.0;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -3107,7 +3107,7 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 7;
+				visionToAlertMultiplier = 15;
 				noiseToAlertMultiplier = 1.0;
 				noiseShotToAlertMultiplier = 2.0;
 				damageToAlertMultiplier = 1e+06;
@@ -3621,8 +3621,8 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 7.0;
-				noiseToAlertMultiplier = 1.0;
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.5;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
 				{
@@ -4155,7 +4155,7 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 60;
-				noiseToAlertMultiplier = 0.3;
+				noiseToAlertMultiplier = 1;
 				noiseShotToAlertMultiplier = 1.2;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -4701,7 +4701,7 @@ class CfgAIBehaviours
 						{
 							sounds[] = {"WolfHowls6_SoundSet","WolfHowls8_tailDistant_SoundSet"};
 						};
-						probability = 0.9;
+						probability = 1.0;
 					};
 					class SoundsDuring
 					{
@@ -4899,8 +4899,8 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 10;
-				noiseToAlertMultiplier = 1.0;
+				visionToAlertMultiplier = 20;
+				noiseToAlertMultiplier = 1.5;
 				damageToAlertMultiplier = 200.0;
 				class Calm
 				{
@@ -5397,8 +5397,8 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 7.0;
-				noiseToAlertMultiplier = 1.0;
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.5;
 				noiseShotToAlertMultiplier = 2.0;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -5545,20 +5545,20 @@ class CfgAIBehaviours
 				class BehaviourZombieAlerted
 				{
 					maxTimeInDisturbedState = 5.0;
-					alertToAttract = 0.75;
+					alertToAttract = 0.8;
 					fightStateEnterDistance = 2.0;
 					fightStateExitDistance = 3.0;
 					fightStateEnterOrientAngleDiff = 160.0;
 					fightStateExitOrientAngleDiff = 160.0;
-					disturbedTargetHistoryLength = 20.0;
+					disturbedTargetHistoryLength = 10.0;
 					disturbedVisionUtilityWeight = 1.0;
 					disturbedNoiseUtilityWeight = 1.0;
-					disturbedDamageUtilityWeight = 0.0;
-					attractedTargetHistoryLength = 20.0;
+					disturbedDamageUtilityWeight = 1.0;
+					attractedTargetHistoryLength = 10.0;
 					attractedVisionUtilityWeight = 1.0;
 					attractedNoiseUtilityWeight = 1.0;
 					attractedDamageUtilityWeight = 1.0;
-					chaseTargetHistoryLength = 20.0;
+					chaseTargetHistoryLength = 10.0;
 					chaseVisionUtilityWeight = 1.0;
 					chaseNoiseUtilityWeight = 1.0;
 					chaseDamageUtilityWeight = 1.0;
@@ -5578,7 +5578,7 @@ class CfgAIBehaviours
 					noiseMakeAlertPeriod = 3.0;
 					class NoiseMakeAlert
 					{
-						strength = 60.0;
+						strength = 40.0;
 						type = "sound";
 					};
 				};
@@ -5586,19 +5586,19 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 20.0;
-				noiseToAlertMultiplier = 0.8;
+				noiseToAlertMultiplier = 1.0;
 				damageToAlertMultiplier = 10000.0;
 				noiseShotToAlertMultiplier = 1.7;
 				class Calm
 				{
-					DropSpeed = 3;
-					DropDelay = 2;
+					DropSpeed = 1;
+					DropDelay = 0;
 					MaxAlertValue = 20;
 				};
 				class Alerted
 				{
-					DropSpeed = 1;
-					DropDelay = 10;
+					DropSpeed = 3;
+					DropDelay = 1;
 					MaxAlertValue = 100;
 				};
 			};
@@ -5608,35 +5608,35 @@ class CfgAIBehaviours
 		class TargetSystemDZBase
 		{
 			visionProximityRange = 2.5;
-			visionProximityStrengthMult = 3;
-			visionCloseRange = 8.0;
+			visionProximityStrengthMult = 2.0;
+			visionCloseRange = 10.0;
 			visionCloseHeight = 1.8;
-			visionCloseStrengthMult = 3.0;
+			visionCloseStrengthMult = 1.5;
 			visionRangeMin = 20;
 			visionRangeMax = 40;
 			visionFov = 1.0;
-			visionPeripheralRangeMin = 5;
+			visionPeripheralRangeMin = 2.5;
 			visionPeripheralRangeMax = 20;
 			visionPeripheralFov = 2.3;
 			visionAngularSpeedMin = 0.1;
 			visionAngularSpeedMax = 0.5;
 			visionAngularSpeedMaxMult = 1.0;
 			visionNightMinMult = 1.0;
-			visionNightMaxMult = 0.4;
+			visionNightMaxMult = 0.3;
 			visionRainMinMult = 1.0;
-			visionRainMaxMult = 0.5;
+			visionRainMaxMult = 1.0;
 			visionFogMinMult = 1.0;
-			visionFogMaxMult = 0.5;
+			visionFogMaxMult = 1.0;
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 3.0;
+			rangeMin = 0;
 			rangeMax = 35.0;
-			rangeShotMin = 25.0;
+			rangeShotMin = 0;
 			rangeShotMax = 200.0;
 			radiusMin = 5.0;
 			radiusMax = 20.0;
-			radiusShotMin = 10.0;
+			radiusShotMin = 25.0;
 			radiusShotMax = 50.0;
 			class NoiseStrengthTeamMultipliers
 			{

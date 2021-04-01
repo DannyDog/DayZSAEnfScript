@@ -550,43 +550,60 @@ class EmoteSuicide extends EmoteBase
 				stancemask = DayZPlayerConstants.STANCEMASK_CROUCH;
 				//m_Player.OverrideShootFromCamera(false);
 			}
-	
 			else if (Weapon_Base.Cast(weapon)) //long firearms
 			{
 				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_RIFLE;
 				stancemask = DayZPlayerConstants.STANCEMASK_CROUCH;
 				//m_Player.OverrideShootFromCamera(false);
 			}
-			
-			else if (suicideStr == "onehanded"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_1HD;
-				stancemask = DayZPlayerConstants.STANCEMASK_CROUCH;
+			else
+			{
+				switch (suicideStr)
+				{
+					case "onehanded":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_1HD;
+						stancemask = DayZPlayerConstants.STANCEMASK_CROUCH;
+					break;
+					
+					case "fireaxe":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_FIREAXE;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "pitchfork":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_PITCHFORK;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "sword":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_SWORD;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "spear":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_SPEAR;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "woodaxe":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_WOODAXE;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "sickle":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_SICKLE;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+					
+					case "hoe":
+						callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_HOE;
+						stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
+					break;
+				}
 			}
 			
-			else if (suicideStr == "fireaxe"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_FIREAXE;
-				stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
-			}
 			
-			else if (suicideStr == "pitchfork"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_PITCHFORK;
-				stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
-			}
 			
-			else if (suicideStr == "sword"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_SWORD;
-				stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
-			}
-			
-			else if (suicideStr == "spear"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_SPEAR;
-				stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
-			}
-			
-			else if (suicideStr == "woodaxe"){
-				callback_ID = DayZPlayerConstants.CMD_SUICIDEFB_WOODAXE;
-				stancemask = DayZPlayerConstants.STANCEMASK_ERECT;
-			}
 		}
 		if (callback_ID > -1)
 		{

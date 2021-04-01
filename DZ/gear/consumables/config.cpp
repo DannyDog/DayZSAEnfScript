@@ -134,8 +134,8 @@ class CfgVehicles
 		varQuantityMax = 100.0;
 		quantityShow = 0;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3};
-		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
+		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3,"KukriKnife",3,"FangeKnife",3};
+		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -298,24 +298,6 @@ class CfgVehicles
 					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\gear\consumables\data\stone.rvmat"}},{0.7,{"DZ\gear\consumables\data\stone.rvmat"}},{0.5,{"DZ\gear\consumables\data\stone_damage.rvmat"}},{0.3,{"DZ\gear\consumables\data\stone_damage.rvmat"}},{0.0,{"DZ\gear\consumables\data\stone_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 	};
@@ -1445,7 +1427,7 @@ class CfgVehicles
 		class Horticulture
 		{
 			TexId = 1;
-			AddEnergyToSlot = 0.5;
+			AddEnergyToSlot = 1;
 			ConsumedQuantity = 250.0;
 		};
 		class AnimEvents
@@ -1661,6 +1643,32 @@ class CfgVehicles
 				{
 					soundset = "woodenlog_drop_SoundSet";
 					id = 898;
+				};
+			};
+		};
+	};
+	class EasterEgg: Inventory_Base
+	{
+		scope = 2;
+		displayName = "$STR_EasterEgg0";
+		descriptionShort = "$STR_EasterEgg1";
+		model = "\dz\gear\consumables\EasterEgg.p3d";
+		weight = 100;
+		itemSize[] = {1,1};
+		stackedUnit = "g";
+		varQuantityInit = 0;
+		varQuantityMin = 0;
+		varQuantityMax = 1;
+		quantityBar = 1;
+		ammoType = "G_GrenadeHand";
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 30;
+					healthLevels[] = {{1.0,{"dz\gear\consumables\data\easter_egg.rvmat"}},{0.7,{"dz\gear\consumables\data\easter_egg.rvmat"}},{0.5,{"dz\gear\consumables\data\easter_egg_damage.rvmat"}},{0.3,{"dz\gear\consumables\data\easter_egg_damage.rvmat"}},{0.0,{"dz\gear\consumables\data\easter_egg_destruct.rvmat"}}};
 				};
 			};
 		};

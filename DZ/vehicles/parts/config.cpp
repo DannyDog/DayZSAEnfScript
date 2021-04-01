@@ -47,6 +47,7 @@ class CfgVehicles
 		rotationFlags = 2;
 		repairableWithKits[] = {7};
 		repairCosts[] = {25.0};
+		lockType = 1;
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -104,6 +105,7 @@ class CfgVehicles
 		varQuantityDestroyOnMin = 0;
 		repairableWithKits[] = {7};
 		repairCosts[] = {25.0};
+		lockType = 1;
 		class EnergyManager
 		{
 			hasIcon = 1;
@@ -251,6 +253,7 @@ class CfgVehicles
 				};
 			};
 		};
+		lockType = 1;
 		class AnimEvents
 		{
 			class SoundWeapon

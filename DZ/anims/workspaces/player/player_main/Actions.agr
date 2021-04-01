@@ -2388,7 +2388,7 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 		}
 		$Node AnimNodeStateMachine {
 			 "FullBodyActionMaster" "TagFullBodyActions"
-			$States 162 {
+			$States 164 {
 				$State {
 					 "LitChemlightPne" "" "LitChemlightPne" "GetCommandI(CMD_FullBodyAction) == 504" "notime" 1
 					$EditorData {
@@ -3359,6 +3359,18 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 					 "LowerFlag" "" "LowerFlagGroup" "GetCommandI(CMD_FullBodyAction) == 601" "notime" 1
 					$EditorData {
 						#EditorPos 41.5 35.0
+					}
+				}
+				$State {
+					 "SickleSelect" "" "SuicideSickle" "GetCommandI(CMD_FullBodyAction) == 2009" "notime" 1
+					$EditorData {
+						#EditorPos 207.6000061 35.7999992
+					}
+				}
+				$State {
+					 "FarmingHoeSelect" "" "SuicideFarmingHoe" "GetCommandI(CMD_FullBodyAction) == 2010" "notime" 1
+					$EditorData {
+						#EditorPos 209.6999969 35.7999992
 					}
 				}
 			}
@@ -5207,6 +5219,12 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 				#EditorPos 201.1000061 24.1000004
 			}
 		}
+		$Node AnimNodeGroupSelect {
+			 "SuicideFarmingHoe" "" "SuicideFireQ" "Suicide" "farminghoe"
+			$EditorData {
+				#EditorPos 209.8000031 32.6000023
+			}
+		}
 		$Node AnimNodeQueue {
 			 "SuicideFireQ" "" "SuicideSTM"
 			$items 1 {
@@ -5313,6 +5331,12 @@ ikpose_secchainmiddlediro = LeftHandOrigin,LeftForeArmDirectionOrigin	// origina
 			}
 			$EditorData {
 				#EditorPos 197.1999969 28.2000008
+			}
+		}
+		$Node AnimNodeGroupSelect {
+			 "SuicideSickle" "" "SuicideFireQ" "Suicide" "sickle"
+			$EditorData {
+				#EditorPos 207.6000061 32.6000023
 			}
 		}
 		$Node AnimNodeGroupSelect {

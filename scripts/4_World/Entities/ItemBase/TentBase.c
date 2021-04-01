@@ -55,7 +55,7 @@ class TentBase extends ItemBase
 		RegisterNetSyncVariableInt("m_OpeningMask");
 		RegisterNetSyncVariableBool("m_IsBeingPacked");
 		
-		ProcessInvulnerabilityCheck("disableContainerDamage");
+		ProcessInvulnerabilityCheck(GetInvulnerabilityTypeString());
 	}
 	
 	void ~TentBase()
@@ -69,6 +69,11 @@ class TentBase extends ItemBase
 		{
 			SEffectManager.DestroySound( m_DeployLoopSound );
 		}
+	}
+	
+	override string GetInvulnerabilityTypeString()
+	{
+		return "disableContainerDamage";
 	}
 	
 	override bool HasProxyParts()

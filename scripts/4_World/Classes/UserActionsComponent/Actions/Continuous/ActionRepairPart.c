@@ -114,6 +114,7 @@ class ActionRepairPart: ActionDismantlePart
 		{
 			case Pickaxe:
 			case Shovel:
+			case FarmingHoe:
 			case FieldShovel:
 				m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_DIG;
 				break;

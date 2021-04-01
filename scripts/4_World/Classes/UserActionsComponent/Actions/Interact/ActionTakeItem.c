@@ -117,7 +117,7 @@ class ActionTakeItem: ActionInteractBase
 			}
 			else
 			{
-				action_data.m_Player.GetInventory().AddInventoryReservation( targetItem, il, GameInventory.c_InventoryReservationTimeoutMS);
+				action_data.m_Player.GetInventory().AddInventoryReservationEx( targetItem, il, GameInventory.c_InventoryReservationTimeoutMS);
 			}
 		}	
 		
@@ -151,7 +151,7 @@ class ActionTakeItem: ActionInteractBase
 		}
 		else
 		{
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 			ntarget.SplitIntoStackMaxToInventoryLocationClient( il );
 		}
 		

@@ -93,7 +93,7 @@ class CarWheel extends InventoryItemSuper
 	override void EEKilled(Object killer)
 	{
 		string newWheel = "";
-		switch( GetType() )
+		switch ( GetType() )
 		{
 			case "HatchbackWheel":
 				newWheel = "HatchbackWheel_Ruined";
@@ -124,6 +124,9 @@ class CarWheel extends InventoryItemSuper
 
 		if ( newWheel != "" )
 		{
+			//Unlock to allow creating a new item
+			if (IsLockedInSlot())
+				UnlockFromParent();
 			ReplaceWheelLambda lambda = new ReplaceWheelLambda ( this, newWheel, NULL);
 			lambda.SetTransferParams(true, true, true);
 			GetInventory().ReplaceItemWithNew(InventoryMode.SERVER, lambda);
@@ -213,7 +216,7 @@ class CarDoor extends InventoryItemSuper
 		if ( newLevel ==  GameConstants.STATE_RUINED )
 		{
 			EffectSound sound_plug;
-			switch( zone )
+			switch ( zone )
 			{
 				case "Window":
 					PlaySoundSet( sound_plug, "offroad_hit_window_small_SoundSet", 0, 0 );
@@ -482,7 +485,7 @@ class HeadlightH7 extends ItemBase
 	{
 		super.SetActions();
 		
-		//AddAction(ActionAttach);
+		//AddAction(ActionAttach); //REMOVING DUPLICATE METHODS
 		AddAction(ActionAttachOnSelection);
 		AddAction(ActionDetach);
 	}
@@ -508,9 +511,9 @@ class SparkPlug extends ItemBase
 	{
 		super.SetActions();
 		
-		AddAction(ActionAttach);
+		//AddAction(ActionAttach); //REMOVING DUPLICATE METHODS
 		AddAction(ActionAttachOnSelection);
-		AddAction(ActionInsertSparkplug);
+		//AddAction(ActionInsertSparkplug); //DEPRECATED, not fully functionnal DO NOT USE
 		AddAction(ActionDetach);
 	}
 };

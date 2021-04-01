@@ -70,8 +70,13 @@ class cfgWeapons
 			reloadTime = 1;
 			recoil = "recoil_Winchester";
 			recoilProne = "recoil_Winchester_prone";
-			dispersion = 0.00075;
+			dispersion = 0.0005;
 			magazineSlot = "magazine";
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

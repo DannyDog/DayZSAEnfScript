@@ -254,7 +254,7 @@ class FoodStage
 			}			
 		}
 		
-		return FoodStageType.NONE;
+		return FoodStageType.BURNED; //If the item cannot transition out of current state, burn it
 	}
 	
 	void ChangeFoodStage( FoodStageType new_stage_type )

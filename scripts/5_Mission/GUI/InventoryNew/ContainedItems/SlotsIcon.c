@@ -11,7 +11,7 @@ class SlotsIcon: LayoutHolder
 	protected ItemBase				m_Item;
 	protected EntityAI				m_SlotParent;
 	protected int					m_SlotID;
-	protected bool					m_IsDragged;
+	protected bool					m_IsDragged			= false;
 	
 	protected Widget				m_PanelWidget;
 	
@@ -26,11 +26,15 @@ class SlotsIcon: LayoutHolder
 	
 	protected Widget				m_ColorWidget;
 	protected Widget				m_SelectedPanel;
+	protected Widget				m_EmptySelectedPanel;
 	
 	protected Widget				m_QuantityPanel;
 	protected TextWidget			m_QuantityItem;
 	protected ProgressBarWidget		m_QuantityProgress;
 	protected Widget				m_QuantityStack;
+	
+	protected string				m_SlotDisplayName;
+	protected string				m_SlotDesc;
 	
 	protected Widget				m_ItemSizePanel;
 	protected TextWidget			m_ItemSizeWidget;
@@ -62,6 +66,7 @@ class SlotsIcon: LayoutHolder
 		
 		m_ColorWidget			= m_MainWidget.FindAnyWidget( "Color" + index );
 		m_SelectedPanel			= m_MainWidget.FindAnyWidget( "Selected" + index );
+		m_EmptySelectedPanel    = m_MainWidget.FindAnyWidget( "EmptySelected" + index );
 		
 		m_QuantityPanel			= m_MainWidget.FindAnyWidget( "QuantityPanel" + index );
 		m_QuantityItem			= TextWidget.Cast( m_MainWidget.FindAnyWidget( "Quantity" + index ) );
@@ -83,6 +88,12 @@ class SlotsIcon: LayoutHolder
 		WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_PanelWidget,  this, "MouseEnter" );
 		WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_PanelWidget,  this, "MouseLeave" );
 		
+		WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_GhostSlot,  this, "MouseEnterGhostSlot" );
+		WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_GhostSlot,  this, "MouseLeaveGhostSlot" );
+		
+		WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_RadialIconPanel,  this, "MouseEnterCategory" );
+		WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_RadialIconPanel,  this, "MouseLeaveCategory" );
+		
 		WidgetEventHandler.GetInstance().RegisterOnDrag( m_PanelWidget, this, "OnIconDrag" );
 		WidgetEventHandler.GetInstance().RegisterOnDrop( m_PanelWidget, this, "OnIconDrop" );
 		
@@ -91,6 +102,8 @@ class SlotsIcon: LayoutHolder
 		
 		m_Reserved 				= false;
 		m_SlotID 				= -1;
+		m_Item					= null;
+		m_Obj					= null;
 		
 		m_SlotParent			= slot_parent;
 		
@@ -101,6 +114,33 @@ class SlotsIcon: LayoutHolder
 		
 		SetActive( false );
 	}
+	
+	void SetSlotParent( EntityAI parent)
+	{
+		m_SlotParent = parent;
+	}
+	
+	void SetSlotDisplayName( string text )
+	{
+		m_SlotDisplayName = text;
+	}
+	
+	string GetSlotDisplayName( )
+	{
+		return m_SlotDisplayName;
+	}
+	
+	void SetSlotDesc( string text )
+	{
+		m_SlotDesc = text;
+	}
+	
+	string GetSlotDesc()
+	{
+		return m_SlotDesc;
+	}
+	
+
 	
 	void ~SlotsIcon()
 	{
@@ -175,6 +215,11 @@ class SlotsIcon: LayoutHolder
 	{
 		return m_SelectedPanel;
 	}
+	
+	Widget GetEmptySelectedPanel()
+	{
+		return m_EmptySelectedPanel;
+	}
 
 	Widget GetQuantityPanel()
 	{
@@ -233,11 +278,16 @@ class SlotsIcon: LayoutHolder
 
 	override void SetActive( bool active )
 	{
+		float x, y;
 		if( active && GetObject() )
 		{
-			float x, y;
 			GetMainWidget().GetScreenPos( x, y );
 			ItemManager.GetInstance().PrepareTooltip( EntityAI.Cast( GetObject() ), x, y );
+		}
+		else if (active)
+		{
+			GetMainWidget().GetScreenPos( x, y );
+			ItemManager.GetInstance().PrepareSlotsTooltip( m_SlotDisplayName, m_SlotDesc, x, y );
 		}
 		
 		m_SelectedPanel.Show( active );
@@ -550,7 +600,7 @@ class SlotsIcon: LayoutHolder
 	bool MouseEnter(Widget w, int x, int y)
 	{
 		if( m_Reserved )
-			return true;
+			return MouseEnterGhostSlot(w, x, y);
 		
 		ItemManager.GetInstance().PrepareTooltip( m_Item, x, y );
 		if( GetDragWidget() != m_PanelWidget && !IsOutOfReach() )
@@ -559,17 +609,42 @@ class SlotsIcon: LayoutHolder
 		}
 		return true;
 	}
+	
+	bool MouseEnterGhostSlot(Widget w, int x, int y)
+	{
+		ItemManager.GetInstance().PrepareSlotsTooltip( m_SlotDisplayName, m_SlotDesc, x, y );
+		
+		if( GetDragWidget() != m_PanelWidget )
+		{
+			m_EmptySelectedPanel.Show( true );
+		}
+		
+		
+		return true;
+	}
 
 	bool MouseLeave( Widget w, Widget s, int x, int y	)
 	{
 		if( m_Reserved )
-			return true;
+			return MouseLeaveGhostSlot(w, s, x, y);
 		
 		ItemManager.GetInstance().HideTooltip();
 		if( GetDragWidget() != m_PanelWidget )
 		{
 			m_SelectedPanel.Show( false );
 		}
+		return true;
+	}
+	
+	bool MouseLeaveGhostSlot( Widget w, Widget s, int x, int y	)
+	{
+		ItemManager.GetInstance().HideTooltipSlot();
+		
+		if( GetDragWidget() != m_PanelWidget )
+		{
+			m_EmptySelectedPanel.Show( false );
+		}
+		
 		return true;
 	}
 	

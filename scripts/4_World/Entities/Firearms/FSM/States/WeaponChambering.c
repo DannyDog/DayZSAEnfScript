@@ -441,7 +441,7 @@ class WeaponChambering extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);
@@ -499,7 +499,7 @@ class WeaponChambering extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);
@@ -707,7 +707,7 @@ class ChamberMultiBullet extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);
@@ -764,7 +764,7 @@ class ChamberMultiBullet extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);
@@ -1025,7 +1025,7 @@ class WeaponMagnumChambering extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);
@@ -1082,7 +1082,7 @@ class WeaponMagnumChambering extends WeaponStateBase
 		bool done = false;
 		if (m_srcMagazine)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( m_srcMagazine , m_srcMagazinePrevLocation );
+			e.m_player.GetInventory().ClearInventoryReservationEx( m_srcMagazine , m_srcMagazinePrevLocation );
 			
 			InventoryLocation leftHandIl = new InventoryLocation;
 			m_srcMagazine.GetInventory().GetCurrentInventoryLocation(leftHandIl);

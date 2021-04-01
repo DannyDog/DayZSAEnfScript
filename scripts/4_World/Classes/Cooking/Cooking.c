@@ -20,6 +20,7 @@ class Cooking
 	//
 	typename COOKING_EQUIPMENT_POT	 					= Pot;
 	typename COOKING_EQUIPMENT_FRYINGPAN				= FryingPan;
+	typename COOKING_EQUIPMENT_CAULDRON					= Cauldron;
 	typename COOKING_INGREDIENT_LARD 					= Lard;
 	//
 	static const float LIQUID_BOILING_POINT 			= 150;	//boiling point for liquids
@@ -349,7 +350,7 @@ class Cooking
 
 	protected CookingMethodType GetCookingMethod( ItemBase cooking_equipment )
 	{
-		if ( cooking_equipment.Type() == COOKING_EQUIPMENT_POT )
+		if ( ( cooking_equipment.Type() == COOKING_EQUIPMENT_POT ) || ( cooking_equipment.Type() == COOKING_EQUIPMENT_CAULDRON ) )
 		{
 			//has water
 			if ( cooking_equipment.GetQuantity() > 0 )

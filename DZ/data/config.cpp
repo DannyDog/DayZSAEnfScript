@@ -1876,6 +1876,8 @@ class CfgVehicles
 		HeadAimDown = 0;
 		author = "dayz";
 		maxCargo = 0;
+		GUIInventoryCargoName = "$STR_CfgCargo0";
+		GUIInventoryCargoIcon = "set:dayz_inventory image:cat_common_cargo";
 	};
 	class AllVehicles: All
 	{
@@ -2047,6 +2049,9 @@ class CfgVehicles
 		varTemperatureInit = 0;
 		varTemperatureMin = 0;
 		varTemperatureMax = 1;
+		compatibleLocks[] = {};
+		lockSoundSet = "";
+		lockType = 0;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -2625,6 +2630,7 @@ class cfgAmmo
 		audibleFire = 0.25;
 		whistleDist = 4;
 		visibleFireTime = 0;
+		SimulationScriptClass = "";
 		class DamageApplied
 		{
 			type = "Projectile";

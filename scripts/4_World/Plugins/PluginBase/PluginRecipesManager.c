@@ -84,12 +84,17 @@ class PluginRecipesManager extends PluginRecipesManagerBase
 	//will fill the map 'ids' with valid recipes for the 'item1' and 'item2' items, where the key is the recipe ID, and the value is the recipe name
 	int GetValidRecipes(ItemBase item1, ItemBase item2, array<int> ids, PlayerBase player)
 	{
-		if( item1 == NULL || item2 == NULL || item1.GetInventory().IsAttachment() || item2.GetInventory().IsAttachment() )
+		if( item1 == NULL || item2 == NULL )
 		{
 			if(ids) ids.Clear();
 			return 0;
 		}
-
+		
+		if( ( item1.GetInventory().IsAttachment() && item1.GetHierarchyParent().DisassembleOnLastDetach() ) || ( item2.GetInventory().IsAttachment() && item2.GetHierarchyParent().DisassembleOnLastDetach() ) )
+		{
+			if(ids) ids.Clear();
+			return 0;
+		}
 		m_Ingredients[0] = item1;
 		m_Ingredients[1] = item2;
 		

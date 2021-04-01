@@ -84,7 +84,6 @@ class BatteryCharger extends ItemBase
 				{
 					battery.GetCompEM().SetEnergy( battery_capacity );
 				}
-				
 				m_BatteryEnergy0To100 = battery.GetCompEM().GetEnergy0To100();
 				SetSynchDirty();
 			}
@@ -194,7 +193,7 @@ class BatteryCharger extends ItemBase
 		return false;
 	}
 
-	override bool CanPutIntoHands ( EntityAI player ) 
+	override bool CanPutIntoHands( EntityAI player ) 
 	{
 		if( !super.CanPutIntoHands( parent ) )
 		{
@@ -383,7 +382,7 @@ class BatteryCharger extends ItemBase
 		ref array<string> array_of_selections = {SEL_CORD_PLUGGED, SEL_CORD_FOLDED, SEL_CLIPS_DETACHED, SEL_CLIPS_FOLDED};	
 		PlayerBase player_PB = PlayerBase.Cast( player );
 				
-		if( GetGame().IsMultiplayer() && GetGame().IsServer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
 			player_PB.GetHologramServer().SetSelectionToRefresh( array_of_selections );
 		}

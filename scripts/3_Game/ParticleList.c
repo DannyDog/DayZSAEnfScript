@@ -121,6 +121,7 @@ class ParticleList
 	// ELECTRICITY	        
 	static const int POWER_GENERATOR_SMOKE			= RegisterParticle("smoke_small_generator_01");
 	static const int BARBED_WIRE_SPARKS				= RegisterParticle("electro_shortc2");
+	static const int EASTER_EGG_ACTIVATE			= RegisterParticle("easter_egg_activate");
 
 	// PLAYER
 	static const int BLEEDING_SOURCE				= RegisterParticle("blood_bleeding_01");
@@ -251,6 +252,10 @@ class ParticleList
 	
 	// CORPSE DECAY
 	static const int ENV_SWARMING_FLIES 			= RegisterParticle("env_fly_swarm_01");
+	
+	// BONFIRE 
+	static const int BONFIRE_FIRE 					= RegisterParticle("fire_bonfire");
+	static const int BONFIRE_SMOKE		 			= RegisterParticle("smoke_bonfire");
 	
 	static int RegisterParticle (string file_name)
 	{

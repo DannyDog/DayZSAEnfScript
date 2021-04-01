@@ -840,4 +840,32 @@ class Fence extends BaseBuildingBase
 		OnVariablesSynchronized();
 	}
 	*/
+			
+	//Debug menu Spawn Ground Special
+	override void OnDebugSpawn()
+	{
+		EntityAI entity;
+		if ( Class.CastTo(entity, this) )
+		{
+			ItemBase logs = ItemBase.Cast(entity.GetInventory().CreateInInventory( "WoodenLog" ));
+ 			logs.SetQuantity(logs.GetQuantityMax());
+		
+			entity.SpawnEntityOnGroundPos("Shovel", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Hammer", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("Pliers", entity.GetPosition());
+
+			entity.SpawnEntityOnGroundPos("Nail", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("CamoNet", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("BarbedWire", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("BarbedWire", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("MetalWire", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("CombinationLock", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("WoodenPlank", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("WoodenPlank", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("WoodenPlank", entity.GetPosition());
+			entity.SpawnEntityOnGroundPos("WoodenPlank", entity.GetPosition());
+			
+		}
+	}
 }

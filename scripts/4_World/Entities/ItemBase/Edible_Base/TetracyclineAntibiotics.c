@@ -16,6 +16,6 @@ class TetracyclineAntibiotics : Edible_Base
 		AddAction(ActionForceConsumeSingle);
 		AddAction(ActionConsumeSingle);
 		//AddAction(ActionForceFeed);
-		//AddAction(ActionEat);
+		//AddAction(ActionEatBig);
 	}
 }

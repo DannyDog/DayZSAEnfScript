@@ -1,3 +1,10 @@
+enum eFertlityState
+{
+	NONE = 0,
+	FERTILIZED = 1
+	//This will be used to set bit values (DO NOT ADD MORE VALUES)
+}
+
 class Slot
 {
 	static const int 		STATE_DIGGED 		= 1;
@@ -5,7 +12,7 @@ class Slot
 	
 	private int 			m_WaterQuantity;
 	static private int 		m_WaterNeeded 		= 200; // How much water is needed to water a plant from a bottle. Value is in mililitres
-	static private int 		m_WaterMax 			= 400; // How much water is needed to water a plant from a bottle. Value is in mililitres
+	static private int 		m_WaterMax 			= 200; // DEPRECATED
 	
 	float m_Fertility;
 	float m_FertilizerUsage;
@@ -14,6 +21,7 @@ class Slot
 	int m_slotId;
 	
 	string m_FertilizerType;
+	int    m_FertilityState = eFertlityState.NONE;
 	string m_DiggedSlotComponent; // example: "Component02" for the 1st slot in GardenBase
 	string m_PlantType;
 	private ItemBase m_Seed;
@@ -109,8 +117,8 @@ class Slot
 		bool needed_water = NeedsWater();
 		m_WaterQuantity += consumed_quantity;
 		
-		if (m_WaterQuantity > GetWaterMax())
-			m_WaterQuantity = GetWaterMax();
+		if (m_WaterQuantity >= GetWaterUsage())
+			m_WaterQuantity = GetWaterUsage();
 		
 		if (m_WaterQuantity < 0)
 			m_WaterQuantity = 0;
@@ -148,7 +156,7 @@ class Slot
 	
 	bool CanBeWatered()
 	{
-		if ( m_WaterQuantity < GetWaterMax() )
+		if ( m_WaterQuantity < GetWaterUsage() )
 		{
 			return true;
 		}
@@ -203,11 +211,22 @@ class Slot
 		m_FertilizerType = type;
 	}
 	
+	int GetFertilityState()
+	{
+		return m_FertilityState;
+	}
+	
+	void SetFertilityState( int newState )
+	{
+		m_FertilityState = newState;
+	}
+	
 	float GetWaterUsage()
 	{
 		return m_WaterNeeded;
 	}
 	
+	//DEPRECATED
 	float GetWaterMax()
 	{
 		return m_WaterMax;
@@ -225,7 +244,7 @@ class Slot
 	
 	bool IsDigged()
 	{
-		if (m_State==STATE_DIGGED)
+		if (m_State == STATE_DIGGED)
 		{
 			return true;
 		}
@@ -234,7 +253,7 @@ class Slot
 	}
 	bool IsPlanted()
 	{
-		if (m_State==STATE_PLANTED)
+		if (m_State == STATE_PLANTED)
 		{
 			return true;
 		}
@@ -249,7 +268,7 @@ class Slot
 		m_FertilizerQuantity = 0.0;
 		m_FertilizerType = "";
 		m_HarvestingEfficiency = 1.0;
-		m_DiggedSlotComponent = "";
+		//m_DiggedSlotComponent = "";
 		m_State = STATE_DIGGED;
 		m_Plant = NULL;
 	}
@@ -287,7 +306,7 @@ class Slot
 			ctx.Read( m_HarvestingEfficiency );
 			ctx.Read( m_State );
 			
-			if( !ctx.Read( m_FertilizerType ) )
+			if ( !ctx.Read( m_FertilizerType ) )
 			{
 				m_FertilizerType = "";
 			}

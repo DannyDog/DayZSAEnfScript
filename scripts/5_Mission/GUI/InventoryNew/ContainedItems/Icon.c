@@ -42,7 +42,7 @@ class Icon: LayoutHolder
 	void Icon( LayoutHolder parent, bool hands_icon = false )
 	{
 		m_HandsIcon = hands_icon;
-		ItemManager.GetInstance().SetSelectedItem( null, null, null );
+		ItemManager.GetInstance().SetSelectedItem( null, null, null, null );
 		
 		m_ItemPreview		= ItemPreviewWidget.Cast( GetMainWidget().FindAnyWidget( "Render" ) );
 		
@@ -75,6 +75,11 @@ class Icon: LayoutHolder
 			ItemManager.GetInstance().SetIsDragging( false );
 			m_IsDragged = false;
 		}
+	}
+	
+	Widget GetSelectedWidget()
+	{
+		return m_SelectedPanel;
 	}
 
 	bool IsDragged()

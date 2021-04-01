@@ -63,6 +63,8 @@ class PlantBase extends ItemBase
 		m_SprayQuantity = 0.0;
 		m_HasCrops = true;
 		
+		SetTakeable( false );
+		
 		
 		RegisterNetSyncVariableBool("m_HasCrops");
 		RegisterNetSyncVariableInt("m_PlantState");
@@ -73,7 +75,7 @@ class PlantBase extends ItemBase
 	{
 		if (!m_MarkForDeletion)
 		{
-			RemovePlant();
+			DestroyPlant();
 		}
 	}
 	
@@ -81,11 +83,11 @@ class PlantBase extends ItemBase
 	{
 		m_GardenBase = garden_base;
 		
-		float divided = (float) ((60 * 5) + Math.RandomInt(0, 60 * 1)) / fertility;
-		m_FullMaturityTime = divided;
+		m_FullMaturityTime += Math.RandomInt(-60,180);
+		float divided = /*(float) ((60 * 5) + Math.RandomInt(0, 60 * 1)) / fertility;*/ m_FullMaturityTime;
 		
-		divided = (float)((60 * 30) + Math.RandomInt(0, 60 * 30)) * fertility;
-		m_SpoilAfterFullMaturityTime = divided;
+		//divided = (float)((60 * 30) + Math.RandomInt(0, 60 * 30)) * fertility;
+		m_SpoilAfterFullMaturityTime = m_FullMaturityTime; //divided;
 
 		divided = (float)((float)m_FullMaturityTime / ((float)m_GrowthStagesCount - 2.0));
 		m_StateChangeTime = divided;
@@ -432,17 +434,12 @@ class PlantBase extends ItemBase
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
-		return false;
+		return super.CanPutInCargo(parent);
 	}
 
 	override bool CanPutIntoHands( EntityAI player )
 	{
-		if( !super.CanPutIntoHands( parent ) )
-		{
-			return false;
-		}
-		return false;
+		return super.CanPutIntoHands(parent);
 	}
 
 	override bool CanRemoveFromHands( EntityAI player )
@@ -523,7 +520,7 @@ class PlantBase extends ItemBase
 				m_PlantStateIndex++;
 				UpdatePlant();
 				SetSynchDirty();
-					
+				
 				if ( m_PlantStateIndex == 0 )
 				{
 					float infestation_time_min = (float)m_FullMaturityTime * 0.2;
@@ -561,7 +558,8 @@ class PlantBase extends ItemBase
 				if (!m_SpoilAfterFullMaturityTimer)
 					m_SpoilAfterFullMaturityTimer = new Timer( CALL_CATEGORY_SYSTEM );
 				
-				m_SpoilAfterFullMaturityTimer.Run( m_SpoilAfterFullMaturityTime, this, "SetSpoiled", NULL, false );
+				if ( !m_SpoilAfterFullMaturityTimer.IsRunning() )
+					m_SpoilAfterFullMaturityTimer.Run( m_SpoilAfterFullMaturityTime, this, "SetSpoiled", NULL, false );
 			}
 		}
 	}
@@ -682,7 +680,7 @@ class PlantBase extends ItemBase
 
 	void RemovePlant()
 	{
-		if ( GetGame()  &&  GetGame().IsServer() )
+		if ( GetGame() && GetGame().IsServer() )
 		{
 			UnlockFromParent();
 			
@@ -696,6 +694,16 @@ class PlantBase extends ItemBase
 			RemoveSlot();
 		}
 	}
+	
+	void DestroyPlant()
+	{
+		if ( GetGame() && GetGame().IsServer() )
+		{
+			UnlockFromParent();
+			
+			RemoveSlot();
+		}
+	}
 
 	void Harvest( PlayerBase player )
 	{
@@ -705,19 +713,13 @@ class PlantBase extends ItemBase
 		
 		//m_CropsCount = m_CropsCount * harvesting_efficiency;
 		
-		for ( int i = 0; i < m_CropsCount; i++ )
+		if ( !IsSpoiled() )
 		{
-			vector pos = player.GetPosition();
-			ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( m_CropsType, pos, ECE_PLACE_ON_SURFACE ) );
-			item.SetQuantity( item.GetQuantityMax() );
-			
-			if ( IsSpoiled() )
+			for ( int i = 0; i < m_CropsCount; i++ )
 			{
-				Edible_Base food_item = Edible_Base.Cast( item );
-				if ( food_item )
-				{
-					food_item.ChangeFoodStage( FoodStageType.ROTTEN );
-				}
+				vector pos = player.GetPosition();
+				ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( m_CropsType, pos, ECE_PLACE_ON_SURFACE ) );
+				item.SetQuantity( item.GetQuantityMax() );
 			}
 		}
 		
@@ -735,6 +737,11 @@ class PlantBase extends ItemBase
 	int GetPlantState()
 	{
 		return m_PlantState;
+	}
+	
+	int GetPlantStateIndex()
+	{
+		return m_PlantStateIndex;
 	}
 	
 	float GetWater()
@@ -757,7 +764,7 @@ class PlantBase extends ItemBase
 	{
 		Slot slotPlant = m_Slot;
 		
-		if ( IsDry()  &&  slotPlant  &&  slotPlant.GetWater() < slotPlant.GetWaterUsage() )
+		if ( IsDry() && slotPlant && slotPlant.GetWater() < slotPlant.GetWaterUsage() )
 		{
 			return true;
 		}
@@ -870,6 +877,11 @@ class PlantBase extends ItemBase
 	bool HasCrops()
 	{
 		return m_HasCrops;
+	}
+	
+	override bool CanBeDisinfected()
+	{
+		return false;
 	}
 	
 	override void SetActions()

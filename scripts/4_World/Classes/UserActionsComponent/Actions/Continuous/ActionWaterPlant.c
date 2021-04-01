@@ -29,7 +29,7 @@ class ActionWaterPlant: ActionContinuousBase
 		return "#water_plant";
 	}
 
-	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		Object targetObject = target.GetObject();
 		

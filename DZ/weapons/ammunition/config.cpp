@@ -576,17 +576,17 @@ class CfgMagazines
 		{
 			class Default
 			{
-				ammo = "MeleeStab";
+				ammo = "MeleeLightBlunt";
 				range = 1.3;
 			};
 			class Heavy
 			{
-				ammo = "MeleeStab_Heavy";
+				ammo = "MeleeLightBlunt_Heavy";
 				range = 1.3;
 			};
 			class Sprint
 			{
-				ammo = "MeleeStab_Heavy";
+				ammo = "MeleeLightBlunt_Heavy";
 				range = 3.3;
 			};
 		};

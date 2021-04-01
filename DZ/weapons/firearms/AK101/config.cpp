@@ -144,7 +144,7 @@ class CfgWeapons
 			reloadTime = 0.1;
 			recoil = "recoil_AK101";
 			recoilProne = "recoil_AK101_prone";
-			dispersion = 0.0015;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 		};
 		class FullAuto: Mode_FullAuto
@@ -161,8 +161,13 @@ class CfgWeapons
 			reloadTime = 0.1;
 			recoil = "recoil_AK101";
 			recoilProne = "recoil_AK101_prone";
-			dispersion = 0.0015;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
+		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle{};
 	};

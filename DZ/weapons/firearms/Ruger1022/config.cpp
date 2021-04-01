@@ -40,7 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 1.18986;
 		barrelArmor = 2.019;
-		initSpeedMultiplier = 1.15;
+		initSpeedMultiplier = 1.25;
 		winchesterTypeOpticsMount = 1;
 		chamberSize = 1;
 		chamberedRound = "";
@@ -61,12 +61,12 @@ class cfgWeapons
 			soundSetShot[] = {"Ruger1022_Shot_SoundSet","Ruger1022_Tail_SoundSet","Ruger1022_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"Ruger1022_silencerHomeMade_SoundSet","Ruger1022_silencerHomeMadeTail_SoundSet","Ruger1022_silencerInteriorHomeMadeTail_SoundSet"}};
 			reloadTime = 0.08;
-			dispersion = 0.0025;
+			dispersion = 0.00075;
 			magazineSlot = "magazine";
 		};
 		class NoiseShoot
 		{
-			strength = 5.0;
+			strength = 66;
 			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle

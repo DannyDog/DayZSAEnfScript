@@ -237,16 +237,17 @@ WindowWidgetClass TextInputDialogRoot {
   }
   PanelWidgetClass notification_root {
    visible 0
+   clipchildren 1
    ignorepointer 1
    color 0 0 0 0.9294
-   position 0 -227.35101
-   size 0.5 243.12401
+   position 0 60
+   size 900 800
    halign center_ref
-   valign center_ref
-   hexactpos 1
+   hexactpos 0
    vexactpos 0
-   hexactsize 0
+   hexactsize 1
    vexactsize 1
+   scaled 1
    scriptclass "AutoHeightSpacer"
    style DayZDefaultPanel
    "no focus" 1
@@ -254,12 +255,13 @@ WindowWidgetClass TextInputDialogRoot {
     RichTextWidgetClass notification_part_1_text {
      clipchildren 1
      ignorepointer 1
-     size 1 1
+     position 0 0
+     size 598 196
      halign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scriptclass ""
      text "#dayz_game_exp_disclaimer_part1"
      font "gui/fonts/sdf_MetronLight24"
@@ -276,12 +278,12 @@ WindowWidgetClass TextInputDialogRoot {
     }
     RichTextWidgetClass notification_part_2_text {
      ignorepointer 1
-     size 1 1
+     size 598 364
      halign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scaled 1
      scriptclass ""
      text "#dayz_game_exp_disclaimer_part2"
@@ -300,12 +302,13 @@ WindowWidgetClass TextInputDialogRoot {
     RichTextWidgetClass notification_part_3_text {
      ignorepointer 1
      keepsafezone 0
-     size 1 1
+     position 0 0
+     size 598 412
      halign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      scaled 1
      scriptclass ""
      text "#dayz_game_exp_disclaimer_part3"
@@ -323,12 +326,13 @@ WindowWidgetClass TextInputDialogRoot {
     }
     RichTextWidgetClass notification_part_4_text {
      ignorepointer 1
-     size 1 1
+     position 0 0
+     size 598 484
      halign center_ref
      hexactpos 1
      vexactpos 1
-     hexactsize 0
-     vexactsize 0
+     hexactsize 1
+     vexactsize 1
      text "#dayz_game_exp_disclaimer_part4"
      font "gui/fonts/sdf_MetronLight24"
      "text offset" 18 0
@@ -346,8 +350,7 @@ WindowWidgetClass TextInputDialogRoot {
    {
     ScriptParamsClass {
      AlignChilds 1
-     MinHeight 10
-     MaxHeight 300
+     MaxHeight 1000
      Gap 1
      Top 1
     }

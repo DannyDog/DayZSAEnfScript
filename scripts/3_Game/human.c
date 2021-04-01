@@ -1093,21 +1093,21 @@ class HumanCommandScript
 //! used in script-side identification of animation commands on human (swim, fall, move...)
 enum HumanMoveCommandID
 {
-	None,
-	CommandMove,
-	CommandMelee,
-	CommandMelee2,
-	CommandFall,
-	CommandClimb,
-	CommandDeath,
-	CommandUnconscious,
-	CommandDamageFullbody,
-	CommandDamageAdditive,
-	CommandLadder,
-	CommandSwim,
-	CommandVehicle,
-	CommandActionFullbody,
-	CommandActionAdditive
+	None = 0,
+	CommandMove = 1,
+	CommandMelee = 2,
+	CommandMelee2 = 4,
+	CommandFall = 8,
+	CommandClimb = 16,
+	CommandDeath = 32,
+	CommandUnconscious = 64,
+	CommandDamageFullbody = 128,
+	CommandDamageAdditive = 256,
+	CommandLadder = 512,
+	CommandSwim = 1024,
+	CommandVehicle = 2048,
+	CommandActionFullbody = 4096,
+	CommandActionAdditive = 8192
 }
 
 // *************************************************************************************

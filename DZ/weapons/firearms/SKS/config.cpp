@@ -41,6 +41,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		WeaponLength = 1.11042;
 		barrelArmor = 1.667;
+		initSpeedMultiplier = 1.5;
 		chamberSize = 10;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Mag_CLIP762x39_10Rnd","Ammo_762x39Tracer"};
@@ -146,6 +147,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

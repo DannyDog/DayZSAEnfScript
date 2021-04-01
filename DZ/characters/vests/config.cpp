@@ -62,7 +62,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.3;
 					};
 					class Blood
 					{
@@ -70,7 +70,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.26;
+						damage = 0.6;
 					};
 				};
 				class Melee
@@ -165,11 +165,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 110;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\Smersh.rvmat"}},{0.7,{"DZ\characters\vests\Data\Smersh.rvmat"}},{0.5,{"DZ\characters\vests\Data\Smersh_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\Smersh_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\Smersh_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 		class AnimationSources
 		{
@@ -233,7 +232,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 75;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\PressVest.rvmat"}},{0.7,{"DZ\characters\vests\Data\PressVest.rvmat"}},{0.5,{"DZ\characters\vests\Data\PressVest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\PressVest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\PressVest_destruct.rvmat"}}};
 				};
 			};
@@ -251,7 +250,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 				};
 				class Melee
@@ -360,11 +359,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\UKAssVest.rvmat","DZ\characters\vests\Data\UKAssVest_ground.rvmat"}},{0.7,{"DZ\characters\vests\Data\UKAssVest.rvmat","DZ\characters\vests\Data\UKAssVest_ground.rvmat"}},{0.5,{"DZ\characters\vests\Data\UKAssVest_damage.rvmat","DZ\characters\vests\Data\UKAssVest_ground_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\UKAssVest_damage.rvmat","DZ\characters\vests\Data\UKAssVest_ground_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\UKAssVest_destruct.rvmat","DZ\characters\vests\Data\UKAssVest_ground_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 		class AnimEvents
 		{
@@ -453,7 +451,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 30;
+					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\PoliceVest.rvmat"}},{0.7,{"DZ\characters\vests\Data\PoliceVest.rvmat"}},{0.5,{"DZ\characters\vests\Data\PoliceVest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\PoliceVest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\PoliceVest_destruct.rvmat"}}};
 				};
 			};
@@ -471,7 +469,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 				};
 				class Melee
@@ -615,7 +613,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\data\chest_holster.rvmat"}},{0.7,{"DZ\characters\vests\data\chest_holster.rvmat"}},{0.5,{"DZ\characters\vests\data\chest_holster_damage.rvmat"}},{0.3,{"DZ\characters\vests\data\chest_holster_damage.rvmat"}},{0.0,{"DZ\characters\vests\data\chest_holster_destruct.rvmat"}}};
 				};
 			};
@@ -667,27 +665,12 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 30;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\TacticalVest2.rvmat"}},{0.7,{"DZ\characters\vests\Data\TacticalVest2.rvmat"}},{0.5,{"DZ\characters\vests\Data\TacticalVest2_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\TacticalVest2_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\TacticalVest2_destruct.rvmat"}}};
 				};
 			};
 			class GlobalArmor
 			{
-				class Projectile
-				{
-					class Health
-					{
-						damage = 0.5;
-					};
-					class Blood
-					{
-						damage = 0;
-					};
-					class Shock
-					{
-						damage = 0.5;
-					};
-				};
 				class Melee
 				{
 					class Health
@@ -790,7 +773,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};
@@ -861,7 +844,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\data\Vest_LeatherStorage_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\vests\Data\Vest_LeatherStorage_natural_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\vests\Data\Vest_LeatherStorage_natural_destruct.rvmat"}}};
 				};
 			};
@@ -879,7 +862,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\data\Vest_LeatherStorage_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\vests\Data\Vest_LeatherStorage_beige_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\vests\Data\Vest_LeatherStorage_beige_destruct.rvmat"}}};
 				};
 			};
@@ -897,7 +880,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\data\Vest_LeatherStorage_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\vests\Data\Vest_LeatherStorage_brown_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\vests\Data\Vest_LeatherStorage_brown_destruct.rvmat"}}};
 				};
 			};
@@ -915,7 +898,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\data\Vest_LeatherStorage_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\vests\Data\Vest_LeatherStorage_black_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\vests\Data\Vest_LeatherStorage_black_destruct.rvmat"}}};
 				};
 			};
@@ -950,7 +933,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 500;
+					hitpoints = 130;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\Hunting_vest.rvmat"}},{0.7,{"DZ\characters\vests\Data\Hunting_vest.rvmat"}},{0.5,{"DZ\characters\vests\Data\Hunting_vest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\Hunting_vest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\Hunting_vest_destruct.rvmat"}}};
 				};
 			};
@@ -1032,7 +1015,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 200;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\orange_vest.rvmat"}},{0.7,{"DZ\characters\vests\Data\orange_vest.rvmat"}},{0.5,{"DZ\characters\vests\Data\orange_vest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\orange_vest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\orange_vest_destruct.rvmat"}}};
 				};
 			};

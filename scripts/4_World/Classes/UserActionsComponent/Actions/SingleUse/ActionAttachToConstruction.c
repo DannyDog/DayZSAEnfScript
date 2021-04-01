@@ -109,6 +109,7 @@ class ActionAttachToConstruction: ActionSingleUseBase
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
+		ClearInventoryReservationEx(action_data);
 		OnExecuteImpl(action_data);
 	}
 	
@@ -116,7 +117,7 @@ class ActionAttachToConstruction: ActionSingleUseBase
 	{
 		if ( !GetGame().IsMultiplayer() )
 		{
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 			
 			OnExecuteImpl(action_data); // single player
 		}

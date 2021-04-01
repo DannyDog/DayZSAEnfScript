@@ -374,10 +374,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 	override void SetNextActive()
 	{
 		ItemManager.GetInstance().HideTooltip( );
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
 		
 		if( IsLastIndex() )
 		{
@@ -399,11 +395,6 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 
 	override void SetPreviousActive( bool force = false )
 	{
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
-		
 		if( IsFirstIndex() || force )
 		{
 			Container.Cast( GetParent() ).SetPreviousActive();
@@ -887,8 +878,9 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				item_base.SplitIntoStackMaxClient( attached_entity, slot_id );
 			}
 		}
-		else if(attached_entity && attached_entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il))
+		else if(attached_entity && attached_entity.GetInventory().CanAddAttachment(item))
 		{
+			attached_entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il);
 			stackable = item_base.GetTargetQuantityMax(il.GetSlot());
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{
@@ -899,8 +891,9 @@ class ContainerWithCargoAndAttachments extends ClosableContainer
 				item_base.SplitIntoStackMaxClient( attached_entity, il.GetSlot() );
 			}
 		}
-		else if( m_Entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il) )
+		else if( m_Entity.GetInventory().CanAddAttachment(item) )
 		{
+			m_Entity.GetInventory().FindFreeLocationFor(item,FindInventoryLocationType.ATTACHMENT,il);
 			stackable = item_base.GetTargetQuantityMax(il.GetSlot());
 			if( stackable == 0 || stackable >= item_base.GetQuantity() )
 			{

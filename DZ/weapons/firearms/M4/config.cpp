@@ -34,14 +34,14 @@ class cfgWeapons
 	class M4A1_Base: Rifle_Base
 	{
 		scope = 0;
-		weight = 1746;
+		weight = 2276;
 		absorbency = 0.0;
 		repairableWithKits[] = {1};
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.6,50,200,4,10};
 		ironsightsExcludingOptics[] = {"M4_CarryHandleOptic","BUISOptic","M68Optic","M4_T3NRDSOptic","ReflexOptic","ACOGOptic"};
 		WeaponLength = 0.814784;
-		barrelArmor = 3.75;
+		barrelArmor = 2.5;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_556x45","Ammo_556x45Tracer"};
@@ -67,7 +67,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_m4";
 			recoilProne = "recoil_m4_prone";
-			dispersion = 0.00125;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro1[] = {"dz\sounds\weapons\firearms\m4a1\m4Silenced",1,1,75};
 			beginSilenced_Pro2[] = {"dz\sounds\weapons\firearms\m4a1\m4Silenced2",1,1,75};
@@ -85,12 +85,17 @@ class cfgWeapons
 			reloadTime = 0.075;
 			recoil = "recoil_m4";
 			recoilProne = "recoil_m4_prone";
-			dispersion = 0.00125;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro1[] = {"dz\sounds\weapons\firearms\m4a1\m4Silenced",1,1,75};
 			beginSilenced_Pro2[] = {"dz\sounds\weapons\firearms\m4a1\m4Silenced2",1,1,75};
 			beginSilenced_HomeMade[] = {"ddz\sounds\weapons\firearms\m4a1\m4Silenced",1,1,150};
 			soundBeginExt[] = {{"beginSilenced_Pro1",0.5,"beginSilenced_Pro2",0.5},{"beginSilenced_HomeMade",1}};
+		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

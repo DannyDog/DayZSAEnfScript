@@ -837,6 +837,7 @@ class cfgVehicles
 		weight = 470;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardM4"};
+		hasRailFunctionality = 1;
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1083,6 +1084,7 @@ class cfgVehicles
 		weight = 430;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardAK"};
+		hasRailFunctionality = 1;
 		dispersionModifier = -0.000125;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1240,6 +1242,7 @@ class cfgVehicles
 		weight = 250;
 		itemSize[] = {1,2};
 		inventorySlot[] = {"weaponHandguardMP5"};
+		hasRailFunctionality = 1;
 		dispersionModifier = -0.0001;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
@@ -1498,6 +1501,8 @@ class cfgVehicles
 		weight = 1500;
 		itemSize[] = {4,3};
 		lootCategory = "Crafted";
+		repairableWithKits[] = {5,2};
+		repairCosts[] = {30.0,25.0};
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};

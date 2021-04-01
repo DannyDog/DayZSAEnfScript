@@ -62,7 +62,17 @@ class BaseBuildingBase extends ItemBase
 			ConfigGetTextArray("mountables",m_Mountables);
 		}
 		
-		ProcessInvulnerabilityCheck("disableBaseDamage");
+		ProcessInvulnerabilityCheck(GetInvulnerabilityTypeString());
+	}
+	
+	override string GetInvulnerabilityTypeString()
+	{
+		return "disableBaseDamage";
+	}
+	
+	override bool CanObstruct()
+	{
+		return true;
 	}
 
 	// --- SYNCHRONIZATION

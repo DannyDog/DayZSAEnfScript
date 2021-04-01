@@ -17,11 +17,11 @@ class DamageSystem
 		string path_base;
 		string path;
 		
-		if(entity.IsWeapon())
+		if (entity.IsWeapon())
 		{
 			path_base = CFG_WEAPONSPATH;
 		}
-		else if(entity.IsMagazine())
+		else if (entity.IsMagazine())
 		{
 			path_base = CFG_MAGAZINESPATH;
 		}
@@ -29,7 +29,8 @@ class DamageSystem
 		{
 			path_base = CFG_VEHICLESPATH;
 		}
-		path_base = "" + path_base + " " + entity.GetType() + " DamageSystem DamageZones";
+		
+		path_base = string.Format("%1 %2 DamageSystem DamageZones", path_base, entity.GetType());
 		
 		if (!GetGame().ConfigIsExisting(path_base))
 		{
@@ -42,12 +43,13 @@ class DamageSystem
 			ref array<string> component_names;
 			
 			entity.GetDamageZones(zone_names);
-			for(int i = 0; i < zone_names.Count(); i++)
+			for (int i = 0; i < zone_names.Count(); i++)
 			{
 				component_names = new array<string>;
 				zone = zone_names.Get(i);
-				path = "" + path_base + " " + zone + " componentNames";
-				if(GetGame().ConfigIsExisting(path))
+				
+				path =  string.Format("%1 %2 componentNames ", path_base, zone);
+				if (GetGame().ConfigIsExisting(path))
 				{
 					GetGame().ConfigGetTextArray(path,component_names);
 				}
@@ -64,14 +66,18 @@ class DamageSystem
 		DamageZoneMap zoneMap = entity.GetEntityDamageZoneMap();
 		array<array<string>> components;
 		components = zoneMap.GetValueArray();
-		for(int i = 0; i < components.Count(); i++)
+		for (int i = 0; i < components.Count(); i++)
 		{
 			array<string> inner = components.Get(i);
-			for(int j = 0; j < inner.Count(); j++)
+			for (int j = 0; j < inner.Count(); j++)
 			{
 				string innerComponentName = inner.Get(j);
 				innerComponentName.ToLower();
-
+				
+				//We don't have a component name, no need to proceed
+				if ( innerComponentName == "" )
+					break;
+				
 				if (innerComponentName == component)
 				{
 					damageZone = zoneMap.GetKey(i);
@@ -87,11 +93,11 @@ class DamageSystem
 	{
 		string path;
 		
-		if(entity.IsWeapon())
+		if (entity.IsWeapon())
 		{
 			path = CFG_WEAPONSPATH;
 		}
-		else if(entity.IsMagazine())
+		else if (entity.IsMagazine())
 		{
 			path = CFG_MAGAZINESPATH;
 		}
@@ -100,14 +106,21 @@ class DamageSystem
 			path = CFG_VEHICLESPATH;
 		}
 		
-		path = "" + path + " " + entity.GetType() + " DamageSystem DamageZones " + damageZone + " componentNames";
-		if(GetGame().ConfigIsExisting(path))
+		path = string.Format("%1 %2 DamageSystem DamageZones %3 componentNames", path, entity.GetType(), damageZone);
+		if (GetGame().ConfigIsExisting(path))
 		{
 			GetGame().ConfigGetTextArray(path,componentNames);
 			return true;
 		}
 		
 		return false;
+	}
+	
+	static string GetDamageDisplayName(EntityAI entity, string zone)
+	{
+		string component_name;
+		entity.GetEntityDamageDisplayNameMap().Find(zone.Hash(), component_name);
+		return component_name;
 	}
 }
 

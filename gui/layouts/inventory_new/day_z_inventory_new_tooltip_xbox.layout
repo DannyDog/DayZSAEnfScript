@@ -162,7 +162,7 @@ PanelWidgetClass BackPanelWidget {
      vexactsize 1
      fixaspect fixwidth
      priority 201
-     "force flip enable" 1
+     "force flip enable" 0
     }
     GridSpacerWidgetClass GridSpacerWidget1 {
      ignorepointer 1

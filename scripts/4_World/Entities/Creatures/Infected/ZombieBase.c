@@ -2,6 +2,8 @@ class ZombieBase extends DayZInfected
 {
 	const float TARGET_CONE_ANGLE_CHASE = 20;
 	const float TARGET_CONE_ANGLE_FIGHT = 30;
+	
+	const float	SHOCK_TO_STUN_MULTIPLIER = 2;
 
 	//! server / singleplayer properties
 	protected int m_StanceVariation = 0;
@@ -39,7 +41,7 @@ class ZombieBase extends DayZInfected
 		m_DefaultHitPosition = SetDefaultHitPosition(GetDayZInfectedType().GetDefaultHitPositionComponent());
 
 		//! client only
-		if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
+		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
 		{
 			m_LastSoundVoiceAW 			= null;
 			m_InfectedSoundEventHandler = new InfectedSoundEventHandler(this);
@@ -61,7 +63,7 @@ class ZombieBase extends DayZInfected
 	//-------------------------------------------------------------
 	override void EOnInit(IEntity other, int extra)
 	{
-		if( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
 		{
 			m_StanceVariation = Math.RandomInt(0, 4);
 	
@@ -71,6 +73,11 @@ class ZombieBase extends DayZInfected
 	}
 	
 	override bool IsZombie()
+	{
+		return true;
+	}
+	
+	override bool IsDanger()
 	{
 		return true;
 	}
@@ -147,13 +154,13 @@ class ZombieBase extends DayZInfected
 	void CommandHandler(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
 	{
 		//! for mods
-		if( ModCommandHandlerBefore(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		if ( ModCommandHandlerBefore(pDt, pCurrentCommandID, pCurrentCommandFinished) )
 		{
 			return;
 		}
 
 		//! handle death
-		if( HandleDeath(pCurrentCommandID) )
+		if ( HandleDeath(pCurrentCommandID) )
 		{
 			return;
 		}
@@ -172,45 +179,45 @@ class ZombieBase extends DayZInfected
 		}
 		
 		//! for mods
-		if( ModCommandHandlerInside(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		if ( ModCommandHandlerInside(pDt, pCurrentCommandID, pCurrentCommandFinished) )
 		{
 			return;
 		}
 
 		
 		//! crawl transition
-		if( HandleCrawlTransition(pCurrentCommandID) )
+		if ( HandleCrawlTransition(pCurrentCommandID) )
 		{
 			return;
 		}
 		
 		//! damage hits
-		if( HandleDamageHit(pCurrentCommandID) )
+		if ( HandleDamageHit(pCurrentCommandID) )
 		{
 			return;
 		}
 		
 		DayZInfectedInputController inputController = GetInputController();
-		if( inputController )
+		if ( inputController )
 		{
-			if( HandleVault(pCurrentCommandID, inputController, pDt) )
+			if ( HandleVault(pCurrentCommandID, inputController, pDt) )
 			{
 				return;
 			}
 			
-			if( HandleMindStateChange(pCurrentCommandID, inputController, pDt) )
+			if ( HandleMindStateChange(pCurrentCommandID, inputController, pDt) )
 			{
 				return;
 			}
 			
-			if( FightLogic(pCurrentCommandID, inputController, pDt) )
+			if ( FightLogic(pCurrentCommandID, inputController, pDt) )
 			{
 				return;
 			}
 		}		
 		
 		//!
-		if( ModCommandHandlerAfter(pDt, pCurrentCommandID, pCurrentCommandFinished) )
+		if ( ModCommandHandlerAfter(pDt, pCurrentCommandID, pCurrentCommandFinished) )
 		{
 			return;
 		}
@@ -244,10 +251,10 @@ class ZombieBase extends DayZInfected
 
 	void  CommandHandlerDebug(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)
 	{
-		if( GetPluginManager() )
+		if ( GetPluginManager() )
 		{
 			PluginDayZInfectedDebug infectedDebug = PluginDayZInfectedDebug.Cast(GetPluginManager().GetPluginByType(PluginDayZInfectedDebug));
-			if( infectedDebug )
+			if ( infectedDebug )
 				infectedDebug.CommandHandler(this);
 		}	
 	}
@@ -277,12 +284,12 @@ class ZombieBase extends DayZInfected
 
 	bool HandleDeath(int pCurrentCommandID)
 	{
-		if( pCurrentCommandID == DayZInfectedConstants.COMMANDID_DEATH )
+		if ( pCurrentCommandID == DayZInfectedConstants.COMMANDID_DEATH )
 		{
 			return true;
 		}
 
-		if( !IsAlive() )
+		if ( !IsAlive() )
 		{
 			StartCommand_Death(m_DeathType, m_DamageHitDirection);
 			m_MovementSpeed = -1;
@@ -306,7 +313,7 @@ class ZombieBase extends DayZInfected
 		pAnimHitDir = ComputeHitDirectionAngle(pSource);
 		
 		//! add some impulse if needed
-		if( doPhxImpulse )
+		if ( doPhxImpulse )
 		{
 			vector impulse = 80 * m_TransportHitVelocity;
 			impulse[1] = 80 * 1.5;
@@ -327,11 +334,11 @@ class ZombieBase extends DayZInfected
 	
 	int GetVaultType(float height)
 	{
-		if( height <= 0.6 )
+		if ( height <= 0.6 )
 			return 0;
-		else if( height <= 1.1 )
+		else if ( height <= 1.1 )
 			return 1;
-		else if( height <= 1.6 )
+		else if ( height <= 1.6 )
 			return 2;
 		else 
 			return 3;
@@ -339,25 +346,25 @@ class ZombieBase extends DayZInfected
 	
 	bool HandleVault(int pCurrentCommandID, DayZInfectedInputController pInputController, float pDt)
 	{
-		if( pCurrentCommandID == DayZInfectedConstants.COMMANDID_VAULT )
+		if ( pCurrentCommandID == DayZInfectedConstants.COMMANDID_VAULT )
 		{
 			DayZInfectedCommandVault vaultCmd = GetCommand_Vault();
-			if( vaultCmd && vaultCmd.WasLand() )
+			if ( vaultCmd && vaultCmd.WasLand() )
 			{
 				m_KnuckleOutTimer = 0;
 				m_KnuckleLand = true;
 			}
-			if( m_KnuckleLand )
+			if ( m_KnuckleLand )
 			{
 				m_KnuckleOutTimer += pDt;
-				if( m_KnuckleOutTimer > 2.0 )
+				if ( m_KnuckleOutTimer > 2.0 )
 					StartCommand_Vault(-1);
 			}
 			
 			return true;
 		}
 		
-		if( pInputController.IsVault() )
+		if ( pInputController.IsVault() )
 		{
 			float vaultHeight = pInputController.GetVaultHeight();
 			int vaultType = GetVaultType(vaultHeight);
@@ -377,26 +384,26 @@ class ZombieBase extends DayZInfected
 	bool HandleMindStateChange(int pCurrentCommandID, DayZInfectedInputController pInputController, float pDt)
 	{
 		DayZInfectedCommandMove moveCommand = GetCommand_Move();
-		if( moveCommand && moveCommand.IsTurning() )
+		if ( moveCommand && moveCommand.IsTurning() )
 			return false;
 		
 		m_MindState = pInputController.GetMindState();
-		if( m_LastMindState != m_MindState )
+		if ( m_LastMindState != m_MindState )
 		{
-			switch( m_MindState )
+			switch ( m_MindState )
 			{
 			case DayZInfectedConstants.MINDSTATE_CALM:
-				if( moveCommand )
+				if ( moveCommand )
 					moveCommand.SetIdleState(0);
 				break;
 
 			case DayZInfectedConstants.MINDSTATE_DISTURBED:
-				if( moveCommand )
+				if ( moveCommand )
 					moveCommand.SetIdleState(1);
 				break;
 			
 			case DayZInfectedConstants.MINDSTATE_CHASE:
-				if( moveCommand && (m_LastMindState < DayZInfectedConstants.MINDSTATE_CHASE) )
+				if ( moveCommand && (m_LastMindState < DayZInfectedConstants.MINDSTATE_CHASE) )
 					moveCommand.SetIdleState(2);
 				break;
 			}
@@ -416,13 +423,13 @@ class ZombieBase extends DayZInfected
 	protected void HandleSoundEvents()
 	{
 		//! no sound handler - bail out
-		if( !m_InfectedSoundEventHandler )
+		if ( !m_InfectedSoundEventHandler )
 		{
 			return;
 		}
 
 		//! infected is dead
-		if( !IsAlive() )
+		if ( !IsAlive() )
 		{
 			//! stop all sounds
 			m_InfectedSoundEventHandler.Stop();
@@ -457,7 +464,7 @@ class ZombieBase extends DayZInfected
 		ref SoundParams			soundParams;
 		ref SoundObjectBuilder	soundObjectBuilder;
 		ref SoundObject			soundObject;
-		if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
 			soundParams = new SoundParams( pSoundSetName );
 			if ( !soundParams.IsValid() )
@@ -480,7 +487,7 @@ class ZombieBase extends DayZInfected
 	{
 		//super.OnSoundVoiceEvent(event_id, event_user_string);
 		AnimSoundVoiceEvent voice_event = GetCreatureAIType().GetSoundVoiceEvent(event_id);
-		if(voice_event != null)
+		if (voice_event != null)
 		{
 			//! stop state sound when playing anim SoundVoice
 			if (m_InfectedSoundEventHandler) // && m_InfectedSoundEventHandler.IsPlaying())
@@ -505,10 +512,10 @@ class ZombieBase extends DayZInfected
 	
 	protected void ProcessSoundVoiceEvent(AnimSoundVoiceEvent sound_event, out AbstractWave aw)
 	{
-		if(GetGame().IsClient() || !GetGame().IsMultiplayer())
+		if (GetGame().IsClient() || !GetGame().IsMultiplayer())
 		{
 			SoundObjectBuilder objectBuilder = sound_event.GetSoundBuilder();
-			if(NULL != objectBuilder)
+			if (NULL != objectBuilder)
 			{
 				objectBuilder.UpdateEnvSoundControllers(GetPosition());
 				SoundObject soundObject = objectBuilder.BuildSoundObject();
@@ -517,9 +524,9 @@ class ZombieBase extends DayZInfected
 			}
 		}
 		
-		if(GetGame().IsServer() || !GetGame().IsMultiplayer())
+		if (GetGame().IsServer() || !GetGame().IsMultiplayer())
 		{
-			if(sound_event.m_NoiseParams != NULL)
+			if (sound_event.m_NoiseParams != NULL)
 				GetGame().GetNoiseSystem().AddNoise(this, sound_event.m_NoiseParams);
 		}
 	}
@@ -535,25 +542,25 @@ class ZombieBase extends DayZInfected
 	
 	bool FightLogic(int pCurrentCommandID, DayZInfectedInputController pInputController, float pDt)
 	{
-		if( pCurrentCommandID == DayZInfectedConstants.COMMANDID_MOVE )
+		if ( pCurrentCommandID == DayZInfectedConstants.COMMANDID_MOVE )
 		{
 			// we attack only in chase & fight state
 			int mindState = pInputController.GetMindState();
-			if( mindState == DayZInfectedConstants.MINDSTATE_CHASE )
+			if ( mindState == DayZInfectedConstants.MINDSTATE_CHASE )
 			{
 				return ChaseAttackLogic(pCurrentCommandID, pInputController, pDt);
 			}
-			else if( mindState == DayZInfectedConstants.MINDSTATE_FIGHT )
+			else if ( mindState == DayZInfectedConstants.MINDSTATE_FIGHT )
 			{
 				return FightAttackLogic(pCurrentCommandID, pInputController, pDt);
 			}
 		}
-		else if( pCurrentCommandID == DayZInfectedConstants.COMMANDID_ATTACK )
+		else if ( pCurrentCommandID == DayZInfectedConstants.COMMANDID_ATTACK )
 		{
 			DayZInfectedCommandAttack attackCommand = GetCommand_Attack();
-			if( attackCommand && attackCommand.WasHit() )
+			if ( attackCommand && attackCommand.WasHit() )
 			{
-				if( m_ActualTarget != NULL )
+				if ( m_ActualTarget != NULL )
 				{
 					if (m_ActualTarget.GetMeleeTargetType() == EMeleeTargetType.NONALIGNABLE )
 					{
@@ -564,18 +571,18 @@ class ZombieBase extends DayZInfected
 					vector hitPosWS = targetPos;
 
 					PlayerBase playerTarget = PlayerBase.Cast(m_ActualTarget);
-					if( playerTarget )
+					if ( playerTarget )
 					{
 						playerInBlockStance = playerTarget.GetMeleeFightLogic() && playerTarget.GetMeleeFightLogic().IsInBlock();
 					}
 
-					if( vector.DistanceSq(targetPos, this.GetPosition()) <= m_ActualAttackType.m_Distance * m_ActualAttackType.m_Distance )
+					if ( vector.DistanceSq(targetPos, this.GetPosition()) <= m_ActualAttackType.m_Distance * m_ActualAttackType.m_Distance )
 					{
 						//! player is in block stance
-						if( playerInBlockStance )
+						if ( playerInBlockStance )
 						{
 							//! infected is playing heavy attack - decrease the dmg to light
-							if( m_ActualAttackType.m_IsHeavy != 0 )
+							if ( m_ActualAttackType.m_IsHeavy != 0 )
 							{
 								hitPosWS = m_ActualTarget.ModelToWorld(m_ActualTarget.GetDefaultHitPosition()); //! override hit pos by pos defined in type
 								DamageSystem.CloseCombatDamageName(this, m_ActualTarget, m_ActualTarget.GetHitComponentForAI(), "MeleeZombie", hitPosWS);
@@ -583,7 +590,7 @@ class ZombieBase extends DayZInfected
 							else
 							{
 								//! infected is playing light attack - do not send damage, play animation instead
-								if( GetGame().IsServer() )
+								if ( GetGame().IsServer() )
 								{
 									hitPosWS = m_ActualTarget.GetDefaultHitPosition(); //! override hit pos by pos defined in type
 									m_ActualTarget.EEHitBy(null, 0, this, -1, m_ActualTarget.GetDefaultHitComponent(), "Dummy_Light", hitPosWS, 1.0);
@@ -612,27 +619,27 @@ class ZombieBase extends DayZInfected
 		
 		//! do not attack players in vehicle - hotfix
 		PlayerBase pb = PlayerBase.Cast(m_ActualTarget);
-		if( pb && pb.GetCommand_Vehicle() )
+		if ( pb && pb.GetCommand_Vehicle() )
 		{
 			return false;
 		}
 
-		if( m_ActualTarget == NULL )
+		if ( m_ActualTarget == NULL )
 			return false;
 	
 		vector targetPos = m_ActualTarget.GetPosition();
-		if( !CanAttackToPosition(targetPos) )
+		if ( !CanAttackToPosition(targetPos) )
 			return false;
 		
 		float targetDist = vector.Distance(targetPos, this.GetPosition());
 		int pitch = GetAttackPitch(m_ActualTarget);
 		
 		m_ActualAttackType = GetDayZInfectedType().ChooseAttack(DayZInfectedAttackGroupType.CHASE, targetDist, pitch);
-		if( m_ActualAttackType )
+		if ( m_ActualAttackType )
 		{
 			Object target = DayZPlayerUtils.GetMeleeTarget(this.GetPosition(), this.GetDirection(), TARGET_CONE_ANGLE_CHASE, m_ActualAttackType.m_Distance, -1.0, 2.0, this, m_TargetableObjects, m_AllTargetObjects);
 			//! target is outside the targeting cone; skip attack
-			if(m_ActualTarget != target)
+			if (m_ActualTarget != target)
 			{
 				m_AllTargetObjects.Clear();
 				return false;
@@ -653,33 +660,33 @@ class ZombieBase extends DayZInfected
 		
 		//! do not attack players in vehicle - hotfix
 		PlayerBase pb = PlayerBase.Cast(m_ActualTarget);
-		if( pb && pb.GetCommand_Vehicle() )
+		if ( pb && pb.GetCommand_Vehicle() )
 		{
 			return false;
 		}
 
-		if( m_AttackCooldownTime > 0 )
+		if ( m_AttackCooldownTime > 0 )
 		{
-			m_AttackCooldownTime -= pDt;
+			m_AttackCooldownTime -= pDt * GameConstants.AI_ATTACKSPEED;
 			return false;
 		}
 					
-		if( m_ActualTarget == NULL )
+		if ( m_ActualTarget == NULL )
 			return false;
 
 		vector targetPos = m_ActualTarget.GetPosition();
 		float targetDist = vector.Distance(targetPos, this.GetPosition());
 		int pitch = GetAttackPitch(m_ActualTarget);
 		
-		if( !CanAttackToPosition(targetPos) )
+		if ( !CanAttackToPosition(targetPos) )
 			return false;
 
 		m_ActualAttackType = GetDayZInfectedType().ChooseAttack(DayZInfectedAttackGroupType.FIGHT, targetDist, pitch);
-		if( m_ActualAttackType )
+		if ( m_ActualAttackType )
 		{
 			Object target = DayZPlayerUtils.GetMeleeTarget(this.GetPosition(), this.GetDirection(), TARGET_CONE_ANGLE_FIGHT, m_ActualAttackType.m_Distance, -1.0, 2.0, this, m_TargetableObjects, m_AllTargetObjects);
 			//! target is outside the targeting cone; skip attack
-			if(m_ActualTarget != target)
+			if (m_ActualTarget != target)
 			{
 				m_AllTargetObjects.Clear();
 				return false;
@@ -699,7 +706,7 @@ class ZombieBase extends DayZInfected
 
 		attackRefPos = target.GetDefaultHitPosition();
 		//! no default hit pos fallback
-		if( attackRefPos != vector.Zero )
+		if ( attackRefPos != vector.Zero )
 		{
 			attackRefPos = target.ModelToWorld(attackRefPos);
 		}
@@ -714,10 +721,10 @@ class ZombieBase extends DayZInfected
 		
 		float diff = Math.AbsFloat(attackRefPos[1] - headPosY);
 		
-		if( diff < 0.3 )
+		if ( diff < 0.3 )
 			return 0;
 		
-		if( headPosY > attackRefPos[1] )
+		if ( headPosY > attackRefPos[1] )
 			return -1;
 		else
 			return 1;
@@ -732,7 +739,7 @@ class ZombieBase extends DayZInfected
 	
 	bool HandleCrawlTransition(int pCurrentCommandID)
 	{
-		if( m_CrawlTransition != -1 )
+		if ( m_CrawlTransition != -1 )
 		{
 			StartCommand_Crawl(m_CrawlTransition);
 			
@@ -746,12 +753,12 @@ class ZombieBase extends DayZInfected
 	bool EvaluateCrawlTransitionAnimation(EntityAI pSource, string pComponent, string pAmmoType, out int pAnimType)
 	{
 		pAnimType = -1;
-		if( pComponent == "LeftLeg" && GetHealth(pComponent, "Health") == 0 )
+		if ( pComponent == "LeftLeg" && GetHealth(pComponent, "Health") == 0 )
 			pAnimType = 0;
-		else if( pComponent == "RightLeg" && GetHealth(pComponent, "Health") == 0 )
+		else if ( pComponent == "RightLeg" && GetHealth(pComponent, "Health") == 0 )
 			pAnimType = 2;
 		
-		if( pAnimType != -1 )
+		if ( pAnimType != -1 )
 		{
 			vector targetDirection = GetDirection();
 			vector toSourceDirection = (pSource.GetPosition() - GetPosition());
@@ -763,7 +770,7 @@ class ZombieBase extends DayZInfected
 			toSourceDirection.Normalize();
 
 			float cosFi = vector.Dot(targetDirection, toSourceDirection);
-			if( cosFi >= 0 ) // front
+			if ( cosFi >= 0 ) // front
 				pAnimType++;
 		}
 		
@@ -779,20 +786,27 @@ class ZombieBase extends DayZInfected
 	
 	bool m_DamageHitHeavy = false;
 	int m_DamageHitType = 0;
+	float m_ShockDamage = 0;
 		
 	bool HandleDamageHit(int pCurrentCommandID)
 	{
-		if( pCurrentCommandID == DayZInfectedConstants.COMMANDID_HIT )
+		if ( pCurrentCommandID == DayZInfectedConstants.COMMANDID_HIT )
 		{
 			m_DamageHitToProcess = false;
+			m_ShockDamage = 0;
 			return true;
 		}
 		
-		if( m_DamageHitToProcess )
+		if ( m_DamageHitToProcess )
 		{
-			StartCommand_Hit(m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection);
+			int randNum = Math.RandomIntInclusive(0, 100);
+			float stunChange = SHOCK_TO_STUN_MULTIPLIER * m_ShockDamage;
+			
+			if ( m_DamageHitHeavy || randNum <= stunChange || ( m_MindState == DayZInfectedConstants.MINDSTATE_CALM || m_MindState == DayZInfectedConstants.MINDSTATE_DISTURBED ) )
+				StartCommand_Hit(m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection);
 			
 			m_DamageHitToProcess = false;
+			m_ShockDamage = 0;
 			m_HeavyHitOverride = false;
 			return true;
 		}
@@ -809,17 +823,18 @@ class ZombieBase extends DayZInfected
 		//! anim type
 		pAnimType = 0; // belly
 		
-		if( !pHeavyHit )
+		if ( !pHeavyHit )
 		{
-			if( pComponent == "Torso" ) // body
+			if ( pComponent == "Torso" ) // body
 				pAnimType = 1;
-			else if( pComponent == "Head" ) // head		
+			else if ( pComponent == "Head" ) // head		
 				pAnimType = 2;
 		}
 		
 		//! direction
 		pAnimHitDir = ComputeHitDirectionAngle(pSource);
-		
+		//! shock GetDamage
+		m_ShockDamage = GetGame().ConfigGetFloat( "CfgAmmo " + pAmmoType + " DamageApplied " + "Shock " + "damage");
 		return true;
 	}
 	
@@ -838,7 +853,7 @@ class ZombieBase extends DayZInfected
 		vector cross = targetDirection * toSourceDirection;
 
 		float dirAngle = Math.Acos(cosFi) * Math.RAD2DEG;
-		if( cross[1] < 0 )
+		if ( cross[1] < 0 )
 			dirAngle = -dirAngle;
 		
 		return dirAngle;
@@ -855,7 +870,7 @@ class ZombieBase extends DayZInfected
 		
 		m_TransportHitRegistered = false;
 		
-		if( !IsAlive() )
+		if ( !IsAlive() )
 		{
 			dBodySetInteractionLayer(this, PhxInteractionLayers.RAGDOLL);
 			EvaluateDeathAnimation(source, dmgZone, ammo, m_DeathType, m_DamageHitDirection);
@@ -863,13 +878,13 @@ class ZombieBase extends DayZInfected
 		else
 		{
 			int crawlTransitionType = -1;
-			if( EvaluateCrawlTransitionAnimation(source, dmgZone, ammo, crawlTransitionType) )
+			if ( EvaluateCrawlTransitionAnimation(source, dmgZone, ammo, crawlTransitionType) )
 			{
 				m_CrawlTransition = crawlTransitionType;
 				return;
 			}
 			
-			if( EvaluateDamageHitAnimation(source, dmgZone, ammo, m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection) )
+			if ( EvaluateDamageHitAnimation(source, dmgZone, ammo, m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection) )
 			{
 				m_DamageHitToProcess = true;
 				return;
@@ -895,11 +910,11 @@ class ZombieBase extends DayZInfected
 	
 	override private void EOnContact(IEntity other, Contact extra)
 	{
-		if( !IsAlive() )
+		if ( !IsAlive() )
 			return;
-		
+
 		Transport transport = Transport.Cast(other);
-		if( transport )
+		if ( transport )
 		{
 			if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
 			{
@@ -921,4 +936,9 @@ class ZombieBase extends DayZInfected
 	{
 		
 	}*/
+	
+	override vector GetCenter()
+	{
+		return GetBonePositionWS( GetBoneIndexByName( "spine3" ) );
+	}
 }

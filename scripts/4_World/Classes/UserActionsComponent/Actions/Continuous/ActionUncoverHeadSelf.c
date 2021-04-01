@@ -70,7 +70,7 @@ class ActionUncoverHeadSelf: ActionContinuousBase
 	{
 		EntityAI attachment;
 		Class.CastTo(attachment, player.GetInventory().FindAttachment(InventorySlots.HEADGEAR));
-		if ( attachment && attachment.GetType() == "BurlapSackCover" )
+		if ( attachment && attachment.IsInherited(BurlapSackCover) )
 		{
 			return true;
 		}

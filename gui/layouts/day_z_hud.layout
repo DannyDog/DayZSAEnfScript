@@ -3541,7 +3541,7 @@ FrameWidgetClass HudFrameWidget {
            }
           }
           PanelWidgetClass ia_item_right {
-           clipchildren 1
+           clipchildren 0
            inheritalpha 0
            position 60 0
            size 260 36

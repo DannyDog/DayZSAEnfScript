@@ -128,7 +128,6 @@ class PlayerBase extends ManBase
 	EPulseType						m_PulseType;
 	PlayerBase						m_CheckPulseLastTarget;
 	int 							m_ForceInjuryAnimMask;
-	//bool 							m_bProcessOpticsPreload;
 	//string 						m_sOpticsType;
 	bool 							m_HideHairAnimated;
 	string 							m_DecayedTexture;
@@ -2274,9 +2273,6 @@ class PlayerBase extends ManBase
 
 		}
 		m_AnimCommandStarting = HumanMoveCommandID.None;
-		
-		//ProcessLiftWeapon();
-		//ProcessOpticsPreload();
 	}
 	
 	bool m_ShowDbgUI = true;
@@ -2310,6 +2306,13 @@ class PlayerBase extends ManBase
 		if (item && Class.CastTo(w, item))
 		{
 			w.ResetWeaponAnimState();
+			
+			HumanCommandMove cm = GetCommand_Move();
+			if ( cm )
+			{
+				cm.SetMeleeBlock( false );
+				GetMeleeFightLogic().SetBlock( false );
+			}
 		}
 		
 		//SetOpticsPreload(true,item);
@@ -2328,50 +2331,6 @@ class PlayerBase extends ManBase
 		
 		//SetOpticsPreload(false,item);
 	}
-	
-	/*void SetOpticsPreload(bool state, EntityAI item)
-	{
-		m_bProcessOpticsPreload = state;
-		if (state)
-		{
-			ItemOptics optics;
-			if (Weapon_Base.Cast(item))
-			{
-				optics = Weapon_Base.Cast(item).GetAttachedOptics();
-				
-			}
-			else if (ItemOptics.Cast(item))
-			{
-				optics = ItemOptics.Cast(item);
-			}
-			
-			if (optics)
-			{
-				string path = "cfgVehicles " + optics.GetType() + " OpticsInfo preloadOpticType";
-				string type_2d;
-				
-				if ( optics.m_2D_preload_type != "" )
-				{
-					m_sOpticsType = optics.m_2D_preload_type;
-				}
-				else
-					m_sOpticsType = optics.GetType();
-			}
-		}
-		else
-		{
-			m_sOpticsType = "";
-		}
-	}*/
-	
-	/*void ProcessOpticsPreload()
-	{
-		if (m_bProcessOpticsPreload && m_sOpticsType != "")
-		{
-			bool boo = GetGame().PreloadObject(m_sOpticsType,0.1);
-			//Print("attached optics found " + m_sOpticsType + " | " + boo);
-		}
-	}*/
 	
 	override void CommandHandler(float pDt, int pCurrentCommandID, bool pCurrentCommandFinished)	
 	{
@@ -2822,6 +2781,11 @@ class PlayerBase extends ManBase
 	override bool IsUnconscious()
 	{
 		return m_IsUnconscious;
+	}
+	
+	override bool CanBeTargetedByAI(EntityAI ai)
+	{
+		return super.CanBeTargetedByAI( ai ) && !IsUnconscious();
 	}
 	
 	void GiveShock(float shock)
@@ -3311,7 +3275,7 @@ class PlayerBase extends ManBase
 			GetWeaponManager().RefreshAnimationState();
 		}
 		
-		if (GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER)
+		if ( GetGame().IsServer() )
 		{
 			if (newStance == DayZPlayerConstants.STANCEIDX_PRONE)
 			{
@@ -3333,6 +3297,20 @@ class PlayerBase extends ManBase
 				else if (m_BrokenLegState == eBrokenLegs.BROKEN_LEGS_SPLINT)
 					m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.BROKEN_LEGS_SPLINT;
 				
+				ForceUpdateInjuredState();
+			}
+		}
+	}
+	
+	override void OnCommandMoveStart()
+	{
+		if ( GetGame().IsServer() )
+		{
+			//In case player changes stance through a different command, we refresh the anim overrides
+			int prone = DayZPlayerConstants.STANCEMASK_PRONE | DayZPlayerConstants.STANCEMASK_RAISEDPRONE;
+			if ( !IsPlayerInStance( prone ) )
+			{
+				m_InjuryHandler.m_ForceInjuryAnimMask = m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PRONE_ANIM_OVERRIDE;
 				ForceUpdateInjuredState();
 			}
 		}
@@ -3418,7 +3396,6 @@ class PlayerBase extends ManBase
 		if ( GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 		{
 			m_Hud.Update( timeSlice );
-			//ProcessOpticsPreload();
 			m_Hud.ToggleHeatBufferPlusSign( m_HasHeatBuffer );
 		}
 	}
@@ -4116,7 +4093,7 @@ class PlayerBase extends ManBase
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_SERVER:
 				case DayZPlayerInstanceType.INSTANCETYPE_AI_REMOTE:
 				case DayZPlayerInstanceType.INSTANCETYPE_REMOTE:
-					//return true; // Might help mitigate "megabugged" (desync)
+					return true; // Might help mitigate "megabugged" (desync)
 				
 					syncDebugPrint("[syncinv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " NeedInventoryJunctureFromServer item=" + Object.GetDebugName(item) + " currPar=" + currParent + " newPar=" + newParent);
 					
@@ -4556,24 +4533,24 @@ class PlayerBase extends ManBase
 	{
 		super.OnRPC(sender, rpc_type, ctx);
 		
-		switch(rpc_type)
+		switch (rpc_type)
 		{
 			case ERPCs.RPC_SYNC_DISPLAY_STATUS:
-				if( GetVirtualHud() ) 
+				if ( GetVirtualHud() ) 
 				{
 					GetVirtualHud().OnRPC(ctx);
 				}
 			break;
 	  
 			case ERPCs.RPC_PLAYER_SYMPTOM_ON:
-				if( GetSymptomManager() ) 
+				if ( GetSymptomManager() ) 
 				{
 					GetSymptomManager().OnRPC(ERPCs.RPC_PLAYER_SYMPTOM_ON, ctx);
 				}
 			break;
 			 
 			case ERPCs.RPC_PLAYER_SYMPTOM_OFF:
-				if( GetSymptomManager() ) 
+				if ( GetSymptomManager() ) 
 				{
 					GetSymptomManager().OnRPC(ERPCs.RPC_PLAYER_SYMPTOM_OFF, ctx);
 				}
@@ -4582,7 +4559,7 @@ class PlayerBase extends ManBase
 			case ERPCs.RPC_CHECK_PULSE:
 				ctx.Read(CachedObjectsParams.PARAM1_INT);
 				EPulseType pulse;
-				if((CachedObjectsParams.PARAM1_INT.param1 & ActionCheckPulse.TARGET_IRREGULAR_PULSE_BIT) == 0)
+				if ( (CachedObjectsParams.PARAM1_INT.param1 & ActionCheckPulse.TARGET_IRREGULAR_PULSE_BIT) == 0 )
 				{
 					pulse = EPulseType.REGULAR;
 				}
@@ -4598,35 +4575,35 @@ class PlayerBase extends ManBase
 				Print("-----------------");
 			*/
 				int blood_level = ~ActionCheckPulse.TARGET_IRREGULAR_PULSE_BIT & CachedObjectsParams.PARAM1_INT.param1;
-				if(m_CheckPulseLastTarget)
+				if (m_CheckPulseLastTarget)
 				{
 					m_CheckPulseLastTarget.SetLastUAMessage(ActionCheckPulse.GetPulseMessage(pulse, blood_level));
 				}
 			break;
 
 			case ERPCs.RPC_PLAYER_SYMPTOMS_DEBUG_ON:
-				if( GetSymptomManager() ) 
+				if ( GetSymptomManager() ) 
 				{
 					GetSymptomManager().OnRPCDebug(ERPCs.RPC_PLAYER_SYMPTOMS_DEBUG_ON, ctx);
 				}
 			break;
 
 			case ERPCs.RPC_PLAYER_SYMPTOMS_DEBUG:
-				if( GetSymptomManager() ) 
+				if ( GetSymptomManager() ) 
 				{
 					GetSymptomManager().OnRPCDebug(ERPCs.RPC_PLAYER_SYMPTOMS_DEBUG, ctx);
 				}
 			break;
 			
 			case ERPCs.RPC_PLAYER_SYMPTOMS_EXIT:
-				if( GetSymptomManager() ) 
+				if ( GetSymptomManager() ) 
 				{
 					GetSymptomManager().OnRPCDebug(ERPCs.RPC_PLAYER_SYMPTOMS_EXIT, ctx);
 				}
 			break;		
 			
 			case ERPCs.RPC_USER_ACTION_MESSAGE:
-				if( !GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT ) 
+				if ( !GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT ) 
 				{
 					break;
 				}
@@ -4670,7 +4647,7 @@ class PlayerBase extends ManBase
 					GiveShock(-damage.param1);
 				}
 			break;
-		
+			
 			case ERPCs.RPC_CRAFTING_INVENTORY_INSTANT:
 				ref Param3<int, ItemBase, ItemBase> craftParam = new Param3<int, ItemBase, ItemBase>(-1, NULL, NULL);
 				if (ctx.Read( craftParam ) )
@@ -4693,14 +4670,20 @@ class PlayerBase extends ManBase
 			break;
 			
 			case ERPCs.RPC_DAMAGE_VALUE_SYNC:
-				if(m_TrasferValues) m_TrasferValues.OnRPC(ctx);
+				if ( m_TrasferValues ) 
+					m_TrasferValues.OnRPC(ctx);
 			break; 
+			
 			case ERPCs.RPC_DEBUG_MONITOR_FLT:
-				if(m_DebugMonitorValues) m_DebugMonitorValues.OnRPCFloat(ctx);
+				if ( m_DebugMonitorValues ) 
+					m_DebugMonitorValues.OnRPCFloat(ctx);
 			break;
+			
 			case ERPCs.RPC_DEBUG_MONITOR_STR:
-				if(m_DebugMonitorValues) m_DebugMonitorValues.OnRPCString(ctx);
+				if ( m_DebugMonitorValues ) 
+					m_DebugMonitorValues.OnRPCString(ctx);
 			break;
+			
 			case ERPCs.RPC_SOFT_SKILLS_SPECIALTY_SYNC:
 				ref Param1<float> p_synch = new Param1<float>(0);
 				ctx.Read( p_synch );
@@ -4725,9 +4708,9 @@ class PlayerBase extends ManBase
 			
 			case ERPCs.RPC_INIT_SET_QUICKBAR:
 				ref Param1<int> count = new Param1<int>(0); 
-				if( ctx.Read( count ) );
+				if ( ctx.Read( count ) );
 				{
-					for( int i = 0; i < count.param1 ; i++)
+					for ( int i = 0; i < count.param1 ; i++ )
 					{
 						m_QuickBarBase.OnSetEntityRPC(ctx);	
 					}
@@ -4753,7 +4736,7 @@ class PlayerBase extends ManBase
 			case ERPCs.RPC_SYNC_THERMOMETER:
 			{
 				float value;
-				if( ctx.Read( value ) )
+				if ( ctx.Read( value ) )
 					m_Hud.SetTemperature( value.ToString() + "#degrees_celsius" );
 				break;
 			}
@@ -4797,7 +4780,7 @@ class PlayerBase extends ManBase
 		}
 		
 		//woodcutting
-		switch(rpc_type)
+		switch (rpc_type)
 		{
 			case PlantType.TREE_HARD:
 				SoundHardTreeFallingPlay();
@@ -4817,13 +4800,16 @@ class PlayerBase extends ManBase
 		}
 #ifdef DEVELOPER
 			PluginDeveloper module_rc = PluginDeveloper.Cast( GetPlugin(PluginDeveloper) );
-			if(module_rc) module_rc.OnRPC(this, rpc_type, ctx);
+			if ( module_rc ) 
+				module_rc.OnRPC(this, rpc_type, ctx);
 			
 			PluginDeveloperSync module_rcs = PluginDeveloperSync.Cast( GetPlugin(PluginDeveloperSync) );
-			if(module_rcs) module_rcs.OnRPC(this, rpc_type, ctx);
+			if ( module_rcs ) 
+				module_rcs.OnRPC(this, rpc_type, ctx);
 			
 			PluginDiagMenu plugin_diag_menu = PluginDiagMenu.Cast( GetPlugin(PluginDiagMenu) );
-			if(plugin_diag_menu) plugin_diag_menu.OnRPC(this, rpc_type, ctx);
+			if ( plugin_diag_menu ) 
+				plugin_diag_menu.OnRPC(this, rpc_type, ctx);
 #endif
 	}
 	
@@ -4844,7 +4830,7 @@ class PlayerBase extends ManBase
 		}
 		
 		CheckSoundEvent();
-		if( GetBleedingManagerRemote() )
+		if ( GetBleedingManagerRemote() )
 		{
 			GetBleedingManagerRemote().OnVariablesSynchronized(GetBleedingBits());
 		}
@@ -5605,30 +5591,26 @@ class PlayerBase extends ManBase
 	{
 		//Print("SpawnBreathVaporEffect:"+GetGame().GetTime());
 		int boneIdx = GetBoneIndexByName("Head");
-		if( boneIdx != -1 )
+		if ( boneIdx != -1 )
 		{
-			EffectParticle eff;
-			if( m_BreathVapour == 1 )
+			Particle p;
+			switch (m_BreathVapour)
 			{
-				eff = new EffBreathVapourLight();
-			}
-			else if( m_BreathVapour == 2)
-			{
-				eff = new EffBreathVapourMedium();
-			}
-			else if( m_BreathVapour == 3)
-			{
-				eff = new EffBreathVapourHeavy();
+				case 1:
+					p = Particle.PlayInWorld(ParticleList.BREATH_VAPOUR_LIGHT, "-0.03 0.15 0");
+					break;
+				case 2:
+					p = Particle.PlayInWorld(ParticleList.BREATH_VAPOUR_MEDIUM, "-0.03 0.15 0");
+					break;
+				case 3:
+					p = Particle.PlayInWorld(ParticleList.BREATH_VAPOUR_HEAVY, "-0.03 0.15 0");
+					break;
+				default:
+					break;
 			}
 			
-			if( eff )
-			{
-				vector player_pos = GetPosition();
-				eff.SetDecalOwner( this );
-				SEffectManager.PlayInWorld( eff, "-0.03 0.15 0" );
-				Particle p = eff.GetParticle();
+			if ( p )
 				AddChild(p, boneIdx);
-			}
 		}
 	}
 
@@ -6724,7 +6706,10 @@ class PlayerBase extends ManBase
 			case DayZPlayerSyncJunctures.SJ_SHOCK :
 				DayZPlayerSyncJunctures.ReadShockParams(pCtx, m_CurrentShock);
 			break;
-			case DayZPlayerSyncJunctures.SJ_STAMINA :
+			case DayZPlayerSyncJunctures.SJ_STAMINA:
+				m_StaminaHandler.OnSyncJuncture(pJunctureID, pCtx);
+			break;
+			case DayZPlayerSyncJunctures.SJ_STAMINA_MISC:
 				m_StaminaHandler.OnSyncJuncture(pJunctureID, pCtx);
 			break;
 		}
@@ -7106,7 +7091,7 @@ class PlayerBase extends ManBase
 		}
 		return super.PredictiveTakeEntityToTargetInventory(target, flags, item);
 	}
-	
+
 	override bool PredictiveTakeEntityToInventory (FindInventoryLocationType flags, notnull EntityAI item)
 	{
 		bool can_detach;
@@ -7120,6 +7105,34 @@ class PlayerBase extends ManBase
 			return false;
 		}
 		return super.PredictiveTakeEntityToInventory(flags, item);
+	}
+	
+	override bool PredictiveTakeEntityToTargetAttachment (notnull EntityAI target, notnull EntityAI item)
+	{
+		Weapon_Base parentWpn = Weapon_Base.Cast(target);
+		Magazine mag = Magazine.Cast(item);
+		if (parentWpn && mag)
+		{
+			if( GetWeaponManager().CanAttachMagazine(parentWpn, mag) )
+				return GetWeaponManager().AttachMagazine(mag);
+
+			return false;
+		}
+		return super.PredictiveTakeEntityToTargetAttachment(target, item);
+	}
+	
+	override bool PredictiveTakeEntityToTargetAttachmentEx (notnull EntityAI target, notnull EntityAI item, int slot)
+	{
+		Weapon_Base parentWpn = Weapon_Base.Cast(target);
+		Magazine mag = Magazine.Cast(item);
+		if (parentWpn && mag)
+		{
+			if( target.CanReceiveAttachment(item,slot) && GetWeaponManager().CanAttachMagazine(parentWpn, mag) )
+				return GetWeaponManager().AttachMagazine(mag);
+
+			return false;
+		}
+		return super.PredictiveTakeEntityToTargetAttachmentEx(target, item,slot);
 	}
 	
 	override bool PredictiveTakeEntityToTargetCargo (notnull EntityAI target, notnull EntityAI item)
@@ -7568,37 +7581,37 @@ class PlayerBase extends ManBase
 		{
 			case PlayerConstants.CORPSE_STATE_MEDIUM :
 				//play medium sound/flies particle
-				if(!m_FliesEff)
+				if (!m_FliesEff)
 					m_FliesEff = new EffSwarmingFlies();
 				
-				if( m_FliesEff && !SEffectManager.IsEffectExist(m_FliesIndex) )
+				if ( m_FliesEff && !SEffectManager.IsEffectExist(m_FliesIndex) )
 				{
 					m_FliesEff.SetDecalOwner( this );
-					m_FliesIndex = SEffectManager.PlayOnObject(m_FliesEff,this,"0 0.25 0");
+					m_FliesIndex = SEffectManager.PlayOnObject(m_FliesEff, this, "0 0.25 0");
 					p = m_FliesEff.GetParticle();
 					AddChild(p, boneIdx);
-					if( !m_SoundFliesEffect )
+					if ( !m_SoundFliesEffect )
 					{
 						//m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
-						PlaySoundSetLoop(m_SoundFliesEffect,"Flies_SoundSet",1.0,1.0);
+						PlaySoundSetLoop(m_SoundFliesEffect, "Flies_SoundSet", 1.0, 1.0);
 					}
 				}
 			break;
 			case PlayerConstants.CORPSE_STATE_DECAYED :
 				//play serious sound/flies particle
-				if( !m_FliesEff )
+				if ( !m_FliesEff )
 					m_FliesEff = new EffSwarmingFlies();
 				
-				if( m_FliesEff && !SEffectManager.IsEffectExist(m_FliesIndex) )
+				if ( m_FliesEff && !SEffectManager.IsEffectExist(m_FliesIndex) )
 				{
 					m_FliesEff.SetDecalOwner( this );
-					m_FliesIndex = SEffectManager.PlayOnObject(m_FliesEff,this,"0 0.25 0");
+					m_FliesIndex = SEffectManager.PlayOnObject(m_FliesEff, this, "0 0.25 0");
 					p = m_FliesEff.GetParticle();
 					AddChild(p, boneIdx);
-					if( !m_SoundFliesEffect )
+					if ( !m_SoundFliesEffect )
 					{
 						//m_SoundFliesEffect = SEffectManager.PlaySoundOnObject("Flies_SoundSet",this,0,0,true);
-						PlaySoundSetLoop(m_SoundFliesEffect,"Flies_SoundSet",1.0,1.0);
+						PlaySoundSetLoop(m_SoundFliesEffect, "Flies_SoundSet", 1.0, 1.0);
 					}
 				}
 			break;
@@ -7726,7 +7739,6 @@ class PlayerBase extends ManBase
 	//! tries to hide item in player's hands, some exceptions for various movement states
 	void TryHideItemInHands(bool hide, bool force = false)
 	{
-		//if ( !hide && ((!IsSwimming() && !IsSwimmingStarting() && !IsClimbingLadder() && !IsClimbingLadderStarting() && !IsInVehicle() && !IsInVehicleStarting()) || force) )
 		if ( !hide && ((!IsSwimming() && !IsClimbingLadder() && !IsInVehicle() && !AnimCommandCheck(HumanMoveCommandID.CommandSwim | HumanMoveCommandID.CommandLadder | HumanMoveCommandID.CommandVehicle)) || force) )
 		{
 			GetItemAccessor().HideItemInHands(false);
@@ -7858,5 +7870,10 @@ class PlayerBase extends ManBase
 		}
 		
 		return super.TakeToDstImpl(mode, src, dst);
+	}
+	
+	override vector GetCenter()
+	{
+		return GetBonePositionWS( GetBoneIndexByName( "spine3" ) );
 	}
 }

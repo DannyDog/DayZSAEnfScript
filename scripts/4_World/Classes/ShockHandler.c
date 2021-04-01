@@ -49,11 +49,13 @@ class ShockHandler
 			if ( m_Player.m_CurrentShock != (m_PrevVignette * 100) )
 			{
 				m_LerpRes = LerpVignette(m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick);
+				float val = MiscGameplayFunctions.Bobbing(PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer);
+				PPEffects.SetTunnelVignette(1 - Easing.EaseInQuart(m_LerpRes) + val);
 			}
 			//Pulsing
-			m_LerpRes = MiscGameplayFunctions.Bobbing(PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer);
+			//m_LerpRes = MiscGameplayFunctions.Bobbing(PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer);
 			
-			PPEffects.SetTunnelVignette(1 - Easing.EaseInQuart(LerpVignette(m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick)) + m_LerpRes);
+			//PPEffects.SetTunnelVignette(1 - Easing.EaseInQuart(LerpVignette(m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick)) + m_LerpRes);
 		}
 
 		

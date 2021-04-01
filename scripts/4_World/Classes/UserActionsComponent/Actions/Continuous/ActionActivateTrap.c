@@ -43,7 +43,7 @@ class ActionActivateTrap: ActionContinuousBase
 
 	override bool HasProgress()
 	{
-		return false;
+		return true;
 	}
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
@@ -73,6 +73,16 @@ class ActionActivateTrap: ActionContinuousBase
 		{
 			TrapBase trap = TrapBase.Cast( action_data.m_Target.GetObject() );
 			Param1<bool> play = new Param1<bool>( true );
+			GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
+		}
+	}
+	
+	override void OnEnd( ActionData action_data )
+	{
+		if ( !GetGame().IsMultiplayer() || GetGame().IsServer() )
+		{
+			TrapBase trap = TrapBase.Cast( action_data.m_Target.GetObject());
+			Param1<bool> play = new Param1<bool>( false );
 			GetGame().RPCSingleParam( trap, SoundTypeTrap.ACTIVATING, play, true );
 		}
 	}

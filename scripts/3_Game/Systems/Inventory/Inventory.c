@@ -400,7 +400,7 @@ class GameInventory
 					Error("[syncinv] ServerInventoryCommand (cmd=HAND_EVENT) dropped, item not in bubble");
 					break; // not in bubble
 				}
-				e.m_Player.GetHumanInventory().PostHandEvent(e);
+				e.m_Player.GetHumanInventory().ProcessHandEvent(e);
 				break;
 			}
 
@@ -559,6 +559,9 @@ class GameInventory
 		int slot;
 		InventoryLocation il = new InventoryLocation;
 		
+		if(!CanForceSwapEntities(item1, item1_dst, item2, item2_dst) )
+			return false;
+		
 		if( item1_dst == null)
 		{
 			item2.GetInventory().GetCurrentInventoryLocation(il);
@@ -585,8 +588,7 @@ class GameInventory
 		if( item2.GetQuantity() > item2.GetTargetQuantityMax(slot) )
 			return false;
 		
-		
-		return CanForceSwapEntities(item1, item1_dst, item2, item2_dst);
+		return true;
 	}
 	
 	proto native bool CanAddSwappedEntity (notnull InventoryLocation src1, notnull InventoryLocation src2, notnull InventoryLocation dst1, notnull InventoryLocation dst2);
@@ -595,8 +597,63 @@ class GameInventory
 	const int c_InventoryReservationTimeoutMS = 5000;
 	const int c_InventoryReservationTimeoutShortMS = 3000;
 	static proto native bool AddInventoryReservation (EntityAI item, InventoryLocation dst, int timeout_ms);
+	bool AddInventoryReservationEx (EntityAI item, InventoryLocation dst, int timeout_ms)
+	{
+		if (GetGame().IsMultiplayer() && GetGame().IsServer() )
+			return true;
+		
+		bool ret_val = AddInventoryReservation(item, dst, timeout_ms);
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryReservationLogEnable() )
+		{
+			DayZPlayer player = GetGame().GetPlayer();
+			if( player )
+			{
+				Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "AddInventoryReservation", player.ToString() );
+			}
+		}
+		#endif
+		return ret_val;
+	}
 	static proto native bool ExtendInventoryReservation (EntityAI item, InventoryLocation dst, int timeout_ms);
+	bool ExtendInventoryReservationEx (EntityAI item, InventoryLocation dst, int timeout_ms)
+	{ 
+		if (GetGame().IsMultiplayer() && GetGame().IsServer() )
+			return true;
+		
+		bool ret_val = ExtendInventoryReservation(item,dst,timeout_ms);
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryReservationLogEnable() )
+		{
+			DayZPlayer player = GetGame().GetPlayer();
+			if( player )
+			{
+				Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ExtendInventoryReservation", player.ToString() );
+		
+			}
+		}
+		#endif
+		return ret_val;
+	}
 	static proto native bool ClearInventoryReservation (EntityAI item, InventoryLocation dst);
+	bool ClearInventoryReservationEx (EntityAI item, InventoryLocation dst)
+	{
+		if (GetGame().IsMultiplayer() && GetGame().IsServer() )
+			return true;
+		
+		bool ret_val = ClearInventoryReservation(item,dst);
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryReservationLogEnable() )
+		{
+			DayZPlayer player = GetGame().GetPlayer();
+			if( player )
+			{
+				Debug.InventoryMoveLog("Reservation cleared result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ClearInventoryReservation", player.ToString() );
+			}
+		}
+		#endif
+		return ret_val;
+	}
 	static proto native bool HasInventoryReservation (EntityAI item, InventoryLocation dst);
 	static proto native bool GetInventoryReservationCount (EntityAI item, InventoryLocation dst);
 	///@} reservations
@@ -619,7 +676,7 @@ class GameInventory
 	///@} locks
 
 	///@{ anti-cheats
-	const float c_MaxItemDistanceRadius = 2.0;
+	const float c_MaxItemDistanceRadius = 2.5;
 	static proto native bool CheckRequestSrc (notnull Man requestingPlayer, notnull InventoryLocation src, float radius);
 	static proto native bool CheckDropRequest (notnull Man requestingPlayer, notnull InventoryLocation src, float radius);
 	static proto native bool CheckTakeItemRequest (notnull Man requestingPlayer, notnull InventoryLocation src, notnull InventoryLocation dst, float radius);
@@ -666,8 +723,9 @@ class GameInventory
 	void EEDelete (EntityAI parent)
 	{
 		EntityAI item = GetInventoryOwner();
-		if (parent)
-			parent.GetInventory().ClearInventoryReservation(item, null);
+		Man player = item.GetHierarchyRootPlayer();
+		if (player)
+			player.GetInventory().ClearInventoryReservationEx(item, null);
 	}
 
 	/**@fn		CreateInInventory

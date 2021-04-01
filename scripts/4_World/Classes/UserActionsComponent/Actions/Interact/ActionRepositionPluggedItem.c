@@ -160,7 +160,7 @@ class ActionRepositionPluggedItem: ActionInteractBase
 		
 		InventoryLocation il = new InventoryLocation;
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		ClearInventoryReservation(action_data);
+		ClearInventoryReservationEx(action_data);
 		
 		action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
 	}
@@ -169,7 +169,7 @@ class ActionRepositionPluggedItem: ActionInteractBase
 	{
 		InventoryLocation il = new InventoryLocation;
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		ClearInventoryReservation(action_data);
+		ClearInventoryReservationEx(action_data);
 		
 		action_data.m_Player.PredictiveTakeEntityToHands( ntarget );
 	}

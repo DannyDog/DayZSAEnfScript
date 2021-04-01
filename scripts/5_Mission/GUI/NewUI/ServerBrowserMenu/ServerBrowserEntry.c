@@ -22,6 +22,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	protected TextWidget				m_ServerBattleye;
 	protected TextWidget				m_ServerIP;
 	protected TextWidget				m_ServerAcceleration;
+	protected TextWidget				m_ServerMap;
 	protected TextWidget				m_ServerMods;
 	protected ButtonWidget				m_ServerModsExpand;
 	protected ref array<string>			m_Mods;
@@ -64,6 +65,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 		m_ServerBattleye		= TextWidget.Cast( m_Root.FindAnyWidget( "battlleye_text" ) );
 		m_ServerIP				= TextWidget.Cast( m_Root.FindAnyWidget( "ip_text" ) );
 		m_ServerAcceleration	= TextWidget.Cast( m_Root.FindAnyWidget( "server_acceleration_text" ) );
+		m_ServerMap				= TextWidget.Cast( m_Root.FindAnyWidget( "map_text" ) );
 		m_ServerMods			= TextWidget.Cast( m_Root.FindAnyWidget( "mods_text" ) );
 		m_ServerModsExpand		= ButtonWidget.Cast( m_Root.FindAnyWidget( "mods_expand" ) );
 		
@@ -102,46 +104,50 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
 		#ifdef PLATFORM_CONSOLE
-		if( w == m_Root	)
+		if ( w == m_Root	)
 		{
 			m_Tab.Connect( this );
 			return true;
 		}
 		#endif
-		if( w == m_ServerModsExpand )
+
+		if ( w == m_ServerModsExpand )
 		{
 			string mods_text;
-			if( m_Mods && m_Mods.Count() > 0 )
+			if ( m_Mods && m_Mods.Count() > 0 )
 			{
 				mods_text = m_Mods[0];
-				for( int i = 1; i < m_Mods.Count(); i++ )
+				for ( int i = 1; i < m_Mods.Count(); i++ )
 				{
 					mods_text += "\n" + m_Mods[i];
 				}
 			}
+
 			GetGame().GetUIManager().ShowDialog( "#main_menu_mods", mods_text, 0, 0, 0, 0, GetGame().GetUIManager().GetMenu() );
 		}
+
 		return false;
 	}
 	
 	override bool OnDoubleClick( Widget w, int x, int y, int button )
 	{
-		if( button == MouseState.LEFT )
+		if ( button == MouseState.LEFT )
 		{
-			if( w == m_Root )
+			if ( w == m_Root )
 			{
 				m_Tab.Connect( this );
 				return true;
 			}
 		}
+
 		return false;
 	}
 	
 	override bool OnMouseButtonUp( Widget w, int x, int y, int button )
 	{
-		if( button == MouseState.LEFT )
+		if ( button == MouseState.LEFT )
 		{
-			if( w == m_Favorite )
+			if ( w == m_Favorite )
 			{
 				ToggleFavorite();
 				return true;
@@ -151,7 +157,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 				ToggleExpand();
 				return true;
 			}
-			else if( w == m_Root )
+			else if ( w == m_Root )
 			{
 				Darken(w, x, y);
 				Select();
@@ -164,22 +170,23 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	override bool OnMouseEnter( Widget w, int x, int y )
 	{
-		if( IsFocusable( w ) )
+		if ( IsFocusable( w ) )
 		{
 			Preview( w, x, y );
-			
 			return true;
 		}
+
 		return false;
 	}
 	
 	override bool OnMouseLeave( Widget w, Widget enterW, int x, int y )
 	{
-		if( IsFocusable( w ) && !IsFocusable( enterW ) )
+		if ( IsFocusable( w ) && !IsFocusable( enterW ) )
 		{
 			Lighten( w, enterW, x, y );
 			return true;
 		}
+
 		return false;
 	}
 	
@@ -195,19 +202,19 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	override bool OnFocus( Widget w, int x, int y )
 	{
-		if( !m_Selected )
+		if ( !m_Selected )
 		{
-			if( IsFocusable( w ) )
-			{
+			if ( IsFocusable( w ) )
 				Darken( w, x, y );
-			}
+
 			#ifdef PLATFORM_CONSOLE
-			if( w == m_Root )
+			if ( w == m_Root )
 			{
 				Select();
 				ServerListFocus( true );
 			}
 			#endif
+
 			return true;
 		}
 		return false;
@@ -216,14 +223,15 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	override bool OnFocusLost( Widget w, int x, int y )
 	{
 		#ifdef PLATFORM_CONSOLE
-		if( w == m_Root )
+
+		if ( w == m_Root )
 		{
 			Deselect();
 			ServerListFocus( false );
 		}
 		#endif
 		
-		if( IsFocusable( w ) )
+		if ( IsFocusable( w ) )
 		{
 			Lighten( w, null, x, y );
 		}
@@ -234,10 +242,9 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	bool IsFocusable( Widget w )
 	{
-		if( w )
-		{
+		if ( w )
 			return ( w == m_Root || w == m_Favorite || w == m_Expand || w == m_ServerModsExpand );
-		}
+
 		return false;
 	}
 	
@@ -269,7 +276,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 		SetExpand( server_info.m_IsExpanded );
 		
 		int pp = 0; // private
-		if (server_info.m_ShardId.Length() == 3 && server_info.m_ShardId.ToInt() < 200)
+		if ( server_info.m_ShardId.Length() == 3 && server_info.m_ShardId.ToInt() < 200 )
 		{
 			pp = 1;	// official
 		}
@@ -302,13 +309,14 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 		if ( slots > 0 )
 		{
 			float pop_percentage = population / slots;
-			if( population == 0 )
+
+			if ( population == 0 )
 				pop_text	= "#server_browser_entry_empty";
-			else if( pop_percentage < 0.33 )
+			else if ( pop_percentage < 0.33 )
 				pop_text	= "#server_browser_entry_low";
-			else if( pop_percentage < 0.66 )
+			else if ( pop_percentage < 0.66 )
 				pop_text	= "#server_browser_entry_medium";
-			else if( pop_percentage != 1 )
+			else if ( pop_percentage != 1 )
 				pop_text	= "#server_browser_entry_high";
 			else
 				pop_text	= "#server_browser_entry_full";
@@ -325,7 +333,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	void SetPing( int ping )
 	{
 		int color;
-		if( ping < 50 )
+		if ( ping < 50 )
 			color	= ARGBF( 1, 0, 1, 0 );
 		else if( ping < 100 )
 			color	= ARGBF( 1, 0.8, 0.8, 0 );
@@ -340,27 +348,27 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void SetTime( string time, float multiplier )
 	{
-		if( time != "" )
+		if ( time != "" )
 		{
 			TStringArray arr	= new TStringArray;
 			
 			time.Split( ":", arr );
 			
-			if( arr.Count() == 2 )
+			if ( arr.Count() == 2 )
 			{
 				int hour		= arr.Get( 0 ).ToInt();
 				int minute		= arr.Get( 1 ).ToInt();
 				
-				if( hour >= 19 || hour <= 5 )	//Night
+				if ( hour >= 19 || hour <= 5 )	//Night
 				{
-					if( multiplier > 1 )
+					if ( multiplier > 1 )
 						m_ServerTime.SetImage( 3 );
 					else
 						m_ServerTime.SetImage( 2 );
 				}
 				else							//Day
 				{
-					if( multiplier > 1 )
+					if ( multiplier > 1 )
 						m_ServerTime.SetImage( 1 );
 					else
 						m_ServerTime.SetImage( 0 );
@@ -372,7 +380,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	void SetShard( int shard )
 	{
 		string text;
-		switch( shard )
+		switch ( shard )
 		{
 			case 0:
 			{
@@ -390,7 +398,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void SetMapName( string mapName )
 	{
-		if( m_ServerData.m_IsDLC )
+		if ( m_ServerData.m_IsDLC )
 		{
 			bool own = GetGame().VerifyWorldOwnership( mapName );
 			m_ServerModIcon.Show( true );
@@ -402,15 +410,19 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 			m_ServerModIcon.FindWidget( "Owned" ).Show( false );
 			m_ServerModIcon.FindWidget( "Unowned" ).Show( false );
 		}
-		
+/*
 		#ifdef PLATFORM_WINDOWS
 		m_ServerMods.SetText( "#STR_USRACT_MAP" + ": " + GetMapName() );
 		#endif
+*/		
 	}
 	
 	void SetCharacterAlive( string char_alive )
 	{
-		m_ServerCharacterAlive.SetText( char_alive );
+		if ( char_alive == "")
+			m_ServerCharacterAlive.SetText( "#STR_server_browser_char_not_alive" );
+		else
+			m_ServerCharacterAlive.SetText( char_alive );
 	}
 	
 	void SetFriends( string friends_text )
@@ -421,7 +433,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	void SetMode( int mode )
 	{
 		string text;
-		switch( mode )
+		switch ( mode )
 		{
 			case 0:
 			{
@@ -439,7 +451,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void SetBattleye( bool battleye )
 	{
-		if( battleye )
+		if ( battleye )
 		{
 			m_ServerBattleye.SetText( "#server_browser_entry_enabled" );
 			m_ServerBattleye.SetColor( ARGBF( 1, 0, 1, 0 ) );
@@ -480,10 +492,12 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	{
 		string map_name = m_ServerData.m_MapNameToRun;
 		map_name.ToLower();
-		if( map_name == "enoch" )
+
+		if ( map_name == "enoch" )
 			return "Livonia";
-		if( map_name == "chernarusplus" )
+		if ( map_name == "chernarusplus" )
 			return "Chernarus";
+
 		return m_ServerData.m_MapNameToRun;
 	}
 	
@@ -496,7 +510,7 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void SetAcceleration( float mult )
 	{
-		if( mult > 1 )
+		if ( mult > 1 )
 		{
 			m_ServerAcceleration.Show( true );
 			m_ServerAcceleration.SetText( mult.ToString() + "x" );
@@ -511,24 +525,26 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	{
 		m_ServerModIcon.Show( is_modded );
 	}
-	
+
+	void SetServerMapName()
+	{
+		m_ServerMap.SetText( GetMapName()  );
+	}
+		
 	void SetMods( array<string> mods )
 	{
 		m_Mods = mods;
-		if( mods )
+
+		//string mods_text = "#STR_USRACT_MAP" + ": " + GetMapName() + " | ";
+		if ( mods && mods.Count() > 0 )
 		{
-			string mods_text = "#STR_USRACT_MAP" + ": " + GetMapName() + " | ";
-			if( mods.Count() > 0 )
-			{
-				mods_text += "#main_menu_mods_lower" + ": " + mods[0];
-				for( int i = 1; i < mods.Count(); i++ )
-				{
-					mods_text += ", " + mods[i];
-				}
-				
-				m_ServerMods.SetText( mods_text );
-			}
+			string mods_text = mods[0];
+			for ( int i = 1; i < mods.Count(); i++ )
+				mods_text += ", " + mods[i];
+	
+			m_ServerMods.SetText( mods_text );
 		}
+
 		#ifdef PLATFORM_WINDOWS
 			m_ServerModsExpand.Show( ( mods && mods.Count() > 0 ) );
 		#endif
@@ -580,10 +596,13 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 		
 		if ( expand && m_FirstExpand )
 		{
-			if( m_ServerData.m_Modded )
+			if ( m_ServerData.m_Modded )
 				OnlineServices.GetServerModList( m_ServerData.m_Id );
+/*
 			else
 				m_ServerMods.SetText( "#STR_USRACT_MAP" + ": " + GetMapName() );
+*/
+
 			m_FirstExpand = false;
 		}
 		
@@ -592,9 +611,9 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void Select( bool notify = true )
 	{
-		if( !m_Selected )
+		if ( !m_Selected )
 		{
-			if( notify )
+			if ( notify )
 			{
 				m_Tab.SelectServer( this );
 			}
@@ -610,13 +629,13 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void Deselect()
 	{
-		if( m_Selected )
+		if ( m_Selected )
 		{
 			m_ServerData.m_IsSelected = false;
 			
 			m_Selected = false;
 			float alpha = 0.1;
-			if( m_Index % 2 )
+			if ( m_Index % 2 )
 			{
 				alpha = 0.3;
 			}
@@ -628,8 +647,8 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void UpdateColors()
 	{
-		float alpha = 0.15;
-		if( m_Index % 2 )
+		float alpha = 0.3;
+		if ( m_Index % 2 )
 		{
 			alpha = 0;
 		}
@@ -640,10 +659,10 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	//Coloring functions (Until WidgetStyles are useful)
 	void Darken( Widget w, int x, int y )
 	{
-		if( m_Selected )
+		if ( m_Selected )
 			return;
 		
-		if( w == m_Root || w == m_Favorite || w == m_Expand )
+		if ( w == m_Root || w == m_Favorite || w == m_Expand )
 		{
 			m_Root.SetColor( ARGB( 255, 200, 0, 0) );
 			m_Root.SetAlpha( 1 );
@@ -654,10 +673,10 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	//Coloring functions (Until WidgetStyles are useful)
 	void Preview( Widget w, int x, int y )
 	{		
-		if( m_Selected )
+		if ( m_Selected )
 			return;
 		
-		if( w == m_Root || w == m_Favorite || w == m_Expand )
+		if ( w == m_Root || w == m_Favorite || w == m_Expand )
 		{
 			m_Root.SetColor( ARGB( 255, 0, 0, 0) );
 			m_Root.SetAlpha( 1 );
@@ -667,12 +686,12 @@ class ServerBrowserEntry extends ScriptedWidgetEventHandler
 	
 	void Lighten( Widget w, Widget enterW, int x, int y )
 	{
-		if( GetFocus() == w || m_Selected )
+		if ( GetFocus() == w || m_Selected )
 		{
 			return;
 		}
 		
-		if( w == m_Root && ( ( m_Favorite && enterW == m_Favorite ) || ( m_Expand && enterW == m_Expand ) ) )
+		if ( w == m_Root && ( ( m_Favorite && enterW == m_Favorite ) || ( m_Expand && enterW == m_Expand ) ) )
 		{
 			return;
 		}

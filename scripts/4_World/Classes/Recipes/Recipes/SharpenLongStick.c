@@ -30,6 +30,8 @@ class SharpenLongStick extends RecipeBase
 		
 		//ingredient 2
 		InsertIngredient(1,"Sickle");//you can insert multiple ingredients this way
+		InsertIngredient(1,"KukriKnife");
+		InsertIngredient(1,"FangeKnife");
 		InsertIngredient(1,"Hacksaw");
 		InsertIngredient(1,"KitchenKnife");
 		InsertIngredient(1,"SteakKnife");

@@ -217,10 +217,13 @@ class PluginPresenceNotifier extends PluginBase
 
 	protected int ProcessNoiseComponents()
 	{
-		int noise = 0;
+		float noise = 0;
 		if (m_pPlayer)
 		{
-			noise = GetSurfaceNoiseComponent() + GetMovementSpeedNoiseComponent() + GetBootsNoiseComponent() + GetExternalNoiseEventsComponent();
+			//noise = GetSurfaceNoiseComponent() + GetMovementSpeedNoiseComponent() + GetBootsNoiseComponent() + GetExternalNoiseEventsComponent();
+			noise = NoiseAIEvaluate.GetNoiseMultiplier(m_pPlayer);
+			noise = Math.Round(noise * NOISE_LEVEL_MAX);
+			
 		}
 		
 		return Math.Clamp(noise, NOISE_LEVEL_MIN, NOISE_LEVEL_MAX);
@@ -249,7 +252,7 @@ class PluginPresenceNotifier extends PluginBase
 		
 		return speedCoef;
 	}
-
+	
 	protected float GetMovementStanceVisualCoef()
 	{
 		ref HumanMovementState	hms = new HumanMovementState();
@@ -277,6 +280,7 @@ class PluginPresenceNotifier extends PluginBase
 
 	//!
 	//! Noise related
+	// Not used since 1.12
 	
 	//! noise component of presence based on player's speed
 	protected int GetMovementSpeedNoiseComponent()
@@ -303,6 +307,7 @@ class PluginPresenceNotifier extends PluginBase
 	}
 
 	//! noise component of presence based on player's shoes
+	// Not used since 1.12
 	protected int GetBootsNoiseComponent()
 	{
 		int val = 0;
@@ -330,6 +335,7 @@ class PluginPresenceNotifier extends PluginBase
 		return val;
 	}
 	
+	// Not used since 1.12
 	protected int GetSurfaceNoiseComponent()
 	{
 		ref HumanMovementState	hms = new HumanMovementState();
@@ -352,6 +358,7 @@ class PluginPresenceNotifier extends PluginBase
 		return SURFACE_NOISE_LVL0;
 	}
 
+	// Not used since 1.12
 	protected int GetExternalNoiseEventsComponent()
 	{
 		return m_PresenceNotifierNoiseEvents.GetValue();

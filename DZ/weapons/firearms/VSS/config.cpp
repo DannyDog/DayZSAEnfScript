@@ -43,7 +43,7 @@ class cfgWeapons
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_9x39","Ammo_9x39AP"};
-		magazines[] = {"Mag_VSS_10Rnd"};
+		magazines[] = {"Mag_VSS_10Rnd","Mag_VAL_20Rnd"};
 		magazineSwitchTime = 0.38;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
@@ -88,8 +88,8 @@ class cfgWeapons
 		};
 		class NoiseShoot
 		{
-			strength = 7.0;
-			type = "shot";
+			strength = 5;
+			type = "sound";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{
@@ -180,6 +180,39 @@ class cfgWeapons
 					healthLevels[] = {{1.0,{"DZ\weapons\firearms\VSS\data\vss.rvmat"}},{0.7,{"DZ\weapons\firearms\VSS\data\vss.rvmat"}},{0.5,{"DZ\weapons\firearms\VSS\data\vss_damage.rvmat"}},{0.3,{"DZ\weapons\firearms\VSS\data\vss_damage.rvmat"}},{0.0,{"DZ\weapons\firearms\VSS\data\vss_destruct.rvmat"}}};
 				};
 			};
+		};
+	};
+	class ASVAL: VSS_Base
+	{
+		scope = 2;
+		displayName = "$STR_cfgWeapons_ASVAL0";
+		descriptionShort = "$STR_cfgWeapons_ASVAL1";
+		model = "\dz\weapons\firearms\VSS\VAL.p3d";
+		PPDOFProperties[] = {1,0.5,50,180.1,4,10};
+		attachments[] = {"weaponWrap","WeaponOptics","weaponFlashlight"};
+		magazines[] = {"Mag_VSS_10Rnd","Mag_VAL_20Rnd"};
+		itemSize[] = {8,3};
+		hiddenSelections[] = {"camo","camo_rails"};
+		hiddenSelectionsTextures[] = {"dz\weapons\firearms\VSS\data\val_co.paa","dz\weapons\firearms\VSS\data\val_rails_co.paa"};
+		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\VSS\data\val.rvmat","dz\weapons\firearms\VSS\data\val_rails.rvmat"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 250;
+					healthLevels[] = {{1.0,{"dz\weapons\firearms\VSS\data\val.rvmat","dz\weapons\firearms\VSS\data\val_rails.rvmat"}},{0.7,{"dz\weapons\firearms\VSS\data\val.rvmat","dz\weapons\firearms\VSS\data\val_rails.rvmat"}},{0.5,{"dz\weapons\firearms\VSS\data\val_damage.rvmat","dz\weapons\firearms\VSS\data\val_rails_damage.rvmat"}},{0.3,{"dz\weapons\firearms\VSS\data\val_damage.rvmat","dz\weapons\firearms\VSS\data\val_rails_damage.rvmat"}},{0.0,{"dz\weapons\firearms\VSS\data\val_destruct.rvmat","dz\weapons\firearms\VSS\data\val_rails_destruct.rvmat"}}};
+				};
+			};
+		};
+		class OpticsInfo: OpticsInfoRifle
+		{
+			discreteDistance[] = {160};
+			discreteDistanceInitIndex = 0;
+			modelOptics = "-";
+			distanceZoomMin = 160;
+			distanceZoomMax = 160;
 		};
 	};
 };

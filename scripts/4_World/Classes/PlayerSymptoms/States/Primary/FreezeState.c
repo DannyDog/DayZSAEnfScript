@@ -33,7 +33,7 @@ class FreezeSymptom extends SymptomBase
 	//!gets called once on an Symptom which is being activated
 	override void OnGetActivatedServer(PlayerBase player)
 	{	
-		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated", m_Player.ToString());
 		HumanMovementState hms = new HumanMovementState();
 		player.GetMovementState(hms);
 		ItemBase item = m_Player.GetItemInHands();
@@ -52,19 +52,19 @@ class FreezeSymptom extends SymptomBase
 	//!gets called once on a Symptom which is being activated
 	override void OnGetActivatedClient(PlayerBase player)
 	{
-		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated", m_Player.ToString());
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated
 	override void OnGetDeactivatedServer(PlayerBase player)
 	{
-		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated", m_Player.ToString());
 	}
 
 	//!only gets called once on an active Symptom that is being deactivated
 	override void OnGetDeactivatedClient(PlayerBase player)
 	{
-		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated");
+		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetDeactivated", m_Player.ToString());
 	}
 	
 	override SmptAnimMetaBase SpawnAnimMetaObject()

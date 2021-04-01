@@ -61,7 +61,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_ij70";
 			recoilProne = "recoil_if70_prone";
-			dispersion = 0.013;
+			dispersion = 0.006;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,60};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\ij70\MakarovSilenced",1,1,100};

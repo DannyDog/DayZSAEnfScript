@@ -379,7 +379,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\Characters\gloves\data\WorkingGloves.rvmat"}},{0.7,{"DZ\Characters\gloves\data\WorkingGloves.rvmat"}},{0.5,{"DZ\Characters\gloves\data\WorkingGloves_damage.rvmat"}},{0.3,{"DZ\Characters\gloves\data\WorkingGloves_damage.rvmat"}},{0.0,{"DZ\Characters\gloves\data\WorkingGloves_destruct.rvmat"}}};
 				};
 			};
@@ -451,7 +451,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 165;
 					healthLevels[] = {{1.0,{"DZ\Characters\gloves\data\TacticalGloves.rvmat"}},{0.7,{"DZ\Characters\gloves\data\TacticalGloves.rvmat"}},{0.5,{"DZ\Characters\gloves\data\TacticalGloves_damage.rvmat"}},{0.3,{"DZ\Characters\gloves\data\TacticalGloves_damage.rvmat"}},{0.0,{"DZ\Characters\gloves\data\TacticalGloves_destruct.rvmat"}}};
 				};
 			};
@@ -523,7 +523,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 30;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\Characters\gloves\data\NBC_Gloves.rvmat"}},{0.7,{"DZ\Characters\gloves\data\NBC_Gloves.rvmat"}},{0.5,{"DZ\Characters\gloves\data\NBC_Gloves_damage.rvmat"}},{0.3,{"DZ\Characters\gloves\data\NBC_Gloves_damage.rvmat"}},{0.0,{"DZ\Characters\gloves\data\NBC_Gloves_destruct.rvmat"}}};
 				};
 			};
@@ -575,7 +575,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 20;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\Characters\gloves\data\Surgical_Gloves.rvmat","DZ\Characters\gloves\data\Surgical_Gloves_g.rvmat"}},{0.7,{"DZ\Characters\gloves\data\Surgical_Gloves.rvmat","DZ\Characters\gloves\data\Surgical_Gloves_g.rvmat"}},{0.5,{"DZ\Characters\gloves\data\Surgical_Gloves_damage.rvmat","DZ\Characters\gloves\data\Surgical_Gloves_g_damage.rvmat"}},{0.3,{"DZ\Characters\gloves\data\Surgical_Gloves_damage.rvmat","DZ\Characters\gloves\data\Surgical_Gloves_g_damage.rvmat"}},{0.0,{"DZ\Characters\gloves\data\Surgical_Gloves_destruct.rvmat","DZ\Characters\gloves\data\Surgical_Gloves_g_destruct.rvmat"}}};
 				};
 			};
@@ -650,7 +650,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 40;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};
@@ -683,7 +683,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 40;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\gloves\data\leather_gloves_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\gloves\Data\leather_gloves_Natural_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\gloves\Data\leather_gloves_Natural_destruct.rvmat"}}};
 				};
 			};
@@ -700,7 +700,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 40;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\gloves\data\leather_gloves_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\gloves\Data\leather_gloves_Beige_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\gloves\Data\leather_gloves_Beige_destruct.rvmat"}}};
 				};
 			};
@@ -717,7 +717,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 40;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\gloves\data\leather_gloves_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\gloves\Data\leather_gloves_Black_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\gloves\Data\leather_gloves_Black_destruct.rvmat"}}};
 				};
 			};
@@ -768,7 +768,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 75;
+					hitpoints = 180;
 					healthLevels[] = {{1.0,{"DZ\Characters\gloves\data\OMNOGloves.rvmat"}},{0.7,{"DZ\Characters\gloves\data\OMNOGloves.rvmat"}},{0.5,{"DZ\Characters\gloves\data\OMNOGloves_damage.rvmat"}},{0.3,{"DZ\Characters\gloves\data\OMNOGloves_damage.rvmat"}},{0.0,{"DZ\Characters\gloves\data\OMNOGloves_destruct.rvmat"}}};
 				};
 			};

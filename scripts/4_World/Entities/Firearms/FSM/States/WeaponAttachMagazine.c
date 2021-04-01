@@ -194,7 +194,7 @@ class WeaponAttachMagazine extends WeaponStateBase
 		
 		if(mag)
 		{
-			e.m_player.GetInventory().ClearInventoryReservation( mag , null );
+			e.m_player.GetInventory().ClearInventoryReservationEx( mag , null );
 			InventoryLocation il = new InventoryLocation;
 			e.m_player.GetInventory().FindFreeLocationFor( mag, FindInventoryLocationType.CARGO, il );
 		

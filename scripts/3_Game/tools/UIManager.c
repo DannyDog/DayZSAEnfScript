@@ -10,6 +10,7 @@ class UIManager
 	proto native Widget GetWidgetUnderCursor();
 	proto native bool IsDialogVisible();
 	proto native bool IsModalVisible();
+	proto native void CloseSpecificDialog(int id);
 	proto native void CloseDialog();
 	proto native void HideDialog();
 	/**

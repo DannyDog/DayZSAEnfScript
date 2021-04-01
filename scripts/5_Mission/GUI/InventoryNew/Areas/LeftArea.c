@@ -349,9 +349,9 @@ class LeftArea: Container
 			
 	}
 	
-	EntityAI GetFocusedItem()
+	override EntityAI GetFocusedItem()
 	{
-		EntityAI item = GetFocusedContainer().GetFocusedEntity();
+		EntityAI item = GetFocusedContainer().GetFocusedItem();
 		return item;
 	}
 	

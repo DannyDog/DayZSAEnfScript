@@ -463,7 +463,7 @@ class cfgVehicles
 		inventorySlot[] = {"suppressorImpro","weaponMuzzleAK","weaponMuzzleM4","pistolMuzzle"};
 		simulation = "ItemSuppressor";
 		dispersionModifier = -0.0001;
-		noiseShootModifier = -0.7;
+		noiseShootModifier = -0.8;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.9,0.9,0.9};
 		swayModifier[] = {1,1,1};
@@ -602,7 +602,7 @@ class cfgVehicles
 		inventorySlot[] = {"weaponMuzzleAK"};
 		simulation = "ItemSuppressor";
 		dispersionModifier = -0.0001;
-		noiseShootModifier = -0.87;
+		noiseShootModifier = -0.9;
 		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
 		swayModifier[] = {1,1,1};

@@ -69,7 +69,7 @@ class ActionTakeHybridAttachmentToHands: ActionInteractBase
 		
 		if ( tgt_entity && ItemBase.CastTo(attachment, tgt_entity.FindAttachmentBySlotName(component_name)) )
 		{
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 			float stackable = attachment.GetTargetQuantityMax(-1);
 			
 			if( stackable == 0 || stackable >= attachment.GetQuantity() )

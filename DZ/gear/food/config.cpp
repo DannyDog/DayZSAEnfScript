@@ -182,10 +182,9 @@ class CfgVehicles
 		rotationFlags = 17;
 		weight = 0;
 		itemSize[] = {3,3};
-		varQuantityInit = 255;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 255;
-		absorbency = 0.7;
+		varQuantityMax = 250;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\CerealBox_01_CO.paa"};
@@ -195,16 +194,16 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 200;
+					hitpoints = 20;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\Cereal_box.rvmat"}},{0.7,{"DZ\gear\food\data\Cereal_box.rvmat"}},{0.5,{"DZ\gear\food\data\Cereal_box_damage.rvmat"}},{0.3,{"DZ\gear\food\data\Cereal_box_damage.rvmat"}},{0.0,{"DZ\gear\food\data\Cereal_box_destruct.rvmat"}}};
 				};
 			};
 		};
 		class Nutrition
 		{
-			fullnessIndex = 2.5;
-			energy = 399;
-			water = 3;
+			fullnessIndex = 2;
+			energy = 400;
+			water = 0;
 			nutritionalIndex = 1;
 			toxicity = 0;
 		};
@@ -269,16 +268,16 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 20;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\powdered_milk.rvmat"}},{0.7,{"DZ\gear\food\data\powdered_milk.rvmat"}},{0.5,{"DZ\gear\food\data\powdered_milk_damage.rvmat"}},{0.3,{"DZ\gear\food\data\powdered_milk_damage.rvmat"}},{0.0,{"DZ\gear\food\data\powdered_milk_destruct.rvmat"}}};
 				};
 			};
 		};
 		class Nutrition
 		{
-			fullnessIndex = 2.5;
-			energy = 496;
-			water = 2.5;
+			fullnessIndex = 2;
+			energy = 400;
+			water = 0;
 			nutritionalIndex = 1;
 			toxicity = 0;
 		};
@@ -425,7 +424,6 @@ class CfgVehicles
 		varQuantityInit = 500;
 		varQuantityMin = 0;
 		varQuantityMax = 500;
-		absorbency = 0;
 		inventorySlot[] = {"Guts"};
 		isMeleeWeapon = 1;
 		class DamageSystem
@@ -459,9 +457,9 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 2.5;
-			energy = 150;
-			water = 70;
+			fullnessIndex = 5;
+			energy = 50;
+			water = 50;
 			nutritionalIndex = 1;
 			toxicity = 0;
 			agents = 4;
@@ -517,16 +515,16 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\rice.rvmat"}},{0.7,{"DZ\gear\food\data\rice.rvmat"}},{0.5,{"DZ\gear\food\data\rice_damage.rvmat"}},{0.3,{"DZ\gear\food\data\rice_damage.rvmat"}},{0.0,{"DZ\gear\food\data\rice_destruct.rvmat"}}};
 				};
 			};
 		};
 		class Nutrition
 		{
-			fullnessIndex = 2.5;
-			energy = 365;
-			water = 11.5;
+			fullnessIndex = 3;
+			energy = 100;
+			water = 0;
 			nutritionalIndex = 1;
 			toxicity = 0;
 		};
@@ -570,26 +568,25 @@ class CfgVehicles
 		model = "\dz\gear\food\Marmalade.p3d";
 		weight = 0;
 		itemSize[] = {2,2};
-		varQuantityInit = 340;
+		varQuantityInit = 400;
 		varQuantityMin = 0;
-		varQuantityMax = 340;
-		absorbency = 0.9;
+		varQuantityMax = 400;
 		class DamageSystem
 		{
 			class GlobalHealth
 			{
 				class Health
 				{
-					hitpoints = 20;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\marmalade_jar.rvmat"}},{0.7,{"DZ\gear\food\data\marmalade_jar.rvmat"}},{0.5,{"DZ\gear\food\data\marmalade_jar_damage.rvmat"}},{0.3,{"DZ\gear\food\data\marmalade_jar_damage.rvmat"}},{0.0,{"DZ\gear\food\data\marmalade_jar_destruct.rvmat"}}};
 				};
 			};
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 280;
-			water = 30;
+			fullnessIndex = 4;
+			energy = 150;
+			water = 50;
 			nutritionalIndex = 1;
 			toxicity = 0;
 		};
@@ -605,6 +602,269 @@ class CfgVehicles
 			};
 		};
 	};
+	class Honey: Edible_Base
+	{
+		scope = 2;
+		displayName = "$STR_Honey0";
+		descriptionShort = "$STR_Honey1";
+		model = "\dz\gear\food\Honey.p3d";
+		weight = 0;
+		itemSize[] = {2,2};
+		varQuantityInit = 400;
+		varQuantityMin = 0;
+		varQuantityMax = 400;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 40;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\honey_jar.rvmat"}},{0.7,{"DZ\gear\food\data\honey_jar.rvmat"}},{0.5,{"DZ\gear\food\data\honey_jar_damage.rvmat"}},{0.3,{"DZ\gear\food\data\honey_jar_damage.rvmat"}},{0.0,{"DZ\gear\food\data\honey_jar_destruct.rvmat"}}};
+				};
+			};
+		};
+		class Nutrition
+		{
+			fullnessIndex = 5;
+			energy = 250;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpItem
+				{
+					soundSet = "Marmalade_pickup_SoundSet";
+					id = 797;
+				};
+			};
+		};
+	};
+	class Zagorky_ColorBase: Edible_Base
+	{
+		model = "\dz\gear\food\Zagorky.p3d";
+		rotationFlags = 1;
+		weight = 0;
+		itemSize[] = {1,2};
+		varQuantityInit = 100;
+		varQuantityMin = 0;
+		varQuantityMax = 100;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 20;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\zagorky.rvmat","DZ\gear\food\data\zagorky_wrapping.rvmat"}},{0.7,{"DZ\gear\food\data\zagorky.rvmat","DZ\gear\food\data\zagorky_wrapping.rvmat"}},{0.5,{"DZ\gear\food\data\zagorky_damage.rvmat","DZ\gear\food\data\zagorky_wrapping_damage.rvmat"}},{0.3,{"DZ\gear\food\data\zagorky_damage.rvmat","DZ\gear\food\data\zagorky_wrapping_damage.rvmat"}},{0.0,{"DZ\gear\food\data\zagorky_destruct.rvmat","DZ\gear\food\data\zagorky_wrapping_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class pickup
+				{
+					soundSet = "BoxCerealCrunchin_pickup_SoundSet";
+					id = 797;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+				class drop
+				{
+					soundset = "BoxCerealCrunchin_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
+	class Zagorky: Zagorky_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Zagorky0";
+		descriptionShort = "$STR_Zagorky1";
+		hiddenSelections[] = {"camoground"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\zagorky_milk_ca.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 0;
+			energy = 100;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class ZagorkyChocolate: Zagorky_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_ZagorkyChocolate0";
+		descriptionShort = "$STR_ZagorkyChocolate1";
+		hiddenSelections[] = {"camoground"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\zagorky_choco_ca.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 0;
+			energy = 200;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class ZagorkyPeanuts: Zagorky_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_ZagorkyPeanuts0";
+		descriptionShort = "$STR_ZagorkyPeanuts1";
+		hiddenSelections[] = {"camoground"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\zagorky_nuts_ca.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 0;
+			energy = 150;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class Snack_ColorBase: Edible_Base
+	{
+		model = "\DZ\gear\food\salty_crackers.p3d";
+		rotationFlags = 1;
+		weight = 0;
+		itemSize[] = {2,2};
+		varQuantityInit = 50;
+		varQuantityMin = 0;
+		varQuantityMax = 50;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 20;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\tycinky.rvmat","DZ\gear\food\data\tycinky_wrapping.rvmat"}},{0.7,{"DZ\gear\food\data\tycinky.rvmat","DZ\gear\food\data\tycinky_wrapping.rvmat"}},{0.5,{"DZ\gear\food\data\tycinky_damage.rvmat","DZ\gear\food\data\tycinky_wrapping_damage.rvmat"}},{0.3,{"DZ\gear\food\data\tycinky_damage.rvmat","DZ\gear\food\data\tycinky_wrapping_damage.rvmat"}},{0.0,{"DZ\gear\food\data\tycinky_destruct.rvmat","DZ\gear\food\data\tycinky_wrapping_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class pickUpItem
+				{
+					soundSet = "pickUpBloodBag_SoundSet";
+					id = 797;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+				class drop
+				{
+					soundset = "bloodbag_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
+	class SaltySticks: Snack_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_SaltySticks0";
+		descriptionShort = "$STR_SaltySticks1";
+		class Nutrition
+		{
+			fullnessIndex = 3;
+			energy = 100;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class Crackers: Snack_ColorBase
+	{
+		model = "\DZ\gear\food\salty_chips.p3d";
+		scope = 2;
+		displayName = "$STR_Crackers0";
+		descriptionShort = "$STR_Crackers1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\salted_crackers_co.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 3;
+			energy = 150;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class Chips: Snack_ColorBase
+	{
+		model = "\DZ\gear\food\salty_chips.p3d";
+		scope = 2;
+		displayName = "$STR_Chips0";
+		descriptionShort = "$STR_Chips1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\salted_chips_co.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 3;
+			energy = 200;
+			water = 0;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
 	class BakedBeansCan: Edible_Base
 	{
 		scope = 2;
@@ -613,7 +873,7 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can.p3d";
 		rotationFlags = 63;
 		itemSize[] = {2,2};
-		weight = 455;
+		weight = 440;
 		varQuantityInit = 0;
 		varQuantityMin = 0;
 		varQuantityMax = 0;
@@ -629,24 +889,6 @@ class CfgVehicles
 					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 		class AnimEvents
@@ -699,9 +941,9 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can_open.p3d";
 		itemSize[] = {2,2};
 		weight = 40;
-		varQuantityInit = 415;
+		varQuantityInit = 400;
 		varQuantityMin = 0;
-		varQuantityMax = 415;
+		varQuantityMax = 400;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\deez_beans_co.paa"};
@@ -718,29 +960,11 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 123;
-			water = 70;
+			fullnessIndex = 2;
+			energy = 200;
+			water = 50;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 		class AnimEvents
 		{
@@ -782,7 +1006,7 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can.p3d";
 		rotationFlags = 63;
 		itemSize[] = {2,2};
-		weight = 465;
+		weight = 440;
 		varQuantityInit = 0;
 		varQuantityMin = 0;
 		varQuantityMax = 0;
@@ -798,24 +1022,6 @@ class CfgVehicles
 					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 		class AnimEvents
@@ -858,9 +1064,9 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can_open.p3d";
 		itemSize[] = {2,2};
 		weight = 40;
-		varQuantityInit = 425;
+		varQuantityInit = 400;
 		varQuantityMin = 0;
-		varQuantityMax = 425;
+		varQuantityMax = 400;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\canned_peaches_co.paa"};
@@ -877,29 +1083,11 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 74;
-			water = 80;
+			fullnessIndex = 2;
+			energy = 150;
+			water = 100;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 		class AnimEvents
 		{
@@ -941,7 +1129,7 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can.p3d";
 		rotationFlags = 63;
 		itemSize[] = {2,2};
-		weight = 280;
+		weight = 440;
 		varQuantityInit = 0;
 		varQuantityMin = 0;
 		varQuantityMax = 0;
@@ -957,24 +1145,6 @@ class CfgVehicles
 					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 		class AnimEvents
@@ -1016,10 +1186,10 @@ class CfgVehicles
 		descriptionShort = "$STR_TacticalBaconCan1";
 		model = "\dz\gear\food\food_can_open.p3d";
 		itemSize[] = {2,2};
-		weight = 25;
-		varQuantityInit = 255;
+		weight = 40;
+		varQuantityInit = 400;
 		varQuantityMin = 0;
-		varQuantityMax = 255;
+		varQuantityMax = 400;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\tactical_bacon_co.paa"};
@@ -1037,28 +1207,10 @@ class CfgVehicles
 		class Nutrition
 		{
 			fullnessIndex = 2;
-			energy = 548;
-			water = 12.5;
+			energy = 300;
+			water = 50;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 		class AnimEvents
 		{
@@ -1100,7 +1252,7 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can.p3d";
 		rotationFlags = 63;
 		itemSize[] = {2,2};
-		weight = 465;
+		weight = 440;
 		varQuantityInit = 0;
 		varQuantityMin = 0;
 		varQuantityMax = 0;
@@ -1116,24 +1268,6 @@ class CfgVehicles
 					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 		class AnimEvents
@@ -1176,9 +1310,9 @@ class CfgVehicles
 		model = "\dz\gear\food\food_can_open.p3d";
 		itemSize[] = {2,2};
 		weight = 40;
-		varQuantityInit = 425;
+		varQuantityInit = 400;
 		varQuantityMin = 0;
-		varQuantityMax = 425;
+		varQuantityMax = 400;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\canned_spaghetti_co.paa"};
@@ -1195,29 +1329,11 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 107;
-			water = 78.2;
+			fullnessIndex = 2;
+			energy = 175;
+			water = 75;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 		class AnimEvents
 		{
@@ -1259,7 +1375,7 @@ class CfgVehicles
 		model = "\dz\gear\food\can_sardines.p3d";
 		rotationFlags = 34;
 		itemSize[] = {2,1};
-		weight = 140;
+		weight = 125;
 		varQuantityInit = 0;
 		varQuantityMin = 0;
 		varQuantityMax = 0;
@@ -1275,24 +1391,6 @@ class CfgVehicles
 					hitpoints = 70;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\Sardines.rvmat"}},{0.7,{"DZ\gear\food\data\Sardines.rvmat"}},{0.5,{"DZ\gear\food\data\Sardines_damage.rvmat"}},{0.3,{"DZ\gear\food\data\Sardines_damage.rvmat"}},{0.0,{"DZ\gear\food\data\Sardines_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
 			};
 		};
 		class AnimEvents
@@ -1334,10 +1432,10 @@ class CfgVehicles
 		descriptionShort = "$STR_SardinesCan1";
 		model = "\dz\gear\food\can_sardines_open.p3d";
 		itemSize[] = {2,1};
-		weight = 15;
-		varQuantityInit = 125;
+		weight = 25;
+		varQuantityInit = 100;
 		varQuantityMin = 0;
-		varQuantityMax = 125;
+		varQuantityMax = 100;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\sardines_CO.paa"};
@@ -1354,29 +1452,11 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 208;
-			water = 59.6;
+			fullnessIndex = 2;
+			energy = 250;
+			water = 200;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 		class AnimEvents
 		{
@@ -1436,24 +1516,6 @@ class CfgVehicles
 				};
 			};
 		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
-			};
-		};
 		class AnimEvents
 		{
 			class SoundWeapon
@@ -1493,10 +1555,10 @@ class CfgVehicles
 		descriptionShort = "$STR_TunaCan1";
 		model = "\dz\gear\food\tuna_open.p3d";
 		itemSize[] = {2,1};
-		weight = 25;
-		varQuantityInit = 240;
+		weight = 15;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 240;
+		varQuantityMax = 250;
 		isMeleeWeapon = 1;
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\tuna_CO.paa"};
@@ -1513,28 +1575,63 @@ class CfgVehicles
 		};
 		class Nutrition
 		{
-			fullnessIndex = 1.5;
-			energy = 186;
-			water = 64;
+			fullnessIndex = 2;
+			energy = 150;
+			water = 100;
 			nutritionalIndex = 1;
 			toxicity = 0;
 		};
-		class MeleeModes
+		class AnimEvents
 		{
-			class Default
+			class SoundWeapon
 			{
-				ammo = "MeleeBlunt";
-				range = 1.0;
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
 			};
-			class Heavy
+		};
+	};
+	class FoodCan_250g_ColorBase: Edible_Base
+	{
+		model = "\dz\gear\food\FoodCan_250g.p3d";
+		rotationFlags = 2;
+		itemSize[] = {2,1};
+		weight = 265;
+		varQuantityInit = 0;
+		varQuantityMin = 0;
+		varQuantityMax = 0;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
 			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBlunt_Heavy";
-				range = 2.8;
+				class Health
+				{
+					hitpoints = 70;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\FoodCan_250g.rvmat"}},{0.7,{"DZ\gear\food\data\FoodCan_250g.rvmat"}},{0.5,{"DZ\gear\food\data\FoodCan_250g_damage.rvmat"}},{0.3,{"DZ\gear\food\data\FoodCan_250g_damage.rvmat"}},{0.0,{"DZ\gear\food\data\FoodCan_250g_destruct.rvmat"}}};
+				};
 			};
 		};
 		class AnimEvents
@@ -1567,6 +1664,415 @@ class CfgVehicles
 					id = 895;
 				};
 			};
+		};
+	};
+	class FoodCan_250g_Opened_ColorBase: Edible_Base
+	{
+		model = "\dz\gear\food\FoodCan_250g_open.p3d";
+		itemSize[] = {2,1};
+		weight = 15;
+		varQuantityInit = 250;
+		varQuantityMin = 0;
+		varQuantityMax = 250;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 70;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\FoodCan_250g.rvmat"}},{0.7,{"DZ\gear\food\data\FoodCan_250g.rvmat"}},{0.5,{"DZ\gear\food\data\FoodCan_250g_damage.rvmat"}},{0.3,{"DZ\gear\food\data\FoodCan_250g_damage.rvmat"}},{0.0,{"DZ\gear\food\data\FoodCan_250g_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+			};
+		};
+	};
+	class DogFoodCan: FoodCan_250g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_DogFoodCan0";
+		descriptionShort = "$STR_DogFoodCan1";
+	};
+	class DogFoodCan_Opened: FoodCan_250g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_DogFoodCan0";
+		descriptionShort = "$STR_DogFoodCan1";
+		class Nutrition
+		{
+			fullnessIndex = 10;
+			energy = 150;
+			water = 100;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class CatFoodCan: FoodCan_250g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_CatFoodCan0";
+		descriptionShort = "$STR_CatFoodCan1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_250g_Cat_CO.paa"};
+	};
+	class CatFoodCan_Opened: FoodCan_250g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_CatFoodCan0";
+		descriptionShort = "$STR_CatFoodCan1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_250g_Cat_CO.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 10;
+			energy = 125;
+			water = 125;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class PorkCan: FoodCan_250g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_PorkCan0";
+		descriptionShort = "$STR_PorkCan1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_250g_Pork_CO.paa"};
+	};
+	class PorkCan_Opened: FoodCan_250g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_PorkCan0";
+		descriptionShort = "$STR_PorkCan1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_250g_Pork_CO.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 2;
+			energy = 225;
+			water = 25;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class Lunchmeat: FoodCan_250g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Lunchmeat0";
+		descriptionShort = "$STR_Lunchmeat1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"dz\gear\food\data\foodcan_250g_lunch_co.paa"};
+	};
+	class Lunchmeat_Opened: FoodCan_250g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Lunchmeat0";
+		descriptionShort = "$STR_Lunchmeat1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"dz\gear\food\data\foodcan_250g_lunch_co.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 2;
+			energy = 200;
+			water = 50;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class UnknownFoodCan: Edible_Base
+	{
+		scope = 2;
+		displayName = "$STR_UnknownFoodCan0";
+		descriptionShort = "$STR_UnknownFoodCan1";
+		model = "\dz\gear\food\food_can.p3d";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"dz\gear\food\data\UnknownFoodCan_co.paa"};
+		rotationFlags = 63;
+		itemSize[] = {2,2};
+		weight = 440;
+		varQuantityInit = 0;
+		varQuantityMin = 0;
+		varQuantityMax = 0;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+			};
+		};
+	};
+	class UnknownFoodCan_Opened: Edible_Base
+	{
+		scope = 2;
+		displayName = "$STR_UnknownFoodCan0";
+		descriptionShort = "$STR_UnknownFoodCan1";
+		model = "\dz\gear\food\food_can_open.p3d";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"dz\gear\food\data\UnknownFoodCan_co.paa"};
+		itemSize[] = {2,2};
+		weight = 40;
+		varQuantityInit = 400;
+		varQuantityMin = 0;
+		varQuantityMax = 400;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\food_can.rvmat"}},{0.7,{"DZ\gear\food\data\food_can.rvmat"}},{0.5,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.3,{"DZ\gear\food\data\food_can_damage.rvmat"}},{0.0,{"DZ\gear\food\data\food_can_destruct.rvmat"}}};
+				};
+			};
+		};
+		class Nutrition
+		{
+			fullnessIndex = 10;
+			energy = 200;
+			water = 100;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+			};
+		};
+	};
+	class FoodCan_100g_ColorBase: Edible_Base
+	{
+		model = "\dz\gear\food\FoodCan_100g.p3d";
+		rotationFlags = 2;
+		itemSize[] = {1,1};
+		weight = 115;
+		varQuantityInit = 0;
+		varQuantityMin = 0;
+		varQuantityMax = 0;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 70;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\FoodCan_100g.rvmat","DZ\gear\food\data\FoodCan_100g_silver.rvmat","DZ\gear\food\data\FoodCan_100g_content.rvmat"}},{0.7,{"DZ\gear\food\data\FoodCan_100g.rvmat","DZ\gear\food\data\FoodCan_100g_silver.rvmat","DZ\gear\food\data\FoodCan_100g_content.rvmat"}},{0.5,{"DZ\gear\food\data\FoodCan_100g_damage.rvmat","DZ\gear\food\data\FoodCan_100g_silver_damage.rvmat","DZ\gear\food\data\FoodCan_100g_content_damage.rvmat"}},{0.3,{"DZ\gear\food\data\FoodCan_100g_damage.rvmat","DZ\gear\food\data\FoodCan_100g_silver_damage.rvmat","DZ\gear\food\data\FoodCan_100g_content_damage.rvmat"}},{0.0,{"DZ\gear\food\data\FoodCan_100g_destruct.rvmat","DZ\gear\food\data\FoodCan_100g_silver_destruct.rvmat","DZ\gear\food\data\FoodCan_100g_content_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class openTunaCan
+				{
+					soundSet = "openTunaCan_SoundSet";
+					id = 204;
+				};
+				class Eating_TakeFood
+				{
+					soundSet = "Eating_TakeFood_Soundset";
+					id = 889;
+				};
+				class Eating_BoxOpen
+				{
+					soundSet = "Eating_BoxOpen_Soundset";
+					id = 893;
+				};
+				class Eating_BoxShake
+				{
+					soundSet = "Eating_BoxShake_Soundset";
+					id = 894;
+				};
+				class Eating_BoxEnd
+				{
+					soundSet = "Eating_BoxEnd_Soundset";
+					id = 895;
+				};
+			};
+		};
+	};
+	class FoodCan_100g_Opened_ColorBase: Edible_Base
+	{
+		model = "\dz\gear\food\FoodCan_100g_open.p3d";
+		itemSize[] = {1,1};
+		weight = 15;
+		varQuantityInit = 100;
+		varQuantityMin = 0;
+		varQuantityMax = 100;
+		isMeleeWeapon = 1;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 70;
+					healthLevels[] = {{1.0,{"DZ\gear\food\data\FoodCan_100g.rvmat","DZ\gear\food\data\FoodCan_100g_white.rvmat","DZ\gear\food\data\FoodCan_100g_content.rvmat"}},{0.7,{"DZ\gear\food\data\FoodCan_100g.rvmat","DZ\gear\food\data\FoodCan_100g_white.rvmat","DZ\gear\food\data\FoodCan_100g_content.rvmat"}},{0.5,{"DZ\gear\food\data\FoodCan_100g_damage.rvmat","DZ\gear\food\data\FoodCan_100g_white_damage.rvmat","DZ\gear\food\data\FoodCan_100g_content_damage.rvmat"}},{0.3,{"DZ\gear\food\data\FoodCan_100g_damage.rvmat","DZ\gear\food\data\FoodCan_100g_white_damage.rvmat","DZ\gear\food\data\FoodCan_100g_content_damage.rvmat"}},{0.0,{"DZ\gear\food\data\FoodCan_100g_destruct.rvmat","DZ\gear\food\data\FoodCan_100g_white_destruct.rvmat","DZ\gear\food\data\FoodCan_100g_content_destruct.rvmat"}}};
+				};
+			};
+		};
+	};
+	class Pajka: FoodCan_100g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Pajka0";
+		descriptionShort = "$STR_Pajka1";
+	};
+	class Pajka_Opened: FoodCan_100g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Pajka0";
+		descriptionShort = "$STR_Pajka1";
+		class Nutrition
+		{
+			fullnessIndex = 2;
+			energy = 150;
+			water = 25;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class Pate: FoodCan_100g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Pate0";
+		descriptionShort = "$STR_Pate1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_100g_Liver_CO.paa"};
+	};
+	class Pate_Opened: FoodCan_100g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_Pate0";
+		descriptionShort = "$STR_Pate1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_100g_Liver_CO.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 2;
+			energy = 250;
+			water = 25;
+			nutritionalIndex = 1;
+			toxicity = 0;
+		};
+	};
+	class BrisketSpread: FoodCan_100g_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_BrisketSpread0";
+		descriptionShort = "$STR_BrisketSpread1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_100g_Brisket_CO.paa"};
+	};
+	class BrisketSpread_Opened: FoodCan_100g_Opened_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_BrisketSpread0";
+		descriptionShort = "$STR_BrisketSpread1";
+		hiddenSelections[] = {"camoGround"};
+		hiddenSelectionsTextures[] = {"\dz\gear\food\Data\FoodCan_100g_Brisket_CO.paa"};
+		class Nutrition
+		{
+			fullnessIndex = 2;
+			energy = 200;
+			water = 25;
+			nutritionalIndex = 1;
+			toxicity = 0;
 		};
 	};
 	class Apple: Edible_Base
@@ -1609,37 +2115,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,65,80,1,0};
+					nutrition_properties[] = {1,100,75,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,40,1,0,16};
+					nutrition_properties[] = {10,75,50,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,100,60,1,0};
+					nutrition_properties[] = {1,250,75,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,85,100,1,0};
+					nutrition_properties[] = {1,200,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {2,3,3};
-					nutrition_properties[] = {0.75,50,8,1,0};
+					nutrition_properties[] = {1,200,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {1,4,4};
-					nutrition_properties[] = {2,37.5,20,1,0};
+					nutrition_properties[] = {5,100,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -1720,37 +2226,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,65,80,1,0};
+					nutrition_properties[] = {1,100,75,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,40,1,0,16};
+					nutrition_properties[] = {10,75,50,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,100,60,1,0};
+					nutrition_properties[] = {1,300,125,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {2,2,2};
-					nutrition_properties[] = {1.5,85,100,1,0};
+					nutrition_properties[] = {1,250,175,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {3,3,3};
-					nutrition_properties[] = {0.75,75,8,1,0};
+					nutrition_properties[] = {1,250,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {4,4,4};
-					nutrition_properties[] = {2,35,20,1,0};
+					nutrition_properties[] = {5,125,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -1831,37 +2337,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,80,1,0};
+					nutrition_properties[] = {1,75,50,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,40,1,0,16};
+					nutrition_properties[] = {10,50,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,87.5,60,1,0};
+					nutrition_properties[] = {1,300,50,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,62.5,100,1,0};
+					nutrition_properties[] = {1,250,150,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,50,8,1,0};
+					nutrition_properties[] = {1,250,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {2,35,20,1,0};
+					nutrition_properties[] = {5,75,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -1914,10 +2420,9 @@ class CfgVehicles
 		weight = 0;
 		itemSize[] = {1,2};
 		stackedUnit = "g";
-		absorbency = 0.2;
-		varQuantityInit = 130;
+		varQuantityInit = 100;
 		varQuantityMin = 0;
-		varQuantityMax = 130;
+		varQuantityMax = 100;
 		quantityBar = 1;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
@@ -1944,13 +2449,13 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {1,89,128,95,1};
+					nutrition_properties[] = {1,200,100,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1,22.25,65,13,1,16};
+					nutrition_properties[] = {10,100,50,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 			};
@@ -2002,7 +2507,6 @@ class CfgVehicles
 		weight = 0;
 		itemSize[] = {1,1};
 		stackedUnit = "g";
-		absorbency = 0.2;
 		varQuantityInit = 110;
 		varQuantityMin = 0;
 		varQuantityMax = 110;
@@ -2032,13 +2536,13 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {1,47,131,117,1};
+					nutrition_properties[] = {1,75,150,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1,12,48,12,1,16};
+					nutrition_properties[] = {10,50,100,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 			};
@@ -2089,12 +2593,10 @@ class CfgVehicles
 		model = "\dz\gear\food\tomato.p3d";
 		weight = 0;
 		itemSize[] = {1,1};
-		uantity = "";
 		stackedUnit = "g";
-		absorbency = 0.2;
-		varQuantityInit = 125;
+		varQuantityInit = 100;
 		varQuantityMin = 0;
-		varQuantityMax = 125;
+		varQuantityMax = 100;
 		quantityBar = 1;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		containsSeedsType = "Cultivation_TomatoSeeds";
@@ -2121,37 +2623,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,60,95,1,0};
+					nutrition_properties[] = {1,50,100,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,47.5,1,0,16};
+					nutrition_properties[] = {10,25,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,90,71.25,1,0};
+					nutrition_properties[] = {1,150,75,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,75,120,1,0};
+					nutrition_properties[] = {1,125,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,65,9.5,1,0};
+					nutrition_properties[] = {1,125,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {1,4,4};
-					nutrition_properties[] = {2,35,23.75,1,0};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2204,7 +2706,6 @@ class CfgVehicles
 		weight = 0;
 		itemSize[] = {1,2};
 		stackedUnit = "g";
-		absorbency = 0.2;
 		varQuantityInit = 150;
 		varQuantityMin = 0;
 		varQuantityMax = 150;
@@ -2234,37 +2735,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,95,1,0};
+					nutrition_properties[] = {1,100,50,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,47.5,1,0,16};
+					nutrition_properties[] = {10,50,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,75,71.25,1,0};
+					nutrition_properties[] = {1,250,50,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,65,120,1,0};
+					nutrition_properties[] = {1,200,125,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,60,9.5,1,0};
+					nutrition_properties[] = {1,200,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {1,4,4};
-					nutrition_properties[] = {2,35,23.75,1,0};
+					nutrition_properties[] = {5,100,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2321,7 +2822,6 @@ class CfgVehicles
 		varQuantityMax = 200;
 		quantityBar = 1;
 		itemSize[] = {1,3};
-		absorbency = 0.2;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		containsSeedsType = "Cultivation_ZucchiniSeeds";
 		containsSeedsQuantity = "15";
@@ -2347,37 +2847,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,65,1,0};
+					nutrition_properties[] = {1,125,75,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,47.5,1,0,16};
+					nutrition_properties[] = {10,25,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,75,100,1,0};
+					nutrition_properties[] = {1,250,75,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,65,120,1,0};
+					nutrition_properties[] = {1,200,150,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {1,3,3};
-					nutrition_properties[] = {0.75,55,9.5,1,0};
+					nutrition_properties[] = {1,200,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {2,35,23.75,1,0};
+					nutrition_properties[] = {5,125,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2518,7 +3018,6 @@ class CfgVehicles
 		weight = 0;
 		itemSize[] = {3,2};
 		stackedUnit = "g";
-		absorbency = 0.2;
 		varQuantityInit = 250;
 		varQuantityMin = 0;
 		varQuantityMax = 250;
@@ -2548,37 +3047,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,50,95,1,0};
+					nutrition_properties[] = {1,75,50,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,35,47.5,1,0,16};
+					nutrition_properties[] = {10,50,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1.75,80,71.25,1,0};
+					nutrition_properties[] = {1,150,50,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {1,2,2};
-					nutrition_properties[] = {1.5,70,120,1,0};
+					nutrition_properties[] = {1,125,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {2,3,3};
-					nutrition_properties[] = {0.75,60,9.5,1,0};
+					nutrition_properties[] = {1,125,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {2,4,4};
-					nutrition_properties[] = {2,35,23.75,1,0};
+					nutrition_properties[] = {5,75,0,1,0,16};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2626,12 +3125,11 @@ class CfgVehicles
 		scope = 2;
 		displayName = "$STR_Potato0";
 		descriptionShort = "$STR_Potato1";
-		model = "\dz\gear\food\potato.p3d";
+		model = "\dz\gear\food\potato_prepared.p3d";
 		rotationFlags = 12;
 		weight = 0;
 		itemSize[] = {2,1};
 		stackedUnit = "g";
-		absorbency = 0.2;
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
@@ -2639,32 +3137,13 @@ class CfgVehicles
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		class Horticulture
 		{
 			PlantType = "Plant_Potato";
 		};
 		hiddenSelections[] = {"cs_raw"};
-		hiddenSelectionsTextures[] = {"dz\gear\food\data\potato_raw_CO.paa","dz\gear\food\data\potato_baked_CO.paa","dz\gear\food\data\potato_baked_CO.paa","dz\gear\food\data\potato_dried_CO.paa","dz\gear\food\data\potato_burnt_CO.paa"};
-		hiddenSelectionsMaterials[] = {"dz\gear\food\data\potato_raw.rvmat","dz\gear\food\data\potato_boiled.rvmat","dz\gear\food\data\potato_baked.rvmat","dz\gear\food\data\potato_dried.rvmat","dz\gear\food\data\potato_burnt.rvmat","dz\gear\food\data\potato_rotten.rvmat"};
+		hiddenSelectionsTextures[] = {"dz\gear\food\data\potato_prepared_CO.paa","dz\gear\food\Data\potato_baked_CO.paa","#(argb,8,8,3)color(1,0.988235,0.835294,1.0,CO)","dz\gear\food\Data\potato_prepared_CO.paa","dz\gear\food\Data\potato_baked_CO.paa"};
+		hiddenSelectionsMaterials[] = {"dz\gear\food\data\potato_prepared.rvmat","dz\gear\food\Data\potato_baked.rvmat","dz\gear\food\data\potato_boiled.rvmat","dz\gear\food\data\potato_dried.rvmat","dz\gear\food\data\potato_burnt.rvmat","dz\gear\food\data\potato_rotten.rvmat"};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -2684,37 +3163,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {2.5,20,95,1,0};
+					nutrition_properties[] = {1,75,25,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {2,15,47.5,1,0,16};
+					nutrition_properties[] = {10,50,25,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {1.75,80,71.25,1,0};
+					nutrition_properties[] = {1,250,25,1,0};
 					cooking_properties[] = {70,35};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {1.5,70,95,1,0};
+					nutrition_properties[] = {1,200,1,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {0.75,20,9.5,1,0};
+					nutrition_properties[] = {1,200,0,1,0};
 					cooking_properties[] = {70,30,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {2,15,23.75,1,0};
+					nutrition_properties[] = {5,75,0,1,0};
 					cooking_properties[] = {100,20};
 				};
 			};
@@ -2766,12 +3245,11 @@ class CfgVehicles
 		rotationFlags = 12;
 		itemSize[] = {1,1};
 		weight = 0;
-		VarQuantityInit = 70;
+		VarQuantityInit = 75;
 		varQuantityMin = 0;
-		varQuantityMax = 70;
+		varQuantityMax = 75;
 		quantityBar = 1;
 		stackedUnit = "g";
-		absorbency = 0.2;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC"};
 		containsSeedsType = "";
 		containsSeedsQuantity = "0";
@@ -2797,13 +3275,13 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {1,42,59,56,1};
+					nutrition_properties[] = {1,150,150,1,0};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {1,1,1};
-					nutrition_properties[] = {1,15,20,10,1,16};
+					nutrition_properties[] = {10,75,75,1,0,16};
 					cooking_properties[] = {0,0};
 				};
 			};
@@ -3192,31 +3670,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		absorbency = 0.3;
 		itemSize[] = {1,3};
 		varQuantityInit = 150;
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3239,37 +3697,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,130,70,1,0,4};
+					nutrition_properties[] = {7,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,97.5,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.75,227.5,52.5,1,0};
+					nutrition_properties[] = {4,200,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3.5,162.5,70,1,0};
+					nutrition_properties[] = {4,150,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.8,130,7,1,0};
+					nutrition_properties[] = {5,150,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,97.5,17.5,1,0,16};
+					nutrition_properties[] = {7,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -3326,27 +3784,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3369,37 +3807,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,160,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,120,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,280,52.5,1,0};
+					nutrition_properties[] = {2,250,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,200,70,1,0};
+					nutrition_properties[] = {2,200,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,160,7,1,0};
+					nutrition_properties[] = {3,200,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,120,17.5,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -3456,27 +3894,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 230;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3582,31 +4000,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		varQuantityInit = 200;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 250;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3629,37 +4027,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,130,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,97.5,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,227.5,52.5,1,0};
+					nutrition_properties[] = {2,325,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,162.5,70,1,0};
+					nutrition_properties[] = {1,275,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,130,7,1,0};
+					nutrition_properties[] = {3,275,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,97.5,17.5,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -3712,31 +4110,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		varQuantityInit = 200;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 250;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3759,37 +4137,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,130,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,97.5,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,227.5,52.5,1,0};
+					nutrition_properties[] = {1,300,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,162.5,70,1,0};
+					nutrition_properties[] = {1,250,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,130,7,1,0};
+					nutrition_properties[] = {2,250,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,97.5,17.5,1,0,16};
+					nutrition_properties[] = {5,50,50,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -3837,31 +4215,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		varQuantityInit = 200;
+		varQuantityInit = 250;
 		varQuantityMin = 0;
-		varQuantityMax = 200;
+		varQuantityMax = 250;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -3884,37 +4242,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,160,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,120,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,280,52.5,1,0};
+					nutrition_properties[] = {2,350,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,200,70,1,0};
+					nutrition_properties[] = {1,300,100,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,160,7,1,0};
+					nutrition_properties[] = {3,300,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,120,17.5,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -3971,27 +4329,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -4014,37 +4352,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,140,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,105,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,245,52.5,1,0};
+					nutrition_properties[] = {2,200,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,175,70,1,0};
+					nutrition_properties[] = {2,150,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,140,7,1,0};
+					nutrition_properties[] = {3,150,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,105,17.5,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -4097,31 +4435,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		varQuantityInit = 180;
+		varQuantityInit = 500;
 		varQuantityMin = 0;
-		varQuantityMax = 180;
+		varQuantityMax = 500;
 		itemSize[] = {2,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -4144,37 +4462,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,544,334,236,1,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,250,222,35,1,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,537,222,129,1};
+					nutrition_properties[] = {2,400,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,537,222,129,1};
+					nutrition_properties[] = {2,350,150,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,390,130,180,1};
+					nutrition_properties[] = {3,350,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,250,90,50,1,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -4227,31 +4545,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		quantityBar = 1;
-		varQuantityInit = 300;
+		varQuantityInit = 500;
 		varQuantityMin = 0;
-		varQuantityMax = 300;
+		varQuantityMax = 500;
 		itemSize[] = {2,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -4274,37 +4572,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,200,65,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,150,32.5,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,350,48.75,1,0};
+					nutrition_properties[] = {1,300,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,250,65,1,0};
+					nutrition_properties[] = {1,250,100,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,200,6.5,1,0};
+					nutrition_properties[] = {1,250,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,150,16.25,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -4361,27 +4659,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 150;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -4404,37 +4682,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,160,70,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,120,35,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,280,52.5,1,0};
+					nutrition_properties[] = {2,250,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,200,70,1,0};
+					nutrition_properties[] = {2,200,100,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,160,7,1,0};
+					nutrition_properties[] = {3,200,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,120,17.5,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -4491,27 +4769,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 130;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_steak_raw_CO.paa","dz\gear\food\data\meat_steak_baked_CO.paa","dz\gear\food\data\meat_steak_boiled_co.paa","dz\gear\food\data\meat_steak_dried_CO.paa","dz\gear\food\data\meat_steak_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_steak_raw.rvmat","dz\gear\food\data\meat_steak_baked.rvmat","dz\gear\food\data\meat_steak_boiled.rvmat","dz\gear\food\data\meat_steak_dried.rvmat","dz\gear\food\data\meat_steak_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -4621,27 +4879,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 125;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_breast_raw_CO.paa","dz\gear\food\data\meat_breast_baked_CO.paa","dz\gear\food\data\meat_breast_baked_CO.paa","dz\gear\food\data\meat_breast_dried_CO.paa","dz\gear\food\data\meat_breast_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_breast_raw.rvmat","dz\gear\food\data\meat_breast_baked.rvmat","dz\gear\food\data\meat_breast_boiled.rvmat","dz\gear\food\data\meat_breast_dried.rvmat","dz\gear\food\data\meat_breast_burnt.rvmat","dz\gear\food\data\meat_breast_rotten.rvmat"};
@@ -4664,37 +4902,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,110,75,1,0,4};
+					nutrition_properties[] = {5,50,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,82.5,37.5,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,25,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,192.5,56.25,1,0};
+					nutrition_properties[] = {1,200,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,137.5,75,1,0};
+					nutrition_properties[] = {1,150,100,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,110,7.5,1,0};
+					nutrition_properties[] = {2,150,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,82.5,18.75,1,0,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -4751,27 +4989,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 110;
 		itemSize[] = {1,2};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\meat_leg_raw_CO.paa","dz\gear\food\data\meat_leg_baked_CO.paa","dz\gear\food\data\meat_leg_baked_CO.paa","dz\gear\food\data\meat_leg_dried_CO.paa","dz\gear\food\data\meat_leg_burned_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\meat_leg_raw.rvmat","dz\gear\food\data\meat_leg_baked.rvmat","dz\gear\food\data\meat_leg_boiled.rvmat","dz\gear\food\data\meat_leg_dried.rvmat","dz\gear\food\data\meat_leg_burnt.rvmat","dz\gear\food\data\meat_leg_rotten.rvmat"};
@@ -4881,27 +5099,7 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 300;
 		itemSize[] = {2,3};
-		absorbency = 0.3;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\carp_fillet_raw_CO.paa","dz\gear\food\data\carp_fillet_baked_CO.paa","dz\gear\food\data\carp_fillet_boiled_CO.paa","dz\gear\food\data\carp_fillet_dried_CO.paa","dz\gear\food\data\carp_fillet_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\carp_fillet_raw.rvmat","dz\gear\food\data\carp_fillet_baked.rvmat","dz\gear\food\data\carp_fillet_boiled.rvmat","dz\gear\food\data\carp_fillet_dried.rvmat","dz\gear\food\data\carp_fillet_burnt.rvmat","dz\gear\food\data\carp_fillet_rotten.rvmat"};
@@ -4924,37 +5122,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,266,120,184,1,4};
+					nutrition_properties[] = {5,50,100,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,67,120,30,1,"4 + 		  16"};
+					nutrition_properties[] = {10,25,50,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,200,74,129,1};
+					nutrition_properties[] = {2,300,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,187,53,150,1};
+					nutrition_properties[] = {2,250,250,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,130,43,180,1};
+					nutrition_properties[] = {3,200,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,60,13,50,1,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -5008,30 +5206,10 @@ class CfgVehicles
 		interactionWeight = 1;
 		quantityBar = 1;
 		itemSize[] = {3,1};
-		absorbency = 0.3;
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mackerel_fillet_raw_CO.paa","dz\gear\food\data\mackerel_fillet_baked_CO.paa","dz\gear\food\data\mackerel_fillet_boiled_CO.paa","dz\gear\food\data\mackerel_fillet_dried_CO.paa","dz\gear\food\data\mackerel_fillet_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mackerel_fillet_raw.rvmat","dz\gear\food\data\mackerel_fillet_baked.rvmat","dz\gear\food\data\mackerel_fillet_boiled.rvmat","dz\gear\food\data\mackerel_fillet_dried.rvmat","dz\gear\food\data\mackerel_fillet_burnt.rvmat","dz\gear\food\data\mackerel_fillet_rotten.rvmat"};
@@ -5054,37 +5232,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {4.5,800,360,184,1,4};
+					nutrition_properties[] = {5,50,100,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {4,200,360,30,1,"4 + 		  16"};
+					nutrition_properties[] = {10,25,50,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {3.5,600,222,129,1};
+					nutrition_properties[] = {1,600,100,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {3,560,160,150,1};
+					nutrition_properties[] = {1,400,400,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {1.5,390,130,180,1};
+					nutrition_properties[] = {2,400,130,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {4,180,40,50,1,16};
+					nutrition_properties[] = {5,50,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -5137,13 +5315,11 @@ class CfgVehicles
 		weight = 0;
 		interactionWeight = 1;
 		itemSize[] = {2,2};
-		absorbency = 0.3;
 		varQuantityInit = 200;
 		varQuantityMin = 0;
 		varQuantityMax = 200;
 		quantityBar = 1;
 		inventorySlot[] = {"Ingredient","DirectCookingA","DirectCookingB","DirectCookingC","SmokingA","SmokingB","SmokingC","SmokingD"};
-		isMeleeWeapon = 1;
 		hiddenSelections[] = {"cs_raw","cs_dried"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\lard_raw_CO.paa","dz\gear\food\data\lard_baked_CO.paa","dz\gear\food\data\lard_boiled_CO.paa","dz\gear\food\data\lard_dried_CO.paa","dz\gear\food\data\lard_burnt_CO.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\lard_raw.rvmat","dz\gear\food\data\lard_baked.rvmat","dz\gear\food\data\lard_boiled.rvmat","dz\gear\food\data\lard_dried.rvmat","dz\gear\food\data\lard_burnt.rvmat","dz\gear\food\data\meat_steak_rotten.rvmat"};
@@ -5166,37 +5342,37 @@ class CfgVehicles
 				class Raw
 				{
 					visual_properties[] = {0,0,0};
-					nutrition_properties[] = {20,600,0,1,0,4};
+					nutrition_properties[] = {7,100,50,1,0,4};
 					cooking_properties[] = {0,0};
 				};
 				class Rotten
 				{
 					visual_properties[] = {-1,-1,5};
-					nutrition_properties[] = {30,300,0,1,0,"4 + 		  16"};
+					nutrition_properties[] = {10,50,25,1,0,"4 + 		  16"};
 					cooking_properties[] = {0,0};
 				};
 				class Baked
 				{
 					visual_properties[] = {0,1,1};
-					nutrition_properties[] = {15,1200,0,1,0};
+					nutrition_properties[] = {4,300,50,1,0};
 					cooking_properties[] = {70,45};
 				};
 				class Boiled
 				{
 					visual_properties[] = {0,2,2};
-					nutrition_properties[] = {20,1200,0,1,0};
+					nutrition_properties[] = {4,250,100,1,0};
 					cooking_properties[] = {70,55};
 				};
 				class Dried
 				{
 					visual_properties[] = {0,3,3};
-					nutrition_properties[] = {15,900,0,1,0};
+					nutrition_properties[] = {5,250,0,1,0};
 					cooking_properties[] = {70,120,80};
 				};
 				class Burned
 				{
 					visual_properties[] = {0,4,4};
-					nutrition_properties[] = {20,400,0,1,0,16};
+					nutrition_properties[] = {7,100,0,1,0,16};
 					cooking_properties[] = {100,30};
 				};
 			};
@@ -5277,24 +5453,6 @@ class CfgVehicles
 		varQuantityMin = 0;
 		varQuantityMax = 600;
 		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
-			};
-		};
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\carp_live_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\carp_live.rvmat"};
@@ -5447,6 +5605,7 @@ class CfgVehicles
 		varQuantityInit = 400;
 		varQuantityMin = 0;
 		varQuantityMax = 400;
+		isMeleeWeapon = 1;
 		hiddenSelections[] = {"cs_raw"};
 		hiddenSelectionsTextures[] = {"dz\gear\food\data\mackerel_live_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\gear\food\data\mackerel_live.rvmat"};
@@ -5510,7 +5669,6 @@ class CfgVehicles
 		varQuantityInit = 0.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 0.0;
-		isMeleeWeapon = 1;
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -5520,24 +5678,6 @@ class CfgVehicles
 					hitpoints = 10;
 					healthLevels[] = {{1.0,{"DZ\gear\food\data\"""".rvmat"}},{0.7,{"DZ\gear\food\data\"""".rvmat"}},{0.5,{"DZ\gear\food\data\""""_damage.rvmat"}},{0.3,{"DZ\gear\food\data\""""_damage.rvmat"}},{0.0,{"DZ\gear\food\data\""""_destruct.rvmat"}}};
 				};
-			};
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeFist";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeFist_Heavy";
-				range = 2.8;
 			};
 		};
 		hiddenSelections[] = {"cs_raw"};

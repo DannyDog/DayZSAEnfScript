@@ -886,11 +886,6 @@ class Inventory: LayoutHolder
 				EnableMicromanagement();
 			}
 			
-			if ( ItemManager.GetInstance().IsMicromanagmentMode() )
-			{
-				ItemManager.GetInstance().SetItemMoving( true );
-			}
-			
 			if ( m_LeftArea.IsActive() )
 			{
 				if ( !ItemManager.GetInstance().IsMicromanagmentMode() )
@@ -930,11 +925,6 @@ class Inventory: LayoutHolder
 			if ( GetGame().GetInput().LocalValue( "UAUISelect", false ) )
 			{
 				EnableMicromanagement();
-			}
-			
-			if ( ItemManager.GetInstance().IsMicromanagmentMode() )
-			{
-				ItemManager.GetInstance().SetItemMoving( true );
 			}
 			
 			ItemManager.GetInstance().HideTooltip();
@@ -1098,8 +1088,7 @@ class Inventory: LayoutHolder
 		if( ItemManager.GetInstance().IsMicromanagmentMode() )
 		{
 			ItemManager.GetInstance().SetItemMicromanagmentMode( false );
-			ItemManager.GetInstance().SetItemMoving( false );
-			ItemManager.GetInstance().SetSelectedItem( null, null, null );
+			ItemManager.GetInstance().SetSelectedItem( null, null, null, null );
 			UpdateConsoleToolbar();
 			ItemManager.GetInstance().HideTooltip();
 		}
@@ -1208,7 +1197,7 @@ class Inventory: LayoutHolder
 				hud.ShowHudInventory( false );
 			}
 		}
-		ItemManager.GetInstance().SetSelectedItem( null, null, null );
+		ItemManager.GetInstance().SetSelectedItem( null, null, null, null );
 	}
 	
 	void UpdateSpecialtyMeter()

@@ -32,7 +32,7 @@ class ActionDigGardenPlot: ActionDeployObject
 		return "#make_garden_plot";
 	}
 	
-	override bool ActionCondition ( PlayerBase player, ActionTarget target, ItemBase item )
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		//Client
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
@@ -71,15 +71,22 @@ class ActionDigGardenPlot: ActionDeployObject
 	{
 		if (item_GP) // TO DO: When GardenPlot is renamed back to GardenPlot then remove this check.
 		{
-			if ( item_GP.CanBePlaced(player, item_GP.GetPosition() )  )
+			vector min_max[2];
+			item_GP.GetCollisionBox(min_max);
+			float offset = min_max[1][1] - min_max[0][1];
+			//Print(offset);
+			vector pos_adjusted = item_GP.GetPosition();
+			pos_adjusted[1] = pos_adjusted[1] + offset;
+			
+			if ( item_GP.CanBePlaced(player, /*item_GP.GetPosition()*/pos_adjusted )  )
 			{
-				if( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftCloseProjectionVector())) )
+				if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftCloseProjectionVector())) )
 				{
-					if( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightCloseProjectionVector())) )
+					if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightCloseProjectionVector())) )
 					{
-						if( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftFarProjectionVector())) )
+						if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftFarProjectionVector())) )
 						{
-							if( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightFarProjectionVector())) )
+							if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightFarProjectionVector())) )
 							{
 								hologram.SetIsCollidingGPlot( false );
 	

@@ -193,9 +193,9 @@ class VicinityItemManager
 		return false;
 	}
 	
-	bool CanIgnoreDistanceCheck (EntityAI entity_ai)
+	bool CanIgnoreDistanceCheck(EntityAI entity_ai)
 	{
-	    return entity_ai.IsTransport() || entity_ai.CanUseConstruction();
+	    return MiscGameplayFunctions.CanIgnoreDistanceCheck(entity_ai);
 	}
 	
 	//per frame call
@@ -204,6 +204,7 @@ class VicinityItemManager
 		array<Object> objects_in_vicinity = new array<Object>;
 		array<CargoBase> proxyCargos = new array<CargoBase>;
 		array<Object> filtered_objects = new array<Object>;
+		array<Object> allFoundObjects = new array<Object>;
 		EntityAI entity_ai;
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		
@@ -240,6 +241,7 @@ class VicinityItemManager
 		
 		if ( objects_in_vicinity ) 
 		{
+			allFoundObjects.InsertAll(objects_in_vicinity);
 			objects_in_vicinity.Clear();
 		}
 		
@@ -264,6 +266,7 @@ class VicinityItemManager
 		
 		if ( objects_in_vicinity ) 
 		{
+			allFoundObjects.InsertAll(objects_in_vicinity);
 			objects_in_vicinity.Clear();
 		}
 		
@@ -286,35 +289,62 @@ class VicinityItemManager
 				filtered_objects.Insert( object_in_cone );
 			}
 		}
+		
+		allFoundObjects.InsertAll(objects_in_vicinity);
 
 		//4. Filter filtered objects with RayCast from the player ( head bone )
-		for ( int l = 0; l < filtered_objects.Count(); l++ )
+		
+		array<Object> obstructingObjects = new array<Object>;
+		MiscGameplayFunctions.FilterObstructingObjects(allFoundObjects, obstructingObjects);
+		
+		if ( obstructingObjects.Count() > 0 )
 		{
-			Object filtered_object = filtered_objects.Get(l);
-			bool is_obstructed = false;
-			Class.CastTo( entity_ai, filtered_object );
-			
-			//distance check
-			if ( vector.DistanceSq( player.GetPosition(), entity_ai.GetPosition() ) > VICINITY_CONE_REACH_DISTANCE * VICINITY_CONE_REACH_DISTANCE )
+			if ( filtered_objects.Count() > 10 )
 			{
-			    if ( !CanIgnoreDistanceCheck( entity_ai ) )
-			    {
-			        //Print("Distance ckeck pre: " + entity_ai + " failed" );
-			        continue;
-			    }
+				array<Object> filteredObjects = new array<Object>;
+				MiscGameplayFunctions.FilterObstructedObjectsByGrouping( player.GetPosition(), VICINITY_CONE_DISTANCE, 0.3, filtered_objects, obstructingObjects, filteredObjects, true, true, VICINITY_CONE_REACH_DISTANCE);
+				
+				for ( int n = 0; n < filteredObjects.Count(); ++n )
+					AddVicinityItems( filteredObjects[n] );
 			}
-			
-			is_obstructed = IsObstructed(filtered_object);
-
-			
-			//Print("is_obstructed: " + is_obstructed);
-			
-			if ( !is_obstructed )
+			else
 			{
-				//Print("AddvicinityItem: " + filtered_object);
-				AddVicinityItems( filtered_object );
+				for ( int l = 0; l < filtered_objects.Count(); l++ )
+				{
+					Object filtered_object = filtered_objects.Get(l);
+					bool is_obstructed = false;
+					Class.CastTo( entity_ai, filtered_object );
+					
+					//distance check
+					if ( vector.DistanceSq( player.GetPosition(), entity_ai.GetPosition() ) > VICINITY_CONE_REACH_DISTANCE * VICINITY_CONE_REACH_DISTANCE )
+					{
+					    if ( !CanIgnoreDistanceCheck( entity_ai ) )
+					    {
+					        //Print("Distance ckeck pre: " + entity_ai + " failed" );
+					        continue;
+					    }
+					}
+					
+					is_obstructed = IsObstructed(filtered_object);
+		
+					
+					//Print("is_obstructed: " + is_obstructed);
+					
+					if ( !is_obstructed )
+					{
+						//Print("AddvicinityItem: " + filtered_object);
+						AddVicinityItems( filtered_object );
+					}
+				}	
 			}
-		}	
+		}
+		else
+		{
+			for ( int m = 0; m < filtered_objects.Count(); m++ )
+			{
+				AddVicinityItems( filtered_objects[m] );
+			}
+		}
 	}
 	
 	bool IsObstructed(Object filtered_object)

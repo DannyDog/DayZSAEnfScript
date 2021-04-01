@@ -25,13 +25,13 @@ class ActionUnfoldEntity : ActionSingleUseBase
 
 	override void OnExecuteClient ( ActionData action_data )
 	{
-		ClearInventoryReservation(action_data);
+		ClearInventoryReservationEx(action_data);
 	}
 
 	override void OnExecuteServer ( ActionData action_data )
 	{
 		if ( !GetGame().IsMultiplayer() )
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 
 		ItemBase old_item = action_data.m_MainItem;
 		if (old_item.ConfigIsExisting("ChangeIntoOnDetach"))

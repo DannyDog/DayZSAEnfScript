@@ -35,6 +35,9 @@ class ActionDigInStash: ActionContinuousBase
 	{
 		ItemBase target_IB;
 		
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		// Check if player is standing on terrain
 		vector plr_pos = player.GetPosition();
 		float height = GetGame().SurfaceY(plr_pos[0], plr_pos[2]);
@@ -49,6 +52,9 @@ class ActionDigInStash: ActionContinuousBase
 			{
 				return false;
 			}
+			
+			if (target_IB.GetInventory().IsAttachment())
+				return false;
 			
 			// Check surface
 			string surface_type;

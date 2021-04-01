@@ -35,7 +35,7 @@ class Trigger extends ScriptedEntity
 
 	protected void Cleanup()
 	{
-		if(shape)
+		if (shape)
 		{
 			shape.Destroy();
 			shape = NULL;
@@ -44,7 +44,7 @@ class Trigger extends ScriptedEntity
 
 	void OnEnter(Object obj)
 	{
-		if(DebugTrigger)
+		if (DebugTrigger)
 		{		
 			Print("entered");
 			Print(obj);
@@ -53,7 +53,7 @@ class Trigger extends ScriptedEntity
 
 	void OnLeave(Object obj)
 	{
-		if(DebugTrigger)
+		if (DebugTrigger)
 		{		
 			Print("left");
 			Print(obj);
@@ -64,10 +64,10 @@ class Trigger extends ScriptedEntity
 	{
 		int timeStamp = g_Game.GetTime();
 
-		for(int n = 0; n < m_insiders.Count(); )
+		for (int n = 0; n < m_insiders.Count(); )
 		{
 			TriggerInsider ins = m_insiders.Get(n);
-			if(ins.GetObject() == NULL)
+			if (ins.GetObject() == NULL)
 			{
 				//object has been deleted. Remove it
 				m_insiders.Remove(n);
@@ -75,7 +75,7 @@ class Trigger extends ScriptedEntity
 			}
 			
 			int timeDiff = timeStamp - ins.timeStamp;
-			if(timeDiff > timeout)
+			if (timeDiff > timeout)
 			{
 				//object left. Remove it
 				OnLeave(ins.GetObject());
@@ -90,11 +90,11 @@ class Trigger extends ScriptedEntity
 	protected void AddInsider(Object obj)
 	{
 		TriggerInsider ins;
-		for(int n = 0; n < m_insiders.Count(); n++)
+		for (int n = 0; n < m_insiders.Count(); n++)
 		{
 			ins = m_insiders.Get(n);
 			//already in?
-			if(ins.GetObject() == obj)
+			if (ins.GetObject() == obj)
 			{
 				//just update timestamp
 				ins.timeStamp = g_Game.GetTime();
@@ -122,12 +122,12 @@ class Trigger extends ScriptedEntity
 	float GetRadius(vector min, vector max)
 	{
 		vector v;
-		for(int n = 0; n < 3; n++)
+		for (int n = 0; n < 3; n++)
 		{
 			float m1 = Math.AbsFloat(min[n]);
 			float m2 = Math.AbsFloat(max[n]);
 
-			if(m1 > m2)
+			if (m1 > m2)
 				v[n] = m1;
 			else
 				v[n] = m2;			
@@ -140,11 +140,11 @@ class Trigger extends ScriptedEntity
 	{
 		SetCollisionBox(mins, maxs);
 
-		if(DebugTrigger)
+		if (DebugTrigger)
 		{
 			vector mat[4];
 			GetTransform(mat);
-			if(shape)
+			if (shape)
 			{
 				shape.Destroy();
 				shape = NULL;
@@ -191,9 +191,9 @@ class ManTrigger extends Trigger
 	override void EOnTouch(IEntity other, int extra)
 	{
 		Object obj;
-		if(Class.CastTo(obj, other))
+		if (Class.CastTo(obj, other))
 		{
-			if(obj.IsMan()) AddInsider(obj);
+			if (obj.IsMan()) AddInsider(obj);
 		}
 	}
 

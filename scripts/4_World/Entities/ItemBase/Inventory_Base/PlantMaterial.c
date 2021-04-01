@@ -2,8 +2,11 @@ class PlantMaterial extends Inventory_Base
 {
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
-		if(!super.CanPutAsAttachment(parent)) {return false;}
-		const int SLOTS_ARRAY1 = 6;
+		if (!super.CanPutAsAttachment(parent))
+		{
+			return false;
+		}
+		/*const int SLOTS_ARRAY1 = 6;
 		const int SLOTS_ARRAY2 = 7;
 		bool is_barrel = false;
 		bool is_opened_barrel = false;
@@ -48,7 +51,7 @@ class PlantMaterial extends Inventory_Base
 		if ( ( is_opened_barrel && slot_test1 ) || ( is_opened_barrel && slot_test2) || !is_barrel )
 		{
 			return true;
-		}
+		}*/
 		
 		return false;
 	}
@@ -56,7 +59,7 @@ class PlantMaterial extends Inventory_Base
 	override bool CanDetachAttachment( EntityAI parent )
 	{
 		
-		bool is_barrel = false;
+		/*bool is_barrel = false;
 		bool is_opened_barrel = false;
 		
 		// is barrel
@@ -74,7 +77,7 @@ class PlantMaterial extends Inventory_Base
 		if ( is_opened_barrel || !is_barrel )
 		{
 			return true;
-		}
+		}*/
 		return false;
 	}	
 	

@@ -217,7 +217,7 @@ class CfgVehicles
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"CookingTripod","CookingEquipment"};
-				icon = "cat_fp_cooking";
+				icon = "set:dayz_inventory image:cat_fp_cooking";
 				view_index = 1;
 			};
 			class Smoking
@@ -225,7 +225,7 @@ class CfgVehicles
 				name = "$STR_attachment_Smoking";
 				description = "";
 				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 				view_index = 2;
 			};
 			class DirectCooking
@@ -233,7 +233,7 @@ class CfgVehicles
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"DirectCookingA","DirectCookingB","DirectCookingC"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 				view_index = 3;
 			};
 			class Upgrade
@@ -241,7 +241,7 @@ class CfgVehicles
 				name = "$STR_attachment_Upgrade0";
 				description = "";
 				attachmentSlots[] = {"Stones"};
-				icon = "cat_fp_upgrade";
+				icon = "set:dayz_inventory image:cat_fp_upgrade";
 				view_index = 4;
 			};
 			class Fuel
@@ -249,7 +249,7 @@ class CfgVehicles
 				name = "$STR_attachment_Fuel0";
 				description = "";
 				attachmentSlots[] = {"Firewood","WoodenStick"};
-				icon = "cat_fp_fuel";
+				icon = "set:dayz_inventory image:cat_fp_fuel";
 				view_index = 5;
 			};
 			class Kindling
@@ -257,7 +257,7 @@ class CfgVehicles
 				name = "$STR_attachment_Kindling0";
 				description = "";
 				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
-				icon = "cat_fp_kindling";
+				icon = "set:dayz_inventory image:cat_fp_kindling";
 				view_index = 6;
 			};
 		};
@@ -287,28 +287,28 @@ class CfgVehicles
 				name = "$STR_attachment_Smoking";
 				description = "";
 				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"DirectCookingA","DirectCookingB"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class Fuel
 			{
 				name = "$STR_attachment_Fuel0";
 				description = "";
 				attachmentSlots[] = {"Firewood","WoodenStick"};
-				icon = "cat_fp_fuel";
+				icon = "set:dayz_inventory image:cat_fp_fuel";
 			};
 			class Kindling
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
 				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
-				icon = "cat_fp_kindling";
+				icon = "set:dayz_inventory image:cat_fp_kindling";
 			};
 		};
 		hiddenSelections[] = {"ashes"};
@@ -333,28 +333,28 @@ class CfgVehicles
 				name = "$STR_attachment_Smoking";
 				description = "";
 				attachmentSlots[] = {"SmokingA","SmokingB"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"DirectCookingA"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class Fuel
 			{
 				name = "$STR_attachment_Fuel0";
 				description = "";
 				attachmentSlots[] = {"Firewood","WoodenStick"};
-				icon = "cat_fp_fuel";
+				icon = "set:dayz_inventory image:cat_fp_fuel";
 			};
 			class Kindling
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
 				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
-				icon = "cat_fp_kindling";
+				icon = "set:dayz_inventory image:cat_fp_kindling";
 			};
 		};
 		hiddenSelections[] = {"ashes"};
@@ -388,28 +388,28 @@ class CfgVehicles
 				name = "$STR_attachment_Smoking";
 				description = "";
 				attachmentSlots[] = {"SmokingA","SmokingB","SmokingC","SmokingD"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class CookingEquipment
 			{
 				name = "$STR_attachment_CookingEquipment0";
 				description = "";
 				attachmentSlots[] = {"DirectCookingA","DirectCookingB","DirectCookingC"};
-				icon = "cookingequipment";
+				icon = "set:dayz_inventory image:cookingequipment";
 			};
 			class Fuel
 			{
 				name = "$STR_attachment_Fuel0";
 				description = "";
 				attachmentSlots[] = {"Firewood","WoodenStick"};
-				icon = "cat_fp_fuel";
+				icon = "set:dayz_inventory image:cat_fp_fuel";
 			};
 			class Kindling
 			{
 				name = "$STR_attachment_Kindling0";
 				description = "";
 				attachmentSlots[] = {"Rags","MedicalBandage","Paper","Bark"};
-				icon = "cat_fp_kindling";
+				icon = "set:dayz_inventory image:cat_fp_kindling";
 			};
 		};
 		hiddenSelections[] = {"ashes","camoGround","inventory"};
@@ -689,6 +689,70 @@ class CfgVehicles
 			};
 		};
 	};
+	class Cauldron: Bottle_Base
+	{
+		scope = 2;
+		displayName = "$STR_Cauldron0";
+		descriptionShort = "$STR_Cauldron1";
+		model = "\dz\gear\cooking\cauldron.p3d";
+		weight = 600;
+		itemSize[] = {4,3};
+		itemsCargoSize[] = {4,3};
+		inventorySlot[] = {"CookingEquipment","DirectCookingA","DirectCookingB","DirectCookingC"};
+		stackedRandom = 0;
+		canBeDigged = 0;
+		allowOwnedCargoManipulation = 1;
+		varLiquidTypeInit = 512;
+		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)";
+		destroyOnEmpty = 0;
+		varQuantityDestroyOnMin = 0;
+		varQuantityInit = 0;
+		varQuantityMin = 0;
+		varQuantityMax = 2000;
+		volume = 3000;
+		varTemperatureMax = 200;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 500;
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\cooking_pot.rvmat"}},{0.7,{"DZ\gear\cooking\data\cooking_pot.rvmat"}},{0.5,{"DZ\gear\cooking\data\cooking_pot_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\cooking_pot_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\cooking_pot_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimationSources
+		{
+			class handle1Rotate
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpPotLight
+				{
+					soundSet = "pickUpPotLight_SoundSet";
+					id = 796;
+				};
+				class pickUpPot
+				{
+					soundSet = "pickUpPot_SoundSet";
+					id = 797;
+				};
+				class drop
+				{
+					soundset = "pot_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
 	class PortableGasStove: Inventory_Base
 	{
 		scope = 2;
@@ -727,6 +791,7 @@ class CfgVehicles
 			powerSocketsCount = 0;
 			plugType = 7;
 			attachmentAction = 1;
+			updateInterval = 10;
 		};
 		class PointLights
 		{

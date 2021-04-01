@@ -1,12 +1,16 @@
 class PluginRepairing extends PluginBase
 {
 	bool Repair(PlayerBase player, ItemBase repair_kit, Object item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true)
-	{	
+	{
 		switch ( item.GetHealthLevel(damage_zone) ) 
 		{
 			case GameConstants.STATE_PRISTINE:
 				break;
 			case GameConstants.STATE_RUINED:
+#ifdef DEVELOPER
+				Print("PluginRepairing - repairing from GameConstants.STATE_RUINED");
+#endif
+				CalculateHealth( player, repair_kit, item, specialty_weight, damage_zone, use_kit_qty );
 				break;
 			case GameConstants.STATE_WORN:
 				if( CanRepairToPristine( player ) || CanBeRepairedToPristine( item ) )
@@ -24,6 +28,15 @@ class PluginRepairing extends PluginBase
 
 	void CalculateHealth( PlayerBase player, ItemBase kit, Object item, float specialty_weight, string damage_zone = "", bool use_kit_qty = true )
 	{
+		EntityAI entity;
+		Class.CastTo(entity,item);
+		
+		if (entity != null)
+		{
+			//Print("" + item + " - damage allowed");
+			entity.SetAllowDamage(true);
+		}
+		
 		bool kit_has_quantity = kit.HasQuantity();
 		int health_levels_count = item.GetNumberOfHealthLevels(damage_zone);
 		float cur_kit_quantity = kit.GetQuantity();
@@ -66,13 +79,18 @@ class PluginRepairing extends PluginBase
 		{
 			item.SetHealth01(damage_zone,"Health",health_coef);
 		}
+		
+		if (entity != null)
+		{
+			entity.ProcessInvulnerabilityCheck(entity.GetInvulnerabilityTypeString());
+		}
 	}
 
 	bool CanRepair( ItemBase repair_kit, Object item, string damage_zone = "" )
 	{
 		int state = item.GetHealthLevel(damage_zone);
 		
-		if ( (item.CanBeRepairedToPristine() && state >= GameConstants.STATE_WORN) || (!item.CanBeRepairedToPristine() && state >= GameConstants.STATE_DAMAGED ) )
+		if ( state != GameConstants.STATE_RUINED && (item.CanBeRepairedToPristine() && state >= GameConstants.STATE_WORN) || (!item.CanBeRepairedToPristine() && state >= GameConstants.STATE_DAMAGED ) )
 		{
 			int repair_kit_type = repair_kit.ConfigGetInt( "repairKitType" );
 			

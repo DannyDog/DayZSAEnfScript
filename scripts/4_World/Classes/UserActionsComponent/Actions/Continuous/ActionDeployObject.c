@@ -25,7 +25,20 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 			return;
 		
 		vector orientation = m_ActionData.m_Player.GetOrientation();
-		vector 	position = m_ActionData.m_Player.GetPosition() + m_ActionData.m_Player.GetDirection();
+		float size_x = 1;
+		float size_z = 1;
+		if (m_ActionData.m_MainItem.MemoryPointExists("BoundingBox_min"))
+		{
+			vector mins, maxs;
+			//m_ActionData.m_MainItem.GetBounds(mins,maxs);
+			mins = m_ActionData.m_MainItem.GetMemoryPointPos("BoundingBox_min");
+			maxs = m_ActionData.m_MainItem.GetMemoryPointPos("BoundingBox_max");
+			
+			size_x = vector.Distance(Vector(mins[0],0,0),Vector(maxs[0],0,0));
+			size_z = vector.Distance(Vector(0,0,mins[2]),Vector(0,0,maxs[2]));
+		}
+		
+		vector 	position = m_ActionData.m_Player.GetPosition() + m_ActionData.m_Player.GetDirection() * Math.Max(size_x,size_z);
 		vector rotation_matrix[3];
 		float direction[4];
 		InventoryLocation source = new InventoryLocation;
@@ -88,6 +101,11 @@ class ActionDeployObject: ActionContinuousBase
 		return true;
 	}
 	
+	override bool IsDeploymentAction()
+	{
+		return true;
+	}
+	
 	override string GetText()
 	{
 		return "#deploy_object";
@@ -139,7 +157,7 @@ class ActionDeployObject: ActionContinuousBase
 			else*/
 			if (action_data.m_Player.IsPlacingServer())
 			{
-				action_data.m_Player.GetHologramServer().EvaluateCollision();
+				action_data.m_Player.GetHologramServer().EvaluateCollision(action_data.m_MainItem);
 				if ( !action_data.m_Player.GetHologramServer().IsColliding() )
 				{
 					if ( action_data.m_MainItem.CanBePlaced(action_data.m_Player, action_data.m_Player.GetHologramServer().GetProjectionEntity().GetPosition()) )
@@ -262,7 +280,7 @@ class ActionDeployObject: ActionContinuousBase
 		vector orientation = action_data.m_Player.GetLocalProjectionOrientation();
 		
 		action_data.m_Player.GetHologramServer().EvaluateCollision(action_data.m_MainItem);
-		if (action_data.m_Player.GetHologramServer().IsColliding())
+		if ( GetGame().IsMultiplayer() && action_data.m_Player.GetHologramServer().IsColliding() )
 		{
 			return;
 		}
@@ -291,8 +309,8 @@ class ActionDeployObject: ActionContinuousBase
 		{
 			EntityAI entity_for_placing = action_data.m_MainItem;
 			action_data.m_Player.PlacingCancelLocal();
-			action_data.m_Player.PredictiveTakeEntityToHands( entity_for_placing );
-			action_data.m_Player.LockHandsUntilItemHeld();
+			//action_data.m_Player.PredictiveTakeEntityToHands( entity_for_placing );
+			//action_data.m_Player.LockHandsUntilItemHeld();
 		}
 	}
 	
@@ -331,7 +349,7 @@ class ActionDeployObject: ActionContinuousBase
 				}
 			}
 			
-			GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
+			//GetGame().ClearJuncture( action_data.m_Player, action_data.m_MainItem );
 		}
 		else
 		{
@@ -356,7 +374,7 @@ class ActionDeployObject: ActionContinuousBase
 	{			
 		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{			
-			if ( action_data.m_Player.GetItemInHands() )			
+			if ( action_data.m_Player.GetItemInHands() )
 				ActiondeployObjectCB.Cast(action_data.m_Callback).DropDuringPlacing();
 		}
 	}

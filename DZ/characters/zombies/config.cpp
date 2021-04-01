@@ -133,7 +133,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 33;
+						hitpoints = 30;
 						transferToGlobalCoef = 1;
 					};
 					class ArmorType
@@ -144,9 +144,12 @@ class CfgVehicles
 							{
 								damage = 1.5;
 							};
-							class Shock
+						};
+						class Melee
+						{
+							class Health
 							{
-								damage = 1.5;
+								damage = 0.5;
 							};
 						};
 						class FragGrenade
@@ -170,6 +173,13 @@ class CfgVehicles
 					};
 					class ArmorType
 					{
+						class Melee
+						{
+							class Health
+							{
+								damage = 1.2;
+							};
+						};
 						class FragGrenade
 						{
 							class Health
@@ -181,7 +191,7 @@ class CfgVehicles
 					componentNames[] = {"Spine1","Spine3"};
 					fatalInjuryCoef = -1;
 					inventorySlots[] = {"Vest","Body","Back"};
-					inventorySlotsCoefs[] = {1.0,1.0,0.5};
+					inventorySlotsCoefs[] = {1.0,1.0,1.0};
 				};
 				class LeftArm
 				{
@@ -192,6 +202,13 @@ class CfgVehicles
 					};
 					class ArmorType
 					{
+						class Melee
+						{
+							class Health
+							{
+								damage = 1.2;
+							};
+						};
 						class FragGrenade
 						{
 							class Health
@@ -201,6 +218,8 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"LeftArm","LeftForeArm"};
+					inventorySlots[] = {"Vest","Body","Back"};
+					inventorySlotsCoefs[] = {1.0,1.0,1.0};
 					fatalInjuryCoef = -1;
 				};
 				class RightArm
@@ -212,6 +231,13 @@ class CfgVehicles
 					};
 					class ArmorType
 					{
+						class Melee
+						{
+							class Health
+							{
+								damage = 1.2;
+							};
+						};
 						class FragGrenade
 						{
 							class Health
@@ -221,6 +247,8 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"RightArm","RightForeArm"};
+					inventorySlots[] = {"Vest","Body","Back"};
+					inventorySlotsCoefs[] = {1.0,1.0,1.0};
 					fatalInjuryCoef = -1;
 				};
 				class LeftLeg

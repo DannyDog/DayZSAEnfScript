@@ -4,6 +4,7 @@ class PortableGasStove extends ItemBase
 	protected const string FLAME_BUTANE_OFF 		= "";
 	typename ATTACHMENT_COOKING_POT 				= Pot;
 	typename ATTACHMENT_FRYING_PAN 					= FryingPan;
+	typename ATTACHMENT_CAULDRON	 				= Cauldron;
 	
 	//cooking
 	protected const float PARAM_COOKING_TEMP_THRESHOLD			= 100;		//temperature threshold for starting coooking process (degree Celsius)
@@ -11,6 +12,7 @@ class PortableGasStove extends ItemBase
 	protected const float PARAM_COOKING_EQUIP_MAX_TEMP			= 250;		//maximum temperature of attached cooking equipment (degree Celsius)
 	protected const float PARAM_COOKING_TIME_INC_COEF			= 0.5;		//cooking time increase coeficient, can be used when balancing how fast a food can be cooked
 	
+	private 		float m_TimeFactor;
 	//
 	ref Cooking m_CookingProcess;
 	ItemBase m_CookingEquipment;
@@ -48,24 +50,24 @@ class PortableGasStove extends ItemBase
 	}	
 	
 	//--- ATTACHMENTS
-	override void EEItemAttached ( EntityAI item, string slot_name ) 
+	override void EEItemAttached( EntityAI item, string slot_name ) 
 	{
 		super.EEItemAttached( item, slot_name );
 		
 		//cookware
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
 		{
 			ItemBase item_base = ItemBase.Cast( item );
 			SetCookingEquipment( item_base );
 		}
 	}
 	
-	override void EEItemDetached ( EntityAI item, string slot_name ) 
+	override void EEItemDetached( EntityAI item, string slot_name ) 
 	{
 		super.EEItemDetached( item, slot_name );
 		
 		//cookware
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) )
 		{
 			//stop steam particle
 			RemoveCookingAudioVisuals();
@@ -126,11 +128,12 @@ class PortableGasStove extends ItemBase
 				//start cooking
 				if ( cook_equip_temp >= PARAM_COOKING_TEMP_THRESHOLD )
 				{
+					m_TimeFactor = consumed_energy;
 					CookWithEquipment();
 				}				
 				
 				//set temperature to cooking equipment
-				cook_equip_temp = cook_equip_temp + PARAM_COOKING_EQUIP_TEMP_INCREASE;
+				cook_equip_temp = cook_equip_temp + (PARAM_COOKING_EQUIP_TEMP_INCREASE * consumed_energy);
 				cook_equip_temp = Math.Clamp ( cook_equip_temp, 0, PARAM_COOKING_EQUIP_MAX_TEMP );
 				GetCookingEquipment().SetTemperature( cook_equip_temp );
 			}
@@ -144,7 +147,7 @@ class PortableGasStove extends ItemBase
 			m_CookingProcess = new Cooking();
 		}
 		
-		m_CookingProcess.CookWithEquipment ( GetCookingEquipment(), PARAM_COOKING_TIME_INC_COEF );
+		m_CookingProcess.CookWithEquipment ( GetCookingEquipment(), PARAM_COOKING_TIME_INC_COEF * m_TimeFactor );
 	}
 
 	//================================================================
@@ -155,7 +158,7 @@ class PortableGasStove extends ItemBase
 	{
 		if ( GetCookingEquipment() )
 		{
-			if ( ( GetCookingEquipment().Type() == ATTACHMENT_COOKING_POT ) )
+			if ( ( GetCookingEquipment().Type() == ATTACHMENT_CAULDRON ) || ( GetCookingEquipment().Type() == ATTACHMENT_COOKING_POT ) )
 			{
 				Bottle_Base cooking_pot = Bottle_Base.Cast( GetCookingEquipment() );
 				cooking_pot.RemoveAudioVisualsOnClient();
@@ -167,7 +170,7 @@ class PortableGasStove extends ItemBase
 				frying_pan.RemoveAudioVisualsOnClient();
 			}
 		}
-	}	
+	}
 	
 	//================================================================
 	// SOUNDS
@@ -198,7 +201,7 @@ class PortableGasStove extends ItemBase
 	//this into/outo parent.Cargo
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
+		if ( !super.CanPutInCargo(parent) ) {return false;}
 		if ( GetCompEM().IsSwitchedOn() )
 		{
 			return false;
@@ -223,7 +226,7 @@ class PortableGasStove extends ItemBase
 	//hands
 	override bool CanPutIntoHands( EntityAI parent )
 	{
-		if( !super.CanPutIntoHands( parent ) )
+		if ( !super.CanPutIntoHands( parent ) )
 		{
 			return false;
 		}

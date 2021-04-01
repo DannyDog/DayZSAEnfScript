@@ -114,6 +114,7 @@ class ActionAttachOnSelection: ActionSingleUseBase
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
+		ClearInventoryReservationEx(action_data);
 		EntityAI target_entity = EntityAI.Cast( action_data.m_Target.GetObject() );
 		EntityAI item_entity = action_data.m_MainItem;
 		

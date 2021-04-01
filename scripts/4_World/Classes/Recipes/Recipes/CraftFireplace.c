@@ -93,9 +93,9 @@ class CraftFireplace extends RecipeBase
 		{
 			InventoryLocation loc = new InventoryLocation;
 			ingredient1.GetInventory().GetCurrentInventoryLocation( loc );
-			player.GetInventory().ClearInventoryReservation( ingredient1, loc );
+			player.GetInventory().ClearInventoryReservationEx( ingredient1, loc );
 			ingredient2.GetInventory().GetCurrentInventoryLocation( loc );
-			player.GetInventory().ClearInventoryReservation( ingredient2, loc );			
+			player.GetInventory().ClearInventoryReservationEx( ingredient2, loc );			
 		}
 		
 		//Ingredient 1

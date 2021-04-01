@@ -4,6 +4,7 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 	protected float	m_TimeToComplete;
 	protected float m_SpentQuantityTotal;
 	protected float m_StartQuantity;
+	protected PlantBase m_Plant;
 
 	void CAContinuousDisinfectPlant( float quantity_used_per_second )
 	{
@@ -12,7 +13,54 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 	
 	override void Setup( ActionData action_data )
 	{
-		PlantBase target_PB;
+		GardenBase garden_base;
+		ActionTarget target = action_data.m_Target;
+		if ( Class.CastTo(garden_base, target.GetObject()))
+		{
+			Slot slot;
+			
+			array<string> selections = new array<string>;
+			garden_base.GetActionComponentNameList(target.GetComponentIndex(), selections);
+			string selection;
+
+			for (int s = 0; s < selections.Count(); s++)
+			{
+				selection = selections[s];
+				slot = garden_base.GetSlotBySelection( selection );
+				if (slot)
+					break;
+			}
+			
+			if ( slot && slot.GetPlant() )
+			{
+				m_Plant = PlantBase.Cast(slot.GetPlant());
+				if ( m_Plant )
+				{	
+					m_SpentQuantity = 0;
+					m_StartQuantity = action_data.m_MainItem.GetQuantity();
+					if ( !m_SpentUnits )
+					{ 
+						m_SpentUnits = new Param1<float>(0);
+					}
+					else
+					{	
+						m_SpentUnits.param1 = 0;
+					}
+					if ( action_data.m_MainItem )
+					{
+						m_ItemQuantity = action_data.m_MainItem.GetQuantity();
+					}
+					if ( m_Plant ) 
+					{
+						m_PlantNeededSpraying = m_Plant.GetSprayUsage() - m_Plant.GetSprayQuantity();
+					}
+		
+					m_TimeToComplete = (Math.Min(m_PlantNeededSpraying,m_ItemQuantity))/m_QuantityUsedPerSecond;
+				}
+			}
+		}
+		
+		/*PlantBase target_PB;
 		if (Class.CastTo(target_PB, action_data.m_Target.GetObject()))
 		{
 			m_SpentQuantity = 0;
@@ -35,7 +83,7 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 			}
 
 			m_TimeToComplete = (Math.Min(m_PlantNeededSpraying,m_ItemQuantity))/m_QuantityUsedPerSecond;
-		}
+		}*/
 	}
 	
 	override int Execute( ActionData action_data  )
@@ -62,9 +110,9 @@ class CAContinuousDisinfectPlant : CAContinuousQuantity
 				
 				if ( m_Action ) 
 				{
-					PlantBase plant;
-					Class.CastTo(plant,  targetObject );
-					plant.SprayPlant(transfered_spray);
+					/*PlantBase plant;
+					Class.CastTo(plant,  targetObject );*/
+					m_Plant.SprayPlant(transfered_spray);
 					//m_Action.SendMessageToClient(action_data.m_Player, plant.StopInfestation( transfered_spray ));
 				}
 				

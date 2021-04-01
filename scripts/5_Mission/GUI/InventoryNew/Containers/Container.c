@@ -162,11 +162,12 @@ class Container extends LayoutHolder
 		return false;
 	}
 	
-	EntityAI GetFocusedEntity()
+	EntityAI GetFocusedItem()
 	{
 		EntityAI item;
 		if( GetFocusedContainer() )
-			item = GetFocusedContainer().GetFocusedEntity();
+			item = GetFocusedContainer().GetFocusedItem();
+
 		return item;
 	}
 	
@@ -351,10 +352,6 @@ class Container extends LayoutHolder
 	void SetNextActive()
 	{
 		ItemManager.GetInstance().HideTooltip( );
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
 		
 		Container active = Container.Cast( m_OpenedContainers[m_ActiveIndex] );
 		if( !active.IsActive() )
@@ -418,11 +415,6 @@ class Container extends LayoutHolder
 
 	void SetPreviousActive( bool force = false )
 	{
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
-		
 		Container active = Container.Cast( m_OpenedContainers[m_ActiveIndex] );
 		if( !active.IsActive() )
 		{

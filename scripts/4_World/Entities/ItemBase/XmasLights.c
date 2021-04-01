@@ -26,7 +26,7 @@ class XmasLights extends Inventory_Base
 
 	void AttachToObject(ItemBase parent)
 	{
-		SetPilotLight( false );	
+		//SetPilotLight( false );	
 		
 		m_AttachedTo = parent;
 		TurnOnItem( parent );
@@ -66,7 +66,7 @@ class XmasLights extends Inventory_Base
 				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 				item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-				item.SetPilotLight(true);	
+				//item.SetPilotLight(true);	
 			}
 			else
 			{
@@ -87,7 +87,7 @@ class XmasLights extends Inventory_Base
 			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
 			item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "dz\\gear\\camping\\data\\christmas_lights_string_ca.paa" );
-			item.SetPilotLight(false);
+			//item.SetPilotLight(false);
 		}
 	}
 
@@ -101,7 +101,7 @@ class XmasLights extends Inventory_Base
 		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_g"), "" );
 		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_b"), "" );
 		item.SetObjectTexture( item.GetHiddenSelectionIndex("xlights_glass_y"), "" );
-		item.SetPilotLight(false);
+//		item.SetPilotLight(false);
 		item.SetAnimationPhase( "Cord_plugged", 1);
 		item.SetAnimationPhase( "Cord_folded", 1);
 	}

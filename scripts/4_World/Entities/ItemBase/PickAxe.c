@@ -26,5 +26,6 @@ class Pickaxe extends ItemBase
 		AddAction(ActionSkinning);
 		AddAction(ActionDigOutStash);
 		AddAction(ActionDigInStash);
+		AddAction(ActionCreateGreenhouseGardenPlot);
 	}
 }	

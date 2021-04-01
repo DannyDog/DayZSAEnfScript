@@ -34,7 +34,7 @@ class Fireplace extends FireplaceBase
 			return true;
 		
 		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) )
 		{
 			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) || IsOven() ) 
 				return true;
@@ -86,7 +86,7 @@ class Fireplace extends FireplaceBase
 			return true;
 		
 		//cookware
-		if ( item.Type() == ATTACHMENT_COOKING_POT )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) )
 		{
 			if ( IsItemTypeAttached( ATTACHMENT_TRIPOD ) /*|| IsOven()*/ ) 
 				return true;
@@ -180,6 +180,10 @@ class Fireplace extends FireplaceBase
 		{
 			return true;
 		}
+		if ( item.Type() == ATTACHMENT_CAULDRON )
+		{
+			return true;			
+		}
 		if ( item.Type() == ATTACHMENT_FRYING_PAN )
 		{
 			return true;
@@ -250,7 +254,17 @@ class Fireplace extends FireplaceBase
 				item_base.SetAnimationPhase( ANIMATION_COOKWARE_HANDLE, 0 );
 			}
 		}
-		
+		if ( item.Type() == ATTACHMENT_CAULDRON )
+		{
+			SetCookingEquipment( item_base );
+			
+			//rotate handle (if not in 'Oven' stage)
+			if ( !IsOven() )
+			{
+				item_base.SetAnimationPhase( ANIMATION_CAULDRON_HANDLE, 0 );
+			}
+		}
+
 		// direct cooking slots, smoking slots
 		bool edible_base_attached = false;
 		switch ( slot_name )
@@ -340,6 +354,17 @@ class Fireplace extends FireplaceBase
 			//remove audio visuals
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
 			cooking_pot.RemoveAudioVisualsOnClient();
+		}
+		if ( item_base.Type() == ATTACHMENT_CAULDRON )
+		{
+			ClearCookingEquipment();
+			
+			//rotate handle
+			item_base.SetAnimationPhase( ANIMATION_CAULDRON_HANDLE, 1 );
+			
+			//remove audio visuals
+			Bottle_Base cauldron = Bottle_Base.Cast( item );
+			cauldron.RemoveAudioVisualsOnClient();
 		}
 		if ( item_base.Type() == ATTACHMENT_FRYING_PAN )
 		{
@@ -725,7 +750,7 @@ class Fireplace extends FireplaceBase
 		{
 			InventoryLocation loc = new InventoryLocation;
 			entity.GetInventory().GetCurrentInventoryLocation( loc );
-			player.GetInventory().ClearInventoryReservation( entity, loc );
+			player.GetInventory().ClearInventoryReservationEx( entity, loc );
 		}
 		
 		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )

@@ -12,7 +12,8 @@ class InventoryGridController extends ScriptedWidgetEventHandler
 	void OnItemRightClick(InventoryGrid grid, Widget w, int row, int col) {}
 	void OnItemDoubleClick(InventoryGrid grid, Widget w, int row, int col) {}
 	// float GetItemQuantity(InventoryGrid grid, InventoryItem item) {}
-	int GetItemColor(ScriptedWidgetEventHandler grid, InventoryItem item) { 
+	int GetItemColor(ScriptedWidgetEventHandler grid, InventoryItem item)
+	{ 
 		return 0;
 	}
 	int GetQuickbarItemColor(InventoryGrid grid, InventoryItem item) {}
@@ -23,6 +24,9 @@ class InventoryGridController extends ScriptedWidgetEventHandler
 	string GetItemQuantityText( InventoryItem item ) {}
 	int HasItemQuantity( InventoryItem item ) {}
 	float GetItemQuantity( InventoryItem item ) {}
+	int GetItemQuantityMax( InventoryItem item ) {}
+	int GetItemCount( InventoryItem item ) {}
+	bool CanAddItemInHandToInventory() {}
 };
 
 // -----------------------------------------------------------
@@ -50,6 +54,7 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	protected Widget					m_Root;
 	protected int						m_GridSize;
 	protected bool						m_IsMouseLeftDown;
+	protected bool						m_CanAddItemInHandToInventory;
 
 	void InventoryGrid()
 	{
@@ -62,6 +67,12 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 	{
 		m_Root = w;
 		m_Root.SetHandler(this);
+	}
+	
+	// NOTE: This is a cached value, depending on when it is called it might not be 100% accurate
+	bool CanAddItemInHandToInventory()
+	{
+		return m_CanAddItemInHandToInventory;
 	}
 	
 	// ScriptedWidgetEventHandler override
@@ -439,8 +450,11 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 				AddItem(item, data, Vector(0,0,0) );
 			}
 		}
+		
+		// cache if entity in hands can be added to inventory
+		m_CanAddItemInHandToInventory = m_Controller.CanAddItemInHandToInventory();
 	
-		// add new items
+		// refresh quickbar
 		for (i = 0; i < items.Count(); i++)
 		{
 			item = items.GetKey(i);
@@ -599,8 +613,8 @@ class InventoryGrid extends ScriptedWidgetEventHandler
 					else if ( has_quantity == QUANTITY_PROGRESS )
 					{
 						float progress_max = quantity_progress.GetMax();
-						int max = item.ConfigGetInt("varQuantityMax");
-						int count = item.ConfigGetInt("count");
+						int max = m_Controller.GetItemQuantityMax( item );
+						int count = m_Controller.GetItemCount( item );
 						float quantity = m_Controller.GetItemQuantity( item );
 						if ( count > 0 )
 						{

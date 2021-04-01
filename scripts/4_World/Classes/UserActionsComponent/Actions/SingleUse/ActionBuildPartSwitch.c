@@ -2,6 +2,9 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 {
 	void ActionBuildPartSwitch()
 	{
+		//m_StanceMask = DayZPlayerConstants.STANCEMASK_NOTRAISED;
+		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
+		m_FullBody = true;
 	}
 	
 	override void CreateConditionComponents()  
@@ -32,6 +35,16 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		//hack solution
+		if ((!GetGame().IsMultiplayer() || GetGame().IsClient()) )
+		{
+			ActionBase ab = ActionManagerClient.Cast(player.GetActionManager()).GetPossibleAction(ContinuousDefaultActionInput);
+			if (ab && ab.Type() != ActionBuildPart)
+			{
+				return false;
+			}
+		}
+		
 		if ( player && !player.IsLeaning() )
 		{
 			Object target_object = target.GetObject();

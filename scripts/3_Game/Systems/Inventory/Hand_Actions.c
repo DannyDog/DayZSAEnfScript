@@ -16,7 +16,12 @@ class HandActionCreated extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " action=created");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionCreated", e.m_Player.ToString() );
+		}
+		#endif
 
 		e.m_Player.OnItemInHandsChanged();
 	}
@@ -26,7 +31,12 @@ class HandActionTake extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " action=take");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionTake", e.m_Player.ToString() );
+		}
+		#endif
 
 		GameInventory.LocationSyncMoveEntity(e.GetSrc(), e.GetDst());
 		e.m_Player.OnItemInHandsChanged();
@@ -37,7 +47,12 @@ class HandActionDrop extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " action=" + e.DumpToString());
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionDrop", e.m_Player.ToString() );
+		}
+		#endif
 
 		GameInventory.LocationSyncMoveEntity(e.GetSrc(), e.GetDst());
  		e.m_Player.OnItemInHandsChanged();
@@ -48,7 +63,12 @@ class HandActionThrow extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " action=throw");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionThrow", e.m_Player.ToString() );
+		}
+		#endif
 		HandEventThrow throwEvent = HandEventThrow.Cast(e);
 
 		GameInventory.LocationSyncMoveEntity(e.GetSrc(), e.GetDst());
@@ -71,7 +91,12 @@ class HandActionMoveTo extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " action=moveTo");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionMoveTo", e.m_Player.ToString() );
+		}
+		#endif
 
 		HandEventMoveTo es = HandEventMoveTo.Cast(e);
 		if (es)
@@ -88,7 +113,12 @@ class HandActionDestroy extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] action=destroy");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionDestroy", e.m_Player.ToString() );
+		}
+		#endif
 
 		GetGame().ObjectDelete(e.GetSrcEntity());
 		e.m_Player.OnItemInHandsChanged();
@@ -99,8 +129,12 @@ class HandActionDestroyed extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] action=destroyed");
-
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionDestroyed", e.m_Player.ToString() );
+		}
+		#endif
 		e.m_Player.OnItemInHandsChanged();
 	}
 };
@@ -109,6 +143,12 @@ class HandActionDestroyAndReplaceWithNew extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionDestroyAndReplaceWithNew", e.m_Player.ToString() );
+		}
+		#endif
 		Man player = e.m_Player;
 		EntityAI itemInHands = player.GetHumanInventory().GetEntityInHands();
 
@@ -118,8 +158,6 @@ class HandActionDestroyAndReplaceWithNew extends HandActionBase
 			HandEventDestroyAndReplaceWithNew edr = HandEventDestroyAndReplaceWithNew.Cast(e);
 			if (edr)
 			{
-				hndDebugPrint("[hndfsm] action=replace with new");
-
 				edr.m_Lambda.Execute();
 				return;
 			}
@@ -143,7 +181,12 @@ class HandActionReplaced extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
-		hndDebugPrint("[hndfsm] action=replaced");
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionReplaced", e.m_Player.ToString() );
+		}
+		#endif
 		Man player = e.m_Player;
 
 		player.OnItemInHandsChanged();
@@ -154,11 +197,15 @@ class HandActionSwap extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionSwap", e.m_Player.ToString() );
+		}
+		#endif
 		HandEventSwap es = HandEventSwap.Cast(e);
 		if (es)
 		{
-			hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " Swap src1=" + InventoryLocation.DumpToStringNullSafe(es.GetSrc()) + " src2=" + InventoryLocation.DumpToStringNullSafe(es.m_Src2) + " dst1=" + InventoryLocation.DumpToStringNullSafe(es.GetDst()) +  "dst2=" + InventoryLocation.DumpToStringNullSafe(es.m_Dst2));
-
 			GameInventory.LocationSwap(es.GetSrc(), es.m_Src2, es.GetDst(), es.m_Dst2);
 			e.m_Player.OnItemInHandsChanged();
 		}
@@ -171,11 +218,15 @@ class HandActionForceSwap extends HandActionBase
 {
 	override void Action (HandEventBase e)
 	{
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("Action - STS=" + e.m_Player.GetSimulationTimeStamp(), e.ToString() , "n/a", "HandActionForceSwap", e.m_Player.ToString() );
+		}
+		#endif
 		HandEventForceSwap es = HandEventForceSwap.Cast(e);
 		if (es)
 		{
-			hndDebugPrint("[hndfsm] " + Object.GetDebugName(e.m_Player) + " STS=" + e.m_Player.GetSimulationTimeStamp() + " FSwap src1=" + InventoryLocation.DumpToStringNullSafe(es.GetSrc()) + " src2=" + InventoryLocation.DumpToStringNullSafe(es.m_Src2) + " dst1=" + InventoryLocation.DumpToStringNullSafe(es.GetDst()) +  "dst2=" + InventoryLocation.DumpToStringNullSafe(es.m_Dst2));
-
 			GameInventory.LocationSwap(es.GetSrc(), es.m_Src2, es.GetDst(), es.m_Dst2);
 			e.m_Player.OnItemInHandsChanged();
 		}

@@ -47,6 +47,7 @@ class cfgWeapons
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		WeaponLength = 0.934214;
 		barrelArmor = 1.111;
+		initSpeedMultiplier = 1.5;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Ammo_762x39Tracer"};
@@ -113,6 +114,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

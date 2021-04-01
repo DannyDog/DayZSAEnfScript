@@ -583,14 +583,40 @@ class Weapon_Base extends Weapon
 	{
 		if( !super.CanReleaseAttachment( attachment ) )
 			return false;
-		PlayerBase player = PlayerBase.Cast( GetHierarchyRootPlayer() );
-		if( player )
+		Magazine mag = Magazine.Cast(attachment);
+		if(mag)
 		{
-			if( player.GetItemInHands() == this )
+			PlayerBase player = PlayerBase.Cast( GetHierarchyRootPlayer() );
+			if( player )
+			{
+				if( player.GetItemInHands() == this )
 				return true;
+			}
+			return false;
 		}
-		return false;
+
+		return true;
 	}
+	
+	/*override bool CanReceiveAttachment(EntityAI attachment,int slotId)
+	{
+		if( !super.CanReleaseAttachment( attachment ) )
+			return false;
+		Magazine mag = Magazine.Cast(attachment);
+		if(mag)
+		{
+			PlayerBase player = PlayerBase.Cast( GetHierarchyRootPlayer() );
+			if( player )
+			{
+				if( player.GetItemInHands() == this )
+				return true;
+			}
+			return false;
+		}
+
+		return true;
+	}*/
+	
 	
 	override bool CanRemoveFromHands (EntityAI parent)
 	{

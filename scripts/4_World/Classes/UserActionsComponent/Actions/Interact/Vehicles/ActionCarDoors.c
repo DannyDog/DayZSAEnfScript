@@ -53,6 +53,8 @@ class ActionCarDoors: ActionInteractBase
 
 	override void OnStart( ActionData action_data )
 	{
+		super.OnStart(action_data);
+		
 		PlayerBase player = action_data.m_Player;
 		CarScript car;
 		if ( player && player.GetCommand_Vehicle() )
@@ -64,10 +66,14 @@ class ActionCarDoors: ActionInteractBase
 		{
 			if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 			{
+				EffectSound sound;
+				
 				if ( m_IsOpening )
-					SEffectManager.PlaySound( car.m_CarDoorOpenSound, car.GetPosition());
+					sound = SEffectManager.PlaySound( car.m_CarDoorOpenSound, car.GetPosition());
 				else
-					SEffectManager.PlaySound( car.m_CarDoorCloseSound, car.GetPosition());
+					sound = SEffectManager.PlaySound( car.m_CarDoorCloseSound, car.GetPosition());
+
+				sound.SetSoundAutodestroy( true );
 			}
 		}
 	}

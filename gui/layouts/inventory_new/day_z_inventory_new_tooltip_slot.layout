@@ -1,0 +1,52 @@
+PanelWidgetClass BackPanelWidget {
+ visible 1
+ clipchildren 0
+ ignorepointer 1
+ position 0 0
+ size 224.8 38.4201
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ priority 952
+ style blank
+ {
+  ImageWidgetClass HeaderWidget {
+   clipchildren 0
+   ignorepointer 1
+   color 0 0 0 0.9412
+   position 0 0
+   size 1 40
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 1
+   image0 "set:dayz_gui image:inv_header_3"
+   mode blend
+   "src alpha" 1
+   "no wrap" 1
+   stretch 1
+   {
+    TextWidgetClass ItemNameWidget {
+     clipchildren 0
+     ignorepointer 1
+     position 2.66667 3
+     size 1 34.3333
+     hexactpos 1
+     vexactpos 1
+     hexactsize 0
+     vexactsize 1
+     priority 1
+     style Normal
+     text " "
+     font "gui/fonts/sdf_MetronBook24"
+     "exact text" 1
+     "exact text size" 16
+     "size to text h" 0
+     "size to text v" 0
+     "text valign" center
+    }
+   }
+  }
+ }
+}

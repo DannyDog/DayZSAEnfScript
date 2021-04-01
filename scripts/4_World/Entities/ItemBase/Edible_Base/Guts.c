@@ -69,6 +69,6 @@ class Guts extends Edible_Base
 		super.SetActions();
 		
 		AddAction(ActionForceFeed);
-		AddAction(ActionEat);
+		AddAction(ActionEatBig);
 	}
 }

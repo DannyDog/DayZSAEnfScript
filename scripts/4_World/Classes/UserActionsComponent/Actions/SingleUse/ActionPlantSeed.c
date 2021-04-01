@@ -28,13 +28,22 @@ class ActionPlantSeed: ActionSingleUseBase
 	{
 		GardenBase targetObject = GardenBase.Cast( target.GetObject() );
 		
-		if( targetObject )
+		if ( targetObject && ( !targetObject.IsHologram() || !targetObject.IsBeingPlaced() ) )
 		{
-			string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
-			
-			if ( item != NULL && item.GetQuantity() > 0 && targetObject.CanPlantSeed( selection ) )
+			array<string> selections = new array<string>;
+			targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
+
+			for (int s = 0; s < selections.Count(); s++)
 			{
-				return true;
+				string selection = selections[s];
+				Slot slot = targetObject.GetSlotBySelection( selection );
+				if (slot)
+				{
+					if ( item != NULL && item.GetQuantity() > 0 && targetObject.CanPlantSeed( selection ) )
+					{
+						return true;
+					}
+				}
 			}
 		}
 		
@@ -54,13 +63,26 @@ class ActionPlantSeed: ActionSingleUseBase
 	void Process( ActionData action_data )
 	{
 		Object targetObject = action_data.m_Target.GetObject();
+		int slot_ID;
 		
 		if ( targetObject != NULL && targetObject.IsInherited(GardenBase) )
 		{
 			GardenBase garden_base = GardenBase.Cast( targetObject );
-			string selection = targetObject.GetActionComponentName(action_data.m_Target.GetComponentIndex());
-			Slot slot = garden_base.GetSlotBySelection( selection );
-			int slot_ID = slot.GetSlotId();
+			array<string> selections = new array<string>;
+			targetObject.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
+
+			for (int s = 0; s < selections.Count(); s++)
+			{
+				string selection = selections[s];
+				Slot slot = garden_base.GetSlotBySelection( selection );
+				if (slot)
+				{
+					slot_ID = slot.GetSlotId();
+					break;
+				}
+			}
+			
+			//int slot_ID = slot.GetSlotId();
 			
 			ItemBase seed_IB = ItemBase.Cast( action_data.m_MainItem );
 			

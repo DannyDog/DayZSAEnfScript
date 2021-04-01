@@ -39,8 +39,8 @@ class cfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.9,10,250,5,10};
 		WeaponLength = 0.6;
-		barrelArmor = 1.453;
-		initSpeedMultiplier = 1.265;
+		barrelArmor = 0.8;
+		initSpeedMultiplier = 1.0;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_Deagle_9rnd"};
@@ -58,8 +58,13 @@ class cfgWeapons
 			soundSetShot[] = {"DEG_Shot_SoundSet","DEG_Tail_SoundSet","DEG_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"DEG_silencerPro_SoundSet","DEG_silencerTail_SoundSet","DEG_silencerInteriorTail_SoundSet"}};
 			reloadTime = 0.18;
-			dispersion = 0.004;
+			dispersion = 0.003;
 			magazineSlot = "magazine";
+		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

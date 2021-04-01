@@ -65,7 +65,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_svd";
 			recoilProne = "recoil_svd_prone";
-			dispersion = 0.00075;
+			dispersion = 0.0005;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,200};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
@@ -179,6 +179,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

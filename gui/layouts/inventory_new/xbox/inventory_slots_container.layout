@@ -175,6 +175,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -235,6 +236,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected0 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot0 {
      visible 0
@@ -531,7 +546,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -540,7 +555,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -592,6 +607,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected1 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot1 {
      visible 0
@@ -885,7 +914,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -894,7 +923,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -946,6 +975,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected2 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot2 {
      visible 0
@@ -1239,7 +1282,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -1248,7 +1291,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -1300,6 +1343,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected3 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot3 {
      visible 0
@@ -1593,7 +1650,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -1602,7 +1659,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -1654,6 +1711,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected4 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot4 {
      visible 0
@@ -1947,7 +2018,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -1956,7 +2027,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -2008,6 +2079,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected5 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot5 {
      visible 0
@@ -2301,7 +2386,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
-         color 0 0.502 0.502 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -2310,7 +2395,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -2362,6 +2447,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected6 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot6 {
      visible 0
@@ -2655,6 +2754,7 @@ GridSpacerWidgetClass height_wrapper {
          visible 0
          clipchildren 1
          ignorepointer 1
+         color 0.95 0.95 0.95 1
          position 0 0
          size 0.7 0.7
          halign right_ref
@@ -2663,7 +2763,7 @@ GridSpacerWidgetClass height_wrapper {
          vexactpos 0
          hexactsize 0
          vexactsize 0
-         priority 4
+         priority 300
          draggable 0
          image0 "set:ccgui_enforce image:HudRepair"
          mode blend
@@ -2715,6 +2815,20 @@ GridSpacerWidgetClass height_wrapper {
        }
       }
      }
+    }
+	PanelWidgetClass EmptySelected7 {
+     visible 0
+     clipchildren 1
+     ignorepointer 1
+     position 0 0
+     size 1 1
+     hexactpos 0
+     vexactpos 0
+     hexactsize 0
+     vexactsize 0
+     draggable 0
+     style Outline
+     "no focus" 0
     }
     ImageWidgetClass GhostSlot7 {
      visible 0

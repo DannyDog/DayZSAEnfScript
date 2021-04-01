@@ -24,7 +24,6 @@ class ActionRepairWithToolFromHands: ActionSingleUseBase
 		{
 			ItemBase item_to_repair = ItemBase.Cast( targetObject );
 			bool can_repair = item_to_repair.CanRepair(item);
-			Print(can_repair);
 			return can_repair;
 		}
 		
@@ -39,7 +38,6 @@ class ActionRepairWithToolFromHands: ActionSingleUseBase
 			ItemBase item_to_repair = ItemBase.Cast( targetObject );
 			Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
 			bool was_repaired = item_to_repair.Repair(action_data.m_Player, action_data.m_MainItem, nacdata.param1);
-			Print(was_repaired);
 		}
 
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );

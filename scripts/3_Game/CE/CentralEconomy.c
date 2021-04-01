@@ -120,6 +120,8 @@ class CEApi
 	//! Outputs log file in csv format to %missionFolder%/%missionName%.%map%/%storage%/log
 	//	Inputs can be found in EconomyLogCategories
 	proto native void EconomyLog( string sLogType );
+	//! Outputs log file in tga format to %missionFolder%/%missionName%.%map%/%storage%/Imap
+	//Some useful prompt: "all:all", "all:loot", "all:vehicle", "all:infected", "all:animal", "all:player"
 	proto native void EconomyMap( string sMapType );
 	proto native void EconomyOutput( string sOutputType, float fRange );
 

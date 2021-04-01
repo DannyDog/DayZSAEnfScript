@@ -5,6 +5,6 @@ class Rice: Edible_Base
 		super.SetActions();
 		
 		AddAction(ActionForceFeed);
-		AddAction(ActionEat);
+		AddAction(ActionEatBig);
 	}
 };

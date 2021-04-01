@@ -192,6 +192,25 @@ class CfgVehicles
 			PlantType = "Plant_Zucchini";
 		};
 	};
+	class PotatoSeed: SeedBase
+	{
+		scope = 2;
+		displayName = "$STR_PotatoSeed0";
+		descriptionShort = "$STR_PotatoSeed1";
+		model = "\dz\gear\food\potato.p3d";
+		varQuantityInit = 1;
+		varQuantityMin = 0;
+		varQuantityMax = 1;
+		rotationFlags = 12;
+		weight = 0;
+		itemSize[] = {2,1};
+		stackedUnit = "g";
+		absorbency = 0.2;
+		class Horticulture
+		{
+			PlantType = "Plant_Potato";
+		};
+	};
 	class CannabisSeeds: SeedBase
 	{
 		scope = 2;
@@ -486,7 +505,7 @@ class CfgVehicles
 		inventorySlot[] = {"Plant"};
 		lootCategory = "Crafted";
 		itemSize[] = {3,2};
-		rotationFlags = 12;
+		rotationFlags = 34;
 		weight = 10;
 		spawnOffset = 0;
 		canBeSplit = 1;
@@ -508,7 +527,7 @@ class CfgVehicles
 		class Horticulture
 		{
 			TexId = 2;
-			AddEnergyToSlot = 0.25;
+			AddEnergyToSlot = 0.5;
 			ConsumedQuantity = 100.0;
 		};
 		class AnimEvents
@@ -700,7 +719,7 @@ class CfgVehicles
 		{
 			GrowthStagesCount = 6;
 			CropsCount = 3;
-			CropsType = "Potato";
+			CropsType = "PotatoSeed";
 		};
 	};
 	class Plant_Pumpkin: PlantBase
@@ -746,6 +765,191 @@ class CfgVehicles
 			CropsType = "Cannabis";
 		};
 	};
+	class GardenPlotGreenhouse: Inventory_Base
+	{
+		scope = 2;
+		model = "DZ\gear\cultivation\garden_plot_greenhouse.p3d";
+		storageCategory = 1;
+		useEntityHierarchy = "true";
+		slopeTolerance = 0.3;
+		alignHologramToTerain = 1;
+		yawPitchRollLimit[] = {10,10,10};
+		physLayer = "item_large";
+		attachments[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9"};
+		hiddenSelections[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","slotCovered_01","slotCovered_02","slotCovered_03","slotCovered_04","slotCovered_05","slotCovered_06","slotCovered_07","slotCovered_08","slotCovered_09"};
+		hiddenSelectionsTextures[] = {"dz\gear\cultivation\data\soil_cultivated_co.paa","dz\gear\cultivation\data\soil_cultivated_limed_CO.paa","dz\gear\cultivation\data\soil_cultivated_compost_CO.paa","","","","","","","","","","","","","","",""};
+		hiddenSelectionsMaterials[] = {"","","","","","","","","","","","","","","","","",""};
+		class AnimationSources
+		{
+			class slotVisible
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class slotHidden: slotVisible
+			{
+				initPhase = 1;
+			};
+			class SeedBase_1: slotVisible{};
+			class SeedBase_2: slotVisible{};
+			class SeedBase_3: slotVisible{};
+			class SeedBase_4: slotVisible{};
+			class SeedBase_5: slotVisible{};
+			class SeedBase_6: slotVisible{};
+			class SeedBase_7: slotVisible{};
+			class SeedBase_8: slotVisible{};
+			class SeedBase_9: slotVisible{};
+			class slotCovered_01: slotHidden{};
+			class slotCovered_02: slotHidden{};
+			class slotCovered_03: slotHidden{};
+			class slotCovered_04: slotHidden{};
+			class slotCovered_05: slotHidden{};
+			class slotCovered_06: slotHidden{};
+			class slotCovered_07: slotHidden{};
+			class slotCovered_08: slotHidden{};
+			class slotCovered_09: slotHidden{};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Filling
+			{
+				name = "$STR_attachment_Filling0";
+				description = "";
+				icon = "set:dayz_inventory image:cat_gp_filling";
+				attachmentSlots[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9"};
+			};
+		};
+	};
+	class GardenPlotPolytunnel: Inventory_Base
+	{
+		scope = 2;
+		model = "DZ\gear\cultivation\garden_plot_polytunnel.p3d";
+		storageCategory = 1;
+		useEntityHierarchy = "true";
+		slopeTolerance = 0.3;
+		alignHologramToTerain = 1;
+		yawPitchRollLimit[] = {10,10,10};
+		physLayer = "item_large";
+		attachments[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","SeedBase_10","SeedBase_11","SeedBase_12","SeedBase_13"};
+		hiddenSelections[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","SeedBase_10","SeedBase_11","SeedBase_12","SeedBase_13","slotCovered_01","slotCovered_02","slotCovered_03","slotCovered_04","slotCovered_05","slotCovered_06","slotCovered_07","slotCovered_08","slotCovered_09","slotCovered_10","slotCovered_11","slotCovered_12","slotCovered_13"};
+		hiddenSelectionsTextures[] = {"dz\gear\cultivation\data\soil_cultivated_co.paa","dz\gear\cultivation\data\soil_cultivated_limed_CO.paa","dz\gear\cultivation\data\soil_cultivated_compost_CO.paa","","","","","","","","","","","","","","","","","","","","","","",""};
+		hiddenSelectionsMaterials[] = {"","","","","","","","","","","","","","","","","","","","","","","","","",""};
+		class AnimationSources
+		{
+			class slotVisible
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class slotHidden: slotVisible
+			{
+				initPhase = 1;
+			};
+			class SeedBase_1: slotVisible{};
+			class SeedBase_2: slotVisible{};
+			class SeedBase_3: slotVisible{};
+			class SeedBase_4: slotVisible{};
+			class SeedBase_5: slotVisible{};
+			class SeedBase_6: slotVisible{};
+			class SeedBase_7: slotVisible{};
+			class SeedBase_8: slotVisible{};
+			class SeedBase_9: slotVisible{};
+			class SeedBase_10: slotVisible{};
+			class SeedBase_11: slotVisible{};
+			class SeedBase_12: slotVisible{};
+			class SeedBase_13: slotVisible{};
+			class slotCovered_01: slotHidden{};
+			class slotCovered_02: slotHidden{};
+			class slotCovered_03: slotHidden{};
+			class slotCovered_04: slotHidden{};
+			class slotCovered_05: slotHidden{};
+			class slotCovered_06: slotHidden{};
+			class slotCovered_07: slotHidden{};
+			class slotCovered_08: slotHidden{};
+			class slotCovered_09: slotHidden{};
+			class slotCovered_10: slotHidden{};
+			class slotCovered_11: slotHidden{};
+			class slotCovered_12: slotHidden{};
+			class slotCovered_13: slotHidden{};
+		};
+		class GUIInventoryAttachmentsProps
+		{
+			class Filling
+			{
+				name = "$STR_attachment_Filling0";
+				description = "";
+				icon = "set:dayz_inventory image:cat_gp_filling";
+				attachmentSlots[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","SeedBase_10","SeedBase_11","SeedBase_12","SeedBase_13"};
+			};
+		};
+	};
+	class GardenPlot: Inventory_Base
+	{
+		scope = 2;
+		model = "DZ\gear\cultivation\garden_plot_outside.p3d";
+		storageCategory = 1;
+		lootCategory = "Crafted";
+		useEntityHierarchy = "true";
+		slopeTolerance = 0.3;
+		alignHologramToTerain = 1;
+		yawPitchRollLimit[] = {10,10,10};
+		attachments[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9"};
+		physLayer = "item_large";
+		class GUIInventoryAttachmentsProps
+		{
+			class Filling
+			{
+				name = "$STR_attachment_Filling0";
+				description = "";
+				attachmentSlots[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9"};
+				icon = "set:dayz_inventory image:cat_gp_filling";
+			};
+		};
+		hiddenSelections[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","slotCovered_01","slotCovered_02","slotCovered_03","slotCovered_04","slotCovered_05","slotCovered_06","slotCovered_07","slotCovered_08","slotCovered_09","placing"};
+		hiddenSelectionsTextures[] = {"dz\gear\cultivation\data\soil_cultivated_co.paa","dz\gear\cultivation\data\soil_cultivated_limed_CO.paa","dz\gear\cultivation\data\soil_cultivated_compost_CO.paa","","","","","","","","","","","","","","","","dz\gear\cultivation\data\tile_co.paa"};
+		hiddenSelectionsMaterials[] = {"","","","","","","","","","","","","","","","","","","dz\gear\cultivation\data\tile.rvmat"};
+		hologramMaterial = "tile";
+		hologramMaterialPath = "dz\gear\cultivation\data";
+		class AnimationSources
+		{
+			class slotVisible
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+			class slotHidden: slotVisible
+			{
+				initPhase = 1;
+			};
+			class SeedBase_1: slotVisible{};
+			class SeedBase_2: slotVisible{};
+			class SeedBase_3: slotVisible{};
+			class SeedBase_4: slotVisible{};
+			class SeedBase_5: slotVisible{};
+			class SeedBase_6: slotVisible{};
+			class SeedBase_7: slotVisible{};
+			class SeedBase_8: slotVisible{};
+			class SeedBase_9: slotVisible{};
+			class slotCovered_01: slotHidden{};
+			class slotCovered_02: slotHidden{};
+			class slotCovered_03: slotHidden{};
+			class slotCovered_04: slotHidden{};
+			class slotCovered_05: slotHidden{};
+			class slotCovered_06: slotHidden{};
+			class slotCovered_07: slotHidden{};
+			class slotCovered_08: slotHidden{};
+			class slotCovered_09: slotHidden{};
+			class placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+		};
+	};
 };
 class CfgNonAIVehicles
 {
@@ -755,8 +959,10 @@ class CfgNonAIVehicles
 		scope = 2;
 		inventorySlot[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","SeedBase_10","SeedBase_11","SeedBase_12","SeedBase_13"};
 	};
-	class Proxytomato_seeds: HorticultureBaseProxies
+	class ProxyTomato_Seeds: ProxyAttachment
 	{
-		model = "\DZ\gear\cultivation\tomato_seeds.p3d";
+		model = "DZ\gear\cultivation\tomato_seeds.p3d";
+		scope = 2;
+		inventorySlot[] = {"SeedBase_1","SeedBase_2","SeedBase_3","SeedBase_4","SeedBase_5","SeedBase_6","SeedBase_7","SeedBase_8","SeedBase_9","SeedBase_10","SeedBase_11","SeedBase_12","SeedBase_13"};
 	};
 };

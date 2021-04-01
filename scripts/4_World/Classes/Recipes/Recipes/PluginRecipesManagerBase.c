@@ -16,7 +16,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CraftTorch);
 		RegisterRecipe(new CraftFireplace);
 		RegisterRecipe(new CraftLongTorch);
-		//RegisterRecipe(new SharpenStick);
+		RegisterRecipe(new SharpenBroom);
 		RegisterRecipe(new SharpenLongStick);
 		RegisterRecipe(new PokeHolesBarrel);
 		RegisterRecipe(new CraftBaseBallBatNailed);
@@ -51,6 +51,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new DeCraftImprovisedLeatherBag);
 		RegisterRecipe(new DeCraftLeatherSack);
 		RegisterRecipe(new SplitLongWoodenStick);
+		RegisterRecipe(new SplitBroom);
 		RegisterRecipe(new SplitFirewood);
 		RegisterRecipe(new CraftSplint); // craft splint
 		RegisterRecipe(new DeCraftSplint);
@@ -63,6 +64,7 @@ class PluginRecipesManagerBase extends PluginBase
 		RegisterRecipe(new CutOutPepperSeeds);
 		RegisterRecipe(new CutOutPumpkinSeeds);
 		RegisterRecipe(new CutOutTomatoSeeds);
+		RegisterRecipe(new PeelPotato);
 		RegisterRecipe(new PrepareCarp);
 		RegisterRecipe(new PrepareMackerel);
 		RegisterRecipe(new OpenCan);

@@ -53,7 +53,7 @@ class Grenade_Base extends InventoryItemSuper
 
 	void Pin()
 	{
-		if( !m_Pinned && m_Pinnable )
+		if ( !m_Pinned && m_Pinnable )
 		{
 			OnPin();
 		}
@@ -61,7 +61,7 @@ class Grenade_Base extends InventoryItemSuper
 	
 	void Unpin()
 	{
-		if( m_Pinned )
+		if ( m_Pinned )
 		{
 			OnUnpin();
 		}
@@ -117,7 +117,7 @@ class Grenade_Base extends InventoryItemSuper
 	{
 		m_ParticlePosition = local_pos;
 
-		if( GetHierarchyParent() )
+		if ( GetHierarchyParent() )
 		{
 			m_ParticlePosition = GetHierarchyParent().WorldToModel(GetPosition());
 		}
@@ -159,18 +159,18 @@ class Grenade_Base extends InventoryItemSuper
 	
 	protected void ExplodeGrenade(EGrenadeType grenade_type)
 	{
-		switch( grenade_type )
+		switch ( grenade_type )
 		{
-		case EGrenadeType.FRAGMENTATION:
-			Explode(DT_EXPLOSION, m_AmmoType);
-		break;
-		case EGrenadeType.CHEMICAL:
-		break;
-		case EGrenadeType.ILLUMINATING:
-			Explode(DT_EXPLOSION, m_AmmoType);
-		break;
-		case EGrenadeType.NON_LETHAL:
-		break;
+			case EGrenadeType.FRAGMENTATION:
+				Explode(DT_EXPLOSION, m_AmmoType);
+			break;
+			case EGrenadeType.CHEMICAL:
+			break;
+			case EGrenadeType.ILLUMINATING:
+				Explode(DT_EXPLOSION, m_AmmoType);
+			break;
+			case EGrenadeType.NON_LETHAL:
+			break;
 		}
 		
 		OnExplode();
@@ -179,7 +179,7 @@ class Grenade_Base extends InventoryItemSuper
 	protected void OnPin()
 	{
 		m_Pinned = true;
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetSynchDirty();
 		}
@@ -189,7 +189,7 @@ class Grenade_Base extends InventoryItemSuper
 	protected void OnUnpin()
 	{
 		m_Pinned = false;
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetSynchDirty();
 		}
@@ -199,7 +199,7 @@ class Grenade_Base extends InventoryItemSuper
 	protected void OnActivateStarted() {}
 	protected void OnActivateFinished()
 	{
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetHealth("", "", 0.0); // causes explosion when grenade is destroyed
 			SetTakeable(false);
@@ -208,7 +208,7 @@ class Grenade_Base extends InventoryItemSuper
 	
 	protected void OnActivateImmediate()
 	{
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetHealth("", "", 0.0); // causes explosion when grenade is destroyed
 			SetTakeable(false);
@@ -218,7 +218,7 @@ class Grenade_Base extends InventoryItemSuper
 	protected void OnDeactivate() {}
 	protected void OnExplode()
 	{
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetHealth("", "", 0.0);
 			m_DeleteTimer.Run(10, this, "DeleteSave");
@@ -245,7 +245,7 @@ class Grenade_Base extends InventoryItemSuper
 	{
 		super.OnStoreSave(ctx);
 		
-		if( GetGame().SaveVersion() >= 107 )
+		if ( GetGame().SaveVersion() >= 107 )
 		{
 			ctx.Write( m_Pinned );
 		}
@@ -257,9 +257,9 @@ class Grenade_Base extends InventoryItemSuper
 			return false;
 		
 		bool pinned;
-		if( version >= 107 )
+		if ( version >= 107 )
 		{
-			if( !ctx.Read(pinned) )
+			if ( !ctx.Read(pinned) )
 			{
 				return false;
 			}
@@ -274,10 +274,10 @@ class Grenade_Base extends InventoryItemSuper
 	{
 		super.OnExplosionEffects(source, directHit, componentIndex, surface, pos, surfNormal, energyFactor, explosionFactor, isWater, ammoType);
 
-		if( m_ParticleExplosionId > ParticleList.INVALID )
+		if ( m_ParticleExplosionId > ParticleList.INVALID )
 		{
 			EntityAI parent = this;
-			if( GetHierarchyParent() )
+			if ( GetHierarchyParent() )
 			{
 				parent = GetHierarchyParent();
 			}

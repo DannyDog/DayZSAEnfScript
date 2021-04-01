@@ -66,7 +66,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_AKM";
 			recoilProne = "recoil_AKM_prone";
-			dispersion = 0.0015;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,200};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
@@ -83,11 +83,16 @@ class cfgWeapons
 			reloadTime = 0.1;
 			recoil = "recoil_AKM";
 			recoilProne = "recoil_AKM_prone";
-			dispersion = 0.0015;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,200};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
 			soundBeginExt[] = {{"beginSilenced_Pro",1},{"beginSilenced_HomeMade",1}};
+		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

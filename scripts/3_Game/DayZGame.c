@@ -377,7 +377,7 @@ class LoadingScreen
 		m_LastProgressUpdate = m_DayZGame.GetTickTime();
 		
 		m_Counter++;
-Print("Loading Inc: "+ m_Counter);
+		//Print("Loading Inc: "+ m_Counter);
 		if ( m_Counter == 1 )
 		{
 			Show();
@@ -1357,6 +1357,10 @@ class DayZGame extends CGame
 		{
 			mission.OnEvent(eventTypeId, params);
 		}
+		
+		ErrorModuleHandler emh = ErrorModuleHandler.GetInstance();
+		if (emh)
+			emh.OnEvent(eventTypeId, params);
 	}
 	
 	// ------------------------------------------------------------	
@@ -2093,9 +2097,9 @@ class DayZGame extends CGame
 	
 	void TryConnect()
 	{
-		if( GetGameState() != DayZGameState.CONNECTING )
+		if ( GetGameState() != DayZGameState.CONNECTING )
 		{
-			switch( GetLoadState() )
+			switch ( GetLoadState() )
 			{
 				case DayZLoadState.JOIN_CONTROLLER_SELECT:
 				{
@@ -2121,6 +2125,24 @@ class DayZGame extends CGame
 					Connect();
 					break;
 				}
+			}
+		}
+		else
+		{
+			string address;
+			int port;
+			if (GetHostAddress(address, port))
+			{
+				if (m_ConnectAddress == address && m_ConnectPort == port)
+					ErrorModuleHandler.ThrowError(ErrorCategory.ConnectErrorScript, EConnectErrorScript.ALREADY_CONNECTING_THIS);
+				else
+					ErrorModuleHandler.ThrowError(ErrorCategory.ConnectErrorScript, EConnectErrorScript.ALREADY_CONNECTING, string.Format("%1:%2", address, port));
+			}
+			else	
+			{
+				DisconnectSessionForce();
+				DisconnectSessionScript();
+				TryConnect();
 			}
 		}
 	}
@@ -2180,7 +2202,7 @@ class DayZGame extends CGame
 	{
 		OnlineServices.GetCurrentServerInfo( m_ConnectAddress, m_ConnectPort );
 	}
-	
+
 	void Connect()
 	{
 		SetConnecting(true);
@@ -2188,43 +2210,44 @@ class DayZGame extends CGame
 		DeleteTitleScreen();
 		string addr;
 		int port;
-		if( GetHostAddress( addr, port ) )
+		if ( GetHostAddress( addr, port ) )
 		{
-			if( m_ConnectAddress == addr && m_ConnectPort == port )
+			if ( m_ConnectAddress == addr && m_ConnectPort == port )
 				return;
 		}
-		
-		int res = Connect( GetUIManager().GetMenu(), m_ConnectAddress, m_ConnectPort, m_ConnectPassword );
-		if( !res )
+
+		if ( Connect( GetUIManager().GetMenu(), m_ConnectAddress, m_ConnectPort, m_ConnectPassword ) != 0 )
+			DisconnectSessionScript(true);
+	}
+	
+	void DisconnectSessionScript(bool displayJoinError = false)
+	{
+		if ( OnlineServices.GetBiosUser() )
+			GetGame().GetUserManager().SelectUser( OnlineServices.GetBiosUser() );
+			
+		if ( g_Game.GetGameState() != DayZGameState.IN_GAME )
 		{
-			if( OnlineServices.GetBiosUser() )
-				GetGame().GetUserManager().SelectUser( OnlineServices.GetBiosUser() );
-			if( g_Game.GetGameState() != DayZGameState.IN_GAME )
+			if ( GetGame().GetMission() )
 			{
-				if( GetGame().GetMission() )
+				if ( g_Game.GetGameState() != DayZGameState.MAIN_MENU )
 				{
-					if( g_Game.GetGameState() != DayZGameState.MAIN_MENU )
-					{
-					//	GetGame().GetUIManager().CloseAllSubmenus();
-						GetGame().GetMission().AbortMission();
-						if (g_Game.GetGameState() == DayZGameState.JOIN)
-							NotificationSystem.AddNotification(NotificationType.JOIN_FAIL_GET_SESSION, 6);
-						g_Game.SetGameState( DayZGameState.MAIN_MENU );
-						g_Game.SetLoadState( DayZLoadState.MAIN_MENU_CONTROLLER_SELECT );
+				//	GetGame().GetUIManager().CloseAllSubmenus();
+					GetGame().GetMission().AbortMission();
+						
+					if ( displayJoinError && g_Game.GetGameState() == DayZGameState.JOIN )
+						NotificationSystem.AddNotification( NotificationType.JOIN_FAIL_GET_SESSION, 6 );
+						
+					g_Game.SetGameState( DayZGameState.MAIN_MENU );
+					g_Game.SetLoadState( DayZLoadState.MAIN_MENU_CONTROLLER_SELECT );
 					
-						g_Game.GamepadCheck();
-						return;
-					}
-				}
-				else
-				{
-					g_Game.MainMenuLaunch();
+					g_Game.GamepadCheck();
+					return;
 				}
 			}
-			if( g_Game.GetGameState() == DayZGameState.JOIN )
-				NotificationSystem.AddNotification( NotificationType.JOIN_FAIL_GET_SESSION, 6 );
 			else
-				NotificationSystem.AddNotification( NotificationType.CONNECT_FAIL_GENERIC, 6 );
+			{
+				g_Game.MainMenuLaunch();
+			}
 		}
 	}
 	
@@ -2248,7 +2271,7 @@ class DayZGame extends CGame
 	void ConnectFromCLI()
 	{
 		string port;
-		if( GetCLIParam("connect", m_ConnectAddress) )
+		if ( GetCLIParam("connect", m_ConnectAddress) )
 		{
 			GetCLIParam("port", port);
 			m_ConnectPort = port.ToInt();

@@ -56,7 +56,7 @@ class ActionTakeItemToHands: ActionInteractBase
 			return;
 	
 		ItemBase ntarget = ItemBase.Cast(action_data.m_Target.GetObject());
-		ClearInventoryReservation(action_data);
+		ClearInventoryReservationEx(action_data);
 		
 		float stackable = ntarget.GetTargetQuantityMax(-1);
 		

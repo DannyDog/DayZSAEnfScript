@@ -47,7 +47,7 @@ class Magazine : InventoryItemSuper
 		InitReliability(m_ChanceToJam);
 		m_ManipulationDamage = ConfigGetFloat("manipulationDamage");
 		m_CompatiableAmmo = new array<string>;
-		ConfigGetTextArray ("ammoItems", m_CompatiableAmmo);
+		ConfigGetTextArray("ammoItems", m_CompatiableAmmo);
 		if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 		{
 			if ( !m_AmmoData )
@@ -156,7 +156,7 @@ class Magazine : InventoryItemSuper
 	//! returns max rounds for this mag (returns "count" config value)
 	int GetAmmoMax()
 	{
-		return ConfigGetInt("count");
+		return m_Count;
 	}
 	//! set max rounds for this mag
 	void ServerSetAmmoMax()

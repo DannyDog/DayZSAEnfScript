@@ -15,2394 +15,2394 @@ class CfgSlots
 	class Slot_Head
 	{
 		name = "Head";
-		displayName = "Head";
+		displayName = "";
 		ghostIcon = "";
 		show = "false";
 	};
 	class Slot_Shoulder
 	{
 		name = "Shoulder";
-		displayName = "Shoulder";
-		ghostIcon = "shoulderleft";
+		displayName = "$STR_CfgShoulder0";
+		ghostIcon = "set:dayz_inventory image:shoulderleft";
 	};
 	class Slot_Melee
 	{
 		name = "Melee";
-		displayName = "Melee";
-		ghostIcon = "shoulderright";
+		displayName = "$STR_CfgShoulder0";
+		ghostIcon = "set:dayz_inventory image:shoulderright";
 	};
 	class Slot_Bow
 	{
 		name = "Bow";
-		displayName = "Bow";
-		ghostIcon = "bow";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:bow";
 	};
 	class Slot_Headgear
 	{
 		name = "Headgear";
-		displayName = "Headgear";
-		ghostIcon = "headgear";
+		displayName = "$STR_CfgHeadgear0";
+		ghostIcon = "set:dayz_inventory image:headgear";
 		boneName = "Head";
 	};
 	class Slot_Mask
 	{
 		name = "Mask";
-		displayName = "Mask";
-		ghostIcon = "mask";
+		displayName = "$STR_CfgMask0";
+		ghostIcon = "set:dayz_inventory image:mask";
 	};
 	class Slot_Eyewear
 	{
 		name = "Eyewear";
-		displayName = "Eyewear";
-		ghostIcon = "eyewear";
+		displayName = "$STR_CfgEyewear0";
+		ghostIcon = "set:dayz_inventory image:eyewear";
 	};
 	class Slot_Hands
 	{
 		name = "Hands";
-		displayName = "Hands";
-		ghostIcon = "hands";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:hands";
 		boneName = "RightHand";
 	};
 	class Slot_LeftHand
 	{
 		name = "LeftHand";
-		displayName = "LH";
-		ghostIcon = "hands";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:hands";
 		boneName = "LeftHand";
 		show = "false";
 	};
 	class Slot_Gloves
 	{
 		name = "Gloves";
-		displayName = "Gloves";
-		ghostIcon = "gloves";
+		displayName = "$STR_CfgGloves0";
+		ghostIcon = "set:dayz_inventory image:gloves";
 	};
 	class Slot_Armband
 	{
 		name = "Armband";
-		displayName = "Armband";
-		ghostIcon = "armband";
+		displayName = "$STR_CfgArmband0";
+		ghostIcon = "set:dayz_inventory image:armband";
 	};
 	class Slot_Vest
 	{
 		name = "Vest";
-		displayName = "Vest";
-		ghostIcon = "vest";
+		displayName = "$STR_CfgVest0";
+		ghostIcon = "set:dayz_inventory image:vest";
 	};
 	class Slot_Body
 	{
 		name = "Body";
-		displayName = "Body";
-		ghostIcon = "body";
+		displayName = "$STR_CfgBody0";
+		ghostIcon = "set:dayz_inventory image:body";
 	};
 	class Slot_Back
 	{
 		name = "Back";
-		displayName = "Back";
-		ghostIcon = "back";
+		displayName = "$STR_CfgBack0";
+		ghostIcon = "set:dayz_inventory image:back";
 	};
 	class Slot_Hips
 	{
 		name = "Hips";
-		displayName = "Hips";
-		ghostIcon = "hips";
+		displayName = "$STR_CfgHips0";
+		ghostIcon = "set:dayz_inventory image:hips";
 	};
 	class Slot_Legs
 	{
 		name = "Legs";
-		displayName = "Legs";
-		ghostIcon = "legs";
+		displayName = "$STR_CfgLegs0";
+		ghostIcon = "set:dayz_inventory image:legs";
 	};
 	class Slot_Feet
 	{
 		name = "Feet";
-		displayName = "Feet";
-		ghostIcon = "feet";
+		displayName = "$STR_CfgFeet0";
+		ghostIcon = "set:dayz_inventory image:feet";
 	};
 	class Slot_Pistol
 	{
 		name = "Pistol";
-		displayName = "Pistol";
-		ghostIcon = "pistol";
+		displayName = "$STR_CfgPistol0";
+		ghostIcon = "set:dayz_inventory image:pistol";
 	};
 	class Slot_Knife
 	{
 		name = "Knife";
-		displayName = "Knife";
-		ghostIcon = "knife";
+		displayName = "$STR_CfgKnife0";
+		ghostIcon = "set:dayz_inventory image:knife";
 	};
 	class Slot_magazine
 	{
 		name = "magazine";
-		displayName = "magazine";
-		ghostIcon = "magazine";
+		displayName = "$STR_CfgMagazine0";
+		ghostIcon = "set:dayz_inventory image:magazine";
 		autoAttach = "false";
 	};
 	class Slot_magazine2
 	{
 		name = "magazine2";
-		displayName = "magazine2";
-		ghostIcon = "magazine2";
+		displayName = "$STR_CfgMagazine0";
+		ghostIcon = "set:dayz_inventory image:magazine2";
 		autoAttach = "false";
 	};
 	class Slot_magazine3
 	{
 		name = "magazine3";
-		displayName = "magazine3";
-		ghostIcon = "magazine3";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:magazine3";
 		autoAttach = "false";
 	};
 	class Slot_Driver
 	{
 		name = "Driver";
-		displayName = "Driver";
-		ghostIcon = "doors";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:doors";
 	};
 	class Slot_Cargo
 	{
 		name = "Cargo";
-		displayName = "Cargo";
-		ghostIcon = "missing";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:missing";
 	};
 	class Slot_Muzzle1
 	{
 		name = "Muzzle1";
-		displayName = "Muzzle1";
-		ghostIcon = "muzzle";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:muzzle";
 	};
 	class Slot_Muzzle2
 	{
 		name = "Muzzle2";
-		displayName = "Muzzle2";
-		ghostIcon = "muzzle";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:muzzle";
 	};
 	class Slot_Muzzle3
 	{
 		name = "Muzzle3";
-		displayName = "Muzzle3";
-		ghostIcon = "muzzle";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:muzzle";
 	};
 	class Slot_VestHolster
 	{
 		name = "VestHolster";
-		displayName = "VestHolster";
-		ghostIcon = "vestholster";
+		displayName = "$STR_CfgBelt_Right0";
+		ghostIcon = "set:dayz_inventory image:vestholster";
 	};
 	class Slot_VestPouch
 	{
 		name = "VestPouch";
-		displayName = "VestPouch";
-		ghostIcon = "vestpouches";
+		displayName = "$STR_CfgVestPouch0";
+		ghostIcon = "set:dayz_inventory image:vestpouches";
 	};
 	class Slot_VestBackpack
 	{
 		name = "VestBackpack";
-		displayName = "VestBackpack";
-		ghostIcon = "back";
+		displayName = "$STR_CfgVestBackpack0";
+		ghostIcon = "set:dayz_inventory image:back";
 	};
 	class Slot_pistolFlashlight
 	{
 		name = "pistolFlashlight";
-		displayName = "pistolFlashlight";
-		ghostIcon = "weaponflashlight";
+		displayName = "$STR_CfgFlashlight0";
+		ghostIcon = "set:dayz_inventory image:weaponflashlight";
 	};
 	class Slot_pistolMuzzle
 	{
 		name = "pistolMuzzle";
-		displayName = "pistolMuzzle";
-		ghostIcon = "supressor";
+		displayName = "$STR_CfgSuppressor0";
+		ghostIcon = "set:dayz_inventory image:supressor";
 	};
 	class Slot_pistolOptics
 	{
 		name = "pistolOptics";
-		displayName = "pistolOptics";
-		ghostIcon = "weaponopticssmall";
+		displayName = "$STR_CfgPistolOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponopticssmall";
 	};
 	class Slot_weaponBayonet
 	{
 		name = "weaponBayonet";
-		displayName = "weaponBayonet";
-		ghostIcon = "bayonet";
+		displayName = "$STR_CfgBayonet0";
+		ghostIcon = "set:dayz_inventory image:bayonet";
 	};
 	class Slot_weaponBayonetAK
 	{
 		name = "weaponBayonetAK";
-		displayName = "weaponBayonetAK";
-		ghostIcon = "bayonet";
+		displayName = "$STR_CfgBayonet0";
+		ghostIcon = "set:dayz_inventory image:bayonet";
 	};
 	class Slot_weaponBayonetMosin
 	{
 		name = "weaponBayonetMosin";
-		displayName = "weaponBayonetMosin";
-		ghostIcon = "bayonet";
+		displayName = "$STR_CfgBayonet0";
+		ghostIcon = "set:dayz_inventory image:bayonet";
 	};
 	class Slot_weaponBayonetSKS
 	{
 		name = "weaponBayonetSKS";
-		displayName = "weaponBayonetSKS";
-		ghostIcon = "bayonet";
+		displayName = "$STR_CfgBayonet0";
+		ghostIcon = "set:dayz_inventory image:bayonet";
 	};
 	class Slot_weaponButtstockAK
 	{
 		name = "weaponButtstockAK";
-		displayName = "weaponButtstockAK";
-		ghostIcon = "buttstock";
+		displayName = "$STR_CfgButtstock0";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponButtstockFal
 	{
 		name = "weaponButtstockFal";
-		displayName = "weaponButtstockFal";
-		ghostIcon = "buttstock";
+		displayName = "$STR_CfgButtstock0";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponButtstockM4
 	{
 		name = "weaponButtstockM4";
-		displayName = "weaponButtstockM4";
-		ghostIcon = "buttstock";
+		displayName = "$STR_CfgButtstock0";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponButtstockMP5
 	{
 		name = "weaponButtstockMP5";
-		displayName = "weaponButtstockMP5";
-		ghostIcon = "buttstock";
+		displayName = "$STR_CfgButtstock0";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponButtstockRed9
 	{
 		name = "weaponButtstockRed9";
-		displayName = "weaponButtstockRed9";
-		ghostIcon = "buttstock";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponButtstockSaiga
 	{
 		name = "weaponButtstockSaiga";
-		displayName = "weaponButtstockSaiga";
-		ghostIcon = "buttstock";
+		displayName = "$STR_CfgButtstock0";
+		ghostIcon = "set:dayz_inventory image:buttstock";
 	};
 	class Slot_weaponHandguardAK
 	{
 		name = "weaponHandguardAK";
-		displayName = "weaponHandguardAK";
-		ghostIcon = "handguard";
+		displayName = "$STR_CfgHandguard0";
+		ghostIcon = "set:dayz_inventory image:handguard";
 	};
 	class Slot_weaponHandguardM4
 	{
 		name = "weaponHandguardM4";
-		displayName = "weaponHandguardM4";
-		ghostIcon = "handguard";
+		displayName = "$STR_CfgHandguard0";
+		ghostIcon = "set:dayz_inventory image:handguard";
 	};
 	class Slot_weaponHandguardMP5
 	{
 		name = "weaponHandguardMP5";
-		displayName = "weaponHandguardMP5";
-		ghostIcon = "handguard";
+		displayName = "$STR_CfgHandguard0";
+		ghostIcon = "set:dayz_inventory image:handguard";
 	};
 	class Slot_weaponHandguardM249
 	{
 		name = "weaponHandguardM249";
-		displayName = "weaponHandguardM249";
-		ghostIcon = "handguard";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:handguard";
 	};
 	class Slot_weaponMuzzle
 	{
 		name = "weaponMuzzle";
-		displayName = "weaponMuzzle";
-		ghostIcon = "weaponmuzzle";
+		displayName = "$STR_CfgMuzzle0";
+		ghostIcon = "set:dayz_inventory image:weaponmuzzle";
 	};
 	class Slot_weaponMuzzleAK
 	{
 		name = "weaponMuzzleAK";
-		displayName = "weaponMuzzleAK";
-		ghostIcon = "supressor";
+		displayName = "$STR_CfgSuppressor0";
+		ghostIcon = "set:dayz_inventory image:supressor";
 	};
 	class Slot_weaponMuzzleM4
 	{
 		name = "weaponMuzzleM4";
-		displayName = "weaponMuzzleM4";
-		ghostIcon = "supressor";
+		displayName = "$STR_CfgSuppressor0";
+		ghostIcon = "set:dayz_inventory image:supressor";
 	};
 	class Slot_weaponMuzzleMP5
 	{
 		name = "weaponMuzzleMP5";
-		displayName = "weaponMuzzleMP5";
-		ghostIcon = "weaponmuzzle";
+		displayName = "$STR_CfgMuzzle0";
+		ghostIcon = "set:dayz_inventory image:weaponmuzzle";
 	};
 	class Slot_weaponMuzzleMosin
 	{
 		name = "weaponMuzzleMosin";
-		displayName = "weaponMuzzleMosin";
-		ghostIcon = "weaponmuzzle";
+		displayName = "$STR_CfgMuzzle0";
+		ghostIcon = "set:dayz_inventory image:weaponmuzzle";
 	};
 	class Slot_weaponUnderSlugM4
 	{
 		name = "weaponUnderSlugM4";
-		displayName = "weaponUnderSlugM4";
-		ghostIcon = "weaponunderslungm4";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:weaponunderslungm4";
 	};
 	class Slot_weaponUnderSlugAK
 	{
 		name = "weaponUnderSlugAK";
-		displayName = "weaponUnderSlugAK";
-		ghostIcon = "weaponunderslungak";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:weaponunderslungak";
 	};
 	class Slot_weaponBarrelAug
 	{
 		name = "weaponBarrelAug";
-		displayName = "weaponBarrelAug";
-		ghostIcon = "weaponmuzzle";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:weaponmuzzle";
 	};
 	class Slot_weaponOptics
 	{
 		name = "weaponOptics";
-		displayName = "weaponOptics";
-		ghostIcon = "weaponoptics";
+		displayName = "$STR_CfgWeaponOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponOpticsAcog
 	{
 		name = "weaponOpticsAcog";
-		displayName = "optic_acog";
-		ghostIcon = "weaponoptics";
+		displayName = "$STR_CfgWeaponOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponOpticsAK
 	{
 		name = "weaponOpticsAK";
-		displayName = "weaponOpticsAK";
-		ghostIcon = "weaponoptics";
+		displayName = "$STR_CfgWeaponOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponOpticsCrossbow
 	{
 		name = "weaponOpticsCrossbow";
-		displayName = "weaponOpticsCrossbow";
-		ghostIcon = "weaponopticssmall";
+		displayName = "$STR_CfgPistolOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponopticssmall";
 	};
 	class Slot_weaponOpticsHunting
 	{
 		name = "weaponOpticsHunting";
-		displayName = "weaponOpticsHunting";
-		ghostIcon = "weaponoptics";
+		displayName = "$STR_CfgWeaponOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponOpticsLRS
 	{
 		name = "weaponOpticsLRS";
-		displayName = "weaponOpticsLRS";
-		ghostIcon = "weaponoptics";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponOpticsMosin
 	{
 		name = "weaponOpticsMosin";
-		displayName = "weaponOpticsMosin";
-		ghostIcon = "weaponoptics";
+		displayName = "$STR_CfgWeaponOptics0";
+		ghostIcon = "set:dayz_inventory image:weaponoptics";
 	};
 	class Slot_weaponBipod
 	{
 		name = "weaponBipod";
-		displayName = "weaponBipod";
-		ghostIcon = "bipod";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:bipod";
 	};
 	class Slot_weaponBipodM249
 	{
 		name = "Slot_weaponBipodM249";
-		displayName = "Slot_weaponBipodM249";
-		ghostIcon = "bipod";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:bipod";
 	};
 	class Slot_weaponFlashlight
 	{
 		name = "weaponFlashlight";
-		displayName = "weaponFlashlight";
-		ghostIcon = "weaponflashlight";
+		displayName = "$STR_CfgFlashlight0";
+		ghostIcon = "set:dayz_inventory image:weaponflashlight";
 	};
 	class Slot_suppressorImpro
 	{
 		name = "suppressorImpro";
-		displayName = "Suppressor";
-		ghostIcon = "supressor";
+		displayName = "$STR_CfgSuppressor0";
+		ghostIcon = "set:dayz_inventory image:supressor";
 	};
 	class Slot_weaponWrap
 	{
 		name = "weaponWrap";
-		displayName = "weaponWrap";
-		ghostIcon = "weaponwrap";
+		displayName = "$STR_CfgWeaponWrap0";
+		ghostIcon = "set:dayz_inventory image:weaponwrap";
 	};
 	class Slot_magazineFakeWeapon
 	{
 		name = "magazineFakeWeapon";
-		displayName = "magazineFakeWeapon";
-		ghostIcon = "magazinefakeweapon";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:magazinefakeweapon";
 		autoAttach = "false";
 	};
 	class Slot_tripWireAttachment
 	{
 		name = "tripWireAttachment";
-		displayName = "tripWireAttachment";
-		ghostIcon = "tripwireattachment";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:tripwireattachment";
 	};
 	class Slot_BatteryD
 	{
 		name = "BatteryD";
-		displayName = "BatteryD";
-		ghostIcon = "batteryd";
+		displayName = "$STR_CfgBatteryD0";
+		ghostIcon = "set:dayz_inventory image:batteryd";
 	};
 	class Slot_MetalWire
 	{
 		name = "MetalWire";
-		displayName = "MetalWire";
-		ghostIcon = "metalwire";
+		displayName = "$STR_CfgMetalWire0";
+		ghostIcon = "set:dayz_inventory image:metalwire";
 	};
 	class Slot_Book
 	{
 		name = "Book";
-		displayName = "Book";
-		ghostIcon = "book";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:book";
 		stackMax = 1;
 	};
 	class Slot_ButaneTorchCanister
 	{
 		name = "ButaneTorchCanister";
-		displayName = "ButaneTorchCanister";
-		ghostIcon = "gascanister";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:gascanister";
 	};
 	class Slot_CableReel
 	{
 		name = "CableReel";
-		displayName = "CableReel";
-		ghostIcon = "cablereel";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:cablereel";
 	};
 	class Slot_CamoNet
 	{
 		name = "CamoNet";
-		displayName = "CamoNet";
-		ghostIcon = "camonet";
+		displayName = "$STR_CfgCamoNet0";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_CookingBase
 	{
 		name = "CookingBase";
-		displayName = "CookingBase";
-		ghostIcon = "cookingbase";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:cookingbase";
 	};
 	class Slot_CookingEquipment
 	{
 		name = "CookingEquipment";
-		displayName = "CookingEquipment";
-		ghostIcon = "cookingequipment";
+		displayName = "$STR_CfgCookingEquipment0";
+		ghostIcon = "set:dayz_inventory image:cookingequipment";
 	};
 	class Slot_CookingTripod
 	{
 		name = "CookingTripod";
-		displayName = "CookingTripod";
-		ghostIcon = "cookingtripod";
+		displayName = "$STR_CfgCookingTripod0";
+		ghostIcon = "set:dayz_inventory image:cookingtripod";
 	};
 	class Slot_DBHelmetMouth
 	{
 		name = "DBHelmetMouth";
-		displayName = "DBHelmetMouth";
-		ghostIcon = "dbhelmetmouth";
+		displayName = "$STR_CfgDBHelmetMouth0";
+		ghostIcon = "set:dayz_inventory image:dbhelmetmouth";
 	};
 	class Slot_DBHelmetVisor
 	{
 		name = "DBHelmetVisor";
-		displayName = "DBHelmetVisor";
-		ghostIcon = "dbhelmetvisor";
+		displayName = "$STR_CfgDBHelmetVisor0";
+		ghostIcon = "set:dayz_inventory image:dbhelmetvisor";
 	};
 	class Slot_Firewood
 	{
 		name = "Firewood";
-		displayName = "Firewood";
-		ghostIcon = "firewood";
+		displayName = "$STR_CfgFirewood0";
+		ghostIcon = "set:dayz_inventory image:firewood";
 		stackMax = 6;
 	};
 	class Slot_GasCanister
 	{
 		name = "GasCanister";
-		displayName = "GasCanister";
-		ghostIcon = "gascanister";
+		displayName = "$STR_CfgGasCanister0";
+		ghostIcon = "set:dayz_inventory image:gascanister";
 	};
 	class Slot_Glass
 	{
 		name = "Glass";
-		displayName = "Glass";
-		ghostIcon = "gorkavisor";
+		displayName = "$STR_CfgGlass0";
+		ghostIcon = "set:dayz_inventory image:gorkavisor";
 	};
 	class Slot_Hook
 	{
 		name = "Hook";
-		displayName = "Hook";
-		ghostIcon = "hook";
+		displayName = "$STR_CfgHook0";
+		ghostIcon = "set:dayz_inventory image:hook";
 	};
 	class Slot_Ingredient
 	{
 		name = "Ingredient";
-		displayName = "Ingredient";
-		ghostIcon = "food";
+		displayName = "$STR_CfgFood0";
+		ghostIcon = "set:dayz_inventory image:food";
 	};
 	class Slot_Lights
 	{
 		name = "Lights";
-		displayName = "Lights";
-		ghostIcon = "cat_christmaslights";
+		displayName = "$STR_CfgXmasLights0";
+		ghostIcon = "set:dayz_inventory image:cat_christmaslights";
 	};
 	class Slot_MedicalBandage
 	{
 		name = "MedicalBandage";
-		displayName = "MedicalBandage";
-		ghostIcon = "medicalbandage";
+		displayName = "$STR_CfgMedicalBandage0";
+		ghostIcon = "set:dayz_inventory image:medicalbandage";
 	};
 	class Slot_Paper
 	{
 		name = "Paper";
-		displayName = "Paper";
-		ghostIcon = "paper";
+		displayName = "$STR_CfgPaper0";
+		ghostIcon = "set:dayz_inventory image:paper";
 	};
 	class Slot_Rags
 	{
 		name = "Rags";
-		displayName = "Rags";
-		ghostIcon = "rags";
+		displayName = "$STR_CfgRags0";
+		ghostIcon = "set:dayz_inventory image:rags";
 		stackMax = 6;
 	};
 	class Slot_Stones
 	{
 		name = "Stones";
-		displayName = "Stones";
-		ghostIcon = "stones";
+		displayName = "$STR_CfgStones0";
+		ghostIcon = "set:dayz_inventory image:stones";
 		stackMax = 16;
 	};
 	class Slot_WoodenStick
 	{
 		name = "WoodenStick";
-		displayName = "WoodenStick";
-		ghostIcon = "woodenstick";
+		displayName = "$STR_CfgWoodenStick0";
+		ghostIcon = "set:dayz_inventory image:woodenstick";
 		stackMax = 10;
 	};
 	class Slot_bait
 	{
 		name = "Bait";
-		displayName = "Bait";
-		ghostIcon = "hook";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:hook";
 	};
 	class Slot_matchinside
 	{
 		name = "matchinside";
-		displayName = "matchinside";
-		ghostIcon = "matchinside";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:matchinside";
 	};
 	class Slot_BerryB
 	{
 		name = "BerryB";
-		displayName = "BerryB";
-		ghostIcon = "berry";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:berry";
 	};
 	class Slot_BerryR
 	{
 		name = "BerryR";
-		displayName = "BerryR";
-		ghostIcon = "berry";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:berry";
 	};
 	class Slot_BirchBark
 	{
 		name = "BirchBark";
-		displayName = "BirchBark";
-		ghostIcon = "bark";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:bark";
 		stackMax = 8;
 	};
 	class Slot_OakBark
 	{
 		name = "OakBark";
-		displayName = "OakBark";
-		ghostIcon = "bark";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:bark";
 		stackMax = 8;
 	};
 	class Slot_Plant
 	{
 		name = "Plant";
-		displayName = "Plant";
-		ghostIcon = "plant";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:plant";
 	};
 	class Slot_Disinfectant
 	{
 		name = "Disinfectant";
-		displayName = "Disinfectant";
-		ghostIcon = "disinfectant";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:disinfectant";
 	};
 	class Slot_Guts
 	{
 		name = "Guts";
-		displayName = "Guts";
-		ghostIcon = "guts";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:guts";
 	};
 	class Slot_Lime
 	{
 		name = "Lime";
-		displayName = "Lime";
-		ghostIcon = "lime";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:lime";
 	};
 	class Slot_Bark
 	{
 		name = "Bark";
-		displayName = "Bark";
-		ghostIcon = "bark";
+		displayName = "$STR_CfgBark0";
+		ghostIcon = "set:dayz_inventory image:bark";
 		stackMax = 8;
 	};
 	class Slot_DirectCookingA
 	{
 		name = "DirectCookingA";
-		displayName = "DirectCookingA";
-		ghostIcon = "directcooking";
+		displayName = "$STR_CfgDirectCooking0";
+		ghostIcon = "set:dayz_inventory image:directcooking";
 	};
 	class Slot_DirectCookingB
 	{
 		name = "DirectCookingB";
-		displayName = "DirectCookingB";
-		ghostIcon = "directcooking";
+		displayName = "$STR_CfgDirectCooking0";
+		ghostIcon = "set:dayz_inventory image:directcooking";
 	};
 	class Slot_DirectCookingC
 	{
 		name = "DirectCookingC";
-		displayName = "DirectCookingC";
-		ghostIcon = "directcooking";
+		displayName = "$STR_CfgDirectCooking0";
+		ghostIcon = "set:dayz_inventory image:directcooking";
 	};
 	class Slot_SmokingA
 	{
 		name = "SmokingA";
-		displayName = "SmokingA";
-		ghostIcon = "smoking";
+		displayName = "$STR_CfgSmoking0";
+		ghostIcon = "set:dayz_inventory image:smoking";
 	};
 	class Slot_SmokingB
 	{
 		name = "SmokingB";
-		displayName = "SmokingB";
-		ghostIcon = "smoking";
+		displayName = "$STR_CfgSmoking0";
+		ghostIcon = "set:dayz_inventory image:smoking";
 	};
 	class Slot_SmokingC
 	{
 		name = "SmokingC";
-		displayName = "SmokingC";
-		ghostIcon = "smoking";
+		displayName = "$STR_CfgSmoking0";
+		ghostIcon = "set:dayz_inventory image:smoking";
 	};
 	class Slot_SmokingD
 	{
 		name = "SmokingD";
-		displayName = "SmokingD";
-		ghostIcon = "smoking";
+		displayName = "$STR_CfgSmoking0";
+		ghostIcon = "set:dayz_inventory image:smoking";
 	};
 	class Slot_SeedBase_1
 	{
 		name = "SeedBase_1";
-		displayName = "SeedBase_1";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_1";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_2
 	{
 		name = "SeedBase_2";
-		displayName = "SeedBase_2";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_2";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_3
 	{
 		name = "SeedBase_3";
-		displayName = "SeedBase_3";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_3";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_4
 	{
 		name = "SeedBase_4";
-		displayName = "SeedBase_4";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_4";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_5
 	{
 		name = "SeedBase_5";
-		displayName = "SeedBase_5";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_5";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_6
 	{
 		name = "SeedBase_6";
-		displayName = "SeedBase_6";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_6";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_7
 	{
 		name = "SeedBase_7";
-		displayName = "SeedBase_7";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_7";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_8
 	{
 		name = "SeedBase_8";
-		displayName = "SeedBase_8";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_8";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_9
 	{
 		name = "SeedBase_9";
-		displayName = "SeedBase_9";
+		displayName = "$STR_CfgSeedBase0";
 		selection = "SeedBase_9";
-		ghostIcon = "seedbase";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_10
 	{
 		name = "SeedBase_10";
-		displayName = "SeedBase_10";
-		selection = "slotDigged_10";
-		ghostIcon = "seedbase";
+		displayName = "$STR_CfgSeedBase0";
+		selection = "SeedBase_10";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_11
 	{
 		name = "SeedBase_11";
-		displayName = "SeedBase_11";
-		selection = "slotDigged_11";
-		ghostIcon = "seedbase";
+		displayName = "$STR_CfgSeedBase0";
+		selection = "SeedBase_11";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_12
 	{
 		name = "SeedBase_12";
-		displayName = "SeedBase_12";
-		selection = "slotDigged_12";
-		ghostIcon = "seedbase";
+		displayName = "$STR_CfgSeedBase0";
+		selection = "SeedBase_12";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_SeedBase_13
 	{
 		name = "SeedBase_13";
-		displayName = "SeedBase_13";
-		selection = "slotDigged_13";
-		ghostIcon = "seedbase";
+		displayName = "$STR_CfgSeedBase0";
+		selection = "SeedBase_13";
+		ghostIcon = "set:dayz_inventory image:seedbase";
 		stackMax = 1;
 	};
 	class Slot_GlowPlug
 	{
 		name = "GlowPlug";
-		displayName = "GlowPlug";
-		ghostIcon = "glowplug";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:glowplug";
 	};
 	class Slot_SparkPlug
 	{
 		name = "SparkPlug";
-		displayName = "SparkPlug";
-		ghostIcon = "sparkplug";
+		displayName = "$STR_CfgSparkPlug0";
+		ghostIcon = "set:dayz_inventory image:sparkplug";
 	};
 	class Slot_EngineBelt
 	{
 		name = "EngineBelt";
-		displayName = "EngineBelt";
-		ghostIcon = "enginebelt";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:enginebelt";
 	};
 	class Slot_CarBattery
 	{
 		name = "CarBattery";
-		displayName = "CarBattery";
+		displayName = "$STR_CfgVehicleBattery0";
 		selection = "battery";
-		ghostIcon = "carbattery";
+		ghostIcon = "set:dayz_inventory image:carbattery";
 	};
 	class Slot_TruckBattery
 	{
 		name = "TruckBattery";
-		displayName = "TruckBattery";
+		displayName = "$STR_CfgVehicleBattery0";
 		selection = "battery";
-		ghostIcon = "carbattery";
+		ghostIcon = "set:dayz_inventory image:carbattery";
 	};
 	class Slot_LightBulb
 	{
 		name = "LightBulb";
-		displayName = "LightBulb";
-		ghostIcon = "lightbulb";
+		displayName = "$STR_CfgLightBulb0";
+		ghostIcon = "set:dayz_inventory image:lightbulb";
 	};
 	class Slot_Reflector_1_1
 	{
 		name = "Reflector_1_1";
-		displayName = "Reflector";
+		displayName = "$STR_CfgLightBulb0";
 		selection = "Reflector_1_1";
-		ghostIcon = "lightbulb";
+		ghostIcon = "set:dayz_inventory image:lightbulb";
 	};
 	class Slot_Reflector_2_1
 	{
 		name = "Reflector_2_1";
-		displayName = "Reflector";
+		displayName = "$STR_CfgLightBulb0";
 		selection = "Reflector_2_1";
-		ghostIcon = "lightbulb";
+		ghostIcon = "set:dayz_inventory image:lightbulb";
 	};
 	class Slot_TruckRadiator
 	{
 		name = "TruckRadiator";
-		displayName = "TruckRadiator";
-		ghostIcon = "radiator";
+		displayName = "$STR_CfgVehicleRadiator0";
+		ghostIcon = "set:dayz_inventory image:radiator";
 	};
 	class Slot_CarRadiator
 	{
 		name = "CarRadiator";
-		displayName = "CarRadiator";
-		ghostIcon = "radiator";
+		displayName = "$STR_CfgVehicleRadiator0";
+		ghostIcon = "set:dayz_inventory image:radiator";
 	};
 	class Slot_V3SWheel_1_1
 	{
 		name = "V3SWheel_1_1";
-		displayName = "Front Left V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_1_2
 	{
 		name = "V3SWheel_1_2";
-		displayName = "Back Left V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_1_3
 	{
 		name = "V3SWheel_1_3";
-		displayName = "Middle Right V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_3";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_2_1
 	{
 		name = "V3SWheel_2_1";
-		displayName = "Front Right V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_2_2
 	{
 		name = "V3SWheel_2_2";
-		displayName = "Back Right V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_2_3
 	{
 		name = "V3SWheel_2_3";
-		displayName = "Middle Right V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_3";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_Spare_1
 	{
 		name = "V3SWheel_Spare_1";
-		displayName = "Spare Left V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_spare_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SWheel_Spare_2
 	{
 		name = "V3SWheel_Spare_2";
-		displayName = "Spare Right V3S Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_spare_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_V3SHood
 	{
 		name = "V3SHood";
-		displayName = "V3SHood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_V3SDriverDoors
 	{
 		name = "V3SDriverDoors";
-		displayName = "V3SDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_V3SCoDriverDoors
 	{
 		name = "V3SCoDriverDoors";
-		displayName = "V3SCoDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_UtilityVehicleWheel_1_1
 	{
 		name = "UtilityVehicleWheel_1_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_UtilityVehicleWheel_1_2
 	{
 		name = "UtilityVehicleWheel_1_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_UtilityVehicleWheel_2_1
 	{
 		name = "UtilityVehicleWheel_2_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_UtilityVehicleWheel_2_2
 	{
 		name = "UtilityVehicleWheel_2_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_UtilityVehicleDriverDoors
 	{
 		name = "UtilityVehicleDriverDoors";
-		displayName = "Utility Vehicle Driver Doors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_UtilityVehicleCoDriverDoors
 	{
 		name = "UtilityVehicleCoDriverDoors";
-		displayName = "Utility Vehicle CoDriver Doors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_NivaWheel_1_1
 	{
 		name = "NivaWheel_1_1";
-		displayName = "Front Left Niva Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_NivaWheel_1_2
 	{
 		name = "NivaWheel_1_2";
-		displayName = "Front Right Niva Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_NivaWheel_2_1
 	{
 		name = "NivaWheel_2_1";
-		displayName = "Front Left Niva Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_NivaWheel_2_2
 	{
 		name = "NivaWheel_2_2";
-		displayName = "Front Right Niva Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_NivaWheel_Spare_1
 	{
 		name = "NivaWheel_Spare_1";
-		displayName = "Spare Niva Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_spare_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_NivaHood
 	{
 		name = "NivaHood";
-		displayName = "NivaHood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_NivaTrunk
 	{
 		name = "NivaTrunk";
-		displayName = "NivaTrunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_NivaDriverDoors
 	{
 		name = "NivaDriverDoors";
-		displayName = "NivaDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_NivaCoDriverDoors
 	{
 		name = "NivaCoDriverDoors";
-		displayName = "NivaCoDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivSedanWheel_1_1
 	{
 		name = "CivSedanWheel_1_1";
-		displayName = "Front Left CivSedan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivSedanWheel_1_2
 	{
 		name = "CivSedanWheel_1_2";
-		displayName = "Front Right CivSedan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivSedanWheel_2_1
 	{
 		name = "CivSedanWheel_2_1";
-		displayName = "Front Left CivSedan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivSedanWheel_2_2
 	{
 		name = "CivSedanWheel_2_2";
-		displayName = "Front Right CivSedan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivSedanHood
 	{
 		name = "CivSedanHood";
-		displayName = "CivSedanHood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_CivSedanTrunk
 	{
 		name = "CivSedanTrunk";
-		displayName = "CivSedanTrunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_CivSedanDriverDoors
 	{
 		name = "CivSedanDriverDoors";
-		displayName = "CivSedanDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivSedanCoDriverDoors
 	{
 		name = "CivSedanCoDriverDoors";
-		displayName = "CivSedanCoDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivSedanCargo1Doors
 	{
 		name = "CivSedanCargo1Doors";
-		displayName = "CivSedanCargo1Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_CivSedanCargo2Doors
 	{
 		name = "CivSedanCargo2Doors";
-		displayName = "CivSedanCargo2Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_CivVanWheel_1_1
 	{
 		name = "CivVanWheel_1_1";
-		displayName = "Front Left CivVan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivVanWheel_1_2
 	{
 		name = "CivVanWheel_1_2";
-		displayName = "Front Right CivVan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivVanWheel_2_1
 	{
 		name = "CivVanWheel_2_1";
-		displayName = "Front Left CivVan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivVanWheel_2_2
 	{
 		name = "CivVanWheel_2_2";
-		displayName = "Front Right CivVan Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivVanDriverDoors
 	{
 		name = "CivVanDriverDoors";
-		displayName = "CivVanDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivVanCoDriverDoors
 	{
 		name = "CivVanCoDriverDoors";
-		displayName = "CivVanCoDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivVanCargo1Doors
 	{
 		name = "CivVanCargo1Doors";
-		displayName = "CivVanCargo1Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_CivVanTrunkUp
 	{
 		name = "CivVanTrunkUp";
-		displayName = "CivVanTrunkUp";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_CivVanCargoDown
 	{
 		name = "CivVanTrunkDown";
-		displayName = "CivVanTrunkDown";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Van_01_Wheel_1_1
 	{
 		name = "Van_01_Wheel_1_1";
-		displayName = "Front Left Van Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Van_01_Wheel_1_2
 	{
 		name = "Van_01_Wheel_1_2";
-		displayName = "Front Right Van Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Van_01_Wheel_2_1
 	{
 		name = "Van_01_Wheel_2_1";
-		displayName = "Front Left Van Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Van_01_Wheel_2_2
 	{
 		name = "Van_01_Wheel_2_2";
-		displayName = "Front Right Van Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Van_01_Door_1_1
 	{
 		name = "Van_01_Door_1_1";
-		displayName = "Van Driver Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Van_01_Door_2_1
 	{
 		name = "Van_01_Door_2_1";
-		displayName = "Van CoDriver Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Van_01_Door_2_2
 	{
 		name = "Van_01_Door_2_2";
-		displayName = "Van Cargo Door";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Van_01_Trunk_1
 	{
 		name = "Van_01_Trunk_1";
-		displayName = "Van Trunk Up Part";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_Van_01_Trunk_2
 	{
 		name = "Van_01_Trunk_2";
-		displayName = "Van Trunk Down Part";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_BusWheel_1_1
 	{
 		name = "BusWheel_1_1";
-		displayName = "Front Left Bus Wheel";
+		displayName = "";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_BusWheel_1_2
 	{
 		name = "BusWheel_1_2";
-		displayName = "Front Right Bus Wheel";
+		displayName = "";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_BusWheel_2_1
 	{
 		name = "BusWheel_2_1";
-		displayName = "Front Left Bus Wheel";
+		displayName = "";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_BusWheel_2_2
 	{
 		name = "BusWheel_2_2";
-		displayName = "Front Right Bus Wheel";
+		displayName = "";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_BusHood
 	{
 		name = "BusHood";
-		displayName = "BusHood";
-		ghostIcon = "hood";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_BusLeftDoors_1
 	{
 		name = "BusLeftDoors_1";
-		displayName = "BusLeftDoors";
+		displayName = "";
 		selection = "BusLeftDoors_1";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_BusLeftDoors_2
 	{
 		name = "BusLeftDoors_2";
-		displayName = "BusLeftDoors";
+		displayName = "";
 		selection = "BusLeftDoors_2";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_BusLeftDoors_3
 	{
 		name = "BusLeftDoors_3";
-		displayName = "BusLeftDoors";
+		displayName = "";
 		selection = "BusLeftDoors_3";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_BusRightDoors_1
 	{
 		name = "BusRightDoors_1";
-		displayName = "BusRightDoors";
+		displayName = "";
 		selection = "BusRightDoors_1";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_BusRightDoors_2
 	{
 		name = "BusRightDoors_2";
-		displayName = "BusRightDoors";
+		displayName = "";
 		selection = "BusRightDoors_2";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_BusRightDoors_3
 	{
 		name = "BusRightDoors_3";
-		displayName = "BusRightDoors";
+		displayName = "";
 		selection = "BusRightDoors_3";
-		ghostIcon = "busdoor";
+		ghostIcon = "set:dayz_inventory image:busdoor";
 	};
 	class Slot_CivHatchbackWheel_1_1
 	{
 		name = "CivHatchbackWheel_1_1";
-		displayName = "Front Left CivHatchback Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivHatchbackWheel_1_2
 	{
 		name = "CivHatchbackWheel_1_2";
-		displayName = "Back Right CivHatchback Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivHatchbackWheel_2_1
 	{
 		name = "CivHatchbackWheel_2_1";
-		displayName = "Front Left CivHatchback Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivHatchbackWheel_2_2
 	{
 		name = "CivHatchbackWheel_2_2";
-		displayName = "Back Right CivHatchback Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_CivHatchbackHood
 	{
 		name = "CivHatchbackHood";
-		displayName = "CivHatchbackHood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_CivHatchbackTrunk
 	{
 		name = "CivHatchbackTrunk";
-		displayName = "CivHatchbackTrunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_CivHatchbackDriverDoors
 	{
 		name = "CivHatchbackDriverDoors";
-		displayName = "CivHatchbackDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivHatchbackCoDriverDoors
 	{
 		name = "CivHatchbackCoDriverDoors";
-		displayName = "CivHatchbackCoDriverDoors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_CivHatchbackCargo1Doors
 	{
 		name = "CivHatchbackCargo1Doors";
-		displayName = "CivHatchbackCargo1Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_CivHatchbackCargo2Doors
 	{
 		name = "CivHatchbackCargo2Doors";
-		displayName = "CivHatchbackCargo2Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_S120Wheel_1_1
 	{
 		name = "S120Wheel_1_1";
-		displayName = "Front Left s120 Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_S120Wheel_1_2
 	{
 		name = "S120Wheel_1_2";
-		displayName = "Front Right s120 Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_S120Wheel_2_1
 	{
 		name = "S120Wheel_2_1";
-		displayName = "Front Left s120 Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_S120Wheel_2_2
 	{
 		name = "S120Wheel_2_2";
-		displayName = "Front Right s120 Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_S120Hood
 	{
 		name = "S120Hood";
-		displayName = "s120 Hood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_S120Trunk
 	{
 		name = "S120Trunk";
-		displayName = "s120 Trunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_S120DriverDoors
 	{
 		name = "S120DriverDoors";
-		displayName = "s120 Driver Doors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_S120CoDriverDoors
 	{
 		name = "S120CoDriverDoors";
-		displayName = "s120 CoDriver Doors";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_S120Cargo1Doors
 	{
 		name = "S120Cargo1Doors";
-		displayName = "s120 Cargo Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_S120Cargo2Doors
 	{
 		name = "S120Cargo2Doors";
-		displayName = "s120 Cargo Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Truck_01_Wheel_1_1
 	{
 		name = "Truck_01_Wheel_1_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_01_Wheel_1_2
 	{
 		name = "Truck_01_Wheel_1_2";
-		displayName = "Back Left Wheel";
+		displayName = "$STR_CfgDoubleWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "doublewheel";
+		ghostIcon = "set:dayz_inventory image:doublewheel";
 	};
 	class Slot_Truck_01_Wheel_1_3
 	{
 		name = "Truck_01_Wheel_1_3";
-		displayName = "Middle Right Wheel";
+		displayName = "$STR_CfgDoubleWheel0";
 		selection = "wheel_1_3";
-		ghostIcon = "doublewheel";
+		ghostIcon = "set:dayz_inventory image:doublewheel";
 	};
 	class Slot_Truck_01_Wheel_2_1
 	{
 		name = "Truck_01_Wheel_2_1";
-		displayName = "Front Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_01_Wheel_2_2
 	{
 		name = "Truck_01_Wheel_2_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgDoubleWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "doublewheel";
+		ghostIcon = "set:dayz_inventory image:doublewheel";
 	};
 	class Slot_Truck_01_Wheel_2_3
 	{
 		name = "Truck_01_Wheel_2_3";
-		displayName = "Middle Right Wheel";
+		displayName = "$STR_CfgDoubleWheel0";
 		selection = "wheel_2_3";
-		ghostIcon = "doublewheel";
+		ghostIcon = "set:dayz_inventory image:doublewheel";
 	};
 	class Slot_Truck_01_Wheel_Spare_1
 	{
 		name = "Truck_01_Wheel_Spare_1";
-		displayName = "Spare Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_spare_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_01_Wheel_Spare_2
 	{
 		name = "Truck_01_Wheel_Spare_2";
-		displayName = "Spare Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_spare_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_01_Hood
 	{
 		name = "Truck_01_Hood";
-		displayName = "Hood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_Truck_01_Door_1_1
 	{
 		name = "Truck_01_Door_1_1";
-		displayName = "Left Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Truck_01_Doors_2_1
 	{
 		name = "Truck_01_Door_2_1";
-		displayName = "Right Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Truck_01_WoodenLogs
 	{
 		name = "Truck_01_WoodenLogs";
-		displayName = "Wooden logs";
-		ghostIcon = "woodenlog";
+		displayName = "$STR_CfgWoodenLogs0";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 50;
 	};
 	class Slot_Truck_01_WoodenPlanks
 	{
 		name = "Truck_01_WoodenPlanks";
-		displayName = "Wooden planks";
-		ghostIcon = "planks";
+		displayName = "$STR_CfgPlanks0";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 100;
 	};
 	class Slot_Truck_01_MetalSheets
 	{
 		name = "Truck_01_MetalSheets";
-		displayName = "Metal sheets";
-		ghostIcon = "plates";
+		displayName = "$STR_CfgMetalPlate0";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 40;
 	};
 	class Slot_Truck_01_Barrel1
 	{
 		name = "Truck_01_Barrel1";
-		displayName = "Barrel";
-		ghostIcon = "barrel";
+		displayName = "$STR_CfgBarrel0";
+		ghostIcon = "set:dayz_inventory image:barrel";
 	};
 	class Slot_Truck_01_Barrel2
 	{
 		name = "Truck_01_Barrel2";
-		displayName = "Barrel";
-		ghostIcon = "barrel";
+		displayName = "$STR_CfgBarrel0";
+		ghostIcon = "set:dayz_inventory image:barrel";
 	};
 	class Slot_Truck_01_Barrel3
 	{
 		name = "Truck_01_Barrel3";
-		displayName = "Barrel";
-		ghostIcon = "barrel";
+		displayName = "$STR_CfgBarrel0";
+		ghostIcon = "set:dayz_inventory image:barrel";
 	};
 	class Slot_Truck_01_Barrel4
 	{
 		name = "Truck_01_Barrel4";
-		displayName = "Barrel";
-		ghostIcon = "barrel";
+		displayName = "$STR_CfgBarrel0";
+		ghostIcon = "set:dayz_inventory image:barrel";
 	};
 	class Slot_Truck_01_WoodenCrate1
 	{
 		name = "Truck_01_WoodenCrate1";
-		displayName = "WoodenCrate";
-		ghostIcon = "woodcrate";
+		displayName = "$STR_CfgCrate0";
+		ghostIcon = "set:dayz_inventory image:woodcrate";
 	};
 	class Slot_Truck_01_WoodenCrate2
 	{
 		name = "Truck_01_WoodenCrate2";
-		displayName = "WoodenCrate";
-		ghostIcon = "woodcrate";
+		displayName = "$STR_CfgCrate0";
+		ghostIcon = "set:dayz_inventory image:woodcrate";
 	};
 	class Slot_Truck_01_WoodenCrate3
 	{
 		name = "Truck_01_WoodenCrate3";
-		displayName = "WoodenCrate";
-		ghostIcon = "woodcrate";
+		displayName = "$STR_CfgCrate0";
+		ghostIcon = "set:dayz_inventory image:woodcrate";
 	};
 	class Slot_Truck_01_WoodenCrate4
 	{
 		name = "Truck_01_WoodenCrate4";
-		displayName = "WoodenCrate";
-		ghostIcon = "woodcrate";
+		displayName = "$STR_CfgCrate0";
+		ghostIcon = "set:dayz_inventory image:woodcrate";
 	};
 	class Slot_Truck_02_Wheel_1_1
 	{
 		name = "Truck_02_Wheel_1_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_02_Wheel_1_2
 	{
 		name = "Truck_02_Wheel_1_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_02_Wheel_2_1
 	{
 		name = "Truck_02_Wheel_2_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_02_Wheel_2_2
 	{
 		name = "Truck_02_Wheel_2_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Truck_02_Door_1_1
 	{
 		name = "Truck_02_Door_1_1";
-		displayName = "Left Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Truck_02_Door_2_1
 	{
 		name = "Truck_02_Door_2_1";
-		displayName = "Right Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Hatchback_02_Wheel_1_1
 	{
 		name = "Hatchback_02_Wheel_1_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Hatchback_02_Wheel_1_2
 	{
 		name = "Hatchback_02_Wheel_1_2";
-		displayName = "Back Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Hatchback_02_Wheel_2_1
 	{
 		name = "Hatchback_02_Wheel_2_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Hatchback_02_Wheel_2_2
 	{
 		name = "Hatchback_02_Wheel_2_2";
-		displayName = "Back Right  Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Hatchback_02_Door_1_1
 	{
 		name = "Hatchback_02_Door_1_1";
-		displayName = "Left Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Hatchback_02_Door_1_2
 	{
 		name = "Hatchback_02_Door_1_2";
-		displayName = "Left Back Doors";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Hatchback_02_Door_2_1
 	{
 		name = "Hatchback_02_Door_2_1";
-		displayName = "Right Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Hatchback_02_Door_2_2
 	{
 		name = "Hatchback_02_Door_2_2";
-		displayName = "Right Back Door";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Hatchback_02_Hood
 	{
 		name = "Hatchback_02_Hood";
-		displayName = "Hood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_Hatchback_02_Trunk
 	{
 		name = "Hatchback_02_Trunk";
-		displayName = "Trunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_Sedan_02_Wheel_1_1
 	{
 		name = "Sedan_02_Wheel_1_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Sedan_02_Wheel_1_2
 	{
 		name = "Sedan_02_Wheel_1_2";
-		displayName = "Front Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_1_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Sedan_02_Wheel_2_1
 	{
 		name = "Sedan_02_Wheel_2_1";
-		displayName = "Front Left Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_1";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Sedan_02_Wheel_2_2
 	{
 		name = "Sedan_02_Wheel_2_2";
-		displayName = "Front Right Wheel";
+		displayName = "$STR_CfgWheel0";
 		selection = "wheel_2_2";
-		ghostIcon = "wheel";
+		ghostIcon = "set:dayz_inventory image:wheel";
 	};
 	class Slot_Sedan_02_Hood
 	{
 		name = "Sedan_02_Hood";
-		displayName = "Hood";
-		ghostIcon = "hood";
+		displayName = "$STR_CfgHood0";
+		ghostIcon = "set:dayz_inventory image:hood";
 	};
 	class Slot_Sedan_02_Trunk
 	{
 		name = "Sedan_02_Trunk";
-		displayName = "Trunk";
-		ghostIcon = "trunk";
+		displayName = "$STR_CfgTrunk0";
+		ghostIcon = "set:dayz_inventory image:trunk";
 	};
 	class Slot_Sedan_02_Door_1_1
 	{
 		name = "Sedan_02_Door_1_1";
-		displayName = "Left Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Sedan_02_Door_2_1
 	{
 		name = "Sedan_02_Door_2_1";
-		displayName = "Right Door";
-		ghostIcon = "doorfront";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorfront";
 	};
 	class Slot_Sedan_02_Door_1_2
 	{
 		name = "Sedan_02_Door_1_2";
-		displayName = "Left Back Door";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Sedan_02_Door_2_2
 	{
 		name = "Sedan_02_Door_2_2";
-		displayName = "Right Back Door";
-		ghostIcon = "doorrear";
+		displayName = "$STR_CfgDoor0";
+		ghostIcon = "set:dayz_inventory image:doorrear";
 	};
 	class Slot_Level_1_Wall_1_Barbedwire_1
 	{
 		name = "Level_1_Wall_1_Barbedwire_1";
-		displayName = "Bottom barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_1_barbedwire_1";
-		ghostIcon = "barbedwiredown";
+		ghostIcon = "set:dayz_inventory image:barbedwiredown";
 	};
 	class Slot_Level_1_Wall_1_Barbedwire_2
 	{
 		name = "Level_1_Wall_1_Barbedwire_2";
-		displayName = "Upper barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_1_barbedwire_2";
-		ghostIcon = "barbedwireup";
+		ghostIcon = "set:dayz_inventory image:barbedwireup";
 	};
 	class Slot_Level_1_Wall_2_Barbedwire_1
 	{
 		name = "Level_1_Wall_2_Barbedwire_1";
-		displayName = "Bottom barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_2_barbedwire_1";
-		ghostIcon = "barbedwiredown";
+		ghostIcon = "set:dayz_inventory image:barbedwiredown";
 	};
 	class Slot_Level_1_Wall_2_Barbedwire_2
 	{
 		name = "Level_1_Wall_2_Barbedwire_2";
-		displayName = "Upper barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_2_barbedwire_2";
-		ghostIcon = "barbedwireup";
+		ghostIcon = "set:dayz_inventory image:barbedwireup";
 	};
 	class Slot_Level_1_Wall_3_Barbedwire_1
 	{
 		name = "Level_1_Wall_3_Barbedwire_1";
-		displayName = "Bottom barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_3_barbedwire_1";
-		ghostIcon = "barbedwiredown";
+		ghostIcon = "set:dayz_inventory image:barbedwiredown";
 	};
 	class Slot_Level_1_Wall_3_Barbedwire_2
 	{
 		name = "Level_1_Wall_3_Barbedwire_2";
-		displayName = "Upper barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "level_1_wall_3_barbedwire_2";
-		ghostIcon = "barbedwireup";
+		ghostIcon = "set:dayz_inventory image:barbedwireup";
 	};
 	class Slot_Level_1_Wall_1_Camonet
 	{
 		name = "Level_1_Wall_1_Camonet";
-		displayName = "1st floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_1_wall_1_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_1_Wall_2_Camonet
 	{
 		name = "Level_1_Wall_2_Camonet";
-		displayName = "1st floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_1_wall_2_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_1_Wall_3_Camonet
 	{
 		name = "Level_1_Wall_3_Camonet";
-		displayName = "1st floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_1_wall_3_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_2_Wall_1_Camonet
 	{
 		name = "Level_2_Wall_1_Camonet";
-		displayName = "2nd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_2_wall_1_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_2_Wall_2_Camonet
 	{
 		name = "Level_2_Wall_2_Camonet";
-		displayName = "2nd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_2_wall_2_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_2_Wall_3_Camonet
 	{
 		name = "Level_2_Wall_3_Camonet";
-		displayName = "2nd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_2_wall_3_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_3_Wall_1_Camonet
 	{
 		name = "Level_3_Wall_1_Camonet";
-		displayName = "3rd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_3_wall_1_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_3_Wall_2_Camonet
 	{
 		name = "Level_3_Wall_2_Camonet";
-		displayName = "3rd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_3_wall_2_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Level_3_Wall_3_Camonet
 	{
 		name = "Level_3_Wall_3_Camonet";
-		displayName = "3rd floor camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "level_3_wall_3_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Material_L1_WoodenLogs
 	{
 		name = "Material_L1_WoodenLogs";
-		displayName = "Wooden logs";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_L1_WoodenLogs";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 4;
 	};
 	class Slot_Material_L1_Nails
 	{
 		name = "Material_L1_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l1_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L1W1_Nails
 	{
 		name = "Material_L1W1_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l1w1_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L1W2_Nails
 	{
 		name = "Material_L1W2_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l1w2_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L1W3_Nails
 	{
 		name = "Material_L1W3_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l1w3_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L1_WoodenPlanks
 	{
 		name = "Material_L1_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l1_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W1_WoodenPlanks
 	{
 		name = "Material_L1W1_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l1w1_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W2_WoodenPlanks
 	{
 		name = "Material_L1W2_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l1w2_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W3_WoodenPlanks
 	{
 		name = "Material_L1W3_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l1w3_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W1_MetalSheets
 	{
 		name = "Material_L1W1_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l1w1_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W2_MetalSheets
 	{
 		name = "Material_L1W2_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l1w2_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L1W3_MetalSheets
 	{
 		name = "Material_L1W3_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l1w3_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L2_WoodenLogs
 	{
 		name = "Material_L2_WoodenLogs";
-		displayName = "Wooden logs";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_L2_WoodenLogs";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 4;
 	};
 	class Slot_Material_L2_Nails
 	{
 		name = "Material_L2_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l2_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L2W1_Nails
 	{
 		name = "Material_L2W1_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l2w1_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L2W2_Nails
 	{
 		name = "Material_L2W2_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l2w2_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L2W3_Nails
 	{
 		name = "Material_L2W3_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "material_l2w3_nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L2_WoodenPlanks
 	{
 		name = "Material_L2_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l2_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W1_WoodenPlanks
 	{
 		name = "Material_L2W1_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l2w1_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W2_WoodenPlanks
 	{
 		name = "Material_L2W2_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l2w2_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W3_WoodenPlanks
 	{
 		name = "Material_L2W3_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "material_l2w3_woodenplanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W1_MetalSheets
 	{
 		name = "Material_L2W1_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l2w1_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W2_MetalSheets
 	{
 		name = "Material_L2W2_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l2w2_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L2W3_MetalSheets
 	{
 		name = "Material_L2W3_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "material_l2w3_metalsheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L3_WoodenLogs
 	{
 		name = "Material_L3_WoodenLogs";
-		displayName = "Wooden logs";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_L3_WoodenLogs";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 4;
 	};
 	class Slot_Material_L3_Nails
 	{
 		name = "Material_L3_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_L3_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L3_MetalSheets
 	{
 		name = "Material_L3_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "Material_L3_MetalSheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W1_Nails
 	{
 		name = "Material_L3W1_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_L3W1_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L3W2_Nails
 	{
 		name = "Material_L3W2_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_L3W2_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L3W3_Nails
 	{
 		name = "Material_L3W3_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_L3W3_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_L3_WoodenPlanks
 	{
 		name = "Material_L3_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "Material_L3_WoodenPlanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W1_WoodenPlanks
 	{
 		name = "Material_L3W1_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "Material_L3W1_WoodenPlanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W2_WoodenPlanks
 	{
 		name = "Material_L3W2_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "Material_L3W2_WoodenPlanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W3_WoodenPlanks
 	{
 		name = "Material_L3W3_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "Material_L3W3_WoodenPlanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W1_MetalSheets
 	{
 		name = "Material_L3W1_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "Material_L3W1_MetalSheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W2_MetalSheets
 	{
 		name = "Material_L3W2_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "Material_L3W2_MetalSheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_L3W3_MetalSheets
 	{
 		name = "Material_L3W3_MetalSheets";
-		displayName = "Metal sheets";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "Material_L3W3_MetalSheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_Nails
 	{
 		name = "Material_Nails";
-		displayName = "Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 99;
 	};
 	class Slot_Material_WoodenPlanks
 	{
 		name = "Material_WoodenPlanks";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgPlanks0";
 		selection = "Material_WoodenPlanks";
-		ghostIcon = "planks";
+		ghostIcon = "set:dayz_inventory image:planks";
 		stackMax = 20;
 	};
 	class Slot_Material_MetalSheets
 	{
 		name = "Material_MetalSheets";
-		displayName = "Wooden planks";
+		displayName = "$STR_CfgMetalPlate0";
 		selection = "Material_MetalSheets";
-		ghostIcon = "plates";
+		ghostIcon = "set:dayz_inventory image:plates";
 		stackMax = 20;
 	};
 	class Slot_Material_WoodenLogs
 	{
 		name = "Material_WoodenLogs";
-		displayName = "Wooden logs";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_WoodenLogs";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 2;
 	};
 	class Slot_Material_MetalWire
 	{
 		name = "Material_MetalWire";
-		displayName = "Metal wire";
+		displayName = "$STR_CfgMetalWire0";
 		selection = "Material_MetalWire";
-		ghostIcon = "metalwire";
+		ghostIcon = "set:dayz_inventory image:metalwire";
 	};
 	class Slot_Att_CombinationLock
 	{
 		name = "Att_CombinationLock";
-		displayName = "Combination lock";
+		displayName = "$STR_CombinationLock0";
 		selection = "att_combinationlock";
-		ghostIcon = "combolock";
+		ghostIcon = "set:dayz_inventory image:combolock";
 	};
 	class Slot_Wall_Barbedwire_1
 	{
 		name = "Wall_Barbedwire_1";
-		displayName = "Upper barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "wall_barbedwire_1";
-		ghostIcon = "barbedwiredown";
+		ghostIcon = "set:dayz_inventory image:barbedwiredown";
 	};
 	class Slot_Wall_Barbedwire_2
 	{
 		name = "Wall_Barbedwire_2";
-		displayName = "Bottom barbed wire";
+		displayName = "$STR_CfgBarbedWire0";
 		selection = "wall_barbedwire_2";
-		ghostIcon = "barbedwireup";
+		ghostIcon = "set:dayz_inventory image:barbedwireup";
 	};
 	class Slot_Wall_Camonet
 	{
 		name = "Wall_Camonet";
-		displayName = "Camonet";
+		displayName = "$STR_CfgCamoNet0";
 		selection = "wall_camonet";
-		ghostIcon = "camonet";
+		ghostIcon = "set:dayz_inventory image:camonet";
 	};
 	class Slot_Material_FPole_WoodenLog
 	{
 		name = "Material_FPole_WoodenLog";
-		displayName = "Material_FPole_WoodenLog";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_FPole_WoodenLog";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 1;
 	};
 	class Slot_Material_FPole_Stones
 	{
 		name = "Material_FPole_Stones";
-		displayName = "Material_FPole_Stones";
+		displayName = "$STR_CfgStones0";
 		selection = "Material_FPole_Stones";
-		ghostIcon = "stones";
+		ghostIcon = "set:dayz_inventory image:stones";
 		stackMax = 32;
 	};
 	class Slot_Material_FPole_WoodenLog2
 	{
 		name = "Material_FPole_WoodenLog2";
-		displayName = "Material_FPole_WoodenLog2";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_FPole_WoodenLog2";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 6;
 	};
 	class Slot_Material_FPole_MetalWire
 	{
 		name = "Material_FPole_MetalWire";
-		displayName = "Material_FPole_MetalWire";
+		displayName = "$STR_CfgMetalWire0";
 		selection = "Material_FPole_MetalWire";
-		ghostIcon = "metalwire";
+		ghostIcon = "set:dayz_inventory image:metalwire";
 	};
 	class Slot_Material_FPole_Rope
 	{
 		name = "Material_FPole_Rope";
-		displayName = "Material_FPole_Rope";
+		displayName = "$STR_CfgRope0";
 		selection = "Material_FPole_Rope";
-		ghostIcon = "rope";
+		ghostIcon = "set:dayz_inventory image:rope";
 	};
 	class Slot_Material_FPole_Nails
 	{
 		name = "Material_FPole_Nails";
-		displayName = "Material_FPole_Nails";
+		displayName = "$STR_CfgNails0";
 		selection = "Material_FPole_Nails";
-		ghostIcon = "nails";
+		ghostIcon = "set:dayz_inventory image:nails";
 		stackMax = 60;
 	};
 	class Slot_Material_FPole_MagicStick
 	{
 		name = "Material_FPole_MagicStick";
-		displayName = "Material_FPole_MagicStick";
+		displayName = "$STR_CfgWoodenLogs0";
 		selection = "Material_FPole_MagicStick";
-		ghostIcon = "woodenlog";
+		ghostIcon = "set:dayz_inventory image:woodenlog";
 		stackMax = 3;
 	};
 	class Slot_Material_FPole_Flag
 	{
 		name = "Material_FPole_Flag";
-		displayName = "Material_FPole_Flag";
+		displayName = "$STR_Flag0";
 		selection = "Material_FPole_Flag";
-		ghostIcon = "tf_flag";
+		ghostIcon = "set:dayz_inventory image:tf_flag";
 	};
 	class Slot_Material_Shelter_FrameSticks
 	{
 		name = "Material_Shelter_FrameSticks";
-		displayName = "Material_Shelter_FrameSticks";
+		displayName = "$STR_CfgWoodenStick0";
 		selection = "Material_Shelter_FrameSticks";
-		ghostIcon = "woodenstick";
+		ghostIcon = "set:dayz_inventory image:woodenstick";
 		stackMax = 4;
 	};
 	class Slot_Material_Shelter_Rope
 	{
 		name = "Material_Shelter_Rope";
-		displayName = "Material_Shelter_Rope";
+		displayName = "$STR_CfgRope0";
 		selection = "Material_Shelter_Rope";
-		ghostIcon = "rope";
+		ghostIcon = "set:dayz_inventory image:rope";
 	};
 	class Slot_Material_Shelter_Leather
 	{
 		name = "Material_Shelter_Leather";
-		displayName = "Material_Shelter_Leather";
+		displayName = "$STR_Leather0";
 		selection = "Material_Shelter_Leather";
-		ghostIcon = "animal_pelt";
+		ghostIcon = "set:dayz_inventory image:animal_pelt";
 		stackMax = 8;
 	};
 	class Slot_Material_Shelter_Fabric
 	{
 		name = "Material_Shelter_Fabric";
-		displayName = "Material_Shelter_Fabric";
+		displayName = "$STR_Fabric0";
 		selection = "Material_Shelter_Fabric";
-		ghostIcon = "tarp";
+		ghostIcon = "set:dayz_inventory image:tarp";
 		stackMax = 4;
 	};
 	class Slot_Material_Shelter_Sticks
 	{
 		name = "Material_Shelter_Sticks";
-		displayName = "Material_Shelter_Sticks";
+		displayName = "$STR_CfgWoodenStick0";
 		selection = "Material_Shelter_Sticks";
-		ghostIcon = "wooden_sticks";
+		ghostIcon = "set:dayz_inventory image:wooden_sticks";
 		stackMax = 50;
 	};
 	class Slot_LargeBattery
 	{
 		name = "LargeBattery";
-		displayName = "LargeBattery";
+		displayName = "$STR_CfgVehicleBattery0";
 		selection = "battery";
-		ghostIcon = "carbattery";
+		ghostIcon = "set:dayz_inventory image:carbattery";
 	};
 	class Slot_Knife_Holster
 	{
 		name = "KnifeHolster";
-		displayName = "KnifeHolster";
-		ghostIcon = "knifeholster";
+		displayName = "";
+		ghostIcon = "set:dayz_inventory image:knifeholster";
 	};
 	class Slot_Chemlight
 	{
 		name = "Chemlight";
-		displayName = "Chemlight";
-		ghostIcon = "chemlight";
+		displayName = "$STR_CfgChemlight0";
+		ghostIcon = "set:dayz_inventory image:chemlight";
 	};
 	class Slot_WalkieTalkie
 	{
 		name = "WalkieTalkie";
-		displayName = "WalkieTalkie";
-		ghostIcon = "walkietalkie";
+		displayName = "$STR_CfgWalkieTalkie0";
+		ghostIcon = "set:dayz_inventory image:walkietalkie";
 	};
 	class Slot_NVG
 	{
 		name = "NVG";
-		displayName = "nvggoggles";
-		ghostIcon = "nvggoggles";
+		displayName = "$STR_CfgNVG0";
+		ghostIcon = "set:dayz_inventory image:nvggoggles";
 	};
 	class Slot_helmetFlashlight
 	{
 		name = "helmetFlashlight";
-		displayName = "helmetFlashlight";
-		ghostIcon = "weaponflashlight";
+		displayName = "$STR_CfgFlashlight0";
+		ghostIcon = "set:dayz_inventory image:weaponflashlight";
 	};
 	class Slot_Belt_Left
 	{
 		name = "Belt_Left";
-		displayName = "Belt_Left";
-		ghostIcon = "canteen";
+		displayName = "$STR_CfgBelt_Left0";
+		ghostIcon = "set:dayz_inventory image:canteen";
 	};
 	class Slot_Belt_Right
 	{
 		name = "Belt_Right";
-		displayName = "Belt_Right";
-		ghostIcon = "vestholster";
+		displayName = "$STR_CfgBelt_Right0";
+		ghostIcon = "set:dayz_inventory image:vestholster";
 	};
 	class Slot_Belt_Back
 	{
 		name = "Belt_Back";
-		displayName = "Belt_Back";
-		ghostIcon = "knifeholster";
+		displayName = "$STR_CfgBelt_Back0";
+		ghostIcon = "set:dayz_inventory image:knifeholster";
 	};
 	class Slot_VestGrenadeA
 	{
 		name = "VestGrenadeA";
-		displayName = "VestGrenadeA";
-		ghostIcon = "grenade";
+		displayName = "$STR_CfgVestGrenade0";
+		ghostIcon = "set:dayz_inventory image:grenade";
 	};
 	class Slot_VestGrenadeB
 	{
 		name = "VestGrenadeB";
-		displayName = "VestGrenadeB";
-		ghostIcon = "grenade";
+		displayName = "$STR_CfgVestGrenade0";
+		ghostIcon = "set:dayz_inventory image:grenade";
 	};
 	class Slot_VestGrenadeC
 	{
 		name = "VestGrenadeC";
-		displayName = "VestGrenadeC";
-		ghostIcon = "grenade";
+		displayName = "$STR_CfgVestGrenade0";
+		ghostIcon = "set:dayz_inventory image:grenade";
 	};
 	class Slot_VestGrenadeD
 	{
 		name = "VestGrenadeD";
-		displayName = "VestGrenadeD";
-		ghostIcon = "grenade";
+		displayName = "$STR_CfgVestGrenade0";
+		ghostIcon = "set:dayz_inventory image:grenade";
 	};
 	class Slot_GasMaskFilter
 	{
 		name = "GasMaskFilter";
-		displayName = "GasMaskFilter";
+		displayName = "";
 		ghostIcon = "";
 	};
 	class Slot_Rope
 	{
 		name = "Rope";
-		displayName = "Rope";
-		ghostIcon = "rope";
+		displayName = "$STR_CfgRope0";
+		ghostIcon = "set:dayz_inventory image:rope";
 	};
 	class Slot_RevolverCylinder
 	{
 		name = "RevolverCylinder";
-		displayName = "RevolverCylinder";
+		displayName = "";
 		ghostIcon = "";
 		show = "false";
 	};
 	class Slot_RevolverEjector
 	{
 		name = "RevolverEjector";
-		displayName = "RevolverEjector";
+		displayName = "";
 		ghostIcon = "";
 		show = "false";
 	};
 	class Slot_Splint_Right
 	{
 		name = "Splint_Right";
-		displayName = "Splint_Right";
+		displayName = "";
 		ghosticon = "";
 		show = "false";
 	};
 	class Slot_Splint_Left
 	{
 		name = "Splint_Left";
-		displayName = "Splint_Left";
+		displayName = "";
 		ghosticon = "";
 		show = "false";
 	};

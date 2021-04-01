@@ -63,7 +63,7 @@ class cfgWeapons
 		{
 			soundSetShot[] = {"B95_Shot_SoundSet","B95_Tail_SoundSet","B95_InteriorTail_SoundSet"};
 			reloadTime = 0.1;
-			dispersion = 0.001;
+			dispersion = 0.00075;
 			magazineSlot = "magazine";
 		};
 		class Burst: Mode_Burst
@@ -94,7 +94,7 @@ class cfgWeapons
 			{
 				soundSetShot[] = {"B95_Shot_SoundSet","B95_Tail_SoundSet","B95_InteriorTail_SoundSet"};
 				reloadTime = 0.1;
-				dispersion = 0.001;
+				dispersion = 0.00075;
 				magazineSlot = "magazine";
 			};
 			class Burst: Mode_Burst
@@ -113,6 +113,11 @@ class cfgWeapons
 				discreteDistance[] = {50,100,200};
 				discreteDistanceInitIndex = 0;
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

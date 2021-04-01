@@ -114,6 +114,11 @@ class cfgWeapons
 				};
 			};
 		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
+		};
 		class OpticsInfo: OpticsInfoRifle
 		{
 			memoryPointCamera = "eye";

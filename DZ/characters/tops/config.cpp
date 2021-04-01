@@ -447,7 +447,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\sweater.rvmat","DZ\characters\tops\Data\sweater_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\sweater.rvmat","DZ\characters\tops\Data\sweater_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\sweater_damage.rvmat","DZ\characters\tops\Data\sweater_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\sweater_damage.rvmat","DZ\characters\tops\Data\sweater_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\sweater_destruct.rvmat","DZ\characters\tops\Data\sweater_g_destruct.rvmat"}}};
 				};
 			};
@@ -554,7 +554,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 70;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Shirt.rvmat","DZ\characters\tops\Data\Shirt_ground.rvmat"}},{0.7,{"DZ\characters\tops\Data\Shirt.rvmat","DZ\characters\tops\Data\Shirt_ground.rvmat"}},{0.5,{"DZ\characters\tops\Data\Shirt_damage.rvmat","DZ\characters\tops\Data\Shirt_ground_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Shirt_damage.rvmat","DZ\characters\tops\Data\Shirt_ground_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Shirt_destruct.rvmat","DZ\characters\tops\Data\Shirt_ground_destruct.rvmat"}}};
 				};
 			};
@@ -637,7 +637,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\tshirt.rvmat","DZ\characters\tops\Data\tshirt_ground.rvmat"}},{0.7,{"DZ\characters\tops\Data\tshirt.rvmat","DZ\characters\tops\Data\tshirt_ground.rvmat"}},{0.5,{"DZ\characters\tops\Data\tshirt_damage.rvmat","DZ\characters\tops\Data\tshirt_ground_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\tshirt_damage.rvmat","DZ\characters\tops\Data\tshirt_ground_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\tshirt_destruct.rvmat","DZ\characters\tops\Data\tshirt_ground_destruct.rvmat"}}};
 				};
 			};
@@ -866,7 +866,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\PCU5Jacket.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground.rvmat"}},{0.7,{"DZ\characters\tops\Data\PCU5Jacket.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground.rvmat"}},{0.5,{"DZ\characters\tops\Data\PCU5Jacket_damage.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\PCU5Jacket_damage.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\PCU5Jacket_destruct.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_destruct.rvmat"}}};
 				};
 			};
@@ -974,7 +974,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\PCU5Jacket_nopatches.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground.rvmat"}},{0.7,{"DZ\characters\tops\Data\PCU5Jacket_nopatches.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground.rvmat"}},{0.5,{"DZ\characters\tops\Data\PCU5Jacket_nopatches_damage.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\PCU5Jacket_nopatches_damage.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\PCU5Jacket_nopatches_destruct.rvmat","DZ\characters\tops\Data\PCU5Jacket_ground_destruct.rvmat"}}};
 				};
 			};
@@ -1081,7 +1081,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\raincoat.rvmat","DZ\characters\tops\Data\raincoat_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\raincoat.rvmat","DZ\characters\tops\Data\raincoat_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\raincoat_damage.rvmat","DZ\characters\tops\Data\raincoat_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\raincoat_damage.rvmat","DZ\characters\tops\Data\raincoat_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\raincoat_destruct.rvmat","DZ\characters\tops\Data\raincoat_g_destruct.rvmat"}}};
 				};
 			};
@@ -1176,7 +1176,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\M65_Jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\M65_Jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\M65_Jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\M65_Jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\M65_Jacket_destruct.rvmat"}}};
 				};
 			};
@@ -1284,7 +1284,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 170;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\TTsKO_Jacket.rvmat","DZ\characters\tops\Data\TTsKO_Jacket_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\TTsKO_Jacket.rvmat","DZ\characters\tops\Data\TTsKO_Jacket_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\TTsKO_Jacket_damage.rvmat","DZ\characters\tops\Data\TTsKO_Jacket_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\TTsKO_Jacket_damage.rvmat","DZ\characters\tops\Data\TTsKO_Jacket_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\TTsKO_Jacket_destruct.rvmat","DZ\characters\tops\Data\TTsKO_Jacket_g_destruct.rvmat"}}};
 				};
 			};
@@ -1373,7 +1373,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 130;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\GorkaUpper.rvmat","DZ\characters\tops\Data\GorkaUpper_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\GorkaUpper.rvmat","DZ\characters\tops\Data\GorkaUpper_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\GorkaUpper_damage.rvmat","DZ\characters\tops\Data\GorkaUpper_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\GorkaUpper_damage.rvmat","DZ\characters\tops\Data\GorkaUpper_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\GorkaUpper_destruct.rvmat","DZ\characters\tops\Data\GorkaUpper_g_destruct.rvmat"}}};
 				};
 			};
@@ -1481,7 +1481,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 130;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Riders_Jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\Riders_Jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\Riders_Jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Riders_Jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Riders_Jacket_destruct.rvmat"}}};
 				};
 			};
@@ -1570,7 +1570,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\WoolCoat.rvmat"}},{0.7,{"DZ\characters\tops\Data\WoolCoat.rvmat"}},{0.5,{"DZ\characters\tops\Data\WoolCoat_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\WoolCoat_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\WoolCoat_destruct.rvmat"}}};
 				};
 			};
@@ -1794,7 +1794,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\PoliceJacket.rvmat","DZ\characters\tops\Data\PoliceJacket_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\PoliceJacket.rvmat","DZ\characters\tops\Data\PoliceJacket_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\PoliceJacket_damage.rvmat","DZ\characters\tops\Data\PoliceJacket_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\PoliceJacket_damage.rvmat","DZ\characters\tops\Data\PoliceJacket_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\PoliceJacket_destruct.rvmat","DZ\characters\tops\Data\PoliceJacket_g_destruct.rvmat"}}};
 				};
 			};
@@ -1880,7 +1880,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\PoliceJacket.rvmat","DZ\characters\tops\Data\PoliceJacket_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\PoliceJacket.rvmat","DZ\characters\tops\Data\PoliceJacket_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\PoliceJacket_damage.rvmat","DZ\characters\tops\Data\PoliceJacket_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\PoliceJacket_damage.rvmat","DZ\characters\tops\Data\PoliceJacket_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\PoliceJacket_destruct.rvmat","DZ\characters\tops\Data\PoliceJacket_g_destruct.rvmat"}}};
 				};
 			};
@@ -1963,7 +1963,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 135;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Paramedic_Jacket.rvmat","DZ\characters\tops\Data\Paramedic_Jacket_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\Paramedic_Jacket.rvmat","DZ\characters\tops\Data\Paramedic_Jacket_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\Paramedic_Jacket_damage.rvmat","DZ\characters\tops\Data\Paramedic_Jacket_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Paramedic_Jacket_damage.rvmat","DZ\characters\tops\Data\Paramedic_Jacket_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Paramedic_Jacket_destruct.rvmat","DZ\characters\tops\Data\Paramedic_Jacket_g_destruct.rvmat"}}};
 				};
 			};
@@ -2062,7 +2062,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Firefighter_jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\Firefighter_jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\Firefighter_jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Firefighter_jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Firefighter_jacket_destruct.rvmat"}}};
 				};
 			};
@@ -2158,7 +2158,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\prison_top.rvmat","DZ\characters\tops\Data\prison_top_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\prison_top.rvmat","DZ\characters\tops\Data\prison_top_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\prison_top_damage.rvmat","DZ\characters\tops\Data\prison_top_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\prison_top_damage.rvmat","DZ\characters\tops\Data\prison_top_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\prison_top_destruct.rvmat","DZ\characters\tops\Data\prison_top_g_destruct.rvmat"}}};
 				};
 			};
@@ -2209,7 +2209,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 75;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\MiniDress.rvmat"}},{0.7,{"DZ\characters\tops\Data\MiniDress.rvmat"}},{0.5,{"DZ\characters\tops\Data\MiniDress_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\MiniDress_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\MiniDress_destruct.rvmat"}}};
 				};
 			};
@@ -2301,7 +2301,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\QuiltedJacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\QuiltedJacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\QuiltedJacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\QuiltedJacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\QuiltedJacket_destruct.rvmat"}}};
 				};
 			};
@@ -2548,7 +2548,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};
@@ -2619,7 +2619,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\data\Top_LeatherJacket_g_natural.rvmat","DZ\characters\tops\data\Top_LeatherJacket_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\tops\Data\Top_LeatherJacket_g_natural_damage.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_natural_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\tops\Data\Top_LeatherJacket_g_natural_destruct.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_natural_destruct.rvmat"}}};
 				};
 			};
@@ -2637,7 +2637,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\data\Top_LeatherJacket_g_natural.rvmat","DZ\characters\tops\data\Top_LeatherJacket_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\tops\Data\Top_LeatherJacket_g_beige_damage.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_beige_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\tops\Data\Top_LeatherJacket_g_beige_destruct.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_beige_destruct.rvmat"}}};
 				};
 			};
@@ -2655,7 +2655,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\data\Top_LeatherJacket_g_natural.rvmat","DZ\characters\tops\data\Top_LeatherJacket_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\tops\Data\Top_LeatherJacket_g_brown_damage.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_brown_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\tops\Data\Top_LeatherJacket_g_brown_destruct.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_brown_destruct.rvmat"}}};
 				};
 			};
@@ -2673,7 +2673,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\data\Top_LeatherJacket_g_natural.rvmat","DZ\characters\tops\data\Top_LeatherJacket_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\tops\Data\Top_LeatherJacket_g_black_damage.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_black_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\tops\Data\Top_LeatherJacket_g_black_destruct.rvmat","DZ\characters\tops\Data\Top_LeatherJacket_black_destruct.rvmat"}}};
 				};
 			};
@@ -2704,7 +2704,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Hunting_jacket.rvmat","DZ\characters\tops\Data\Hunting_jacket_G.rvmat"}},{0.7,{"DZ\characters\tops\Data\Hunting_jacket.rvmat","DZ\characters\tops\Data\Hunting_jacket_G.rvmat"}},{0.5,{"DZ\characters\tops\Data\Hunting_jacket_damage.rvmat","DZ\characters\tops\Data\Hunting_jacket_G_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Hunting_jacket_damage.rvmat","DZ\characters\tops\Data\Hunting_jacket_G_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Hunting_jacket_destruct.rvmat","DZ\characters\tops\Data\Hunting_jacket_G_destruct.rvmat"}}};
 				};
 			};
@@ -2817,7 +2817,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\MedicalScrubs_Shirt.rvmat"}},{0.7,{"DZ\characters\tops\Data\MedicalScrubs_Shirt.rvmat"}},{0.5,{"DZ\characters\tops\Data\MedicalScrubs_Shirt_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\MedicalScrubs_Shirt_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\MedicalScrubs_Shirt_destruct.rvmat"}}};
 				};
 			};
@@ -2886,7 +2886,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\LabCoat.rvmat"}},{0.7,{"DZ\characters\tops\Data\LabCoat.rvmat"}},{0.5,{"DZ\characters\tops\Data\LabCoat_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\LabCoat_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\LabCoat_destruct.rvmat"}}};
 				};
 			};
@@ -2938,7 +2938,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 70;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\NurseDress.rvmat"}},{0.7,{"DZ\characters\tops\Data\NurseDress.rvmat"}},{0.5,{"DZ\characters\tops\Data\NurseDress_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\NurseDress_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\NurseDress_destruct.rvmat"}}};
 				};
 			};
@@ -2999,7 +2999,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 160;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\USMC_Jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\USMC_Jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\USMC_Jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\USMC_Jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\USMC_Jacket_destruct.rvmat"}}};
 				};
 			};
@@ -3089,6 +3089,17 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		soundAttType = "TShirt";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 110;
+					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Blouse.rvmat"}},{0.7,{"DZ\characters\tops\Data\Blouse.rvmat"}},{0.5,{"DZ\characters\tops\Data\Blouse_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Blouse_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Blouse_destruct.rvmat"}}};
+				};
+			};
+		};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\tops\blouse_m.p3d";
@@ -3158,7 +3169,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\NBC_Jacket.rvmat","DZ\characters\tops\Data\NBC_Jacket_g.rvmat"}},{0.7,{"DZ\characters\tops\Data\NBC_Jacket.rvmat","DZ\characters\tops\Data\NBC_Jacket_g.rvmat"}},{0.5,{"DZ\characters\tops\Data\NBC_Jacket_damage.rvmat","DZ\characters\tops\Data\NBC_Jacket_g_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\NBC_Jacket_damage.rvmat","DZ\characters\tops\Data\NBC_Jacket_g_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\NBC_Jacket_destruct.rvmat","DZ\characters\tops\Data\NBC_Jacket_g_destruct.rvmat"}}};
 				};
 			};
@@ -3256,7 +3267,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\denim_jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\denim_jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\denim_jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\denim_jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\denim_jacket_destruct.rvmat"}}};
 				};
 			};
@@ -3397,7 +3408,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Chernarus_sport_shirt.rvmat"}},{0.7,{"DZ\characters\tops\Data\Chernarus_sport_shirt.rvmat"}},{0.5,{"DZ\characters\tops\Data\Chernarus_sport_shirt_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Chernarus_sport_shirt_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Chernarus_sport_shirt_destruct.rvmat"}}};
 				};
 			};
@@ -3450,7 +3461,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 140;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\Jumpsuit_top.rvmat"}},{0.7,{"DZ\characters\tops\Data\Jumpsuit_top.rvmat"}},{0.5,{"DZ\characters\tops\Data\Jumpsuit_top_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\Jumpsuit_top_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\Jumpsuit_top_destruct.rvmat"}}};
 				};
 			};
@@ -3560,7 +3571,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 140;
 					healthLevels[] = {{1.0,{"DZ\characters\tops\Data\BDU_Jacket.rvmat"}},{0.7,{"DZ\characters\tops\Data\BDU_Jacket.rvmat"}},{0.5,{"DZ\characters\tops\Data\BDU_Jacket_damage.rvmat"}},{0.3,{"DZ\characters\tops\Data\BDU_Jacket_damage.rvmat"}},{0.0,{"DZ\characters\tops\Data\BDU_Jacket_destruct.rvmat"}}};
 				};
 			};
@@ -3904,7 +3915,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};

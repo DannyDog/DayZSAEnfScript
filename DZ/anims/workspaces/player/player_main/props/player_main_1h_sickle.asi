@@ -1,0 +1,11 @@
+$animsetinstance {
+ #template "{F0C651DE8E24A5DE}DZ/anims/workspaces/player/player_main/player_main.ast"
+ #nparents 1
+ #parent "{7324B2E80BB624A1}DZ/anims/workspaces/player/player_main/player_main_1h.asi"
+ $animations {
+   "Suicide.1hd.Cancelled" "{8D12157463907254}DZ/anims/anm/player/gestures/suicide/p_1hd_sickle_cro_suicide_cancelled.anm"
+   "Suicide.1hd.In" "{E18CFE06CE76A4FA}DZ/anims/anm/player/gestures/suicide/p_1hd_sickle_cro_suicide_in.anm"
+   "Suicide.1hd.Loop" "{D3C9C52A5C77F623}DZ/anims/anm/player/gestures/suicide/p_1hd_sickle_cro_suicide_loop.anm"
+   "Suicide.1hd.Out" "{AADB9955178AAD71}DZ/anims/anm/player/gestures/suicide/p_1hd_sickle_cro_suicide_out.anm"
+  
+ }

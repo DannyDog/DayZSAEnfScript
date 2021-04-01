@@ -11,10 +11,10 @@ WindowWidgetClass server_browser_tab_root {
    ignorepointer 1
    color 0 0 0 0.549
    position 80 0
-   size 1050 1080
+   size 0.63 1080
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 1
    "no focus" 1
    Padding 0
@@ -114,11 +114,11 @@ WindowWidgetClass server_browser_tab_root {
         FrameWidgetClass server_list_content_header_host {
          ignorepointer 0
          position 0 0
-         size 585 30
+         size 740 1
          hexactpos 1
          vexactpos 1
          hexactsize 1
-         vexactsize 1
+         vexactsize 0
          {
           FrameWidgetClass host_sort {
            visible 1
@@ -848,11 +848,11 @@ WindowWidgetClass server_browser_tab_root {
    ignorepointer 1
    color 0 0 0 0.549
    position 80 0
-   size 450 1
+   size 0.25 1
    halign right_ref
    hexactpos 1
    vexactpos 1
-   hexactsize 1
+   hexactsize 0
    vexactsize 0
    scaled 1
    priority 1

@@ -827,14 +827,16 @@ $animsettemplate {
   }
  }
  $groupType "Suicide" {
-  #ngroupnames 9
+  #ngroupnames 11
   #nanims 4
   $groupnames {
     "1hd"
+    "farminghoe"
     "fireaxe"
     "pitchfork"
     "pst"
     "rfl"
+    "sickle"
     "spear"
     "sword"
     "unarmed"

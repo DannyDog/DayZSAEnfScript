@@ -41,7 +41,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.9,10,250,4,10};
 		WeaponLength = 0.63;
 		barrelArmor = 1.758;
-		initSpeedMultiplier = 1.17;
+		initSpeedMultiplier = 1.0;
 		DisplayMagazine = 0;
 		chamberSize = 1;
 		chamberedRound = "";
@@ -60,7 +60,7 @@ class cfgWeapons
 			begin2[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_1",1,1,700};
 			soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin2",0.33333};
 			reloadTime = 0.19;
-			dispersion = 0.009;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 		};
 		class OpticsInfoMagnumBase: OpticsInfoPistol
@@ -71,6 +71,11 @@ class cfgWeapons
 			modelOptics = "-";
 			distanceZoomMin = 100;
 			distanceZoomMax = 100;
+		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoMagnumBase{};
 		muzzles[] = {"this","SecondMuzzle","ThirdMuzzle","FourthMuzzle","FifthMuzzle","SixthMuzzle"};
@@ -85,6 +90,7 @@ class cfgWeapons
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_357"};
 			barrelArmor = 1.758;
+			initSpeedMultiplier = 1.0;
 			drySound[] = {"DZ\sounds\weapons\firearms\magnum\Magnum_dry",0.5,1,20};
 			soundBullet[] = {};
 			class Single: Mode_SemiAuto
@@ -94,7 +100,7 @@ class cfgWeapons
 				begin2[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_1",1,1,700};
 				soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin2",0.33333};
 				reloadTime = 0.19;
-				dispersion = 0.009;
+				dispersion = 0.0045;
 				magazineSlot = "magazine";
 			};
 			class OpticsInfo: OpticsInfoMagnumBase{};

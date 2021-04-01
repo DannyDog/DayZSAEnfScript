@@ -44,8 +44,8 @@ class AreaDamageBase
 		
 		m_DamageableTypes	= new array<typename>;
 		m_DamageableTypes.Insert(DayZPlayer);
-		m_DamageableTypes.Insert(DayZInfected);
-		m_DamageableTypes.Insert(DayZAnimal);
+		//m_DamageableTypes.Insert(DayZInfected);
+		//m_DamageableTypes.Insert(DayZAnimal);
 
 		m_AmmoName			= "MeleeDamage";
 		m_DamageType 		= DT_CUSTOM;
@@ -53,7 +53,10 @@ class AreaDamageBase
 		m_LoopTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
 		m_DeferTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
 	}
-	void ~AreaDamageBase() {}
+	void ~AreaDamageBase()
+	{
+		Destroy();
+	}
 
 	//! spawn damage trigger
 	void Spawn()
@@ -145,6 +148,16 @@ class AreaDamageBase
     void SetAreaOrientation( vector orientation )
 		{ m_AreaOrientation = orientation };	
 	
+	string GetAmmoName()
+	{
+		return m_AmmoName;
+	}
+	
+	vector GetOrientation()
+	{
+		return m_AreaOrientation;
+	}
+	
 	EntityAI GetParentObject()
 	{
 		return m_ParentObject;
@@ -174,7 +187,7 @@ class AreaDamageBase
 	{
 		bool is_local;
 
-		if( GetGame().IsMultiplayer() && GetGame().IsServer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
 			is_local = false;
 		}
@@ -183,7 +196,7 @@ class AreaDamageBase
 			is_local = true;
 		}
 
-		if(Class.CastTo(m_AreaDamageTrigger, GetGame().CreateObject( "AreaDamageTrigger", m_AreaPosition, is_local, false, !is_local )))
+		if (Class.CastTo(m_AreaDamageTrigger, GetGame().CreateObject( "AreaDamageTrigger", m_AreaPosition, is_local, false, !is_local )))
 		{
 			m_AreaDamageTrigger.SetOrientation( m_AreaOrientation );
 			m_AreaDamageTrigger.SetExtents( m_ExtentMin, m_ExtentMax );
@@ -194,7 +207,7 @@ class AreaDamageBase
 	//! destroys damage trigger
 	protected void DestroyDamageTrigger()
 	{
-		if( GetGame() && m_AreaDamageTrigger ) // It's necesarry to check if the game exists. Otherwise a crash occurs while quitting.
+		if ( GetGame() && m_AreaDamageTrigger ) // It's necesarry to check if the game exists. Otherwise a crash occurs while quitting.
 		{
 			GetGame().ObjectDelete( m_AreaDamageTrigger );
 			m_AreaDamageTrigger = null;
@@ -222,7 +235,7 @@ class AreaDamageBase
 	{
 		string hitzone;
 
-		if( m_RaycastSources.Count() )
+		if ( m_RaycastSources.Count() )
 		{
 			hitzone = GetRaycastedHitZone(object, m_RaycastSources);
 			EvaluateDamage_Common(object, hitzone);
@@ -236,27 +249,28 @@ class AreaDamageBase
 	
 	protected void EvaluateDamage_Common(Object object, string hitzone)
 	{
-		if( object && object.IsAlive() )
+		if ( object && object.IsAlive() )
 		{
-			if( object.IsAnyInherited(m_DamageableTypes) )
+			if ( object.IsAnyInherited( m_DamageableTypes ) )
 			{
 				//If we are hitting an infected or animal, we increase the damage dealt as they do not bleed
-				//Change is multiplier, keep small as fire damage could one shot AI if multiplier is too high
-				DayZInfected dayzInfected = DayZInfected.Cast(object);
+				//Change is multiplier
+				/*DayZInfected dayzInfected = DayZInfected.Cast(object);
 				DayZAnimal dayzAnimal = DayZAnimal.Cast(object);
 				EntityAI eai = EntityAI.Cast(object);
 				if ( dayzInfected || dayzAnimal )
 				{
+					//Agents should not take damage from fireplace, but just in case, keep multiplier relatively low
 					if ( hitzone )
 					{
-						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 5);
+						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 8);
 					}
 					else
-						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), "", m_AmmoName, "0.5 0.5 0.5", 5);
+						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), "", m_AmmoName, "0.5 0.5 0.5", 8);
 				}
-				else
+				else*/
 				{
-					eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
+					object.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
 				}
 				PostDamageActions();
 			}
@@ -311,17 +325,17 @@ class AreaDamageBase
 			{
 				Object contact_obj = victims.Get(j);
 				
-				if( contact_obj.IsAnyInherited(m_DamageableTypes) )
+				if ( contact_obj.IsAnyInherited(m_DamageableTypes) )
 				{
 					isSteppedOn = true;
 					break;
 				}
 			}
 			
-			if( isSteppedOn )
+			if ( isSteppedOn )
 			{
 				EntityAI eai = EntityAI.Cast(victim);
-				if( eai )
+				if ( eai )
 				{
 					hitzone = eai.GetDamageZoneNameByComponentIndex(contactComponent);
 					break;
@@ -329,7 +343,7 @@ class AreaDamageBase
 			}
 		}
 		
-		if( isSteppedOn )
+		if ( isSteppedOn )
 		{
 			return hitzone;
 		}
@@ -352,10 +366,10 @@ class AreaDamageBase
 	
 	void EnableDebug(bool pState = false)
 	{
-		//if(GetGame() && (!GetGame().IsClient() || GetGame().IsMultiplayer()))
+		//if (GetGame() && (!GetGame().IsClient() || GetGame().IsMultiplayer()))
 			//return;
 
-		if( pState )
+		if ( pState )
 		{
 			Debug_DrawArea();
 		}

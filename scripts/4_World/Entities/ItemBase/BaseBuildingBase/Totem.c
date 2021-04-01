@@ -114,6 +114,7 @@ class TerritoryFlag extends BaseBuildingBase
 		ctx.Write( m_RefresherTimeRemaining );
 		ctx.Write( m_RefreshTimeCounter );
 		ctx.Write( m_FlagRefresherMaxDuration );
+		ctx.Write( m_RefresherActive );
 	}
 	
 	override bool OnStoreLoad( ParamsReadContext ctx, int version )
@@ -135,6 +136,11 @@ class TerritoryFlag extends BaseBuildingBase
 		}
 		
 		if ( !ctx.Read( loaded_max_duration ) )
+		{
+			return false;
+		}
+		
+		if ( version >= 118 && !ctx.Read( m_RefresherActive ) )
 		{
 			return false;
 		}

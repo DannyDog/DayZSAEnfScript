@@ -3705,8 +3705,8 @@ class CfgMagazines
 		weight = 40;
 		itemSize[] = {1,1};
 		count = 5;
-		ammo = "Bullet_308Win";
-		ammoItems[] = {"Ammo_308Win","Ammo_308WinTracer"};
+		ammo = "Bullet_556x45";
+		ammoItems[] = {"Ammo_556x45","Ammo_556x45Tracer"};
 		tracersEvery = 0;
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\magazine\data\scout_mag_co.paa"};
@@ -3876,6 +3876,96 @@ class CfgMagazines
 		weight = 350;
 		itemSize[] = {1,2};
 		count = 10;
+		ammo = "Bullet_9x39";
+		ammoItems[] = {"Ammo_9x39","Ammo_9x39AP"};
+		tracersEvery = 0;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\magazine\data\vss_mag.rvmat"}},{0.7,{"DZ\weapons\attachments\magazine\data\vss_mag.rvmat"}},{0.5,{"DZ\weapons\attachments\magazine\data\vss_mag_damage.rvmat"}},{0.3,{"DZ\weapons\attachments\magazine\data\vss_mag_damage.rvmat"}},{0.0,{"DZ\weapons\attachments\magazine\data\vss_mag_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class MagRifle_fill_in
+				{
+					soundSet = "MagRifle_fill_in_SoundSet";
+					id = 1;
+				};
+				class MagRifle_fill_loop
+				{
+					soundSet = "MagRifle_fill_loop_SoundSet";
+					id = 2;
+				};
+				class MagRifle_fill_out
+				{
+					soundSet = "MagRifle_fill_out_SoundSet";
+					id = 3;
+				};
+				class MagRifle_empty_in
+				{
+					soundSet = "MagRifle_empty_in_SoundSet";
+					id = 4;
+				};
+				class MagRifle_empty_loop
+				{
+					soundSet = "MagRifle_empty_loop_SoundSet";
+					id = 5;
+				};
+				class MagRifle_empty_out
+				{
+					soundSet = "MagRifle_empty_out_SoundSet";
+					id = 6;
+				};
+				class MagPistol_fill_in
+				{
+					soundSet = "MagPistol_fill_in_SoundSet";
+					id = 7;
+				};
+				class MagPistol_fill_loop
+				{
+					soundSet = "MagPistol_fill_loop_SoundSet";
+					id = 8;
+				};
+				class MagPistol_fill_out
+				{
+					soundSet = "MagPistol_fill_out_SoundSet";
+					id = 9;
+				};
+				class MagPistol_empty_in
+				{
+					soundSet = "MagPistol_empty_in_SoundSet";
+					id = 10;
+				};
+				class MagPistol_empty_loop
+				{
+					soundSet = "MagPistol_empty_loop_SoundSet";
+					id = 11;
+				};
+				class MagPistol_empty_out
+				{
+					soundSet = "MagPistol_empty_out_SoundSet";
+					id = 12;
+				};
+			};
+		};
+	};
+	class Mag_VAL_20Rnd: Magazine_Base
+	{
+		scope = 2;
+		displayName = "$STR_CfgMagazines_Mag_VAL_20Rnd0";
+		descriptionShort = "$STR_CfgMagazines_Mag_VAL_20Rnd1";
+		model = "\DZ\weapons\attachments\magazine\magazine_val.p3d";
+		weight = 550;
+		itemSize[] = {1,2};
+		count = 20;
 		ammo = "Bullet_9x39";
 		ammoItems[] = {"Ammo_9x39","Ammo_9x39AP"};
 		tracersEvery = 0;
@@ -5066,6 +5156,14 @@ class CfgNonAIVehicles
 	{
 		scope = 2;
 		model = "\dz\weapons\projectiles\shotgunshell_pellets.p3d";
+		autocenter = 1;
+		shadow = 1;
+		simulation = "proxyprojectile";
+	};
+	class Proxy357_SingleRound
+	{
+		scope = 2;
+		model = "\dz\weapons\projectiles\357_SingleRound.p3d";
 		autocenter = 1;
 		shadow = 1;
 		simulation = "proxyprojectile";

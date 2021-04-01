@@ -40,7 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.75,40,180,4,10};
 		ironsightsExcludingOptics[] = {"M4_CarryHandleOptic","BUISOptic","M68Optic","M4_T3NRDSOptic","ReflexOptic"};
 		WeaponLength = 0.583269;
-		barrelArmor = 1.667;
+		barrelArmor = 1.25;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_9x19"};
@@ -143,6 +143,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 66;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

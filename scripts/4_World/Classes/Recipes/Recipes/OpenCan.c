@@ -29,6 +29,7 @@ class OpenCan extends RecipeBase
 		InsertIngredient(0,"TacticalBaconCan");//you can insert multiple ingredients this way
 		InsertIngredient(0,"SpaghettiCan");//you can insert multiple ingredients this way
 		InsertIngredient(0,"SardinesCan");//you can insert multiple ingredients this way
+		InsertIngredient(0,"UnknownFoodCan");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[0] = 0;// 0 = do nothing
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
@@ -38,6 +39,8 @@ class OpenCan extends RecipeBase
 		
 		//ingredient 2
 		InsertIngredient(1,"Sickle");//you can insert multiple ingredients this way
+		InsertIngredient(1,"KukriKnife");
+		InsertIngredient(1,"FangeKnife");
 		InsertIngredient(1,"Hacksaw");
 		InsertIngredient(1,"KitchenKnife");
 		InsertIngredient(1,"SteakKnife");
@@ -53,6 +56,7 @@ class OpenCan extends RecipeBase
 		InsertIngredient(1,"SKS_Bayonet");
 		InsertIngredient(1,"Spear");
 		InsertIngredient(1,"CanOpener");
+		InsertIngredient(1,"FarmingHoe");
 		InsertIngredient(1,"Shovel");
 		InsertIngredient(1,"FieldShovel");
 		InsertIngredient(1,"Crowbar");
@@ -61,7 +65,6 @@ class OpenCan extends RecipeBase
 		InsertIngredient(1,"Wrench");
 		InsertIngredient(1,"LugWrench");
 		InsertIngredient(1,"Screwdriver");
-		InsertIngredient(1,"FarmingHoe");
 		InsertIngredient(1,"SledgeHammer");
 		InsertIngredient(1,"Broom");
 		InsertIngredient(1,"Chainsaw");
@@ -103,6 +106,9 @@ class OpenCan extends RecipeBase
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)//final check for recipe's validity
 	{
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		return true;
 	}
 

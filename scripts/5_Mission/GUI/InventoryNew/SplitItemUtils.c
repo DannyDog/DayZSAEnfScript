@@ -14,7 +14,7 @@ class SplitItemUtils
 			{
 				if( il.GetType() == InventoryLocationType.ATTACHMENT )
 				{
-					player.PredictiveTakeEntityToTargetAttachmentEx(target, item, il.GetSlot());
+					player.PredictiveTakeEntityToTargetAttachmentEx(il.GetParent(), item, il.GetSlot());
 				}
 				else
 				{
@@ -26,7 +26,7 @@ class SplitItemUtils
 			}
 			else
 			{
-				item_base.SplitIntoStackMaxClient( target, il.GetSlot() );
+				item_base.SplitIntoStackMaxClient( il.GetParent(), il.GetSlot() );
 			}
 		}
 	}

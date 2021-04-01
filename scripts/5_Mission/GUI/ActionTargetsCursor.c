@@ -15,7 +15,7 @@ class ATCCachedObject
 	//! cache object and its world pos
 	void Store(Object obj, vector pos, int compIdx)
 	{
-		if(!m_CachedObject)
+		if (!m_CachedObject)
 		{
 			m_CachedObject = obj;
 			m_CursorWPos = pos;
@@ -267,7 +267,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	void Update()
 	{
 		//! don't show floating widget if it's disabled in profile
-		if(GetGame().GetUIManager().GetMenu() != null || !g_Game.GetProfileOption(EDayZProfilesOptions.HUD))
+		if (GetGame().GetUIManager().GetMenu() != null || !g_Game.GetProfileOption(EDayZProfilesOptions.HUD))
 		{
 			HideWidget();
 			return;
@@ -278,19 +278,19 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		//SetHealthVisibility(true);
 		//SetQuantityVisibility(true);
 		
-		if(m_Player && !m_Player.IsAlive()) // handle respawn
+		if (m_Player && !m_Player.IsAlive()) // handle respawn
 		{
 			m_Player = null;
 			m_AM = null;
 		}
 
-		if(!m_Player) GetPlayer();
-		if(!m_AM) GetActionManager();
+		if (!m_Player) GetPlayer();
+		if (!m_AM) GetActionManager();
 
 		GetTarget();
 		GetActions();
 
-		if((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
+		if ((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
 		{
 			//! cursor with fixed position (environment interaction mainly)
 			if ( m_Target.GetObject() == null && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous))
@@ -423,12 +423,12 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		
 		Object object;
 
-		if(m_Target)
+		if (m_Target)
 		{
 			object = m_Target.GetObject();
 			compIdx  = m_Target.GetComponentIndex();
 
-			if(m_Target.GetCursorHitPos() == vector.Zero)
+			if (m_Target.GetCursorHitPos() == vector.Zero)
 				isTargetForced = true;
 		}
 		else
@@ -436,9 +436,9 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			return;
 		}
 
-		if(object)
+		if (object)
 		{
-			if(!isTargetForced)
+			if (!isTargetForced)
 			{
 				compName = object.GetActionComponentName( compIdx );
 				object.GetActionComponentNameList( compIdx, components );
@@ -454,17 +454,17 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	
 				//! Get memory LOD from p3d
 				lod = object.GetLODByName(MEM_LOD_NAME);
-				if(lod != null)
+				if (lod != null)
 				{
 					//! save selection from memory lod
 					lod.GetSelections(memSelections);
 					
 					// items with CE_Center mem point
-					if( IsComponentInSelection( memSelections, CE_CENTER_COMP_NAME ) )
+					if ( IsComponentInSelection( memSelections, CE_CENTER_COMP_NAME ) )
 					{
-						for( int i2 = 0; i2 < memSelections.Count(); ++i2 )
+						for ( int i2 = 0; i2 < memSelections.Count(); ++i2 )
 						{
-							if( memSelections[i2].GetName() == CE_CENTER_COMP_NAME && memSelections[i2].GetVertexCount() == 1 )
+							if ( memSelections[i2].GetName() == CE_CENTER_COMP_NAME && memSelections[i2].GetVertexCount() == 1 )
 							{
 								m_FixedOnPosition = false;
 								modelPos = object.GetSelectionPositionMS( CE_CENTER_COMP_NAME );
@@ -484,12 +484,12 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 						m_CachedObject.Store(object, worldPos, compIdx);
 					} 
 					//! doors/handles
-					else if( !compName.Contains("ladder") && IsComponentInSelection( memSelections, compName ) )
+					else if ( !compName.Contains("ladder") && IsComponentInSelection( memSelections, compName ) )
 					{
-						for( int i1 = 0; i1 < memSelections.Count(); ++i1 )
+						for ( int i1 = 0; i1 < memSelections.Count(); ++i1 )
 						{
 							//! single vertex in selection
-							if( memSelections[i1].GetName() == compName && memSelections[i1].GetVertexCount() == 1 )
+							if ( memSelections[i1].GetName() == compName && memSelections[i1].GetVertexCount() == 1 )
 							{
 								modelPos = object.GetSelectionPositionMS( compName );
 								worldPos = object.ModelToWorld( modelPos );
@@ -511,9 +511,9 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 							//! multiple vertices in selection
 							if ( memSelections[i1].GetName() == compName && memSelections[i1].GetVertexCount() > 1 )
 							{
-								for( int j = 0; j < components.Count(); ++j )
+								for ( int j = 0; j < components.Count(); ++j )
 								{
-									if( IsComponentInSelection(memSelections, components[j]) )
+									if ( IsComponentInSelection(memSelections, components[j]) )
 									{
 										modelPos = object.GetSelectionPositionMS( components[j] );
 										worldPos = object.ModelToWorld( modelPos );
@@ -536,13 +536,13 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 						m_CachedObject.Store(object, worldPos, -1); //! do not store component index for doors/handles
 					}
 					//! ladders handling
-					else if( compName.Contains("ladder") && IsComponentInSelection( memSelections, compName))
+					else if ( compName.Contains("ladder") && IsComponentInSelection( memSelections, compName))
 					{
 						vector ladderHandlePointLS, ladderHandlePointWS;
 						vector closestHandlePos;
 						float lastDistance = 0;
 	
-						for( int i3 = 0; i3 < memSelections.Count(); ++i3 )
+						for ( int i3 = 0; i3 < memSelections.Count(); ++i3 )
 						{
 							if ( memSelections[i3].GetName() == compName && memSelections[i3].GetVertexCount() > 1 )
 							{
@@ -551,7 +551,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 								closestHandlePos = ladderHandlePointWS;
 								lastDistance = Math.AbsFloat(vector.DistanceSq(ladderHandlePointWS, m_Player.GetPosition()));
 	
-								for( int k = 1; k < memSelections[i3].GetVertexCount(); ++k )
+								for ( int k = 1; k < memSelections[i3].GetVertexCount(); ++k )
 								{
 									ladderHandlePointLS = memSelections[i3].GetVertexPosition(lod, k);
 									ladderHandlePointWS = object.ModelToWorld( ladderHandlePointLS );
@@ -628,7 +628,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 	protected void GetActionManager()
 	{
-		if( m_Player && m_Player.IsPlayerSelected() )
+		if ( m_Player && m_Player.IsPlayerSelected() )
 		{
 			Class.CastTo(m_AM, m_Player.GetActionManager());
 		}
@@ -646,10 +646,10 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		m_Single = null;
 		m_Continuous = null;
 
-		if(!m_AM) return;
-		if(!m_Target) return;
-		if(m_Player.IsSprinting()) return;
-		if(m_Player.IsInVehicle()) return; // TODO: TMP: Car AM rework needed
+		if (!m_AM) return;
+		if (!m_Target) return;
+		if (m_Player.IsSprinting()) return;
+		if (m_Player.IsInVehicle()) return; // TODO: TMP: Car AM rework needed
 			
 		array<ActionBase> possible_interact_actions = m_AM.GetPossibleActions(InteractActionInput);
 		array<ActionBase> possible_continuous_interact_actions = m_AM.GetPossibleActions(ContinuousInteractActionInput);
@@ -657,7 +657,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		int possible_continuous_interact_actions_index = m_AM.GetPossibleActionIndex(ContinuousInteractActionInput);
 		
 		m_InteractActionsNum = possible_interact_actions.Count();
-		if( m_InteractActionsNum > 0 )
+		if ( m_InteractActionsNum > 0 )
 		{
 			m_Interact = possible_interact_actions[possible_interact_actions_index];
 			m_DisplayInteractTarget = m_Interact.GetDisplayInteractObject(m_Player,m_Target);
@@ -668,10 +668,10 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		}
 		
 		m_ContinuousInteractActionsNum = possible_continuous_interact_actions.Count();
-		if( m_ContinuousInteractActionsNum > 0 )
+		if ( m_ContinuousInteractActionsNum > 0 )
 		{
 			m_ContinuousInteract = possible_continuous_interact_actions[possible_continuous_interact_actions_index];
-			if(m_DisplayInteractTarget == null)
+			if (m_DisplayInteractTarget == null)
 				m_DisplayInteractTarget = m_ContinuousInteract.GetDisplayInteractObject(m_Player,m_Target);
 		}
 		
@@ -682,7 +682,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 	protected void GetTarget()
 	{
-		if(!m_AM) return;
+		if (!m_AM) return;
 
 		m_Target = m_AM.FindActionTarget();
 		m_Hidden = false;
@@ -690,7 +690,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		if (m_Target && m_Target.GetObject() && m_Target.GetObject().IsItemBase())
 		{
 			ItemBase item = ItemBase.Cast(m_Target.GetObject());
-			if( !item.IsTakeable() || (m_Player && m_Player.IsInVehicle()) )
+			if ( !item.IsTakeable() || (m_Player && m_Player.IsInVehicle()) )
 			{
 				m_Hidden = true;
 			}
@@ -708,25 +708,83 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		return desc;
 	}
 	
-	//getting name of the entity
-	protected string GetItemDesc(ActionBase action)
+	//Getting NAME of the entity
+	protected string GetItemDesc( ActionBase action )
 	{
 		string desc = "";
 		Object tgObject = m_DisplayInteractTarget;
-		if(!tgObject && m_Target)
+		if ( !tgObject && m_Target )
 		{
 			tgObject = m_Target.GetObject();
 		}
 		
-		if(tgObject)
+		if ( tgObject )
 		{
-			if( tgObject.IsItemBase() || tgObject.IsTransport() )
+			//BreakOut if item is ruined
+			Object tgParent = m_Target.GetParent();
+			if ( !tgObject.IsAlive() )
 			{
-				desc = tgObject.GetDisplayName();
+				//Fetch parent item name if one is present
+				if ( !tgParent )
+					desc = tgObject.GetDisplayName();
+				else
+					desc = tgParent.GetDisplayName();
+				return desc;
 			}
-			else if( !tgObject.IsAlive() )
+			
+			EntityAI targetEntity;
+			
+			if ( tgParent && ( tgParent.IsItemBase() || tgParent.IsTransport() ) )
 			{
-				desc = tgObject.GetDisplayName();
+				targetEntity = EntityAI.Cast( tgParent );
+			}
+			
+			if ( tgObject.IsItemBase() || tgObject.IsTransport() )
+			{
+				targetEntity = EntityAI.Cast( tgObject );
+			}
+			
+			if ( targetEntity )
+			{
+				string zone = "";
+				string compName;
+				
+				array<string> selections = new array<string>();
+				
+				//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
+				if ( targetEntity.IsInherited( TentBase ) && TentBase.Cast( targetEntity ).GetState() != 0 )
+				{
+					//This is really specific to tents, as they use proxies. Hence object must be used
+					compName = tgObject.GetActionComponentName( m_Target.GetComponentIndex(), "fire" );
+					
+					if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone ) )
+					{
+						desc = DamageSystem.GetDamageDisplayName( targetEntity, zone );
+					}
+				}
+				else
+				{
+					targetEntity.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
+					
+					//Important to get display name from component tied to multiple selections
+					for ( int s = 0; s < selections.Count(); s++ )
+					{
+						compName = selections[s];
+	
+						if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
+						{
+							desc = DamageSystem.GetDamageDisplayName( targetEntity, zone );
+						}
+					}
+				}
+				
+				//For cases where damagezone is ruined but entity is still alive, car parts for example
+				if ( targetEntity.GetHealthLevel( zone ) >= GameConstants.STATE_RUINED )
+					desc = targetEntity.GetDisplayName();
+				
+				//Safety check to output something to widget
+				if ( desc == "" )
+					desc = targetEntity.GetDisplayName();
 			}
 		}
 		return desc;
@@ -742,51 +800,62 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		}
 		
 		Object tgObject = m_DisplayInteractTarget;
-		if(!tgObject && m_Target)
+		if (!tgObject && m_Target)
 		{
 			tgObject = m_Target.GetObject();
 		}
 		
 		if ( tgObject )
 		{
-			if ( tgObject.IsHealthVisible() )
+			Object tgParent = m_Target.GetParent();
+			EntityAI targetEntity;
+			
+			//Return specific part health, even if display name is from parent
+			if ( !tgObject.IsAlive() )
 			{
-				//bool showZoneHealth = true;
-				if ( tgObject.ShowZonesHealth() && !tgObject.IsDamageDestroyed() )
+				health = tgObject.GetHealthLevel();
+				return health;
+			}
+			
+			if ( tgParent && ( tgParent.IsItemBase() || tgParent.IsTransport() ) )
+			{
+				targetEntity = EntityAI.Cast( tgParent );
+			}
+			
+			if ( tgObject.IsItemBase() || tgObject.IsTransport() )
+			{
+				targetEntity = EntityAI.Cast( tgObject );
+			}
+			
+			if ( targetEntity )
+			{
+				if ( !targetEntity.IsDamageDestroyed() )
 				{
-					//
 					string zone = "";
 					string compName;
 					array<string> selections = new array<string>();
-
+	
 					//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-					tgObject.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
-
+					targetEntity.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
+					
 					for ( int s = 0; s < selections.Count(); s++ )
 					{
 						compName = selections[s];
-						EntityAI targetEntity = EntityAI.Cast( tgObject );
-
-						if ( targetEntity && DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
+	
+						if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
 						{
-							health = m_Target.GetObject().GetHealthLevel(zone);
-							//Print(zone);
+							health = targetEntity.GetHealthLevel(zone);
 							break;
 						}
 					}
-
+	
 					if ( zone == "" )
-						health = m_Target.GetObject().GetHealthLevel();
+						health = targetEntity.GetHealthLevel();
 				}
-				else
-				{
-					health = m_Target.GetObject().GetHealthLevel();
-				}
-
 			}
-			else if ( !m_Target.GetObject().IsAlive() )
+			else
 			{
-				health = m_Target.GetObject().GetHealthLevel();
+				health = tgObject.GetHealthLevel();
 			}
 		}
 		
@@ -797,18 +866,18 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	{
 		InventoryItem item = null;
 
-		if(m_Interact && !m_Interact.HasTarget())
+		if (m_Interact && !m_Interact.HasTarget())
 		{
 			return;
 		}
 		
 		Object tgObject = m_DisplayInteractTarget;
-		if(!tgObject && m_Target)
+		if (!tgObject && m_Target)
 		{
 			tgObject = m_Target.GetObject();
 		}
 		
-		if( Class.CastTo(item, tgObject) )
+		if ( Class.CastTo(item, tgObject) )
 		{
 			q_type = QuantityConversions.HasItemQuantity(item);
 			if (q_type > 0)
@@ -824,12 +893,12 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		PlayerBase player;
 		
 		Object tgObject = m_DisplayInteractTarget;
-		if(!tgObject && m_Target)
+		if (!tgObject && m_Target)
 		{
 			tgObject = m_Target.GetObject();
 		}
 
-		if( Class.CastTo(entity,tgObject) )
+		if ( Class.CastTo(entity,tgObject) )
 		{
 			//! player specific way
 			if (entity.IsInherited(PlayerBase))
@@ -839,14 +908,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 					int attCount = player.GetHumanInventory().AttachmentCount();
 
 					//! go thru the each attachment slot and check cargo count
-					for(int attIdx = 0; attIdx < attCount; attIdx++)
+					for (int attIdx = 0; attIdx < attCount; attIdx++)
 					{
 						EntityAI attachment = player.GetInventory().GetAttachmentFromIndex(attIdx);
 						int attachmentSlot = attachment.GetInventory().GetSlotId(0);
-						if( attachment.GetInventory() )
+						if ( attachment.GetInventory() )
 						{
 							cargo = attachment.GetInventory().GetCargo();
-							if( cargo )
+							if ( cargo )
 							{
 								cargoCount += cargo.GetItemCount();
 							}
@@ -859,7 +928,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			}
 			else
 			{
-				if(entity.GetInventory())
+				if (entity.GetInventory())
 				{
 					cargo = entity.GetInventory().GetCargo();
 	
@@ -887,7 +956,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		if (playerT)
 			string msg = playerT.GetLastUAMessage();
 				
-		if(descText.Length() == 0 && msg.Length() == 0)
+		if (descText.Length() == 0 && msg.Length() == 0)
 		{
 			widget.Show(false);
 			return;
@@ -916,7 +985,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		
 		widget = m_Root.FindAnyWidget(itemWidget);
 		
-		if(enabled)
+		if (enabled)
 		{
 			ImageWidget healthMark;
 			Class.CastTo(healthMark, widget.FindAnyWidget(healthWidget));
@@ -970,7 +1039,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		
 		widget = m_Root.FindAnyWidget(itemWidget);
 		
-		if(enabled)
+		if (enabled)
 		{
 			ProgressBarWidget progressBar;
 			TextWidget textWidget;
@@ -986,7 +1055,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 					textWidget.GetParent().Show(false);
 					break;
 				case QUANTITY_COUNT :
-					if(max > 1 || current > 1)
+					if (max > 1 || current > 1)
 					{
 						string qty_text = string.Format("%1/%2", Math.Round(current).ToString(), max.ToString());
 						progressBar.Show(false);
@@ -1032,14 +1101,14 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 #endif
 #endif
 		
-		if(action)
+		if (action)
 		{
-			if(action.HasTarget() && m_AM.GetActionState() < 1) // targeted & action not performing
+			if (action.HasTarget() && m_AM.GetActionState() < 1) // targeted & action not performing
 			{
 				TextWidget actionName;
 				Class.CastTo(actionName, widget.FindAnyWidget(descWidget));
 
-				if(action.GetInput().GetInputType() == ActionInputType.AIT_CONTINUOUS)
+				if (action.GetInput().GetInputType() == ActionInputType.AIT_CONTINUOUS)
 				{
 					descText = descText + " " + "#action_target_cursor_hold";
 					actionName.SetText(descText);
@@ -1074,7 +1143,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 		widget = m_Root.FindAnyWidget(multiActionsWidget);
 
-		if(m_InteractActionsNum > 1)
+		if (m_InteractActionsNum > 1)
 			widget.Show(true);
 		else
 			widget.Show(false);	
@@ -1086,7 +1155,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 
 		widget = m_Root.FindAnyWidget(multiActionsWidget);
 
-		if(m_ContinuousInteractActionsNum > 1)
+		if (m_ContinuousInteractActionsNum > 1)
 			widget.Show(true);
 		else
 			widget.Show(false);	
@@ -1109,7 +1178,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		GetDayZGame().GetBacklit().HintShow(i1);
 		
 		i1.SelectAlternative(0); //! select first alternative (which is the primary bind)
-		for( int c = 0; c < i1.BindKeyCount(); c++ )
+		for ( int c = 0; c < i1.BindKeyCount(); c++ )
 		{
 		  	int _hc = i1.GetBindKey(0);
 		  	keyName = GetUApi().GetButtonName(_hc);

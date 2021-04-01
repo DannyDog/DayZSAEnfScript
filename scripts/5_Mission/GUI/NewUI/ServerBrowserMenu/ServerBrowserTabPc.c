@@ -1005,6 +1005,7 @@ class ServerBrowserTabPc extends ServerBrowserTab
 				
 				entry.Show( true );
 				entry.FillInfo( server_info );
+				entry.SetServerMapName();
 				entry.SetMods( m_EntryMods.Get( server_info.m_Id ) );
 				m_TotalLoadedServers++;
 			}

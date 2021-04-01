@@ -797,7 +797,7 @@ class cfgVehicles
 		selectionHeadWound = "injury_head";
 		selectionPersonality = "personality";
 		hiddenSelections[] = {"beard","hair"};
-		simpleHiddenSelections[] = {"beard","hair","Clipping_GhillieHood","Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_ProtecSkateHelmet2","Clipping_BandanaFace","Clipping_NioshFaceMask","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_SantasBeard","Clipping_Surgical_mask","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BoonieHat","Clipping_prison_cap","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_MxHelmet","Clipping_baseballcap","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HeadTorch","Clipping_pilotka","Clipping_HeloHelmet","Clipping_HelmetMich","Clipping_Ssh68Helmet","Clipping_Mich2001","Clipping_Welding_Mask","Clipping_VintageHockeyMask","Clipping_mouth_rags","Clipping_Gasmask"};
+		simpleHiddenSelections[] = {"beard","hair","Clipping_GhillieHood","Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_ProtecSkateHelmet2","Clipping_BandanaFace","Clipping_NioshFaceMask","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_SantasBeard","Clipping_Surgical_mask","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BoonieHat","Clipping_prison_cap","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_MxHelmet","Clipping_baseballcap","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HeadTorch","Clipping_pilotka","Clipping_HeloHelmet","Clipping_HelmetMich","Clipping_Ssh68Helmet","Clipping_Mich2001","Clipping_Welding_Mask","Clipping_VintageHockeyMask","Clipping_mouth_rags","Clipping_Gasmask","Clipping_WitchHood","Clipping_WitchHat"};
 	};
 	class FemaleFridaHead: Head_Default
 	{
@@ -814,7 +814,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_PumpkinHelmet","Clipping_MotoHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_PumpkinHelmet","Clipping_MotoHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -858,7 +858,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_GhillieHood","Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_Maska","Clipping_NioshFaceMask","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BeanieHat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HelmetMich"};
+				memberSelections[] = {"Clipping_GhillieHood","Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_Maska","Clipping_NioshFaceMask","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BeanieHat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HelmetMich","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -887,7 +887,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_VintageHockeyMask"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_VintageHockeyMask","Clipping_WitchHood","Clipping_WitchHat","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -926,7 +926,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_NBC_Hood","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask"};
+				memberSelections[] = {"Clipping_NBC_Hood","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -975,7 +975,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BoonieHat","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_MxHelmet","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_pilotka","Clipping_HeloHelmet","Clipping_HelmetMich","Clipping_Ssh68Helmet","Clipping_Mich2001","Clipping_VintageHockeyMask"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_BoonieHat","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_MxHelmet","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_pilotka","Clipping_HeloHelmet","Clipping_HelmetMich","Clipping_Ssh68Helmet","Clipping_Mich2001","Clipping_VintageHockeyMask","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -999,7 +999,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_HeadTorch","Clipping_Welding_Mask","Clipping_VintageHockeyMask"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_Hockey_hekmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_TankerHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_HeadTorch","Clipping_Welding_Mask","Clipping_VintageHockeyMask","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -1038,7 +1038,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_RadarCap","Clipping_VintageHockeyMask"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_GP5GasMask","Clipping_RadarCap","Clipping_VintageHockeyMask","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -1077,7 +1077,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -1126,7 +1126,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_Maska","Clipping_ProtecSkateHelmet2","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_TankerHelmet","Clipping_RadarCap","Clipping_HelmetMich","Clipping_Mich2001"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_Maska","Clipping_ProtecSkateHelmet2","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_PumpkinHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_TankerHelmet","Clipping_RadarCap","Clipping_HelmetMich","Clipping_Mich2001","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -1170,7 +1170,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_PumpkinHelmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_BeanieHat","Clipping_RadarCap","Clipping_HeloHelmet","Clipping_TankerHelmet","Clipping_Mich2001","Clipping_HelmetMich"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_PumpkinHelmet","Clipping_Maska","Clipping_NBC_Hood","Clipping_MotoHelmet","Clipping_FireHelmet","Clipping_Balaclava_3holes","Clipping_Balaclava","Clipping_BeanieHat","Clipping_RadarCap","Clipping_HeloHelmet","Clipping_TankerHelmet","Clipping_Mich2001","Clipping_HelmetMich","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_0
 			{
@@ -1282,7 +1282,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_NBC_Hood","Clipping_TankerHelmet","Clipping_RadarCap","Clipping_BeanieHat"};
+				memberSelections[] = {"Clipping_NBC_Hood","Clipping_TankerHelmet","Clipping_RadarCap","Clipping_BeanieHat","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_Beard
 			{
@@ -1331,7 +1331,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_NBC_Hood","Clipping_TankerHelmet"};
+				memberSelections[] = {"Clipping_NBC_Hood","Clipping_TankerHelmet","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_Beard
 			{
@@ -1385,7 +1385,7 @@ class cfgVehicles
 			class Group_Hair
 			{
 				simpleSelectionName[] = {"hair"};
-				memberSelections[] = {"Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_BoonieHat","Clipping_prison_cap","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_baseballcap","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HeloHelmet"};
+				memberSelections[] = {"Clipping_grathelm","Clipping_ConstructionHelmet","Clipping_FireHelmet","Clipping_ushanka","Clipping_TankerHelmet","Clipping_BoonieHat","Clipping_prison_cap","Clipping_MilitaryBeret_xx","Clipping_Policecap","Clipping_OfficerHat","Clipping_Hat_leather","Clipping_CowboyHat","Clipping_BandanaHead","Clipping_SantasHat","Clipping_FlatCap","Clipping_baseballcap","Clipping_BeanieHat","Clipping_MedicalScrubs_Hat","Clipping_RadarCap","Clipping_ZmijovkaCap","Clipping_HeloHelmet","Clipping_WitchHood","Clipping_WitchHat"};
 			};
 			class Group_Beard
 			{

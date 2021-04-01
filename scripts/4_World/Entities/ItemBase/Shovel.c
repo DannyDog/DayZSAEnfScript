@@ -5,10 +5,10 @@ class Shovel extends ItemBase
 		return true;
 	}
 
-	override bool IsMeleeFinisher()
+	/*override bool IsMeleeFinisher()
 	{
 		return true;
-	}
+	}*/
 	
 	override void SetActions()
 	{
@@ -27,5 +27,6 @@ class Shovel extends ItemBase
 		AddAction(ActionDigInStash);
 		AddAction(ActionFillObject);
 		AddAction(ActionDigWorms);
+		AddAction(ActionCreateGreenhouseGardenPlot);
 	}
 }

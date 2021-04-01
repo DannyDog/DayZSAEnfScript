@@ -4,6 +4,7 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 	protected float	m_TimeToComplete;
 	protected float m_SpentQuantityTotal;
 	protected float m_StartQuantity;
+	protected Slot 	m_Slot;
 
 	void CAContinuousWaterSlot( float quantity_used_per_second )
 	{
@@ -32,11 +33,24 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			
 			if ( target_GB ) 
 			{
-				string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
+				/*string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
 			
-				Slot slot = target_GB.GetSlotBySelection( selection );
+				Slot slot = target_GB.GetSlotBySelection( selection );*/
+				//Slot slot;// = garden_base.GetSlotBySelection( selection );
 			
-				m_PlantThirstyness = slot.GetWaterUsage() - slot.GetWater();
+				array<string> selections = new array<string>;
+				target_GB.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
+	
+				for (int s = 0; s < selections.Count(); s++)
+				{
+					//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
+					string selection = selections[s];
+					m_Slot = target_GB.GetSlotBySelection( selection );
+					if (m_Slot)
+						break;
+				}
+			
+				m_PlantThirstyness = m_Slot.GetWaterUsage() - m_Slot.GetWater();
 			}
 			
 			m_TimeToComplete = (Math.Min(m_PlantThirstyness,m_ItemQuantity))/m_QuantityUsedPerSecond;
@@ -66,14 +80,13 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 		}
 		else
 		{
-			string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
-			Slot slot = target_GB.GetSlotBySelection( selection );
-			
-			if ( slot  &&  m_SpentQuantity < m_ItemQuantity )
+			/*string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
+			Slot slot = target_GB.GetSlotBySelection( selection );*/
+			if ( m_Slot  &&  m_SpentQuantity < m_ItemQuantity )
 			{
 				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
 				float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
-				slot.GiveWater( water );
+				m_Slot.GiveWater( water );
 				
 				m_SpentQuantityTotal += m_SpentQuantity;
 				CalcAndSetQuantity( action_data );

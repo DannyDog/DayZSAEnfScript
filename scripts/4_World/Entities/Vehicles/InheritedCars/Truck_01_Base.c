@@ -55,6 +55,17 @@ class Truck_01_Base extends CarScript
 		return CarRearLightBase.Cast( ScriptedLightBase.CreateLight(Truck_01RearLight) );
 	}
 	
+	override bool CanReleaseAttachment( EntityAI attachment )
+	{
+		if ( !super.CanReleaseAttachment( attachment ) )
+			return false;
+		
+		if ( EngineIsOn() && attachment.GetType() == "TruckBattery" )
+			return false;
+
+		return true;
+	}
+	
 	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
 	{
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);

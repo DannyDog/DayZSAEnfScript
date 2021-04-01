@@ -204,7 +204,7 @@ class GesturesMenu extends UIScriptedMenu
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		if (player && m_CurrentCategory != -1)
 		{
-			bool can = player.GetEmoteManager().CanPlayEmote(gesture_item.GetID());
+			bool can = player.GetEmoteManager().CanPlayEmote(gesture_item.GetID()) && !player.GetEmoteManager().IsEmotePlaying();
 			gesture_item.SetCanPerformEmote(can);
 		}
 	}

@@ -6,7 +6,7 @@ class FlashGrenade extends Grenade_Base
 
 		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 
-		if( player )
+		if ( player )
 		{
 			bool visual = false;
 			vector headPos = player.GetDamageZonePos("Head"); // animated position in the middle of the zone
@@ -15,7 +15,7 @@ class FlashGrenade extends Grenade_Base
 			string grenadePath = "cfgAmmo " + ammoType + " indirectHitRange";
 			float maxRange = GetGame().ConfigGetFloat(grenadePath);
 
-			if( vector.Distance(headPos, pos) <= maxRange ) 
+			if ( vector.DistanceSq(headPos, pos) <= (maxRange * maxRange) ) 
 			{
 				// check visibility
 				vector contactPos;
@@ -25,12 +25,24 @@ class FlashGrenade extends Grenade_Base
 				// ignore collisions with parent if fireplace
 				InventoryItem invItem = InventoryItem.Cast( source );
 				EntityAI parent = invItem.GetHierarchyParent();
-				if (parent && !parent.IsFireplace())
-					parent = null;
+				array<Object> excluded = new array<Object>;
 				
-				if (!DayZPhysics.RaycastRV(headPos, pos, contactPos, contactDir, contactComponent, NULL, player, parent, false, false, ObjIntersectFire))
+				if (!parent || !parent.IsFireplace())
+					parent = null;
+				else if (parent)
+					excluded.Insert(parent);
+				
+				array<ref RaycastRVResult> results = new array<ref RaycastRVResult>;
+				excluded.Insert(this); //Ignore self for visibility check
+				
+				//There shouldn't be cases justifying we go further than first entry (if in fireplace, self does not impact)
+				RaycastRVParams rayParams = new RaycastRVParams(pos, headPos, excluded[0]);
+				DayZPhysics.RaycastRVProxy(rayParams, results, excluded);
+				
+				//If player is not first index, object is between player and grenade
+				if (PlayerBase.Cast(results[0].obj))
 				{
-					if( MiscGameplayFunctions.IsPlayerOrientedTowardPos(player, pos, 60) )
+					if ( MiscGameplayFunctions.IsPlayerOrientedTowardPos(player, pos, 60) )
 					{
 						visual = true;
 					}
@@ -45,7 +57,7 @@ class FlashGrenade extends Grenade_Base
 	{
 		SetAmmoType("FlashGrenade_Ammo");
 		SetFuseDelay(2);
-		SetGrenadeType(EGrenadeType.FRAGMENTATION);
+		SetGrenadeType(EGrenadeType.ILLUMINATING);
 		SetParticleExplosion(ParticleList.GRENADE_M84);
 	}
 

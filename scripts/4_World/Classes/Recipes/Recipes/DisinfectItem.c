@@ -60,7 +60,7 @@ class DisinfectItem extends RecipeBase
 	{
 		ItemBase item = ingredients[1];
 		
-		if (item.IsInherited(PlantBase) )
+		if ( !item.CanBeDisinfected() )
 			return false;
 		
 		int liquid_type = ingredients[0].GetLiquidType();

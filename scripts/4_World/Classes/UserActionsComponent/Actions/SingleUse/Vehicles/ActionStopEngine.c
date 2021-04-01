@@ -53,7 +53,10 @@ class ActionStopEngine: ActionSingleUseBase
 				{
 					car.EngineStop();
 					if ( !GetGame().IsMultiplayer() )
-						SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
+					{
+						EffectSound sound = SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
+						sound.SetSoundAutodestroy( true );
+					}
 				}
 			}
 		}	
@@ -72,7 +75,8 @@ class ActionStopEngine: ActionSingleUseBase
 				if ( Class.CastTo(car, trans) )
 				{
 					car.EngineStop();
-					SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
+					EffectSound sound = SEffectManager.PlaySound( car.m_EngineStopFuel, car.GetPosition() );
+					sound.SetSoundAutodestroy( true );
 				}
 			}
 		}

@@ -1,5 +1,10 @@
-class Screwdriver extends Inventory_Base
+class Screwdriver extends ToolBase
 {
+	void Screwdriver()
+	{
+		m_MineDisarmRate = 80;
+	}
+	
 	override bool IsMeleeFinisher()
 	{
 		return true;
@@ -13,5 +18,7 @@ class Screwdriver extends Inventory_Base
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionBurnSewSelf);
 		AddAction(ActionSkinning);
+		AddAction(ActionLockAttachment);
+		AddAction(ActionDisarmMine);
 	}
 }

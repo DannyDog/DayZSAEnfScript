@@ -33,6 +33,12 @@ class InventorySlots
 	 * @return		string or null string
 	 **/
 	static proto native owned string GetSlotName (int id);
+	/**@fn		GetSlotDisplayName
+	 * @brief	converts slot_id to string
+	 * @param[in]	slot_id	\p	slot id to be find.
+	 * @return		string or null string
+	 **/
+	static proto native owned string GetSlotDisplayName (int id);
 	/**@fn		IsSlotIdValid
 	 * @brief	verifies existence of the slot id
 	 * @return	true if slot valid

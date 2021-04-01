@@ -19,6 +19,9 @@ class AttachmentCategoriesSlotsContainer: Container
 			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(),  m_Parent, "MouseClick" );
 			WidgetEventHandler.GetInstance().RegisterOnMouseButtonDown( m_ItemsCont.GetSlotIcon( k ).GetPanelWidget(),  m_Parent, "MouseClick" );
 			
+			WidgetEventHandler.GetInstance().RegisterOnMouseEnter( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(), m_ItemsCont.GetSlotIcon( k ), "MouseEnterGhostSlot" );
+			WidgetEventHandler.GetInstance().RegisterOnMouseLeave( m_ItemsCont.GetSlotIcon( k ).GetMainWidget(), m_ItemsCont.GetSlotIcon( k ), "MouseLeaveGhostSlot" );
+			
 			m_ItemsCont.GetSlotIcon( k ).GetMainWidget().SetUserID( k );
 			m_ItemsCont.GetSlotIcon( k ).GetPanelWidget().SetUserID( k );
 		}
@@ -51,7 +54,7 @@ class AttachmentCategoriesSlotsContainer: Container
 		return GetFocusedContainer() == last;
 	}
 	
-	override EntityAI GetFocusedEntity()
+	override EntityAI GetFocusedItem()
 	{
 		return m_ItemsCont.GetSlotIcon( m_FocusedColumn ).GetRender().GetItem();
 	}
@@ -126,7 +129,7 @@ class AttachmentCategoriesSlotsContainer: Container
 
 		m_ItemsCont.SetFocus( m_FocusedColumn );
 		
-		EntityAI focused_item = GetFocusedEntity();
+		EntityAI focused_item = GetFocusedItem();
 		if( focused_item )
 		{
 			float x, y;

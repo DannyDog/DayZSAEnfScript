@@ -28,7 +28,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		//synchronized variables
 		RegisterNetSyncVariableBool("m_Openable.m_IsOpened");
 		
-		ProcessInvulnerabilityCheck("disableContainerDamage");
+		ProcessInvulnerabilityCheck(GetInvulnerabilityTypeString());
 		
 		m_LightDistance = 50;
 		m_LastSoundPlayed = SOUND_NONE;
@@ -37,6 +37,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override int GetDamageSystemVersionChange()
 	{
 		return 110;
+	}
+	
+	override string GetInvulnerabilityTypeString()
+	{
+		return "disableContainerDamage";
 	}
 	
 	override void EEInit()
@@ -127,7 +132,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		//direct cooking slots
 		if ( !IsOpen() )
 		{
-			if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+			if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 			{
 				return super.CanReceiveAttachment(attachment, slotId);
 			}
@@ -150,7 +155,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		if ( GetHealthLevel() == GameConstants.STATE_RUINED )
 			return false;
 
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) || IsKindling( item ) || IsFuel( item ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) || IsKindling( item ) || IsFuel( item ) )
 			return super.CanLoadAttachment(attachment);
 
 		return false;
@@ -203,7 +208,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 		
 		//direct cooking slots
-		if ( ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || ( item.Type() == ATTACHMENT_COOKING_POT ) || ( item.Type() == ATTACHMENT_FRYING_PAN ) || ( item.IsKindOf( "Edible_Base" ) ) )
 		{
 			return true;
 		}
@@ -336,7 +341,7 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		}
 
 		// cookware-specifics (remove audio visuals)
-		if ( item_base.Type() == ATTACHMENT_COOKING_POT )
+		if ( ( item.Type() == ATTACHMENT_CAULDRON ) || item_base.Type() == ATTACHMENT_COOKING_POT )
 		{	
 			Bottle_Base cooking_pot = Bottle_Base.Cast( item );
 			cooking_pot.RemoveAudioVisualsOnClient();	

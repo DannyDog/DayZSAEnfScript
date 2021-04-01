@@ -19,14 +19,14 @@ class ActionSidePlateInteract: ActionAnimateCarSelection
 		Entity targetEnt;
 		if ( Class.CastTo(targetEnt, action_data.m_Target.GetObject()) )
 		{
+			EffectSound sound;
+			
 			if ( targetEnt.GetAnimationPhase(m_AnimSource) > 0.5 )
-			{
-				SEffectManager.PlaySound(closeSidePlateSound, targetEnt.GetPosition(), 0.1, 0.1);
-			}
-			if ( targetEnt.GetAnimationPhase(m_AnimSource) <= 0.5 )
-			{
-				SEffectManager.PlaySound(openSidePlateSound, targetEnt.GetPosition(), 0.1, 0.1);
-			}
+				sound = SEffectManager.PlaySound(closeSidePlateSound, targetEnt.GetPosition(), 0.1, 0.1);
+			else if ( targetEnt.GetAnimationPhase(m_AnimSource) <= 0.5 )
+				sound = SEffectManager.PlaySound(openSidePlateSound, targetEnt.GetPosition(), 0.1, 0.1);
+			
+			sound.SetSoundAutodestroy( true );
 		}
 	}
 };

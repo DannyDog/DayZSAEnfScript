@@ -13,7 +13,7 @@ class VicinityObjects
 	{
 		//! completely remove items that are being placed or are holograms
 		ItemBase ib = ItemBase.Cast(object);
-		if(ib && (ib.IsBeingPlaced() || ib.IsHologram()))
+		if (ib && (ib.IsBeingPlaced() || ib.IsHologram()))
 			return;
 
 		//! ignores plain objects
@@ -33,7 +33,7 @@ class VicinityObjects
 	//! transform simple array of Objects to VicinityObjects hashmap
 	void TransformToVicinityObjects(array<Object> objects)
 	{
-		for(int i = 0; i < objects.Count(); i++)
+		for (int i = 0; i < objects.Count(); i++)
 		{
 			if (objects[i].GetType() != "")
 			{
@@ -52,13 +52,25 @@ class VicinityObjects
 	array< Object > GetVicinityObjects()
 	{
 		ref array<Object> vicinityObjects = new array<Object>;
-		for(int i = 0; i < m_VicinityObjects.Count(); i++)
+		for (int i = 0; i < m_VicinityObjects.Count(); i++)
 		{
 			//! filters out non-takeable items (won't be shown in vicinity)
 			ItemBase ib = ItemBase.Cast(GetObject(i));
-			if(ib && !ib.IsTakeable())
+			if (ib && !ib.IsTakeable())
 				continue;
 
+			vicinityObjects.Insert(GetObject(i));
+		}
+		
+		return vicinityObjects;
+	}
+	
+	//! return simple array of Objects in Vicinity
+	array< Object > GetRawVicinityObjects()
+	{
+		ref array<Object> vicinityObjects = new array<Object>;
+		for (int i = 0; i < m_VicinityObjects.Count(); i++)
+		{
 			vicinityObjects.Insert(GetObject(i));
 		}
 		
@@ -86,6 +98,14 @@ class VicinityObjects
 	{
 		m_VicinityObjects.Remove(object);
 	}
+	
+	void Remove(array<Object> objects)
+	{
+		for (int i = 0; i < objects.Count(); i++)
+		{
+			m_VicinityObjects.Remove(objects[i]);
+		}
+	}
 }
 
 class ActionTarget
@@ -107,7 +127,7 @@ class ActionTarget
 
 	bool IsProxy()
 	{
-		if(m_Parent)
+		if (m_Parent)
 		 	return true;
 		return false;
 	}
@@ -171,8 +191,19 @@ class ActionTargets
 		m_Targets.Clear();
 	}
 	
-	void Update()
+	vector CalculateRayStart()
 	{
+		vector rayStart = GetGame().GetCurrentCameraPosition();
+		if (m_Player.GetCurrentCamera() && m_Player.GetCurrentCamera().IsInherited(DayZPlayerCamera3rdPerson))
+		{
+			//! tmp hotfix - move the start point for a bit in 3p view (camera collision issue related)
+			rayStart = GetGame().GetCurrentCameraPosition() + GetGame().GetCurrentCameraDirection() * 0.5;
+		}
+		return rayStart;
+	}
+	
+	void Update()
+	{	
 		int i;
 #ifdef DEVELOPER
 		m_Debug = DiagMenu.GetBool(DiagMenuIDs.DM_ACTION_TARGETS_DEBUG);
@@ -182,6 +213,7 @@ class ActionTargets
 		Clear();
 
 		Object cursorTarget = null;
+		EntityAI cursorTargetEntity = null;
 		array<Object> vicinityObjects = new array<Object>;
 		
 		//! camera & ray properties
@@ -189,12 +221,7 @@ class ActionTargets
 		vector playerPos = m_Player.GetPosition();
 		vector headingDirection = MiscGameplayFunctions.GetHeadingVector(m_Player);
 
-		m_RayStart = GetGame().GetCurrentCameraPosition();
-		if (m_Player.GetCurrentCamera() && m_Player.GetCurrentCamera().IsInherited(DayZPlayerCamera3rdPerson))
-		{
-			//! tmp hotfix - move the start point for a bit in 3p view (camera collision issue related)
-			m_RayStart = GetGame().GetCurrentCameraPosition() + GetGame().GetCurrentCameraDirection() * 0.5;
-		}
+		m_RayStart = CalculateRayStart();
 		m_RayEnd = m_RayStart + GetGame().GetCurrentCameraDirection() * c_RayDistance;
 
 		RaycastRVParams rayInput = new RaycastRVParams(m_RayStart, m_RayEnd, m_Player);
@@ -210,7 +237,7 @@ class ActionTargets
 				array<float> distance_helper_unsorted = new array<float>;
 				float distance;
 				
-				for(i = 0; i < results.Count(); i++)
+				for (i = 0; i < results.Count(); i++)
 				{
 					distance = vector.DistanceSq(results[i].pos, m_RayStart);
 					distance_helper.Insert(distance);
@@ -223,12 +250,13 @@ class ActionTargets
 				RaycastRVResult res;
 				
 				
-				for( i = 0; i < results.Count(); i++)
+				for ( i = 0; i < results.Count(); i++)
 				{
 					res = results.Get(distance_helper_unsorted.Find(distance_helper[i])); //closest object
 					
 					cursorTarget = res.obj;
-					if ( cursorTarget && (cursorTarget.IsDamageDestroyed() && (cursorTarget.IsTree() || cursorTarget.IsBush())) )
+					Class.CastTo(cursorTargetEntity,cursorTarget);
+					if ( cursorTarget && ((cursorTarget.IsDamageDestroyed() && (cursorTarget.IsTree() || cursorTarget.IsBush())) || (cursorTargetEntity && cursorTargetEntity.IsHologram())) )
 						continue;
 					//! if the cursor target is a proxy
 					if ( res.hierLevel > 0 )
@@ -264,27 +292,32 @@ class ActionTargets
 			hitComponentIndex = -1;
 		}
 		
+		//Print(cursorTarget);
+		
 		//! spacial search
-		DayZPlayerUtils.GetEntitiesInCone(playerPos, headingDirection, c_ConeAngle, c_MaxTargetDistance, c_ConeHeightMin, c_ConeHeightMax, vicinityObjects);
+		DayZPlayerCamera camera = m_Player.GetCurrentCamera();
+		if (camera && camera.GetCurrentPitch() <= -45) // Spatial search is a contributor to very heavy searching, limit it to when we are at least looking down
+			DayZPlayerUtils.GetEntitiesInCone(playerPos, headingDirection, c_ConeAngle, c_MaxTargetDistance, c_ConeHeightMin, c_ConeHeightMax, vicinityObjects);
+		
 		//! removes player from the vicinity
 		vicinityObjects.RemoveItem(m_Player);
 
-		//Print("m_VicinityObjects before" + m_VicinityObjects.Count());
 		//! transformation of array of Objects to hashmap (VicinityObjects)
+		//Print("m_VicinityObjects before" + m_VicinityObjects.Count());
 		m_VicinityObjects.TransformToVicinityObjects(vicinityObjects);
-
 		//Print("m_VicinityObjects after" + m_VicinityObjects.Count());
+		
 		//! removes Vicinity objects that are not directly visible from player position
-		FilterObstructedObjects(cursorTarget);
+		FilterObstructedObjectsEx(cursorTarget, vicinityObjects);
 		
 		//! select & sort targets based on utility function
-		for( i = 0; i < m_VicinityObjects.Count(); i++ )
+		for ( i = 0; i < m_VicinityObjects.Count(); i++ )
 		{
 			Object object = m_VicinityObjects.GetObject(i);
 			Object parent = m_VicinityObjects.GetParent(i);
 
 			float utility = ComputeUtility(object, m_RayStart, m_RayEnd, cursorTarget, m_HitPos);
-			if( utility > 0 )
+			if ( utility > 0 )
 			{
 				int targetComponent = -1;
 				targetComponent = hitComponentIndex;
@@ -314,7 +347,7 @@ class ActionTargets
 		m_Targets.Insert(new ActionTarget(null, null, -1, m_HitPos, 0));
 
 #ifdef DEVELOPER
-		if(m_Debug)
+		if (m_Debug)
 		{
 			ShowDebugActionTargets(true);
 			DrawDebugActionTargets(true);
@@ -336,64 +369,13 @@ class ActionTargets
 	
 	private bool IsObstructed(Object object)
 	{
-		return MiscGameplayFunctions.IsObjectObstructed(object, true, m_HitPos, c_MaxActionDistance);
-		
-		/*vector hitNormal, hitPosObstructed, objCenterPos;
-		int hitComponentIndex;
-		ref set<Object> hitObjects = new set<Object>;
-		
-		//! skip these objects for obstruction checks
-		if ( object && object.GetType() == string.Empty ) return false; // mainly ground
-		if ( object && (object.IsBuilding() || object.IsTransport() || object.IsStaticTransmitter()) ) return false;
-		if ( object && (object.IsTree() || object.IsBush())) return false;
-		if ( object && (object.IsInherited(BaseBuildingBase) || object.IsInherited(FenceKit) || object.IsInherited(WatchtowerKit)) ) return false; // base building objects
-		if ( object && object.IsInherited(PlantBase) ) return false;
-		if ( object && object.IsInherited(GardenPlot) ) return false; // TO DO: Add GardenBase here
-
-		if ( object )
-		{
-			//! quick distance check
-			if (vector.DistanceSq(m_Player.GetPosition(), m_HitPos) > c_MaxActionDistance * c_MaxActionDistance)
-				return true;
-
-			// use CE_CENTER mem point for obstruction check
-			if ( object.MemoryPointExists(CE_CENTER) )
-			{
-				vector modelPos = object.GetMemoryPointPos(CE_CENTER);
-				objCenterPos = object.ModelToWorld(modelPos);
-			}
-			else
-			{
-				objCenterPos = object.GetPosition();
-				objCenterPos[1] = objCenterPos[1] + HEIGHT_OFFSET;
-			}
-			
-			if (DayZPhysics.RaycastRV( m_RayStart, objCenterPos, hitPosObstructed, hitNormal, hitComponentIndex, hitObjects, null, m_Player, false, false, ObjIntersectView ))
-			{
-				for ( int i = 0; i < hitObjects.Count(); i++ )
-				{
-					if (hitObjects[i] == object)
-					{
-						return false;
-					}
-				}
-
-#ifdef DEVELOPER				
-				if (m_Debug)
-				{
-					obstruction.Insert( Debug.DrawLine(m_RayStart, hitPosObstructed, COLOR_RED) );
-					obstruction.Insert( Debug.DrawLine(hitPosObstructed, objCenterPos, COLOR_YELLOW) );
-				}
-#endif
-				return true;
-			}
-#ifdef DEVELOPER
-			if (m_Debug)
-				obstruction.Insert( Debug.DrawLine(m_RayStart, objCenterPos, COLOR_GREEN) );
-#endif
-			return false;
-		}
-		return false;*/
+		IsObjectObstructedCache cache = new IsObjectObstructedCache(m_RayStart, 1);
+		return IsObstructedEx(object, cache);
+	}
+	
+	private bool IsObstructedEx(Object object, IsObjectObstructedCache cache)
+	{
+		return MiscGameplayFunctions.IsObjectObstructedEx(object, cache);
 	}
  	
 	//! returns count of founded targets
@@ -417,14 +399,14 @@ class ActionTargets
 	{
 		int left = 0;
 		int right = m_Targets.Count() - 1;
-		while( left <= right )
+		while ( left <= right )
 		{
 			int middle = (left + right) / 2;
 			float middleValue = m_Targets.Get(middle).GetUtility();
 			
-			if( middleValue == value )
+			if ( middleValue == value )
 				return middle;
-            else if( middleValue < value )
+            else if ( middleValue < value )
 				right = middle - 1;
             else
 				left = middle + 1;
@@ -437,31 +419,31 @@ class ActionTargets
 	private float ComputeUtility(Object pTarget, vector pRayStart, vector pRayEnd, Object cursorTarget, vector hitPos)
 	{
 		//! out of reach
-		if(vector.DistanceSq(hitPos, m_Player.GetPosition()) > c_MaxTargetDistance * c_MaxTargetDistance)
+		if (vector.DistanceSq(hitPos, m_Player.GetPosition()) > c_MaxTargetDistance * c_MaxTargetDistance)
 			return -1;
 
-		if(pTarget)
+		if (pTarget)
 		{
-			if( pTarget == cursorTarget )
+			if ( pTarget == cursorTarget )
 			{
 				//! ground and static objects
-				if(pTarget.GetType() == string.Empty)
+				if ( pTarget.GetType() == string.Empty )
 					return 0.01;
 
-				if( pTarget.IsBuilding() )
+				if ( pTarget.IsBuilding() )
 					return 0.25;
 
-				if( pTarget.IsTransport() )
+				if ( pTarget.IsTransport() )
 					return 0.25;
 
-				if( pTarget.IsWell() )
+				if ( pTarget.IsWell() )
 					return 0.9;
 
 				vector playerPosXZ = m_Player.GetPosition();
 				vector hitPosXZ = hitPos;
 				playerPosXZ[1] = 0;
 				hitPosXZ[1] = 0;
-				if( vector.DistanceSq(playerPosXZ, hitPosXZ) <= c_MaxTargetDistance * c_MaxTargetDistance )
+				if ( vector.DistanceSq(playerPosXZ, hitPosXZ) <= c_MaxTargetDistance * c_MaxTargetDistance )
 					return c_UtilityMaxValue;
 			}
 
@@ -481,7 +463,7 @@ class ActionTargets
 		float c1 = vector.Dot(w,v);
 		float c2 = vector.Dot(v,v);
 
-		if( c1 <= 0 || c2 == 0 )
+		if ( c1 <= 0 || c2 == 0 )
 			return vector.DistanceSq(pPoint, pL1);
 
 		float b = c1 / c2;	
@@ -489,18 +471,46 @@ class ActionTargets
 		return vector.DistanceSq(pPoint, nearestPoint);		
 	}
 	
+	private void FilterObstructedObjectsEx(Object cursor_target, array<Object> vicinityObjects)
+	{
+		#ifdef DEVELOPER
+		if (m_Debug)
+			CleanupDebugShapes(obstruction);
+		#endif
+
+		array<Object> obstructingObjects = new array<Object>;
+		MiscGameplayFunctions.FilterObstructingObjects(vicinityObjects, obstructingObjects);
+		
+		if ( obstructingObjects.Count() > 0 )
+		{
+			PlayerBase player = PlayerBase.Cast(g_Game.GetPlayer());
+					
+			int numObstructed = 0;
+			int mCount = m_VicinityObjects.Count();
+			
+			if (mCount > GROUPING_COUNT_THRESHOLD)
+			{
+				array<Object> filteredObjects = new array<Object>;
+				MiscGameplayFunctions.FilterObstructedObjectsByGrouping(m_RayStart, c_MaxTargetDistance, c_DistanceDelta, m_VicinityObjects.GetRawVicinityObjects(), vicinityObjects, filteredObjects);
+				m_VicinityObjects.ClearVicinityObjects();
+				m_VicinityObjects.TransformToVicinityObjects(filteredObjects);
+			}
+			else
+			{
+				FilterObstructedObjects(cursor_target);
+			}
+		}
+	}
+	
 	private void FilterObstructedObjects(Object cursor_target)
 	{
-#ifdef DEVELOPER
-		if(m_Debug)
-			CleanupDebugShapes(obstruction);
-#endif
-
-		int numObstructed = 0;		
+		int numObstructed = 0;
 		int mCount = m_VicinityObjects.Count();
+		IsObjectObstructedCache cache = new IsObjectObstructedCache(m_RayStart, mCount);
 		mCount--;
+	
 		//! check if targets are not obstructed (eg.: wall)
-		for (int i = mCount; i >= 0; i--)
+		for ( int i = mCount; i >= 0; --i )
 		{
 			Object object = m_VicinityObjects.GetObject(i);
 			Object parent = m_VicinityObjects.GetParent(i);
@@ -517,16 +527,17 @@ class ActionTargets
 				}
 
 				//! obstruction check
-				if (IsObstructed(object) && object != cursor_target)
+				if (object != cursor_target && IsObstructedEx(object, cache))
 				{
 					m_VicinityObjects.Remove(object);
 					numObstructed++;
 				}
+
+				cache.ClearCache();
 			}
 		}
 	}
-
-
+	
 #ifdef DEVELOPER
 	ref array<Shape> shapes = new array<Shape>();
 	ref array<Shape> dbgConeShapes = new array<Shape>();
@@ -657,13 +668,13 @@ class ActionTargets
 	
 	private void DrawSelectionPos(bool enabled)
 	{
-		if(enabled)
+		if (enabled)
 		{
 			CleanupDebugShapes(dbgPosShapes);
-			if(GetTargetsCount() > 0 && GetTarget(0).GetUtility() > -1 )
+			if (GetTargetsCount() > 0 && GetTarget(0).GetUtility() > -1 )
 			{
 				ActionTarget at = GetTarget(0);
-				if(at.GetObject())
+				if (at.GetObject())
 				{
 					string compName = at.GetObject().GetActionComponentName(at.GetComponentIndex());
 					vector modelPos = at.GetObject().GetSelectionPositionMS(compName);
@@ -722,11 +733,12 @@ class ActionTargets
 	//--------------------------------------------------------
 	//! searching properties
 	private const float c_RayDistance = 5.0;
-	private const float c_MaxTargetDistance = 5.0;
+	private const float c_MaxTargetDistance = 3.0;
 	private const float c_MaxActionDistance = UAMaxDistances.DEFAULT;
 	private const float c_ConeAngle = 30.0;
 	private const float c_ConeHeightMin = -0.5;
 	private const float c_ConeHeightMax = 2.0;
+	private const float c_DistanceDelta = 0.3;
 	
 	//! utility constants
 	private const float c_UtilityMaxValue = 10000;
@@ -738,4 +750,10 @@ class ActionTargets
 	
 	//! misc
 	private const int OBSTRUCTED_COUNT_THRESHOLD	= 3;
+	private const int GROUPING_COUNT_THRESHOLD		= 10;
 };
+
+class ObjectGroup
+{
+	ref array<Object> Objects = new array<Object>;
+}

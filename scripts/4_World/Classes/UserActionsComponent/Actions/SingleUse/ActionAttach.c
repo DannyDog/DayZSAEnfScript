@@ -45,7 +45,7 @@ class ActionAttach: ActionSingleUseBase
 				target_entity = EntityAI.Cast( target.GetObject() );
 			}
 			
-			if(!target_entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il ))
+			if (!target_entity.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il ))
 				return false;
 		}
 			
@@ -101,6 +101,7 @@ class ActionAttach: ActionSingleUseBase
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
+		ClearInventoryReservationEx(action_data);
 		AttachActionData action_data_a = AttachActionData.Cast(action_data);
 		
 		EntityAI target_EAI;

@@ -18,10 +18,13 @@ class ActionPlugIn: ActionSingleUseBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		ItemBase target_IB = ItemBase.Cast( target.GetObject() );
 		
 		//Prevent plugging to items in inventory
-		if ( target_IB && target_IB.GetHierarchyRoot() != player &&  item )
+		if ( target_IB && target_IB.GetHierarchyRoot() == target_IB &&  item )
 		{
 			if ( item.HasEnergyManager()  &&  !item.GetCompEM().IsPlugged()  &&  target_IB.HasEnergyManager()  &&  target_IB.GetCompEM().CanReceivePlugFrom(item) )
 			{
@@ -30,9 +33,11 @@ class ActionPlugIn: ActionSingleUseBase
 			
 			ItemBase attached_device = GetAttachedDevice(target_IB);
 			
-			if (attached_device)
+			//Will only ever affect batteries
+			if ( attached_device )
 			{
-				return true;
+				if ( attached_device.GetCompEM().HasFreeSocket() )
+					return true;
 			}
 		}
 		

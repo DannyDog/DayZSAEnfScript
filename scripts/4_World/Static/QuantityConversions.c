@@ -9,7 +9,7 @@ class QuantityConversions
 			Class.CastTo(item_base, item);
 			float quantity = item_base.GetQuantity();
 			int ammo;
-			if ( item.IsInherited( Magazine) )
+			if ( item.IsMagazine() )
 			{
 				Magazine magazine_item;
 				Class.CastTo(magazine_item, item);
@@ -30,9 +30,9 @@ class QuantityConversions
 			{
 				if (stack_max == 1)
 				{
-					if(quantity > 1)
+					if (quantity > 1)
 					{
-						if(showMax)
+						if (showMax)
 							quantity_text = string.Format("%1/%2", quantity.ToString(), stack_max.ToString() );
 						//quantity_text = string.Format("%i/%i", quantity, stack_max );
 						else
@@ -45,7 +45,7 @@ class QuantityConversions
 				}
 				else
 				{
-					if(showMax)
+					if (showMax)
 						quantity_text = string.Format("%1/%2", quantity.ToString(), stack_max.ToString() );
 						//quantity_text = string.Format("%i/%i", quantity, stack_max );
 					else
@@ -76,9 +76,9 @@ class QuantityConversions
 		{
 			ItemBase item_base;
 			Class.CastTo(item_base, item);
-			if( item_base )
+			if ( item_base )
 			{
-				if ( item.IsInherited( Magazine) )
+				if ( item.IsMagazine() )
 				{
 					Magazine magazine_item;
 					Class.CastTo(magazine_item, item);
@@ -99,7 +99,7 @@ class QuantityConversions
 		{
 			ItemBase item_base;
 			Class.CastTo(item_base, item);
-			if ( item.IsInherited( Magazine ) )
+			if ( item.IsMagazine() )
 			{
 				Magazine magazine_item;
 				Class.CastTo(magazine_item, item);
@@ -118,24 +118,19 @@ class QuantityConversions
 
 	static int HasItemQuantity( notnull EntityAI item )
 	{
-		if ( item.IsInherited( InventoryItem ) )
+		ItemBase ib;
+		if ( Class.CastTo(ib, item) )
 		{
-			if ( item.IsInherited( Magazine) )
-			{
+			if ( item.IsMagazine() )
 				return QUANTITY_COUNT;
-			}
 			
-			bool show_quantity = item.ConfigGetBool("quantityShow");
-			if(!show_quantity)
-			{
+			if ( !ib.m_CanShowQuantity )
 				return QUANTITY_HIDDEN;
-			}
 			
 			int max = item.GetQuantityMax();
-			bool bar = item.ConfigGetBool("quantityBar");
 			if ( max > 0 )
 			{
-				if ( bar )
+				if ( ib.m_HasQuantityBar )
 				{
 					return QUANTITY_PROGRESS;
 				}

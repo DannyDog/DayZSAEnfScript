@@ -54,7 +54,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\GasMask.rvmat"}},{0.7,{"DZ\characters\masks\data\GasMask.rvmat"}},{0.5,{"DZ\characters\masks\data\GasMask_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\GasMask_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\GasMask_destruct.rvmat"}}};
 				};
 			};
@@ -110,7 +110,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BandanaF.rvmat"}},{0.7,{"DZ\characters\headgear\data\BandanaF.rvmat"}},{0.5,{"DZ\characters\headgear\data\BandanaF_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BandanaF_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BandanaF_destruct.rvmat"}}};
 				};
 			};
@@ -209,7 +209,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\NioshFaceMask.rvmat"}},{0.7,{"DZ\characters\masks\data\NioshFaceMask.rvmat"}},{0.5,{"DZ\characters\masks\data\NioshFaceMask_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\NioshFaceMask_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\NioshFaceMask_destruct.rvmat"}}};
 				};
 			};
@@ -370,7 +370,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\GP5GasMask.rvmat"}},{0.7,{"DZ\characters\masks\data\GP5GasMask.rvmat"}},{0.5,{"DZ\characters\masks\data\GP5GasMask_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\GP5GasMask_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\GP5GasMask_destruct.rvmat"}}};
 				};
 			};
@@ -484,7 +484,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\GP5GasMask.rvmat"}},{0.7,{"DZ\characters\masks\data\GP5GasMask.rvmat"}},{0.5,{"DZ\characters\masks\data\GP5GasMask_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\GP5GasMask_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\GP5GasMask_destruct.rvmat"}}};
 				};
 			};
@@ -588,7 +588,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 250;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\SantasBeard.rvmat"}},{0.7,{"DZ\characters\masks\data\SantasBeard.rvmat"}},{0.5,{"DZ\characters\masks\data\SantasBeard_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\SantasBeard_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\SantasBeard_destruct.rvmat"}}};
 				};
 			};
@@ -643,7 +643,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\mouth_rags.rvmat"}},{0.7,{"DZ\characters\masks\data\mouth_rags.rvmat"}},{0.5,{"DZ\characters\masks\data\mouth_rags_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\mouth_rags_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\mouth_rags_destruct.rvmat"}}};
 				};
 			};
@@ -694,7 +694,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\Surgical_mask_ground.rvmat"}},{0.7,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\Surgical_mask_ground.rvmat"}},{0.5,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\Surgical_mask_ground_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\Surgical_mask_ground_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\Surgical_mask_destruct.rvmat","DZ\characters\masks\data\Surgical_mask_ground_destruct.rvmat"}}};
 				};
 			};
@@ -748,7 +748,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\Data\Vintagehockeym.rvmat"}},{0.7,{"DZ\characters\masks\Data\Vintagehockeym.rvmat"}},{0.5,{"DZ\characters\masks\Data\Vintagehockeym_damage.rvmat"}},{0.3,{"DZ\characters\masks\Data\Vintagehockeym_damage.rvmat"}},{0.0,{"DZ\characters\masks\Data\Vintagehockeym_destruct.rvmat"}}};
 				};
 			};
@@ -803,6 +803,54 @@ class CfgVehicles
 				class drop
 				{
 					soundset = "DarkMotoHelmet_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
+	class CrookedNose: Clothing
+	{
+		scope = 2;
+		displayName = "$STR_CrookedNose0";
+		descriptionShort = "$STR_CrookedNose1";
+		model = "\DZ\characters\masks\CrookedNose_g.p3d";
+		inventorySlot[] = {"Mask"};
+		itemInfo[] = {"Clothing","Mask"};
+		rotationFlags = 16;
+		weight = 220;
+		itemSize[] = {3,1};
+		varWetMax = 0.049;
+		heatIsolation = 0.4;
+		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
+		hiddenSelectionsTextures[] = {"\DZ\characters\masks\data\CrookedNose_co.paa","\DZ\characters\masks\data\CrookedNose_co.paa","\DZ\characters\masks\data\CrookedNose_co.paa"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 250;
+					healthLevels[] = {{1.0,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\CrookedNose_co.rvmat"}},{0.7,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\CrookedNose_co.rvmat"}},{0.5,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\CrookedNose_co_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\CrookedNose_co_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\Surgical_mask_destruct.rvmat","DZ\characters\masks\data\CrookedNose_co_destruct.rvmat"}}};
+				};
+			};
+		};
+		class ClothingTypes
+		{
+			male = "\DZ\characters\masks\CrookedNose_m.p3d";
+			female = "\DZ\characters\masks\CrookedNose_f.p3d";
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class pickUpItem
+				{
+					soundSet = "Shirt_pickup_SoundSet";
+					id = 797;
+				};
+				class drop
+				{
+					soundset = "Shirt_drop_SoundSet";
 					id = 898;
 				};
 			};

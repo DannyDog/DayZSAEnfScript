@@ -75,10 +75,6 @@ class HandsContainer: Container
 	override void SetNextActive()
 	{
 		ItemManager.GetInstance().HideTooltip( );
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
 		
 		if( !IsLastIndex() )
 		{
@@ -94,11 +90,6 @@ class HandsContainer: Container
 
 	override void SetPreviousActive( bool force = false )
 	{
-		if( ItemManager.GetInstance().IsMicromanagmentMode() )
-		{
-			ItemManager.GetInstance().SetItemMoving( true );
-		}
-		
 		if( !IsFirstIndex() )
 		{
 			if( GetFocusedContainer() )
@@ -512,12 +503,12 @@ class HandsContainer: Container
 		EntityAI item_in_hands;
 		if( m_ActiveIndex == 1 )
 			item_in_hands = player.GetHumanInventory().GetEntityInHands();
-		else
-			item_in_hands = GetFocusedContainer().GetFocusedEntity();
+		else if( GetFocusedContainer() )
+			item_in_hands = GetFocusedContainer().GetFocusedItem();
 		
 		if( item_in_hands )
 		{
-			ItemManager.GetInstance().SetSelectedItem( item_in_hands, null, null );
+			ItemManager.GetInstance().SetSelectedItem( item_in_hands, null, null, null );
 			return true;
 		}
 		return false;

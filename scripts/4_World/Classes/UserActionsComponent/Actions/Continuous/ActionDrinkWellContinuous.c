@@ -47,6 +47,8 @@ class ActionDrinkWellContinuous: ActionContinuousBase
 
 	override void OnStart(ActionData action_data)
 	{
+		super.OnStart(action_data);
+		
 		action_data.m_Player.TryHideItemInHands(true);
 	}
 

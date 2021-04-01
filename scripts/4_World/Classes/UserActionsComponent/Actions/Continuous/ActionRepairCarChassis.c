@@ -38,7 +38,7 @@ class ActionRepairCarChassis: ActionContinuousBase
 	override void CreateConditionComponents()  
 	{
 		m_ConditionItem = new CCINonRuined; //To change?
-		m_ConditionTarget = new CCTNone; //CCTNonRuined( UAMaxDistances.BASEBUILDING ); ??
+		m_ConditionTarget = new CCTCursor(UAMaxDistances.SMALL); //CCTNonRuined( UAMaxDistances.BASEBUILDING ); ??
 	}
 
 	override string GetText()
@@ -60,114 +60,108 @@ class ActionRepairCarChassis: ActionContinuousBase
 		
 		if ( !car || !player )
 			return false;
+		
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
+			return true;
+		
+		array<string> selections = new array<string>;
+		PluginRepairing module_repairing;
+		Class.CastTo( module_repairing, GetPlugin(PluginRepairing) );
 
-		 //m_MaximalActionDistance;
-		//float distance = Math.AbsFloat( vector.Distance( car.GetPosition(),player.GetPosition() ));
+		targetObject.GetActionComponentNameList( target.GetComponentIndex(), selections, "view");
 
-		//if ( distance <= MAX_ACTION_DIST )	
-		//{
-			if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-				return true;
-			
-			array<string> selections = new array<string>;
-			PluginRepairing module_repairing;
-			Class.CastTo( module_repairing, GetPlugin(PluginRepairing) );
+		if (m_LastValidType != target.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "" )
+		{
+			string damageZone = "";
+			string compName = "";
 
-			targetObject.GetActionComponentNameList( target.GetComponentIndex(), selections, "view");
-
-			if (m_LastValidType != target.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "" )
+			for ( int s = 0; s < selections.Count(); s++ )
 			{
-				string damageZone = "";
-				string compName = "";
-
-				for ( int s = 0; s < selections.Count(); s++ )
+				compName = selections[s];
+				
+				//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
+				if ( carEntity && DamageSystem.GetDamageZoneFromComponentName( carEntity, compName, damageZone ))
 				{
-					compName = selections[s];
-					
-					//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-					if ( carEntity && DamageSystem.GetDamageZoneFromComponentName( carEntity, compName, damageZone ))
+					int zoneHP = car.GetHealthLevel( damageZone );
+					//Print( "damageZone: " + damageZone + " hp: " + zoneHP );
+					if ( zoneHP < GameConstants.STATE_RUINED && zoneHP > GameConstants.STATE_PRISTINE )
 					{
-						int zoneHP = car.GetHealthLevel( damageZone );
-						//Print( "damageZone: " + damageZone + " hp: " + zoneHP );
-						if ( zoneHP < GameConstants.STATE_RUINED && zoneHP > GameConstants.STATE_PRISTINE )
+						m_CurrentDamageZone = damageZone;
+						m_LastValidComponentIndex = target.GetComponentIndex();
+						
+						vector repairPos = carEntity.GetPosition();
+					
+						Truck_01_Covered truck = Truck_01_Covered.Cast(car);
+						//Determine if using a "Special" item for repairing
+						WoodenPlank plank = WoodenPlank.Cast(item);
+						Fabric tarp = Fabric.Cast(item);
+					
+						switch( damageZone )
 						{
-							m_CurrentDamageZone = damageZone;
-							m_LastValidComponentIndex = target.GetComponentIndex();
-							
-							vector repairPos = carEntity.GetPosition();
-						
-							Truck_01_Covered truck = Truck_01_Covered.Cast(car);
-							//Determine if using a "Special" item for repairing
-							WoodenPlank plank = WoodenPlank.Cast(item);
-							Fabric tarp = Fabric.Cast(item);
-						
-							switch( damageZone )
+							case "dmgZone_front":
 							{
-								case "dmgZone_front":
-								{
-									repairPos = car.GetFrontPointPosWS();
-									break;
-								}
-								case "dmgZone_back":
-								{
-									repairPos = car.GetBackPointPosWS();
-									break;
-								}
-								case "Fender_1_1":
-								{
-									repairPos = car.Get_1_1PointPosWS();
-									break;
-								}
-								case "Fender_1_2":
-								{
-									repairPos = car.Get_1_2PointPosWS();
-									break;
-								}
-								case "Fender_2_1":
-								{
-									repairPos = car.Get_2_1PointPosWS();
-									break;
-								}
-								case "Fender_2_2":
-								{
-									repairPos = car.Get_2_2PointPosWS();
-									break;
-								}
-								case "dmgZone_doors":	
-								{
-									repairPos = car.GetFrontPointPosWS();
-									break;
-								}
-								case "BackWood":
-								{
-									if (!plank)
-										return false;
-									repairPos = truck.GetBackPointPosWS();
-									break;
-								}
-								case "BackTarp":
-								{
-									if (!tarp)
-										return false;
-									repairPos = truck.GetBackPointPosWS();
-									break;
-								}
-								default:
-									return false;
+								repairPos = car.GetFrontPointPosWS();
 								break;
 							}
-							
-							//Prevent planks and tarp from repairing non related areas
-							if ((tarp || plank) && (damageZone != "BackWood" && damageZone != "BackTarp"))
+							case "dmgZone_back":
+							{
+								repairPos = car.GetBackPointPosWS();
+								break;
+							}
+							case "Fender_1_1":
+							{
+								repairPos = car.Get_1_1PointPosWS();
+								break;
+							}
+							case "Fender_1_2":
+							{
+								repairPos = car.Get_1_2PointPosWS();
+								break;
+							}
+							case "Fender_2_1":
+							{
+								repairPos = car.Get_2_1PointPosWS();
+								break;
+							}
+							case "Fender_2_2":
+							{
+								repairPos = car.Get_2_2PointPosWS();
+								break;
+							}
+							case "dmgZone_doors":	
+							{
+								repairPos = car.GetFrontPointPosWS();
+								break;
+							}
+							case "BackWood":
+							{
+								if (!plank)
+									return false;
+								repairPos = truck.GetBackPointPosWS();
+								break;
+							}
+							case "BackTarp":
+							{
+								if (!tarp)
+									return false;
+								repairPos = truck.GetBackPointPosWS();
+								break;
+							}
+							default:
 								return false;
-
-							float dist = vector.Distance( repairPos, player.GetPosition() );
-							if ( dist < MAX_ACTION_DIST)
-								return true;
+							break;
 						}
+						
+						//Prevent planks and tarp from repairing non related areas
+						if ((tarp || plank) && (damageZone != "BackWood" && damageZone != "BackTarp"))
+							return false;
+
+						float dist = vector.Distance( repairPos, player.GetPosition() );
+						if ( dist < MAX_ACTION_DIST)
+							return true;
 					}
 				}
-			//}
+			}
 		}
 		
 		return false;

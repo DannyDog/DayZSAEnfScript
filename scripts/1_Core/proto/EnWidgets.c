@@ -103,7 +103,7 @@ class Widget: Managed
 	proto native void SetName(string name);
 	proto native owned string GetTypeName();
 	proto native WidgetType GetTypeID();
-	proto native void Show(bool show);
+	proto native void Show(bool show, bool immedUpdate = true);
 	proto native void Enable(bool enable);
 	proto native int GetFlags();
 	proto native int SetFlags(int flags, bool immedUpdate = true);
@@ -155,7 +155,7 @@ class WorkspaceWidget: Widget
 	//!Create widgets by \ref WidgetType
 	proto native external Widget CreateWidget(WidgetType type, int left, int top, int width, int height, WidgetFlags flags, int color, int sort, Widget parentWidget = NULL);
 	//!Create widgets from *.layout file
-	proto native external Widget CreateWidgets(string layout, Widget parentWidget = NULL);	
+	proto native external Widget CreateWidgets(string layout, Widget parentWidget = NULL, bool immedUpdate = true);	
 };
 
 proto native Widget GetWidgetUnderCursor();

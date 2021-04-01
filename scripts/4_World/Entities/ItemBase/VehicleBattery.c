@@ -2,7 +2,9 @@ class VehicleBattery : ItemBase
 {
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
-		if (!super.CanPutAsAttachment(parent)) {return false;}
+		if (!super.CanPutAsAttachment(parent)) 
+			return false;
+		
 		string obj_type = parent.GetType();
 		if ( parent.IsInherited(BatteryCharger) )
 		{
@@ -16,18 +18,26 @@ class VehicleBattery : ItemBase
 		return true;
 	}
 	
-	
-	override bool CanDetachAttachment ( EntityAI parent )
+	override bool CanDetachAttachment( EntityAI parent )
 	{
 		return true;
 	}
 	
-	override bool CanPutIntoHands ( EntityAI player ) 
+	override bool CanReceiveAttachment( EntityAI attachment, int slotId)
 	{
-		if( !super.CanPutIntoHands( parent ) )
+		if (GetCompEM().IsPlugged())
+			return false;
+		
+		return super.CanReceiveAttachment(attachment, slotId);
+	}
+	
+	override bool CanPutIntoHands( EntityAI player ) 
+	{
+		if ( !super.CanPutIntoHands( parent ) )
 		{
 			return false;
 		}
+		
 		if ( HasEnergyManager() )
 		{
 			ItemBase powered_device = ItemBase.Cast( GetCompEM().GetPluggedDevice() ); // Should return metal wire or barbed wire attachment
@@ -45,6 +55,24 @@ class VehicleBattery : ItemBase
 		return true;
 	}
 	
+	override bool CanPutInCargo( EntityAI parent )
+	{
+		super.CanPutInCargo( parent );
+		
+		ItemBase powered_device = ItemBase.Cast( GetCompEM().GetPluggedDevice() ); // Should return metal wire or barbed wire attachment
+			
+		if ( powered_device )
+		{
+			//We block placing in cargo if metal wire is plugged
+			//metal wires plugged to batteries in cargo cause too many issues for little gameplay gain
+			if ( powered_device.IsInherited( MetalWire ) )
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	override void OnInventoryEnter(Man player)
 	{
 		super.OnInventoryEnter(player);
@@ -59,7 +87,9 @@ class VehicleBattery : ItemBase
 				{
 					if ( powered_device.IsInherited( MetalWire ) )
 					{
-						powered_device.GetCompEM().UnplugAllDevices();
+						//Unplug the device the wire is powering, but keep wire plugged to battery
+						if ( powered_device.GetCompEM().IsPlugged() )
+							powered_device.GetCompEM().UnplugDevice( powered_device.GetCompEM().GetPluggedDevice() );
 					}
 					else
 					{
@@ -70,21 +100,50 @@ class VehicleBattery : ItemBase
 		}
 	}
 	
+	override void OnMovedInsideCargo(EntityAI container)
+	{
+		super.OnMovedInsideCargo(container);
+		
+		if ( HasEnergyManager() )
+		{
+			ItemBase powered_device = ItemBase.Cast( GetCompEM().GetPluggedDevice() ); // Should return metal wire or barbed wire attachment
+			
+			if ( powered_device )
+			{
+				//Should not be possible, but better safe than sorry
+				if ( powered_device.IsInherited( MetalWire ) )
+				{
+					powered_device.GetCompEM().UnplugAllDevices();
+				}
+				else
+				{
+					this.GetCompEM().UnplugAllDevices();
+				}
+			}
+		}
+	}
+	
+	override bool CanDisplayAttachmentSlot( string slot_name )
+	{
+		if ( GetCompEM().IsPlugged() )
+			return false;
+		return super.CanDisplayAttachmentSlot( slot_name );
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
 		
-		AddAction(ActionAttach);
+		//AddAction(ActionAttach);
 		AddAction(ActionAttachOnSelection);
 		AddAction(ActionDetach);
-		AddAction(ActionAttachPowerSourceToPanel);
+		//AddAction(ActionAttachPowerSourceToPanel); SHOULD NOT BE USED ANYMORE
 		AddAction(ActionPlugTargetIntoThis);
 	}
 	
 	override void OnQuantityChanged(float delta)
 	{
 		super.OnQuantityChanged(delta);
-		m_EM.SetEnergy(m_VarQuantity / GetQuantityMax() * m_EM.GetEnergyMax());
 	}
 	
 	//------------------------------------
@@ -150,6 +209,4 @@ class VehicleBattery : ItemBase
 			}
 		}
 	}
-	
-	
 }

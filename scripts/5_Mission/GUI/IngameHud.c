@@ -260,7 +260,7 @@ class IngameHud extends Hud
 
 		#ifndef NO_GUI
 			m_Timer = new Timer( CALL_CATEGORY_GAMEPLAY );
-			m_Timer.Run(0.05, this, "RefreshQuickbar", NULL, true );
+			m_Timer.Run(0.333, this, "RefreshQuickbar", NULL, true );
 			//m_Timer.Run(1, this, "CheckHudElementsVisibility", NULL, true ); //modify duration if needed, currently on 1s "update"
 		#endif
 
@@ -1220,8 +1220,11 @@ class IngameHud extends Hud
 	}
 	
 	override void RefreshQuickbar( bool itemChanged = false )
-	{		
-		if( itemChanged )
+	{
+		if (m_QuickbarHidePlayer) // Don't update when it is hidden
+			return;
+		
+		if ( itemChanged )
 		{
 			UIManager manager = GetGame().GetUIManager();
 		
@@ -1229,12 +1232,12 @@ class IngameHud extends Hud
 			MissionGameplay mission = MissionGameplay.Cast(GetGame().GetMission());
 
 			
-			if(	mission )
+			if ( mission )
 			{
 				inventory = mission.GetInventory();
 			}
 		
-			if( inventory )
+			if ( inventory )
 			{
 				inventory.RefreshQuickbar();
 			}

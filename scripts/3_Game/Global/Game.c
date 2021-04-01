@@ -2,14 +2,10 @@
  *  Game Class provide most "world" or global engine API functions.
  */
 
-static int GAME_STORAGE_VERSION = 117;
+static int GAME_STORAGE_VERSION = 119;
 
 class CGame
 {
-	// -enNewMenu
-	//bool m_ParamNewMenu;
-	static bool m_ParamDoNoLogs;
-	
 	// enableDebugMonitor in server config
 	int m_DebugMonitorEnabled;
 
@@ -181,23 +177,23 @@ class CGame
 	@param IpAddress of the server
 	@param port of the server set to 0 for default port
 	@param password of the server
-	\return true on success, false is not success(server does not exist)
+	\return 0 on success, error code from ErrorModuleHandler on not success
 	*/
-	proto native int		Connect( UIScriptedMenu parent , string IpAddress, int port, string password );	
+	proto native int				Connect( UIScriptedMenu parent , string IpAddress, int port, string password );	
 	/**
   \brief Connects to last success network session
-	\return true on success, false if there is no previous session
+	\return 0 on success, error code from ErrorModuleHandler on not success
 	*/
-	proto native int		ConnectLastSession( UIScriptedMenu parent , int selectedCharacter = -1 );
+	proto native int				ConnectLastSession( UIScriptedMenu parent , int selectedCharacter = -1 );
 	/**
   \brief Disconnects from current multiplayer session
 	*/
-	proto native void		DisconnectSession();
+	proto native void				DisconnectSession();
 	
 	/**
   \brief Forces disconnect from current multiplayer session even if not yet in the game
 	*/
-	proto native void 		DisconnectSessionForce();
+	proto native void 				DisconnectSessionForce();
 
 	// profile functions
 	/**
@@ -618,10 +614,35 @@ class CGame
 	
 	// inventory
 	proto native bool	AddInventoryJuncture(Man player, notnull EntityAI item, InventoryLocation dst, bool test_dst_occupancy, int timeout_ms);
+	
+	bool	AddInventoryJunctureEx(Man player, notnull EntityAI item, InventoryLocation dst, bool test_dst_occupancy, int timeout_ms)
+	{
+		bool result = AddInventoryJuncture(player, item, dst, test_dst_occupancy, timeout_ms);
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryReservationLogEnable() )
+		{
+			Debug.InventoryReservationLog("STS = " + player.GetSimulationTimeStamp() + " result: " + result + " item:" + item + " dst: " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "AddInventoryJuncture",player.ToString() );	
+		}
+		#endif
+		//Print("Juncture - STS=" + player.GetSimulationTimeStamp() + " item:" + item + " dst: " + InventoryLocation.DumpToStringNullSafe(dst));
+		return result;
+	}
+	
 	proto native bool 	HasInventoryJunctureDestination(Man player, notnull InventoryLocation dst);
 	proto native bool	AddActionJuncture(Man player, notnull EntityAI item, int timeout_ms);
 	proto native bool	ExtendActionJuncture(Man player, notnull EntityAI item, int timeout_ms);
 	proto native bool	ClearJuncture(Man player, notnull EntityAI item);
+	
+	bool	ClearJunctureEx(Man player, notnull EntityAI item)
+	{
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryReservationLogEnable() )
+		{
+			Debug.InventoryReservationLog("STS = " + player.GetSimulationTimeStamp()+ " item:" + item, "n/a" , "n/a", "ClearJuncture",player.ToString() );	
+		}
+		#endif
+		return ClearJuncture( player, item);
+	}
 
 	// support
 	//! Delevoper only: Executes Enforce Script expression, if there is an error, is printed into the script console
@@ -851,11 +872,6 @@ class CGame
 		return OnlineServices.IsGameActive(false);
 	}
 //#endif
-	
-	static bool IsDoNoLogs()
-	{
-		return m_ParamDoNoLogs;
-	}
 	
 	/*bool IsNewMenu()
 	{

@@ -958,6 +958,8 @@ enum DayZPlayerConstants
     CMD_SUICIDEFB_UNARMED				= 2006,			// cro              [end (cancel), end2 (commit)]
     CMD_SUICIDEFB_WOODAXE				= 2007,			// erc              [end (cancel), end2 (commit)]
     CMD_SUICIDEFB_SPEAR					= 2008,			// erc              [end (cancel), end2 (commit)]
+	CMD_SUICIDEFB_SICKLE				= 2009,			// cro              [end (cancel), end2 (commit)]
+	CMD_SUICIDEFB_HOE					= 2010,			// erc              [end (cancel), end2 (commit)]
 
 	// 32767 is totaly MAXIMAL index !!!!!
 

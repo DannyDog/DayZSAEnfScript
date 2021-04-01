@@ -51,7 +51,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 75;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\HelmetMich.rvmat"}},{0.7,{"DZ\characters\headgear\data\HelmetMich.rvmat"}},{0.5,{"DZ\characters\headgear\data\HelmetMich_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\HelmetMich_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\HelmetMich_destruct.rvmat"}}};
 				};
 			};
@@ -61,7 +61,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.25;
 					};
 					class Blood
 					{
@@ -69,7 +69,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.26;
+						damage = 0.5;
 					};
 				};
 				class Melee
@@ -187,7 +187,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BaseballCapII.rvmat"}},{0.7,{"DZ\characters\headgear\data\BaseballCapII.rvmat"}},{0.5,{"DZ\characters\headgear\data\BaseballCapII_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BaseballCapII_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BaseballCapII_destruct.rvmat"}}};
 				};
 			};
@@ -292,7 +292,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 27;
+					hitpoints = 75;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\HeloHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\HeloHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\HeloHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\HeloHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\HeloHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -306,11 +306,11 @@ class CfgVehicles
 					};
 					class Blood
 					{
-						damage = 0.0;
+						damage = 0;
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 				};
 				class Melee
@@ -424,7 +424,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\ConstructionHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\ConstructionHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\ConstructionHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\ConstructionHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\ConstructionHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -434,15 +434,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 					class Blood
 					{
-						damage = 0.0;
+						damage = 0;
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -567,7 +567,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 200;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Head_Sack.rvmat"}},{0.7,{"DZ\characters\headgear\data\Head_Sack.rvmat"}},{0.5,{"DZ\characters\headgear\data\Head_Sack_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\Head_Sack_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\Head_Sack_destruct.rvmat"}}};
 				};
 			};
@@ -624,7 +624,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BeanieHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\BeanieHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\BeanieHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BeanieHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BeanieHat_destruct.rvmat"}}};
 				};
 			};
@@ -721,7 +721,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Ushanka.rvmat"}},{0.7,{"DZ\characters\headgear\data\Ushanka.rvmat"}},{0.5,{"DZ\characters\headgear\data\Ushanka_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\Ushanka_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\Ushanka_destruct.rvmat"}}};
 				};
 			};
@@ -811,12 +811,11 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 250;
 					healthLabels[] = {1.0,0.7,0.5,0.3,0.0};
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MotoHelmet_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 		class AnimEvents
 		{
@@ -871,7 +870,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MotoHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -881,7 +880,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 					class Blood
 					{
@@ -889,7 +888,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -1039,7 +1038,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\MotoHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MotoHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MotoHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -1049,7 +1048,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 					class Blood
 					{
@@ -1057,7 +1056,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -1197,7 +1196,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\HeadTorch.rvmat"}},{0.7,{"DZ\characters\headgear\data\HeadTorch.rvmat"}},{0.5,{"DZ\characters\headgear\data\HeadTorch_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\HeadTorch_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\HeadTorch_destruct.rvmat"}}};
 				};
 			};
@@ -1273,7 +1272,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BandanaH.rvmat"}},{0.7,{"DZ\characters\headgear\data\BandanaH.rvmat"}},{0.5,{"DZ\characters\headgear\data\BandanaH_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BandanaH_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BandanaH_destruct.rvmat"}}};
 				};
 			};
@@ -1366,7 +1365,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BandanaH.rvmat"}},{0.7,{"DZ\characters\headgear\data\BandanaH.rvmat"}},{0.5,{"DZ\characters\headgear\data\BandanaH_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BandanaH_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BandanaH_destruct.rvmat"}}};
 				};
 			};
@@ -1460,7 +1459,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\RadarCap.rvmat"}},{0.7,{"DZ\characters\headgear\data\RadarCap.rvmat"}},{0.5,{"DZ\characters\headgear\data\RadarCap_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\RadarCap_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\RadarCap_destruct.rvmat"}}};
 				};
 			};
@@ -1540,7 +1539,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MilitaryBeret.rvmat"}},{0.7,{"DZ\characters\headgear\data\MilitaryBeret.rvmat"}},{0.5,{"DZ\characters\headgear\data\MilitaryBeret_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MilitaryBeret_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MilitaryBeret_destruct.rvmat"}}};
 				};
 			};
@@ -1648,7 +1647,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 45;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\FlatCap.rvmat"}},{0.7,{"DZ\characters\headgear\data\FlatCap.rvmat"}},{0.5,{"DZ\characters\headgear\data\FlatCap_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\FlatCap_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\FlatCap_destruct.rvmat"}}};
 				};
 			};
@@ -1740,6 +1739,16 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_ZmijovkaCap"};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 40;
+				};
+			};
+		};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\headgear\ZmijovkaCap_m.p3d";
@@ -1815,11 +1824,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\CowboyHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\CowboyHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\CowboyHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\CowboyHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\CowboyHat_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 		class ClothingTypes
 		{
@@ -1896,7 +1904,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\BoonieHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\BoonieHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\BoonieHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\BoonieHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\BoonieHat_destruct.rvmat"}}};
 				};
 			};
@@ -2018,7 +2026,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 35;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Officerhat.rvmat"}},{0.7,{"DZ\characters\headgear\data\Officerhat.rvmat"}},{0.5,{"DZ\characters\headgear\data\Officerhat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\Officerhat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\Officerhat_destruct.rvmat"}}};
 				};
 			};
@@ -2072,7 +2080,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\PoliceCap.rvmat"}},{0.7,{"DZ\characters\headgear\data\PoliceCap.rvmat"}},{0.5,{"DZ\characters\headgear\data\PoliceCap_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\PoliceCap_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\PoliceCap_destruct.rvmat"}}};
 				};
 			};
@@ -2126,7 +2134,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 30;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\pilotka.rvmat"}},{0.7,{"DZ\characters\headgear\data\pilotka.rvmat"}},{0.5,{"DZ\characters\headgear\data\pilotka_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\pilotka_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\pilotka_destruct.rvmat"}}};
 				};
 			};
@@ -2182,8 +2190,71 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\TankerHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\TankerHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\TankerHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\TankerHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\TankerHelmet_destruct.rvmat"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.9;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.9;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.75;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.75;
+					};
+				};
+				class Infected
+				{
+					class Health
+					{
+						damage = 0.75;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.75;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0.5;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.5;
+					};
 				};
 			};
 		};
@@ -2242,7 +2313,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\HelmetMich.rvmat"}},{0.7,{"DZ\characters\headgear\data\HelmetMich.rvmat"}},{0.5,{"DZ\characters\headgear\data\HelmetMich_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\HelmetMich_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\HelmetMich_destruct.rvmat"}}};
 				};
 			};
@@ -2252,7 +2323,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.25;
 					};
 					class Blood
 					{
@@ -2260,7 +2331,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.26;
+						damage = 0.5;
 					};
 				};
 				class Melee
@@ -2365,7 +2436,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 27;
+					hitpoints = 70;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\FireHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\FireHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\FireHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\FireHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\FireHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -2375,15 +2446,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 					class Blood
 					{
-						damage = 0.0;
+						damage = 0;
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -2495,7 +2566,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 40;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\ProtecSkateHelmet2.rvmat"}},{0.7,{"DZ\characters\headgear\data\ProtecSkateHelmet2.rvmat"}},{0.5,{"DZ\characters\headgear\data\ProtecSkateHelmet2_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\ProtecSkateHelmet2_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\ProtecSkateHelmet2_destruct.rvmat"}}};
 				};
 			};
@@ -2505,15 +2576,15 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 					class Blood
 					{
-						damage = 0.0;
+						damage = 0;
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -2642,8 +2713,71 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\masks\data\Welding_Mask.rvmat"}},{0.7,{"DZ\characters\masks\data\Welding_Mask.rvmat"}},{0.5,{"DZ\characters\masks\data\Welding_Mask_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\Welding_Mask_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\Welding_Mask_destruct.rvmat"}}};
+				};
+			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.75;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.9;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.75;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.75;
+					};
+				};
+				class Infected
+				{
+					class Health
+					{
+						damage = 0.75;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.75;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0.5;
+					};
+					class Blood
+					{
+						damage = 0.0;
+					};
+					class Shock
+					{
+						damage = 0.5;
+					};
 				};
 			};
 		};
@@ -2699,7 +2833,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\prison_cap.rvmat"}},{0.7,{"DZ\characters\headgear\data\prison_cap.rvmat"}},{0.5,{"DZ\characters\headgear\data\prison_cap_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\prison_cap_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\prison_cap_destruct.rvmat"}}};
 				};
 			};
@@ -2744,6 +2878,16 @@ class CfgVehicles
 		repairCosts[] = {30.0,25.0};
 		headSelectionsToHide[] = {"Clipping_GhillieHood"};
 		hiddenSelections[] = {"camoGround","camo","camo1"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 50;
+				};
+			};
+		};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\headgear\GhillieHood.p3d";
@@ -2781,7 +2925,6 @@ class CfgVehicles
 					healthLevels[] = {{1.0,{"DZ\characters\backpacks\data\ghillie_green_co.paa"}},{0.7,{"DZ\characters\backpacks\data\ghillie_tan_co.paa"}},{0.5,{"DZ\characters\backpacks\data\ghillie_tan_damage_co.paa"}},{0.3,{"DZ\characters\backpacks\data\ghillie_tan_damage_co.paa"}},{0.0,{"DZ\characters\backpacks\data\ghillie_tan_destruct_co.paa"}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 	};
 	class GhillieHood_Woodland: GhillieHood_ColorBase
@@ -2795,11 +2938,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\backpacks\data\ghillie_green_co.paa"}},{0.7,{"DZ\characters\backpacks\data\ghillie_green_co.paa"}},{0.5,{"DZ\characters\backpacks\data\ghillie_green_damage_co.paa"}},{0.3,{"DZ\characters\backpacks\data\ghillie_green_damage_co.paa"}},{0.0,{"DZ\characters\backpacks\data\ghillie_green_destruct_co.paa"}}};
 				};
 			};
-			class GlobalArmor{};
 			componentNames[] = {"dmg_all"};
 		};
 	};
@@ -2814,7 +2956,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\backpacks\data\ghillie_green_co.paa"}},{0.7,{"DZ\characters\backpacks\data\ghillie_mossy_co.paa"}},{0.5,{"DZ\characters\backpacks\data\ghillie_mossy_damage_co.paa"}},{0.3,{"DZ\characters\backpacks\data\ghillie_mossy_damage_co.paa"}},{0.0,{"DZ\characters\backpacks\data\ghillie_mossy_destruct_co.paa"}}};
 				};
 				componentNames[] = {"dmg_all"};
@@ -2848,11 +2990,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};
-			class GlobalArmor{};
 		};
 		class ClothingTypes
 		{
@@ -2887,11 +3028,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Hat_Leather_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\headgear\Data\Hat_Leather_natural_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\headgear\Data\Hat_Leather_natural_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor: GlobalArmor{};
 		};
 	};
 	class LeatherHat_Beige: LeatherHat_ColorBase
@@ -2905,11 +3045,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Hat_Leather_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\headgear\Data\Hat_Leather_beige_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\headgear\Data\Hat_Leather_beige_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor: GlobalArmor{};
 		};
 	};
 	class LeatherHat_Brown: LeatherHat_ColorBase
@@ -2923,11 +3062,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Hat_Leather_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\headgear\Data\Hat_Leather_brown_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\headgear\Data\Hat_Leather_brown_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor: GlobalArmor{};
 		};
 	};
 	class LeatherHat_Black: LeatherHat_ColorBase
@@ -2941,11 +3079,10 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Hat_Leather_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\headgear\Data\Hat_Leather_black_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\headgear\Data\Hat_Leather_black_destruct.rvmat"}}};
 				};
 			};
-			class GlobalArmor: GlobalArmor{};
 		};
 	};
 	class MedicalScrubsHat_ColorBase: Clothing
@@ -2970,7 +3107,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MedicalScrubs_Hat.rvmat"}},{0.7,{"DZ\characters\headgear\data\MedicalScrubs_Hat.rvmat"}},{0.5,{"DZ\characters\headgear\data\MedicalScrubs_Hat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MedicalScrubs_Hat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MedicalScrubs_Hat_destruct.rvmat"}}};
 				};
 			};
@@ -3041,7 +3178,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 27;
+					hitpoints = 125;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\greathelm.rvmat"}},{0.7,{"DZ\characters\headgear\data\greathelm.rvmat"}},{0.5,{"DZ\characters\headgear\data\greathelm_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\greathelm_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\greathelm_destruct.rvmat"}}};
 				};
 			};
@@ -3059,7 +3196,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 1;
 					};
 				};
 				class Melee
@@ -3165,7 +3302,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 27;
+					hitpoints = 85;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\SSH68Helmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\SSH68Helmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\SSH68Helmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\SSH68Helmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\SSH68Helmet_destruct.rvmat"}}};
 				};
 			};
@@ -3175,11 +3312,11 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.25;
 					};
 					class Blood
 					{
-						damage = 0.0;
+						damage = 0;
 					};
 					class Shock
 					{
@@ -3281,7 +3418,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 75;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\MxHelmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\MxHelmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\MxHelmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\MxHelmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\MxHelmet_destruct.rvmat"}}};
 				};
 			};
@@ -3291,7 +3428,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.75;
 					};
 					class Blood
 					{
@@ -3299,7 +3436,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -3480,7 +3617,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 25;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\NBC_Hood.rvmat"}},{0.7,{"DZ\characters\headgear\data\NBC_Hood.rvmat"}},{0.5,{"DZ\characters\headgear\data\NBC_Hood_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\NBC_Hood_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\NBC_Hood_destruct.rvmat"}}};
 				};
 			};
@@ -3537,7 +3674,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 15;
+					hitpoints = 55;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\Hockey_helmet.rvmat"}},{0.7,{"DZ\characters\headgear\data\Hockey_helmet.rvmat"}},{0.5,{"DZ\characters\headgear\data\Hockey_helmet_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\Hockey_helmet_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\Hockey_helmet_destruct.rvmat"}}};
 				};
 			};
@@ -3547,7 +3684,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 					class Blood
 					{
@@ -3555,7 +3692,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.5;
+						damage = 0.9;
 					};
 				};
 				class Melee
@@ -3676,7 +3813,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 250;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\SantasHat_destruct.rvmat"}}};
 				};
 			};
@@ -3685,6 +3822,93 @@ class CfgVehicles
 		{
 			male = "\DZ\characters\headgear\SantasHat_m.p3d";
 			female = "\DZ\characters\headgear\SantasHat_f.p3d";
+		};
+	};
+	class WitchHood_ColorBase: Clothing
+	{
+		displayName = "$STR_WitchHood0";
+		descriptionShort = "$STR_WitchHood1";
+		model = "\DZ\characters\headgear\WitchHood_g.p3d";
+		inventorySlot[] = {"Headgear"};
+		vehicleClass = "Clothing";
+		simulation = "clothing";
+		itemInfo[] = {"Clothing","Headgear"};
+		rotationFlags = 16;
+		weight = 250;
+		itemSize[] = {2,2};
+		varWetMax = 0.049;
+		heatIsolation = 1;
+		visibilityModifier = 1;
+		noMask = 0;
+		headSelectionsToHide[] = {"Clipping_WitchHood"};
+		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 250;
+					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\WitchHood.rvmat"}},{0.7,{"DZ\characters\headgear\data\WitchHood.rvmat"}},{0.5,{"DZ\characters\headgear\data\WitchHood_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\WitchHood_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\WitchHood_destruct.rvmat"}}};
+				};
+			};
+		};
+		class ClothingTypes
+		{
+			male = "\DZ\characters\headgear\WitchHood_m.p3d";
+			female = "\DZ\characters\headgear\WitchHood_f.p3d";
+		};
+	};
+	class WitchHood_Black: WitchHood_ColorBase
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\DZ\characters\headgear\data\WitchHood_black_co.paa","\DZ\characters\headgear\data\WitchHood_black_co.paa","\DZ\characters\headgear\data\WitchHood_black_co.paa"};
+	};
+	class WitchHood_Brown: WitchHood_ColorBase
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\DZ\characters\headgear\data\WitchHood_brown_co.paa","\DZ\characters\headgear\data\WitchHood_brown_co.paa","\DZ\characters\headgear\data\WitchHood_brown_co.paa"};
+	};
+	class WitchHood_Red: WitchHood_ColorBase
+	{
+		scope = 2;
+		hiddenSelectionsTextures[] = {"\DZ\characters\headgear\data\WitchHood_red_co.paa","\DZ\characters\headgear\data\WitchHood_red_co.paa","\DZ\characters\headgear\data\WitchHood_red_co.paa"};
+	};
+	class WitchHat: Clothing
+	{
+		scope = 2;
+		displayName = "$STR_WitchHat0";
+		descriptionShort = "$STR_WitchHat1";
+		model = "\DZ\characters\headgear\WitchHat_g.p3d";
+		inventorySlot[] = {"Headgear"};
+		vehicleClass = "Clothing";
+		simulation = "clothing";
+		itemInfo[] = {"Clothing","Headgear"};
+		rotationFlags = 16;
+		weight = 450;
+		itemSize[] = {3,2};
+		varWetMax = 0.049;
+		heatIsolation = 1;
+		visibilityModifier = 1;
+		noMask = 0;
+		headSelectionsToHide[] = {"Clipping_WitchHat"};
+		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
+		hiddenSelectionsTextures[] = {"\DZ\characters\headgear\data\WitchHat_co.paa","\DZ\characters\headgear\data\WitchHat_co.paa","\DZ\characters\headgear\data\WitchHat_co.paa"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 250;
+					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\SantasHat_destruct.rvmat"}}};
+				};
+			};
+		};
+		class ClothingTypes
+		{
+			male = "\DZ\characters\headgear\WitchHat_m.p3d";
+			female = "\DZ\characters\headgear\WitchHat_f.p3d";
 		};
 	};
 	class Mich2001Helmet: Clothing
@@ -3716,7 +3940,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\mich2001.rvmat","DZ\characters\headgear\data\mich2001_rail.rvmat"}},{0.7,{"DZ\characters\headgear\data\mich2001.rvmat","DZ\characters\headgear\data\mich2001_rail.rvmat"}},{0.5,{"DZ\characters\headgear\data\mich2001_damage.rvmat","DZ\characters\headgear\data\mich2001_rail_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\mich2001_damage.rvmat","DZ\characters\headgear\data\mich2001_rail_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\mich2001_destruct.rvmat","DZ\characters\headgear\data\mich2001_rail_destruct.rvmat"}}};
 				};
 			};
@@ -3726,7 +3950,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.5;
+						damage = 0.25;
 					};
 					class Blood
 					{
@@ -3734,7 +3958,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.26;
+						damage = 0.5;
 					};
 				};
 				class Melee

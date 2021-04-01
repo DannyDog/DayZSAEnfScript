@@ -154,7 +154,7 @@ class Transport extends EntityAI
 		
 		EntityAI e = EntityAI.Cast(o);			
 		// CanBeSkinned means it is a dead entity which should not block the door
-		return ( ( e && e.IsZombie() ) || o.CanBeSkinned() || o.IsBush() || o.IsTree() );
+		return ( ( e && (e.IsZombie() || e.IsHologram()) ) || o.CanBeSkinned() || o.IsBush() || o.IsTree() );
 	}
 	
 	bool IsAreaAtDoorFree( int currentSeat, float maxAllowedObjHeight = 0.5, float horizontalExtents = 0.5, float playerHeight = 1.7 )

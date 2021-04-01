@@ -84,6 +84,11 @@ class cfgWeapons
 			dispersion = 0.0015;
 			magazineSlot = "magazine";
 		};
+		class NoiseShoot
+		{
+			strength = 82;
+			type = "shot";
+		};
 		class OpticsInfo: OpticsInfoRifle
 		{
 			modelOptics = "-";

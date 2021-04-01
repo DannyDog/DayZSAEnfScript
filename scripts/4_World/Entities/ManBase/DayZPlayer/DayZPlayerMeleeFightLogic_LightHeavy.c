@@ -52,6 +52,11 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		return m_IsInBlock;
 	}
 	
+	void SetBlock( bool block )
+	{
+		m_IsInBlock = block;
+	}
+	
 	bool IsEvading()
 	{
 		return m_IsEvading;
@@ -77,17 +82,17 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	
 	protected EMeleeHitType GetAttackTypeByWeaponAttachments(EntityAI pEntity)
 	{
-		if( !m_DZPlayer.CanConsumeStamina(EStaminaConsumers.MELEE_HEAVY) )
+		if ( !m_DZPlayer.CanConsumeStamina(EStaminaConsumers.MELEE_HEAVY) )
 		{
 			return EMeleeHitType.NONE;
 		}
 
 		//! use stabbing if the bayonet/knife is attached to firearm
-		if( pEntity.HasBayonetAttached() )
+		if ( pEntity.HasBayonetAttached() )
 		{
 			return EMeleeHitType.WPN_STAB;
 		}
-		else if( pEntity.HasButtstockAttached() )
+		else if ( pEntity.HasButtstockAttached() )
 		{
 			return EMeleeHitType.WPN_HIT_BUTTSTOCK;
 		}
@@ -99,13 +104,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 
 	protected float GetAttackTypeByDistanceToTarget(EntityAI pTarget, EMeleeTargetType pTargetType = EMeleeTargetType.ALIGNABLE)
 	{
-		if( pTargetType == EMeleeTargetType.NONALIGNABLE )
+		if ( pTargetType == EMeleeTargetType.NONALIGNABLE )
 			return 1.0;
 
-		if( pTarget )
+		if ( pTarget )
 		{
 			//! target in short distance - in place attack
-			if( vector.Distance(m_DZPlayer.GetPosition(), pTarget.GetPosition()) <= CLOSE_TARGET_DISTANCE )
+			if ( vector.DistanceSq(m_DZPlayer.GetPosition(), pTarget.GetPosition()) <= ( CLOSE_TARGET_DISTANCE * CLOSE_TARGET_DISTANCE ) )
 			{
 				return 1.0;
 			}
@@ -122,6 +127,11 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		
 		//Get worn gloves
 		ClothingBase gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("GLOVES"));
+		
+		//We kick so "gloves" will be the shoes
+		if ( m_HitType == EMeleeHitType.KICK )
+			gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("FEET"));
+		
 		PlayerBase player = PlayerBase.Cast(m_DZPlayer);
 				
 		bool isFireWeapon = itemInHands && itemInHands.IsWeapon();
@@ -165,7 +175,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					else if (hcm.GetCurrentMovementSpeed() <= 2.05 && (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT || pContinueAttack) && !m_DZPlayer.IsFighting())
 					{
 						m_HitType = GetAttackTypeByWeaponAttachments(pEntityInHands);
-						if( m_HitType == EMeleeHitType.NONE )
+						if ( m_HitType == EMeleeHitType.NONE )
 							return false; //! exit if there is no suitable attack
 
 						m_MeleeCombat.Update(itemInHands, m_HitType);
@@ -182,7 +192,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						return true;
 					}				
 					//! char stand up when performing firearm melee from crouch
-					else if( pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDCROUCH )
+					else if ( pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDCROUCH )
 					{
 						if (hcm)
 						{
@@ -239,7 +249,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						float hcw_angle = hcw.GetBaseAimingAngleLR();
 						//! check if player is on back
 						//! (situation where the player is raised in prone and on back is not in anim graph)
-						if( ( hcw_angle < -90 || hcw_angle > 90 ) && m_Player.m_BrokenLegState != eBrokenLegs.BROKEN_LEGS )
+						if ( ( hcw_angle < -90 || hcw_angle > 90 ) && m_Player.m_BrokenLegState != eBrokenLegs.BROKEN_LEGS )
 						{
 							m_HitType = EMeleeHitType.KICK;
 							m_MeleeCombat.Update(itemInHands, m_HitType);
@@ -250,6 +260,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 							m_DZPlayer.StartCommand_Melee2(target, false, attackByDistance);
 							m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_HEAVY);
 							DisableControls();
+							
 							return true;
 						}
 						
@@ -275,7 +286,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			else if (pCurrentCommandID == DayZPlayerConstants.COMMANDID_MELEE2)
 			{
 				//! no suitable attack - skip that
-				if( m_HitType == EMeleeHitType.NONE )
+				if ( m_HitType == EMeleeHitType.NONE )
 					return false;
 
 				HumanCommandMelee2 hmc2 = m_DZPlayer.GetCommand_Melee2();
@@ -283,7 +294,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				if (hmc2 && hmc2.IsInComboRange())
 				{
 					//! select if the next attack will light or heavy (based on input/attachment modifier)
-					if( !isFireWeapon )
+					if ( !isFireWeapon )
 					{
 						m_HitType = GetAttackTypeFromInputs(pInputs);
 					}
@@ -299,7 +310,6 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						GetTargetData(target, targetType);						
 						attackByDistance = GetAttackTypeByDistanceToTarget(target, targetType);
 						
-						//!Testing
 						player = PlayerBase.Cast(m_DZPlayer);
 						if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 						{
@@ -328,7 +338,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					}
 
 					//! stamina depletion per attack
-					switch( m_HitType )
+					switch ( m_HitType )
 					{
 						case EMeleeHitType.HEAVY:
 						case EMeleeHitType.SPRINT:
@@ -427,18 +437,18 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				if (cm.GetCurrentInputAngle(angle2) && (angle2 < -130.0 || angle2 > 130))
 				{
 					cm.SetMeleeBlock(true);
-					m_IsInBlock = true;
+					SetBlock(true);
 				}
 				else
 				{
 					cm.SetMeleeBlock(false);
-					m_IsInBlock = false;
+					SetBlock(false);
 				}
 			}
 			else
 			{
 				cm.SetMeleeBlock(false);
-				m_IsInBlock = false;
+				SetBlock(false);
 			}
 		}
 
@@ -449,17 +459,17 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	{
 		EntityAI target = m_MeleeCombat.GetTargetEntity();
 
-		if( target )
+		if ( target )
 		{
-			if( target.IsInherited(DayZPlayer) )
+			if ( target.IsInherited(DayZPlayer) )
 			{
 				EvaluateHit_Player(weapon, target);
 			}
-			else if( target.IsInherited(DayZInfected) )
+			else if ( target.IsInherited(DayZInfected) )
 			{
 				EvaluateHit_Infected(weapon, target);
 			}
-			else if( target.GetMeleeTargetType() == EMeleeTargetType.NONALIGNABLE )
+			else if ( target.GetMeleeTargetType() == EMeleeTargetType.NONALIGNABLE )
 			{
 				EvaluateHit_NonAlignableObjects(weapon, target);
 			}
@@ -482,12 +492,12 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		PlayerBase targetPlayer = PlayerBase.Cast(target);
 
 		//! Melee Hit/Impact modifiers
-		if( targetPlayer )
+		if ( targetPlayer )
 		{
 			//! if the oponnent is in Melee Block shift the damage down
-			if( targetPlayer.GetMeleeFightLogic() && targetPlayer.GetMeleeFightLogic().IsInBlock())
+			if ( targetPlayer.GetMeleeFightLogic() && targetPlayer.GetMeleeFightLogic().IsInBlock())
 			{
-				if( weaponMode > 0 )
+				if ( weaponMode > 0 )
 				{
 					weaponMode--; // Heavy -> Light shift
 				}
@@ -503,39 +513,49 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	
 	protected void EvaluateHit_Infected(InventoryItem weapon, Object target)
 	{
-		int hitZoneIdx = m_MeleeCombat.GetHitZoneIdx();
-		int weaponMode = m_MeleeCombat.GetWeaponMode();
-		vector hitPosWS;
-
-		DayZInfected targetInfected = DayZInfected.Cast(target);
-
-		//! check and evaluate stealth kill
-		if( targetInfected && weapon )
-		{
-			//! perform only for finisher suitable weapons in combination with heavy melee attack OR stabbing with firearm melee
-			if((m_HitType == EMeleeHitType.HEAVY && weapon.IsMeleeFinisher()) || m_HitType == EMeleeHitType.WPN_STAB)
-			{
-				//! check if attacker is in right pos and angle against victim
-				if( IsBehindEntity(45, m_DZPlayer, target) )
-				{
-					EntityAI targetEntity = EntityAI.Cast(target);
-
-					//! translate idx to name
-					string compName = targetEntity.GetDamageZoneNameByComponentIndex(hitZoneIdx);
+		//If the finisher attack haven't been performed, then use normal hit
+		if (!EvaluateFinisherAttack(weapon, target))
+			EvaluateHit_Common(weapon, target);
+	}
 	
-					//check if name is in suitable components list
-					if( targetEntity.GetSuitableFinisherHitComponents().Find(compName) > -1 )
+	protected bool EvaluateFinisherAttack(InventoryItem weapon, Object target)
+	{		
+		DayZInfected targetInfected = DayZInfected.Cast(target);
+		int hitZoneIdx = m_MeleeCombat.GetHitZoneIdx();
+		vector hitPosWS;
+		
+		//! check and evaluate stealth kill
+		if (GetGame().IsServer() && targetInfected && weapon)
+		{
+			//! perform only for finisher suitable weapons
+			if ((weapon.IsMeleeFinisher() || m_HitType == EMeleeHitType.WPN_STAB) &&  weapon.GetHealthLevel("") !=  GameConstants.STATE_RUINED)
+			{
+				int mindState = targetInfected.GetInputController().GetMindState();
+				
+				//Check if the infected is aware of the player
+				if ((mindState != DayZInfectedConstants.MINDSTATE_CHASE) && (mindState != DayZInfectedConstants.MINDSTATE_FIGHT))
+				{
+					//! check if attacker is in right pos and angle against victim
+					if (IsBehindEntity(60, m_DZPlayer, target))
 					{
+						EntityAI targetEntity = EntityAI.Cast(target);
+	
+						//! translate idx to name
+						string compName = targetEntity.GetDamageZoneNameByComponentIndex(hitZoneIdx);
+		
 						// execute attack (dmg part)
+						target.AddHealth("","Health",-100);
+						/*
 						hitPosWS = targetEntity.ModelToWorld(targetEntity.GetDefaultHitPosition());
 						DamageSystem.CloseCombatDamage(m_DZPlayer, target, hitZoneIdx, "FinisherHit", hitPosWS);
-						return; //! early exit
+						*/
+						return true;
 					}
 				}
 			}
 		}
-		
-		EvaluateHit_Common(weapon, target);
+		//Finisher attack not performed
+		return false;
 	}
 	
 	protected void EvaluateHit_Common(InventoryItem weapon, Object target, bool forcedDummy=false)
@@ -548,7 +568,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		EntityAI targetEntity = EntityAI.Cast(target);
 
 		//! check if we need to use dummy hit
-		if(!DummyHitSelector(m_HitType, ammo) && !forcedDummy)
+		if (!DummyHitSelector(m_HitType, ammo) && !forcedDummy)
 		{
 			//! normal hit with applied damage to targeted component
 			if (hitZoneIdx >= 0)
@@ -560,7 +580,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		else
 		{
 			//! play hit animation for dummy hits
-			if( GetGame().IsServer() && targetEntity )
+			if ( GetGame().IsServer() && targetEntity )
 			{
 				hitPosWS = targetEntity.ModelToWorld(targetEntity.GetDefaultHitPosition()); //! override hit pos by pos defined in type
 				targetEntity.EEHitBy(null, 0, m_DZPlayer, hitZoneIdx, "", ammo, hitPosWS, 1.0);
@@ -585,13 +605,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		target = m_MeleeCombat.GetTargetEntity();
 		targetType = EMeleeTargetType.ALIGNABLE; //! default
 		
-		if( target )
+		if ( target )
 		{
 			targetType = target.GetMeleeTargetType();
 		}
 
 		//! nullify target for nonalignable objects (big objects)
-		if( targetType == EMeleeTargetType.NONALIGNABLE )
+		if ( targetType == EMeleeTargetType.NONALIGNABLE )
 		{
 			target = null;
 		}
@@ -600,7 +620,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	//! evaluation of hit player vs. player
 	protected bool DummyHitSelector(EMeleeHitType hitType, out string ammoType)
 	{
-		switch(hitType)
+		switch (hitType)
 		{
 		//! in case of kick (on back or push from erc) change the ammo type to dummy
 		case EMeleeHitType.KICK:
@@ -631,10 +651,10 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 
 		int hitDir = Math.Acos(cosFi) * Math.RAD2DEG;
 		
-		if( cross[1] < 0 )
+		if ( cross[1] < 0 )
 			hitDir = -hitDir;
 		
-		if( hitDir <= (-180 + angle) || hitDir >= (180 - angle) )
+		if ( hitDir <= (-180 + angle) || hitDir >= (180 - angle) )
 		{
 			//Print("HitDir: " + hitDir + " angle passed");
 			return true;
@@ -646,7 +666,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	protected void SetCooldown(float time, EFightLogicCooldownCategory cooldownCategory)
 	{
 		//! stops currently running cooldown timer (for specific category)
-		if( m_CooldownTimers.Get(cooldownCategory).IsRunning() )
+		if ( m_CooldownTimers.Get(cooldownCategory).IsRunning() )
 		{
 			m_CooldownTimers.Get(cooldownCategory).Stop();
 		}
@@ -658,7 +678,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	
 	protected void ResetCooldown(EFightLogicCooldownCategory cooldownCategory)
 	{
-		switch(cooldownCategory)
+		switch (cooldownCategory)
 		{
 		case EFightLogicCooldownCategory.EVADE:
 			m_IsEvading = false;
@@ -669,7 +689,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	protected void EnableControls()
 	{
 		/*
-		if(m_Mission)
+		if (m_Mission)
 		{
 			m_Mission.PlayerControlEnable(true);
 		}
@@ -679,7 +699,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 	protected void DisableControls()
 	{
 		/*
-		if(m_Mission)
+		if (m_Mission)
 		{
 			m_Mission.PlayerControlDisable(INPUT_EXCLUDE_MOUSE_ALL);
 		}
@@ -695,8 +715,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			return;
 		
 		//Check if server side
-		if ( DZPlayer.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_SERVER && !itemInHands )
+		if ( GetGame().IsServer() )
 		{
+			if ( itemInHands )
+				return;
+			
+			int m_RandNum; //Poor variable naming caught me eventually...
+			
 			//If gloves, damage gloves
 			if ( gloves && gloves.GetHealthLevel() < GameConstants.STATE_RUINED )
 			{
@@ -704,28 +729,52 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			}
 			else
 			{
-				//If no gloves, inflict hand damage and bleeding
-				//DZPlayer.DecreaseHealth("hands", "", 10); IN CASE WE WANT TO DO STUFF WITH HAND HEALTH
-				
 				//Do not add bleeding if hitting player, zombie or animal
-				if ( PlayerBase.Cast(target) || DayZInfected.Cast(target) || AnimalBase.Cast(target) )
+				if ( PlayerBase.Cast(target) || DayZCreatureAI.Cast( target ) )
 					return;
 				
-				//Random bleeding source
-				int m_RandNum = Math.RandomIntInclusive(1, 15);
-				switch (m_RandNum)
+				//We don't inflict bleeding to hands when kicking
+				if ( m_HitType != EMeleeHitType.KICK )
 				{
-					case 1:
-						PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArmRoll");
-					break;
+					//If no gloves, inflict hand damage and bleeding
+					//DZPlayer.DecreaseHealth("hands", "", 10); IN CASE WE WANT TO DO STUFF WITH HAND HEALTH
 					
-					case 2:
-						PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftForeArmRoll");
-					break;
-					
-					default:
-						//Do nothing here
-					break;
+					//Random bleeding source
+					m_RandNum = Math.RandomIntInclusive(1, 15);
+					switch (m_RandNum)
+					{
+						case 1:
+							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArmRoll");
+						break;
+						
+						case 2:
+							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftForeArmRoll");
+						break;
+						
+						default:
+							//Do nothing here
+						break;
+					}
+				}
+				else
+				{
+					//Random bleeding source
+					m_RandNum = Math.RandomIntInclusive(1, 15);
+					//We only add bleeding to left foot as character kicks with left foot
+					switch (m_RandNum)
+					{
+						case 1:
+							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftToeBase");
+						break;
+						
+						case 2:
+							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftFoot");
+						break;
+						
+						default:
+							//Do nothing here
+						break;
+					}
 				}
 			}
 		}

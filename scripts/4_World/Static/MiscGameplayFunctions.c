@@ -973,158 +973,262 @@ class MiscGameplayFunctions
 
 		return heatIsolation;
 	}
+	
+	static void FilterObstructingObjects(array<Object> potentiallyObstructingObjects, out array<Object> obstructingObjects)
+	{
+		if (!obstructingObjects)
+			obstructingObjects = new array<Object>;
+		
+		for ( int i = 0; i < potentiallyObstructingObjects.Count(); ++i )
+		{
+			Object obj = potentiallyObstructingObjects[i];
+			if ( obj && obj.CanObstruct() )
+				obstructingObjects.Insert(obj);
+		}
+	}
+	
+	static bool CanIgnoreDistanceCheck(Object obj)
+	{
+	    return obj.IsTransport() || obj.CanUseConstruction();
+	}
+	
+	//! group objects that are close to each other together	
+	static void FilterObstructedObjectsByGrouping(vector origin, float range, float distanceDelta, array<Object> objects, array<Object> obstructingObjects, out array<Object> filteredObjects, bool doDistanceCheck = false, bool checkIfDistanceCanBeIgnored = false, float maxDist = 0)
+	{
+		array<Object> vicinityObjects= new array<Object>;
+		vicinityObjects.Copy(objects);
+		
+		int i = 0;
+		int j = 0;
+		int k = 0;			
+		int mCount = vicinityObjects.Count();
+		
+		if (!filteredObjects)
+			filteredObjects = new array<Object>;
+		
+		// Remove objects that are too far from the player anyways
+		if ( doDistanceCheck )
+		{
+			for ( i = vicinityObjects.Count() - 1; i >= 0; --i )
+			{
+				Object obj = vicinityObjects[i];
+				if ( obj && !CanIgnoreDistanceCheck( obj ) && vector.DistanceSq(origin, obj.GetPosition()) > maxDist * maxDist )
+					vicinityObjects.Remove(j);
+			}
+		}
+
+		// Sort obstructingObjects to have the furthest one first
+		array<Object> sortedObstructingObjects = new array<Object>;
+		array<float> distanceHelper = new array<float>;
+		array<float> distanceHelperUnsorted = new array<float>;
+		float distance, dist1, dist2;
+
+		for ( i = 0; i < obstructingObjects.Count(); ++i )
+		{
+			distance = vector.DistanceSq(obstructingObjects[i].GetWorldPosition(), origin);
+			distanceHelper.Insert(distance);
+		}
+
+		distanceHelperUnsorted.Copy(distanceHelper);
+		distanceHelper.Sort();
+
+		for ( i = distanceHelper.Count() - 1; i >= 0; --i )
+			sortedObstructingObjects.Insert(obstructingObjects[distanceHelperUnsorted.Find(distanceHelper[i])]);
+
+		array<ref array<Object>> tempGroups = new array<ref array<Object>>;
+		array<ref array<Object>> objectGroups = new array<ref array<Object>>;
+		ref array<Object> group;
+		
+		float cos = Math.Cos(90);
+		float sin = Math.Sin(90);
+
+		// Iterate through sorted obstructingObjects
+		for ( i = 0; i < sortedObstructingObjects.Count(); ++i )
+		{
+			Object obstrObj = sortedObstructingObjects[i];
+			vector worldPos = obstrObj.GetWorldPosition();
+			vector min, max;
+			vector minMax[2];
+			if ( obstrObj.GetCollisionBox(minMax) )
+			{
+				min = minMax[0];
+				max = minMax[1];
+				max = max * (obstrObj.GetOrientation() * range);
+
+				vector center, dx, dy, dz, half;
+				center = (min + max) * 0.5;
+				dz = obstrObj.GetOrientation();
+				dx = vector.RotateAroundZero(dz, vector.Up, cos, sin);
+				dy = vector.RotateAroundZero(dz, vector.Aside, cos, sin);
+				half = (max - min) * 0.5;
+				half = Vector(Math.AbsFloat(half[0]), Math.AbsFloat(half[1]), Math.AbsFloat(half[2]));
+
+				group = new array<Object>;
+
+				// Group objects within the above box
+				for ( j = vicinityObjects.Count() - 1; j >= 0; --j )
+				{
+					Object vicObj = vicinityObjects[j];
+					if ( vicObj )
+					{
+						vector d = vicObj.GetWorldPosition() - worldPos + center;
+						if ( Math.AbsFloat(vector.Dot(d, dx)) <= half[0] && Math.AbsFloat(vector.Dot(d, dy)) <= half[1] && Math.AbsFloat(vector.Dot(d, dz)) <= half[2] )
+						{
+							group.Insert(vicObj);
+							vicinityObjects.Remove(j);
+						}
+					}
+				}
+
+				if ( group.Count() > 0 )
+					tempGroups.Insert(group);
+			}
+		}
+
+		// Go through the objects grouped by obstruction to split them by distance too
+		for ( i = 0; i < tempGroups.Count(); ++i )
+			SplitArrayIntoGroupsByDistance(tempGroups[i], objectGroups, distanceDelta);
+
+		// Split initial groups by distance
+		SplitArrayIntoGroupsByDistance(vicinityObjects, objectGroups, distanceDelta);
+
+		// Raycast accordingly to groups		
+		IsObjectObstructedCache cache = new IsObjectObstructedCache(origin, mCount);
+		for ( i = 0; i < objectGroups.Count(); ++i )
+		{
+			array<Object> objectGroup = objectGroups[i];
+			Object sampleObject = objectGroup[0];
+
+			if ( !IsObjectObstructedEx(sampleObject, cache) )
+				filteredObjects.InsertAll(objectGroup);
+
+			cache.ClearCache();
+		}
+	}
+
+	static void SplitArrayIntoGroupsByDistance(array<Object> objects, array<ref array<Object>> objectGroups, float squaredDistanceDelta)
+	{
+		ref array<Object> group;
+		for ( int i = 0; i < objects.Count(); )
+		{
+			Object obj1 = objects[i];
+			if ( obj1 )
+			{
+				group = new array<Object>;
+				group.Insert(obj1);
+				for ( int j = objects.Count() - 1; j > i; --j )
+				{
+					Object obj2 = objects[j];
+					if ( obj1 && obj2 )
+					{
+						vector start = obj1.GetWorldPosition();
+						vector end = obj2.GetWorldPosition();
+
+						float distance = vector.DistanceSq(start, end);
+						if ( distance < squaredDistanceDelta )
+						{								
+							group.Insert(obj2);
+							objects.Remove(j);
+						}
+					}
+				}
+				objectGroups.Insert(group);
+				objects.Remove(i);
+				continue;
+			}
+			++i;
+		}
+	}
+	
 	static bool IsObjectObstructed(Object object, bool doDistanceCheck = false, vector distanceCheckPos = "0 0 0", float maxDist = 0)
+	{
+		vector rayStart;
+		MiscGameplayFunctions.GetHeadBonePos( PlayerBase.Cast( GetGame().GetPlayer() ), rayStart);
+		IsObjectObstructedCache cache = new IsObjectObstructedCache(rayStart, 1);
+		return IsObjectObstructedEx(object, cache, doDistanceCheck, distanceCheckPos, maxDist);
+	}
+
+	static bool IsObjectObstructedEx(Object object, IsObjectObstructedCache cache, bool doDistanceCheck = false, vector distanceCheckPos = "0 0 0", float maxDist = 0)
 	{
 		if (!object)
 			return true;
 		
-		PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+		PlayerBase player = PlayerBase.Cast(g_Game.GetPlayer());
 		if (doDistanceCheck && vector.DistanceSq(player.GetPosition(), distanceCheckPos) > maxDist * maxDist)
 			return true;
-		
-		bool is_obstructed = false;
-		vector object_center_pos;
-		vector object_contact_pos;
-		vector object_contact_dir;
-		vector raycast_start;
-		int contact_component;
-		array<ref RaycastRVResult> hit_proxy_objects = new array<ref RaycastRVResult>;	
-		set<Object> hit_objects = new set<Object>;
-		EntityAI entity_ai;
-		
-		Class.CastTo( entity_ai, object );
-				
-		if ( object.MemoryPointExists("ce_center") )
-		{
-			//Print("CE_CENTER found");
-			vector modelPos = object.GetMemoryPointPos("ce_center");
-			object_center_pos = object.ModelToWorld(modelPos);
-		}
-		else if ( entity_ai && entity_ai.IsMan() )
-		{
-			//Print("NA HRACovi getujem pelvis");
-			PlayerBase vicinity_player = PlayerBase.Cast( entity_ai );
-			if ( vicinity_player )
-			{
-				int bone_index_player = vicinity_player.GetBoneIndexByName( "spine3" );
-				object_center_pos = vicinity_player.GetBonePositionWS( bone_index_player );
-			}
-		}
-		else if ( entity_ai && (entity_ai.IsZombie() || entity_ai.IsZombieMilitary()) )
-		{
-			//Print("NA INFECTEDovi getujem pelvis");
-			ZombieBase vicinity_zombie = ZombieBase.Cast( entity_ai );
-			if ( vicinity_zombie )
-			{
-				int bone_index_zombie = vicinity_zombie.GetBoneIndexByName( "spine3" );
-				object_center_pos = vicinity_zombie.GetBonePositionWS( bone_index_zombie );
-			}
-		}
-		else
-		{
-			//Print("CE_CENTER DOING A BAMBOOZLE => not found");
-			object_center_pos = object.GetPosition();
-			object_center_pos[1] = object_center_pos[1] + 0.2;
-		}
+
+		cache.ObjectCenterPos = object.GetCenter();
 			
-		//Print("-->raycast from player to: " + object);
-		MiscGameplayFunctions.GetHeadBonePos( PlayerBase.Cast( GetGame().GetPlayer() ), raycast_start);
-		//DebugRaycastDraw( raycast_start, object_center_pos );
+		if (IsObjectObstructedProxy(object, cache, player))
+			return true;
 			
+		//Print(" ===>>> pouzij standardny raycast s fire geometriou koli domom a basebuildingu <<<=== ");
+		DayZPhysics.RaycastRV( cache.RaycastStart, cache.ObjectCenterPos, cache.ObjectContactPos, cache.ObjectContactDir, cache.ContactComponent, cache.HitObjects, object, GetGame().GetPlayer(), false, false, ObjIntersectFire, 0.0, CollisionFlags.ALLOBJECTS );
+			
+		return IsObjectObstructedFilter(object, cache, player);
+	}
+ 	
+	static bool IsObjectObstructedProxy(Object object, IsObjectObstructedCache cache, PlayerBase player)
+	{
 		if ( object.HasProxyParts() || object.CanUseConstruction() )
 		{
 			//Print(" :) (: pouzij proxy raycast koli proxy itemom :) (: ");
-			RaycastRVParams ray_input = new RaycastRVParams( raycast_start, object_center_pos, player );
-			DayZPhysics.RaycastRVProxy( ray_input, hit_proxy_objects );
-				
-			if ( hit_proxy_objects )
+			RaycastRVParams ray_input = new RaycastRVParams( cache.RaycastStart, cache.ObjectCenterPos, player );
+			DayZPhysics.RaycastRVProxy( ray_input, cache.HitProxyObjects );				
+			if ( cache.HitProxyObjects )
 			{
-				//Print(" - hit_proxy_objects - ");
-				if ( hit_proxy_objects.Count() > 0 )
+				//Print(" - cache.HitProxyObjects - ");
+				if ( cache.HitProxyObjects.Count() > 0 )
 				{
-					if ( hit_proxy_objects[0].hierLevel > 0 )
+					if ( cache.HitProxyObjects[0].hierLevel > 0 )
 					{
 						// ignores attachments on player
-						if ( !hit_proxy_objects[0].parent.IsMan() )
+						if ( !cache.HitProxyObjects[0].parent.IsMan() )
 						{
-							//Print( "hit_proxy_objects[0].obj " + hit_proxy_objects[0].obj );
-							//Print( "hit_proxy_objects[0].parent" + hit_proxy_objects[0].parent );
+							//Print( "cache.HitProxyObjects[0].obj " + cache.HitProxyObjects[0].obj );
+							//Print( "cache.HitProxyObjects[0].parent" + cache.HitProxyObjects[0].parent );
 								
-							if ( hit_proxy_objects[0].parent )
+							if ( cache.HitProxyObjects[0].parent )
 							{
-								EntityAI proxy_parent = EntityAI.Cast( hit_proxy_objects[0].parent );
+								EntityAI proxy_parent = EntityAI.Cast( cache.HitProxyObjects[0].parent );
 								if ( proxy_parent.GetInventory() && proxy_parent.GetInventory().GetCargo() )
-								{	
 									return true;
-								}
-								else
-								{
-									is_obstructed = false;
-								}
 							}
 						}	
 					}
 				}
 			}
 		}
-		if ( hit_objects ) 
-			hit_objects.Clear();
-				
-		//Print(" ===>>> pouzij standardny raycast s fire geometriou koli domom a basebuildingu <<<=== ");
-		DayZPhysics.RaycastRV( raycast_start, object_center_pos, object_contact_pos, object_contact_dir, contact_component, hit_objects, null, GetGame().GetPlayer(), false, false, ObjIntersectFire, 0.0, CollisionFlags.ALLOBJECTS );
-				
-		//4.2. ignore items if they are obstructed
-		for ( int m = 0; m < hit_objects.Count(); m++ )
-		{
-			Object hit_object = hit_objects.Get(m);
-				
-			//Print("-->>pocas raycastu hitujem: " + hit_object);
-				
-			if ( hit_object.IsBuilding() )
-			{
-				//Print("!!!!!obstacle building: " + hit_object);
-				return true;
-			}
-	
-			if ( hit_object.IsPlainObject()/* && !ItemBase.Cast(hit_object)*/ )
-			{
-				//Print("!!!!!obstacle plain object: " + hit_object);
-				return true;
-			}
-				
-			if ( hit_object.IsInherited(BaseBuildingBase) )
-			{
-				if (object != hit_object)
-					return true;
-			} 
-			
-			if ( hit_object.IsInherited(ItemBase) )
-			{
-				ItemBase item = ItemBase.Cast(hit_object);
-
-				if (!item.IsPlayerInside(player, ""))
-					return true;
-			} 
-				
-			//4.3. ignore item if items are big and heavy >= OBJECT_OBSTRUCTION_WEIGHT 
-			/*EntityAI eai;
-			if ( Class.CastTo( eai, hit_object ) )
-			{
-					
-				if ( eai.GetWeight() >= OBJECT_OBSTRUCTION_WEIGHT )
-				{
-					if ( eai != filtered_object && eai.GetHierarchyRoot() != filtered_object )
-					{
-						//Print("!!!!!obstacle vaha: " + hit_object);
-						is_obstructed = true;
-					}
-				}
-			}*/
-		}
-			
-		return is_obstructed;
+		return false;
 	}
 	
+	static bool IsObjectObstructedFilter(Object object, IsObjectObstructedCache cache, PlayerBase player)
+	{
+		for ( int m = 0; m < cache.HitObjects.Count(); m++ )
+		{
+			Object hit_object = cache.HitObjects.Get(m);
+			
+			if ( hit_object.CanObstruct() )
+				return true;
+
+			//4.3. ignore item if items are big and heavy >= OBJECT_OBSTRUCTION_WEIGHT 
+			//EntityAI eai;
+			//if ( Class.CastTo( eai, hit_object ) )
+			//{					
+			//	if ( eai.GetWeight() >= OBJECT_OBSTRUCTION_WEIGHT )
+			//	{
+			//		if ( eai != filtered_object && eai.GetHierarchyRoot() != filtered_object )
+			//		{
+			//			//Print("!!!!!obstacle vaha: " + hit_object);
+			//			is_obstructed = true;
+			//		}
+			//	}
+			//}
+		}
+		
+		return false;
+	}
+
 	//Inflict absolute damage to item (used on tools when completing actions)
 	static void DealAbsoluteDmg(ItemBase item, float dmg)
 	{
@@ -1250,4 +1354,45 @@ class DestroyItemInCorpsesHandsAndCreateNewOnGndLambda : ReplaceAndDestroyLambda
 		super.RemoveOldItemFromLocation();
 		m_Player.GetHumanInventory().OnEntityInHandsDestroyed(m_OldLocation);
 	}
+}
+
+// This was created since IsObjectObstructed is often called multiple times in one frame
+// And apparently it seems that keeping this data in one struct seems to be more efficient than creating the variables dozens of times per frame
+class IsObjectObstructedCache // Pretending this is a struct
+{
+	// Outside data
+	vector RaycastStart = "0 0 0";
+	int TotalObjects = 0;
+	
+	// Inside data
+	vector ObjectCenterPos = "0 0 0";
+	vector ObjectContactPos = "0 0 0";
+	vector ObjectContactDir = "0 0 0";
+	int ContactComponent = -1;
+	ref array<ref RaycastRVResult> HitProxyObjects = new array<ref RaycastRVResult>;	
+	ref set<Object> HitObjects = new set<Object>;
+	
+	void IsObjectObstructedCache(vector rayCastStart, int totalObjects)
+	{
+		RaycastStart = rayCastStart;
+		TotalObjects = totalObjects;
+	}
+	
+	// Only inside data
+	void ClearCache()
+	{		
+		// TODO: What is fastest to assign to vector, "0 0 0" or Vector(0, 0, 0) ?
+		ObjectCenterPos = "0 0 0";
+		ObjectContactPos = "0 0 0";
+		ObjectContactDir = "0 0 0";
+		ContactComponent = -1;
+		HitProxyObjects.Clear();
+		HitObjects.Clear();
+	}
+	
+	// Clear everything
+	/*void Clear()
+	{
+		
+	}*/
 }

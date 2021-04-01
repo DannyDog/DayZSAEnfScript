@@ -48,15 +48,16 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{		
-		EntityAI target_EAI = EntityAI.Cast( target.GetObject() );
+		EntityAI target_EAI = EntityAI.Cast( target.GetObject() ); //Keep for backwards compatibility
+		ItemBase target_IB = ItemBase.Cast( target.GetObject() );
 		
 		//Prevent plugging to items in inventory
-		if ( target_EAI && target_EAI.GetHierarchyRoot() != player &&  item  &&  target_EAI.HasEnergyManager()  &&  item.HasEnergyManager() )
+		if ( target_IB && target_IB.GetHierarchyRoot() == target_IB &&  item  &&  target_IB.HasEnergyManager()  &&  item.HasEnergyManager() )
 		{
-			if ( !target_EAI.GetCompEM().IsPlugged()  &&  item.GetCompEM().CanReceivePlugFrom(target_EAI) )
+			if ( !target_IB.GetCompEM().IsPlugged()  &&  item.GetCompEM().CanReceivePlugFrom(target_IB) )
 			{
 				//hotfix, re-work entire action!
-				return target_EAI.IsElectricAppliance();
+				return target_IB.IsElectricAppliance();
 			}
 			
 			// Special case for vehicle batteries
@@ -64,7 +65,7 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 			{
 				MetalWire metal_wire = MetalWire.Cast( item.GetCompEM().GetPluggedDevice() );
 				
-				if ( metal_wire  &&  metal_wire.GetCompEM().CanReceivePlugFrom(target_EAI) )
+				if ( metal_wire  &&  metal_wire.GetCompEM().CanReceivePlugFrom(target_IB) )
 				{
 					return true; // We can power the action_data.m_Target from vehicle battery because it has metal wire attached.
 				}

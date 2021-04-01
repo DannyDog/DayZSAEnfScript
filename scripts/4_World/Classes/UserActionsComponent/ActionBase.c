@@ -152,7 +152,7 @@ class ActionBase : ActionBase_Basic
 		{
 			if (!InventoryReservation(action_data))
 			{
-				ClearInventoryReservation(action_data);
+				ClearInventoryReservationEx(action_data);
 				return false;
 			}
 			
@@ -311,6 +311,12 @@ class ActionBase : ActionBase_Basic
 	}
 	
 	bool CanBeUsedThrowing()
+	{
+		return false;
+	}
+	
+	//! Is an action directly related to deployment/advanced placing
+	bool IsDeploymentAction()
 	{
 		return false;
 	}
@@ -702,7 +708,7 @@ class ActionBase : ActionBase_Basic
 				}
 				else
 				{
-					action_data.m_Player.GetInventory().AddInventoryReservation( targetItem, targetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
+					action_data.m_Player.GetInventory().AddInventoryReservationEx( targetItem, targetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
 				}
 			}
 		}	
@@ -716,7 +722,7 @@ class ActionBase : ActionBase_Basic
 		}
 		else
 		{
-			action_data.m_Player.GetInventory().AddInventoryReservation( action_data.m_Player.GetItemInHands(), handInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
+			action_data.m_Player.GetInventory().AddInventoryReservationEx( action_data.m_Player.GetItemInHands(), handInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
 		}
 		
 		if ( success )
@@ -735,7 +741,7 @@ class ActionBase : ActionBase_Basic
 		return success;
 	}
 
-	void ClearInventoryReservation(ActionData action_data)
+	void ClearInventoryReservationEx(ActionData action_data)
 	{
 		if(action_data.m_ReservedInventoryLocations)
 		{
@@ -744,7 +750,7 @@ class ActionBase : ActionBase_Basic
 			{
 				il = action_data.m_ReservedInventoryLocations.Get(i);
 				EntityAI entity = il.GetItem();
-				action_data.m_Player.GetInventory().ClearInventoryReservation( il.GetItem() , il );
+				action_data.m_Player.GetInventory().ClearInventoryReservationEx( il.GetItem() , il );
 			}
 			action_data.m_ReservedInventoryLocations.Clear();
 		}
@@ -759,7 +765,7 @@ class ActionBase : ActionBase_Basic
 			{
 				il = action_data.m_ReservedInventoryLocations.Get(i);
 				EntityAI entity = il.GetItem();
-				action_data.m_Player.GetInventory().ExtendInventoryReservation( il.GetItem() , il, 10000 );
+				action_data.m_Player.GetInventory().ExtendInventoryReservationEx( il.GetItem() , il, 10000 );
 			}
 		}
 	}
@@ -969,7 +975,10 @@ class ActionBase : ActionBase_Basic
 	{}
 	
 	void OnStart(ActionData action_data)
-	{}
+	{
+		if (action_data.m_Player != NULL && action_data.m_Player.IsPlacingLocal() && !IsDeploymentAction())
+			action_data.m_Player.PlacingCancelLocal();
+	}
 	
 	void OnStartClient(ActionData action_data)
 	{}

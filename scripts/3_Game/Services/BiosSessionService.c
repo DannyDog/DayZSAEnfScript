@@ -160,12 +160,12 @@ class BiosSessionService
 	void OnGetGameplaySession(string session_address, int session_port)
 	{	
 		m_GetSessionAttempts = 0;
-		if( g_Game.GetGameState() == DayZGameState.IN_GAME )
+		if ( g_Game.GetGameState() == DayZGameState.IN_GAME )
 		{
 			string addr;
 			int port;
 			bool found = GetGame().GetHostAddress( addr, port );
-			if( found && !( addr == session_address && port == session_port ) )
+			if ( found && !( addr == session_address && port == session_port ) )
 			{
 				OnlineServices.SetInviteServerInfo( session_address, session_port );
 				g_Game.GetUIManager().EnterScriptedMenu( MENU_INVITE_TIMER, null );

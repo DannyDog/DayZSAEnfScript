@@ -237,20 +237,17 @@ class InventoryQuickbar extends InventoryGridController
 		int color = 0x0AFFFFFF;
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		EntityAI itemInHand = player.GetHumanInventory().GetEntityInHands();
-		if( player && itemInHand == item )
+		if ( player && itemInHand == item )
 		{
-			if( player.GetHumanInventory().FindUserReservedLocationIndex(item) != -1 || player.GetInventory().CanAddEntityToInventory(item))
+			if ( player.GetHumanInventory().FindUserReservedLocationIndex(item) != -1 || grid.CanAddItemInHandToInventory() )
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_H_GOOD;
 			else
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_H_BAD;
 		}
-		else if( itemInHand )
+		else if ( itemInHand )
 		{
-			if(!player.GetInventory().CanAddEntityToInventory(itemInHand) && !GameInventory.CanSwapEntitiesEx(item, itemInHand) )	
-			{
+			if ( !grid.CanAddItemInHandToInventory() && !GameInventory.CanSwapEntitiesEx(item, itemInHand) )	
 				color = InventoryGrid.ITEM_COLOR_QUICKBAR_I_BAD;
-			}
-			
 		}
 		return color;
 	}
@@ -269,5 +266,24 @@ class InventoryQuickbar extends InventoryGridController
 	override float GetItemQuantity( InventoryItem item )
 	{
 		return QuantityConversions.GetItemQuantity( item );
+	}
+	
+	override int GetItemQuantityMax( InventoryItem item )
+	{
+		ItemBase ib = ItemBase.Cast(item);
+		return ib.m_VarQuantityMax;
+	}
+	
+	override int GetItemCount( InventoryItem item )
+	{
+		ItemBase ib = ItemBase.Cast(item);
+		return ib.m_Count;
+	}
+	
+	override bool CanAddItemInHandToInventory()
+	{
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		EntityAI itemInHand = player.GetHumanInventory().GetEntityInHands();
+		return itemInHand && player.GetInventory().CanAddEntityToInventory(itemInHand);
 	}
 }

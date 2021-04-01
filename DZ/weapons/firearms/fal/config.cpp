@@ -39,7 +39,7 @@ class cfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,20,170,4,10};
 		WeaponLength = 0.752228;
-		barrelArmor = 3.888;
+		barrelArmor = 2.2;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer"};
@@ -64,7 +64,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_fal";
 			recoilProne = "recoil_fal_prone";
-			dispersion = 0.001;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,200};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
@@ -81,11 +81,16 @@ class cfgWeapons
 			reloadTime = 0.085;
 			recoil = "recoil_fal";
 			recoilProne = "recoil_fal_prone";
-			dispersion = 0.001;
+			dispersion = 0.002;
 			magazineSlot = "magazine";
 			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,200};
 			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\AK101\akSilenced",1,1,300};
 			soundBeginExt[] = {{"beginSilenced_Pro",1},{"beginSilenced_HomeMade",1}};
+		};
+		class NoiseShoot
+		{
+			strength = 100;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

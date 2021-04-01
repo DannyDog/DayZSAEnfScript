@@ -20,7 +20,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		return m_CategoryIdentifier;
 	}
 	
-	override EntityAI GetFocusedEntity()
+	override EntityAI GetFocusedItem()
 	{
 		SlotsIcon icon = GetFocusedIcon();
 		if( icon )
@@ -53,10 +53,11 @@ class AttachmentCategoriesRow: ClosableContainer
 	{
 		if( m_FocusedRow < m_Ics.Count() )
 		{
-			ItemBase item = ItemBase.Cast( GetFocusedEntity() );
-			if ( !item.IsLockedInSlot() )
+			ItemBase item = ItemBase.Cast( GetFocusedItem() );
+			SlotsIcon icon = GetFocusedIcon();
+			if ( item && !item.IsLockedInSlot() )
 			{
-				ItemManager.GetInstance().SetSelectedItem( item, null, m_Ics.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ) );
+				ItemManager.GetInstance().SetSelectedItem( item, null, icon.GetCursorWidget(),icon );
 				return true;
 			}
 		}
@@ -65,115 +66,92 @@ class AttachmentCategoriesRow: ClosableContainer
 	
 	override bool Select()
 	{
-		ItemBase prev_item = ItemBase.Cast( GetFocusedEntity() );
 		Man player = GetGame().GetPlayer();
-		SlotsIcon selected_icon = GetFocusedIcon();
-		
-		if( ItemManager.GetInstance().IsItemMoving() )
+		SlotsIcon focused_icon = GetFocusedIcon();
+		EntityAI focused_item = GetFocusedItem();
+		ItemBase selected_item = ItemBase.Cast( ItemManager.GetInstance().GetSelectedItem() );
+		if( focused_icon.IsReserved() || focused_item != selected_item )
 		{
-			ItemBase selected_item = ItemBase.Cast( ItemManager.GetInstance().GetSelectedItem() );
-			int selected_slot = GetFocusedSlot();
-			int stack_max;
-			if( selected_item && selected_item.GetInventory().CanRemoveEntity() && !selected_icon.IsOutOfReach() )
+			if( selected_item )
 			{
-				if( m_Entity.GetInventory().CanAddAttachmentEx( selected_item, selected_slot ) )
+				int stack_max;
+				if( selected_item.GetInventory().CanRemoveEntity() )
 				{
-					stack_max = InventorySlots.GetStackMaxForSlotId( selected_slot );
-					float quantity = selected_item.GetQuantity();
-					if( stack_max == 0 || stack_max >= quantity || !selected_item.CanBeSplit() )
+					if( !focused_item && m_Entity.GetInventory().CanAddAttachmentEx( selected_item, focused_icon.GetSlotID() ) )
 					{
-						player.PredictiveTakeEntityToTargetAttachmentEx( m_Entity, selected_item, selected_slot );
-						return true;
-					}
-					else
-					{
-						selected_item.SplitIntoStackMaxClient( m_Entity, selected_slot );
-						return true;
-					}
-				}
-				else if( selected_slot != -1 )
-				{
-					if( prev_item && prev_item.GetInventory().CanRemoveEntity() )
-					{
-						InventoryLocation inv_loc = new InventoryLocation;
-						prev_item.GetInventory().GetCurrentInventoryLocation( inv_loc );
-						stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc.GetSlot() );
-						quantity = prev_item.GetQuantity();
-						if( prev_item.CanBeCombined( ItemBase.Cast( selected_item ) ) )
+						stack_max = InventorySlots.GetStackMaxForSlotId( focused_icon.GetSlotID() );
+						float quantity = selected_item.GetQuantity();
+						if( stack_max == 0 || stack_max >= quantity || !selected_item.CanBeSplit() )
 						{
-							prev_item.CombineItemsClient( selected_item, true );
+							player.PredictiveTakeEntityToTargetAttachmentEx( m_Entity, selected_item, focused_icon.GetSlotID() );
 							return true;
 						}
-						else if( stack_max == 0 && GameInventory.CanSwapEntitiesEx( prev_item, selected_item ) )
+						else
 						{
-							player.PredictiveSwapEntities( selected_item, prev_item );
+							selected_item.SplitIntoStackMaxClient( m_Entity, focused_icon.GetSlotID() );
 							return true;
 						}
-						else if( m_AttachmentCargos.Contains( inv_loc.GetSlot() ) )
-						{
-							if( prev_item.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo() ) )
-							{
-								SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( player ), prev_item, selected_item );
-								return true;
-							}
-						}
 					}
-					else
+					else if( focused_icon.GetSlotID() != -1 )
 					{
-						InventoryLocation inv_loc_src = new InventoryLocation;
-						InventoryLocation inv_loc_dst = new InventoryLocation;
-						selected_item.GetInventory().GetCurrentInventoryLocation( inv_loc_src );
-						m_Entity.GetInventory().FindFreeLocationFor( selected_item, FindInventoryLocationType.ATTACHMENT, inv_loc_dst );
-						int dst_slot = inv_loc_dst.GetSlot();
-
-						if(dst_slot == selected_slot && selected_item.GetInventory().CanRemoveEntity() && inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
+						if( focused_item && focused_item.GetInventory().CanRemoveEntity() )
 						{
-							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc_dst.GetSlot() );
-							quantity = selected_item.GetQuantity();
-							if( stack_max == 0 || stack_max >= quantity || !selected_item.CanBeSplit() )
+							InventoryLocation inv_loc = new InventoryLocation;
+							focused_item.GetInventory().GetCurrentInventoryLocation( inv_loc );
+							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc.GetSlot() );
+							quantity = focused_item.GetQuantity();
+							if( focused_item.CanBeCombined( ItemBase.Cast( selected_item ) ) )
 							{
-								GetGame().GetPlayer().PredictiveTakeEntityToTargetAttachmentEx( m_Entity, selected_item, inv_loc_dst.GetSlot() );
+								focused_item.CombineItemsClient( selected_item, true );
 								return true;
 							}
-							else if( stack_max >= 0 || !selected_item.CanBeSplit() )
+							else if( stack_max == 0 && GameInventory.CanSwapEntitiesEx( focused_item, selected_item ) )
 							{
-								selected_item.SplitIntoStackMaxClient( m_Entity, inv_loc_dst.GetSlot() );
+								player.PredictiveSwapEntities( selected_item, focused_item );
 								return true;
+							}
+							else if( m_AttachmentCargos.Contains( inv_loc.GetSlot() ) )
+							{
+								if( focused_item.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo() ) )
+								{
+									SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( player ), focused_item, selected_item );
+									return true;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		else
-		{
-			if( prev_item && prev_item.GetInventory().CanRemoveEntity() && !selected_icon.IsOutOfReach() )
+			else
 			{
-				EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-				if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
+				if( focused_item && focused_item.GetInventory().CanRemoveEntity() && !focused_icon.IsOutOfReach() )
 				{
-					if( GameInventory.CanSwapEntitiesEx( item_in_hands, prev_item ) )
+					EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
+					if( item_in_hands && item_in_hands.GetInventory().CanRemoveEntity() )
 					{
-						player.PredictiveSwapEntities( item_in_hands, prev_item );
-						return true;
+						if( GameInventory.CanSwapEntitiesEx( item_in_hands, focused_item ) )
+						{
+							player.PredictiveSwapEntities( item_in_hands, focused_item );
+							return true;
+						}
 					}
-				}
-				else
-				{
-					if( player.GetHumanInventory().CanAddEntityInHands( prev_item ) )
+					else
 					{
-						player.PredictiveTakeEntityToHands( prev_item );
-						return true;
+						if( player.GetHumanInventory().CanAddEntityInHands( focused_item ) )
+						{
+							player.PredictiveTakeEntityToHands( focused_item );
+							return true;
+						}
 					}
-				}
-			}		
+				}		
+			}
 		}
 		return false;
 	}
 	
 	override bool TransferItem()
 	{
-		EntityAI entity = GetFocusedEntity();
+		EntityAI entity = GetFocusedItem();
 		if( entity && !entity.IsLockedInSlot() && !GetFocusedIcon().IsOutOfReach() )
 		{
 			PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -185,7 +163,7 @@ class AttachmentCategoriesRow: ClosableContainer
 	
 	override bool TransferItemToVicinity()
 	{
-		ItemBase item = ItemBase.Cast(GetFocusedEntity());
+		ItemBase item = ItemBase.Cast(GetFocusedItem());
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
 		
 		if( item && !item.IsLockedInSlot() && !GetFocusedIcon().IsOutOfReach() )
@@ -202,7 +180,7 @@ class AttachmentCategoriesRow: ClosableContainer
 	override bool Combine()
 	{
 		Man player = GetGame().GetPlayer();
-		ItemBase prev_item = ItemBase.Cast( GetFocusedEntity() );
+		ItemBase prev_item = ItemBase.Cast( GetFocusedItem() );
 		ItemBase selected_item = ItemBase.Cast( player.GetHumanInventory().GetEntityInHands() );
 		
 		if( selected_item )
@@ -211,7 +189,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			int stack_max;
 			if( selected_item && selected_item.GetInventory().CanRemoveEntity() && !GetFocusedIcon().IsOutOfReach() )
 			{
-				if( m_Entity.GetInventory().CanAddAttachmentEx( selected_item, selected_slot ) )
+				if( !prev_item && m_Entity.GetInventory().CanAddAttachmentEx( selected_item, selected_slot ) )
 				{
 					stack_max = InventorySlots.GetStackMaxForSlotId( selected_slot );
 					float quantity = selected_item.GetQuantity();
@@ -249,29 +227,6 @@ class AttachmentCategoriesRow: ClosableContainer
 							if( prev_item.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo() ) )
 							{
 								SplitItemUtils.TakeOrSplitToInventory( PlayerBase.Cast( player ), prev_item, selected_item );
-								return false;
-							}
-						}
-					}
-					else
-					{
-						InventoryLocation inv_loc_src = new InventoryLocation;
-						InventoryLocation inv_loc_dst = new InventoryLocation;
-						selected_item.GetInventory().GetCurrentInventoryLocation( inv_loc_src );
-						m_Entity.GetInventory().FindFreeLocationFor( selected_item, FindInventoryLocationType.ATTACHMENT, inv_loc_dst );
-						
-						if( inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
-						{
-							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc_dst.GetSlot() );
-							quantity = selected_item.GetQuantity();
-							if( stack_max == 0 || stack_max >= quantity || !selected_item.CanBeSplit() )
-							{
-								GetGame().GetPlayer().PredictiveTakeEntityToTargetAttachmentEx( m_Entity, selected_item, inv_loc_dst.GetSlot() );
-								return false;
-							}
-							else if( stack_max >= 0 || !selected_item.CanBeSplit() )
-							{
-								selected_item.SplitIntoStackMaxClient( m_Entity, inv_loc_dst.GetSlot() );
 								return false;
 							}
 						}
@@ -295,7 +250,7 @@ class AttachmentCategoriesRow: ClosableContainer
 	override bool CanCombine()
 	{
 		Man player = GetGame().GetPlayer();
-		ItemBase prev_item = ItemBase.Cast( GetFocusedEntity() );
+		ItemBase prev_item = ItemBase.Cast( GetFocusedItem() );
 		ItemBase selected_item = ItemBase.Cast( player.GetHumanInventory().GetEntityInHands() );
 		
 		if( selected_item )
@@ -328,27 +283,6 @@ class AttachmentCategoriesRow: ClosableContainer
 						if( prev_item.CanBeCombined( ItemBase.Cast( selected_item ) ) )
 						{
 							return true;
-						}
-					}
-					else
-					{
-						InventoryLocation inv_loc_src = new InventoryLocation;
-						InventoryLocation inv_loc_dst = new InventoryLocation;
-						selected_item.GetInventory().GetCurrentInventoryLocation( inv_loc_src );
-						m_Entity.GetInventory().FindFreeLocationFor( selected_item, FindInventoryLocationType.ATTACHMENT, inv_loc_dst );
-						
-						if( inv_loc_dst.IsValid() && inv_loc_dst.GetType() == InventoryLocationType.ATTACHMENT )
-						{
-							stack_max = InventorySlots.GetStackMaxForSlotId( inv_loc_dst.GetSlot() );
-							quantity = selected_item.GetQuantity();
-							if( stack_max == 0 || stack_max >= quantity || !selected_item.CanBeSplit() )
-							{
-								return true;
-							}
-							else if( stack_max >= 0 || !selected_item.CanBeSplit() )
-							{
-								return true;
-							}
 						}
 					}
 				}
@@ -384,14 +318,19 @@ class AttachmentCategoriesRow: ClosableContainer
 		m_FocusedColumn = 0;
 		if( m_FocusedRow < m_Ics.Count() )
 		{
-			m_Ics.Get( 0 ).GetMainWidget().FindAnyWidget( "Cursor" + 0 ).Show( true );
-			EntityAI focused_item = GetFocusedEntity();
+			EntityAI focused_item = GetFocusedItem();
+			SlotsIcon icon = GetFocusedIcon();
+			float x, y;
+			icon.GetCursorWidget().GetScreenPos( x, y );
 			if( focused_item )
 			{
-				float x, y;
-				m_Ics.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).GetScreenPos( x, y );
 				ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
 			}
+			else
+			{
+				ItemManager.GetInstance().PrepareSlotsTooltip( icon.GetSlotDisplayName(), icon.GetSlotDesc(), x, y );
+			}
+			icon.GetCursorWidget().Show(true);
 		}
 	}
 	
@@ -447,7 +386,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			if( m_FocusedRow == m_Ics.Count() + m_AttachmentCargos.Count() )
 			{
 				m_FocusedRow = 0;
-				cnt = Container.Cast( m_Parent.GetParent().GetParent().GetParent() );
+				cnt = Container.Cast( m_Parent.GetParent() );
 				if( cnt )
 				{
 					cnt.SetNextActive();
@@ -519,12 +458,13 @@ class AttachmentCategoriesRow: ClosableContainer
 	
 		if( m_FocusedRow < m_Ics.Count() )
 		{
-			m_Ics.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).Show( true );
-			EntityAI focused_item = GetFocusedEntity();
+			SlotsIcon icon = GetFocusedIcon();
+			icon.GetCursorWidget().Show( true );
+			EntityAI focused_item = GetFocusedItem();
 			if( focused_item )
 			{
 				float x, y;
-				m_Ics.Get( m_FocusedRow ).GetMainWidget().FindAnyWidget( "Cursor" + m_FocusedColumn ).GetScreenPos( x, y );
+				icon.GetCursorWidget().GetScreenPos( x, y );
 				ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
 			}
 		}
@@ -953,6 +893,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		SlotsIcon icon					= row.GetSlotIcon( id );
 		
 		icon.SetSlotID(slot_id);
+		icon.SetSlotDisplayName(InventorySlots.GetSlotDisplayName(slot_id));
 		ref CargoContainer cont;
 		
 		if( !m_Entity.CanDisplayAttachmentSlot( slot_name ) )
@@ -1100,7 +1041,7 @@ class AttachmentCategoriesRow: ClosableContainer
 		for ( j = 0; j < count; j++ )
 		{
 			string slot_name = player_ghosts_slots2.Get ( j );
-			string icon_name2;
+			string icon_name2; //must be in format "set:<setname> image:<imagename>"
 			string path = "CfgSlots" + " Slot_" + slot_name;
 			GetGame().ConfigGetText( path + " ghostIcon", icon_name2 );
 			GetGame().ConfigGetText( path + " name", slot_name );
@@ -1116,7 +1057,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			//icon2.Clear();
 			RefreshSlot( j, id, slot_id, slot_name );
 			
-			icon2.GetGhostSlot().LoadImageFile( 0,"set:dayz_inventory image:" + icon_name2 );
+			icon2.GetGhostSlot().LoadImageFile( 0,StaticGUIUtils.VerifyIconImageString(StaticGUIUtils.IMAGESETGROUP_INVENTORY,icon_name2) );
 		}
 		/*
 		array<EntityAI> cargo_attachments = entity.GetAttachmentsWithCargo();

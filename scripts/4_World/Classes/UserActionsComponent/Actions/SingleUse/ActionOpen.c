@@ -39,13 +39,13 @@ class ActionOpen: ActionSingleUseBase
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
-		ClearInventoryReservation(action_data);
+		ClearInventoryReservationEx(action_data);
 	}
 
 	override void OnExecuteServer( ActionData action_data )
 	{
 		if( !GetGame().IsMultiplayer() )
-			ClearInventoryReservation(action_data);
+			ClearInventoryReservationEx(action_data);
 		
 		action_data.m_MainItem.Open();
 	}

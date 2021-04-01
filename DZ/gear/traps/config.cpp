@@ -27,7 +27,7 @@ class CfgAmmo
 	class DefaultAmmo;
 	class LandMineExplosion: DefaultAmmo
 	{
-		hit = 0.1;
+		hit = 0.0;
 		indirectHit = 0.5;
 		indirectHitRange = 1;
 		particle = "explosion_landmine_01";
@@ -47,7 +47,7 @@ class CfgAmmo
 			bleedThreshold = 1.0;
 			class Health
 			{
-				damage = 50;
+				damage = 17;
 			};
 			class Blood
 			{
@@ -55,7 +55,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 99;
+				damage = 100;
 			};
 		};
 		class NoiseExplosion

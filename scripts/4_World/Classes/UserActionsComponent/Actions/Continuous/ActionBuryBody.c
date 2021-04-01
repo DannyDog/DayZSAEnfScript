@@ -31,6 +31,9 @@ class ActionBuryBody: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
+		if ( player.IsPlacingLocal() )
+			return false;
+		
 		EntityAI body_EAI;
 		Class.CastTo(body_EAI, target.GetObject());
 		

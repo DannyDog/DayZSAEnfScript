@@ -1,9 +1,9 @@
 class PipeWrench extends Inventory_Base
 {
-	override bool IsMeleeFinisher()
+	/*override bool IsMeleeFinisher()
 	{
 		return true;
-	}
+	}*/
 	
 	override void SetActions()
 	{

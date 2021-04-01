@@ -389,7 +389,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 90;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\athleticShoes.rvmat"}},{0.7,{"DZ\characters\shoes\data\athleticShoes.rvmat"}},{0.5,{"DZ\characters\shoes\data\athleticShoes_damage.rvmat"}},{0.3,{"DZ\characters\shoes\data\athleticShoes_damage.rvmat"}},{0.0,{"DZ\characters\shoes\data\athleticShoes_destruct.rvmat"}}};
 				};
 			};
@@ -455,7 +455,7 @@ class CfgVehicles
 		heatIsolation = 0.9;
 		repairableWithKits[] = {3};
 		repairCosts[] = {25.0};
-		soundAttType = "Sneakers";
+		soundAttType = "Boots";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -468,7 +468,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 80;
+					hitpoints = 140;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\hikingBoots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\hikingBoots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\hikingBoots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\hikingBoots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\hikingBoots_destruct.rvmat"}}};
 				};
 			};
@@ -549,7 +549,7 @@ class CfgVehicles
 		heatIsolation = 0.5;
 		repairableWithKits[] = {3};
 		repairCosts[] = {25.0};
-		soundAttType = "Sneakers";
+		soundAttType = "Boots";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -562,7 +562,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 70;
+					hitpoints = 120;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\hikingBoots_low.rvmat"}},{0.7,{"DZ\characters\shoes\Data\hikingBoots_low.rvmat"}},{0.5,{"DZ\characters\shoes\Data\hikingBoots_low_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\hikingBoots_low_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\hikingBoots_low_destruct.rvmat"}}};
 				};
 			};
@@ -668,7 +668,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 100;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\wellies.rvmat"}},{0.7,{"DZ\characters\shoes\Data\wellies.rvmat"}},{0.5,{"DZ\characters\shoes\Data\wellies_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\wellies_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\wellies_destruct.rvmat"}}};
 				};
 			};
@@ -774,7 +774,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 60;
+					hitpoints = 130;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\WorkingBoots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\WorkingBoots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\WorkingBoots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\WorkingBoots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\WorkingBoots_destruct.rvmat"}}};
 				};
 			};
@@ -885,7 +885,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 90;
+					hitpoints = 150;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\JungleBoots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\JungleBoots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\JungleBoots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\JungleBoots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\JungleBoots_destruct.rvmat"}}};
 				};
 			};
@@ -984,7 +984,7 @@ class CfgVehicles
 		repairCosts[] = {25.0};
 		varWetMax = 0.79;
 		heatIsolation = 0.25;
-		soundAttType = "Boots";
+		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -997,7 +997,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 40;
+					hitpoints = 60;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\LeatherShoes.rvmat"}},{0.7,{"DZ\characters\shoes\Data\LeatherShoes.rvmat"}},{0.5,{"DZ\characters\shoes\Data\LeatherShoes_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\LeatherShoes_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\LeatherShoes_destruct.rvmat"}}};
 				};
 			};
@@ -1109,7 +1109,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 180;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\MilitaryBoots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\MilitaryBoots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\MilitaryBoots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\MilitaryBoots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\MilitaryBoots_destruct.rvmat"}}};
 				};
 			};
@@ -1221,7 +1221,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 120;
+					hitpoints = 160;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\CombatBoots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\CombatBoots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\CombatBoots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\CombatBoots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\CombatBoots_destruct.rvmat"}}};
 				};
 			};
@@ -1396,7 +1396,7 @@ class CfgVehicles
 		repairCosts[] = {25.0};
 		varWetMax = 0.249;
 		heatIsolation = 1;
-		soundAttType = "Boots";
+		soundAttType = "Sneakers";
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\DZ\characters\shoes\data\Shoes_LeatherMoccasins_CO.paa","\DZ\characters\shoes\data\Shoes_LeatherMoccasins_CO.paa","\DZ\characters\shoes\data\Shoes_LeatherMoccasins_CO.paa"};
 		class ClothingTypes
@@ -1410,7 +1410,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 50;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 			};
@@ -1476,7 +1476,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Shoes_LeatherMoccasins_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_black_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_black_destruct.rvmat"}}};
 				};
 			};
@@ -1494,7 +1494,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Shoes_LeatherMoccasins_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_natural_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_natural_destruct.rvmat"}}};
 				};
 			};
@@ -1512,7 +1512,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Shoes_LeatherMoccasins_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_brown_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_brown_destruct.rvmat"}}};
 				};
 			};
@@ -1530,7 +1530,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 100;
+					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Shoes_LeatherMoccasins_natural.rvmat"}},{0.7,{}},{0.5,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_beige_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\characters\shoes\Data\Shoes_LeatherMoccasins_beige_destruct.rvmat"}}};
 				};
 			};
@@ -1564,7 +1564,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 30;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Sneakers.rvmat"}},{0.7,{"DZ\characters\shoes\data\Sneakers.rvmat"}},{0.5,{"DZ\characters\shoes\data\Sneakers_damage.rvmat"}},{0.3,{"DZ\characters\shoes\data\Sneakers_damage.rvmat"}},{0.0,{"DZ\characters\shoes\data\Sneakers_destruct.rvmat"}}};
 				};
 			};
@@ -1642,7 +1642,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 70;
+					hitpoints = 80;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\Data\NBC_Boots.rvmat"}},{0.7,{"DZ\characters\shoes\Data\NBC_Boots.rvmat"}},{0.5,{"DZ\characters\shoes\Data\NBC_Boots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\Data\NBC_Boots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\Data\NBC_Boots_destruct.rvmat"}}};
 				};
 			};
@@ -1714,7 +1714,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 20;
+					hitpoints = 50;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\Ballerinas.rvmat"}},{0.7,{"DZ\characters\shoes\data\Ballerinas.rvmat"}},{0.5,{"DZ\characters\shoes\data\Ballerinas_damage.rvmat"}},{0.3,{"DZ\characters\shoes\data\Ballerinas_damage.rvmat"}},{0.0,{"DZ\characters\shoes\data\Ballerinas_destruct.rvmat"}}};
 				};
 			};
@@ -1782,7 +1782,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 110;
+					hitpoints = 170;
 					healthLevels[] = {{1.0,{"DZ\characters\shoes\data\TTsKO_boots.rvmat"}},{0.7,{"DZ\characters\shoes\data\TTsKO_boots.rvmat"}},{0.5,{"DZ\characters\shoes\data\TTsKO_boots_damage.rvmat"}},{0.3,{"DZ\characters\shoes\data\TTsKO_boots_damage.rvmat"}},{0.0,{"DZ\characters\shoes\data\TTsKO_boots_destruct.rvmat"}}};
 				};
 			};

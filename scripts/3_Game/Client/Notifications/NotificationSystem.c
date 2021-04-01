@@ -21,7 +21,7 @@ class NotificationRuntimeData
 	{
 		m_NotificationTime	= time + NOTIFICATION_FADE_TIME;
 		m_StaticData		= data;
-		if( detail_text != "" )
+		if ( detail_text != "" )
 			m_DetailText	= detail_text;
 		else
 			m_DetailText	= m_StaticData.m_DescriptionText;
@@ -155,7 +155,7 @@ class NotificationSystem
 	*/
 	static void AddNotification( NotificationType type, float show_time, string detail_text = "" )
 	{
-		if( m_Instance.m_TimeArray.Count() < MAX_NOTIFICATIONS )
+		if ( m_Instance.m_TimeArray.Count() < MAX_NOTIFICATIONS )
 		{
 			float time = GetGame().GetTickTime() + show_time;
 			ref NotificationRuntimeData data = new NotificationRuntimeData(time, m_Instance.GetNotificationData( type ), detail_text);
@@ -248,20 +248,20 @@ class NotificationSystem
 		
 		array<int> types = new array<int>;
 		NotificationType type_curr = 0;
-		while( type_curr != NotificationType.NOTIFICATIONS_END )
+		while ( type_curr != NotificationType.NOTIFICATIONS_END )
 		{
 			types.Insert( type_curr );
 			type_curr++;
 		}
 		
-		for( int i = 0; i < m_Instance.m_DataArray.Count(); i++ )
+		for ( int i = 0; i < m_Instance.m_DataArray.Count(); i++ )
 		{
 			types.RemoveItem( m_Instance.m_DataArray.GetKey( i ) );
 		}
 		
-		if( types.Count() > 0 )
+		if ( types.Count() > 0 )
 		{
-			foreach( NotificationType type2 : types )
+			foreach ( NotificationType type2 : types )
 			{
 				ref NotificationData data2 = new NotificationData( "please_add_an_icon", "please_add_a_title", "optional_description" );
 				m_Instance.m_DataArray.Insert( type2, data2 );

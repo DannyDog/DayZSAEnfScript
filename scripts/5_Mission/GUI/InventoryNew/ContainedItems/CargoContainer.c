@@ -395,7 +395,7 @@ class CargoContainer extends Container
 		return null;
 	}
 	
-	Icon GetFocusedItem()
+	Icon GetFocusedIcon()
 	{
 		return GetIcon( m_FocusedItemPosition );
 	}
@@ -403,8 +403,8 @@ class CargoContainer extends Container
 	override float GetFocusedContainerHeight( bool contents = false )
 	{
 		float x, y;
-		if( GetFocusedItem() && contents )
-			GetFocusedItem().GetRootWidget().GetScreenSize( x, y );
+		if( contents && GetFocusedIcon() )
+			GetFocusedIcon().GetRootWidget().GetScreenSize( x, y );
 		else
 			GetRootWidget().GetScreenSize( x, y );
 		return y;
@@ -413,8 +413,8 @@ class CargoContainer extends Container
 	override float GetFocusedContainerYPos( bool contents = false )
 	{
 		float x, y;
-		if( GetFocusedItem() && contents )
-			GetFocusedItem().GetRootWidget().GetPos( x, y );
+		if( contents && GetFocusedIcon() )
+			GetFocusedIcon().GetRootWidget().GetPos( x, y );
 		else
 			GetRootWidget().GetPos( x, y );
 		return y;
@@ -423,8 +423,8 @@ class CargoContainer extends Container
 	override float GetFocusedContainerYScreenPos( bool contents = false )
 	{
 		float x, y;
-		if( GetFocusedItem() && contents )
-			GetFocusedItem().GetRootWidget().GetScreenPos( x, y );
+		if( contents && GetFocusedIcon() )
+			GetFocusedIcon().GetRootWidget().GetScreenPos( x, y );
 		else
 			GetRootWidget().GetScreenPos( x, y );
 		return y;
@@ -542,9 +542,9 @@ class CargoContainer extends Container
 	override bool TransferItemToVicinity()
 	{
 		Man player = GetGame().GetPlayer();
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			ItemBase item = ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase item = ItemBase.Cast( GetFocusedIcon().GetObject() );
 			if( item && player.CanDropEntity( item ) )
 			{
 				if( item.GetTargetQuantityMax() < item.GetQuantity() )
@@ -570,7 +570,7 @@ class CargoContainer extends Container
 	
 	void Unfocus()
 	{
-		Icon icon = GetFocusedItem();
+		Icon icon = GetFocusedIcon();
 		if ( icon )
 		{
 			icon.SetActive( false );
@@ -590,9 +590,9 @@ class CargoContainer extends Container
 		m_FocusedItemPosition = 0;
 	}
 	
-	override EntityAI GetFocusedEntity()
+	override EntityAI GetFocusedItem()
 	{
-		Icon icon = GetFocusedItem();
+		Icon icon = GetFocusedIcon();
 		if( icon )
 		{
 			return EntityAI.Cast( icon.GetObject() );
@@ -603,9 +603,9 @@ class CargoContainer extends Container
 	
 	override void SetLastActive()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			GetFocusedItem().SetActive( false );
+			GetFocusedIcon().SetActive( false );
 		}
 		m_FocusedItemPosition = ( ( m_Rows.Count() - 1 ) * ROWS_NUMBER_XBOX );
 		UpdateSelection();
@@ -626,9 +626,9 @@ class CargoContainer extends Container
 	
 	override bool IsItemActive()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			ItemBase item = ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase item = ItemBase.Cast( GetFocusedIcon().GetObject() );
 			return ( item != null );
 		}
 		return false;
@@ -636,9 +636,9 @@ class CargoContainer extends Container
 	
 	override bool IsItemWithQuantityActive()
 	{
-		if( GetFocusedItem()  )
+		if( GetFocusedIcon()  )
 		{
-			ItemBase item = ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase item = ItemBase.Cast( GetFocusedIcon().GetObject() );
 			return ( !IsEmpty() && QuantityConversions.HasItemQuantity( item ) && item.CanBeSplit() );
 		}
 		return false;
@@ -657,9 +657,9 @@ class CargoContainer extends Container
 	
 	override bool CanEquip()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			EntityAI entity = EntityAI.Cast( GetFocusedItem().GetObject() );
+			EntityAI entity = EntityAI.Cast( GetFocusedIcon().GetObject() );
 			InventoryLocation il = new InventoryLocation;
 			if( !entity.IsInherited( Magazine ) )
 			{
@@ -671,9 +671,9 @@ class CargoContainer extends Container
 	
 	override bool CanCombine()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			ItemBase entity			= ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase entity			= ItemBase.Cast( GetFocusedIcon().GetObject() );
 			ItemBase item_in_hands	= ItemBase.Cast( GetGame().GetPlayer().GetHumanInventory().GetEntityInHands() );
 			
 			return ( ItemManager.GetCombinationFlags( entity, item_in_hands ) != 0 );
@@ -683,11 +683,11 @@ class CargoContainer extends Container
 	
 	override bool CanCombineAmmo()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
 			ActionManagerClient amc	= ActionManagerClient.Cast( PlayerBase.Cast( GetGame().GetPlayer() ).GetActionManager() );
 			
-			ItemBase entity			= ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase entity			= ItemBase.Cast( GetFocusedIcon().GetObject() );
 			ItemBase item_in_hands	= ItemBase.Cast( GetGame().GetPlayer().GetHumanInventory().GetEntityInHands() );
 			
 			return ( amc.CanPerformActionFromInventory( item_in_hands, entity ) || amc.CanSetActionFromInventory( item_in_hands, entity ) );
@@ -697,9 +697,9 @@ class CargoContainer extends Container
 	
 	override bool TransferItem()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			EntityAI entity = EntityAI.Cast( GetFocusedItem().GetObject() );
+			EntityAI entity = EntityAI.Cast( GetFocusedIcon().GetObject() );
 			if( entity )
 			{
 				GetGame().GetPlayer().PredictiveTakeEntityToInventory( FindInventoryLocationType.CARGO, entity );
@@ -711,9 +711,9 @@ class CargoContainer extends Container
 	
 	override bool EquipItem()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			ItemBase entity = ItemBase.Cast( GetFocusedItem().GetObject() );
+			ItemBase entity = ItemBase.Cast( GetFocusedIcon().GetObject() );
 			if( entity )
 			{
 				if( entity.HasQuantity() && entity.CanBeSplit() )
@@ -738,10 +738,10 @@ class CargoContainer extends Container
 	
 	override bool SelectItem()
 	{
-		Icon focused_item = GetFocusedItem();
+		Icon focused_item = GetFocusedIcon();
 		if( focused_item )
 		{
-			ItemManager.GetInstance().SetSelectedItem( ItemBase.Cast( focused_item.GetObject() ), this, null );
+			ItemManager.GetInstance().SetSelectedItem( ItemBase.Cast( focused_item.GetObject() ), this, null, null );
 			return true;
 		}
 		return false;
@@ -749,63 +749,64 @@ class CargoContainer extends Container
 
 	override bool Select()
 	{
-		EntityAI prev_item;
-		if( GetFocusedItem() )
-		{
-			prev_item = EntityAI.Cast( GetFocusedEntity() );
-		}
-		Man player = GetGame().GetPlayer();
+		Icon focused_icon = GetFocusedIcon();
+		EntityAI focused_item = GetFocusedItem();
+		EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
+		DayZPlayer player = GetGame().GetPlayer();
 		
-		if( ItemManager.GetInstance().IsItemMoving() )
+		
+		if( focused_item != selected_item )
 		{
-			EntityAI selected_item = ItemManager.GetInstance().GetSelectedItem();
-			if( selected_item && selected_item.GetInventory().CanRemoveEntity() && m_Entity )
+			if( selected_item )
 			{
-				bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo());
-				bool in_cargo = !player.GetInventory().HasEntityInInventory( selected_item ) || !m_Entity.GetInventory().HasEntityInCargo( selected_item );
-				if( can_add && in_cargo )
+				if( selected_item.GetInventory().CanRemoveEntity() && m_Entity )
 				{
-					player.PredictiveTakeEntityToTargetCargo( m_Entity, selected_item );
-					Container selected_cont2 = ItemManager.GetInstance().GetSelectedContainer();
-					if( selected_cont2 )
+					bool can_add = m_Entity.GetInventory().CanAddEntityInCargo( selected_item, selected_item.GetInventory().GetFlipCargo());
+					bool in_cargo = !player.GetInventory().HasEntityInInventory( selected_item ) || !m_Entity.GetInventory().HasEntityInCargo( selected_item );
+					if( can_add && in_cargo )
 					{
-						selected_cont2.SetActive( false );
+						player.PredictiveTakeEntityToTargetCargo( m_Entity, selected_item );
+						Container selected_cont2 = ItemManager.GetInstance().GetSelectedContainer();
+						if( selected_cont2 )
+						{
+							selected_cont2.SetActive( false );
+						}
+						
+						SetActive( true );
+						m_FocusedItemPosition = 0;
+						return true;
 					}
-					
-					SetActive( true );
-					m_FocusedItemPosition = 0;
-					return true;
+					else
+					{
+						Container selected_cont = ItemManager.GetInstance().GetSelectedContainer();
+						if( selected_cont )
+						{
+							selected_cont.SetActive( false );
+						}
+						
+						SetActive( true );
+						SetDefaultFocus( true );
+					}
+				}
+			}
+			else if ( focused_item && focused_item.GetInventory().CanRemoveEntity() )
+			{
+				EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
+				if( item_in_hands )
+				{
+					if( GameInventory.CanSwapEntitiesEx( item_in_hands, focused_item ) )
+					{
+						player.PredictiveSwapEntities( item_in_hands, focused_item );
+						return true;
+					}
 				}
 				else
 				{
-					Container selected_cont = ItemManager.GetInstance().GetSelectedContainer();
-					if( selected_cont )
+					if( player.GetHumanInventory().CanAddEntityInHands( focused_item ) )
 					{
-						selected_cont.SetActive( false );
+						player.PredictiveTakeEntityToHands( focused_item );
+						return true;
 					}
-					
-					SetActive( true );
-					SetDefaultFocus( true );
-				}
-			}
-		}
-		else if ( prev_item && prev_item.GetInventory().CanRemoveEntity() )
-		{
-			EntityAI item_in_hands = GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();
-			if( item_in_hands )
-			{
-				if( GameInventory.CanSwapEntitiesEx( item_in_hands, prev_item ) )
-				{
-					player.PredictiveSwapEntities( item_in_hands, prev_item );
-					return true;
-				}
-			}
-			else
-			{
-				if( player.GetHumanInventory().CanAddEntityInHands( prev_item ) )
-				{
-					player.PredictiveTakeEntityToHands( prev_item );
-					return true;
 				}
 			}
 		}
@@ -814,9 +815,9 @@ class CargoContainer extends Container
 	
 	override bool Combine()
 	{
-		if( GetFocusedItem() )
+		if( GetFocusedIcon() )
 		{
-			Icon icon = GetFocusedItem();
+			Icon icon = GetFocusedIcon();
 			if( icon )
 			{
 				EntityAI item_in_hands	= GetGame().GetPlayer().GetHumanInventory().GetEntityInHands();

@@ -8,6 +8,8 @@ class ActionDisinfectPlantCB : ActionContinuousBaseCB
 
 class ActionDisinfectPlant: ActionContinuousBase
 {
+	PlantBase m_Plant;
+	
 	void ActionDisinfectPlant()
 	{
 		m_CallbackClass = ActionDisinfectPlantCB;
@@ -31,7 +33,40 @@ class ActionDisinfectPlant: ActionContinuousBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		PlantBase plant;
+		GardenBase garden_base;
+		if ( Class.CastTo(garden_base, target.GetObject()))
+		{
+			Slot slot;
+			
+			array<string> selections = new array<string>;
+			garden_base.GetActionComponentNameList(target.GetComponentIndex(), selections);
+			string selection;
+
+			for (int s = 0; s < selections.Count(); s++)
+			{
+				selection = selections[s];
+				slot = garden_base.GetSlotBySelection( selection );
+				if (slot)
+					break;
+			}
+			
+			if ( slot && slot.GetPlant() )
+			{
+				m_Plant = PlantBase.Cast(slot.GetPlant());
+				if ( m_Plant.IsGrowing()  &&  m_Plant.NeedsSpraying() )
+				{	
+					if ( m_Plant.GetPlantStateIndex() < 1 )
+						return false;
+					
+					if ( item.GetQuantity() > 0 )
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+		/*PlantBase plant;
 		if ( Class.CastTo(plant,  target.GetObject() ) && !item.IsDamageDestroyed() )
 		{			
 			if ( plant.IsGrowing()  &&  plant.NeedsSpraying() )
@@ -43,24 +78,8 @@ class ActionDisinfectPlant: ActionContinuousBase
 			}
 		}
 		
-		return false;
+		return false;*/
 	}
-
-	/*override void OnEndServer( ActionData action_data )
-	{
-		PlantBase plant;
-		if ( Class.CastTo(plant, action_data.m_Target.GetObject()) )
-		{
-			Param1<float> nacdata = Param1<float>.Cast( action_data.m_ActionComponent.GetACData() );
-			if(nacdata)
-			{
-				float spray = nacdata.param1;
-				plant.SprayPlant(spray);
-				//SendMessageToClient(action_data.m_Player,plant.StopInfestation( nacdata.param1 ));
-				action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-			}
-		}
-	}*/
 	
 	override void OnFinishProgressServer( ActionData action_data)
 	{

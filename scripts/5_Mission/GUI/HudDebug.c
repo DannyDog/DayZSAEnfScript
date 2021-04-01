@@ -32,6 +32,7 @@ class HudDebug extends Hud
 	static const int HUD_WIN_CHAR_DEBUG			= 4;
 	static const int HUD_WIN_CHAR_LEVELS		= 5;
 	static const int HUD_WIN_CHAR_STOMACH		= 6;
+	static const int HUD_WIN_VERSION			= 7;
 	
 	Widget							m_WgtRoot;
 	Widget							m_Crosshair;
@@ -93,6 +94,10 @@ class HudDebug extends Hud
 		// Register Window Chracter Debug
 		HudDebugWinCharStomach win_char_stomach = new HudDebugWinCharStomach( m_WgtRoot.FindAnyWidget( "wdw_CharacterStomach" ) );
 		m_Panels.Insert( win_char_stomach );
+		
+		// Register Window Version
+		HudDebugWinVersion win_version = new HudDebugWinVersion( m_WgtRoot.FindAnyWidget( "wdw_Version" ) );
+		m_Panels.Insert( win_version );
 		
 		
 		RefreshByLocalProfile();
@@ -223,6 +228,7 @@ class HudDebug extends Hud
 			SetPanelVisible( HudDebug.HUD_WIN_CHAR_AGENTS,	 	module_cfg_profile.GetCharacterAgentsVisible() );
 			SetPanelVisible( HudDebug.HUD_WIN_CHAR_DEBUG, 		module_cfg_profile.GetCharacterDebugVisible() );
 			SetPanelVisible( HudDebug.HUD_WIN_CHAR_STOMACH, 	module_cfg_profile.GetCharacterStomachVisible() );
+			SetPanelVisible( HudDebug.HUD_WIN_VERSION, 			module_cfg_profile.GetVersionVisible() );
 		}
 	}
 	
@@ -247,13 +253,13 @@ class HudDebug extends Hud
 		//send OnClick to HudDebugWinCharModifiers
 		if ( m_WinCharModifiers )
 		{
-			if(m_WinCharModifiers.OnClick( w, x, y, button ))
+			if (m_WinCharModifiers.OnClick( w, x, y, button ))
 				return true;
 		}
 		
 		if ( m_WinCharAgents )
 		{
-			if(m_WinCharAgents.OnClick( w, x, y, button ))
+			if (m_WinCharAgents.OnClick( w, x, y, button ))
 				return true;
 		}
 		

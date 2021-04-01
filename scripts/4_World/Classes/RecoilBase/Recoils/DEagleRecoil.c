@@ -19,7 +19,7 @@ class DEagleRecoil: RecoilBase
 		
 		m_MouseOffsetRangeMin = 70;//in degrees min
 		m_MouseOffsetRangeMax = 110;//in degrees max
-		m_MouseOffsetDistance = 3.5;//how far should the mouse travel
+		m_MouseOffsetDistance = 2.5;//how far should the mouse travel
 		m_MouseOffsetRelativeTime = 0.0625; //0.03;//[0..1] a time it takes to move the mouse the required distance relative to the reload time of the weapon(firing mode)
 				
 		m_CamOffsetDistance = 0.05;

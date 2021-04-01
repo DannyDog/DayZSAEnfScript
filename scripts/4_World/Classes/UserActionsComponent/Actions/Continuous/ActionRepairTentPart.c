@@ -116,7 +116,9 @@ class ActionRepairTentPart: ActionContinuousBase
 			TentBase tent = TentBase.Cast( targetParent );
 			float m_RepairedLevel = usedItem.GetHealthLevel();
 			
+			tent.SetAllowDamage(true);
 			targetParent.SetHealth01("" + damageZone, "", targetParent.GetHealthLevelValue(m_RepairedLevel));
+			tent.ProcessInvulnerabilityCheck(tent.GetInvulnerabilityTypeString());
 			
 			if (usedItem.GetQuantity() > 1)
 			{

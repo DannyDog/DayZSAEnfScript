@@ -2,11 +2,11 @@ class ActionEatMeatCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_SMALL,UATimeSpent.DEFAULT);
+		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_NORMAL,UATimeSpent.DEFAULT);
 	}
 };
 
-class ActionEatMeat: ActionEat
+class ActionEatMeat: ActionEatBig
 {
 	void ActionEatMeat()
 	{

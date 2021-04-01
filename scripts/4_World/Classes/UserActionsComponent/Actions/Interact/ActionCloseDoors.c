@@ -1,5 +1,7 @@
 class ActionCloseDoors: ActionInteractBase
 {
+	ref NoiseParams m_NoisePar;
+	
 	void ActionCloseDoors()
 	{
 		m_CommandUID = DayZPlayerConstants.CMD_ACTIONMOD_OPENDOORFW;
@@ -20,17 +22,20 @@ class ActionCloseDoors: ActionInteractBase
 
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if( !target ) return false;
-		//if( IsDamageDestroyed(action_data.m_Target) ) return false;
-		if( !IsBuilding(target) ) return false;
+		if ( !target ) 
+			return false;
+		//if ( IsDamageDestroyed(action_data.m_Target) ) return false;
+		if ( !IsBuilding(target) ) 
+			return false;
 		
 		Building building;
-		if( Class.CastTo(building, target.GetObject()) )
+		if ( Class.CastTo(building, target.GetObject()) )
 		{
 			int doorIndex = building.GetDoorIndex(target.GetComponentIndex());
 			if ( doorIndex != -1 )
 			{
-				if( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+				if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) 
+					return false;
 				return building.IsDoorOpen(doorIndex);
 			}
 		}		
@@ -40,13 +45,25 @@ class ActionCloseDoors: ActionInteractBase
 	override void OnStartServer( ActionData action_data )
 	{
 		Building building;
-		if( Class.CastTo(building, action_data.m_Target.GetObject()) )
+		if ( Class.CastTo(building, action_data.m_Target.GetObject()) )
 		{
 			int doorIndex = building.GetDoorIndex(action_data.m_Target.GetComponentIndex());
-			if( doorIndex != -1 )
+			if ( doorIndex != -1 )
 			{
 				building.CloseDoor(doorIndex);
 			}
+		}
+	}
+	
+	override void OnEndServer( ActionData action_data )
+	{
+		m_NoisePar = new NoiseParams();
+		m_NoisePar.LoadFromPath("CfgVehicles SurvivorBase NoiseActionDefault");
+		NoiseSystem noise = GetGame().GetNoiseSystem();
+		if ( noise )
+		{
+			if ( action_data.m_Player )
+				noise.AddNoisePos(action_data.m_Player, action_data.m_Target.GetObject().GetPosition(), m_NoisePar);
 		}
 	}
 };

@@ -354,6 +354,7 @@ class CfgVehicles
 					componentNames[] = {"dmgZone_head"};
 					fatalInjuryCoef = 0.1;
 					inventorySlots[] = {"Headgear","Mask","Eyewear"};
+					inventorySlotsCoefs[] = {1.0,1.0,0.5};
 				};
 				class Brain
 				{
@@ -499,6 +500,8 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"dmgZone_leftArm"};
+					inventorySlots[] = {"Vest"};
+					inventorySlotsCoefs[] = {1.0};
 					fatalInjuryCoef = -1;
 				};
 				class RightArm
@@ -537,6 +540,8 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"dmgZone_rightArm"};
+					inventorySlots[] = {"Vest"};
+					inventorySlotsCoefs[] = {1.0};
 					fatalInjuryCoef = -1;
 				};
 				class LeftHand
@@ -752,6 +757,11 @@ class CfgVehicles
 		class NoiseShout
 		{
 			strength = 40;
+			type = "sound";
+		};
+		class NoiseActionDefault
+		{
+			strength = 10;
 			type = "sound";
 		};
 		class AnimEvents
@@ -4007,6 +4017,141 @@ class CfgVehicles
 				{
 					soundSet = "Flare_Gun_dry_SoundSet";
 					id = 1401;
+				};
+				class SCOUT_charge_open
+				{
+					soundSet = "SCOUT_charge_open_SoundSet";
+					id = 1403;
+				};
+				class SCOUT_charge_open_release
+				{
+					soundSet = "SCOUT_charge_open_release_SoundSet";
+					id = 1404;
+				};
+				class SCOUT_charge_close
+				{
+					soundSet = "SCOUT_charge_close_SoundSet";
+					id = 1405;
+				};
+				class SCOUT_charge_close_release
+				{
+					soundSet = "SCOUT_charge_close_release_SoundSet";
+					id = 1406;
+				};
+				class SCOUT_chamber_load
+				{
+					soundSet = "SCOUT_chamber_load_SoundSet";
+					id = 1407;
+				};
+				class SCOUT_mag_in
+				{
+					soundSet = "SCOUT_mag_in_SoundSet";
+					id = 1408;
+				};
+				class SCOUT_mag_load
+				{
+					soundSet = "SCOUT_mag_load_SoundSet";
+					id = 1409;
+				};
+				class SCOUT_mag_out
+				{
+					soundSet = "SCOUT_mag_out_SoundSet";
+					id = 1410;
+				};
+				class SCOUT_mag_remove
+				{
+					soundSet = "SCOUT_mag_remove_SoundSet";
+					id = 1411;
+				};
+				class SCOUT_dry
+				{
+					soundSet = "SCOUT_dry_SoundSet";
+					id = 1412;
+				};
+				class SCOUT_pullout
+				{
+					soundSet = "SCOUT_pullout_SoundSet";
+					id = 1413;
+				};
+				class SCOUT_hand1
+				{
+					soundSet = "SCOUT_hand1_SoundSet";
+					id = 1414;
+				};
+				class SCOUT_hand2
+				{
+					soundSet = "SCOUT_hand2_SoundSet";
+					id = 1415;
+				};
+				class SCOUT_hand3
+				{
+					soundSet = "SCOUT_hand3_SoundSet";
+					id = 1416;
+				};
+				class SCOUT_hand4
+				{
+					soundSet = "SCOUT_hand4_SoundSet";
+					id = 1417;
+				};
+				class SCOUT_jamming1
+				{
+					soundSet = "SCOUT_jamming1_SoundSet";
+					id = 1418;
+				};
+				class SCOUT_jamming2
+				{
+					soundSet = "SCOUT_jamming2_SoundSet";
+					id = 1419;
+				};
+				class SCOUT_jamming3
+				{
+					soundSet = "SCOUT_jamming3_SoundSet";
+					id = 1420;
+				};
+				class SCOUT_jamming4
+				{
+					soundSet = "SCOUT_jamming4_SoundSet";
+					id = 1421;
+				};
+				class SCOUT_jamming5
+				{
+					soundSet = "SCOUT_jamming5_SoundSet";
+					id = 1422;
+				};
+				class SCOUT_jamming6
+				{
+					soundSet = "SCOUT_jamming6_SoundSet";
+					id = 1423;
+				};
+				class SCOUT_jamming7
+				{
+					soundSet = "SCOUT_jamming7_SoundSet";
+					id = 1424;
+				};
+				class SCOUT_jamming8
+				{
+					soundSet = "SCOUT_jamming8_SoundSet";
+					id = 1425;
+				};
+				class SCOUT_jamming9
+				{
+					soundSet = "SCOUT_jamming9_SoundSet";
+					id = 1426;
+				};
+				class SCOUT_jamming10
+				{
+					soundSet = "SCOUT_jamming10_SoundSet";
+					id = 1427;
+				};
+				class SCOUT_jamming11
+				{
+					soundSet = "SCOUT_jamming11_SoundSet";
+					id = 1428;
+				};
+				class SCOUT_jam
+				{
+					soundSet = "SCOUT_jam_SoundSet";
+					id = 1429;
 				};
 				class MagRifle_fill_loop
 				{

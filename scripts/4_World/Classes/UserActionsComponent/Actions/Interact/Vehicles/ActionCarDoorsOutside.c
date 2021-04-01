@@ -63,16 +63,22 @@ class ActionCarDoorsOutside: ActionInteractBase
 
 	override void OnStart( ActionData action_data )
 	{
+		super.OnStart(action_data);
+		
 		CarScript car = CarScript.Cast(action_data.m_Target.GetParent());
 
 		if ( car )
 		{
 			if ( GetGame().IsClient() || !GetGame().IsMultiplayer() )
 			{
+				EffectSound sound;
+				
 				if ( m_IsOpening )
-					SEffectManager.PlaySound( car.m_CarDoorOpenSound, car.GetPosition());
+					sound = SEffectManager.PlaySound( car.m_CarDoorOpenSound, car.GetPosition());
 				else
-					SEffectManager.PlaySound( car.m_CarDoorCloseSound, car.GetPosition());
+					sound = SEffectManager.PlaySound( car.m_CarDoorCloseSound, car.GetPosition());
+				
+				sound.SetSoundAutodestroy( true );
 			}
 		}
 	}

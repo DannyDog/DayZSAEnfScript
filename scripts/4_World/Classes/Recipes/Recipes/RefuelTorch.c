@@ -87,7 +87,7 @@ class RefuelTorch extends RecipeBase
 		{
 			InventoryLocation loc = new InventoryLocation;
 			rag.GetInventory().GetCurrentInventoryLocation( loc );
-			player.GetInventory().ClearInventoryReservation( rag, loc );
+			player.GetInventory().ClearInventoryReservationEx( rag, loc );
 		}	
 		
 		Rag rag_on_torch = Rag.Cast(  torch.GetInventory().FindAttachment( rag.GetInventory().GetSlotId(0) )  );

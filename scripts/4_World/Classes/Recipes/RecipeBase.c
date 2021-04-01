@@ -217,6 +217,7 @@ class RecipeBase
 			}
 			spawned_objects.Insert(ItemBase.Cast(object));
 			Debug.Log("spawning item "+item_to_spawn,"recipes");
+			object = null;
 		}
 
 	}

@@ -13,6 +13,11 @@ class ActionBuildShelter: ActionBuildPart
 		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
 	}
 	
+	void ~ActionBuildShelter()
+	{
+		DestroyActionLoopSound();
+	}
+	
 	override void CreateConditionComponents()
 	{
 		m_ConditionItem = new CCINone;

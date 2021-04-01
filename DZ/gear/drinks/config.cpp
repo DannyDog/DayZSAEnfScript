@@ -380,10 +380,9 @@ class CfgVehicles
 		itemSize[] = {1,2};
 		weight = 15;
 		stackedUnit = "";
-		varQuantityInit = 330;
+		varQuantityInit = 300;
 		varQuantityMin = 0;
-		varQuantityMax = 330;
-		isMeleeWeapon = 1;
+		varQuantityMax = 300;
 		hiddenSelections[] = {"camoGround"};
 		class DamageSystem
 		{
@@ -392,35 +391,17 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 30;
-					healthLevels[] = {{1.0,{"DZ\gear\drinks\data\Drink_WaterPouch_Natural.rvmat"}},{0.7,{"DZ\gear\drinks\data\Drink_WaterPouch_Natural.rvmat"}},{0.5,{"DZ\gear\drinks\data\Drink_WaterPouch_Natural_damage.rvmat"}},{0.3,{"DZ\gear\drinks\data\Drink_WaterPouch_Natural_damage.rvmat"}},{0.0,{"DZ\gear\drinks\data\Drink_WaterPouch_Natural_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\gear\drinks\data\sodacan.rvmat"}},{0.7,{"DZ\gear\drinks\data\sodacan.rvmat"}},{0.5,{"DZ\gear\drinks\data\sodacan_damage.rvmat"}},{0.3,{"DZ\gear\drinks\data\sodacan_damage.rvmat"}},{0.0,{"DZ\gear\drinks\data\sodacan_destruct.rvmat"}}};
 				};
 			};
 		};
 		class Nutrition
 		{
 			totalVolume = 1;
-			energy = 43.5;
-			water = 89;
+			energy = 50;
+			water = 150;
 			nutritionalIndex = 1;
 			toxicity = 0;
-		};
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeLightBlunt";
-				range = 1.0;
-			};
-			class Heavy
-			{
-				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
-			};
-			class Sprint
-			{
-				ammo = "MeleeLightBlunt_Heavy";
-				range = 2.8;
-			};
 		};
 	};
 	class SodaCan_Pipsi: SodaCan_ColorBase
@@ -574,14 +555,6 @@ class CfgVehicles
 				};
 			};
 		};
-		class Nutrition
-		{
-			totalVolume = 1;
-			energy = 43.5;
-			water = 89;
-			nutritionalIndex = 1;
-			toxicity = 0;
-		};
 	};
 	class SodaCan_Empty: Inventory_Base
 	{
@@ -590,6 +563,44 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_SodaCan_Empty1";
 		model = "\dz\gear\drinks\SodaCan_Used.p3d";
 		inventorySlot[] = {"tripWireAttachment"};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class SodaCan_in_B
+				{
+					soundSet = "SodaCan_in_B_SoundSet";
+					id = 202;
+				};
+				class WellPond_loop
+				{
+					soundSet = "WellPond_loop_SoundSet";
+					id = 209;
+				};
+				class WellBottle_loop
+				{
+					soundSet = "WellBottle_loop_SoundSet";
+					id = 210;
+				};
+				class pickup
+				{
+					soundSet = "SodaCan_pickup_SoundSet";
+					id = 797;
+				};
+				class drop
+				{
+					soundset = "SodaCan_drop_SoundSet";
+					id = 898;
+				};
+			};
+		};
+	};
+	class SodaCan_Fronta: SodaCan_ColorBase
+	{
+		scope = 2;
+		displayName = "$STR_CfgVehicles_SodaCan_Fronta0";
+		descriptionShort = "$STR_CfgVehicles_SodaCan_Fronta1";
+		hiddenSelectionsTextures[] = {"\dz\gear\drinks\Data\SodaCan_Fanda_co.paa"};
 		class AnimEvents
 		{
 			class SoundWeapon

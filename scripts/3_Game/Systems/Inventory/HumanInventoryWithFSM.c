@@ -96,7 +96,12 @@ class HumanInventoryWithFSM : HumanInventory
 		//SyncRemote(e);
 		if (m_FSM.ProcessEvent(e) == ProcessEventResult.FSM_OK)
 		{
-			hndDebugSpam("[hndfsm]  STS=" + GetManOwner().GetSimulationTimeStamp() + " Processed event e=" + e.ToString());
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{
+				Debug.InventoryHFSMLog("STS=" + GetManOwner().GetSimulationTimeStamp() , e.ToString(), "ProcessHandEvent", e.m_Player.ToString() );
+			}
+			#endif
 			return true;
 		}
 		else

@@ -229,17 +229,6 @@ class ItemOptics extends InventoryItemSuper
 		SetTakeable(true);
 	}
 	
-	override void OnInventoryEnter(Man player)
-	{
-		super.OnInventoryEnter(player);
-		
-		/*if (PlayerBase.Cast(player))
-		{
-			PlayerBase.Cast(player).m_bProcessOpticsPreload = true;
-			PlayerBase.Cast(player).m_sOpticsType = GetType();
-		}*/
-	}
-	
 	override void OnInventoryExit(Man player)
 	{
 		super.OnInventoryExit(player);
@@ -251,12 +240,6 @@ class ItemOptics extends InventoryItemSuper
 		}
 		
 		SetTakeable(true);
-		
-		/*if (PlayerBase.Cast(player))
-		{
-			PlayerBase.Cast(player).m_bProcessOpticsPreload = false;
-			PlayerBase.Cast(player).m_sOpticsType = "";
-		}*/
 	}
 	
 	void InitReddotData()

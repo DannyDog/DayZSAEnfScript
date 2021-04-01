@@ -137,8 +137,8 @@ class CfgVehicles
 		OnRestrainChange = "Rope";
 		StruggleLength = 10;
 		rotationFlags = 17;
-		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3};
-		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
+		CanBeUnrestrainedBy[] = {"Sickle",3,"Hacksaw",3,"KitchenKnife",3,"SteakKnife",3,"HayHook",3,"StoneKnife",3,"Cleaver",3,"CombatKnife",3,"HuntingKnife",3,"Machete",3,"Screwdriver",3,"Crowbar",3,"Pickaxe",3,"WoodAxe",3,"Hatchet",3,"FirefighterAxe",3,"Sword",3,"AK_Bayonet",3,"M9A1_Bayonet",3,"Mosin_Bayonet",3,"SKS_Bayonet",3,"HandSaw",3,"KukriKnife",3,"FangeKnife",3};
+		CanBeUnrestrainedByDMG[] = {12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -566,6 +566,24 @@ class CfgVehicles
 				};
 			};
 		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeWrench";
+				range = 1.2;
+			};
+			class Heavy
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 1.2;
+			};
+			class Sprint
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 3.3;
+			};
+		};
 	};
 	class SharpWoodenStick: Inventory_Base
 	{
@@ -595,6 +613,24 @@ class CfgVehicles
 					hitpoints = 200;
 					healthLevels[] = {{1.0,{"DZ\gear\crafting\data\Wooden_stick.rvmat"}},{0.7,{"DZ\gear\crafting\data\Wooden_stick.rvmat"}},{0.5,{"DZ\gear\crafting\data\Wooden_stick_damage.rvmat"}},{0.3,{"DZ\gear\crafting\data\Wooden_stick_damage.rvmat"}},{0.0,{"DZ\gear\crafting\data\Wooden_stick_destruct.rvmat"}}};
 				};
+			};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeWrench";
+				range = 1.2;
+			};
+			class Heavy
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 1.2;
+			};
+			class Sprint
+			{
+				ammo = "MeleeWrench_Heavy";
+				range = 3.3;
 			};
 		};
 	};

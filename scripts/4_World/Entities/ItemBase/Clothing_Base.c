@@ -19,6 +19,11 @@ class Clothing extends Clothing_Base
 		if ( !super.CanPutInCargo( parent ) )
 			return false;
 		
+		return CanPutInCargoClothingConditions( parent );
+	}
+	
+	bool CanPutInCargoClothingConditions( EntityAI parent )
+	{
 		bool is_hidden_stash_exception = false;
 		
 		if ( parent.IsInherited( UndergroundStash ) )
@@ -42,6 +47,11 @@ class Clothing extends Clothing_Base
 		if (!super.CanReceiveItemIntoCargo(item))
 			return false;
 		
+		return CanReceiveItemIntoCargoClothingConditions( item );
+	}
+	
+	bool CanReceiveItemIntoCargoClothingConditions( EntityAI item )
+	{
 		EntityAI hierarchyParent = GetHierarchyParent();
 		return !hierarchyParent || hierarchyParent.IsMan() || SmershException(hierarchyParent);
 	}
@@ -64,6 +74,11 @@ class Clothing extends Clothing_Base
 		if (!super.CanLoadItemIntoCargo(item))
 			return false;
 		
+		return CanLoadItemIntoCargoClothingConditions(item);
+	}
+	
+	bool CanLoadItemIntoCargoClothingConditions(EntityAI item)
+	{
 		EntityAI parent = GetHierarchyParent();
 		
 		if ( parent && parent.IsInherited( UndergroundStash ) )

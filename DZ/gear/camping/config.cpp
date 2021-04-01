@@ -203,6 +203,7 @@ class CfgVehicles
 							};
 						};
 					};
+					displayName = "$STR_CfgVehicles_Tent_Entrance0";
 					componentNames[] = {"entranceo","entrancec"};
 					fatalInjuryCoef = -1;
 				};
@@ -236,7 +237,7 @@ class CfgVehicles
 				name = "$STR_attachment_accessories";
 				description = "";
 				attachmentSlots[] = {"CamoNet","Lights"};
-				icon = "cat_fp_tents";
+				icon = "set:dayz_inventory image:cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -379,6 +380,15 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\tent_medium_pitched.rvmat"};
 		hologramMaterial = "tent_medium";
 		hologramMaterialPath = "dz\gear\camping\data";
+		class AnimationSources
+		{
+			class Placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
 	};
 	class MediumTent_GreenPlacing: MediumTentPlacing{};
 	class MediumTent_OrangePlacing: MediumTentPlacing{};
@@ -565,6 +575,7 @@ class CfgVehicles
 							};
 						};
 					};
+					displayName = "$STR_CfgVehicles_Tent_Entrance0";
 					componentNames[] = {"entranceo","entrancec"};
 					fatalInjuryCoef = -1;
 				};
@@ -600,6 +611,7 @@ class CfgVehicles
 							};
 						};
 					};
+					displayName = "$STR_CfgVehicles_LargeTent_Window0";
 					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
@@ -661,7 +673,7 @@ class CfgVehicles
 				name = "$STR_attachment_accessories";
 				description = "";
 				attachmentSlots[] = {"CamoNet","Lights"};
-				icon = "cat_fp_tents";
+				icon = "set:dayz_inventory image:cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -878,6 +890,15 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\large_tent.rvmat"};
 		hologramMaterial = "large_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
+		class AnimationSources
+		{
+			class Placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
 	};
 	class LargeTentClutterCutter: Static
 	{
@@ -1062,6 +1083,7 @@ class CfgVehicles
 							};
 						};
 					};
+					displayName = "$STR_CfgVehicles_Tent_Entrance0";
 					componentNames[] = {"entranceo","entrancec"};
 					fatalInjuryCoef = -1;
 				};
@@ -1095,7 +1117,7 @@ class CfgVehicles
 				name = "$STR_attachment_accessories";
 				description = "";
 				attachmentSlots[] = {"CamoNet","Lights"};
-				icon = "cat_fp_tents";
+				icon = "set:dayz_inventory image:cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -1218,6 +1240,15 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\car_tent.rvmat"};
 		hologramMaterial = "car_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
+		class AnimationSources
+		{
+			class Placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
 	};
 	class PartyTent: TentBase
 	{
@@ -1389,6 +1420,7 @@ class CfgVehicles
 							};
 						};
 					};
+					displayName = "$STR_CfgVehicles_PartyTent_Door0";
 					componentNames[] = {""};
 					fatalInjuryCoef = -1;
 				};
@@ -1446,7 +1478,7 @@ class CfgVehicles
 				name = "$STR_attachment_accessories";
 				description = "";
 				attachmentSlots[] = {"CamoNet","Lights"};
-				icon = "cat_fp_tents";
+				icon = "set:dayz_inventory image:cat_fp_tents";
 				view_index = 1;
 			};
 		};
@@ -1732,6 +1764,15 @@ class CfgVehicles
 		hiddenSelectionsMaterials[] = {"dz\gear\camping\data\party_tent_cloth.rvmat"};
 		hologramMaterial = "party_tent";
 		hologramMaterialPath = "dz\gear\camping\data";
+		class AnimationSources
+		{
+			class Placing
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 1;
+			};
+		};
 	};
 	class PartyTent_BluePlacing: PartyTentPlacing{};
 	class PartyTent_BrownPlacing: PartyTentPlacing{};
@@ -2119,6 +2160,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -2172,6 +2214,7 @@ class CfgVehicles
 				};
 				class Wall_Base_Up: Wall_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"wall_base_up"};
 				};
 				class Wall_Wood_Down
@@ -2182,6 +2225,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -2235,6 +2279,7 @@ class CfgVehicles
 				};
 				class Wall_Wood_Up: Wall_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"wall_wood_up"};
 				};
 				class Wall_Metal_Down
@@ -2245,6 +2290,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -2298,6 +2344,7 @@ class CfgVehicles
 				};
 				class Wall_Metal_Up: Wall_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"wall_metal_up"};
 				};
 				class Wall_Platform
@@ -2308,6 +2355,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Platform";
 					class ArmorType
 					{
 						class Projectile
@@ -2361,10 +2409,12 @@ class CfgVehicles
 				};
 				class Wall_Platform_Stairs_Left: Wall_Platform
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Right";
 					componentNames[] = {"wall_platform_stairs_left"};
 				};
 				class Wall_Platform_Stairs_Right: Wall_Platform
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Platform_Stairs_Left";
 					componentNames[] = {"wall_platform_stairs_right"};
 				};
 				class Wall_Barbedwire_1
@@ -2375,6 +2425,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.7,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.5,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.3,{"DZ\gear\camping\data\barbed_wire.rvmat"}},{0.0,{"DZ\gear\camping\data\barbed_wire.rvmat"}}};
 					};
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					class ArmorType
 					{
 						class Projectile
@@ -2429,6 +2480,7 @@ class CfgVehicles
 				};
 				class Wall_Barbedwire_2: Wall_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"wall_barbedwire_2","wall_barbedwire_2_mounted"};
 					inventorySlots[] = {"Wall_Barbedwire_2"};
 				};
@@ -2499,6 +2551,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Base";
 					class ArmorType
 					{
 						class Projectile
@@ -2559,6 +2612,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\crafting\data\string_metalwire.rvmat"}},{0.7,{"DZ\gear\crafting\data\string_metalwire.rvmat"}},{0.5,{"DZ\gear\crafting\data\string_metalwire_damage.rvmat"}},{0.3,{"DZ\gear\crafting\data\string_metalwire_damage.rvmat"}},{0.0,{"DZ\gear\crafting\data\string_metalwire_destruct.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_MetalWire0";
 					class ArmorType
 					{
 						class Projectile
@@ -2621,7 +2675,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Fence_Att_Category_Base";
 				description = "";
 				attachmentSlots[] = {"Material_WoodenLogs"};
-				icon = "cat_bb_base";
+				icon = "set:dayz_inventory image:cat_bb_base";
 				selection = "wall";
 			};
 			class Attachments
@@ -2629,7 +2683,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Fence_Att_Category_Attachments";
 				description = "";
 				attachmentSlots[] = {"Wall_Camonet","Wall_Barbedwire_1","Wall_Barbedwire_2","Att_CombinationLock"};
-				icon = "cat_bb_attachments";
+				icon = "set:dayz_inventory image:cat_bb_attachments";
 				selection = "wall";
 			};
 			class Material
@@ -2637,7 +2691,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Fence_Att_Category_Materials";
 				description = "";
 				attachmentSlots[] = {"Material_Nails","Material_WoodenPlanks","Material_MetalSheets","Material_MetalWire"};
-				icon = "cat_bb_material";
+				icon = "set:dayz_inventory image:cat_bb_material";
 				selection = "wall";
 			};
 		};
@@ -3112,6 +3166,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Base";
 					class ArmorType
 					{
 						class Projectile
@@ -3172,6 +3227,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Stairs";
 					class ArmorType
 					{
 						class Projectile
@@ -3231,6 +3287,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -3284,6 +3341,7 @@ class CfgVehicles
 				};
 				class Level_1_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_1_wall_1_base_up"};
 				};
 				class Level_1_Wall_1_Wood_Down
@@ -3294,6 +3352,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -3347,6 +3406,7 @@ class CfgVehicles
 				};
 				class Level_1_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_1_wall_1_wood_up"};
 				};
 				class Level_1_Wall_1_Metal_Down
@@ -3357,6 +3417,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					class ArmorType
 					{
 						class Projectile
@@ -3410,6 +3471,7 @@ class CfgVehicles
 				};
 				class Level_1_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_1_wall_1_metal_up"};
 				};
 				class Level_1_Wall_1_Barbedwire_1
@@ -3420,6 +3482,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\barbed_wire.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\barbed_wire.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.5,{"DZ\gear\camping\data\barbed_wire_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\barbed_wire_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.0,{"DZ\gear\camping\data\barbed_wire_destruct.rvmat","DZ\gear\camping\data\fence_pile_of_planks_destruct.rvmat"}}};
 					};
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					class ArmorType
 					{
 						class Projectile
@@ -3474,233 +3537,289 @@ class CfgVehicles
 				};
 				class Level_1_Wall_1_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"level_1_wall_1_barbedwire_2","level_1_wall_1_barbedwire_2_mounted"};
 					inventorySlots[] = {"Level_1_Wall_1_Barbedwire_2"};
 				};
 				class Level_1_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_1_wall_2_base_down"};
 				};
 				class Level_1_Wall_2_Base_Up: Level_1_Wall_1_Base_Up
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_1_wall_2_base_up"};
 				};
 				class Level_1_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_1_wall_2_wood_down"};
 				};
 				class Level_1_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_1_wall_2_wood_up"};
 				};
 				class Level_1_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_1_wall_2_metal_down"};
 				};
 				class Level_1_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_1_wall_2_metal_up"};
 				};
 				class Level_1_Wall_2_Barbedwire_1: Level_1_Wall_1_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"level_1_wall_2_barbedwire_1","level_1_wall_2_barbedwire_1_mounted"};
 					inventorySlots[] = {"Level_1_Wall_2_Barbedwire_1"};
 				};
 				class Level_1_Wall_2_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"level_1_wall_2_barbedwire_2","level_1_wall_2_barbedwire_2_mounted"};
 					inventorySlots[] = {"Level_1_Wall_2_Barbedwire_2"};
 				};
 				class Level_1_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_1_wall_3_base_down"};
 				};
 				class Level_1_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_1_wall_3_base_up"};
 				};
 				class Level_1_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_1_wall_3_wood_down"};
 				};
 				class Level_1_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_1_wall_3_wood_up"};
 				};
 				class Level_1_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_1_wall_3_metal_down"};
 				};
 				class Level_1_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_1_wall_3_metal_up"};
 				};
 				class Level_1_Wall_3_Barbedwire_1: Level_1_Wall_1_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"level_1_wall_3_barbedwire_1","level_1_wall_3_barbedwire_1_mounted"};
 					inventorySlots[] = {"Level_1_Wall_3_Barbedwire_1"};
 				};
 				class Level_1_Wall_3_Barbedwire_2: Level_1_Wall_1_Barbedwire_1
 				{
+					displayName = "$STR_cfgvehicles_barbedwire0";
 					componentNames[] = {"level_1_wall_3_barbedwire_2","level_1_wall_3_barbedwire_2_mounted"};
 					inventorySlots[] = {"Level_1_Wall_3_Barbedwire_2"};
 				};
 				class Material_L2_WoodenLogs: Material_L1_WoodenLogs
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base";
 					componentNames[] = {"Material_L2_WoodenLogs"};
 					inventorySlots[] = {"Material_L2_WoodenLogs"};
 				};
 				class Level_2_Stairs: Level_1_Stairs
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Stairs";
 					componentNames[] = {"level_2_stairs"};
 				};
 				class Level_2_Wall_1_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_2_wall_1_base_down"};
 				};
 				class Level_2_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_2_wall_1_base_up"};
 				};
 				class Level_2_Wall_1_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_2_wall_1_wood_down"};
 				};
 				class Level_2_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_2_wall_1_wood_up"};
 				};
 				class Level_2_Wall_1_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_2_wall_1_metal_down"};
 				};
 				class Level_2_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_2_wall_1_metal_up"};
 				};
 				class Level_2_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_2_wall_2_base_down"};
 				};
 				class Level_2_Wall_2_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_2_wall_2_base_up"};
 				};
 				class Level_2_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_2_wall_2_wood_down"};
 				};
 				class Level_2_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_2_wall_2_wood_up"};
 				};
 				class Level_2_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_2_wall_2_metal_down"};
 				};
 				class Level_2_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_2_wall_2_metal_up"};
 				};
 				class Level_2_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_2_wall_3_base_down"};
 				};
 				class Level_2_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_2_wall_3_base_up"};
 				};
 				class Level_2_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_2_wall_3_wood_down"};
 				};
 				class Level_2_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_2_wall_3_wood_up"};
 				};
 				class Level_2_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_2_wall_3_metal_down"};
 				};
 				class Level_2_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_2_wall_3_metal_up"};
 				};
 				class Material_L3_WoodenLogs: Material_L1_WoodenLogs
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base";
 					componentNames[] = {"Material_L3_WoodenLogs"};
 					inventorySlots[] = {"Material_L3_WoodenLogs"};
 				};
 				class Level_3_Wall_1_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_3_wall_1_base_down"};
 				};
 				class Level_3_Wall_1_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_3_wall_1_base_up"};
 				};
 				class Level_3_Wall_1_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_3_wall_1_wood_down"};
 				};
 				class Level_3_Wall_1_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_3_wall_1_wood_up"};
 				};
 				class Level_3_Wall_1_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_3_wall_1_metal_down"};
 				};
 				class Level_3_Wall_1_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_3_wall_1_metal_up"};
 				};
 				class Level_3_Wall_2_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_3_wall_2_base_down"};
 				};
 				class Level_3_Wall_2_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_3_wall_2_base_up"};
 				};
 				class Level_3_Wall_2_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_3_wall_2_wood_down"};
 				};
 				class Level_3_Wall_2_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_3_wall_2_wood_up"};
 				};
 				class Level_3_Wall_2_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_3_wall_2_metal_down"};
 				};
 				class Level_3_Wall_2_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_3_wall_2_metal_up"};
 				};
 				class Level_3_Wall_3_Base_Down: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Down";
 					componentNames[] = {"level_3_wall_3_base_down"};
 				};
 				class Level_3_Wall_3_Base_Up: Level_1_Wall_1_Base_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Base_Up";
 					componentNames[] = {"level_3_wall_3_base_up"};
 				};
 				class Level_3_Wall_3_Wood_Down: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Down";
 					componentNames[] = {"level_3_wall_3_wood_down"};
 				};
 				class Level_3_Wall_3_Wood_Up: Level_1_Wall_1_Wood_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Wood_Up";
 					componentNames[] = {"level_3_wall_3_wood_up"};
 				};
 				class Level_3_Wall_3_Metal_Down: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Down";
 					componentNames[] = {"level_3_wall_3_metal_down"};
 				};
 				class Level_3_Wall_3_Metal_Up: Level_1_Wall_1_Metal_Down
 				{
+					displayName = "$STR_CfgVehicles_Construction_Part_Metal_Up";
 					componentNames[] = {"level_3_wall_3_metal_up"};
 				};
 				class Level_3_Roof
@@ -3711,6 +3830,7 @@ class CfgVehicles
 						transferToGlobalCoef = 0;
 						healthLevels[] = {{1.0,{"DZ\gear\camping\data\fence_metalsheets.rvmat","DZ\gear\camping\data\fence_pile_of_planks.rvmat"}},{0.7,{"DZ\gear\camping\data\fence_metalsheets_worn.rvmat","DZ\gear\camping\data\fence_pile_of_planks_worn.rvmat"}},{0.5,{"DZ\gear\camping\data\fence_metalsheets_damage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_damage.rvmat"}},{0.3,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}},{0.0,{"DZ\gear\camping\data\fence_metalsheets_bdamage.rvmat","DZ\gear\camping\data\fence_pile_of_planks_bdamage.rvmat"}}};
 					};
+					displayName = "$STR_CfgVehicles_Construction_Part_Roof";
 					class ArmorType
 					{
 						class Projectile
@@ -3772,7 +3892,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L1_WoodenLogs","Material_L1_Nails","Material_L1_WoodenPlanks"};
-				icon = "cat_bb_watchtower";
+				icon = "set:dayz_inventory image:cat_bb_watchtower";
 				selection = "level_1";
 			};
 			class Level_1_Wall_1
@@ -3780,7 +3900,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L1W1_Nails","Material_L1W1_WoodenPlanks","Material_L1W1_MetalSheets","Level_1_Wall_1_Camonet","Level_1_Wall_1_Barbedwire_1","Level_1_Wall_1_Barbedwire_2"};
-				icon = "cat_bb_watchtower_wall_1";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_1";
 				selection = "level_1_wall_1";
 			};
 			class Level_1_Wall_2
@@ -3788,7 +3908,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L1W2_Nails","Material_L1W2_WoodenPlanks","Material_L1W2_MetalSheets","Level_1_Wall_2_Camonet","Level_1_Wall_2_Barbedwire_1","Level_1_Wall_2_Barbedwire_2"};
-				icon = "cat_bb_watchtower_wall_2";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_2";
 				selection = "level_1_wall_2";
 			};
 			class Level_1_Wall_3
@@ -3796,7 +3916,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_1_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L1W3_Nails","Material_L1W3_WoodenPlanks","Material_L1W3_MetalSheets","Level_1_Wall_3_Camonet","Level_1_Wall_3_Barbedwire_1","Level_1_Wall_3_Barbedwire_2"};
-				icon = "cat_bb_watchtower_wall_3";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_3";
 				selection = "level_1_wall_3";
 			};
 			class Level_2
@@ -3804,7 +3924,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L2_WoodenLogs","Material_L2_Nails","Material_L2_WoodenPlanks"};
-				icon = "cat_bb_watchtower";
+				icon = "set:dayz_inventory image:cat_bb_watchtower";
 				selection = "level_2";
 			};
 			class Level_2_Wall_1
@@ -3812,7 +3932,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L2W1_Nails","Material_L2W1_WoodenPlanks","Material_L2W1_MetalSheets","Level_2_Wall_1_Camonet"};
-				icon = "cat_bb_watchtower_wall_1";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_1";
 				selection = "level_2_wall_1";
 			};
 			class Level_2_Wall_2
@@ -3820,7 +3940,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L2W2_Nails","Material_L2W2_WoodenPlanks","Material_L2W2_MetalSheets","Level_2_Wall_2_Camonet"};
-				icon = "cat_bb_watchtower_wall_2";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_2";
 				selection = "level_2_wall_2";
 			};
 			class Level_2_Wall_3
@@ -3828,7 +3948,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_2_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L2W3_Nails","Material_L2W3_WoodenPlanks","Material_L2W3_MetalSheets","Level_2_Wall_3_Camonet"};
-				icon = "cat_bb_watchtower_wall_3";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_3";
 				selection = "level_2_wall_3";
 			};
 			class Level_3
@@ -3836,7 +3956,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Base";
 				description = "";
 				attachmentSlots[] = {"Material_L3_WoodenLogs","Material_L3_Nails","Material_L3_WoodenPlanks","Material_L3_MetalSheets"};
-				icon = "cat_bb_watchtower";
+				icon = "set:dayz_inventory image:cat_bb_watchtower";
 				selection = "level_3";
 			};
 			class Level_3_Wall_1
@@ -3844,7 +3964,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_1";
 				description = "";
 				attachmentSlots[] = {"Material_L3W1_Nails","Material_L3W1_WoodenPlanks","Material_L3W1_MetalSheets","Level_3_Wall_1_Camonet"};
-				icon = "cat_bb_watchtower_wall_1";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_1";
 				selection = "level_3_wall_1";
 			};
 			class Level_3_Wall_2
@@ -3852,7 +3972,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_2";
 				description = "";
 				attachmentSlots[] = {"Material_L3W2_Nails","Material_L3W2_WoodenPlanks","Material_L3W2_MetalSheets","Level_3_Wall_2_Camonet"};
-				icon = "cat_bb_watchtower_wall_2";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_2";
 				selection = "level_3_wall_2";
 			};
 			class Level_3_Wall_3
@@ -3860,7 +3980,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Watchtower_Att_Category_Level_3_Wall_3";
 				description = "";
 				attachmentSlots[] = {"Material_L3W3_Nails","Material_L3W3_WoodenPlanks","Material_L3W3_MetalSheets","Level_3_Wall_3_Camonet"};
-				icon = "cat_bb_watchtower_wall_3";
+				icon = "set:dayz_inventory image:cat_bb_watchtower_wall_3";
 				selection = "level_3_wall_3";
 			};
 		};
@@ -4022,7 +4142,7 @@ class CfgVehicles
 				};
 				class level_1_roof
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Roof";
+					name = "$STR_cfgvehicles_construction_part_floor_base";
 					id = 3;
 					platform_support = "level_2";
 					required_parts[] = {"level_1_base"};
@@ -4529,7 +4649,7 @@ class CfgVehicles
 			{
 				class level_2_base
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Floor_Base";
+					name = "$STR_CfgVehicles_Construction_Part_Base";
 					id = 22;
 					platform_support = "level_2";
 					required_parts[] = {"level_1_roof"};
@@ -4577,7 +4697,7 @@ class CfgVehicles
 				};
 				class level_2_roof
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Roof";
+					name = "$STR_cfgvehicles_construction_part_floor_base";
 					id = 24;
 					platform_support = "level_3";
 					required_parts[] = {"level_2_base"};
@@ -5084,7 +5204,7 @@ class CfgVehicles
 			{
 				class level_3_base
 				{
-					name = "$STR_CfgVehicles_Construction_Part_Floor_Base";
+					name = "$STR_CfgVehicles_Construction_Part_Base";
 					id = 43;
 					platform_support = "level_3";
 					required_parts[] = {"level_2_roof"};
@@ -6602,7 +6722,7 @@ class CfgVehicles
 		model = "\dz\gear\camping\battery_charger.p3d";
 		slopeTolerance = 0.15;
 		yawPitchRollLimit[] = {45,45,45};
-		attachments[] = {"CarBattery","TruckBattery"};
+		attachments[] = {"LargeBattery"};
 		weight = 5000;
 		itemSize[] = {3,3};
 		itemBehaviour = 1;
@@ -7021,7 +7141,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Fence_Att_Category_Base";
 				description = "";
 				attachmentSlots[] = {"Material_Shelter_FrameSticks"};
-				icon = "cat_shelter_support";
+				icon = "set:dayz_inventory image:cat_shelter_support";
 				selection = "site";
 			};
 			class Material
@@ -7029,7 +7149,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Fence_Att_Category_Materials";
 				description = "";
 				attachmentSlots[] = {"Material_Shelter_Leather","Material_Shelter_Fabric","Material_Shelter_Sticks"};
-				icon = "cat_shelter_roof";
+				icon = "set:dayz_inventory image:cat_shelter_roof";
 				selection = "site";
 			};
 		};
@@ -7411,6 +7531,30 @@ class CfgVehicles
 					healthLevels[] = {{1.0,{"dz\characters\backpacks\data\ghillie_green_co.paa","dz\gear\camping\data\improvised_tent_construction_01.rvmat","dz\gear\crafting\data\bp_wooden_stick.rvmat","dz\plants\tree\data\t_piceaabies_leaves_ca.paa"}},{0.7,{"dz\characters\backpacks\data\ghillie_green_damage_co.paa","DZ\gear\camping\Data\wooden_log_damage.rvmat","dz\gear\crafting\data\bp_wooden_stick_damage.rvmat","dz\plants\tree\data\t_piceaabies_leaves_damage_ca.paa"}},{0.5,{"dz\characters\backpacks\data\ghillie_green_damage_co.paa","DZ\gear\camping\Data\wooden_log_damage.rvmat","dz\gear\crafting\data\bp_wooden_stick_damage.rvmat","dz\plants\tree\data\t_piceaabies_leaves_damage_ca.paa"}},{0.3,{"dz\characters\backpacks\data\ghillie_green_destruct_co.paa","DZ\gear\camping\Data\wooden_log_destruct.rvmat","dz\gear\crafting\data\bp_wooden_stick_destruct.rvmat","dz\plants\tree\data\t_piceaabies_leaves_destruct_ca.paa"}},{0.0,{"dz\characters\backpacks\data\ghillie_green_destruct_co.paa","DZ\gear\camping\Data\wooden_log_destruct.rvmat","dz\gear\crafting\data\bp_wooden_stick_destruct.rvmat","dz\plants\tree\data\t_piceaabies_leaves_destruct_ca.paa"}}};
 				};
 			};
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0.05;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0.3;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 8;
+					};
+				};
+			};
 			componentNames[] = {""};
 		};
 	};
@@ -7498,7 +7642,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_Construction_Part_Base";
 				description = "";
 				attachmentSlots[] = {"Material_FPole_WoodenLog"};
-				icon = "cat_tf_log";
+				icon = "set:dayz_inventory image:cat_tf_log";
 				selection = "totem";
 			};
 			class Support
@@ -7506,7 +7650,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Support";
 				description = "";
 				attachmentSlots[] = {"Material_FPole_Stones","Material_FPole_WoodenLog2"};
-				icon = "tf_stones";
+				icon = "set:dayz_inventory image:tf_stones";
 				selection = "totem";
 			};
 			class Pole
@@ -7514,7 +7658,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Pole";
 				description = "";
 				attachmentSlots[] = {"Material_FPole_MetalWire","Material_FPole_Rope","Material_FPole_Nails","Material_FPole_MagicStick"};
-				icon = "cat_tf_pole";
+				icon = "set:dayz_inventory image:cat_tf_pole";
 				selection = "totem";
 			};
 			class Flag
@@ -7522,7 +7666,7 @@ class CfgVehicles
 				name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Flag";
 				description = "";
 				attachmentSlots[] = {"Material_FPole_Flag"};
-				icon = "tf_flag";
+				icon = "set:dayz_inventory image:tf_flag";
 				selection = "totem";
 			};
 		};
@@ -7784,6 +7928,7 @@ class CfgVehicles
 		model = "\dz\gear\camping\DZ_Flag.p3d";
 		itemSize[] = {2,2};
 		absorbency = 0.9;
+		ragQuantity = 6;
 		inventorySlot[] = {"Material_FPole_Flag"};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\gear\camping\data\flag_chern_co.paa"};
@@ -7996,6 +8141,12 @@ class CfgVehicles
 	{
 		scope = 2;
 		hiddenSelectionsTextures[] = {"\dz\gear\camping\Data\Flag_snake_co.paa"};
+	};
+	class Bonfire: HouseNoDestruct
+	{
+		scope = 2;
+		storageCategory = 4;
+		model = "\DZ\gear\camping\bonfire.p3d";
 	};
 };
 class CfgNonAIVehicles

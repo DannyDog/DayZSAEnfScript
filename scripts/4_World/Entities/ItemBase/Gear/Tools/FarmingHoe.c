@@ -1,4 +1,4 @@
-class FarmingHoe: Inventory_Base
+class FarmingHoe: ItemBase
 {
 	override bool CanMakeGardenplot()
 	{
@@ -9,11 +9,19 @@ class FarmingHoe: Inventory_Base
 	{
 		super.SetActions();
 		
+		AddAction(ActionBuildPartSwitch);
 		AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionTogglePlaceObject);
 		AddAction(ActionDigGardenPlot);
 		AddAction(ActionDismantleGardenPlot);
+		AddAction(ActionDismantlePart);
+		AddAction(ActionBuildPart);
+		AddAction(ActionBuryBody);
 		AddAction(ActionBuryAshes);
+		AddAction(ActionDigOutStash);
+		AddAction(ActionDigInStash);
+		AddAction(ActionFillObject);
 		AddAction(ActionDigWorms);
+		AddAction(ActionCreateGreenhouseGardenPlot);
 	}
 };

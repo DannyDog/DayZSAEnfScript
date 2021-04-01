@@ -167,6 +167,7 @@ class FireplaceBase extends ItemBase
 	const string ANIMATION_OVEN 			= "Oven";
 	const string ANIMATION_INVENTORY	 	= "Inventory";
 	const string ANIMATION_COOKWARE_HANDLE 	= "handleRotate";
+	const string ANIMATION_CAULDRON_HANDLE 	= "handle1Rotate";
 
 	
 	//Visual textures and materials
@@ -189,6 +190,7 @@ class FireplaceBase extends ItemBase
 	typename ATTACHMENT_STONES 			= Stone;
 	typename ATTACHMENT_COOKING_POT 	= Pot;
 	typename ATTACHMENT_FRYING_PAN 		= FryingPan;
+	typename ATTACHMENT_CAULDRON	 	= Cauldron;
 	//
 	const string OBJECT_CLUTTER_CUTTER 	= "ClutterCutterFireplace";
 	protected Object m_ClutterCutter;
@@ -382,7 +384,7 @@ class FireplaceBase extends ItemBase
 		
 		if ( IsBaseFireplace() && !IsOven() )
 		{
-			if( m_IsBurning && !m_AreaDamage )
+			if ( m_IsBurning && !m_AreaDamage )
 			{
 				CreateAreaDamage();
 			}
@@ -511,7 +513,7 @@ class FireplaceBase extends ItemBase
 					lightDist = 50;
 				if ( player )
 				{
-					if ( vector.Distance( player.GetPosition(), this.GetPosition() ) > lightDist )
+					if ( vector.DistanceSq( player.GetPosition(), this.GetPosition() ) > lightDist * lightDist )
 					{
 						GetLightEntity().FadeBrightnessTo( 0, 5 );
 					}
@@ -1098,7 +1100,7 @@ class FireplaceBase extends ItemBase
 		int contactComponent;
 		
 		bool hit = DayZPhysics.RaycastRV( from, to, contactPos, contactDir, contactComponent, NULL, NULL, this );
-		actual_height = vector.Distance( from, contactPos ) + 1.0;
+		actual_height = vector.DistanceSq( from, contactPos ) + 1.0;
 		
 		return hit;
 	}
@@ -1106,9 +1108,9 @@ class FireplaceBase extends ItemBase
 	float GetAirResistanceForSmokeParticles( float actual_height )
 	{
 		float air_res;
-		actual_height = Math.Clamp( actual_height, 0, 6 );
+		actual_height = Math.Clamp( actual_height, 0, 36 );
 		
-		air_res = ( 6 - actual_height ) * 0.33; //6 is the max height of smoke particles
+		air_res = ( 36 - actual_height ) * 0.33; //6 is the max height of smoke particles, but we square for performance
 		air_res = Math.Clamp( air_res, 0, 2 );
 		
 		return air_res;
@@ -1251,7 +1253,7 @@ class FireplaceBase extends ItemBase
 	//if 'amount == 0', the whole quantity will be consumed (quantity -= 1 )
 	//debug
 	//int m_debug_fire_consume_time = 0;
-	protected void SpendFireConsumable ( float amount )
+	protected void SpendFireConsumable( float amount )
 	{
 		//spend item
 		ref FireConsumable fire_consumable = GetItemToConsume();
@@ -1525,6 +1527,8 @@ class FireplaceBase extends ItemBase
 			m_IsOven = is_oven;
 			m_RoofAbove = is_oven;
 			
+			GetInventory().SetSlotLock( InventorySlots.GetSlotIdFromString("Stones") , is_oven);
+			
 			//synchronize
 			Synchronize();
 		}
@@ -1534,6 +1538,8 @@ class FireplaceBase extends ItemBase
 		if ( m_HasStoneCircle != has_stonecircle )
 		{
 			m_HasStoneCircle = has_stonecircle;
+			
+			GetInventory().SetSlotLock( InventorySlots.GetSlotIdFromString("Stones") , has_stonecircle);
 			
 			//synchronize
 			Synchronize();
@@ -1623,6 +1629,13 @@ class FireplaceBase extends ItemBase
 			
 			//start heating
 			StartHeating();
+			
+			//Update navmesh
+			if ( !IsFireplaceIndoor() )
+			{
+				SetAffectPathgraph( false, true );
+				GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( GetGame().UpdatePathgraphRegionByObject, 100, false, this );
+			}
 		}
 	}
 
@@ -1632,7 +1645,7 @@ class FireplaceBase extends ItemBase
 		//Print("Starting heat...");
 		
 		//visual
-		SetObjectMaterial ( 0, MATERIAL_FIREPLACE_GLOW );
+		SetObjectMaterial( 0, MATERIAL_FIREPLACE_GLOW );
 		
 		//create area damage
 		if ( IsBaseFireplace() && !IsOven() )
@@ -1640,8 +1653,8 @@ class FireplaceBase extends ItemBase
 			CreateAreaDamage();
 		}
 		
-		m_HeatingTimer = new Timer ( CALL_CATEGORY_GAMEPLAY );
-		m_HeatingTimer.Run ( TIMER_HEATING_UPDATE_INTERVAL, this, "Heating", NULL, true );	
+		m_HeatingTimer = new Timer( CALL_CATEGORY_GAMEPLAY );
+		m_HeatingTimer.Run( TIMER_HEATING_UPDATE_INTERVAL, this, "Heating", NULL, true );	
 	}
 
 	//Do heating
@@ -1805,6 +1818,13 @@ class FireplaceBase extends ItemBase
 		
 		//Refresh fire visual
 		SetFireState( fire_state );
+		
+		//Update navmesh
+		if ( !IsFireplaceIndoor() )
+		{
+			SetAffectPathgraph( false, false );
+			GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( GetGame().UpdatePathgraphRegionByObject, 100, false, this );
+		}
 	}
 	
 	//Stop heating
@@ -2016,7 +2036,7 @@ class FireplaceBase extends ItemBase
 		}
 		
 		// check if it isnt cookware first (because its also Edible_Base)
-		if ( ( slot_item.Type() == ATTACHMENT_COOKING_POT ) || ( slot_item.Type() == ATTACHMENT_FRYING_PAN ) )
+		if ( ( slot_item.Type() == ATTACHMENT_CAULDRON ) || ( slot_item.Type() == ATTACHMENT_COOKING_POT ) || ( slot_item.Type() == ATTACHMENT_FRYING_PAN ) )
 		{
 			// cooking equipment attached
 			m_CookingProcess.CookWithEquipment( slot_item );
@@ -2128,11 +2148,11 @@ class FireplaceBase extends ItemBase
 		
 		if ( GetFuelCount() == 0 && temperature <= ( PARAM_SMALL_FIRE_TEMPERATURE + PARAM_TEMPERATURE_INCREASE ) )	//no fuel present, temperature should be low but there can be high temperature from previous fuel burning
 		{
-			temperature = Math.Clamp ( temperature, 0, PARAM_SMALL_FIRE_TEMPERATURE );		//small fire
+			temperature = Math.Clamp( temperature, 0, PARAM_SMALL_FIRE_TEMPERATURE );		//small fire
 		}
 		else
 		{
-			temperature = Math.Clamp ( temperature, 0, PARAM_NORMAL_FIRE_TEMPERATURE );		//normal fire
+			temperature = Math.Clamp( temperature, 0, PARAM_NORMAL_FIRE_TEMPERATURE );		//normal fire
 		}
 		SetTemperature( temperature );
 	}	
@@ -2186,7 +2206,7 @@ class FireplaceBase extends ItemBase
 		ref array<Object> nearest_objects = new array<Object>;
 		ref array<CargoBase> proxy_cargos = new array<CargoBase>;
 
-		GetGame().GetObjectsAtPosition ( GetPosition(), PARAM_HEAT_RADIUS, nearest_objects, proxy_cargos ); 
+		GetGame().GetObjectsAtPosition( GetPosition(), PARAM_HEAT_RADIUS, nearest_objects, proxy_cargos ); 
 
 		for ( int i = 0; i < nearest_objects.Count(); i++ )
 		{
@@ -2196,14 +2216,14 @@ class FireplaceBase extends ItemBase
 			if ( nearest_object.IsInherited( PlayerBase ) )
 			{
 				PlayerBase player = PlayerBase.Cast( nearest_object );
-				distance = vector.Distance( player.GetPosition(), GetPosition() );
-				distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
+				distance = vector.DistanceSq( player.GetPosition(), GetPosition() );
+				//distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
 				float temperature = 0;
 				
 				//! heat transfer through air to player ( anv temperature )
-				if ( distance > PARAM_FULL_HEAT_RADIUS )
+				if ( distance > PARAM_FULL_HEAT_RADIUS * PARAM_FULL_HEAT_RADIUS )
 				{
-					float distFactor = 1 - (distance/PARAM_HEAT_RADIUS);
+					float distFactor = 1 - ( distance / ( PARAM_HEAT_RADIUS * PARAM_HEAT_RADIUS ) );
 					temperature = GetTemperature() * ( PARAM_HEAT_THROUGH_AIR_COEF * distFactor);
 				}
 				else
@@ -2220,10 +2240,10 @@ class FireplaceBase extends ItemBase
 				//! drying of items around the fireplace (based on distance)
 				if ( wetness > 0 )
 				{
-					distance = vector.Distance( item.GetPosition(), GetPosition() );
+					distance = vector.DistanceSq( item.GetPosition(), GetPosition() );
 					distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
 					
-					wetness = wetness * ( PARAM_HEAT_THROUGH_AIR_COEF / distance );
+					wetness = wetness * ( ( PARAM_HEAT_THROUGH_AIR_COEF * PARAM_HEAT_THROUGH_AIR_COEF ) / distance );
 					wetness = Math.Clamp( wetness, item.GetWetMin(), item.GetWetMax() );
 					item.AddWet( -wetness );
 				}
@@ -2239,7 +2259,7 @@ class FireplaceBase extends ItemBase
 		
 		//create new area damage
 		m_AreaDamage = new AreaDamageRegularDeferred( this );
-		m_AreaDamage.SetExtents("-0.25 0 -0.25", "0.25 1.8 0.25");
+		m_AreaDamage.SetExtents("-0.30 0 -0.30", "0.30 0.75 0.30");
 		m_AreaDamage.SetLoopInterval( 0.5 );
 		m_AreaDamage.SetDeferDuration( 0.5 );
 		m_AreaDamage.SetHitZones( { "Head","Torso","LeftHand","LeftLeg","LeftFoot","RightHand","RightLeg","RightFoot" } );
@@ -2272,8 +2292,8 @@ class FireplaceBase extends ItemBase
 			return false;
 		}
 		
-		float dot = vector.Dot ( player.GetOrientation(), dir_vec );
-		if ( Math.Acos ( dot ) < 0.436332313 ) 		//0.436332313 => 25 degrees 
+		float dot = vector.Dot( player.GetOrientation(), dir_vec );
+		if ( Math.Acos( dot ) < 0.436332313 ) 		//0.436332313 => 25 degrees 
 		{
 			return true;
 		}
@@ -2447,7 +2467,7 @@ class FireplaceBase extends ItemBase
 		{
 			float item_quantity = attached_item.GetQuantity();
 			
-			if ( !IsOven() && !IsBurning() && ( item_quantity >= MIN_STONES_TO_BUILD_OVEN ) && !IsItemTypeAttached( ATTACHMENT_TRIPOD ) )
+			if ( !IsOven() && !IsBurning() && ( item_quantity >= MIN_STONES_TO_BUILD_OVEN ) && !IsItemTypeAttached( ATTACHMENT_TRIPOD ) && !HasStoneCircle() )
 			{
 				return true;
 			}
@@ -2557,8 +2577,10 @@ class FireplaceBase extends ItemBase
 			{
 				typename key = m_FireConsumableTypes.GetKey( i );
 				FireConsumableType fire_consumable_type = m_FireConsumableTypes.Get( key );
-				string qt_config_path = "CfgVehicles" + " " + fire_consumable_type.GetItemType().ToString() + " " + "varQuantityMax";
-				string sm_config_path = "CfgSlots" + " " + "Slot_" + fire_consumable_type.GetAttSlot() + " " + "stackMax";
+				//string qt_config_path = "CfgVehicles" + " " + fire_consumable_type.GetItemType().ToString() + " " + "varQuantityMax";
+				string qt_config_path = string.Format("CfgVehicles %1 varQuantityMax", fire_consumable_type.GetItemType().ToString());
+				//string sm_config_path = "CfgSlots" + " " + "Slot_" + fire_consumable_type.GetAttSlot() + " " + "stackMax";
+				string sm_config_path = string.Format("CfgSlots Slot_%1 stackMax", fire_consumable_type.GetAttSlot());
 				if ( GetGame().ConfigIsExisting( qt_config_path ) )
 				{
 					float quantity_max = GetGame().ConfigGetFloat( qt_config_path );
@@ -2627,8 +2649,10 @@ class FireplaceBase extends ItemBase
 	void LockOvenAttachments(bool lock)
 	{
 		//Print("LockOvenAttachments");
-		string path_cooking_equipment = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps CookingEquipment attachmentSlots";
-		string path_direct_cooking = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps DirectCooking attachmentSlots";
+		//string path_cooking_equipment = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps CookingEquipment attachmentSlots";
+		string path_cooking_equipment = string.Format("%1 %2 GUIInventoryAttachmentsProps CookingEquipment attachmentSlots", CFG_VEHICLESPATH, GetType());
+		//string path_direct_cooking = "" + CFG_VEHICLESPATH + " " + GetType() + " GUIInventoryAttachmentsProps DirectCooking attachmentSlots";
+		string path_direct_cooking = string.Format("%1 %2 GUIInventoryAttachmentsProps DirectCooking attachmentSlots", CFG_VEHICLESPATH, GetType());
 		if ( GetGame().ConfigIsExisting(path_cooking_equipment) && GetGame().ConfigIsExisting(path_direct_cooking) )
 		{
 			array<string> arr_cooking_equipment = new array<string>;

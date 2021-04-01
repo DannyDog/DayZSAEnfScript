@@ -1,16 +1,16 @@
-class ActionEatCB : ActionContinuousBaseCB
+class ActionEatBigCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_NORMAL,UATimeSpent.DEFAULT);
+		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_BIG, UATimeSpent.DEFAULT);
 	}
 };
 
-class ActionEat: ActionConsume
+class ActionEatBig: ActionConsume
 {
-	void ActionEat()
+	void ActionEatBig()
 	{
-		m_CallbackClass = ActionEatCB;
+		m_CallbackClass = ActionEatBigCB;
 		//m_Sound = "EatingSoft_0";
 	}
 	
@@ -33,5 +33,40 @@ class ActionEat: ActionConsume
 	override string GetText()
 	{
 		return "#eat";
+	}
+};
+
+
+//-------------- Action Eat
+class ActionEatCB : ActionEatBigCB
+{
+	override void CreateActionComponent()
+	{
+		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_NORMAL, UATimeSpent.DEFAULT);
+	}
+};
+
+class ActionEat: ActionEatBig
+{
+	void ActionEat()
+	{
+		m_CallbackClass = ActionEatCB;
+	}
+};
+
+//-------------- Action Eat Small
+class ActionEatSmallCB : ActionEatBigCB
+{
+	override void CreateActionComponent()
+	{
+		m_ActionData.m_ActionComponent = new CAContinuousQuantityEdible(UAQuantityConsumed.EAT_SMALL, UATimeSpent.DEFAULT);
+	}
+};
+
+class ActionEatSmall: ActionEatBig
+{
+	void ActionEatSmall()
+	{
+		m_CallbackClass = ActionEatSmallCB;
 	}
 };

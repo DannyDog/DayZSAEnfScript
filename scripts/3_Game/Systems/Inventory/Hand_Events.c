@@ -137,6 +137,22 @@ class HandEventBase
 		res = res + " }";
 		return res;
 	}
+	
+	bool ReserveInventory()
+	{
+		InventoryLocation dst = GetDst();
+		if( !m_Player.GetHumanInventory().AddInventoryReservationEx(dst.GetItem(), dst, GameInventory.c_InventoryReservationTimeoutShortMS) )
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	void ClearInventoryReservation()
+	{
+		InventoryLocation dst = GetDst();
+		m_Player.GetHumanInventory().ClearInventoryReservationEx(dst.GetItem(), dst);
+	}
 };
 
 class HandEventTake extends HandEventBase
@@ -169,7 +185,13 @@ class HandEventTake extends HandEventBase
 	{
 		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
 		{
-			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("CANNOT perform", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CanPerformEvent", m_Player.ToString() );
+			}
+			#endif
+			//hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
 			return false;
 		}
 		return true;
@@ -227,7 +249,12 @@ class HandEventMoveTo extends HandEventBase
 	{
 		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
 		{
-			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("CANNOT perform", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CanPerformEvent", m_Player.ToString() );
+			}
+			#endif
 			return false;
 		}
 		return true;
@@ -268,7 +295,12 @@ class HandEventDrop extends HandEventBase
 	{
 		if (false == GameInventory.CheckRequestSrc(m_Player, GetSrc(), GameInventory.c_MaxItemDistanceRadius))
 		{
-			syncDebugPrint("[cheat] HandleInputData man=" + Object.GetDebugName(m_Player) + " failed src1 check with cmd=" + typename.EnumToString(HandEventID, GetEventID()) + " src1=" + InventoryLocation.DumpToStringNullSafe(GetSrc()));
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("Check src - failed, src = " + InventoryLocation.DumpToStringNullSafe(GetSrc()), typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CheckRequestSrc", m_Player.ToString() );
+			}
+			#endif
 			return false; // stale packet
 		}
 		return true;
@@ -283,7 +315,12 @@ class HandEventDrop extends HandEventBase
 	{
 		if (false == GameInventory.LocationCanMoveEntity(GetSrc(), GetDst()))
 		{
-			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("CANNOT perform", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CanPerformEvent", m_Player.ToString() );
+			}
+			#endif
 			return false;
 		}
 		return true;
@@ -431,10 +468,23 @@ class HandEventSwap extends HandEventBase
 	override bool CheckRequest ()
 	{
 		if (!GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius))
-			hndDebugPrint("Warning: HandEventSwap.CheckRequest failed");
-
+		{	
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("CheckSwapItemsRequest - failed", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CheckRequest", m_Player.ToString() );
+			}
+			#endif
+		}
   		else if (!m_Player.GetHumanInventory().CanAddSwappedEntity(m_Src, m_Src2, m_Dst, m_Dst2))
-			hndDebugPrint("Warning: HandEventSwap.CheckRequest test2 failed");
+		{	
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{	
+				Debug.InventoryHFSMLog("CanAddSwappedEntity - failed", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CheckRequest", m_Player.ToString() );
+			}
+			#endif
+		}
 		else
 			return true;
 
@@ -446,7 +496,12 @@ class HandEventSwap extends HandEventBase
 		if (GameInventory.CanForceSwapEntitiesEx(GetSrc().GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2))
 			return true;
 		
-		hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
+		{	
+			Debug.InventoryHFSMLog("CANNOT perform", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CanPerformEvent", m_Player.ToString() );
+		}
+		#endif
 		return false;
 	}
 
@@ -465,6 +520,26 @@ class HandEventSwap extends HandEventBase
 		DayZPlayer player = DayZPlayer.Cast(m_Player);
 		player.ForceStandUpForHeavyItemsSwap( m_Src.GetItem(), m_Src2.GetItem() );
 	}
+	
+	override bool ReserveInventory()
+	{
+		if( !m_Player.GetHumanInventory().AddInventoryReservationEx(m_Dst.GetItem(), m_Dst, GameInventory.c_InventoryReservationTimeoutShortMS) )
+		{
+			return false;
+		}
+		if( !m_Player.GetHumanInventory().AddInventoryReservationEx(m_Dst2.GetItem(), m_Dst2, GameInventory.c_InventoryReservationTimeoutShortMS) )
+		{
+			m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst.GetItem(), m_Dst);
+			return false;
+		}
+		return true;
+	}
+	
+	override void ClearInventoryReservation()
+	{
+		m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst.GetItem(), m_Dst);
+		m_Player.GetHumanInventory().ClearInventoryReservationEx(m_Dst2.GetItem(), m_Dst2);
+	}
 };
 
 class HandEventForceSwap extends HandEventSwap
@@ -478,20 +553,27 @@ class HandEventForceSwap extends HandEventSwap
 		if (GetSrcEntity() && inHands && m_Dst && m_Dst.IsValid())
 		{
 			test1 = GameInventory.CheckSwapItemsRequest(m_Player, m_Src, m_Src2, m_Dst, m_Dst2, GameInventory.c_MaxItemDistanceRadius);
-			if (!test1)
-				hndDebugPrint("Warning: HandEventForceSwap.CheckRequest test1 failed");
+			#ifdef DEVELOPER
+			if ( LogManager.IsInventoryHFSMLogEnable() )
+			{
+				if (!test1)	
+					Debug.InventoryHFSMLog("CheckSwapItemsRequest failed", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CheckRequest", m_Player.ToString() );
+	 		}
+			#endif
 		}
 		return test1;
 	}
 	
 	override bool CanPerformEvent ()
 	{
-		Print("Warning - CanFSwap #5");
 		bool test2 = GameInventory.CanForceSwapEntitiesEx(m_Src.GetItem(), m_Dst, m_Src2.GetItem(), m_Dst2); // null here means 'do not search for dst2' (already have valid one from constructor)
-		if (!test2)
+		#ifdef DEVELOPER
+		if ( LogManager.IsInventoryHFSMLogEnable() )
 		{
-			hndDebugPrint("[desync] HandleInputData man=" + Object.GetDebugName(m_Player) + " CANNOT perform ev=" + DumpToString());
+			if (!test2)	
+				Debug.InventoryHFSMLog("CanForceSwapEntitiesEx failed", typename.EnumToString(HandEventID, GetEventID()) , "n/a", "CanPerformEvent", m_Player.ToString() );
 		}
+		#endif
 		return test2;
 	}
 };

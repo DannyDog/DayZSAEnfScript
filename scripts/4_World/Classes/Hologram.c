@@ -103,7 +103,7 @@ class Hologram
 		}
 		//Print(ProjectionBasedOnParent());
 		
-		if ( !projection_entity.IsInherited(GardenBase) && ItemBase.Cast(projection_entity) ) // Garden plot is a special case
+		if ( /*!projection_entity.IsInherited(GardenBase) &&*/ ItemBase.Cast(projection_entity) ) // Garden plot is a special case
 		{
 			ItemBase.Cast(GetProjectionEntity()).SetIsHologram( true );
 		}

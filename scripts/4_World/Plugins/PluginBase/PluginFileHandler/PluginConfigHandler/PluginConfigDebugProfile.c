@@ -15,13 +15,14 @@ class PluginConfigDebugProfile extends PluginConfigHandler
 	protected const string CHAR_DEBUG_VIS					= "console_character_debug_visible";
 	protected const string CHAR_STOMACH_VIS					= "console_character_stomach_visible";
 	protected const string FREE_CAMERA_CROSSHAIR			= "console_free_camera_crosshair_visible";
+	protected const string VERSION_VIS						= "console_version_visible";
 	protected const string SUB_PARAM_ITEM					= "item";
 	protected const string SUB_PARAM_ITEM_NAME				= "name";
 	protected const string SUB_PARAM_ITEM_HEALTH			= "health";
 	protected const string SUB_PARAM_ITEM_QUANTITY			= "quantity";
 	protected const string LOGS_ENABLED						= "logs_enabled";
 	
-	protected ref map<string, ref CfgParam>			m_DefaultValues;
+	protected ref map<string, ref CfgParam>				m_DefaultValues;
 	protected ref TStringArray 							m_PresetList;	
 	
 	//========================================
@@ -288,6 +289,7 @@ class PluginConfigDebugProfile extends PluginConfigHandler
 		m_DefaultValues.Insert(CHAR_AGENTS_VIS, 		GetNewCfgParamBool(false) );
 		m_DefaultValues.Insert(CHAR_DEBUG_VIS, 			GetNewCfgParamBool(false) );
 		m_DefaultValues.Insert(FREE_CAMERA_CROSSHAIR, 	GetNewCfgParamBool(true) );
+		m_DefaultValues.Insert(VERSION_VIS,				GetNewCfgParamBool(true) );
 	}
 	
 	//========================================
@@ -511,6 +513,19 @@ class PluginConfigDebugProfile extends PluginConfigHandler
 	void SetFreeCameraCrosshairVisible( bool is_visible )
 	{
 		SetBool( FREE_CAMERA_CROSSHAIR, is_visible );
+	}
+	
+	//========================================
+	// VersionVisible
+	//========================================	
+	bool GetVersionVisible()
+	{
+		return GetBool( VERSION_VIS );
+	}
+
+	void SetVersionVisible( bool is_visible )
+	{
+		SetBool( VERSION_VIS, is_visible );
 	}
 	
 	//========================================

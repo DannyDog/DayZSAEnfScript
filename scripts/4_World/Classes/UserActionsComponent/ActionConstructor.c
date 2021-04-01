@@ -53,6 +53,7 @@ class ActionConstructor
 		actions.Insert(ActionPlaceFireplaceIndoor);
 		actions.Insert(ActionPlaceOvenIndoor);
 		actions.Insert(ActionCreateIndoorFireplace);
+		actions.Insert(ActionCreateGreenhouseGardenPlot);
 		actions.Insert(ActionCreateIndoorOven);
 		actions.Insert(ActionAttach);
 		actions.Insert(ActionAttachOnProxy);
@@ -79,6 +80,7 @@ class ActionConstructor
 		actions.Insert(ActionAttachToConstruction);
 		actions.Insert(ActionTakeMaterialToHandsSwitch);
 		actions.Insert(ActionClapBearTrapWithThisItem);
+		actions.Insert(ActionDisarmMine);
 		actions.Insert(ActionPlaceFireplaceIntoBarrel);
 		actions.Insert(ActionStopEngine);
 		actions.Insert(ActionUnfoldMap);
@@ -132,7 +134,8 @@ class ActionConstructor
 		actions.Insert(ActionForceConsume);
 		actions.Insert(ActionForceDrink);
 		actions.Insert(ActionForceFeed);
-		actions.Insert(ActionEat);
+		actions.Insert(ActionForceFeedSmall);
+		actions.Insert(ActionEatBig);
 		actions.Insert(ActionEatMeat);
 		actions.Insert(ActionEatFruit);
 		actions.Insert(ActionDrink);
@@ -165,6 +168,7 @@ class ActionConstructor
 		actions.Insert(ActionSawPlanks);
 		actions.Insert(ActionBuryBody);
 		actions.Insert(ActionEatCan);
+		actions.Insert(ActionEatSmallCan);
 		actions.Insert(ActionForceFeedCan);
 		actions.Insert(ActionForceFeedMeat);
 		actions.Insert(ActionWaterGardenSlot);
@@ -176,6 +180,7 @@ class ActionConstructor
 		actions.Insert(ActionDestroyPart);
 		actions.Insert(ActionCPR);
 		actions.Insert(ActionDrinkPondContinuous);
+		actions.Insert(ActionEat);
 		actions.Insert(ActionEatSmall);
 		actions.Insert(ActionMineTreeBark);
 		actions.Insert(ActionDigWorms);
@@ -230,6 +235,7 @@ class ActionConstructor
 		actions.Insert(ActionRepairCarChassis);
 		actions.Insert(ActionRepairCarEngine);
 		actions.Insert(ActionRepairShelter);
+		actions.Insert(ActionLockAttachment);
 		//actions.Insert(ActionEmptyBarrel);
 		
 		// Interact actions

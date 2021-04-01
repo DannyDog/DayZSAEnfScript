@@ -39,7 +39,7 @@ class cfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.55,10,280,4,10};
 		WeaponLength = 0.635576;
-		barrelArmor = 2.018;
+		barrelArmor = 1.7;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_CZ75_15Rnd"};
@@ -64,7 +64,7 @@ class cfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_cz75";
 			recoilProne = "recoil_cz75_prone";
-			dispersion = 0.0055;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 		};
 		class Particles
@@ -102,6 +102,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 50;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

@@ -25,16 +25,19 @@ class EpinephrineMdfr: ModifierBase
 	{
 		return (LIFETIME - GetAttachedTime()).ToString();
 	}
-
 	
 	override void OnActivate(PlayerBase player)
 	{
 		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		player.GiveShock(100);
+		player.GetStaminaHandler().SetStamina(100);
+		player.GetStaminaHandler().SetDepletionMultiplier(0);
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
 		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		player.GetStaminaHandler().SetDepletionMultiplier(1);
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)
@@ -53,7 +56,7 @@ class EpinephrineMdfr: ModifierBase
 
 	override void OnTick(PlayerBase player, float deltaT)
 	{
-		player.GetStaminaHandler().SetStamina(100);
+		//player.GetStaminaHandler().SetStamina(100);
 	}
 
 	

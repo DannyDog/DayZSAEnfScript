@@ -285,7 +285,7 @@ class WeaponManager
 			}
 			else
 			{
-				m_player.GetInventory().AddInventoryReservation(weapon,ilWeapon,GameInventory.c_InventoryReservationTimeoutMS);
+				m_player.GetInventory().AddInventoryReservationEx(weapon,ilWeapon,GameInventory.c_InventoryReservationTimeoutMS);
 			}	
 		}
 		
@@ -293,12 +293,12 @@ class WeaponManager
 		{
 			if ( m_player.GetInventory().HasInventoryReservation(invLoc.GetItem(),invLoc) )
 			{
-				m_player.GetInventory().ClearInventoryReservation(weapon, ilWeapon);
+				m_player.GetInventory().ClearInventoryReservationEx(weapon, ilWeapon);
 				return false;
 			}
 			else
 			{
-				m_player.GetInventory().AddInventoryReservation(invLoc.GetItem(),invLoc,GameInventory.c_InventoryReservationTimeoutMS);
+				m_player.GetInventory().AddInventoryReservationEx(invLoc.GetItem(),invLoc,GameInventory.c_InventoryReservationTimeoutMS);
 			}
 		}
 		
@@ -308,18 +308,18 @@ class WeaponManager
 			mag.GetInventory().GetCurrentInventoryLocation(m_TargetInventoryLocation);
 			
 			if ( m_player.GetInventory().HasInventoryReservation(mag, m_TargetInventoryLocation) )
-			//if ( !m_player.GetInventory().AddInventoryReservation( mag, m_TargetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS) )
+			//if ( !m_player.GetInventory().AddInventoryReservationEx( mag, m_TargetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS) )
 			{
-				m_player.GetInventory().ClearInventoryReservation(weapon, ilWeapon);
+				m_player.GetInventory().ClearInventoryReservationEx(weapon, ilWeapon);
 				if (invLoc)
 				{
-					m_player.GetInventory().ClearInventoryReservation(invLoc.GetItem(), invLoc);
+					m_player.GetInventory().ClearInventoryReservationEx(invLoc.GetItem(), invLoc);
 				}
 				return false;
 			}
 			else
 			{
-				m_player.GetInventory().AddInventoryReservation(mag, m_TargetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
+				m_player.GetInventory().AddInventoryReservationEx(mag, m_TargetInventoryLocation, GameInventory.c_InventoryReservationTimeoutMS);
 			}
 		}
 		m_PendingTargetMagazine = mag;
@@ -507,16 +507,16 @@ class WeaponManager
 							InventoryLocation ilWeapon = new InventoryLocation;
 							ItemBase weapon = m_player.GetItemInHands();
 							weapon.GetInventory().GetCurrentInventoryLocation(ilWeapon);
-							m_player.GetInventory().ClearInventoryReservation(m_player.GetItemInHands(),ilWeapon);
+							m_player.GetInventory().ClearInventoryReservationEx(m_player.GetItemInHands(),ilWeapon);
 							
 							if( m_PendingTargetMagazine )
 							{
-								m_PendingTargetMagazine.GetInventory().ClearInventoryReservation(m_PendingTargetMagazine, m_TargetInventoryLocation );
+								m_PendingTargetMagazine.GetInventory().ClearInventoryReservationEx(m_PendingTargetMagazine, m_TargetInventoryLocation );
 							}
 							
 							if( m_PendingInventoryLocation )
 							{
-								m_player.GetInventory().ClearInventoryReservation( NULL, m_PendingInventoryLocation );
+								m_player.GetInventory().ClearInventoryReservationEx( NULL, m_PendingInventoryLocation );
 							}
 						}
 						m_PendingWeaponActionAcknowledgmentID = -1;
@@ -573,7 +573,7 @@ class WeaponManager
 					slotID = wpn.GetSlotFromMuzzleIndex(mi);
 					il = new InventoryLocation;
 					il.SetAttachment(wpn,mag,slotID);
-					if( GetGame().AddInventoryJuncture(m_player, mag, il, false, 10000) )
+					if( GetGame().AddInventoryJunctureEx(m_player, mag, il, false, 10000) )
 						accepted = true;
 
 					m_PendingTargetMagazine = mag;
@@ -613,7 +613,7 @@ class WeaponManager
 					if ( !det_mag || ( mag != det_mag) )
 						break;
 					
-					if( GetGame().AddInventoryJuncture(m_player, il.GetItem(), il, true, 10000))
+					if( GetGame().AddInventoryJunctureEx(m_player, il.GetItem(), il, true, 10000))
 						accepted = true;
 					m_PendingInventoryLocation = il;
 					m_PendingTargetMagazine = mag;
@@ -915,16 +915,16 @@ class WeaponManager
 			{
 				InventoryLocation il = new InventoryLocation;
 				il.SetHands(m_player,m_player.GetItemInHands());
-				m_player.GetInventory().ClearInventoryReservation(m_player.GetItemInHands(),il);
+				m_player.GetInventory().ClearInventoryReservationEx(m_player.GetItemInHands(),il);
 						
 				if( m_PendingTargetMagazine )
 				{
-					m_player.GetInventory().ClearInventoryReservation(m_PendingTargetMagazine, m_TargetInventoryLocation );
+					m_player.GetInventory().ClearInventoryReservationEx(m_PendingTargetMagazine, m_TargetInventoryLocation );
 				}
 						
 				if( m_PendingInventoryLocation )
 				{
-					m_player.GetInventory().ClearInventoryReservation( m_PendingInventoryLocation.GetItem(), m_PendingInventoryLocation );
+					m_player.GetInventory().ClearInventoryReservationEx( m_PendingInventoryLocation.GetItem(), m_PendingInventoryLocation );
 				}
 			}
 		}

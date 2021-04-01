@@ -21,6 +21,7 @@ class CombatKnife extends ToolBase
 		AddAction(ActionBurnSewSelf);
 		AddAction(ActionDigWorms);
 		AddAction(ActionShaveTarget);
+		AddAction(ActionDisarmMine);
 		AddAction(ActionShave);
 	}
 }

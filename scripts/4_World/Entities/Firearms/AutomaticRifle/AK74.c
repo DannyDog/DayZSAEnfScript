@@ -22,4 +22,13 @@ class AK74_Base : AKM_Base
 	}
 };
 
-class AK74 : AK74_Base {};
+class AK74 : AK74_Base
+{
+	override bool CanEnterIronsights()
+	{
+		ItemOptics optic = GetAttachedOptics();
+		if (optic && PSO1Optic.Cast(optic) || PSO11Optic.Cast(optic) || KazuarOptic.Cast(optic))
+			return true;
+		return super.CanEnterIronsights();
+	}
+};

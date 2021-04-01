@@ -39,7 +39,7 @@ class CfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.5,10,190,4,10};
 		WeaponLength = 0.541088;
-		barrelArmor = 1.5;
+		barrelArmor = 1.9;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_380"};
@@ -67,7 +67,7 @@ class CfgWeapons
 			reloadTime = 0.125;
 			recoil = "recoil_cz61";
 			recoilProne = "recoil_cz61_prone";
-			dispersion = 0.003;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 		};
 		class FullAuto: Mode_FullAuto
@@ -84,7 +84,7 @@ class CfgWeapons
 			reloadTime = 0.067;
 			recoil = "recoil_cz61";
 			recoilProne = "recoil_cz61_prone";
-			dispersion = 0.003;
+			dispersion = 0.0045;
 			magazineSlot = "magazine";
 		};
 		class Particles
@@ -136,6 +136,11 @@ class CfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 66;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoRifle
 		{

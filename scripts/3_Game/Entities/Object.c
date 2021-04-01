@@ -583,6 +583,16 @@ class Object extends IEntity
 		return false;
 	}
 	
+	bool CanObstruct()
+	{
+		return IsPlainObject() && !IsScenery();
+	}
+	
+	bool CanBeIgnoredByDroppedItem()
+	{
+		return IsBush() || IsTree();
+	}
+	
 	//! Disables icon in the vicinity, useful for large, immovable items, that are not buildings
 	bool DisableVicinityIcon()
 	{
@@ -731,6 +741,16 @@ class Object extends IEntity
 		}
 		return ret;
 	}
+		
+	/**
+  \brief Is this just static object without config? So we can avoid calling unnecessary methods
+	*/
+	proto native bool IsPlainObject();
+		
+	/**
+  \brief Is this Scenery? (handy for excluding terain when it is not needed)
+	*/
+	proto native bool IsScenery();
 	
 	// Damage system
 	/**
@@ -879,11 +899,6 @@ class Object extends IEntity
 	@param index of the component
 	*/
 	proto native owned string GetDamageZoneNameByComponentIndex(int componentIndex);
-	
-	/**
-  \brief Is this just static object without config? So we can avoid calling unnecessary methods
-	*/
-	proto native bool IsPlainObject();
 	
 	/**
   	\brief Returns global health level specified in object's config class parameter healthLevels
@@ -1035,6 +1050,20 @@ class Object extends IEntity
 	bool CanBeRepairedToPristine()
 	{
 		return false;
+	}
+	
+	vector GetCenter()
+	{
+		if ( MemoryPointExists("ce_center") )
+		{
+			//Print("CE_CENTER found");
+			return ModelToWorld( GetMemoryPointPos("ce_center") );
+		}
+		else
+		{
+			//Print("CE_CENTER DOING A BAMBOOZLE => not found");
+			return GetPosition() + Vector(0, 0.2, 0);
+		}
 	}
 	
 	//Debug

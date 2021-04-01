@@ -104,24 +104,6 @@ class CfgVehicles
 		fragility = 0.02;
 		openItemSpillRange[] = {40,70};
 		isMeleeWeapon = 1;
-		class MeleeModes
-		{
-			class Default
-			{
-				ammo = "MeleeBatNails";
-				range = 1.5;
-			};
-			class Heavy
-			{
-				ammo = "MeleeBatNails_Heavy";
-				range = 1.5;
-			};
-			class Sprint
-			{
-				ammo = "MeleeBatNails_Heavy";
-				range = 4.1;
-			};
-		};
 		class DamageSystem
 		{
 			class GlobalHealth
@@ -131,6 +113,24 @@ class CfgVehicles
 					hitpoints = 250;
 					healthLevels[] = {{1.0,{"DZ\weapons\melee\blunt\Data\BaseballBat.rvmat","DZ\weapons\melee\blunt\Data\BaseballBat_View.rvmat"}},{0.7,{"DZ\weapons\melee\blunt\Data\BaseballBat.rvmat","DZ\weapons\melee\blunt\Data\BaseballBat_View.rvmat"}},{0.5,{"DZ\weapons\melee\blunt\Data\BaseballBat_damage.rvmat","DZ\weapons\melee\blunt\Data\BaseballBat_View_damage.rvmat"}},{0.3,{"DZ\weapons\melee\blunt\Data\BaseballBat_damage.rvmat","DZ\weapons\melee\blunt\Data\BaseballBat_View_damage.rvmat"}},{0.0,{"DZ\weapons\melee\blunt\Data\BaseballBat_destruct.rvmat","DZ\weapons\melee\blunt\Data\BaseballBat_View_destruct.rvmat"}}};
 				};
+			};
+		};
+		class MeleeModes
+		{
+			class Default
+			{
+				ammo = "MeleeBatNails";
+				range = 1.0;
+			};
+			class Heavy
+			{
+				ammo = "MeleeBatNails_Heavy";
+				range = 1.0;
+			};
+			class Sprint
+			{
+				ammo = "MeleeBatNails_Heavy";
+				range = 2.8;
 			};
 		};
 		class AnimEvents

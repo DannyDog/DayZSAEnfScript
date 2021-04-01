@@ -164,7 +164,7 @@ class Man extends EntityAI
 		{
 			InventoryLocation il = new InventoryLocation;
 			il.SetHands(this, item);
-			//GetInventory().AddInventoryReservation(item, il ,GameInventory.c_InventoryReservationTimeoutShortMS);
+			//GetInventory().AddInventoryReservationEx(item, il ,GameInventory.c_InventoryReservationTimeoutShortMS);
 		}
 			
 		syncDebugPrint("[inv] " + GetDebugName(this) + " STS=" + GetSimulationTimeStamp() + " ::Take2Hands(" + typename.EnumToString(InventoryMode, mode) + ") item=" + Object.GetDebugName(item));
