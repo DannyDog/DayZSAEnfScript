@@ -33,7 +33,6 @@ class cfgWeapons
 	class Scout_Base: BoltActionRifle_Base
 	{
 		scope = 0;
-		animName = "cz527";
 		weight = 3000;
 		repairableWithKits[] = {1};
 		repairCosts[] = {25.0};

@@ -752,7 +752,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 				array<string> selections = new array<string>();
 				
 				//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-				if ( targetEntity.IsInherited( TentBase ) && TentBase.Cast( targetEntity ).GetState() != 0 )
+				if ( targetEntity.IsInherited( TentBase ) && TentBase.Cast( targetEntity ).GetState() != TentBase.PACKED )
 				{
 					//This is really specific to tents, as they use proxies. Hence object must be used
 					compName = tgObject.GetActionComponentName( m_Target.GetComponentIndex(), "fire" );
@@ -834,18 +834,31 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 					string zone = "";
 					string compName;
 					array<string> selections = new array<string>();
-	
-					//NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-					targetEntity.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
 					
-					for ( int s = 0; s < selections.Count(); s++ )
+					if ( targetEntity.IsInherited( TentBase ) && TentBase.Cast( targetEntity ).GetState() != TentBase.PACKED )
 					{
-						compName = selections[s];
-	
-						if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
+						//This is really specific to tents, as they use proxies. Hence object must be used
+						compName = tgObject.GetActionComponentName( m_Target.GetComponentIndex(), "fire" );
+						
+						if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone ) )
 						{
-							health = targetEntity.GetHealthLevel(zone);
-							break;
+							health = targetEntity.GetHealthLevel(zone);// .hea GetDamageDisplayName( targetEntity, zone );
+						}
+					}
+					else
+					{
+						//NOTE: relevant view geometry and view geometry selection names MUST match in order to get a valid damage zone
+						targetEntity.GetActionComponentNameList( m_Target.GetComponentIndex(), selections, "view" );
+						
+						for ( int s = 0; s < selections.Count(); s++ )
+						{
+							compName = selections[s];
+		
+							if ( DamageSystem.GetDamageZoneFromComponentName( targetEntity , compName, zone))
+							{
+								health = targetEntity.GetHealthLevel(zone);
+								break;
+							}
 						}
 					}
 	

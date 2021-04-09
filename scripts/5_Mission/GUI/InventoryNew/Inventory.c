@@ -476,6 +476,26 @@ class Inventory: LayoutHolder
 				if ( !item.GetInventory().CanRemoveEntity() )
 					return;
 				PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+				
+				bool found = false;
+				
+				InventoryLocation inv_loc = new InventoryLocation;
+				
+				if ( player )
+				{
+					int index = player.GetHumanInventory().FindUserReservedLocationIndex(item);
+					if(index>=0)
+					{
+						player.GetHumanInventory().GetUserReservedLocation( index, inv_loc);
+						if(player.GetInventory().LocationCanAddEntity(inv_loc))
+						{
+							SplitItemUtils.TakeOrSplitToInventoryLocation( player, inv_loc );
+						}
+						return;
+					}
+					
+				}	
+						
 				if ( player && ( player.GetInventory().CanAddAttachment( item ) ) )
 				{
 					float stackable = item.GetTargetQuantityMax(-1);
@@ -562,9 +582,24 @@ class Inventory: LayoutHolder
 			{
 				int slot_id = item.GetInventory().GetSlotId(0);
 				EntityAI slot_item = player.GetInventory().FindAttachment( slot_id );
+				bool found = false;
 				
 				InventoryLocation inv_loc = new InventoryLocation;
-				player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, inv_loc );
+				
+				int index = player.GetHumanInventory().FindUserReservedLocationIndex(item);
+				if(index>=0)
+				{
+					player.GetHumanInventory().GetUserReservedLocation( index, inv_loc);
+					if(player.GetInventory().LocationCanAddEntity(inv_loc))
+					found = true;
+				}
+				
+				if( !found)
+				{
+					player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ANY, inv_loc );
+				}
+				
+				
 				if( inv_loc.IsValid() )
 				{
 					ItemManager.GetInstance().HideDropzones();

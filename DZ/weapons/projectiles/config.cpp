@@ -567,7 +567,7 @@ class CfgAmmo
 		damageBarrelDestroyed = 600.0;
 		weight = 0.005;
 		impactBehaviour = 1;
-		hitAnimation = 1;
+		hitAnimation = 0;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -611,7 +611,7 @@ class CfgAmmo
 		damageBarrel = 600.0;
 		damageBarrelDestroyed = 600.0;
 		weight = 0.028;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class SoundSetsGroundHits
 		{
@@ -813,7 +813,7 @@ class CfgAmmo
 		damageBarrel = 250;
 		damageBarrelDestroyed = 250;
 		weight = 0.004;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -823,7 +823,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.9,1.0}};
 			class Health
 			{
-				damage = 100;
+				damage = 90;
 			};
 			class Blood
 			{
@@ -864,7 +864,7 @@ class CfgAmmo
 		damageBarrel = 214.28572;
 		damageBarrelDestroyed = 214.28572;
 		weight = 0.00343;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -1029,7 +1029,7 @@ class CfgAmmo
 		damageBarrel = 500;
 		damageBarrelDestroyed = 500;
 		weight = 0.008;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -1085,7 +1085,7 @@ class CfgAmmo
 		damageBarrel = 187.5;
 		damageBarrelDestroyed = 187.5;
 		weight = 0.0149;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -1130,7 +1130,7 @@ class CfgAmmo
 		damageBarrel = 187.5;
 		damageBarrelDestroyed = 187.5;
 		weight = 0.0102;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -1177,8 +1177,8 @@ class CfgAmmo
 		damageBarrel = 166.66667;
 		damageBarrelDestroyed = 166.66667;
 		weight = 0.0084;
-		impactBehaviour = 1;
-		hitAnimation = 1;
+		impactBehaviour = 0;
+		hitAnimation = 0;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1224,7 +1224,7 @@ class CfgAmmo
 		damageBarrel = 150;
 		damageBarrelDestroyed = 150;
 		weight = 0.006;
-		hitAnimation = 1;
+		hitAnimation = 0;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1318,7 +1318,7 @@ class CfgAmmo
 		weight = 0.0168;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{
@@ -1366,7 +1366,7 @@ class CfgAmmo
 		weight = 0.0168;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 1;
 		class DamageApplied
 		{

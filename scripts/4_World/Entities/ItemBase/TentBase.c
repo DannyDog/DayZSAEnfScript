@@ -17,8 +17,8 @@ class TentBase extends ItemBase
 	const int OPENING_14 = 16384;
 	const int OPENING_15 = 32768;
 	
-	protected const int PACKED 	= 0;
-	protected const int PITCHED = 1;
+	static const int PACKED 	= 0;
+	static const int PITCHED 	= 1;
 	const float MAX_PLACEMENT_HEIGHT_DIFF = 1.5;
 	
 	//bool m_DamageSystemStarted = false;
@@ -243,17 +243,27 @@ class TentBase extends ItemBase
 		if ( zone == "" && GetState() == PITCHED && newLevel == GameConstants.STATE_RUINED && GetGame().IsServer() )
 			MiscGameplayFunctions.DropAllItemsInInventoryInBounds(this, m_HalfExtents);
 		
-		if ( zone != "Body" && zone != "Inventory" && zone != "" && newLevel == GameConstants.STATE_RUINED )
+		if ( zone != "Body" && zone != "Inventory" && zone != "" )
 		{
-			array<string> selections = new array<string>;
-			DamageSystem.GetComponentNamesFromDamageZone(this,zone,selections);
-			for( int j = 0; j < selections.Count(); j++ )
+			if (newLevel == GameConstants.STATE_RUINED)
 			{
-				if (selections.Get(j) != "")
+				array<string> selections = new array<string>;
+				DamageSystem.GetComponentNamesFromDamageZone(this,zone,selections);
+				for( int j = 0; j < selections.Count(); j++ )
 				{
-					RemoveProxyPhysics( selections.Get(j) ); //To keep
-					//HideSelection( selections.Get(j) ); //To change
-					AnimateCamonetByOpeningSelection(selections.Get(j)); //To keep
+					if (selections.Get(j) != "")
+					{
+						RemoveProxyPhysics( selections.Get(j) ); //To keep
+						//HideSelection( selections.Get(j) ); //To change
+						AnimateCamonetByOpeningSelection(selections.Get(j)); //To keep
+					}
+				}
+			}
+			else if (oldLevel == GameConstants.STATE_RUINED)
+			{
+				if (GetState() == PITCHED)
+				{
+					Pitch( true );
 				}
 			}
 		}

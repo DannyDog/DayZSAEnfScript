@@ -125,18 +125,18 @@ class PlantBase extends ItemBase
 		if ( !super.OnStoreLoad( ctx, version ) )
 			return false;
 		
-		Print("Plant - OnStoreLoad - ");
+		//Print("Plant - OnStoreLoad - ");
 		
 		GardenBase garden = GardenBase.Cast( GetHierarchyParent() );
-		Print(garden);
+		//Print(garden);
 		
 		int slot_index = -1;
 		ctx.Read( slot_index );
 		
-		Print(slot_index);
+		//Print(slot_index);
 		
 		Slot slot = garden.GetSlotByIndex(slot_index);
-		Print(slot);
+		//Print(slot);
 		
 		SetSlot(slot);
 

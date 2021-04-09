@@ -148,18 +148,6 @@ class MainMenu extends UIScriptedMenu
 				m_ScenePC.CharacterRotationStart();
 			return true;
 		}
-		else if ( w == m_Play )
-		{
-			m_LastFocusedButton = m_Play;
-			Play();
-			return true;
-		}
-		else if ( w == m_ChooseServer )
-		{
-			m_LastFocusedButton = m_ChooseServer;
-			OpenMenuServerBrowser();
-			return true;
-		}
 		
 		return false;
 	}
@@ -173,9 +161,9 @@ class MainMenu extends UIScriptedMenu
 	
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
-		if( button == MouseState.LEFT )
+		if ( button == MouseState.LEFT )
 		{
-			if( w == m_Play )
+			if ( w == m_Play )
 			{
 				m_LastFocusedButton = m_Play;
 				Play();

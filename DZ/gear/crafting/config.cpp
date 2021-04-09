@@ -570,17 +570,17 @@ class CfgVehicles
 		{
 			class Default
 			{
-				ammo = "MeleeWrench";
+				ammo = "MeleeBluntStick";
 				range = 1.2;
 			};
 			class Heavy
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleeBluntStick_Heavy";
 				range = 1.2;
 			};
 			class Sprint
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleeBluntStick_Heavy";
 				range = 3.3;
 			};
 		};
@@ -619,17 +619,17 @@ class CfgVehicles
 		{
 			class Default
 			{
-				ammo = "MeleeWrench";
+				ammo = "MeleeBluntStick";
 				range = 1.2;
 			};
 			class Heavy
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleeBluntStick_Heavy";
 				range = 1.2;
 			};
 			class Sprint
 			{
-				ammo = "MeleeWrench_Heavy";
+				ammo = "MeleeBluntStick_Heavy";
 				range = 3.3;
 			};
 		};

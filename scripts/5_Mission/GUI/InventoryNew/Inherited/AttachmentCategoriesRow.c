@@ -459,14 +459,18 @@ class AttachmentCategoriesRow: ClosableContainer
 		if( m_FocusedRow < m_Ics.Count() )
 		{
 			SlotsIcon icon = GetFocusedIcon();
-			icon.GetCursorWidget().Show( true );
 			EntityAI focused_item = GetFocusedItem();
+			float x, y;
+			icon.GetCursorWidget().GetScreenPos( x, y );
 			if( focused_item )
 			{
-				float x, y;
-				icon.GetCursorWidget().GetScreenPos( x, y );
 				ItemManager.GetInstance().PrepareTooltip( focused_item, x, y );
 			}
+			else
+			{
+				ItemManager.GetInstance().PrepareSlotsTooltip( icon.GetSlotDisplayName(), icon.GetSlotDesc(), x, y );
+			}
+			icon.GetCursorWidget().Show( true );
 		}
 	}
 	

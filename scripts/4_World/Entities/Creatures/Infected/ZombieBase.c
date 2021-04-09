@@ -3,7 +3,7 @@ class ZombieBase extends DayZInfected
 	const float TARGET_CONE_ANGLE_CHASE = 20;
 	const float TARGET_CONE_ANGLE_FIGHT = 30;
 	
-	const float	SHOCK_TO_STUN_MULTIPLIER = 2;
+	const float	SHOCK_TO_STUN_MULTIPLIER = 2.82;
 
 	//! server / singleplayer properties
 	protected int m_StanceVariation = 0;

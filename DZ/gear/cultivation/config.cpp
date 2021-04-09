@@ -810,6 +810,57 @@ class CfgVehicles
 			class slotCovered_08: slotHidden{};
 			class slotCovered_09: slotHidden{};
 		};
+		class DamageSystem
+		{
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
+		};
 		class GUIInventoryAttachmentsProps
 		{
 			class Filling
@@ -873,6 +924,57 @@ class CfgVehicles
 			class slotCovered_11: slotHidden{};
 			class slotCovered_12: slotHidden{};
 			class slotCovered_13: slotHidden{};
+		};
+		class DamageSystem
+		{
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
 		};
 		class GUIInventoryAttachmentsProps
 		{
@@ -947,6 +1049,57 @@ class CfgVehicles
 				source = "user";
 				animPeriod = 0.01;
 				initPhase = 0;
+			};
+		};
+		class DamageSystem
+		{
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
 			};
 		};
 	};

@@ -15,6 +15,9 @@ enum EConnectErrorClient
 
 	DLC_CHECK_FAILED,			// Client does not have required DLC
 	EMPTY_PASSWORD,				// Player input an empty password
+	
+	PASSWORD,					// Server is password protected
+	BE_LICENCE,					// Server is using BE and it has not yet been agreed to
 };
 
 class ConnectErrorClientModule : ErrorHandlerModuleScript
@@ -48,6 +51,9 @@ class ConnectErrorClientModule : ErrorHandlerModuleScript
 		
 		InsertDialogueErrorProperties(EConnectErrorClient.DLC_CHECK_FAILED,			"#mod_detail_info_warning");
 		InsertDialogueErrorProperties(EConnectErrorClient.EMPTY_PASSWORD,			"#STR_empty_password");
+		
+		InsertErrorProperties(EConnectErrorClient.PASSWORD);
+		InsertErrorProperties(EConnectErrorClient.BE_LICENCE);
 	}
 	
 	override void OnEvent(EventType eventTypeId, Param params)

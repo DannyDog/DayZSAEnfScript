@@ -752,7 +752,7 @@ class Icon: LayoutHolder
 				return;
 			}
 		}
-		else if( cmenu.Count() == 1 )
+		else if( cmenu.Count() >= 1 )
 		{
 			if( !color_test )
 			{
@@ -782,10 +782,10 @@ class Icon: LayoutHolder
 				ColorManager.GetInstance().SetColor( w, ColorManager.RED_COLOR );
 				ItemManager.GetInstance().ShowSourceDropzone( entity2 );
 			}
-			else
+		/*	else
 			{
 				cmenu.Show( m_am_Pos_x, m_am_Pos_y );
-			}
+			}*/
 		}
 		
 		
@@ -908,16 +908,16 @@ class Icon: LayoutHolder
 			OnPerformRecipe( id );
 			return true;
 		}
-		else if( cmenu.Count() == 1 )
+		else /*if( cmenu.Count() == 1 )*/
 		{
 			OnPerformCombination( current_flag );
 			return true;
 		}
-		else
+		/*else
 		{
 			cmenu.Show( m_am_Pos_x, m_am_Pos_y );
 			return true;
-		}
+		}*/
 	}
 
 	void MouseClick( Widget w, int x, int y, int button )

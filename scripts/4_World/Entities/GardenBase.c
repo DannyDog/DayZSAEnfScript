@@ -557,11 +557,11 @@ class GardenBase extends ItemBase //BuildingSuper
 			// Set dry material for garden lime
 			if ( slot.GetFertilityType() == "GardenLime" )
 			{
-				SetObjectMaterial ( slot_index + slot_index_offset, SLOT_MATERIAL_LIMED_DRY ); 
+				SetObjectMaterial( slot_index + slot_index_offset, SLOT_MATERIAL_LIMED_DRY ); 
 			}
 			else if ( slot.GetFertilityType() == "PlantMaterial" )
 			{
-				SetObjectMaterial ( slot_index + slot_index_offset, SLOT_MATERIAL_COMPOST_DRY ); 
+				SetObjectMaterial( slot_index + slot_index_offset, SLOT_MATERIAL_COMPOST_DRY ); 
 			}
 		}
 		else
@@ -569,11 +569,11 @@ class GardenBase extends ItemBase //BuildingSuper
 			// Set dry material for compost
 			if ( slot.GetFertilityType() == "GardenLime" )
 			{
-				SetObjectMaterial ( slot_index + slot_index_offset, SLOT_MATERIAL_LIMED_WET ); 
+				SetObjectMaterial( slot_index + slot_index_offset, SLOT_MATERIAL_LIMED_WET ); 
 			}
 			else if ( slot.GetFertilityType() == "PlantMaterial" )
 			{
-				SetObjectMaterial ( slot_index + slot_index_offset, SLOT_MATERIAL_COMPOST_WET );
+				SetObjectMaterial( slot_index + slot_index_offset, SLOT_MATERIAL_COMPOST_WET );
 			}
 		}
 	}

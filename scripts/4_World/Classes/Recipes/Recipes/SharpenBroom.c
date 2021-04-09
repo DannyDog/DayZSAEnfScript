@@ -25,7 +25,7 @@ class SharpenBroom extends RecipeBase
 		m_IngredientAddHealth[0] = 0;
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
 		m_IngredientAddQuantity[0] = -1;
-		m_IngredientDestroy[0] = 0;
+		m_IngredientDestroy[0] = 1;
 		m_IngredientUseSoftSkills[1] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		//ingredient 2

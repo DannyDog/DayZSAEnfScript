@@ -16,7 +16,6 @@ class ItemManager
  	protected int						m_HandsDefaultOpenState;
 	protected ref Timer					m_ToolTipTimer;
 	protected ref Timer					m_TooltipSlotTimer;
-	protected ref Timer					m_TooltipcategoryTimer;
 
 	protected EntityAI					m_SelectedItem;
 	protected Container					m_SelectedContainer;
@@ -352,16 +351,6 @@ class ItemManager
 		
 	}
 	
-	void HideTooltipCategory()
-	{
-		if ( m_SlotInfoShown )
-		{
-			m_TooltipSlotWidget.Show( false );
-			m_SlotInfoShown = false;
-			delete m_TooltipSlotTimer;
-		}
-	}
-	
 	static int GetItemHealthColor( EntityAI item, string zone = "" )
 	{
 		if( item )
@@ -466,6 +455,8 @@ class ItemManager
 
 		if ( item.IsInherited( InventoryItem ) )
 		{
+			HideTooltip();
+			
 			m_HoveredItem = item;
 			InspectMenuNew.UpdateItemInfo( m_TooltipWidget, item );
 			
@@ -515,9 +506,12 @@ class ItemManager
 	
 	void PrepareSlotsTooltip( string name, string desc, int x = 0, int y = 0 )
 	{
-		m_SlotInfoShown = true;
 		InspectMenuNew.UpdateSlotInfo( m_TooltipSlotWidget, name, desc );
+		
+		HideTooltip();
 			
+		m_SlotInfoShown = true;
+		
 		#ifndef PLATFORM_CONSOLE
 		int screen_w, screen_h;
 		float w, h;

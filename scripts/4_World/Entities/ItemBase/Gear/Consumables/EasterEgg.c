@@ -32,6 +32,7 @@ class EasterEgg : Inventory_Base
 	protected int 					m_CaptureSoundHash; //Used to find capture sound set in map
 	protected int 					m_ReleaseSoundHash; //Used to find release sound set in map
 	
+	
 	void EasterEgg()
 	{
 		m_CreatureType = "";
@@ -66,8 +67,8 @@ class EasterEgg : Inventory_Base
 			{
 				if ( GetGame().IsServer() )
 					Capture( capAnimal );
-				PlayVFX();
-				PlaySFX();
+				//PlayVFX();
+				//PlaySFX();
 			}
 			else
 				m_CaptureState = eCaptureState.STASIS; //We did not capture anything, go back to stasis
@@ -84,8 +85,8 @@ class EasterEgg : Inventory_Base
 			//Creates slight delay but saves network traffic
 			if ( m_CreatureHash != 0 )
 			{
-				PlayVFX();
-				PlaySFX();
+				//PlayVFX();
+				//PlaySFX();
 				
 				//Make sure to go back in stasis
 				m_CaptureState = eCaptureState.STASIS;
@@ -151,6 +152,14 @@ class EasterEgg : Inventory_Base
 	// ------------------------------
 	private void Capture( DayZCreatureAI capAnimal )
 	{
+		if ( !IsAlive() )
+		{
+			if ( m_ParCapture )
+				m_ParCapture.Delete();
+			Delete();
+			return;
+		}
+		
 		m_StoredCreature = capAnimal;
 		m_CreatureType = m_StoredCreature.GetType();
 		m_CreatureHash = m_CreatureType.Hash();
@@ -255,6 +264,15 @@ class EasterEgg : Inventory_Base
 		}
 	}
 	
+	
+	override void OnVariablesSynchronized()
+	{
+		if ( m_CaptureState == eCaptureState.CAPTUREFX )
+		{
+			PlayVFX();
+			PlaySFX();
+		}
+	}
 	
 	// ------------------------------
 	// SOUNDSET MAP REGISTRATION

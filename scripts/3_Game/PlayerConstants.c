@@ -138,13 +138,13 @@ class PlayerConstants
 	static const float SHOCK_DAMAGE_BLOOD_THRESHOLD_LOW		= 2500; 	// the closer we get to this value, the higher the over time shock damage we deal
 	
 	static const float SHOCK_DAMAGE_HIGH					= 5.5; 		// shock damage per second when the blood is near the upper blood threshold
-	static const float SHOCK_DAMAGE_LOW						= 6.25; 		// shock damage per second when the blood is near the lower blood threshold
+	static const float SHOCK_DAMAGE_LOW						= 6.25; 	// shock damage per second when the blood is near the lower blood threshold
 	
-	static const float SHOCK_REFILL_COOLDOWN_AFTER_HIT 		= 15; 		// duration of cooldown during which shock regeneration is paused
+	static const float SHOCK_REFILL_COOLDOWN_AFTER_HIT 		= 1000; 	// duration of cooldown (ms) during which shock regeneration is paused
 	
 	static const float UNCONSCIOUS_IN_WATER_TIME_LIMIT_TO_DEATH	= 20;	// how long can player survive while unconscious when in water in secs 
 	//----------------------------------------------------------
-	static const float BLEEDING_SOURCE_BLOODLOSS_PER_SEC 	= -24; 		// amount of blood loss per second from one bleeding source 
+	static const float BLEEDING_SOURCE_BLOODLOSS_PER_SEC 	= -20; 		// amount of blood loss per second from one bleeding source 
 	static const float BLEEDING_SOURCE_FLOW_MODIFIER_MEDIUM = 0.6; 		// modifier of the bloodloss given by BLEEDING_SOURCE_BLOODLOSS_PER_SEC, multiplying these two will give the resulting bloodloss
 	static const float BLEEDING_SOURCE_FLOW_MODIFIER_LOW	= 0.1; 		// modifier of the bloodloss given by BLEEDING_SOURCE_BLOODLOSS_PER_SEC, multiplying these two will give the resulting bloodloss
 	static const int BLEEDING_SOURCE_DURATION_NORMAL = 300; 			// in seconds, how long will bleeding source exist until disapearing

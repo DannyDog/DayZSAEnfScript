@@ -90,12 +90,12 @@ enum EClientKicked
 	PBO_CLIENT_UPDATED,			// Client has a more recent version
 	PBO_SERVER_UPDATED,			// Server has a more recent version
 	
-	// AuthError Kicks (0x0100)
-	AUTH_ERROR = 144,						// Generic Auth error (fallback)
+	// AuthError Kicks (0x00A0)
+	AUTH_ERROR = 160,						// Generic Auth error (fallback)
 	AUTH_NO_USER,							// The user was not found
 	
-	// Steam Validate (0x0100)
-	AUTH_INVALID_STEAM_VALIDATE = 160,		// Unknown error (API update needed?)
+	// Steam Validate (0x00B0)
+	AUTH_INVALID_STEAM_VALIDATE = 176,		// Unknown error (API update needed?)
 	AUTH_NO_SERVER,							// Server not initialized properly
 	AUTH_INVALID_TICKET,					// Ticket is not valid.
 	AUTH_DUPLICATE_REQUEST,					// A ticket has already been submitted for this steamID
@@ -103,8 +103,8 @@ enum EClientKicked
 	AUTH_GAME_MISMATCH,						// Ticket is not for this game
 	AUTH_EXPIRED_TICKET,					// Ticket has expired
 	
-	// Steam OnValidate (0x0110)
-	AUTH_INVALID_STEAM_ONVALIDATE = 176,	// Unknown error (API update needed?)
+	// Steam OnValidate (0x00C0)
+	AUTH_INVALID_STEAM_ONVALIDATE = 192,	// Unknown error (API update needed?)
 	AUTH_USER_NOT_CONNECTED,				// The user in question is not connected to steam
 	AUTH_LICENCE,							// The license has expired.
 	AUTH_SERVICE_BAN,						// The user is VAC banned for this game.
@@ -115,20 +115,20 @@ enum EClientKicked
 	AUTH_TICKET_INVALID,					// This ticket is not from a user instance currently connected to steam.
 	AUTH_PUBLISHER_BAN,						// The user is banned for this game.
 	
-	// Bios Validate (0x0120)
-	AUTH_INVALID_BIOS_VALIDATE = 192,		// Unknown error (API update needed?)
+	// Bios Validate (0x00D0)
+	AUTH_INVALID_BIOS_VALIDATE = 208,		// Unknown error (API update needed?)
 	AUTH_BIOS_REQUEST_CREATE,				// Failed to create the request to identify user.
 	AUTH_BIOS_REQUEST_SEND,					// Failed to send request
 	AUTH_BIOS_REQUEST_WAIT,					// Failed to receive response
 	AUTH_UNKNOWN_BIOS_VALIDATE,				// Unknown error
 	
-	// Bios OnValidate (0x0130)
-	AUTH_INVALID_BIOS_ONVALIDATE = 208,		// Unknown error (API update needed?)
+	// Bios OnValidate (0x00E0)
+	AUTH_INVALID_BIOS_ONVALIDATE = 224,		// Unknown error (API update needed?)
 	AUTH_BIOS_WRONG_RESPONSE,				// Response has unexpected format
 	AUTH_UNKNOWN_BIOS_ONVALIDATE,			// Unknown error
 
-	// BattlEye Kicks (0x0140)
-	BATTLEYE = 224,				// Kick administred by BattlEye (Can also be Admin Kick)
+	// BattlEye Kicks (0x00F0)
+	BATTLEYE = 240,				// Kick administred by BattlEye (Can also be Admin Kick)
 };
 
 #ifdef PLATFORM_WINDOWS
