@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,10,280,4,10};
 		WeaponLength = 0.560518;
 		barrelArmor = 4.5;
+		initSpeedMultiplier = 1;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_IJ70_8Rnd"};
@@ -94,6 +95,11 @@ class cfgWeapons
 					overridePoint = "Nabojnicestart";
 				};
 			};
+		};
+		class NoiseShoot
+		{
+			strength = 50;
+			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol
 		{

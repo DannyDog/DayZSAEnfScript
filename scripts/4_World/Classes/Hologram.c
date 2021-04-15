@@ -1158,7 +1158,8 @@ class Hologram
 		//inheritance comparison
 		if( !GetProjectionEntity().IsKindOf( m_Parent.GetType() ))
 		{
-			Class.CastTo(entity_for_placing, GetGame().CreateObjectEx( m_Projection.GetType(), m_Projection.GetPosition(), ECE_PLACE_ON_SURFACE ));
+			//Class.CastTo(entity_for_placing, GetGame().CreateObjectEx( m_Projection.GetType(), m_Projection.GetPosition(), ECE_PLACE_ON_SURFACE ));
+			Class.CastTo(entity_for_placing, GetGame().CreateObjectEx( m_Projection.GetType(), m_Projection.GetPosition(), ECE_OBJECT_SWAP )); //garden plot
 		}
 		
 		return entity_for_placing;

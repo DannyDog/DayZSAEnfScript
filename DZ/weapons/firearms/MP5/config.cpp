@@ -41,6 +41,7 @@ class cfgWeapons
 		ironsightsExcludingOptics[] = {"M4_CarryHandleOptic","BUISOptic","M68Optic","M4_T3NRDSOptic","ReflexOptic"};
 		WeaponLength = 0.583269;
 		barrelArmor = 1.25;
+		initSpeedMultiplier = 1.05;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_9x19"};

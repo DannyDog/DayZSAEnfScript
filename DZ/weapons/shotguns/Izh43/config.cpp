@@ -45,6 +45,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,10,175,4,10};
 		WeaponLength = 0.95;
 		barrelArmor = 1.333;
+		initSpeedMultiplier = 1.25;
 		ejectType = 3;
 		reloadSkips[] = {0.48,0.81};
 		drySound[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_dry",0.005623413,1};
@@ -193,7 +194,7 @@ class cfgWeapons
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
 			barrelArmor = 1.333;
-			initSpeedMultiplier = 1.0;
+			initSpeedMultiplier = 1.25;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";
 			irLaserEnd = "laser dir";
@@ -229,6 +230,7 @@ class cfgWeapons
 		weight = 3100;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.2,2.2,1.2};
+		initSpeedMultiplier = 0.9;
 		hiddenSelectionsTextures[] = {"dz\weapons\shotguns\Izh43\data\izh43_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\shotguns\Izh43\data\izh43.rvmat"};
 		class DamageSystem
@@ -294,7 +296,7 @@ class cfgWeapons
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_12gaPellets","Ammo_12gaSlug","Ammo_12gaRubberSlug","Mag_12gaSnaploader_2Rnd"};
 			barrelArmor = 1.333;
-			initSpeedMultiplier = 1.0;
+			initSpeedMultiplier = 0.9;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";
 			irLaserEnd = "laser dir";

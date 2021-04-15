@@ -39,17 +39,15 @@ class DialogueErrorProperties : ErrorProperties
 	protected int m_DialogButtonType;
 	protected int m_DefaultButton;
 	protected int m_DialogMeaningType;
-	protected int m_MenuId;
 	protected UIScriptedMenu m_Handler;
 	protected bool m_DisplayAdditionalInfo;
 	
-	void DialogueErrorProperties(string message, string serverMessage, string header, int menuId = -1, UIScriptedMenu handler = null, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
+	void DialogueErrorProperties(string message, string serverMessage, string header, UIScriptedMenu handler = null, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
 		m_Header = header;
 		m_DialogButtonType = dialogButtonType;
 		m_DefaultButton = defaultButton;
 		m_DialogMeaningType = dialogMeaningType;
-		m_MenuId = menuId;
 		m_Handler = handler;
 		m_DisplayAdditionalInfo = displayAdditionalInfo;
 	}
@@ -67,13 +65,12 @@ class DialogueErrorProperties : ErrorProperties
 		
 		GetGame().GetUIManager().ShowDialog(
 			string.Format(EP_HEADER_FORMAT_STRING, m_Header, ErrorModuleHandler.GetErrorHex(errorCode)),
-			message, m_MenuId, m_DialogButtonType, m_DefaultButton, m_DialogMeaningType, m_Handler);
+			message, errorCode, m_DialogButtonType, m_DefaultButton, m_DialogMeaningType, m_Handler);
 	}
 	
 	string GetHeader() { return m_Message; }
 	int GetDialogButtonType() { return m_DialogButtonType; }
 	int GetDefaultButton() { return m_DefaultButton; }
 	int GetDialogMeaningType() { return m_DialogMeaningType; }
-	int GetMenuId() { return m_MenuId; }
 	UIScriptedMenu GetHandler() { return m_Handler; }
 }

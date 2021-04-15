@@ -81,10 +81,6 @@ const int MENU_LOGIN_TIME							= 38;
 const int MENU_WARNING_ITEMDROP						= 39;
 const int MENU_RESPAWN_DIALOGUE						= 40;
 
-const int MENU_CONNECT_ERROR_SCRIPT					= 41;
-const int MENU_CONNECT_ERROR_CLIENT					= 42;
-const int MENU_CONNECT_ERROR_SERVER					= 43;
-
 const int GUI_WINDOW_MISSION_LOADER = 1;
 
 const string CFG_VEHICLESPATH = "CfgVehicles";

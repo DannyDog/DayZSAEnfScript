@@ -42,6 +42,7 @@ class cfgWeapons
 		WeaponLength = 0.931718;
 		barrelArmor = 3.125;
 		winchesterTypeOpticsMount = 1;
+		initSpeedMultiplier = 1.15;
 		chamberSize = 5;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer"};

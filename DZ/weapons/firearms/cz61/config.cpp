@@ -45,6 +45,7 @@ class CfgWeapons
 		chamberableFrom[] = {"Ammo_380"};
 		magazines[] = {"Mag_CZ61_20Rnd"};
 		magazineSwitchTime = 0.3;
+		initSpeedMultiplier = 1.15;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1.1,1.1,1};

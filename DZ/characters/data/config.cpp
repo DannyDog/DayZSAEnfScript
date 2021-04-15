@@ -630,7 +630,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 150;
+						hitpoints = 125;
 						transferToGlobalCoef = 0.25;
 					};
 					class Blood
@@ -649,7 +649,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 1;
+								damage = 1.2;
 							};
 							class Blood
 							{
@@ -674,7 +674,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						hitpoints = 150;
+						hitpoints = 125;
 						transferToGlobalCoef = 0.1;
 					};
 					class Blood
@@ -693,7 +693,7 @@ class CfgVehicles
 						{
 							class Health
 							{
-								damage = 1;
+								damage = 1.2;
 							};
 							class Blood
 							{

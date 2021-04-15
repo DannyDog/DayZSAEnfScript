@@ -42,7 +42,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		WeaponLength = 1.1;
 		barrelArmor = 0.54;
-		initSpeedMultiplier = 1.5;
+		initSpeedMultiplier = 1.25;
 		chamberSize = 7;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_357"};

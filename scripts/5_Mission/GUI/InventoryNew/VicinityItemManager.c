@@ -301,8 +301,11 @@ class VicinityItemManager
 		{
 			if ( filtered_objects.Count() > 10 )
 			{
+				vector rayStart;
+				MiscGameplayFunctions.GetHeadBonePos( PlayerBase.Cast( GetGame().GetPlayer() ), rayStart);
+				
 				array<Object> filteredObjects = new array<Object>;
-				MiscGameplayFunctions.FilterObstructedObjectsByGrouping( player.GetPosition(), VICINITY_CONE_DISTANCE, 0.3, filtered_objects, obstructingObjects, filteredObjects, true, true, VICINITY_CONE_REACH_DISTANCE);
+				MiscGameplayFunctions.FilterObstructedObjectsByGrouping( rayStart, VICINITY_CONE_DISTANCE, 0.3, filtered_objects, obstructingObjects, filteredObjects, true, true, VICINITY_CONE_REACH_DISTANCE);
 				
 				for ( int n = 0; n < filteredObjects.Count(); ++n )
 					AddVicinityItems( filteredObjects[n] );

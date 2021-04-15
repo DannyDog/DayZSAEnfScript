@@ -44,6 +44,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,10,140,4,10};
 		WeaponLength = 1.03525;
 		barrelArmor = 2.25;
+		initSpeedMultiplier = 1.25;
 		ejectType = 0;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.3,2.3,1.2};

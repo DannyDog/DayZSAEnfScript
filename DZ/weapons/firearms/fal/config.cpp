@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,20,170,4,10};
 		WeaponLength = 0.752228;
 		barrelArmor = 2.2;
+		initSpeedMultiplier = 0.9;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer"};

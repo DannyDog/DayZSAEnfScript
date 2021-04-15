@@ -42,6 +42,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		WeaponLength = 0.981055;
 		barrelArmor = 1.875;
+		initSpeedMultiplier = 1.05;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Ammo_762x39Tracer"};
@@ -149,6 +150,7 @@ class cfgWeapons
 		swayModifier[] = {1.5,1.5,1};
 		firespreadangle = 3;
 		WeaponLength = 0.41;
+		initSpeedMultiplier = 0.75;
 		class Single: Mode_SemiAuto
 		{
 			soundSetShot[] = {"IZH18_Shot_SoundSet","IZH18_Tail_SoundSet","IZH18_InteriorTail_SoundSet"};

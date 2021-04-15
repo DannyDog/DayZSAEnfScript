@@ -39,7 +39,8 @@ class cfgWeapons
 		repairCosts[] = {25.0};
 		PPDOFProperties[] = {1,0.55,10,280,4,10};
 		WeaponLength = 0.635576;
-		barrelArmor = 1.7;
+		barrelArmor = 2;
+		initSpeedMultiplier = 1;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_CZ75_15Rnd"};

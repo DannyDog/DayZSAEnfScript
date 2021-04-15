@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.9,10,250,4,10};
 		WeaponLength = 0.634148;
 		barrelArmor = 1.523;
+		initSpeedMultiplier = 1;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_1911_7Rnd"};

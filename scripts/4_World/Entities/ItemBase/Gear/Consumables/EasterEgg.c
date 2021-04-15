@@ -4,6 +4,7 @@ enum eCaptureState
 	RELEASE = 1,
 	STASIS = 2,
 	CAPTUREFX = 3,
+	RELEASEFX = 4,
 	
 	//Keep this last value at the end, add any new states before
 	END
@@ -63,12 +64,10 @@ class EasterEgg : Inventory_Base
 		{
 			case eCaptureState.CAPTURE:
 			DayZCreatureAI capAnimal = DayZCreatureAI.Cast( other );
-			if ( capAnimal  && capAnimal.IsAlive() )
+			if ( capAnimal && capAnimal.IsAlive() )
 			{
 				if ( GetGame().IsServer() )
 					Capture( capAnimal );
-				//PlayVFX();
-				//PlaySFX();
 			}
 			else
 				m_CaptureState = eCaptureState.STASIS; //We did not capture anything, go back to stasis
@@ -81,13 +80,11 @@ class EasterEgg : Inventory_Base
 		break;
 			
 			case eCaptureState.CAPTUREFX:
+			case eCaptureState.RELEASEFX:
 			//Intermediate state to play FX on next client side contact event
 			//Creates slight delay but saves network traffic
 			if ( m_CreatureHash != 0 )
 			{
-				//PlayVFX();
-				//PlaySFX();
-				
 				//Make sure to go back in stasis
 				m_CaptureState = eCaptureState.STASIS;
 				SetSynchDirty();
@@ -182,7 +179,7 @@ class EasterEgg : Inventory_Base
 	{
 		if ( GetGame().IsServer() )
 		{
-			m_CaptureState = eCaptureState.STASIS;
+			m_CaptureState = eCaptureState.RELEASEFX;
 			m_CreatureHash = 0;
 			SetSynchDirty();
 			
@@ -271,6 +268,11 @@ class EasterEgg : Inventory_Base
 		{
 			PlayVFX();
 			PlaySFX();
+		}
+		else if ( m_CaptureState == eCaptureState.RELEASEFX )
+		{
+			PlayVFX();
+			PlaySFX( eCaptureState.RELEASE );
 		}
 	}
 	

@@ -40,7 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,10,250,4,10};
 		ironsightsExcludingOptics[] = {"FNP45_MRDSOptic"};
 		WeaponLength = 0.634148;
-		barrelArmor = 3.125;
+		barrelArmor = 0.75;
 		chamberSize = 1;
 		chamberedRound = "";
 		magazines[] = {"Mag_FNX45_15Rnd"};

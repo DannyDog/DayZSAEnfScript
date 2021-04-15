@@ -19,7 +19,6 @@ class ConnectErrorScriptModule : ErrorHandlerModuleScript
 		super.InitOptionalVariables();
 		
 		m_Header = "#server_browser_connecting_failed";
-		m_MenuId = MENU_CONNECT_ERROR_SCRIPT;
 		m_UIHandler = new ConnectErrorScriptModuleUI;
 	}
 	
@@ -27,7 +26,7 @@ class ConnectErrorScriptModule : ErrorHandlerModuleScript
 	{
 		super.FillErrorDataMap();
 		
-		InsertDialogueErrorProperties(EConnectErrorScript.ALREADY_CONNECTING, 		"#STR_script_already_connecting", DBT_YESNO, DBB_NO);
+		InsertDialogueErrorProperties(EConnectErrorScript.ALREADY_CONNECTING, 		"#STR_script_already_connecting", DBT_YESNOCANCEL, DBB_NO);
 		InsertDialogueErrorProperties(EConnectErrorScript.ALREADY_CONNECTING_THIS, 	"#STR_script_already_connecting_this");
 	}
 	
@@ -36,7 +35,7 @@ class ConnectErrorScriptModule : ErrorHandlerModuleScript
 		switch (eventTypeId)
 		{
 			case MPSessionPlayerReadyEventTypeID:
-				g_Game.GetUIManager().CloseSpecificDialog(m_MenuId);
+				g_Game.GetUIManager().CloseSpecificDialog(m_LastErrorThrown);
 				break;
 			
 			default:
@@ -55,13 +54,24 @@ class ConnectErrorScriptModuleUI : UIScriptedMenu
 		switch ( error )
 		{
 			case EConnectErrorScript.ALREADY_CONNECTING:
-				if (result == DBB_YES)
-				{
-					g_Game.DisconnectSessionForce();
-					g_Game.DisconnectSessionScript();
-					OnlineServices.LoadMPPrivilege();
-				}
+			{
+					switch ( result )
+					{
+						case DBB_YES:
+							g_Game.DisconnectSessionForce();
+							g_Game.DisconnectSessionScript();
+							OnlineServices.LoadMPPrivilege();
+							break;
+						case DBB_CANCEL:
+							g_Game.DisconnectSessionForce();
+							g_Game.DisconnectSessionScript();
+							break;
+					
+						default:
+							break;
+					}
 				break;
+			}				
 			
 			default:
 				break;

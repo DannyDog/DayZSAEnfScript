@@ -47,8 +47,8 @@ class ErrorHandlerModuleScript : ErrorHandlerModule
 	
 	protected string m_Header = ""; //!< \p Optional: Header (e.g. The header of a Dialogue box)
 	protected string m_Prefix = ""; //!< \p Optional: Prefix (e.g. Fixed text at the start of the messages in the module)
-	protected int m_MenuId = -1; //!< \p Optional: The ID for the menus belonging to this module	
 	protected ref UIScriptedMenu m_UIHandler = null; //!< \p Optional: The UI the handler might generally use	
+	protected int m_LastErrorThrown = 0; //!< Holds the last thrown error in this module, defaults to 0
 	
 	/**
 		\brief \p Map containing the codes that exist for the ErrorHandlerModule
@@ -134,6 +134,8 @@ class ErrorHandlerModuleScript : ErrorHandlerModule
 	{
 		super.OnErrorThrown(errorCode, additionalInfo);
 		
+		m_LastErrorThrown = errorCode;
+		
 		ErrorProperties properties = GetProperties(errorCode);
 			
 		if ( properties )
@@ -152,31 +154,31 @@ class ErrorHandlerModuleScript : ErrorHandlerModule
 	//! Insert an error with Dialogue as handling, using the Optional Variables
 	void InsertDialogueErrorProperties(int code, string message, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
-		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), message, m_Header, m_MenuId, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), message, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
 	//! Insert an error with Dialogue as handling with custom header
 	void InsertHeaderDialogueErrorProperties(int code, string message, string header, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
-		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), message, header, m_MenuId, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), message, header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
 	//! Insert an error with Dialogue as handling with custom prefix
 	void InsertPrefixDialogueErrorProperties(int code, string message, string prefix, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
-		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", prefix, message), message, m_Header, m_MenuId, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", prefix, message), message, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
 	//! Insert an error with Dialogue as handling with extended prefix
 	void InsertExtendedPrefixDialogueErrorProperties(int code, string message, string prefix, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
-		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2%3", m_Prefix, prefix, message), message, m_Header, m_MenuId, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2%3", m_Prefix, prefix, message), message, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
 	//! Insert an error with Dialogue as handling with separate server message
 	void InsertSplitDialogueErrorProperties(int code, string message, string serverMessage, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{
-		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), serverMessage, m_Header, m_MenuId, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2", m_Prefix, message), serverMessage, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
 	//! Insert an error with no handling

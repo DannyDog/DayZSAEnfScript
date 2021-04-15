@@ -42,7 +42,6 @@ class ConnectErrorServerModule : ErrorHandlerModuleScript
 		super.InitOptionalVariables();
 		
 		m_Header = "#server_browser_connecting_failed";
-		m_MenuId = MENU_CONNECT_ERROR_SERVER;
 	}
 	
 	override void FillErrorDataMap()
@@ -81,7 +80,7 @@ class ConnectErrorServerModule : ErrorHandlerModuleScript
 		switch (eventTypeId)
 		{
 			case MPSessionPlayerReadyEventTypeID:
-				g_Game.GetUIManager().CloseSpecificDialog(m_MenuId);
+				g_Game.GetUIManager().CloseSpecificDialog(m_LastErrorThrown);
 				break;
 			
 			default:

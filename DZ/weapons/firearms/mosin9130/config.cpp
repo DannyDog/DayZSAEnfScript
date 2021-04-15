@@ -44,6 +44,7 @@ class cfgWeapons
 		DisplayMagazine = 0;
 		WeaponLength = 1.22271;
 		barrelArmor = 2.0;
+		initSpeedMultiplier = 1.05;
 		chamberSize = 5;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x54","Ammo_762x54Tracer","Mag_CLIP762x54_5Rnd"};
@@ -151,6 +152,7 @@ class cfgWeapons
 		repairableWithKits[] = {1};
 		repairCosts[] = {25.0};
 		WeaponLength = 0.52;
+		initSpeedMultiplier = 0.75;
 		chamberSize = 5;
 		chamberedRound = "";
 		magazines[] = {};

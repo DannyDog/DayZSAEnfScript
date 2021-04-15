@@ -206,7 +206,7 @@ class SymptomBase
 		{
 			OnUpdateClient(m_Player, deltatime);
 		}
-		if( GetGame().IsServer() && !GetGame().IsMultiplayer() )
+		if( GetGame().IsServer() && !GetGame().IsMultiplayer() && !GetGame().IsMissionMainMenu() )
 		{
 			OnUpdateClient(m_Player, deltatime);
 		}

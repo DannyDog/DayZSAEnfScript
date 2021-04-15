@@ -1013,7 +1013,7 @@ class MiscGameplayFunctions
 			{
 				Object obj = vicinityObjects[i];
 				if ( obj && !CanIgnoreDistanceCheck( obj ) && vector.DistanceSq(origin, obj.GetPosition()) > maxDist * maxDist )
-					vicinityObjects.Remove(j);
+					vicinityObjects.Remove(i);
 			}
 		}
 

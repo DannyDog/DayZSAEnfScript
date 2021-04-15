@@ -40,6 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.56;
 		barrelArmor = 2.743;
+		initSpeedMultiplier = 1;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_545x39","Ammo_545x39Tracer"};
@@ -216,6 +217,7 @@ class cfgWeapons
 		itemSize[] = {6,3};
 		PPDOFProperties[] = {1,0.5,50,175,4,10};
 		WeaponLength = 0.476735;
+		initSpeedMultiplier = 0.8;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1.8,1.8,1};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK74\data\aks74u_co.paa"};

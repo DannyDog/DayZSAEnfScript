@@ -45,7 +45,7 @@ class cfgWeapons
 		ironsightsExcludingOptics[] = {"HuntingOptic"};
 		WeaponLength = 0.934214;
 		barrelArmor = 1.111;
-		initSpeedMultiplier = 1.5;
+		initSpeedMultiplier = 1.15;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_556x45","Ammo_556x45Tracer"};

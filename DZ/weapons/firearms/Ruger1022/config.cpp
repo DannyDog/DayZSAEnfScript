@@ -40,7 +40,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 1.18986;
 		barrelArmor = 2.019;
-		initSpeedMultiplier = 1.25;
+		initSpeedMultiplier = 1.15;
 		winchesterTypeOpticsMount = 1;
 		chamberSize = 1;
 		chamberedRound = "";

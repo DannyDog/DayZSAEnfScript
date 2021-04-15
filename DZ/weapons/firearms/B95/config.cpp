@@ -48,6 +48,7 @@ class cfgWeapons
 		PPDOFProperties[] = {1,0.5,50,160,4,10};
 		WeaponLength = 0.85;
 		barrelArmor = 1.6;
+		initSpeedMultiplier = 1.05;
 		muzzles[] = {"this","SecondMuzzle"};
 		ejectType = 3;
 		recoilModifier[] = {1,1,1};
@@ -84,7 +85,7 @@ class cfgWeapons
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_308Win","Ammo_308WinTracer","Mag_308WinSnaploader_2Rnd"};
 			barrelArmor = 1.6;
-			initSpeedMultiplier = 1.0;
+			initSpeedMultiplier = 1.05;
 			irDistance = 0.0;
 			irLaserPos = "laser pos";
 			irLaserEnd = "laser dir";

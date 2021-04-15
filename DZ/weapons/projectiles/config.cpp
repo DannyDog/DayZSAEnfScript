@@ -556,8 +556,8 @@ class CfgAmmo
 		hitBlood = -200;
 		hitHealth = -200;
 		bleedChance = 2;
-		initSpeed = 370;
-		typicalSpeed = 370;
+		initSpeed = 340;
+		typicalSpeed = 420;
 		airFriction = -0.00575;
 		caliber = 0.5;
 		deflecting = 0;
@@ -566,7 +566,7 @@ class CfgAmmo
 		damageBarrel = 600.0;
 		damageBarrelDestroyed = 600.0;
 		weight = 0.005;
-		impactBehaviour = 1;
+		impactBehaviour = 0;
 		hitAnimation = 0;
 		class DamageApplied
 		{
@@ -576,7 +576,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.9,1.0}};
 			class Health
 			{
-				damage = 25;
+				damage = 35;
 			};
 			class Blood
 			{
@@ -584,7 +584,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 25;
+				damage = 35;
 			};
 		};
 		class NoiseHit
@@ -603,9 +603,9 @@ class CfgAmmo
 		hit = 11;
 		indirectHit = 0;
 		indirectHitRange = 0;
-		initSpeed = 420;
+		initSpeed = 340;
 		typicalSpeed = 420;
-		airFriction = -0.005;
+		airFriction = -0.003;
 		caliber = 1;
 		deflecting = 0;
 		damageBarrel = 600.0;
@@ -690,7 +690,6 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{1.0,1.0}};
 			class Health
 			{
 				damage = 110;
@@ -718,9 +717,9 @@ class CfgAmmo
 		casing = "FxCartridge_12RubberSlug";
 		round = "FxRound_12RubberSlug";
 		spawnPileType = "Ammo_12gaRubberSlug";
-		initSpeed = 260;
-		typicalSpeed = 260;
-		airFriction = -0.01;
+		initSpeed = 60;
+		typicalSpeed = 80;
+		airFriction = -0.02;
 		caliber = 0.1;
 		deflecting = 30;
 		damageBarrel = 480.0;
@@ -801,9 +800,9 @@ class CfgAmmo
 		hit = 8;
 		indirectHit = 0;
 		indirectHitRange = 0;
-		initSpeed = 910;
-		typicalSpeed = 910;
-		airFriction = -0.00095;
+		initSpeed = 850;
+		typicalSpeed = 1000;
+		airFriction = -0.00125;
 		caliber = 1.0;
 		deflecting = 10;
 		tracerScale = 1;
@@ -820,10 +819,10 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.9,1.0}};
+			defaultDamageOverride[] = {{0.87,1.0}};
 			class Health
 			{
-				damage = 90;
+				damage = 100;
 			};
 			class Blood
 			{
@@ -856,7 +855,7 @@ class CfgAmmo
 		casing = "FxCartridge_556";
 		round = "FxRound_556";
 		hit = 7.2;
-		airFriction = -0.00165;
+		airFriction = -0.00125;
 		typicalSpeed = 880;
 		initSpeed = 880;
 		caliber = 0.9;
@@ -871,10 +870,9 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 75;
+				damage = 80;
 			};
 			class Blood
 			{
@@ -882,7 +880,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 85;
+				damage = 90;
 			};
 		};
 		class NoiseHit
@@ -910,10 +908,10 @@ class CfgAmmo
 		indirectHit = 0;
 		indirectHitRange = 0;
 		airLock = 1;
-		initSpeed = 790;
-		typicalSpeed = 790;
-		airFriction = -0.0007;
-		caliber = 1.2;
+		initSpeed = 785;
+		typicalSpeed = 865;
+		airFriction = -0.0001;
+		caliber = 1;
 		deflecting = 10;
 		damageBarrel = 500;
 		damageBarrelDestroyed = 500;
@@ -925,7 +923,7 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.95,1.0}};
+			defaultDamageOverride[] = {{0.94,1.0}};
 			class Health
 			{
 				damage = 170;
@@ -936,7 +934,8 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 190;
+				damage = 170;
+				damageOverride[] = {{0.86,1.0}};
 			};
 		};
 		class NoiseHit
@@ -964,16 +963,16 @@ class CfgAmmo
 		indirectHit = 0;
 		indirectHitRange = 0;
 		airLock = 1;
-		typicalSpeed = 810;
+		initSpeed = 770;
+		typicalSpeed = 940;
 		tracerScale = 1.2;
 		tracerStartTime = -1;
 		tracerEndTime = 1;
 		airFriction = -0.00045;
-		caliber = 1.2;
+		caliber = 1;
 		deflecting = 10;
 		damageBarrel = 500;
 		damageBarrelDestroyed = 500;
-		initSpeed = 810;
 		weight = 0.01;
 		impactBehaviour = 1;
 		hitAnimation = 1;
@@ -1021,9 +1020,9 @@ class CfgAmmo
 		indirectHit = 0;
 		indirectHitRange = 0;
 		airLock = 1;
-		initSpeed = 740;
+		initSpeed = 640;
 		typicalSpeed = 740;
-		airFriction = -0.00135;
+		airFriction = -0.0015;
 		caliber = 1.0;
 		deflecting = 10;
 		damageBarrel = 500;
@@ -1039,7 +1038,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 100;
+				damage = 110;
 			};
 			class Blood
 			{
@@ -1077,9 +1076,9 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.8;
 		deflecting = 30;
-		initSpeed = 290;
+		initSpeed = 260;
 		typicalSpeed = 290;
-		airFriction = -0.00195;
+		airFriction = -0.001;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		damageBarrel = 187.5;
@@ -1092,10 +1091,9 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 35;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -1103,7 +1101,8 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 45;
+				damage = 40;
+				damageOverride[] = {{0.9,1.0}};
 			};
 		};
 		class NoiseHit
@@ -1124,8 +1123,8 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.9;
 		deflecting = 30;
-		airFriction = -0.0014;
-		typicalSpeed = 380;
+		airFriction = -0.0015;
+		typicalSpeed = 520;
 		initSpeed = 380;
 		damageBarrel = 187.5;
 		damageBarrelDestroyed = 187.5;
@@ -1137,10 +1136,10 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.9,1.0}};
+			defaultDamageOverride[] = {{0.85,1.0}};
 			class Health
 			{
-				damage = 55;
+				damage = 65;
 			};
 			class Blood
 			{
@@ -1148,7 +1147,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 75;
+				damage = 90;
 			};
 		};
 		class NoiseHit
@@ -1169,9 +1168,9 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.8;
 		deflecting = 30;
-		initSpeed = 360;
-		typicalSpeed = 360;
-		airFriction = -0.001;
+		initSpeed = 350;
+		typicalSpeed = 380;
+		airFriction = -0.0018;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		damageBarrel = 166.66667;
@@ -1184,10 +1183,10 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.9,1.0}};
+			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 35;
+				damage = 40;
 			};
 			class Blood
 			{
@@ -1195,7 +1194,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 35;
+				damage = 40;
 			};
 		};
 		class NoiseHit
@@ -1216,9 +1215,9 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.8;
 		deflecting = 30;
-		initSpeed = 340;
-		typicalSpeed = 340;
-		airFriction = -0.0025;
+		initSpeed = 300;
+		typicalSpeed = 345;
+		airFriction = -0.0015;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		damageBarrel = 150;
@@ -1230,10 +1229,9 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 30;
+				damage = 35;
 			};
 			class Blood
 			{
@@ -1241,7 +1239,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 30;
+				damage = 35;
 			};
 		};
 		class NoiseHit
@@ -1264,9 +1262,9 @@ class CfgAmmo
 		tracerEndTime = 1;
 		deflecting = 30;
 		caliber = 0.7;
-		airFriction = -0.005;
-		typicalSpeed = 340;
-		initSpeed = 340;
+		airFriction = -0.0025;
+		typicalSpeed = 440;
+		initSpeed = 370;
 		damageBarrel = 115.38461;
 		damageBarrelDestroyed = 115.38461;
 		weight = 0.0025;
@@ -1278,7 +1276,7 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.95,1.0}};
+			defaultDamageOverride[] = {{0.7,1.0}};
 			class Health
 			{
 				damage = 20;
@@ -1311,11 +1309,11 @@ class CfgAmmo
 		caliber = 1.2;
 		deflecting = 15;
 		typicalSpeed = 320;
-		airFriction = -0.00055;
+		airFriction = -0.0015;
 		initSpeed = 320;
 		damageBarrel = 250;
 		damageBarrelDestroyed = 250;
-		weight = 0.0168;
+		weight = 0.018;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		impactBehaviour = 0;
@@ -1325,10 +1323,10 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.9,1.0}};
+			defaultDamageOverride[] = {{0.95,1.0}};
 			class Health
 			{
-				damage = 70;
+				damage = 75;
 				armorDamage = 3;
 			};
 			class Blood
@@ -1337,7 +1335,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 70;
+				damage = 75;
 			};
 		};
 		class NoiseHit
@@ -1358,12 +1356,12 @@ class CfgAmmo
 		tracerScale = 1;
 		caliber = 0.9;
 		deflecting = 20;
-		typicalSpeed = 320;
-		airFriction = -0.00055;
-		initSpeed = 320;
+		typicalSpeed = 280;
+		airFriction = -0.0015;
+		initSpeed = 280;
 		damageBarrel = 250;
 		damageBarrelDestroyed = 250;
-		weight = 0.0168;
+		weight = 0.017;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		impactBehaviour = 0;
@@ -1373,10 +1371,9 @@ class CfgAmmo
 			type = "Projectile";
 			dispersion = 0.0;
 			bleedThreshold = 1.0;
-			defaultDamageOverride[] = {{0.9,1.0}};
 			class Health
 			{
-				damage = 70;
+				damage = 75;
 			};
 			class Blood
 			{
@@ -1384,7 +1381,8 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 70;
+				damage = 75;
+				damageOverride[] = {{0.9,1.0}};
 			};
 		};
 		class NoiseHit

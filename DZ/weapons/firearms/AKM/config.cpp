@@ -41,6 +41,7 @@ class cfgWeapons
 		ironsightsExcludingOptics[] = {"KashtanOptic","GrozaOptic","KobraOptic"};
 		WeaponLength = 0.829067;
 		barrelArmor = 4.444;
+		initSpeedMultiplier = 0.9;
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_762x39","Ammo_762x39Tracer"};

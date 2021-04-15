@@ -12,6 +12,7 @@ class BloodLoss extends SymptomBase
 		m_DestroyOnAnimFinish = true;
 		m_IsPersistent = false;
 		m_SyncToClient = true;
+		m_BloodSet = -1;
 	}
 	
 	//!gets called every frame
@@ -21,13 +22,11 @@ class BloodLoss extends SymptomBase
 
 	override void OnUpdateClient(PlayerBase player, float deltatime)
 	{
-		if( player.GetTransferValues() && player.GetTransferValues().GetBlood() != m_BloodSet ) 
+		if( player.IsPlayerSelected() && player.GetTransferValues() && player.GetTransferValues().GetBlood() != m_BloodSet ) 
 		{
-				m_BloodSet = player.GetTransferValues().GetBlood();
-				PPEffects.SetBloodSaturation(m_BloodSet);
+			m_BloodSet = player.GetTransferValues().GetBlood();
+			PPEffects.SetBloodSaturation(m_BloodSet);	
 		}
-		
-		
 	}
 	
 	//!gets called once on an Symptom which is being activated
