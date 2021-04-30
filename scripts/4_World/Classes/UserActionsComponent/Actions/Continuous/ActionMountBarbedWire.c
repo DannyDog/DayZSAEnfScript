@@ -65,7 +65,28 @@ class ActionMountBarbedWire: ActionContinuousBase
 		
 		//mount and refresh parent
 		barbed_wire.SetMountedState( true );
-		base_building.SetHealth(m_SlotName,"Health",barbed_wire.GetHealth("","Health")); //attachment slot names and damagezone names must match
+		
+		//solution for DamageSystem's case sensitivity
+		string zone = "invalid";
+		array<string> zones = new array<string>;
+		zones.Copy(base_building.GetEntityDamageZoneMap().GetKeyArray());
+		
+		string tmp = "";
+		string test = "";
+		for (int i = 0; i < zones.Count(); i++)
+		{
+			tmp = zones.Get(i);
+			test = tmp;
+			test.ToLower();
+			
+			if (test == m_SlotName)
+			{
+				zone = tmp;
+				break;
+			}
+		}
+		
+		base_building.SetHealth01(zone,"Health",barbed_wire.GetHealth01("","Health")); //attachment slot names and damagezone names must match
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}

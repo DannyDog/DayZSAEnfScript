@@ -4,6 +4,10 @@
  **/
 class BoltActionRifle_Base extends Weapon_Base
 {
+	override float GetChanceToJam()
+	{
+		return 0.0;
+	}
 };
 
 

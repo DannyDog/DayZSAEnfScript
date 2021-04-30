@@ -603,9 +603,9 @@ class CfgAmmo
 		hit = 11;
 		indirectHit = 0;
 		indirectHitRange = 0;
-		initSpeed = 340;
+		initSpeed = 380;
 		typicalSpeed = 420;
-		airFriction = -0.003;
+		airFriction = -0.005;
 		caliber = 1;
 		deflecting = 0;
 		damageBarrel = 600.0;
@@ -803,7 +803,7 @@ class CfgAmmo
 		initSpeed = 850;
 		typicalSpeed = 1000;
 		airFriction = -0.00125;
-		caliber = 1.0;
+		caliber = 1.2;
 		deflecting = 10;
 		tracerScale = 1;
 		tracerStartTime = -1;
@@ -822,7 +822,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.87,1.0}};
 			class Health
 			{
-				damage = 100;
+				damage = 110;
 			};
 			class Blood
 			{
@@ -830,7 +830,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 100;
+				damage = 110;
 			};
 		};
 		class NoiseHit
@@ -910,7 +910,7 @@ class CfgAmmo
 		airLock = 1;
 		initSpeed = 785;
 		typicalSpeed = 865;
-		airFriction = -0.0001;
+		airFriction = -0.001;
 		caliber = 1;
 		deflecting = 10;
 		damageBarrel = 500;
@@ -926,7 +926,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.94,1.0}};
 			class Health
 			{
-				damage = 170;
+				damage = 150;
 			};
 			class Blood
 			{
@@ -934,7 +934,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 170;
+				damage = 150;
 				damageOverride[] = {{0.86,1.0}};
 			};
 		};
@@ -968,7 +968,7 @@ class CfgAmmo
 		tracerScale = 1.2;
 		tracerStartTime = -1;
 		tracerEndTime = 1;
-		airFriction = -0.00045;
+		airFriction = -0.001;
 		caliber = 1;
 		deflecting = 10;
 		damageBarrel = 500;
@@ -984,7 +984,7 @@ class CfgAmmo
 			defaultDamageOverride[] = {{0.9,1.0}};
 			class Health
 			{
-				damage = 170;
+				damage = 150;
 			};
 			class Blood
 			{
@@ -992,7 +992,7 @@ class CfgAmmo
 			};
 			class Shock
 			{
-				damage = 170;
+				damage = 150;
 			};
 		};
 		class NoiseHit
@@ -1047,6 +1047,7 @@ class CfgAmmo
 			class Shock
 			{
 				damage = 110;
+				damageOverride[] = {{0.8,1.0}};
 			};
 		};
 		class NoiseHit
@@ -1121,11 +1122,11 @@ class CfgAmmo
 		indirectHit = 0;
 		indirectHitRange = 0;
 		tracerScale = 1;
-		caliber = 0.9;
+		caliber = 1;
 		deflecting = 30;
-		airFriction = -0.0015;
+		airFriction = -0.0025;
 		typicalSpeed = 520;
-		initSpeed = 380;
+		initSpeed = 440;
 		damageBarrel = 187.5;
 		damageBarrelDestroyed = 187.5;
 		weight = 0.0102;
@@ -1170,7 +1171,7 @@ class CfgAmmo
 		deflecting = 30;
 		initSpeed = 350;
 		typicalSpeed = 380;
-		airFriction = -0.0018;
+		airFriction = -0.0023;
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
 		damageBarrel = 166.66667;

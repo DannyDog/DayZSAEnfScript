@@ -230,7 +230,7 @@ class cfgWeapons
 		weight = 3100;
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {2.2,2.2,1.2};
-		initSpeedMultiplier = 0.9;
+		initSpeedMultiplier = 1.25;
 		hiddenSelectionsTextures[] = {"dz\weapons\shotguns\Izh43\data\izh43_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\shotguns\Izh43\data\izh43.rvmat"};
 		class DamageSystem
@@ -258,6 +258,7 @@ class cfgWeapons
 		recoilModifier[] = {2,2,1};
 		swayModifier[] = {1,5,1,5,1};
 		WeaponLength = 0.42;
+		initSpeedMultiplier = 0.9;
 		hiddenSelectionsTextures[] = {"dz\weapons\shotguns\Izh43\data\izh43_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\shotguns\Izh43\data\izh43.rvmat"};
 		class DamageSystem

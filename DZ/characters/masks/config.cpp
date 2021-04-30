@@ -830,7 +830,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 250;
-					healthLevels[] = {{1.0,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\CrookedNose_co.rvmat"}},{0.7,{"DZ\characters\masks\data\Surgical_mask.rvmat","DZ\characters\masks\data\CrookedNose_co.rvmat"}},{0.5,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\CrookedNose_co_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\Surgical_mask_damage.rvmat","DZ\characters\masks\data\CrookedNose_co_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\Surgical_mask_destruct.rvmat","DZ\characters\masks\data\CrookedNose_co_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\characters\masks\data\CrookedNose.rvmat"}},{0.7,{"DZ\characters\masks\data\CrookedNose.rvmat"}},{0.5,{"DZ\characters\masks\data\CrookedNose_damage.rvmat"}},{0.3,{"DZ\characters\masks\data\CrookedNose_damage.rvmat"}},{0.0,{"DZ\characters\masks\data\CrookedNose_destruct.rvmat"}}};
 				};
 			};
 		};

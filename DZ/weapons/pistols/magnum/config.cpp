@@ -90,7 +90,7 @@ class cfgWeapons
 			magazines[] = {};
 			chamberableFrom[] = {"Ammo_357"};
 			barrelArmor = 1.758;
-			initSpeedMultiplier = 1.0;
+			initSpeedMultiplier = 0.9;
 			drySound[] = {"DZ\sounds\weapons\firearms\magnum\Magnum_dry",0.5,1,20};
 			soundBullet[] = {};
 			class Single: Mode_SemiAuto

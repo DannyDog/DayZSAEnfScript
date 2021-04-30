@@ -718,7 +718,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 500;
-					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\cooking_pot.rvmat"}},{0.7,{"DZ\gear\cooking\data\cooking_pot.rvmat"}},{0.5,{"DZ\gear\cooking\data\cooking_pot_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\cooking_pot_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\cooking_pot_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\gear\cooking\data\cauldron.rvmat"}},{0.7,{"DZ\gear\cooking\data\cauldron.rvmat"}},{0.5,{"DZ\gear\cooking\data\cauldron_damage.rvmat"}},{0.3,{"DZ\gear\cooking\data\cauldron_damage.rvmat"}},{0.0,{"DZ\gear\cooking\data\cauldron_destruct.rvmat"}}};
 				};
 			};
 		};

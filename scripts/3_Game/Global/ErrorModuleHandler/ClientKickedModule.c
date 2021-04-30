@@ -183,14 +183,14 @@ class ClientKickedModule : ErrorHandlerModuleScript
 		InsertDialogueErrorProperties(EClientKicked.KICK,								"");
 		InsertDialogueErrorProperties(EClientKicked.BAN,								"#STR_MP_BANNED_CLIENT");
 		InsertDialogueErrorProperties(EClientKicked.PING,								"#STR_MP_MAX_PING");
-		InsertDialogueErrorProperties(EClientKicked.MODIFIED_DATA,						"#STR_modified_data" + VERIFY);
+		InsertSplitDialogueErrorProperties(EClientKicked.MODIFIED_DATA,					"#STR_modified_data" + VERIFY, "#STR_modified_data");
 		InsertSplitDialogueErrorProperties(EClientKicked.UNSTABLE_NETWORK,				"#STR_unstable_network_client", "#STR_unstable_network_server");
 		InsertDialogueErrorProperties(EClientKicked.SERVER_SHUTDOWN,					"#STR_server_shutdown");
 
 		InsertDialogueErrorProperties(EClientKicked.NOT_WHITELISTED,					"#multi_server_not_whitelisted_message");
 		InsertDialogueErrorProperties(EClientKicked.NO_IDENTITY,						"#STR_no_identity");
 		InsertDialogueErrorProperties(EClientKicked.INVALID_UID,						"#STR_invalid_UID");
-		InsertDialogueErrorProperties(EClientKicked.BANK_COUNT,							"#STR_bank_count" + VERIFY);
+		InsertSplitDialogueErrorProperties(EClientKicked.BANK_COUNT,					"#STR_bank_count" + VERIFY, "#STR_bank_count");
 		InsertDialogueErrorProperties(EClientKicked.ADMIN_KICK,							"#STR_admin_kick");
 		InsertDialogueErrorProperties(EClientKicked.INVALID_ID,							"#STR_invalid_ID");
 
@@ -235,20 +235,20 @@ class ClientKickedModule : ErrorHandlerModuleScript
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VERIFICATION_ERROR,			"#server_browser_error_unknown", VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UNKNOWN,					"#server_browser_error_unknown", VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_DECOMPRESS,				"#STR_ve_decompress", VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_MISSING_MOD,				"#STR_ve_missing_mod" + MODS, VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_EXTRA_MOD,					"#STR_ve_extra_mod" + MODS, VE_PREFIX);
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.VE_MISSING_MOD,			"#STR_ve_missing_mod" + MODS, VE_PREFIX, "#STR_ve_missing_mod");
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.VE_EXTRA_MOD,			"#STR_ve_extra_mod" + MODS, VE_PREFIX, "#STR_ve_extra_mod");
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_CLIENT_CORRUPT,			"#STR_ve_client_corrupt" + VERIFY, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_SERVER_CORRUPT,			"#STR_ve_server_corrupt", VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UNEXPECTED_MOD_PBO,		"#STR_ve_unexpected_mod_pbo0"+"\n"+"#STR_ve_unexpected_mod_pbo1"+"\n"+"#STR_ve_unexpected_mod_pbo2"+"\n"+"#STR_ve_unexpected_mod_pbo3"+"\n", VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UM_ROGUE_PBO,				"#STR_ve_unexpected_mod_pbo0"+"\n"+"#STR_ve_unexpected_mod_pbo1"+"\n"+"#STR_ve_unexpected_mod_pbo2"+"\n"+"#STR_ve_unexpected_mod_pbo3"+"\n", VE_PREFIX);
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.VE_UNEXPECTED_MOD_PBO,	"#STR_ve_unexpected_mod_pbo0"+"\n"+"#STR_ve_unexpected_mod_pbo1"+"\n"+"#STR_ve_unexpected_mod_pbo2"+"\n"+"#STR_ve_unexpected_mod_pbo3"+"\n", VE_PREFIX, "#STR_ve_unexpected_mod_pbo0");
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.VE_UM_ROGUE_PBO,			"#STR_ve_unexpected_mod_pbo0"+"\n"+"#STR_ve_unexpected_mod_pbo1"+"\n"+"#STR_ve_unexpected_mod_pbo2"+"\n"+"#STR_ve_unexpected_mod_pbo3"+"\n", VE_PREFIX, "#STR_ve_unexpected_mod_pbo0");
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UM_CLIENT_UPDATED,			"#STR_ve_um_client_updated" + SERVER_MUST_UPDATE, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UM_SERVER_UPDATED,			"#STR_ve_um_server_updated" + CLIENT_MUST_UPDATE, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_UNEXPECTED_SOURCE,			"#STR_ve_unexpected_source", VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_PATCHED_PBO,				"#STR_ve_patched_pbo" + VERIFY, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_INTEGRITY,					"#STR_ve_integrity" + VERIFY, VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_MISSING_BISIGN,			"#STR_ve_missing_bising" + VERIFY, VE_PREFIX);
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.VE_MISSING_BISIGN,		"#STR_ve_missing_bising" + VERIFY, VE_PREFIX, "#STR_ve_missing_bising");
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_MISSING_PBO,				"#STR_ve_missing_pbo", VE_PREFIX);
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_ROGUE_PBO,				"#STR_ve_m_rogue_pbo0"+"\n"+"STR_ve_m_rogue_pbo1", VE_PREFIX);
+		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_ROGUE_PBO,				"#STR_ve_m_rogue_pbo0"+"\n"+"#STR_ve_m_rogue_pbo1", VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_CLIENT_UPDATED,			"#STR_ve_m_client_updated" + SERVER_MUST_UPDATE, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_SERVER_UPDATED,			"#STR_ve_m_server_updated0"+"\n"+"#STR_ve_m_server_updated1" + CLIENT_MUST_UPDATE, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_SERVER_CORRUPT,			"#STR_ve_m_server_corrupt0"+"\n"+"#STR_ve_m_server_corrupt1"+"\n", VE_PREFIX);
@@ -256,7 +256,7 @@ class ClientKickedModule : ErrorHandlerModuleScript
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.VE_M_UNEXPECTED_SOURCE,		"#STR_ve_m_unexpected_source", VE_PREFIX);
 		
 		// PBO Mismatch
-		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.PBO_MISMATCH,					"#STR_pbo_mismatch" + VERIFY, VE_PREFIX);
+		InsertExtendedPrefixSplitDialogueErrorProperties(EClientKicked.PBO_MISMATCH,			"#STR_pbo_mismatch" + VERIFY, VE_PREFIX, "#STR_pbo_mismatch");
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.PBO_VERSION_MISMATCH,			"#STR_pbo_version_mismatch", VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.PBO_CLIENT_UPDATED,			"#STR_pbo_client_updated" + SERVER_MUST_UPDATE, VE_PREFIX);
 		InsertExtendedPrefixDialogueErrorProperties(EClientKicked.PBO_SERVER_UPDATED,			"#STR_pbo_server_updated" + CLIENT_MUST_UPDATE, VE_PREFIX);

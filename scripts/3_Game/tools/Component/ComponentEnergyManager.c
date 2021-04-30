@@ -1138,9 +1138,6 @@ class ComponentEnergyManager : Component
 		return m_UpdateInterval;
 	}
 	
-
-
-	
 	//! Returns wetness exposure value defined in config
 	float GetWetnessExposure()
 	{
@@ -1185,14 +1182,20 @@ class ComponentEnergyManager : Component
 	//! Energy manager: Returns the maximum amount of energy this device can curently store. If parameter 'reduceMaxEnergyByDamageCoef' is used in the config of this device then the returned value will be reduced by damage.
 	float GetEnergyMax()
 	{
-		float max_health = m_ThisEntityAI.GetMaxHealth("","");
+		float max_health = 0;
+		
+		if ( m_ThisEntityAI.HasDamageSystem() )
+			max_health = m_ThisEntityAI.GetMaxHealth("","");
+		//else if ( m_ReduceMaxEnergyByDamageCoef != 0 )
+		//	Error("[ERROR] ReduceMaxEnergyByDamageCoef is setup but " + m_ThisEntityAI.GetType() + " does not have a Damage System");
+		
+		if ( max_health == 0 || m_ReduceMaxEnergyByDamageCoef == 0 )
+			return GetEnergyMaxPristine();
+		
 		float health = 100;
 		
 		if (GetGame().IsServer()) // TO DO: Remove this IF when method GetHealth can be called on client!
 			health = m_ThisEntityAI.GetHealth("","");
-		
-		if (max_health == 0  ||  m_ReduceMaxEnergyByDamageCoef == 0)
-			return GetEnergyMaxPristine();
 		
 		float damage_coef = 1 - (health / max_health);
 		
@@ -1210,8 +1213,6 @@ class ComponentEnergyManager : Component
 	{
 		return m_CordLength;
 	}
-
-
 
 	//! Energy manager: Returns the energy source this device is plugged into
 	EntityAI GetEnergySource()
@@ -1247,24 +1248,17 @@ class ComponentEnergyManager : Component
 		return NULL;
 	}
 	
-
-
-
 	//! Energy manager: Returns path to the cord texture file.
 	string GetCordTextureFile()
 	{
 		return m_CordTextureFile;
 	}
 
-
-
 	//! Energy manager: Returns an array of devices which are plugged into this one
 	array<EntityAI> GetPluggedDevices()
 	{
 		return m_PluggedDevices;
 	}
-
-
 
 	//! Energy manager: Returns an array of devices which are plugged into this one and are turned on
 	array<EntityAI> GetPoweredDevices()
@@ -1282,8 +1276,6 @@ class ComponentEnergyManager : Component
 		
 		return return_array;
 	}
-	
-	
 	
 	
 	/*===================================

@@ -26,17 +26,17 @@ class ComponentAnimalBleeding : Component
 		}	
 		
 		float health_damage_inflicted = damage_result.GetDamage( zone_name, "Health");
-		float blood_damage_inflicted = damage_result.GetDamage( zone_name, "Blood");	
+		//float blood_damage_inflicted = damage_result.GetDamage( zone_name, "Blood");	
 		float wound_healt_damage = health_damage_inflicted;
-		float wound_blood_damage = health_damage_inflicted;
+		//float wound_blood_damage = health_damage_inflicted;
 		
 		m_ThisEntityAI.DecreaseHealth( "", "Health", wound_healt_damage );
-		m_ThisEntityAI.DecreaseHealth( "", "Blood", wound_blood_damage );
+		//m_ThisEntityAI.DecreaseHealth( "", "Blood", wound_blood_damage );
 		
 		if ( zone_name != "" )
 		{
 			m_ThisEntityAI.DecreaseHealth( zone_name, "Health", wound_healt_damage );
-			m_ThisEntityAI.DecreaseHealth( zone_name, "Blood", wound_blood_damage );
+			//m_ThisEntityAI.DecreaseHealth( zone_name, "Blood", wound_blood_damage );
 		}	
 		
 		//Print("Zone hit: " + zone_name );
@@ -51,11 +51,11 @@ class ComponentAnimalBleeding : Component
 		InflictWoundDamage( damage_result, zone_name, ammo );
 		//Print( "GetHealth Health after creating wood@: " + zone_name + " " + m_ThisEntityAI.GetHealth( zone_name, "Health" ));
 		
-		float can_bleed = GetGame().ConfigGetFloat( "CfgVehicles " + m_ThisEntityAI.GetType() + " DamageSystem " + "DamageZones " + zone_name + " canBleed" );
+		float can_bleed = false; //= GetGame().ConfigGetFloat( "CfgVehicles " + m_ThisEntityAI.GetType() + " DamageSystem " + "DamageZones " + zone_name + " canBleed" );
 		//Print("can_bleed: " + can_bleed );
-		float bleed_treshold = GetGame().ConfigGetFloat( "CfgAmmo " + ammo + " DamageApplied " + "bleedThreshold" );
+		float bleed_treshold = 0; //= GetGame().ConfigGetFloat( "CfgAmmo " + ammo + " DamageApplied " + "bleedThreshold" );
 		//Print("bleed_treshold: " + bleed_treshold );
-		float chance = Math.RandomFloat01();
+		float chance = -1; //Math.RandomFloat01();
 		//Print("chance: " + chance );
 		
 		//Print( "GetHealth Health @: " + m_ThisEntityAI.GetHealth( zone_name, "Health" ));
@@ -79,7 +79,7 @@ class ComponentAnimalBleeding : Component
 
 	void Bleed( float wound_intensity )
 	{
-		if( m_ThisEntityAI.IsAlive() )
+		if ( m_ThisEntityAI.IsAlive() )
 		{
 			float bleeding_intensity = BASE_BLEED_RATE * wound_intensity;
 			//Print("bleeding_intensity: " + bleeding_intensity);
@@ -87,7 +87,7 @@ class ComponentAnimalBleeding : Component
 
 			m_ThisEntityAI.DecreaseHealth( "", "Blood", bleeding_intensity );
 
-			if( global_blood_lvl < PASS_OUT_AMOUT )
+			if ( global_blood_lvl < PASS_OUT_AMOUT )
 			{
 				m_ThisEntityAI.SetHealth( "", "", 0 );
 				//Print("global_blood_lvl < PASS_OUT_AMOUT => Zabijam zviera.");	

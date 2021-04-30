@@ -175,6 +175,12 @@ class ErrorHandlerModuleScript : ErrorHandlerModule
 		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2%3", m_Prefix, prefix, message), message, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
 	}
 	
+	//! Insert an error with Dialogue as handling with extended prefix and separate server message
+	void InsertExtendedPrefixSplitDialogueErrorProperties(int code, string message, string prefix, string serverMessage, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
+	{
+		m_ErrorDataMap.Insert(code, DialogueErrorProperties(string.Format("%1%2%3", m_Prefix, prefix, message), serverMessage, m_Header, m_UIHandler, dialogButtonType, defaultButton, dialogMeaningType, displayAdditionalInfo));
+	}
+	
 	//! Insert an error with Dialogue as handling with separate server message
 	void InsertSplitDialogueErrorProperties(int code, string message, string serverMessage, int dialogButtonType = DBT_OK, int defaultButton = DBB_OK, int dialogMeaningType = DMT_EXCLAMATION, bool displayAdditionalInfo = true)
 	{

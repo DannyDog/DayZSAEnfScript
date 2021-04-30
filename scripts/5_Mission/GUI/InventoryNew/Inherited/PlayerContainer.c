@@ -1424,14 +1424,17 @@ class PlayerContainer: CollapsibleContainer
 			m_Player.GetInventory().FindFreeLocationFor( item, FindInventoryLocationType.ATTACHMENT, il );
 			float stackable = item.GetTargetQuantityMax(-1);
 		
-			if ( stackable == 0 || stackable >= item.GetQuantity() )
+			if( il.IsValid() )
 			{
-				real_player.PredictiveTakeEntityToTargetAttachment( il.GetParent(), item );
-			}
-			else
-			{
+				if ( stackable == 0 || stackable >= item.GetQuantity() )
+				{
+					real_player.PredictiveTakeEntityToTargetAttachment( il.GetParent(), item );
+				}
+				else
+				{
 
-				ItemBase.Cast(item).SplitIntoStackMaxToInventoryLocationClient( il );
+					ItemBase.Cast(item).SplitIntoStackMaxToInventoryLocationClient( il );
+				}
 			}
 		}
 		else if(  m_Player.GetInventory().CanAddEntityToInventory( item, FindInventoryLocationType.CARGO | FindInventoryLocationType.ATTACHMENT ) && ( !m_Player.GetInventory().HasEntityInInventory( item ) ) || m_Player.GetHumanInventory().HasEntityInHands( item ) )

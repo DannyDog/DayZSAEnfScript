@@ -3798,6 +3798,8 @@ class CfgVehicles
 		vehicleClass = "Clothing";
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
+		repairableWithKits[] = {2};
+		repairCosts[] = {25.0};
 		weight = 450;
 		itemSize[] = {3,2};
 		varWetMax = 0.049;
@@ -3834,6 +3836,8 @@ class CfgVehicles
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
 		rotationFlags = 16;
+		repairableWithKits[] = {2};
+		repairCosts[] = {25.0};
 		weight = 250;
 		itemSize[] = {2,2};
 		varWetMax = 0.049;
@@ -3885,6 +3889,8 @@ class CfgVehicles
 		simulation = "clothing";
 		itemInfo[] = {"Clothing","Headgear"};
 		rotationFlags = 16;
+		repairableWithKits[] = {3};
+		repairCosts[] = {25.0};
 		weight = 450;
 		itemSize[] = {3,2};
 		varWetMax = 0.049;
@@ -3901,7 +3907,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 250;
-					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\SantasHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\SantasHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\SantasHat_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\characters\headgear\data\WitchHat.rvmat"}},{0.7,{"DZ\characters\headgear\data\WitchHat.rvmat"}},{0.5,{"DZ\characters\headgear\data\WitchHat_damage.rvmat"}},{0.3,{"DZ\characters\headgear\data\WitchHat_damage.rvmat"}},{0.0,{"DZ\characters\headgear\data\WitchHat_destruct.rvmat"}}};
 				};
 			};
 		};

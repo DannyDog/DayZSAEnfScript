@@ -192,7 +192,7 @@ class BoltActionRifle_InnerMagazine_Base extends BoltActionRifle_Base
 		m_fsm.AddTransition(new WeaponTransition(  Trigger_JF,	_abt_,	JF));
 		
 		
-		m_fsm.AddTransition(new WeaponTransition( JF,			__TJ_,	Trigger_C1J)); // fire.cocked
+		m_fsm.AddTransition(new WeaponTransition( C1,			__TJ_,	Trigger_C1J)); // fire.cocked
 		m_fsm.AddTransition(new WeaponTransition(  Trigger_C1J,	_fin_,	JF));
 		m_fsm.AddTransition(new WeaponTransition(  Trigger_C1J,	_rto_,	JF));
 		m_fsm.AddTransition(new WeaponTransition(  Trigger_C1J,	_abt_,	JF));

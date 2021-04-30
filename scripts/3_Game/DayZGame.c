@@ -8,7 +8,7 @@ class LoginQueueBase extends UIScriptedMenu
 	protected bool m_IsStatic;
 	
 	void LoginQueueBase()
-	{
+	{		
 		m_iPosition = -1;
 		m_IsStatic = false;
 		g_Game.SetKeyboardHandle(this);	
@@ -20,12 +20,13 @@ class LoginQueueBase extends UIScriptedMenu
 	}
 	
 	override Widget Init()
-	{	
+	{		
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets("gui/layouts/dialog_queue_position.layout");
 		
 		m_txtPosition = TextWidget.Cast( layoutRoot.FindAnyWidget("txtPosition") );
 		m_txtNote = TextWidget.Cast( layoutRoot.FindAnyWidget("txtNote") );
 		m_btnLeave = ButtonWidget.Cast( layoutRoot.FindAnyWidget("btnLeave") );
+		m_txtNote.Show(true);
 		#ifdef PLATFORM_CONSOLE
 		m_btnLeave.Show(false);
 		layoutRoot.FindAnyWidget("toolbar_bg").Show(true);
@@ -103,6 +104,7 @@ class LoginQueueBase extends UIScriptedMenu
 	{
 		g_Game.SetGameState( DayZGameState.MAIN_MENU );
 		g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
+
 		g_Game.GetCallQueue(CALL_CATEGORY_SYSTEM).Call(GetGame().DisconnectSessionForce);
 		
 		Close();
@@ -116,11 +118,6 @@ class LoginQueueStatic extends LoginQueueBase
 	void LoginQueueStatic()
 	{
 		Init();
-		//! hide leave button and show note text
-		#ifndef PLATFORM_CONSOLE
-		m_btnLeave.Show(false);
-		m_txtNote.Show(true);
-		#endif
 		
 		m_IsStatic = true;
 	}
@@ -151,12 +148,13 @@ class LoginTimeBase extends UIScriptedMenu
 	}
 	
 	override Widget Init()
-	{	
+	{
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets("gui/layouts/dialog_login_time.layout");
 		
 		m_txtDescription = TextWidget.Cast( layoutRoot.FindAnyWidget("txtDescription") );
 		m_txtLabel = TextWidget.Cast( layoutRoot.FindAnyWidget("txtLabel") );
 		m_btnLeave = ButtonWidget.Cast( layoutRoot.FindAnyWidget("btnLeave") );
+		m_txtDescription.Show(true);
 		#ifdef PLATFORM_CONSOLE
 		m_btnLeave.Show(false);
 		layoutRoot.FindAnyWidget("toolbar_bg").Show(true);
@@ -248,6 +246,7 @@ class LoginTimeBase extends UIScriptedMenu
 	{
 		g_Game.SetGameState( DayZGameState.MAIN_MENU );
 		g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
+		
 		g_Game.GetCallQueue(CALL_CATEGORY_SYSTEM).Call(GetGame().DisconnectSessionForce);
 		
 		Close();
@@ -260,8 +259,6 @@ class LoginTimeStatic extends LoginTimeBase
 	void LoginTimeStatic()
 	{
 		Init();
-		//! hide leave button and show note text
-		m_btnLeave.Show(false);
 		
 		m_IsStatic = true;
 	}
@@ -1373,27 +1370,32 @@ class DayZGame extends CGame
 		{	
 			GetUIManager().CloseAll();
 			
-			if(GetMission())
+			if (GetMission())
 			{
 				UIScriptedMenu parent = GetUIManager().GetMenu();
 				EnterLoginQueue(parent);
 			}
 			else
 			{
-				//! Without cancel button
 				m_LoginQueue = new LoginQueueStatic();
+				//! no leave button on console
+				#ifndef PLATFORM_CONSOLE
+				GetUIManager().ShowScriptedMenu(m_LoginQueue, null);
+				#endif
 			}
 		}
 		if (m_LoginQueue)
 		{
 			m_LoginQueue.SetPosition(pos);
 		
+			#ifndef PLATFORM_CONSOLE
 			//! manually update static login queue dialog
 			ref LoginQueueStatic loginQueue;
 			if (LoginQueueBase.CastTo(loginQueue, m_LoginQueue))
 			{
 				loginQueue.Update(timeslice);
 			}
+			#endif
 		}
 	}
 	
@@ -1421,8 +1423,11 @@ class DayZGame extends CGame
 				}
 				else
 				{
-					//! Without cancel button
 					m_LoginTimeScreen = new LoginTimeStatic();
+					//! Without cancel button for console
+					#ifndef PLATFORM_CONSOLE
+					GetUIManager().ShowScriptedMenu(m_LoginTimeScreen, null);
+					#endif
 				}
 			}
 			
@@ -1615,7 +1620,7 @@ class DayZGame extends CGame
 		m_Visited = new TStringArray;
 		GetProfileStringList( "SB_Visited", m_Visited );
 		
-		if( GetLoadState() == DayZLoadState.UNDEFINED )
+		if ( GetLoadState() == DayZLoadState.UNDEFINED )
 		{
 			string param;
 			
@@ -1642,8 +1647,10 @@ class DayZGame extends CGame
 			{
 				MainMenuLaunch();
 			}
+			
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -1797,7 +1804,7 @@ class DayZGame extends CGame
 	void ConnectLaunch()
 	{
 		BiosUserManager user_manager = GetUserManager();
-		if( user_manager.GetTitleInitiator() )
+		if ( user_manager.GetTitleInitiator() )
 		{
 			user_manager.SelectUser( user_manager.GetTitleInitiator() );
 		}
@@ -2035,10 +2042,10 @@ class DayZGame extends CGame
 		m_DayZProfileOptions.ResetOptions();
 		BiosUserManager user_manager = GetUserManager();
 		
-		if( user_manager )
+		if ( user_manager )
 		{
 			BiosUser selected_user = user_manager.GetSelectedUser();
-			if( selected_user )
+			if ( selected_user )
 			{
 				OnlineServices.SetBiosUser(selected_user);
 				SetPlayerName( selected_user.GetName() );
@@ -2049,13 +2056,13 @@ class DayZGame extends CGame
 				#endif
 			}
 			
-			if( GetUIManager().GetMenu() )
+			if ( GetUIManager().GetMenu() )
 			{
 				GetUIManager().GetMenu().Refresh();
 			}
 		}
 		
-		switch( GetLoadState() )
+		switch ( GetLoadState() )
 		{
 			case DayZLoadState.JOIN_USER_SELECT:
 			{
@@ -2246,7 +2253,7 @@ class DayZGame extends CGame
 			}
 			else
 			{
-				g_Game.MainMenuLaunch();
+ 				g_Game.MainMenuLaunch();
 			}
 		}
 	}
