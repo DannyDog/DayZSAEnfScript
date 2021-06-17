@@ -99,7 +99,7 @@ class DayZPlayerImplement extends DayZPlayer
 	ref WeaponDebug										m_WeaponDebug;
 	ref Timer 											m_DeathEffectTimer;
 	ref Timer 											m_ADSAutomationTimer;
-	protected bool 										m_ADSTimerLaunched; //Nescessary, timer tick may not correspond to command handler tick!
+	protected bool 										m_ADSTimerLaunched; //Necessary, timer tick may not correspond to command handler tick!
 	ref Timer 											m_FightEndBlendTimer;
 //	protected bool 										m_ShouldReturnToOptics;
 //	protected bool 										m_ShouldReturnToRegularIronsights;
@@ -907,7 +907,13 @@ class DayZPlayerImplement extends DayZPlayer
 		{
 			if (m_DamageHitFullbody)
 			{
-				StartCommand_Damage(m_DamageHitAnimType, m_DamageHitDir);
+				//Hotfix
+				if (!m_CameraOptics && !m_CameraIronsight)
+				{
+					StartCommand_Damage(m_DamageHitAnimType, m_DamageHitDir);
+				}
+				else
+					AddCommandModifier_Damage(m_DamageHitAnimType, m_DamageHitDir);
 				m_DamageHitAnimType = -1;
 				return true;
 			}
@@ -1924,7 +1930,6 @@ class DayZPlayerImplement extends DayZPlayer
 			m_FallYDiff = GetPosition()[1];
 			return;
 		}
-
 		//--------------------------------------------
 		// damage hits
 		if (HandleDamageHit(pCurrentCommandID))

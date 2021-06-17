@@ -982,7 +982,7 @@ class MiscGameplayFunctions
 		for ( int i = 0; i < potentiallyObstructingObjects.Count(); ++i )
 		{
 			Object obj = potentiallyObstructingObjects[i];
-			if ( obj && obj.CanObstruct() )
+			if ( obj && ( obj.CanObstruct() || obj.CanProxyObstruct() ) )
 				obstructingObjects.Insert(obj);
 		}
 	}
@@ -1170,7 +1170,7 @@ class MiscGameplayFunctions
  	
 	static bool IsObjectObstructedProxy(Object object, IsObjectObstructedCache cache, PlayerBase player)
 	{
-		if ( object.HasProxyParts() || object.CanUseConstruction() )
+		if ( object.CanProxyObstruct() )
 		{
 			//Print(" :) (: pouzij proxy raycast koli proxy itemom :) (: ");
 			RaycastRVParams ray_input = new RaycastRVParams( cache.RaycastStart, cache.ObjectCenterPos, player );

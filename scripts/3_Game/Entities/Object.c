@@ -588,6 +588,11 @@ class Object extends IEntity
 		return IsPlainObject() && !IsScenery();
 	}
 	
+	bool CanProxyObstruct()
+	{
+		return HasProxyParts() || CanUseConstruction();
+	}
+	
 	bool CanBeIgnoredByDroppedItem()
 	{
 		return IsBush() || IsTree();

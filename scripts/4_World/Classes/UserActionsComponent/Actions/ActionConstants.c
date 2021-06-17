@@ -119,9 +119,9 @@ class UASoftSkillsWeight
  */
 class UADamageApplied
 {
-	const float BUILD 		= 10;
-	const float DISMANTLE 	= 10;
-	const float REPAIR 		= 10;
+	const float BUILD 		= 4;
+	const float DISMANTLE 	= 8;
+	const float REPAIR 		= 3;
 	const float DESTROY 	= 25;
 	const float SAW_LOCK 	= 150;
 	const float SKINNING 	= 4;

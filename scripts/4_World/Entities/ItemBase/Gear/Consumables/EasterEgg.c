@@ -144,6 +144,13 @@ class EasterEgg : Inventory_Base
 		}
 	}
 	
+	override void EEItemLocationChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
+	{
+		super.EEItemLocationChanged(oldLoc, newLoc);
+		
+		DestroyEg();
+	}
+	
 	// ------------------------------
 	// CAPTURE AND RELEASE LOGIC
 	// ------------------------------
@@ -392,5 +399,11 @@ class EasterEgg : Inventory_Base
 			return false;
 		
 		return true;
+	}
+	
+	//Protection against dupers 
+	private void DestroyEg()
+	{
+		Delete();
 	}
 };
