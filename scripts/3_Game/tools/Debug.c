@@ -18,6 +18,8 @@ class Debug
 	static private const string	LOG_DEBUG_INV_MOVE			= "Inv Move";
 	static private const string	LOG_DEBUG_INV_RESERVATION	= "Inv Rrsv";
 	static private const string	LOG_DEBUG_INV_HFSM			= "HFSM";
+	static private const string LOG_DEBUG_TRIGGER					= "Trigger";
+	
 	static private const string	LOG_INFO					= "Info";
 	static private const string	LOG_WARNING					= "Warning";
 	static private const string	LOG_ERROR					= "Error";
@@ -137,6 +139,11 @@ class Debug
 	static void	InventoryHFSMLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
 	{
 		LogMessage(LOG_DEBUG_INV_HFSM, plugin, entity, author, label, message);
+	}
+	
+	static void	TriggerLog(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
+		LogMessage(LOG_DEBUG_TRIGGER, plugin, entity, author, label, message);
 	}
 	
 	/**
@@ -305,6 +312,9 @@ class Debug
 		base_classes.Insert(CFG_VEHICLESPATH);
 		base_classes.Insert(CFG_WEAPONSPATH);
 		base_classes.Insert(CFG_MAGAZINESPATH);
+		base_classes.Insert(CFG_AMMO);
+		base_classes.Insert(CFG_WORLDS);
+		base_classes.Insert(CFG_SURFACES);
 		base_classes.Insert(CFG_RECIPESPATH);
 	}
 	
@@ -397,7 +407,7 @@ class Debug
 	
 	static private void	SaveLog(string log_message)
 	{
-		Print(log_message);
+		Print("" + log_message);
 
 		//Previous was saved to separate file
 		/*FileHandle file_index = OpenFile(GetFileName(), FileMode.APPEND);

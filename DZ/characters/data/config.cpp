@@ -469,7 +469,7 @@ class CfgVehicles
 					class Health
 					{
 						hitpoints = 100;
-						transferToGlobalCoef = 0.33;
+						transferToGlobalCoef = 0.1;
 					};
 					class Blood
 					{
@@ -500,7 +500,6 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"dmgZone_leftArm"};
-					inventorySlots[] = {"Vest"};
 					inventorySlotsCoefs[] = {1.0};
 					fatalInjuryCoef = -1;
 				};
@@ -509,7 +508,7 @@ class CfgVehicles
 					class Health
 					{
 						hitpoints = 100;
-						transferToGlobalCoef = 0.33;
+						transferToGlobalCoef = 0.1;
 					};
 					class Blood
 					{
@@ -540,7 +539,6 @@ class CfgVehicles
 						};
 					};
 					componentNames[] = {"dmgZone_rightArm"};
-					inventorySlots[] = {"Vest"};
 					inventorySlotsCoefs[] = {1.0};
 					fatalInjuryCoef = -1;
 				};
@@ -657,7 +655,7 @@ class CfgVehicles
 							};
 							class Shock
 							{
-								damage = 0.5;
+								damage = 0.33;
 							};
 						};
 					};
@@ -4152,6 +4150,146 @@ class CfgVehicles
 				{
 					soundSet = "SCOUT_jam_SoundSet";
 					id = 1429;
+				};
+				class M16_charge_open
+				{
+					soundSet = "M16_charge_open_SoundSet";
+					id = 1430;
+				};
+				class M16_charge_open_release
+				{
+					soundSet = "M16_charge_open_release_SoundSet";
+					id = 1431;
+				};
+				class M16_charge_close
+				{
+					soundSet = "M16_charge_close_SoundSet";
+					id = 1432;
+				};
+				class M16_charge_close_release
+				{
+					soundSet = "M16_charge_close_release_SoundSet";
+					id = 1433;
+				};
+				class M16_charge_close_release2
+				{
+					soundSet = "M16_charge_close_release2_SoundSet";
+					id = 1434;
+				};
+				class M16_chamber_load
+				{
+					soundSet = "M16_chamber_load_SoundSet";
+					id = 1435;
+				};
+				class M16_mag_in
+				{
+					soundSet = "M16_mag_in_SoundSet";
+					id = 1436;
+				};
+				class M16_mag_load
+				{
+					soundSet = "M16_mag_load_SoundSet";
+					id = 1437;
+				};
+				class M16_mag_out
+				{
+					soundSet = "M16_mag_out_SoundSet";
+					id = 1438;
+				};
+				class M16_mag_remove
+				{
+					soundSet = "M16_mag_remove_SoundSet";
+					id = 1439;
+				};
+				class M16_dry
+				{
+					soundSet = "M16_dry_SoundSet";
+					id = 1440;
+				};
+				class M16_pullout
+				{
+					soundSet = "M16_pullout_SoundSet";
+					id = 1441;
+				};
+				class M16_hand
+				{
+					soundSet = "M16_hand_SoundSet";
+					id = 1442;
+				};
+				class M16_weapon_down
+				{
+					soundSet = "M16_weapon_down_SoundSet";
+					id = 1443;
+				};
+				class M16_jamming1
+				{
+					soundSet = "M16_jamming1_SoundSet";
+					id = 1444;
+				};
+				class M16_jamming2
+				{
+					soundSet = "M16_jamming2_SoundSet";
+					id = 1445;
+				};
+				class M16_jamming3
+				{
+					soundSet = "M16_jamming3_SoundSet";
+					id = 1446;
+				};
+				class M16_jamming4
+				{
+					soundSet = "M16_jamming4_SoundSet";
+					id = 1447;
+				};
+				class M16_jamming5
+				{
+					soundSet = "M16_jamming5_SoundSet";
+					id = 1448;
+				};
+				class M16_jamming6
+				{
+					soundSet = "M16_jamming6_SoundSet";
+					id = 1449;
+				};
+				class M16_jamming7
+				{
+					soundSet = "M16_jamming7_SoundSet";
+					id = 1450;
+				};
+				class M16_jamming8
+				{
+					soundSet = "M16_jamming8_SoundSet";
+					id = 1451;
+				};
+				class M16_jamming9
+				{
+					soundSet = "M16_jamming9_SoundSet";
+					id = 1452;
+				};
+				class M16_jamming10
+				{
+					soundSet = "M16_jamming10_SoundSet";
+					id = 1453;
+				};
+				class M16_jamming11
+				{
+					soundSet = "M16_jamming11_SoundSet";
+					id = 1454;
+				};
+				class M16_jamming12
+				{
+					soundSet = "M16_jamming12_SoundSet";
+					id = 1455;
+				};
+				class M16_jamming13
+				{
+					soundSet = "M16_jamming13_SoundSet";
+					id = 1456;
+				};
+				class M16_jam
+				{
+					soundSet = "M16_jam_SoundSet";
+					id = 1457;
 				};
 				class MagRifle_fill_loop
 				{

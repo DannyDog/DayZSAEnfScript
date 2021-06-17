@@ -41,6 +41,8 @@ class SharpenStick extends RecipeBase
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
 		InsertIngredient(1,"Screwdriver");
 		InsertIngredient(1,"Crowbar");
 		InsertIngredient(1,"Pickaxe");
@@ -82,6 +84,16 @@ class SharpenStick extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)
 	{
-		Debug.Log("Recipe Do method called","recipes");
+		ItemBase ingredient = ingredients[0];
+	
+		for (int i=0; i < results.Count(); i++)
+		{
+			ItemBase item_result;
+			Class.CastTo(item_result, results.Get(i));
+			
+			MiscGameplayFunctions.TransferItemProperties(ingredient, item_result);
+		}	
+		
+		super.Do( ingredients, player, results, specialty_weight);;
 	}
 };

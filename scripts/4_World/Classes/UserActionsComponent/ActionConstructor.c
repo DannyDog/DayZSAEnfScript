@@ -92,6 +92,8 @@ class ActionConstructor
 		actions.Insert(ActionTurnOnHelmetFlashlight);
 		actions.Insert(ActionTurnOffHelmetFlashlight);
 		actions.Insert(ActionToggleNVG);
+		//actions.Insert(ActionSwitchMineWood);
+		actions.Insert(ActionAttachOnTentProxy);
 
 		// Continuous use actions
 		actions.Insert(ActionWorldCraft);
@@ -248,6 +250,7 @@ class ActionConstructor
 		actions.Insert(ActionTurnOnSpotlight);
 		actions.Insert(ActionTurnOffSpotlight);
 		actions.Insert(ActionITest);
+		actions.Insert(ActionRemoveSeed);
 		actions.Insert(ActionRemovePlant);
 		actions.Insert(ActionHarvestCrops);
 		actions.Insert(ActionFoldObject);

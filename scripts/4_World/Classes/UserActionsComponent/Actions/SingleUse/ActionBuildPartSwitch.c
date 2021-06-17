@@ -61,10 +61,11 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 				{
 					if ( base_building.IsPlayerInside( player, main_part_name ) && !player.GetInputController().CameraIsFreeLook() )
 					{
+/*
 						//Camera check (client-only)
 						if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) && base_building.IsFacingCamera( main_part_name ))
 							return false;
-
+*/
 						//Check validity of recipes
 						int valid_recipes;
 						for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)

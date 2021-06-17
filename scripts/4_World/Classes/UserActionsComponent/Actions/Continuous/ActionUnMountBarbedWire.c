@@ -40,7 +40,7 @@ class ActionUnmountBarbedWire: ActionContinuousBase
 		if ( targetObject && targetObject.CanUseConstruction() )
 		{
 			BaseBuildingBase base_building = BaseBuildingBase.Cast( targetObject );
-			if(!base_building.IsPlayerInside(player,""))
+			if (!base_building.IsPlayerInside(player,""))
 				return false;
 			
 			string selection = targetObject.GetActionComponentName( target.GetComponentIndex() );
@@ -75,5 +75,11 @@ class ActionUnmountBarbedWire: ActionContinuousBase
 		barbed_wire.SetMountedState( false );
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+	}
+	
+	override string GetAdminLogMessage( ActionData action_data )
+	{
+		string message = string.Format("Player %1 Unmounted BarbedWire from %2", action_data.m_Player, action_data.m_Target.GetObject() );
+		return message;
 	}
 }

@@ -179,6 +179,7 @@ class NotifierBase
 		if ( delta < dectresholdlow )  	tendency = TENDENCY_DEC_LOW;
 		if ( delta < dectresholdmed )  	tendency = TENDENCY_DEC_MED;
 		if ( delta < dectresholdhigh ) 	tendency = TENDENCY_DEC_HIGH;
+		//Print(" " + delta + " tendency:  " + tendency +" " + this);
 		return tendency;
 	}
 	

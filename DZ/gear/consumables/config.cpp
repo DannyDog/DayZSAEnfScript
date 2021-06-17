@@ -718,8 +718,13 @@ class CfgVehicles
 		{
 			energyAtSpawn = 1200;
 			energyUsagePerSecond = 1;
-			updateInterval = 50;
+			updateInterval = 10;
 			convertEnergyToQuantity = 1;
+		};
+		class NoiseRoadFlare
+		{
+			strength = 30.0;
+			type = "shot";
 		};
 		class AnimationSources
 		{

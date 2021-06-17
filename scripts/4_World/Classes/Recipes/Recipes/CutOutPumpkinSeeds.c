@@ -44,6 +44,8 @@ class CutOutPumpkinSeeds extends CutOutSeeds
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
 		InsertIngredient(1,"AK_Bayonet");
 		InsertIngredient(1,"M9A1_Bayonet");
 		InsertIngredient(1,"Mosin_Bayonet");

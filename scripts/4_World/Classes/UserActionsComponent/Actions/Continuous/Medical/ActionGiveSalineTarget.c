@@ -13,9 +13,9 @@ class ActionGiveSalineTarget: ActionContinuousBase
 		m_CallbackClass = ActionGiveSalineTargetCB;
 		m_SpecialtyWeight = UASoftSkillsWeight.PRECISE_MEDIUM;
 		
-		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_CRAFTING;
+		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_SALINEBLOODBAGTARGET;
 		m_FullBody = true;
-		m_StanceMask = DayZPlayerConstants.STANCEMASK_CROUCH;
+		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
 	}
 	
 	override void CreateConditionComponents()  

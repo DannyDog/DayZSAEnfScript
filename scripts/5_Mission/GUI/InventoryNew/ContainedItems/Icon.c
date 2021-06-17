@@ -1051,7 +1051,8 @@ class Icon: LayoutHolder
 			
 			loc_dst = new InventoryLocation();			
 			loc_dst.SetCargoAuto(target_cargo, w_entity, PosY, PosX, w_entity.GetInventory().GetFlipCargo());
-		
+			
+			
 			if( parent.GetInventory().LocationCanAddEntity(loc_dst))
 			{
 				player.GetHumanInventory().ClearUserReservedLocation( m_Item );
@@ -1068,7 +1069,7 @@ class Icon: LayoutHolder
 			{
 				( ItemBase.Cast( receiver_entity ) ).CombineItemsClient( ItemBase.Cast( w_entity ) );
 			}
-			else 
+			else
 			{
 				Magazine mag = Magazine.Cast(w_entity);
 				Weapon_Base wpn = Weapon_Base.Cast(w_entity.GetHierarchyParent());

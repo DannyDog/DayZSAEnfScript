@@ -198,8 +198,19 @@ enum TransferInventoryResult
 	Ok, DroppedSome
 };
 
+enum ThrowEntityFlags
+{
+	NONE = 0,
+	SPLIT = 1, //< Splits the item when it has quantity, recommended to use when called on an attachment
+}
+
 class MiscGameplayFunctions
 {	
+	static string GetColorString(float r, float g, float b, float a)
+	{
+		return string.Format("#(argb,8,8,3)color(%1,CO)", string.Format("%1,%2,%3,%4", r, g, b, a));
+	}
+	
 	//! Produces ACII "progress bar" based on an 0..1 'value' input
 	static string ValueToBar(float value, string bar = "[----------]", string mark = "x")
 	{
@@ -909,6 +920,96 @@ class MiscGameplayFunctions
 			item = items.Get(i);
 			if ( item )
 				ib.GetInventory().DropEntityInBounds(InventoryMode.SERVER, ib, item, halfExtents, angle, cos, sin);					
+		}
+	}
+	
+	static void ThrowAllItemsInInventory(notnull EntityAI parent, int flags)
+	{
+		vector position = parent.GetPosition();
+		vector orientation = parent.GetOrientation();
+		vector rotation_matrix[3];
+		float direction[4];
+		
+		vector minmax[2];
+		parent.GetCollisionBox(minmax);
+
+		Math3D.YawPitchRollMatrix( orientation, rotation_matrix );
+		Math3D.MatrixToQuat( rotation_matrix, direction );
+
+		vector randomPos;
+		for ( int i = 0; i < parent.GetInventory().AttachmentCount(); ++i )
+		{
+			randomPos = Vector(position[0] + Math.RandomFloat(minmax[0][0], minmax[1][0]),
+								position[1] + Math.RandomFloat(minmax[0][1], minmax[1][1]),
+								position[2] + Math.RandomFloat(minmax[0][2], minmax[1][2]));
+			
+			ThrowEntityFromInventory(parent.GetInventory().GetAttachmentFromIndex( i ), randomPos, direction, -GetVelocity(parent), ThrowEntityFlags.NONE);
+		}
+
+		for ( int j = 0; j < parent.GetInventory().GetCargo().GetItemCount(); ++j )
+		{
+			randomPos = Vector(position[0] + Math.RandomFloat(minmax[0][0], minmax[1][0]),
+								position[1] + Math.RandomFloat(minmax[0][1], minmax[1][1]),
+								position[2] + Math.RandomFloat(minmax[0][2], minmax[1][2]));
+			
+			ThrowEntityFromInventory(parent.GetInventory().GetCargo().GetItem( j ), randomPos, direction, -GetVelocity(parent), ThrowEntityFlags.NONE);
+		}
+	}
+	
+	static void ThrowEntityFromInventory(notnull EntityAI entity, vector position, float direction[4], vector force, int flags)
+	{	
+		InventoryMode invMode = InventoryMode.SERVER;
+		if ( !GetGame().IsMultiplayer() )
+			invMode = InventoryMode.LOCAL;
+		
+		ItemBase entityIB;
+		if (CastTo(entityIB, entity))
+		{
+			InventoryLocation dst = new InventoryLocation;	
+			dst.SetGroundEx(entity, position, direction);
+			
+			if ( (flags & ThrowEntityFlags.SPLIT) && entityIB.CanBeSplit() )
+			{
+				for (int l = 0; l < entityIB.GetQuantity(); ++l)
+				{
+					ItemBase new_item = ItemBase.Cast( GameInventory.LocationCreateEntity( dst, entityIB.GetType(), ECE_NONE, RF_DEFAULT ) );
+		
+					if ( new_item )
+					{
+						MiscGameplayFunctions.TransferItemProperties(entityIB, new_item);
+						entityIB.AddQuantity( -1 );
+						new_item.SetQuantity( 1 );
+						new_item.ThrowPhysically(null, force);
+					}
+				}
+			}
+			else
+			{
+				float stackable = entityIB.GetTargetQuantityMax();
+				if ( !(stackable == 0 || stackable >= entityIB.GetQuantity()) )
+				{					
+					while (entityIB.GetQuantity() > stackable)
+					{
+						InventoryLocation spltDst = new InventoryLocation;
+						position[1] = position[1] + 0.1;
+						spltDst.SetGroundEx(entity, position, direction);
+						
+						ItemBase splitItem = entityIB.SplitIntoStackMaxToInventoryLocationEx( spltDst );
+						splitItem.ThrowPhysically(null, force);
+					}
+				}
+				
+				InventoryLocation src = new InventoryLocation;
+				entity.GetInventory().GetCurrentInventoryLocation(src);
+				
+				entity.GetInventory().TakeToDst(invMode, src, dst);
+				entityIB.ThrowPhysically(null, force);
+			}
+		}
+		else
+		{
+			entity.GetInventory().DropEntity(invMode, entity.GetHierarchyRoot(), entity);
+			dBodyApplyImpulse(entity, force);
 		}
 	}
 

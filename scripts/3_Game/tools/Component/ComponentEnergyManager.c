@@ -18,7 +18,7 @@ Every EntityAI object which uses this API gains these functions:
 class ComponentEnergyManager : Component
 {
 	protected const  float DEFAULT_UPDATE_INTERVAL = 15;
-	protected static bool 			m_DebugPlugs = true; // Use this to toggle visualisation of plug connections
+	protected static bool 			m_DebugPlugs = false; //true; // Use this to toggle visualisation of plug connections
 	protected 		Shape			m_DebugPlugArrow;
 	
 	protected 		bool			m_IsSwichedOn;
@@ -107,40 +107,43 @@ class ComponentEnergyManager : Component
 	// Update debug arrows
 	void DebugUpdate()
 	{
-		if (GetGame().IsMultiplayer()  &&  GetGame().IsServer())
+		if ( GetDebugPlugs() )
 		{
-			if (m_DebugUpdate)
-				m_DebugUpdate.Stop();
-			
-			return;
-		}
-		
-		if (m_DebugPlugArrow)
-		{
-			m_DebugPlugArrow.Destroy();
-			m_DebugPlugArrow = NULL; 
-		}
-		
-		if ( GetEnergySource() )
-		{
-			vector from = GetEnergySource().GetPosition() + "0 0.1 0";
-			vector to = m_ThisEntityAI.GetPosition() + "0 0.1 0";
-			
-			//No need to draw an arrow in this situation as it would not be visible
-			if ( vector.DistanceSq(from, to) == 0 )
-				return;
-			
-			if ( m_ThisEntityAI.GetType() == "BarbedWire" ) // Special case for debugging of electric fences. Temporal code until offsets in fences are fixed.
+			if ( GetGame().IsMultiplayer()  &&  GetGame().IsServer() )
 			{
-				EntityAI BBB = m_ThisEntityAI.GetHierarchyParent();
+				if (m_DebugUpdate)
+					m_DebugUpdate.Stop();
 				
-				if ( BBB  &&  BBB.GetType() == "Fence" )
-				{
-					to = to + "0 -1.3 0";
-				}
+				return;
+			}
+		
+			if (m_DebugPlugArrow)
+			{
+				m_DebugPlugArrow.Destroy();
+				m_DebugPlugArrow = NULL; 
 			}
 			
-			m_DebugPlugArrow = DrawArrow( from, to );
+			if ( GetEnergySource() )
+			{
+				vector from = GetEnergySource().GetPosition() + "0 0.1 0";
+				vector to = m_ThisEntityAI.GetPosition() + "0 0.1 0";
+				
+				//No need to draw an arrow in this situation as it would not be visible
+				if ( vector.DistanceSq(from, to) == 0 )
+					return;
+				
+				if ( m_ThisEntityAI.GetType() == "BarbedWire" ) // Special case for debugging of electric fences. Temporal code until offsets in fences are fixed.
+				{
+					EntityAI BBB = m_ThisEntityAI.GetHierarchyParent();
+					
+					if ( BBB  &&  BBB.GetType() == "Fence" )
+					{
+						to = to + "0 -1.3 0";
+					}
+				}
+				
+				m_DebugPlugArrow = DrawArrow( from, to );
+			}
 		}
 	}
 	
@@ -163,6 +166,11 @@ class ComponentEnergyManager : Component
 		return Shape.CreateLines(color, flags, pts, 5);
 	}
 
+	EntityAI GetThisEntityAI()
+	{
+		return m_ThisEntityAI;
+	}
+	
 	// Prepare everything
 	override void Event_OnAwake()
 	{
@@ -170,27 +178,27 @@ class ComponentEnergyManager : Component
 		string cfg_energy_manager = cfg_item + " EnergyManager ";
 		
 		// Read all config parameters
-		m_EnergyUsage					= GetGame().ConfigGetFloat (cfg_energy_manager + "energyUsagePerSecond");
-		bool switch_on					= GetGame().ConfigGetFloat (cfg_energy_manager + "switchOnAtSpawn");
-		m_AutoSwitchOff					= GetGame().ConfigGetFloat (cfg_energy_manager + "autoSwitchOff");
-		m_HasElectricityIcon			= GetGame().ConfigGetFloat (cfg_energy_manager + "hasIcon");
-		m_AutoSwitchOffWhenInCargo 		= GetGame().ConfigGetFloat (cfg_energy_manager + "autoSwitchOffWhenInCargo");
+		m_EnergyUsage					= GetGame().ConfigGetFloat(cfg_energy_manager + "energyUsagePerSecond");
+		bool switch_on					= GetGame().ConfigGetFloat(cfg_energy_manager + "switchOnAtSpawn");
+		m_AutoSwitchOff					= GetGame().ConfigGetFloat(cfg_energy_manager + "autoSwitchOff");
+		m_HasElectricityIcon			= GetGame().ConfigGetFloat(cfg_energy_manager + "hasIcon");
+		m_AutoSwitchOffWhenInCargo 		= GetGame().ConfigGetFloat(cfg_energy_manager + "autoSwitchOffWhenInCargo");
 		
-		m_Energy						= GetGame().ConfigGetFloat (cfg_energy_manager + "energyAtSpawn");
-		m_EnergyStorageMax				= GetGame().ConfigGetFloat (cfg_energy_manager + "energyStorageMax");
-		m_ReduceMaxEnergyByDamageCoef	= GetGame().ConfigGetFloat (cfg_energy_manager + "reduceMaxEnergyByDamageCoef");
-		m_SocketsCount					= GetGame().ConfigGetFloat (cfg_energy_manager + "powerSocketsCount");
+		m_Energy						= GetGame().ConfigGetFloat(cfg_energy_manager + "energyAtSpawn");
+		m_EnergyStorageMax				= GetGame().ConfigGetFloat(cfg_energy_manager + "energyStorageMax");
+		m_ReduceMaxEnergyByDamageCoef	= GetGame().ConfigGetFloat(cfg_energy_manager + "reduceMaxEnergyByDamageCoef");
+		m_SocketsCount					= GetGame().ConfigGetFloat(cfg_energy_manager + "powerSocketsCount");
 		
-		m_IsPassiveDevice				= GetGame().ConfigGetFloat (cfg_energy_manager + "isPassiveDevice");
-		m_CordLength 					= GetGame().ConfigGetFloat (cfg_energy_manager + "cordLength");
-		m_PlugType 						= GetGame().ConfigGetFloat (cfg_energy_manager + "plugType");
+		m_IsPassiveDevice				= GetGame().ConfigGetFloat(cfg_energy_manager + "isPassiveDevice");
+		m_CordLength 					= GetGame().ConfigGetFloat(cfg_energy_manager + "cordLength");
+		m_PlugType 						= GetGame().ConfigGetFloat(cfg_energy_manager + "plugType");
 		
-		m_AttachmentActionType			= GetGame().ConfigGetFloat (cfg_energy_manager + "attachmentAction");
-		m_WetnessExposure				= GetGame().ConfigGetFloat (cfg_energy_manager + "wetnessExposure");
+		m_AttachmentActionType			= GetGame().ConfigGetFloat(cfg_energy_manager + "attachmentAction");
+		m_WetnessExposure				= GetGame().ConfigGetFloat(cfg_energy_manager + "wetnessExposure");
 		
-		float update_interval			= GetGame().ConfigGetFloat (cfg_energy_manager + "updateInterval");
+		float update_interval			= GetGame().ConfigGetFloat(cfg_energy_manager + "updateInterval");
 		
-		m_ConvertEnergyToQuantity		= GetGame().ConfigGetFloat (cfg_energy_manager + "convertEnergyToQuantity");
+		m_ConvertEnergyToQuantity		= GetGame().ConfigGetFloat(cfg_energy_manager + "convertEnergyToQuantity");
 		
 		
 		// Check if energy->quantity converion is configured properly
@@ -295,7 +303,12 @@ class ComponentEnergyManager : Component
 		
 		m_CanWork = HasEnoughStoredEnergy();
 		
-		m_ThisEntityAI.HideSelection ( SEL_CORD_PLUGGED );
+		m_ThisEntityAI.HideSelection( SEL_CORD_PLUGGED );
+		
+		
+		#ifdef DEVELOPER
+		GetGame().m_EnergyManagerArray.Insert( this );
+		#endif
 	}
 
 	// Returns the type of this component
@@ -319,9 +332,37 @@ class ComponentEnergyManager : Component
 		;
 	}
 	
+	//Restart the debug timer when relogging
+	void RefreshDebug()
+	{
+		if ( m_DebugPlugs )
+		{
+			if ( !m_DebugUpdate )
+				m_DebugUpdate = new Timer( CALL_CATEGORY_SYSTEM );
+			
+			if ( !m_DebugUpdate.IsRunning() )
+				m_DebugUpdate.Run(0.01, this, "DebugUpdate", NULL, true);
+		}
+		else
+		{
+			if ( m_DebugPlugArrow )
+			{
+				m_DebugPlugArrow.Destroy();
+				m_DebugPlugArrow = NULL; 
+			}
+		}
+	}
 	
+	bool GetDebugPlugs()
+	{
+		return m_DebugPlugs;
+	}
 	
-	
+	void SetDebugPlugs( bool newVal )
+	{
+		m_DebugPlugs = newVal;
+		RefreshDebug();
+	}
 
 	//======================================================================================
 	// 									 PUBLIC FUNCTIONS
@@ -1298,12 +1339,9 @@ class ComponentEnergyManager : Component
 			
 			if (!m_DebugUpdate.IsRunning())
 				m_DebugUpdate.Run(0.01, this, "DebugUpdate", NULL, true);
-			
 		}
 		
 		UpdateCanWork();
-		
-		
 		
 		m_ThisEntityAI.OnIsPlugged(source_device);
 	}
@@ -1544,8 +1582,8 @@ class ComponentEnergyManager : Component
 			
 			if (GetGame().IsServer())
 			{
-				device_to_plug.HideSelection ( SEL_CORD_FOLDED );
-				device_to_plug.ShowSelection ( SEL_CORD_PLUGGED );
+				device_to_plug.HideSelection( SEL_CORD_FOLDED );
+				device_to_plug.ShowSelection( SEL_CORD_PLUGGED );
 			}
 			
 			return true;

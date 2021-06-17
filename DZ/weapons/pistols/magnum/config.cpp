@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class Muzzle_Base;
@@ -53,7 +54,7 @@ class cfgWeapons
 		drySound[] = {"DZ\sounds\weapons\firearms\magnum\Magnum_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\magnum\magnum_reload2",0.8,1,20};
 		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Magnum_Shot_SoundSet","Magnum_Tail_SoundSet","Magnum_InteriorTail_SoundSet"};
 			begin1[] = {"dz\sounds\weapons\firearms\magnum\magnum_single_2",1,1,700};

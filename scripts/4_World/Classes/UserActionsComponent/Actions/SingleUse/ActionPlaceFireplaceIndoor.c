@@ -21,7 +21,6 @@ class ActionPlaceFireplaceIndoor: ActionSingleUseBase
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
 		if ( !target ) return false;
-		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
 
 		Object target_object = target.GetObject();
 		string action_selection = target_object.GetActionComponentName( target.GetComponentIndex() );
@@ -29,6 +28,8 @@ class ActionPlaceFireplaceIndoor: ActionSingleUseBase
 		
 		if ( target_object && building && action_selection.Contains( FireplaceIndoor.FIREPOINT_ACTION_SELECTION ) )
 		{
+			if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) ) return false;
+			
 			vector fire_point_pos_world, fire_point_rot_world;
 			int fire_point_index = FireplaceIndoor.GetFirePointIndex( action_selection );
 			if ( FireplaceIndoor.CanPlaceFireplaceInSelectedSpot( building, fire_point_index, fire_point_pos_world, fire_point_rot_world ) )

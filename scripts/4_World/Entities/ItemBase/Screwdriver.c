@@ -17,6 +17,7 @@ class Screwdriver extends ToolBase
 		AddAction(ActionBurnSewTarget);
 		AddAction(ActionUnrestrainTarget);
 		AddAction(ActionBurnSewSelf);
+		AddAction(ActionMineTreeBark);
 		AddAction(ActionSkinning);
 		AddAction(ActionLockAttachment);
 		AddAction(ActionDisarmMine);

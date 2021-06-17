@@ -262,6 +262,12 @@ class CfgVehicles
 			energyAtSpawn = 90;
 			energyUsagePerSecond = 1;
 			wetnessExposure = 0.1;
+			updateInterval = 5;
+		};
+		class NoiseSmokeGrenade
+		{
+			strength = 30.0;
+			type = "sound";
 		};
 		class AnimEvents
 		{
@@ -325,6 +331,12 @@ class CfgVehicles
 			energyAtSpawn = 90;
 			energyUsagePerSecond = 1;
 			wetnessExposure = 0.1;
+			updateInterval = 5;
+		};
+		class NoiseSmokeGrenade
+		{
+			strength = 30.0;
+			type = "sound";
 		};
 		class AnimEvents
 		{

@@ -24,6 +24,7 @@ class Weapon_Base extends Weapon
 	protected bool m_LiftWeapon = false;
 	protected bool m_BayonetAttached;
 	protected bool m_ButtstockAttached;
+	protected int m_BurstCount;
 	protected int m_BayonetAttachmentIdx;
 	protected int m_ButtstockAttachmentIdx;
 	protected int m_weaponAnimState = -1; /// animation state the weapon is in, -1 == uninitialized
@@ -45,6 +46,7 @@ class Weapon_Base extends Weapon
 		m_ButtstockAttached = false;
 		m_BayonetAttachmentIdx = -1;
 		m_ButtstockAttachmentIdx = -1;
+		m_BurstCount = 0;
 		
 		if ( ConfigIsExisting("simpleHiddenSelections") )
 		{
@@ -488,7 +490,15 @@ class Weapon_Base extends Weapon
 		return m_PropertyModifierObject;
 	}
 	
-	void OnFire(int muzzle_index){}
+	void OnFire(int muzzle_index)
+	{
+		m_BurstCount++;
+	}
+	
+	void OnFireModeChange(int fireMode)
+	{
+		ResetBurstCount();
+	}
 	
 	void ValidateAndRepair()
 	{
@@ -960,6 +970,16 @@ class Weapon_Base extends Weapon
 	bool IsShowingChamberedBullet()
 	{
 		return true;
+	}
+	
+	int GetBurstCount()
+	{
+		return m_BurstCount;
+	}
+	
+	void ResetBurstCount()
+	{
+		m_BurstCount = 0;
 	}
 
 	override void SetActions()

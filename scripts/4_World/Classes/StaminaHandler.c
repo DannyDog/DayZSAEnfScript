@@ -277,9 +277,9 @@ class StaminaHandler
 	{
 #ifdef DEVELOPER
 		m_Debug = DiagMenu.GetBool(DiagMenuIDs.DM_CHEATS_STAMINA_DISABLE);
-		if( m_Debug ) return;
+		if ( m_Debug ) return;
 #endif
-		if( m_Player )
+		if ( m_Player )
 		{
 			// Calculates actual max stamina based on player's load
 			if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
@@ -305,25 +305,25 @@ class StaminaHandler
 
 			switch (pCurrentCommandID)
 			{
-			case DayZPlayerConstants.COMMANDID_MOVE:
-				StaminaProcessor_Move(m_State);
-			break;
-			case DayZPlayerConstants.COMMANDID_LADDER:
-				StaminaProcessor_Ladder(m_State);
-			break;
-			case DayZPlayerConstants.COMMANDID_SWIM:
-				StaminaProcessor_Swimming(m_State);
-			break;
-			case DayZPlayerConstants.COMMANDID_FALL:	//! processed on event
-			case DayZPlayerConstants.COMMANDID_MELEE2:  //! processed on event
-			case DayZPlayerConstants.COMMANDID_CLIMB:  //! processed on event
-			break;
-			default:
-				if( !m_IsInCooldown )
-				{
-					m_StaminaDelta = GameConstants.STAMINA_GAIN_IDLE_PER_SEC;
-				}
-			break;
+				case DayZPlayerConstants.COMMANDID_MOVE:
+					StaminaProcessor_Move(m_State);
+					break;
+				case DayZPlayerConstants.COMMANDID_LADDER:
+					StaminaProcessor_Ladder(m_State);
+					break;
+				case DayZPlayerConstants.COMMANDID_SWIM:
+					StaminaProcessor_Swimming(m_State);
+					break;
+				case DayZPlayerConstants.COMMANDID_FALL:	//! processed on event
+				case DayZPlayerConstants.COMMANDID_MELEE2:  //! processed on event
+				case DayZPlayerConstants.COMMANDID_CLIMB:  //! processed on event
+					break;
+				default:
+					if ( !m_IsInCooldown )
+					{
+						m_StaminaDelta = GameConstants.STAMINA_GAIN_IDLE_PER_SEC;
+					}
+					break;
 			}
 			
 			//Sets current stamina & stores + syncs data with client
@@ -403,7 +403,7 @@ class StaminaHandler
 				m_Stamina = stamina; //?
 				m_StaminaSynced = stamina;
 				
-				if( !m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
+				if ( !m_Player.GetInstanceType() == DayZPlayerInstanceType.INSTANCETYPE_CLIENT )
 				{
 					return;
 				}
@@ -435,7 +435,7 @@ class StaminaHandler
 				SetCooldown(GameConstants.STAMINA_REGEN_COOLDOWN_DEPLETION);
 				break;
 			}
-			if ( pHumanMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_CROUCH)
+			else if ( pHumanMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_CROUCH)
 			{
 				m_StaminaDelta = -GameConstants.STAMINA_DRAIN_CROUCHED_SPRINT_PER_SEC;
 				SetCooldown(GameConstants.STAMINA_REGEN_COOLDOWN_DEPLETION);
@@ -624,7 +624,7 @@ class StaminaHandler
 	protected void SetCooldown(float time, int modifier = -1)
 	{
 		//StaminaModifier sm = m_StaminaModifiers.GetModifierData(modifier);
-		if( m_StaminaDepleted || m_Stamina <= 0.0 )
+		if ( m_StaminaDepleted || m_Stamina <= 0.0 )
 		{
 			ResetCooldown(modifier);
 			return;
@@ -636,7 +636,7 @@ class StaminaHandler
 		m_CooldownTimer.Run(time, this, "ResetCooldown",  new Param1<int>( modifier ));*/
 		
 		Timer timer;
-		if (m_TimerMap.Find(modifier,timer) && timer.IsRunning())
+		if (m_TimerMap.Find(modifier, timer) && timer.IsRunning())
 		{
 			timer.Stop();
 		}

@@ -1644,7 +1644,7 @@ class CfgWorlds
 			class LocalOffice_Stary
 			{
 				name = "";
-				position[] = {5971.08,7743.35};
+				position[] = {6056.08,7715.35};
 				type = "LocalOffice";
 			};
 			class LocalOffice_Novy

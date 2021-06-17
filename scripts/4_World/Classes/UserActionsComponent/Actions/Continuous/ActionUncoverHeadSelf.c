@@ -6,7 +6,48 @@ class ActionUncoverHeadSelfCB : ActionContinuousBaseCB
 	}
 };
 
-class ActionUncoverHeadSelf: ActionContinuousBase
+
+class ActionUncoverHeadBase: ActionContinuousBase
+{
+	void UncoverHead(PlayerBase target, PlayerBase source)
+	{
+		EntityAI attachment;
+		if( !source.GetHumanInventory().GetEntityInHands() )
+		{
+			ItemBase item = ItemBase.Cast(HumanInventory.Cast(source.GetInventory()).CreateInHands("BurlapSack"));
+		}
+		else
+		{
+			EntityAI entity = source.GetInventory().CreateInInventory("BurlapSack");
+			
+			if( !entity )//full inventory
+			{
+				vector m4[4];
+				source.GetTransformWS(m4);
+				InventoryLocation target_gnd = new InventoryLocation;
+				target_gnd.SetGround(null, m4);
+				entity = GameInventory.LocationCreateEntity(target_gnd, "BurlapSack",ECE_IN_INVENTORY,RF_DEFAULT);
+			}
+		
+			ItemBase new_item = ItemBase.Cast(entity);
+			
+		}
+		
+		Class.CastTo(attachment, target.GetInventory().FindAttachment(InventorySlots.HEADGEAR));
+		if ( attachment && attachment.GetType() == "BurlapSackCover" )
+		{
+			if (new_item)
+				MiscGameplayFunctions.TransferItemProperties(attachment,new_item,true,false,true);
+			
+			attachment.Delete();
+		}
+
+		source.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+	}
+
+}
+
+class ActionUncoverHeadSelf: ActionUncoverHeadBase
 {
 	void ActionUncoverHeadSelf()
 	{
@@ -41,28 +82,8 @@ class ActionUncoverHeadSelf: ActionContinuousBase
 
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
-		EntityAI entity = action_data.m_Player.GetInventory().CreateInInventory("BurlapSack");
-		if( !entity )
-		{
-			vector m4[4];
-			action_data.m_Player.GetTransformWS(m4);
-			InventoryLocation target_gnd = new InventoryLocation;
-			target_gnd.SetGround(null, m4);
-			entity = GameInventory.LocationCreateEntity(target_gnd, "BurlapSack",ECE_IN_INVENTORY,RF_DEFAULT);
-		}
-		
-		EntityAI attachment;
-		ItemBase new_item = ItemBase.Cast(entity);
-		Class.CastTo(attachment, action_data.m_Player.GetInventory().FindAttachment(InventorySlots.HEADGEAR));
-		if ( attachment && attachment.GetType() == "BurlapSackCover" )
-		{
-			if (new_item)
-				MiscGameplayFunctions.TransferItemProperties(attachment,new_item,true,false,true);
-			
-			attachment.Delete();
-		}
-		
-		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+		UncoverHead(action_data.m_Player, action_data.m_Player);
+
 	}
 
 

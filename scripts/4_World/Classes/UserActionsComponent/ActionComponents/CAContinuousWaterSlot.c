@@ -33,17 +33,11 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			
 			if ( target_GB ) 
 			{
-				/*string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
-			
-				Slot slot = target_GB.GetSlotBySelection( selection );*/
-				//Slot slot;// = garden_base.GetSlotBySelection( selection );
-			
 				array<string> selections = new array<string>;
 				target_GB.GetActionComponentNameList(action_data.m_Target.GetComponentIndex(), selections);
 	
 				for (int s = 0; s < selections.Count(); s++)
 				{
-					//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
 					string selection = selections[s];
 					m_Slot = target_GB.GetSlotBySelection( selection );
 					if (m_Slot)
@@ -80,9 +74,7 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 		}
 		else
 		{
-			/*string selection = target_GB.GetActionComponentName(action_data.m_Target.GetComponentIndex());
-			Slot slot = target_GB.GetSlotBySelection( selection );*/
-			if ( m_Slot  &&  m_SpentQuantity < m_ItemQuantity )
+			if ( m_Slot && m_SpentQuantity < m_ItemQuantity )
 			{
 				m_SpentQuantity += m_QuantityUsedPerSecond * action_data.m_Player.GetDeltaT();
 				float water = action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( m_SpentQuantity, m_Action.GetSpecialtyWeight(), true );
@@ -98,7 +90,8 @@ class CAContinuousWaterSlot : CAContinuousQuantity
 			else
 			{
 				CalcAndSetQuantity( action_data );
-				OnCompletePogress(action_data);
+				OnCompletePogress( action_data );
+				
 				return UA_FINISHED;
 			}
 		}

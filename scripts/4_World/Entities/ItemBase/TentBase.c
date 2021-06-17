@@ -140,9 +140,9 @@ class TentBase extends ItemBase
 		return true;
 	}
 	
-	override void OnCreatePhysics()
+	override void RefreshPhysics()
 	{
-		super.OnCreatePhysics();
+		super.RefreshPhysics();
 		
 		if ( m_State == PITCHED )
 		{

@@ -54,13 +54,17 @@ class InfectedSoundEventBase extends SoundEventBase
 	{
 		string soundset_name;
 			
-		soundset_name = m_Infected.ClassName() + "_" + m_SoundSetNameRoot + "_SoundSet";
+		soundset_name = string.Format("%1_%2_SoundSet", m_Infected.ClassName(), m_SoundSetNameRoot);
 		m_SoundSetCallback = m_Infected.ProcessVoiceFX(soundset_name);
 		if ( m_SoundSetCallback )
 		{
 			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLaterByName(this, "PosUpdate", 0, true);
 			return true;
 		}
+		#ifdef DEVELOPER
+		Error("[ERROR] No sound callback for : " + m_Infected.ClassName() + " Please define relevant SoundSet in Zombie_SoundSets.hpp");
+		#endif
+		PrintToRPT("[WARNING] No sound callback for : " + m_Infected.ClassName() + " Please define relevant SoundSet in sounds/hpp/config.cpp");
 		return false;
 	}
 }

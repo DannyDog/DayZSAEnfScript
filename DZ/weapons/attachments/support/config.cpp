@@ -36,10 +36,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 354;
 		itemSize[] = {2,1};
-		dispersionModifier = -0.0002;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -59,12 +57,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -97,10 +95,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 330;
 		itemSize[] = {2,1};
-		dispersionModifier = -0.00025;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.9,0.9,0.9};
+		swayModifier[] = {0.5,0.5,0.5};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -120,12 +116,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -158,12 +154,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockM4"};
 		weight = 450;
 		itemSize[] = {2,1};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
-		dexterityModifier = 1;
-		dexterityCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.7,0.7,0.7};
+		swayModifier[] = {0.9,0.9,0.9};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -183,12 +175,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -221,10 +213,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 530;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.0002;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.7,0.7,0.7};
+		swayModifier[] = {0.9,0.9,0.9};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_wood_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\data\akm_wood.rvmat"};
@@ -245,12 +235,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -284,10 +274,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 530;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.0002;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.75,0.75,0.75};
+		swayModifier[] = {0.8,0.8,0.8};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\ak74_wood_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\data\ak74_wood.rvmat"};
@@ -308,12 +296,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -347,10 +335,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 720;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.9,0.9,0.9};
+		swayModifier[] = {0.5,0.5,0.5};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_accessories_black_co.paa"};
 		class DamageSystem
@@ -370,12 +356,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -408,10 +394,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 363;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK101\data\ak101_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK101\data\ak101.rvmat"};
@@ -432,12 +416,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -471,10 +455,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockAK"};
 		weight = 450;
 		itemSize[] = {2,1};
-		dispersionModifier = -5e-05;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.85,0.85,0.85};
+		swayModifier[] = {0.6,0.6,0.6};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK74\data\aks74u_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\firearms\AK74\data\aks74u.rvmat"};
@@ -495,12 +477,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -533,10 +515,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockMP5"};
 		weight = 450;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.00025;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_stock_CO.paa"};
 		class DamageSystem
@@ -556,12 +536,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -629,10 +609,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockFal"};
 		weight = 530;
 		itemSize[] = {3,1};
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
-		dispersionModifier = -0.0002;
-		dispersionCondition = "true";
+		recoilModifier[] = {0.75,0.75,0.75};
+		swayModifier[] = {0.8,0.8,0.8};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\FAL_stock_oe_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\support\data\FAL_stock_oe.rvmat"};
@@ -653,12 +631,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -678,10 +656,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockFal"};
 		weight = 530;
 		itemSize[] = {3,1};
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
-		dispersionModifier = -0.0001;
-		dispersionCondition = "true";
+		recoilModifier[] = {0.85,0.85,0.85};
+		swayModifier[] = {0.6,0.6,0.6};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\FAL_stock_folding_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\support\data\FAL_stock_folding.rvmat"};
@@ -702,12 +678,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -727,10 +703,8 @@ class cfgVehicles
 		inventorySlot[] = {"weaponButtstockSaiga"};
 		weight = 720;
 		itemSize[] = {3,1};
-		dispersionModifier = -0.0002;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\support\data\saiga_folding_co.paa"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\attachments\support\data\saiga_folding.rvmat"};
@@ -751,12 +725,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -776,10 +750,8 @@ class cfgVehicles
 		weight = 250;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardM4"};
-		dispersionModifier = -0.0001;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\handguard_co.paa"};
 		class DamageSystem
@@ -799,12 +771,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -838,10 +810,8 @@ class cfgVehicles
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardM4"};
 		hasRailFunctionality = 1;
-		dispersionModifier = -0.000125;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.7,0.7,0.7};
+		swayModifier[] = {0.9,0.9,0.9};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -861,12 +831,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -899,10 +869,8 @@ class cfgVehicles
 		weight = 350;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardM4"};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.9,0.9,0.9};
+		swayModifier[] = {0.5,0.5,0.5};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"};
 		class DamageSystem
@@ -922,12 +890,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -960,10 +928,8 @@ class cfgVehicles
 		weight = 550;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardAK"};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.7,0.7,0.7};
+		swayModifier[] = {0.9,0.9,0.9};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_wood_co.paa"};
 		class DamageSystem
@@ -983,12 +949,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -1022,10 +988,8 @@ class cfgVehicles
 		weight = 550;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardAK"};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.75,0.75,0.75};
+		swayModifier[] = {0.8,0.8,0.8};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\ak74_wood_co.paa"};
 		class DamageSystem
@@ -1045,12 +1009,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -1085,10 +1049,8 @@ class cfgVehicles
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardAK"};
 		hasRailFunctionality = 1;
-		dispersionModifier = -0.000125;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.9,0.9,0.9};
+		swayModifier[] = {0.5,0.5,0.5};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\akm_accessories_black_co.paa"};
 		class DamageSystem
@@ -1108,12 +1070,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -1146,10 +1108,8 @@ class cfgVehicles
 		weight = 160;
 		itemSize[] = {2,1};
 		inventorySlot[] = {"weaponHandguardAK"};
-		dispersionModifier = -0.00015;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\firearms\AK101\data\ak101_co.paa"};
 		class DamageSystem
@@ -1169,12 +1129,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -1194,10 +1154,8 @@ class cfgVehicles
 		weight = 250;
 		itemSize[] = {1,2};
 		inventorySlot[] = {"weaponHandguardMP5"};
-		dispersionModifier = -0.0001;
-		dispersionCondition = "true";
 		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		swayModifier[] = {0.7,0.7,0.7};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_grip01_CO.paa"};
 		class DamageSystem
@@ -1217,12 +1175,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{
@@ -1243,10 +1201,8 @@ class cfgVehicles
 		itemSize[] = {1,2};
 		inventorySlot[] = {"weaponHandguardMP5"};
 		hasRailFunctionality = 1;
-		dispersionModifier = -0.0001;
-		dispersionCondition = "true";
-		recoilModifier[] = {0.8,0.8,0.8};
-		swayModifier[] = {1,1,1};
+		recoilModifier[] = {0.7,0.7,0.7};
+		swayModifier[] = {0.9,0.9,0.9};
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"dz\weapons\attachments\data\MP5k_grip_CO.paa"};
 		class DamageSystem
@@ -1266,12 +1222,12 @@ class cfgVehicles
 			class Default
 			{
 				ammo = "MeleeLightBlunt";
-				range = 1.0;
+				range = 1;
 			};
 			class Heavy
 			{
 				ammo = "MeleeLightBlunt_Heavy";
-				range = 1.0;
+				range = 1;
 			};
 			class Sprint
 			{

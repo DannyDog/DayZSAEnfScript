@@ -133,6 +133,13 @@ class KitBase extends ItemBase
 		return "";
 	}
 	
+	override void RefreshPhysics()
+	{
+		super.RefreshPhysics();
+		
+		UpdatePhysics();
+	}
+	
 	//Update visuals and physics
 	void UpdateVisuals()
 	{

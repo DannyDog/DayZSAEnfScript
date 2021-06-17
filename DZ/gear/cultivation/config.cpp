@@ -509,9 +509,9 @@ class CfgVehicles
 		weight = 10;
 		spawnOffset = 0;
 		canBeSplit = 1;
-		varQuantityInit = 300;
+		varQuantityInit = 350;
 		varQuantityMin = 0.0;
-		varQuantityMax = 300;
+		varQuantityMax = 350;
 		quantityBar = 1;
 		class DamageSystem
 		{
@@ -1051,6 +1051,69 @@ class CfgVehicles
 				initPhase = 0;
 			};
 		};
+		class DamageSystem
+		{
+			class GlobalArmor
+			{
+				class Projectile
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class Melee
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+				class FragGrenade
+				{
+					class Health
+					{
+						damage = 0;
+					};
+					class Blood
+					{
+						damage = 0;
+					};
+					class Shock
+					{
+						damage = 0;
+					};
+				};
+			};
+		};
+	};
+	class GardenPlotPlacing: GardenPlot
+	{
+		displayName = "This is a hologram";
+		descriptionShort = "Nothing to see here, move along";
+		model = "DZ\gear\cultivation\garden_plot_outside_placing.p3d";
+		storageCategory = 10;
+		hiddenSelections[] = {"placing"};
+		hiddenSelectionsTextures[] = {"dz\gear\cultivation\data\tile_co.tga"};
+		hiddenSelectionsMaterials[] = {"dz\gear\cultivation\data\tile.rvmat"};
+		hologramMaterial = "tile";
+		hologramMaterialPath = "dz\gear\cultivation\data";
 		class DamageSystem
 		{
 			class GlobalArmor

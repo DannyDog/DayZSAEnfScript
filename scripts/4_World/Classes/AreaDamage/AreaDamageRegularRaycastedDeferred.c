@@ -1,8 +1,9 @@
+// DEPRECATED: Left for backwards compatibility with mods
 class AreaDamageRegularRaycastedDeferred extends AreaDamageBase
 {	
 	void AreaDamageRegularRaycastedDeferred(EntityAI parent)
 	{
-		AreaDamageBase(parent);
+
 	}
 
 	void ~AreaDamageRegularRaycastedDeferred() {}

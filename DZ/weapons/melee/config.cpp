@@ -1,5 +1,17 @@
 #define _ARMA_
 
+//(8 Enums)
+enum {
+	destructengine = 2,
+	destructdefault = 6,
+	destructwreck = 7,
+	destructtree = 3,
+	destructtent = 4,
+	destructno = 0,
+	destructman = 5,
+	destructbuilding = 1
+};
+
 class CfgPatches
 {
 	class DZ_Weapons_Melee
@@ -18,6 +30,7 @@ class CfgAmmo
 		hit = 2;
 		indirectHit = 0;
 		indirectHitRange = 0;
+		unconRefillModifier = 1;
 		model = "shotShell";
 		affectSkeleton = 1;
 		caliber = 0.1;
@@ -7236,12 +7249,17 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 5;
 			};
 			class Shock
 			{
 				damage = 10;
 			};
+		};
+		class NoiseHit
+		{
+			strength = 0;
+			type = "sound";
 		};
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
 		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
@@ -7458,7 +7476,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMale: MeleeDamage
+	class MeleeZombieMale: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -7471,7 +7489,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 10;
 			};
 			class Shock
 			{
@@ -7693,7 +7711,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMaleLong: MeleeDamage
+	class MeleeZombieMaleLong: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -7706,7 +7724,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 10;
 			};
 			class Shock
 			{
@@ -7928,7 +7946,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieFemale: MeleeDamage
+	class MeleeZombieFemale: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -7941,7 +7959,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 10;
 			};
 			class Shock
 			{
@@ -8163,7 +8181,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieFemaleLong: MeleeDamage
+	class MeleeZombieFemaleLong: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -8176,7 +8194,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 10;
 			};
 			class Shock
 			{
@@ -8398,7 +8416,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMaleSoldier: MeleeDamage
+	class MeleeZombieSoldier: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -8411,7 +8429,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 15;
 			};
 			class Shock
 			{
@@ -8524,7 +8542,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMaleSoldier_Heavy: MeleeZombieMaleSoldier
+	class MeleeZombieSoldier_Heavy: MeleeZombieSoldier
 	{
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
@@ -8633,7 +8651,7 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMaleSoldierLong: MeleeDamage
+	class MeleeZombieSoldierLong: MeleeZombie
 	{
 		class DamageApplied
 		{
@@ -8646,7 +8664,7 @@ class CfgAmmo
 			};
 			class Blood
 			{
-				damage = 0;
+				damage = 15;
 			};
 			class Shock
 			{
@@ -8759,7 +8777,947 @@ class CfgAmmo
 		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
 		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
 	};
-	class MeleeZombieMaleSoldierLong_Heavy: MeleeZombieMaleSoldierLong
+	class MeleeZombieSoldierLong_Heavy: MeleeZombieSoldierLong
+	{
+		hitAnimation = 1;
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.70794576,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.70794576,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.70794576,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.70794576,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.70794576,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.70794576,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.70794576,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.70794576,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.70794576,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.70794576,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.70794576,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.70794576,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.63095737,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.63095737,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.63095737,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.63095737,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.63095737,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.63095737,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.63095737,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.63095737,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_1",0.70794576,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_2",0.70794576,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_3",0.70794576,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_4",0.70794576,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_5",0.70794576,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_6",0.70794576,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.63095737,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.63095737,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.63095737,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.63095737,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.63095737,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.63095737,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.63095737,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.63095737,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.63095737,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.63095737,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.63095737,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.63095737,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.63095737,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.63095737,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.63095737,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombiePolice: MeleeZombie
+	{
+		class DamageApplied
+		{
+			type = "Infected";
+			bleedThreshold = 0.3;
+			class Health
+			{
+				damage = 10;
+				armorDamage = 0.8;
+			};
+			class Blood
+			{
+				damage = 15;
+			};
+			class Shock
+			{
+				damage = 15;
+			};
+		};
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.4,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.4,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.4,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.4,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.4,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.4,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.4,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.4,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.4,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.4,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.4,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.4,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.31622776,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.31622776,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.31622776,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.31622776,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.31622776,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.31622776,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.31622776,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.31622776,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_1",0.56234133,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_2",0.56234133,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_3",0.56234133,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_4",0.56234133,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_5",0.56234133,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_6",0.56234133,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.31622776,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.31622776,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.31622776,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.31622776,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.31622776,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.31622776,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.31622776,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.31622776,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.31622776,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.31622776,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.31622776,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.31622776,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.31622776,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.31622776,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.31622776,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombiePolice_Heavy: MeleeZombiePolice
+	{
+		hitAnimation = 1;
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.70794576,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.70794576,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.70794576,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.70794576,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.70794576,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.70794576,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.70794576,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.70794576,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.70794576,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.70794576,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.70794576,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.70794576,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.63095737,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.63095737,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.63095737,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.63095737,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.63095737,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.63095737,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.63095737,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.63095737,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_1",0.70794576,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_2",0.70794576,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_3",0.70794576,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_4",0.70794576,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_5",0.70794576,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_6",0.70794576,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.63095737,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.63095737,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.63095737,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.63095737,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.63095737,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.63095737,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.63095737,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.63095737,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.63095737,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.63095737,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.63095737,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.63095737,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.63095737,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.63095737,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.63095737,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombiePoliceLong: MeleeZombie
+	{
+		class DamageApplied
+		{
+			type = "Infected";
+			bleedThreshold = 0.35;
+			class Health
+			{
+				damage = 10;
+				armorDamage = 0.8;
+			};
+			class Blood
+			{
+				damage = 15;
+			};
+			class Shock
+			{
+				damage = 15;
+			};
+		};
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.4,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.4,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.4,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.4,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.4,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.4,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.4,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.4,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.4,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.4,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.4,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.4,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.31622776,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.31622776,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.31622776,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.31622776,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.31622776,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.31622776,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.31622776,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.31622776,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_1",0.56234133,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_2",0.56234133,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_3",0.56234133,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_4",0.56234133,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_5",0.56234133,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_6",0.56234133,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.31622776,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.31622776,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.31622776,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.31622776,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.31622776,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.31622776,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.31622776,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.31622776,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.31622776,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.31622776,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.31622776,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.31622776,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.31622776,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.31622776,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.31622776,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombiePoliceLong_Heavy: MeleeZombiePoliceLong
+	{
+		hitAnimation = 1;
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.70794576,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.70794576,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.70794576,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.70794576,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.70794576,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.70794576,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.70794576,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.70794576,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.70794576,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.70794576,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.70794576,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.70794576,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.63095737,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.63095737,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.63095737,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.63095737,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.63095737,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.63095737,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.63095737,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.63095737,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_1",0.70794576,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_2",0.70794576,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_3",0.70794576,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_4",0.70794576,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_5",0.70794576,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_6",0.70794576,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.63095737,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.63095737,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.63095737,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.63095737,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.63095737,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.63095737,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.63095737,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.63095737,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.63095737,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.63095737,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.63095737,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.63095737,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.63095737,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.63095737,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.63095737,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombieFirefighter: MeleeZombie
+	{
+		class DamageApplied
+		{
+			type = "Infected";
+			bleedThreshold = 0.3;
+			class Health
+			{
+				damage = 10;
+				armorDamage = 0.8;
+			};
+			class Blood
+			{
+				damage = 15;
+			};
+			class Shock
+			{
+				damage = 15;
+			};
+		};
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.4,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.4,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.4,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.4,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.4,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.4,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.4,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.4,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.4,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.4,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.4,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.4,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.31622776,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.31622776,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.31622776,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.31622776,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.31622776,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.31622776,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.31622776,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.31622776,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_1",0.56234133,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_2",0.56234133,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_3",0.56234133,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_4",0.56234133,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_5",0.56234133,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_6",0.56234133,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.31622776,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.31622776,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.31622776,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.31622776,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.31622776,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.31622776,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.31622776,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.31622776,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.31622776,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.31622776,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.31622776,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.31622776,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.31622776,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.31622776,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.31622776,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombieFirefighter_Heavy: MeleeZombieFirefighter
+	{
+		hitAnimation = 1;
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.63095737,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.63095737,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.63095737,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.63095737,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.63095737,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.63095737,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.63095737,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.70794576,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.70794576,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.70794576,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.70794576,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.70794576,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.70794576,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.70794576,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.70794576,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.70794576,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.70794576,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.70794576,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.70794576,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.63095737,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.63095737,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.63095737,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.63095737,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.63095737,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.63095737,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.63095737,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.63095737,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.63095737,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.63095737,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.63095737,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.63095737,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.63095737,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.63095737,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.63095737,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.63095737,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_1",0.70794576,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_2",0.70794576,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_3",0.70794576,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_4",0.70794576,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_5",0.70794576,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_heavy_6",0.70794576,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.63095737,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.63095737,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.63095737,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.63095737,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.63095737,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.63095737,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.63095737,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.63095737,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.63095737,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.63095737,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.63095737,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.63095737,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.63095737,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.63095737,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.63095737,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.63095737,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.63095737,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.63095737,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.63095737,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.63095737,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.63095737,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.63095737,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.63095737,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombieFirefighterLong: MeleeZombie
+	{
+		class DamageApplied
+		{
+			type = "Infected";
+			bleedThreshold = 0.35;
+			class Health
+			{
+				damage = 10;
+				armorDamage = 0.8;
+			};
+			class Blood
+			{
+				damage = 15;
+			};
+			class Shock
+			{
+				damage = 15;
+			};
+		};
+		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,60};
+		soundGroundSoft2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,60};
+		soundGroundSoft3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,60};
+		soundGroundSoft4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,60};
+		soundGroundSoft5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,60};
+		soundGroundSoft6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,60};
+		soundGroundSoft7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,60};
+		soundGroundSoft8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,60};
+		soundGroundHard1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.31622776,1,80};
+		soundGroundHard2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_02",0.31622776,1,80};
+		soundGroundHard3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_03",0.31622776,1,80};
+		soundGroundHard4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_04",0.31622776,1,80};
+		soundGroundHard5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_05",0.31622776,1,80};
+		soundGroundHard6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_06",0.31622776,1,80};
+		soundGroundHard7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_07",0.31622776,1,80};
+		soundGroundHard8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_08",0.31622776,1,80};
+		soundMetal1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundMetal2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundMetal3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundMetal4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundMetal5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundMetal6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundMetal7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundMetal8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundHitGlass1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_01",0.4,1,100};
+		soundHitGlass2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_02",0.4,1,100};
+		soundHitGlass3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_03",0.4,1,100};
+		soundHitGlass4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_04",0.4,1,100};
+		soundHitGlass5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_05",0.4,1,100};
+		soundHitGlass6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_glass_hit_06",0.4,1,100};
+		soundGlassArmored1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_01",0.4,1,60};
+		soundGlassArmored2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_02",0.4,1,60};
+		soundGlassArmored3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_03",0.4,1,60};
+		soundGlassArmored4[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_04",0.4,1,60};
+		soundGlassArmored5[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_05",0.4,1,60};
+		soundGlassArmored6[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_armored_glass_hit_06",0.4,1,60};
+		soundVehiclePlate1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_01",0.31622776,1,80};
+		soundVehiclePlate2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_02",0.31622776,1,80};
+		soundVehiclePlate3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_03",0.31622776,1,80};
+		soundVehiclePlate4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_04",0.31622776,1,80};
+		soundVehiclePlate5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_05",0.31622776,1,80};
+		soundVehiclePlate6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_06",0.31622776,1,80};
+		soundVehiclePlate7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_07",0.31622776,1,80};
+		soundVehiclePlate8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_metal_hit_08",0.31622776,1,80};
+		soundWood1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_01",0.31622776,1,80};
+		soundWood2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_02",0.31622776,1,80};
+		soundWood3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_03",0.31622776,1,80};
+		soundWood4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_04",0.31622776,1,80};
+		soundWood5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_05",0.31622776,1,80};
+		soundWood6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_06",0.31622776,1,80};
+		soundWood7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_07",0.31622776,1,80};
+		soundWood8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_wood_hit_08",0.31622776,1,80};
+		soundHitBody1[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_1",0.56234133,1,60};
+		soundHitBody2[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_2",0.56234133,1,60};
+		soundHitBody3[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_3",0.56234133,1,60};
+		soundHitBody4[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_4",0.56234133,1,60};
+		soundHitBody5[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_5",0.56234133,1,60};
+		soundHitBody6[] = {"dz\sounds\weapons\hits\melee\fist\hit_fist_body_light_6",0.56234133,1,60};
+		soundHitBuilding1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,60};
+		soundHitBuilding2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,60};
+		soundHitBuilding3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,60};
+		soundHitBuilding4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,60};
+		soundHitBuilding5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,60};
+		soundHitBuilding6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,60};
+		soundHitBuilding7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,60};
+		soundHitBuilding8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,60};
+		soundHitFoliage1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_01",0.31622776,1,20};
+		soundHitFoliage2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_02",0.31622776,1,20};
+		soundHitFoliage3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_03",0.31622776,1,20};
+		soundHitFoliage4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_leaves_hit_04",0.31622776,1,20};
+		soundPlastic1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_01",0.31622776,1,70};
+		soundPlastic2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_02",0.31622776,1,70};
+		soundPlastic3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_03",0.31622776,1,70};
+		soundPlastic4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_hard_plastic_hit_04",0.31622776,1,70};
+		soundConcrete1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_01",0.31622776,1,70};
+		soundConcrete2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_02",0.31622776,1,70};
+		soundConcrete3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_03",0.31622776,1,70};
+		soundConcrete4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_04",0.31622776,1,70};
+		soundConcrete5[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_05",0.31622776,1,70};
+		soundConcrete6[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_06",0.31622776,1,70};
+		soundConcrete7[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_07",0.31622776,1,70};
+		soundConcrete8[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_concrete_hit_08",0.31622776,1,70};
+		soundRubber1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_01",0.31622776,1,50};
+		soundRubber2[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_02",0.31622776,1,50};
+		soundRubber3[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_03",0.31622776,1,50};
+		soundRubber4[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_rubber_hit_04",0.31622776,1,50};
+		soundWater1[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_01",0.31622776,1,40};
+		soundWater2[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_02",0.31622776,1,40};
+		soundWater3[] = {"dz\sounds\weapons\meleehits\blunt_wood_weapon_hits\blunt_wood_weapon_water_hit_03",0.31622776,1,40};
+		hitGroundSoft[] = {"soundGroundSoft1",0.2,"soundGroundSoft2",0.2,"soundGroundSoft3",0.1,"soundGroundSoft4",0.1,"soundGroundSoft5",0.1,"soundGroundSoft6",0.1,"soundGroundSoft7",0.1,"soundGroundSoft8",0.1};
+		hitGroundHard[] = {"soundGroundHard1",0.2,"soundGroundHard2",0.2,"soundGroundHard3",0.1,"soundGroundHard4",0.1,"soundGroundHard5",0.1,"soundGroundHard6",0.1,"soundGroundHard7",0.1,"soundGroundHard8",0.1};
+		hitMan[] = {"soundHitBody1",0.166,"soundHitBody2",0.166,"soundHitBody3",0.166,"soundHitBody4",0.166,"soundHitBody5",0.166,"soundHitBody6",0.17};
+		hitArmor[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitBuilding[] = {"soundHitBuilding1",0.2,"soundHitBuilding2",0.2,"soundHitBuilding3",0.1,"soundHitBuilding4",0.1,"soundHitBuilding5",0.1,"soundHitBuilding6",0.1,"soundHitBuilding7",0.1,"soundHitBuilding8",0.1};
+		hitFoliage[] = {"soundHitFoliage1",0.25,"soundHitFoliage2",0.25,"soundHitFoliage3",0.25,"soundHitFoliage4",0.25};
+		hitWood[] = {"soundWood1",0.125,"soundWood2",0.125,"soundWood3",0.125,"soundWood4",0.125,"soundWood5",0.125,"soundWood6",0.125,"soundWood7",0.125,"soundWood8",0.125};
+		hitGlass[] = {"soundHitGlass1",0.166,"soundHitGlass2",0.166,"soundHitGlass3",0.167,"soundHitGlass4",0.167,"soundHitGlass5",0.167,"soundHitGlass6",0.167};
+		hitGlassArmored[] = {"soundGlassArmored1",0.166,"soundGlassArmored2",0.166,"soundGlassArmored3",0.167,"soundGlassArmored4",0.167,"soundGlassArmored5",0.167,"soundGlassArmored6",0.167};
+		hitConcrete[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitRubber[] = {"soundRubber1",0.25,"soundRubber2",0.25,"soundRubber3",0.25,"soundRubber4",0.25};
+		hitPlastic[] = {"soundPlastic1",0.25,"soundPlastic2",0.25,"soundPlastic3",0.25,"soundPlastic4",0.25};
+		hitDefault[] = {"soundConcrete1",0.125,"soundConcrete2",0.125,"soundConcrete3",0.125,"soundConcrete4",0.125,"soundConcrete5",0.125,"soundConcrete6",0.125,"soundConcrete7",0.125,"soundConcrete8",0.125};
+		hitMetal[] = {"soundMetal1",0.125,"soundMetal2",0.125,"soundMetal3",0.125,"soundMetal4",0.125,"soundMetal5",0.125,"soundMetal6",0.125,"soundMetal7",0.125,"soundMetal8",0.125};
+		hitMetalplate[] = {"soundVehiclePlate1",0.125,"soundVehiclePlate2",0.125,"soundVehiclePlate3",0.125,"soundVehiclePlate4",0.125,"soundVehiclePlate5",0.125,"soundVehiclePlate6",0.125,"soundVehiclePlate7",0.125,"soundVehiclePlate8",0.125};
+		hitWater[] = {"soundWater1",0.333,"soundWater2",0.333,"soundWater3",0.333};
+	};
+	class MeleeZombieFirefighterLong_Heavy: MeleeZombieFirefighterLong
 	{
 		hitAnimation = 1;
 		soundGroundSoft1[] = {"dz\sounds\weapons\meleehits\fist_hits\fist_dirt_hit_01",0.63095737,1,60};

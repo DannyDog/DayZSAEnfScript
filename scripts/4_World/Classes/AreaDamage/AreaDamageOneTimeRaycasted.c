@@ -1,8 +1,9 @@
+// DEPRECATED: Left for backwards compatibility with mods
 class AreaDamageOneTimeRaycasted extends AreaDamageBase
 {	
 	void AreaDamageOneTimeRaycasted(EntityAI parent)
 	{
-		AreaDamageBase(parent);
+
 	}
 
 	void ~AreaDamageOneTimeRaycasted() {}

@@ -14,6 +14,7 @@ const int ECE_UPDATEPATHGRAPH				= 32;	// update navmesh when object placed upon
 
 const int ECE_ROTATIONFLAGS					= 512;	// enable rotation flags for object placement
 const int ECE_CREATEPHYSICS					= 1024;	// create collision envelope and related physics data (if object has them)
+const int ECE_INITAI						= 2048; // init ai
 const int ECE_AIRBORNE						= 4096;	// create flying unit in the air
 
 const int ECE_EQUIP_ATTACHMENTS				= 8192;		// equip with configured ATTACHMENTS
@@ -100,7 +101,7 @@ class CEApi
 	proto native void TimeShift( float fShift );
 	proto native void OverrideLifeTime( float fLifeTime );
 
-	proto native void SpawnGroup( string sEvName, vector vPos );
+	proto native Entity SpawnGroup( string sEvName, vector vPos );
 	proto native void SpawnDE( string sEvName, vector vPos, float fAngle ); /* THIS WILL BE OBSOLETE OR PREFERABLY DEFAULT? */
 	proto native void SpawnDE_WIP( string sEvName, vector vPos, float fAngle, int uFlags );
 	proto native void SpawnLoot( string sEvName, vector vPos, float fAngle, int iCount, float fRange );

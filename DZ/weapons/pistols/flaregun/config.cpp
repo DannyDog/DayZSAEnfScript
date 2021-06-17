@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class OpticsInfoPistol;
@@ -51,7 +52,7 @@ class cfgWeapons
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\magnum\magnum_reload2",0.8,1,20};
 		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Flare_Gun_Shot_SoundSet","Flare_Gun_Tail_SoundSet","Flare_Gun_InteriorTail_SoundSet"};
 			begin1[] = {"dz\sounds\weapons\firearms\flare_gun\flare_shot_0",1.7782794,1,300};
@@ -64,6 +65,11 @@ class cfgWeapons
 		class NoiseShoot
 		{
 			strength = 50;
+			type = "shot";
+		};
+		class NoiseFlare
+		{
+			strength = 30.0;
 			type = "shot";
 		};
 		class OpticsInfo: OpticsInfoPistol

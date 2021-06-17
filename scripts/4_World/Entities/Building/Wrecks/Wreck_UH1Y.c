@@ -1,6 +1,7 @@
 class Wreck_UH1Y extends House
 {
 	Particle m_ParticleEfx;
+	
 	void Wreck_UH1Y()
 	{
 		if ( !GetGame().IsMultiplayer() || GetGame().IsClient() )
@@ -16,5 +17,15 @@ class Wreck_UH1Y extends House
 			if ( m_ParticleEfx )
 				m_ParticleEfx.Stop();
 		}
+	}
+	
+}
+
+class Wreck_Mi8 extends House
+{
+
+	void Wreck_Mi8()
+	{
+		//I'll leave this here if we want to add particles to MI-8
 	}
 }

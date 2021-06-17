@@ -328,6 +328,9 @@ class DayZPlayerCameraIronsights extends DayZPlayerCameraBase
 
 class DayZPlayerCameraOptics : DayZPlayerCameraIronsights
 {
+	static const float 	CONST_NEARPLANE_OPTICS = 0.06; //Default near plane value for this camera
+	protected float m_RecoilOffsetZ = 0.0;
+	
 	void DayZPlayerCameraOptics(DayZPlayer pPlayer, HumanInputController pInput)
 	{
 		if (!temp_array)
@@ -380,7 +383,8 @@ class DayZPlayerCameraOptics : DayZPlayerCameraIronsights
 		pOutResult.m_fInsideCamera 			= 1.0;
 		pOutResult.m_fShootFromCamera		= m_fShootFromCamera;
 		
-		pOutResult.m_fNearPlane = 0.06; //0.07 default
+		//pOutResult.m_fNearPlane = CONST_NEARPLANE_OPTICS; //0.07 global default
+		pOutResult.m_fNearPlane = Math.Clamp(m_opticsUsed.GetNearPlaneValue() - m_RecoilOffsetZ, CONST_NEARPLANE_OPTICS, 10.0); //some sufficiently nonsensical max
 	}
 	
 	override float HoldBreathFOVEffect(float pDt)
@@ -592,6 +596,11 @@ class DayZPlayerCameraOptics : DayZPlayerCameraIronsights
 				SetCameraNV(false);
 			}
 		}
+	}
+	
+	override void SendRecoilOffsetZ(float offset)
+	{
+		m_RecoilOffsetZ = offset;
 	}
 };
 

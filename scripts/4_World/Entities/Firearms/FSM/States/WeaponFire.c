@@ -10,6 +10,7 @@ class WeaponDryFire extends WeaponStartAction
 		{
 			m_dtAccumulator = 0;
 		}
+		m_weapon.ResetBurstCount();
 	}
 
 	override bool IsWaitingForActionFinish () { return true; }
@@ -60,6 +61,7 @@ class WeaponFire extends WeaponStartAction
 				DayZPlayerImplement p;
 				if (Class.CastTo(p, e.m_player))
 					p.GetAimingModel().SetRecoil(m_weapon);
+				m_weapon.OnFire(mi);
 			}
 		}
 		super.OnEntry(e);
@@ -85,6 +87,12 @@ class WeaponFire extends WeaponStartAction
 			m_dtAccumulator = 0;
 		super.OnExit(e);
 	}
+	
+	override void OnAbort (WeaponEventBase e)
+	{
+		m_weapon.ResetBurstCount();
+		super.OnAbort(e);
+	}
 };
 
 class WeaponFireWithEject extends WeaponFire
@@ -102,6 +110,7 @@ class WeaponFireWithEject extends WeaponFire
 			if (Class.CastTo(p, e.m_player))
 				p.GetAimingModel().SetRecoil(m_weapon);
 			m_weapon.EjectCasing(mi);
+			m_weapon.OnFire(mi);
 		}
 		super.OnEntry(e);
 	}
@@ -121,7 +130,7 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 			m_dtAccumulator = 0;
 	
 			wpnPrint("[wpnfsm] " + Object.GetDebugName(m_weapon) + " WeaponFire bang bang!");
-			//m_weapon.Fire();
+
 			int mi = m_weapon.GetCurrentMuzzle();
 			int b = m_weapon.GetCurrentModeBurstSize(mi);
 			if(b > 1 )
@@ -140,7 +149,6 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 			}
 			else
 			{
-				//int mi = m_weapon.GetCurrentMuzzle();
 				if (TryFireWeapon(m_weapon, mi))
 				{
 					DayZPlayerImplement p;
@@ -176,6 +184,12 @@ class WeaponFireMultiMuzzle extends WeaponStartAction
 		if (e)
 			m_dtAccumulator = 0;
 		super.OnExit(e);
+	}
+	
+	override void OnAbort (WeaponEventBase e)
+	{
+		m_weapon.ResetBurstCount();
+		super.OnAbort(e);
 	}
 };
 
@@ -268,8 +282,10 @@ class WeaponFireToJam extends WeaponStartAction
 				DayZPlayerImplement p;
 				if (Class.CastTo(p, e.m_player))
 					p.GetAimingModel().SetRecoil(m_weapon);
+				m_weapon.OnFire(mi);
 			}
 		}
+		m_weapon.ResetBurstCount();
 		super.OnEntry(e);
 	}
 

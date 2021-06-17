@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class OpticsInfoRifle;
@@ -58,7 +59,7 @@ class cfgWeapons
 		shotAction = "ReloadRepeaterShot";
 		hiddenSelections[] = {"camo"};
 		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Repeater_Shot_SoundSet","Repeater_Tail_SoundSet","Repeater_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"Repeater_silencerHomeMade_SoundSet","Repeater_silencerHomeMadeTail_SoundSet","Repeater_silencerInteriorHomeMadeTail_SoundSet"}};

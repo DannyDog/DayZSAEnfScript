@@ -46,7 +46,7 @@ class DayZCreature extends EntityAI
 	
 	override bool IsIgnoredByConstruction()
 	{
-		return true;
+		return IsRuined();
 	}
 }
 

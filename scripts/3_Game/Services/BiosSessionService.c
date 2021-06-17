@@ -40,20 +40,20 @@ class BiosSessionService
 	*/
 	void TryGetSession( string join_handle = "" )
 	{
-		if( join_handle != "" )
+		if ( join_handle != "" )
 		{
 			m_GetSessionAttempts	= 0;
 			m_CurrentHandle			= join_handle;
 		}
 		
-		if( m_GetSessionAttempts < 10 )
+		if ( m_GetSessionAttempts < 10 )
 			GetSessionAsync( m_CurrentHandle );
 		else
 		{
-			GetGame().GetUserManager().SelectUser(OnlineServices.GetBiosUser());
-			if( g_Game.GetGameState() != DayZGameState.IN_GAME )
+			GetGame().GetUserManager().SelectUserEx(OnlineServices.GetBiosUser());
+			if ( g_Game.GetGameState() != DayZGameState.IN_GAME )
 			{
-				if( GetGame().GetMission() )
+				if ( GetGame().GetMission() )
 				{
 					GetGame().GetUIManager().CloseAllSubmenus();
 					GetGame().GetMission().AbortMission();
@@ -67,6 +67,7 @@ class BiosSessionService
 					g_Game.MainMenuLaunch();
 				}
 			}
+			
 			GetGame().GetUIManager().ShowDialog( "#str_xbox_join_fail_title", "#str_xbox_join_fail", 444, DBT_OK, DBB_NONE, DMT_INFO, GetGame().GetUIManager().GetMenu() );
 		}
 	}
@@ -200,7 +201,7 @@ class BiosSessionService
 			GetGame().GetCallQueue( CALL_CATEGORY_SYSTEM ).CallLater( TryGetSession, 100, false, "" );
 		#else
 			#ifdef PLATFORM_PS4
-				GetGame().GetUserManager().SelectUser(OnlineServices.GetBiosUser());
+				GetGame().GetUserManager().SelectUserEx(OnlineServices.GetBiosUser());
 				if( g_Game.GetGameState() != DayZGameState.IN_GAME )
 				{
 					if( GetGame().GetMission() )

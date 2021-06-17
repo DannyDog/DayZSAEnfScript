@@ -102,7 +102,7 @@ class ActionLightItemOnFire: ActionContinuousBase
 		
 		return false;
 	}
-
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{
 		ItemBase target_item = ItemBase.Cast( action_data.m_Target.GetObject() );
@@ -137,15 +137,10 @@ class ActionLightItemOnFire: ActionContinuousBase
 		}
 	}
 	
-	override void OnFinishProgressClient( ActionData action_data )
-	{
-		//Print("Ignite client");
-	}
-	
 	//setup
 	override bool SetupAction( PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL )
 	{	
-		if( super.SetupAction( player, target, item, action_data, extra_data ) )
+		if ( super.SetupAction( player, target, item, action_data, extra_data ) )
 		{
 			ItemBase target_item = ItemBase.Cast( target.GetObject() );
 			if ( target_item )
@@ -161,7 +156,7 @@ class ActionLightItemOnFire: ActionContinuousBase
 	
 	void SetIgnitingAnimation( ItemBase target_item )
 	{
-		if( target_item.HasFlammableMaterial() )
+		if ( target_item.HasFlammableMaterial() )
 		{
 			m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_STARTFIRE;
 		}

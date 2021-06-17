@@ -34,8 +34,14 @@ class ActionAttachOnSelection: ActionSingleUseBase
 
 			for (int s = 0; s < selections.Count(); s++)
 			{
-
-				int carId = InventorySlots.GetSlotIdFromString( selections[s] );
+				//Print(selections[s]);
+				int carId = -1;
+				if ( !target_entity.TranslateSlotFromSelection(selections[s],carId) )
+					carId = InventorySlots.GetSlotIdFromString( selections[s] );
+				
+				if ( carId == -1 )
+					continue;
+				
 				int slotsCnt = item.GetInventory().GetSlotIdCount();
 
 				for (int i=0; i < slotsCnt; i++ )

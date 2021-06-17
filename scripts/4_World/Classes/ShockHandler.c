@@ -1,12 +1,10 @@
-
-
 class ShockHandler
 {	
 	protected float 						m_Shock;
 	protected PlayerBase					m_Player;
 	
-	protected const float 					UPDATE_THRESHOLD = 5; //NOTE : The lower, the more precise but the more synchronization
-	const float 							VALUE_CHECK_INTERVAL = 0.5; //in seconds 
+	protected const float 					UPDATE_THRESHOLD = 3; //NOTE : The lower, the more precise but the more synchronization
+	const float 							VALUE_CHECK_INTERVAL = 0.95; //in seconds 
 	protected float 						m_CumulatedShock;
 	private float							m_TimeSinceLastTick = VALUE_CHECK_INTERVAL + 1;
 	private float							m_ShockMultiplier = 1;
@@ -27,45 +25,49 @@ class ShockHandler
 	{
 		m_Player = player;
 		m_Player.m_CurrentShock = m_Player.GetMaxHealth("", "Shock");
-		m_PrevVignette = m_Player.m_CurrentShock/100;
+		m_PrevVignette = m_Player.m_CurrentShock * 0.01; //Equivalent to divided by 100
 	}
 
-	
 	void Update(float deltaT)
 	{
-		
 		m_TimeSinceLastTick += deltaT;
 		
 		m_PulseTimer += deltaT;
 		
-		if (GetGame().IsClient())
+		if ( GetGame().IsClient() )
 		{
 			//Deactivate tunnel vignette when player falls unconscious
-			if (m_Player.IsUnconscious())
+			if ( m_Player.IsUnconscious() )
 			{
 				PPEffects.SetTunnelVignette(0);
 				return;
 			}
+			
+			//Add bobbing to create pulsing effect
+			float val = MiscGameplayFunctions.Bobbing( PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer );
+			
 			if ( m_Player.m_CurrentShock != (m_PrevVignette * 100) )
 			{
-				m_LerpRes = LerpVignette(m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick);
-				float val = MiscGameplayFunctions.Bobbing(PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer);
-				PPEffects.SetTunnelVignette(1 - Easing.EaseInQuart(m_LerpRes) + val);
+				//Interpolate between previous level and currently synchronized shock level
+				m_LerpRes = LerpVignette( m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick );
+				PPEffects.SetTunnelVignette( 1 - Easing.EaseInQuart(m_LerpRes) + val );
 			}
-			//Pulsing
-			//m_LerpRes = MiscGameplayFunctions.Bobbing(PULSE_PERIOD, PULSE_AMPLITUDE, m_PulseTimer);
-			
-			//PPEffects.SetTunnelVignette(1 - Easing.EaseInQuart(LerpVignette(m_PrevVignette, NormalizeShockVal(m_Player.m_CurrentShock), m_TimeSinceLastTick)) + m_LerpRes);
+			else
+			{
+				PPEffects.SetTunnelVignette( 1 - Easing.EaseInQuart( NormalizeShockVal(m_Player.m_CurrentShock)) + val );
+			}
 		}
-
 		
 		if ( m_TimeSinceLastTick > VALUE_CHECK_INTERVAL )
 		{
 			//Play the shock hit event (multiply prevVignette by 100 to "Un-Normalize" value)
-			if (GetGame().IsClient())
-				ShockHitEffect(m_PrevVignette * 100);
+			if ( GetGame().IsClient() )
+			{
+				ShockHitEffect( m_PrevVignette * 100 );
+				m_PrevVignette = m_Player.m_CurrentShock * 0.01;
+			}
 			
-			CheckValue(false);
+			CheckValue( false );
 			m_TimeSinceLastTick = 0;
 		}
 	}		
@@ -80,26 +82,28 @@ class ShockHandler
 		return m_Shock;
 	}
 	
-	void SetShock(float dealtShock)
+	void SetShock( float dealtShock )
 	{
 		m_Shock += dealtShock;
-		CheckValue(false);
+		CheckValue( false );
 	}
 	
 	//Inflict shock damage
 	private void DealShock()
 	{
-		if (GetGame().IsServer())
-			m_Player.GiveShock(-m_CumulatedShock);
+		if ( GetGame().IsServer() )
+			m_Player.GiveShock( -m_CumulatedShock );
 	}
 	
-	//Passing a value of FALSE will only check the values a value of TRUE will force a synchronization (don't use too often)
+	//Passing a value of FALSE will only check the values, a value of TRUE will force a synchronization (don't use too often)
 	void CheckValue(bool forceUpdate)
 	{
 		m_CumulatedShock += m_Shock; // increment on both client and server
-		m_PrevVignette = NormalizeShockVal(m_Player.m_CurrentShock);
 		
-		if (GetGame().IsServer())
+		if ( forceUpdate )
+			m_PrevVignette = NormalizeShockVal( m_Player.m_CurrentShock );
+		
+		if ( GetGame().IsServer() )
 		{	
 			m_Player.m_CurrentShock = m_Player.GetHealth("", "Shock");
 			if ( m_CumulatedShock >= UPDATE_THRESHOLD || forceUpdate )
@@ -116,8 +120,7 @@ class ShockHandler
 	
 	protected void Synchronize()
 	{
-		DayZPlayerSyncJunctures.SendShock(m_Player, m_Player.m_CurrentShock);
-		//m_Player.SetSynchDirty();
+		DayZPlayerSyncJunctures.SendShock( m_Player, m_Player.m_CurrentShock );
 	}
 	
 	float SetMultiplier(float mult)
@@ -126,33 +129,33 @@ class ShockHandler
 		return m_ShockMultiplier;
 	}
 	
-	private float NormalizeShockVal(float shock)
+	private float NormalizeShockVal( float shock )
 	{
 		float base = m_Player.GetMaxHealth("", "Shock") * INTENSITY_FACTOR;
 		float normShock = shock / base;
 		return normShock;
 	}
 	
-	private float LerpVignette(float x, float y, float deltaT)
+	private float LerpVignette( float x, float y, float deltaT )
 	{
 		float output;
-		output = Math.Lerp(x, y, deltaT);
+		output = Math.Lerp( x, y, deltaT );
 		return output;
 	}
 	
 	//ONLY CLIENT SIDE
-	private void ShockHitEffect(float compareBase)
+	private void ShockHitEffect( float compareBase )
 	{
 		float shockDifference = compareBase - m_Player.m_CurrentShock;
 		
-		if (shockDifference >= UPDATE_THRESHOLD)
+		if ( shockDifference >= UPDATE_THRESHOLD )
 		{
-			if (m_CumulatedShock < 25)
-				m_Player.SpawnShockEffect(MiscGameplayFunctions.Normalize(LIGHT_SHOCK_HIT, 100)); 
-			else if (m_CumulatedShock < 50)
-				m_Player.SpawnShockEffect(MiscGameplayFunctions.Normalize(MID_SHOCK_HIT, 100));
+			if ( m_CumulatedShock < 25 )
+				m_Player.SpawnShockEffect( MiscGameplayFunctions.Normalize( LIGHT_SHOCK_HIT, 100 ) ); 
+			else if ( m_CumulatedShock < 50 )
+				m_Player.SpawnShockEffect( MiscGameplayFunctions.Normalize( MID_SHOCK_HIT, 100 ) );
 			else
-				m_Player.SpawnShockEffect(MiscGameplayFunctions.Normalize(HEAVY_SHOCK_HIT, 100));
+				m_Player.SpawnShockEffect( MiscGameplayFunctions.Normalize( HEAVY_SHOCK_HIT, 100 ) );
 		}
 	}
 };

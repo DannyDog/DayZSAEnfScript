@@ -247,6 +247,7 @@ class CfgAmmo
 		};
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
+		unconRefillModifier = 10;
 		casing = "FxCartridge_556";
 		round = "FxRound_556";
 		timeToLive = 6;
@@ -509,6 +510,7 @@ class CfgAmmo
 		};
 		damageBarrel = 100;
 		damageBarrelDestroyed = 100;
+		unconRefillModifier = 5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -542,20 +544,12 @@ class CfgAmmo
 	};
 	class Bullet_12GaugePellets: Shotgun_Base
 	{
-		scope = 2;
+		scope = 1;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_pellets.p3d";
 		muzzleFlashParticle = "weapon_shot_pellets";
 		casing = "FxCartridge_12Pellet";
 		round = "FxRound_12Pellet";
 		spawnPileType = "Ammo_12gaPellets";
-		hit = 6;
-		indirectHit = 0;
-		indirectHitRange = 0;
-		hitShockHead = 20000;
-		hitShock = 400;
-		hitBlood = -200;
-		hitHealth = -200;
-		bleedChance = 2;
 		initSpeed = 340;
 		typicalSpeed = 420;
 		airFriction = -0.00575;
@@ -568,6 +562,7 @@ class CfgAmmo
 		weight = 0.005;
 		impactBehaviour = 0;
 		hitAnimation = 0;
+		unconRefillModifier = 2.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -595,7 +590,7 @@ class CfgAmmo
 	};
 	class Bullet_12GaugeSlug: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_slug.p3d";
 		casing = "FxCartridge_12Slug";
 		round = "FxRound_12Slug";
@@ -685,6 +680,7 @@ class CfgAmmo
 			water_int[] = {"Shell_12ga_water_int_SoundSet"};
 			water[] = {"Shell_12ga_water_int_SoundSet"};
 		};
+		unconRefillModifier = 2.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -711,7 +707,7 @@ class CfgAmmo
 	};
 	class Bullet_12GaugeRubberSlug: Bullet_12GaugeSlug
 	{
-		scope = 2;
+		scope = 1;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_rubber.p3d";
 		model = "\dz\weapons\projectiles\tracer_rubberslug.p3d";
 		casing = "FxCartridge_12RubberSlug";
@@ -725,6 +721,7 @@ class CfgAmmo
 		damageBarrel = 480.0;
 		damageBarrelDestroyed = 480.0;
 		weight = 0.005;
+		unconRefillModifier = 2.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -751,7 +748,7 @@ class CfgAmmo
 	};
 	class Bullet_12GaugeBeanbag: Bullet_12GaugeSlug
 	{
-		scope = 2;
+		scope = 1;
 		proxyShape = "\dz\weapons\projectiles\shotgunshell_beanbag.p3d";
 		model = "\dz\weapons\projectiles\tracer_beanbag.p3d";
 		casing = "FxCartridge_12Beanbag";
@@ -793,7 +790,7 @@ class CfgAmmo
 	};
 	class Bullet_556x45: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		spawnPileType = "Ammo_556x45";
 		casing = "FxCartridge_556";
 		round = "FxRound_556";
@@ -814,6 +811,7 @@ class CfgAmmo
 		weight = 0.004;
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 7.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -841,7 +839,7 @@ class CfgAmmo
 	};
 	class Bullet_556x45Tracer: Bullet_556x45
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\tracer_red.p3d";
 		spawnPileType = "Ammo_556x45Tracer";
 		tracerScale = 1.2;
@@ -850,7 +848,7 @@ class CfgAmmo
 	};
 	class Bullet_545x39: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		spawnPileType = "Ammo_545x39";
 		casing = "FxCartridge_556";
 		round = "FxRound_556";
@@ -865,6 +863,7 @@ class CfgAmmo
 		weight = 0.00343;
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 7.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -891,7 +890,7 @@ class CfgAmmo
 	};
 	class Bullet_545x39Tracer: Bullet_545x39
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\tracer_green.p3d";
 		spawnPileType = "Ammo_545x39Tracer";
 		tracerScale = 1.2;
@@ -900,7 +899,7 @@ class CfgAmmo
 	};
 	class Bullet_762x54: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_762";
 		round = "FxRound_762";
 		spawnPileType = "Ammo_762x54";
@@ -918,6 +917,7 @@ class CfgAmmo
 		weight = 0.012;
 		impactBehaviour = 1;
 		hitAnimation = 1;
+		unconRefillModifier = 5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -946,7 +946,7 @@ class CfgAmmo
 	};
 	class Bullet_762x54Tracer: Bullet_762x54
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\tracer_green.p3d";
 		spawnPileType = "Ammo_762x54Tracer";
 		tracerScale = 1.2;
@@ -955,7 +955,7 @@ class CfgAmmo
 	};
 	class Bullet_308Win: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_762";
 		round = "FxRound_308Win";
 		spawnPileType = "Ammo_308Win";
@@ -976,6 +976,7 @@ class CfgAmmo
 		weight = 0.01;
 		impactBehaviour = 1;
 		hitAnimation = 1;
+		unconRefillModifier = 5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1003,7 +1004,7 @@ class CfgAmmo
 	};
 	class Bullet_308WinTracer: Bullet_308Win
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\tracer_red.p3d";
 		spawnPileType = "Ammo_308WinTracer";
 		tracerScale = 1.2;
@@ -1012,7 +1013,7 @@ class CfgAmmo
 	};
 	class Bullet_762x39: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_762x39";
 		round = "FxRound_762x39";
 		spawnPileType = "Ammo_762x39";
@@ -1030,6 +1031,7 @@ class CfgAmmo
 		weight = 0.008;
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 7.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1058,7 +1060,7 @@ class CfgAmmo
 	};
 	class Bullet_762x39Tracer: Bullet_762x39
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\tracer_green.p3d";
 		spawnPileType = "Ammo_762x39Tracer";
 		tracerScale = 1.2;
@@ -1067,7 +1069,7 @@ class CfgAmmo
 	};
 	class Bullet_45ACP: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_9mm";
 		round = "FxRound_45acp";
 		spawnPileType = "Ammo_45ACP";
@@ -1087,6 +1089,7 @@ class CfgAmmo
 		weight = 0.0149;
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 10;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1114,7 +1117,7 @@ class CfgAmmo
 	};
 	class Bullet_357: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_9mm";
 		round = "FxRound_9mm";
 		spawnPileType = "Ammo_357";
@@ -1132,6 +1135,7 @@ class CfgAmmo
 		weight = 0.0102;
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1159,7 +1163,7 @@ class CfgAmmo
 	};
 	class Bullet_9x19: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_9mm";
 		round = "FxRound_9mm";
 		spawnPileType = "Ammo_9x19";
@@ -1179,6 +1183,7 @@ class CfgAmmo
 		weight = 0.0084;
 		impactBehaviour = 0;
 		hitAnimation = 0;
+		unconRefillModifier = 10;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1206,7 +1211,7 @@ class CfgAmmo
 	};
 	class Bullet_380: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_9mm";
 		round = "FxRound_9mm";
 		spawnPileType = "Ammo_380";
@@ -1225,6 +1230,7 @@ class CfgAmmo
 		damageBarrelDestroyed = 150;
 		weight = 0.006;
 		hitAnimation = 0;
+		unconRefillModifier = 10;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1251,7 +1257,7 @@ class CfgAmmo
 	};
 	class Bullet_22: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_22";
 		round = "FxRound_22";
 		spawnPileType = "Ammo_22";
@@ -1272,6 +1278,7 @@ class CfgAmmo
 		soundFly[] = {};
 		supersonicCrackNear[] = {};
 		supersonicCrackFar[] = {};
+		unconRefillModifier = 10;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1299,7 +1306,7 @@ class CfgAmmo
 	};
 	class Bullet_9x39AP: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_762x39";
 		round = "FxRound_762x39";
 		spawnPileType = "Ammo_9x39AP";
@@ -1319,6 +1326,7 @@ class CfgAmmo
 		supersonicCrackFar[] = {};
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 7.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1347,7 +1355,7 @@ class CfgAmmo
 	};
 	class Bullet_9x39: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		casing = "FxCartridge_762x39";
 		round = "FxRound_762x39";
 		spawnPileType = "Ammo_9x39";
@@ -1367,6 +1375,7 @@ class CfgAmmo
 		supersonicCrackFar[] = {};
 		impactBehaviour = 0;
 		hitAnimation = 1;
+		unconRefillModifier = 7.5;
 		class DamageApplied
 		{
 			type = "Projectile";
@@ -1394,7 +1403,7 @@ class CfgAmmo
 	};
 	class Arrow_Composite: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_composite_flying.p3d";
 		spawnPileType = "Ammo_ArrowComposite";
 		proxyShape = "\dz\weapons\projectiles\arrow_composite.p3d";
@@ -1437,7 +1446,7 @@ class CfgAmmo
 	};
 	class Arrow_Target: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_target.p3d";
 		proxyShape = "\dz\weapons\projectiles\arrow_target.p3d";
 		hit = 7;
@@ -1479,7 +1488,7 @@ class CfgAmmo
 	};
 	class Arrow_Hunting: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_hunting.p3d";
 		proxyShape = "\dz\weapons\projectiles\arrow_hunting.p3d";
 		hit = 7;
@@ -1521,7 +1530,7 @@ class CfgAmmo
 	};
 	class Arrow_Bolt: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_hunting_flying.p3d";
 		spawnPileType = "Ammo_ArrowBolt";
 		proxyShape = "\dz\weapons\projectiles\arrow_hunting.p3d";
@@ -1564,7 +1573,7 @@ class CfgAmmo
 	};
 	class Arrow_Boned: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_hunting_flying.p3d";
 		spawnPileType = "Ammo_ArrowBoned";
 		proxyShape = "\dz\weapons\projectiles\arrow_crafted_advanced.p3d";
@@ -1604,7 +1613,7 @@ class CfgAmmo
 	};
 	class Arrow_Primitive: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_hunting_flying.p3d";
 		spawnPileType = "Ammo_ArrowPrimitive";
 		proxyShape = "\dz\weapons\projectiles\arrow_crafted_simple.p3d";
@@ -1644,7 +1653,7 @@ class CfgAmmo
 	};
 	class Arrow_Crude: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\arrow_hunting_flying.p3d";
 		spawnPileType = "Ammo_SharpStick";
 		proxyShape = "\dz\weapons\projectiles\arrow_crude_simple.p3d";
@@ -1684,7 +1693,7 @@ class CfgAmmo
 	};
 	class Dart_Syringe: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\dart_syringe.p3d";
 		spawnPileType = "Ammo_DartSyringe";
 		hit = 9;
@@ -1723,7 +1732,7 @@ class CfgAmmo
 	};
 	class Bullet_Flare: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\projectiles\Flare_Projectile.p3d";
 		proxyShape = "\dz\weapons\projectiles\Flare_SingleRound.p3d";
 		casing = "FxCartridge_Flare";
@@ -1801,7 +1810,7 @@ class CfgAmmo
 	class FlareSimulation_Blue: FlareSimulation{};
 	class GrenadeM4: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		simulation = "shotShell";
 		simulationStep = 0.05;
 		soundFly[] = {"dz\sounds\weapons\effects\bullet_crack_mid",9.999997e-09,1};
@@ -1842,7 +1851,7 @@ class CfgAmmo
 	};
 	class Rocket_RPG7_Base: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\ammunition\rocket_rpg7_inflight.p3d";
 		proxyShape = "\dz\weapons\projectiles\rocket_rpg7_inflight.p3d";
 		casing = "-";
@@ -1960,7 +1969,7 @@ class CfgAmmo
 	};
 	class Rocket_LAW_Base: Bullet_Base
 	{
-		scope = 2;
+		scope = 1;
 		model = "\dz\weapons\ammunition\rocket_rpg7_inflight.p3d";
 		proxyShape = "\dz\weapons\projectiles\rocket_rpg7_inflight.p3d";
 		casing = "-";

@@ -509,7 +509,9 @@ class ActionBase : ActionBase_Basic
 	{
 		if ( HasProneException() )
 		{
-			if ( player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT))
+			if ( player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_RAISEDERECT | DayZPlayerConstants.STANCEMASK_RAISEDCROUCH | DayZPlayerConstants.STANCEMASK_RAISEDPRONE))
+				return -1;
+			else if ( player.IsPlayerInStance(DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT))
 				return DayZPlayerConstants.STANCEMASK_CROUCH | DayZPlayerConstants.STANCEMASK_ERECT;
 			else
 				return DayZPlayerConstants.STANCEMASK_PRONE;
@@ -649,12 +651,15 @@ class ActionBase : ActionBase_Basic
 		
 		if ( HasTarget() )
 		{
-			EntityAI entity = EntityAI.Cast(target.GetObject());
-			if ( entity && !target.GetObject().IsMan() )
+			if(!FirearmActionBase.Cast(this))
 			{
-				Man man = entity.GetHierarchyRootPlayer();
-				if ( man && man != player )
-					return false;
+				EntityAI entity = EntityAI.Cast(target.GetObject());
+				if ( entity && !target.GetObject().IsMan() )
+				{
+					Man man = entity.GetHierarchyRootPlayer();
+					if ( man && man != player )
+						return false;
+				}
 			}
 			
 			if ( m_ConditionTarget && !m_ConditionTarget.Can(player, target))

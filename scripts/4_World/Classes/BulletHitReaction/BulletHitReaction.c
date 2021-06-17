@@ -45,3 +45,45 @@ class DamageDealtEffect
 	}
 	
 }
+
+class EffectRadial
+{
+	
+	float m_TimeActive;
+	float m_Divisor = 16;
+	float m_Duration = 0.6;
+	
+	void EffectRadial(Param param1, Param param2)
+	{
+		if (param1)
+		{
+			Param2<float, float> p1 = Param2<float, float>.Cast(param1);
+			if (p1)
+			{
+				m_Divisor = p1.param1;
+				m_Duration = p1.param2;
+			}
+		}
+	}
+	
+	void ~EffectRadial()
+	{
+		PPEffects.ResetRadialBlur();
+	}
+
+	void Update(float deltatime)
+	{
+		
+		float time = Math.InverseLerp(0, m_Duration, m_TimeActive);	
+		float value = 1 - Easing.EaseInQuart(time);
+		float strenght = value / m_Divisor; //The divisor matches the ease curve used
+		
+		PPEffects.SetRadialBlur(strenght, strenght, 1 - value, 1 - value);
+		
+		m_TimeActive += deltatime;
+		if(m_TimeActive >= m_Duration)
+		{
+			delete this;
+		}
+	}
+}

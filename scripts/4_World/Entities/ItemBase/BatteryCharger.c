@@ -285,6 +285,7 @@ class BatteryCharger extends ItemBase
 	}
 	
 	
+	
 	// Control of status lights
 	// ON
 	void RedLightOn()
@@ -361,6 +362,19 @@ class BatteryCharger extends ItemBase
 		{
 			PlayPlaceSound();
 		}
+	}
+	
+	override void RefreshPhysics()
+	{
+		super.RefreshPhysics();
+		
+		if ( GetAttachmentByType(CarBattery) )
+		{
+			RemoveProxyPhysics( "battery" );
+			AddProxyPhysics( "battery" );
+		}
+		else
+			RemoveProxyPhysics( "battery" );
 	}
 		
 	//================================================================

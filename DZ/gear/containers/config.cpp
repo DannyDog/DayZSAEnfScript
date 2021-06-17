@@ -49,7 +49,7 @@ class CfgVehicles
 		stackedUnit = "ml";
 		randomQuantity = 2;
 		varLiquidTypeInit = 512;
-		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)";
+		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256) -32768";
 		varQuantityInit = 0.0;
 		varQuantityMin = 0.0;
 		varQuantityMax = 200000.0;
@@ -507,7 +507,7 @@ class CfgVehicles
 		itemsCargoSize[] = {4,5};
 		allowOwnedCargoManipulation = 1;
 		canBeDigged = 1;
-		varWetMax = 0.05;
+		varWetMax = 0.249;
 		heatIsolation = 1;
 		repairableWithKits[] = {5,6};
 		repairCosts[] = {30.0,25.0};

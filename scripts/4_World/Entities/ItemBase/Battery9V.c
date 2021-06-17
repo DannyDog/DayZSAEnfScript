@@ -9,6 +9,14 @@ class Battery9V extends ItemBase
 		RegisterNetSyncVariableInt("m_Efficiency0To10");
 	}
 	
+	//Update Battery energy level before it overrides quantity
+	override void SetCEBasedQuantity()
+	{
+		super.SetCEBasedQuantity();
+		if ( GetCompEM() )
+			GetCompEM().SetEnergy( GetCompEM().GetEnergyMax() * ( GetQuantity() / GetQuantityMax() ) );
+	}
+	
 	//! Returns efficiency of this battery. The value is synchronized from server to all clients and is accurate down to 0.1 units.
 	float GetEfficiency0To1()
 	{

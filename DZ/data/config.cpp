@@ -1012,6 +1012,341 @@ class CfgWorlds
 		};
 	};
 };
+class MapDefaults
+{
+	ptsPerSquareSea = 8.0;
+	ptsPerSquareTxt = 10.0;
+	ptsPerSquareCLn = 10.0;
+	ptsPerSquareExp = 10.0;
+	ptsPerSquareCost = 10.0;
+	ptsPerSquareFor = 9.0;
+	ptsPerSquareForEdge = 15.0;
+	ptsPerSquareRoad = 4.0;
+	ptsPerSquareObj = 15.0;
+	maxSatelliteAlpha = 0.0;
+	alphaFadeStartScale = 1.0;
+	alphaFadeEndScale = 1.0;
+	userMapPath = "";
+	maxUserMapAlpha = 1.0;
+	alphaUserMapFadeStartScale = 0.34;
+	alphaUserMapFadeEndScale = 0.34;
+	showCountourInterval = 1;
+	colorLevels[] = {0.65,0.6,0.45,0.95};
+	colorSea[] = {0.64,0.76,0.89,1.0};
+	colorForest[] = {0.36,0.78,0.08,0.5};
+	colorRocks[] = {0.5,0.5,0.5,0.5};
+	colorCountlines[] = {0.85,0.8,0.65,1.0};
+	colorMainCountlines[] = {0.45,0.4,0.25,1.0};
+	colorCountlinesWater[] = {0.25,0.4,0.5,0.3};
+	colorMainCountlinesWater[] = {0.25,0.4,0.5,0.9};
+	colorPowerLines[] = {0.1,0.1,0.1,1.0};
+	colorRailWay[] = {0.8,0.2,0.0,1.0};
+	colorForestBorder[] = {0.4,0.8,0.0,1.0};
+	colorRocksBorder[] = {0.5,0.5,0.5,1.0};
+	colorOutside[] = {1.0,1.0,1.0,1.0};
+	colorTracks[] = {0.78,0.66,0.34,1.0};
+	colorRoads[] = {0.69,0.43,0.23,1.0};
+	colorMainRoads[] = {0.53,0.35,0.0,1.0};
+	colorTracksFill[] = {0.96,0.91,0.6,1.0};
+	colorRoadsFill[] = {0.92,0.73,0.41,1.0};
+	colorMainRoadsFill[] = {0.84,0.61,0.21,1.0};
+	colorGrid[] = {0.15,0.15,0.05,0.9};
+	colorGridMap[] = {0.25,0.25,0.1,0.75};
+	fontNames = "GUI_FONT_SYSTEM";
+	sizeExNames = 0.04;
+	colorNames[] = {0.0,0.0,0.0,1.0};
+	fontGrid = "GUI_FONT_SYSTEM";
+	sizeExGrid = 0.01;
+	fontLevel = "GUI_FONT_SYSTEM";
+	sizeExLevel = 0.01;
+	colorMountPoint[] = {0.45,0.4,0.25,1.0};
+	mapPointDensity = 0.12;
+	text = "";
+	fontLabel = "GUI_FONT_SYSTEM";
+	fontInfo = "GUI_FONT_SYSTEM";
+	class Legend
+	{
+		x = 0.05;
+		y = 0.85;
+		w = 0.4;
+		h = 0.1;
+		font = "GUI_FONT_SYSTEM";
+		sizeEx = 0.02;
+		colorBackground[] = {1,1,1,0.5};
+		color[] = {0,0,0,1};
+	};
+	class Bush
+	{
+		icon = "\dz\gear\navigation\data\map_bush_ca.paa";
+		color[] = {0.4,0.8,0.0,0.8};
+		size = 14;
+		importance = "0.2 * 14 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class SmallTree
+	{
+		icon = "\dz\gear\navigation\data\map_smalltree_ca.paa";
+		color[] = {0.4,0.8,0.0,0.8};
+		size = 12;
+		importance = "0.6 * 12 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Tree
+	{
+		icon = "\dz\gear\navigation\data\map_tree_ca.paa";
+		color[] = {0.4,0.8,0.0,0.8};
+		size = 12;
+		importance = "0.9 * 16 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Rock
+	{
+		icon = "\dz\gear\navigation\data\map_rock_ca.paa";
+		color[] = {0.1,0.1,0.1,0.8};
+		size = 12;
+		importance = "0.5 * 12 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Fuelstation
+	{
+		icon = "\dz\gear\navigation\data\map_fuelstation_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.75;
+		coefMax = 4;
+	};
+	class Lighthouse
+	{
+		icon = "\dz\gear\navigation\data\map_lighthouse_ca.paa";
+		size = 14;
+		color[] = {0,0,0,1};
+		importance = "3 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Stack
+	{
+		icon = "\dz\gear\navigation\data\map_stack_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Transmitter
+	{
+		icon = "\dz\gear\navigation\data\map_transmitter_ca.paa";
+		color[] = {0,0,0,1};
+		size = 16;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Watertower
+	{
+		icon = "\dz\gear\navigation\data\map_watertower_ca.paa";
+		color[] = {0.2,0.45,0.7,1};
+		size = 16;
+		importance = "1.2 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Shipwreck
+	{
+		icon = "\dz\gear\navigation\data\map_shipwreck_ca.paa";
+		color[] = {0,0,0,1};
+		size = 16;
+		importance = "1.2 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Monument
+	{
+		icon = "\dz\gear\navigation\data\map_monument_ca.paa";
+		color[] = {0,0,0,1};
+		size = 20;
+		importance = "1.2 * 16 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class BusStop
+	{
+		icon = "\dz\gear\navigation\data\map_busstop_ca.paa";
+		color[] = {0.15,0.26,0.87,1};
+		size = 12;
+		importance = "1 * 10 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Fountain
+	{
+		icon = "\dz\gear\navigation\data\map_fountain_ca.paa";
+		color[] = {0.2,0.45,0.7,1};
+		size = 15;
+		importance = "1 * 12 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Waterpump
+	{
+		icon = "\dz\gear\navigation\data\map_waterpump_ca.paa";
+		color[] = {0.2,0.45,0.7,1};
+		size = 16;
+		importance = "1 * 12 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Hospital
+	{
+		icon = "\dz\gear\navigation\data\map_hospital_ca.paa";
+		color[] = {0.15,0.26,0.87,1};
+		size = 17;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Store
+	{
+		icon = "\dz\gear\navigation\data\map_store_ca.paa";
+		color[] = {0.0,0.0,0.0,1};
+		size = 20;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Police
+	{
+		icon = "\dz\gear\navigation\data\map_police_ca.paa";
+		color[] = {0.11,0.1,0.25,1};
+		size = 20;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class FireDep
+	{
+		icon = "\dz\gear\navigation\data\map_firedep_ca.paa";
+		color[] = {0.764,0.0,0.0,1};
+		size = 20;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class TouristSign
+	{
+		icon = "\dz\gear\navigation\data\map_tsign_ca.paa";
+		color[] = {0.0,0,0.0,1};
+		size = 18;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Tourism
+	{
+		icon = "\dz\gear\navigation\data\map_tourism_ca.paa";
+		color[] = {0.0,0.0,0.0,1};
+		size = 14;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Cross
+	{
+		icon = "\dz\gear\navigation\data\map_cross_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "0.7 * 16 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Chapel
+	{
+		icon = "\dz\gear\navigation\data\map_chapel_ca.paa";
+		color[] = {0,0,0,1};
+		size = 16;
+		importance = "1 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class Church
+	{
+		icon = "\dz\gear\navigation\data\map_church_ca.paa";
+		color[] = {0,0,0,1};
+		size = 10;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.9;
+		coefMax = 4;
+	};
+	class ViewTower
+	{
+		icon = "\dz\gear\navigation\data\map_viewtower_ca.paa";
+		color[] = {0,0,0,1};
+		size = 16;
+		importance = "2.5 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class TouristShelter
+	{
+		icon = "\dz\gear\navigation\data\map_tshelter_ca.paa";
+		color[] = {0.0,0,0.0,1};
+		size = 16;
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Quay
+	{
+		icon = "\dz\gear\navigation\data\map_quay_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.5;
+		coefMax = 4;
+	};
+	class Bunker
+	{
+		icon = "\dz\gear\navigation\data\map_bunker_ca.paa";
+		color[] = {0,0,0,1};
+		size = 14;
+		importance = "1.5 * 14 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Fortress
+	{
+		icon = "\dz\gear\navigation\data\map_fortress_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "2 * 16 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Rocks
+	{
+		icon = "\dz\gear\navigation\data\map_rock_ca.paa";
+		color[] = {0.1,0.1,0.1,0.8};
+		size = 12;
+		importance = "0.5 * 12 * 0.05";
+		coefMin = 0.25;
+		coefMax = 4;
+	};
+	class Ruin
+	{
+		icon = "\dz\gear\navigation\data\map_ruin_ca.paa";
+		size = 16;
+		color[] = {0,0,0,1};
+		importance = "1.2 * 16 * 0.05";
+		coefMin = 1;
+		coefMax = 4;
+	};
+};
+class RscMapControl: MapDefaults{};
 class CfgMaterials
 {
 	class Water
@@ -1866,6 +2201,18 @@ class PreloadVehicles
 	{
 		loadStyle = 2;
 	};
+	class Truck_01_Covered
+	{
+		loadStyle = 2;
+	};
+	class Truck_01_Covered_Blue
+	{
+		loadStyle = 2;
+	};
+	class Truck_01_Covered_Orange
+	{
+		loadStyle = 2;
+	};
 };
 class CfgVehicles
 {
@@ -2049,6 +2396,9 @@ class CfgVehicles
 		varTemperatureInit = 0;
 		varTemperatureMin = 0;
 		varTemperatureMax = 1;
+		varCleannessInit = 0;
+		varCleannessMin = 0;
+		varCleannessMax = 1;
 		compatibleLocks[] = {};
 		lockSoundSet = "";
 		lockType = 0;
@@ -2738,7 +3088,13 @@ class cfgWeapons
 			};
 		};
 	};
-	class BoltActionRifle_Base: Rifle_Base{};
+	class BoltActionRifle_Base: Rifle_Base
+	{
+		class Reliability
+		{
+			ChanceToJam[] = {0,0.0,0.0,0.0,1};
+		};
+	};
 	class BoltActionRifle_InnerMagazine_Base: BoltActionRifle_Base{};
 	class Shotgun_Base: Rifle_Base
 	{

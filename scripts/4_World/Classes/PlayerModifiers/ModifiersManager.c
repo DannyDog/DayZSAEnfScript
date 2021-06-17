@@ -6,6 +6,7 @@ enum EActivationType {
 };
 
 const int DEFAULT_TICK_TIME_ACTIVE = 3;
+const int DEFAULT_TICK_TIME_ACTIVE_SHORT = 1;
 const int DEFAULT_TICK_TIME_INACTIVE = 3;
 const int DEFAULT_TICK_TIME_INACTIVE_LONG = 10;
 
@@ -51,7 +52,7 @@ class ModifiersManager
 	ref map<int, ref ModifierBase> m_ModifierList;
 	ref array<ref Param> m_ParamList;
 	bool m_AllowModifierTick = false;
-	const int STORAGE_VERSION = 101;
+	const int STORAGE_VERSION = 121;
 	void ModifiersManager(PlayerBase player)
 	{
 		m_ModifierList 	= new map<int, ref ModifierBase>;
@@ -102,12 +103,15 @@ class ModifiersManager
 		AddModifier(new ToxicityMdfr);
 		AddModifier(new BreathVapourMdfr);
 		AddModifier(new ShockMdfr);
-		AddModifier(new WoundInfectionMdfr);
+		AddModifier(new WoundInfectStage1Mdfr);
+		AddModifier(new WoundInfectStage2Mdfr);
 		AddModifier(new CharcoalMdfr);
 		AddModifier(new MorphineMdfr);
 		AddModifier(new PainKillersMdfr);
 		AddModifier(new EpinephrineMdfr);
 		AddModifier(new HeatBufferMdfr);
+		AddModifier(new DisinfectionMdfr);
+		AddModifier(new FatigueMdfr);
 	}
 
 	void SetModifiers(bool enable)
@@ -161,6 +165,14 @@ class ModifiersManager
 			m_ModifierList.GetElement(i).Tick(delta_time);
 		}
 
+	}
+	
+	void DeactivateAllModifiers()
+	{
+		for(int i = 0; i < m_ModifierList.Count(); i++)
+		{
+			m_ModifierList.GetElement(i).Deactivate();
+		}
 	}
 	
 	void ActivateModifier(int modifier_id, bool triggerEvent = EActivationType.TRIGGER_EVENT_ON_ACTIVATION)

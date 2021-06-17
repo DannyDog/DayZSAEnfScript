@@ -116,14 +116,20 @@ class ActionDigOutStash: ActionContinuousBase
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
+	
+	override string GetAdminLogMessage( ActionData action_data )
+	{
+		string message = string.Format("Player %1 Dug out %2 at position %3", action_data.m_Player, action_data.m_Target.GetObject(), action_data.m_Target.GetObject().GetPosition() );
+		return message;
+	}
 };
 
 class DigOutStashLambda : DropEquipAndDestroyRootLambda
 {
-	void DigOutStashLambda (EntityAI old_item, string new_item_type, PlayerBase player)
+	void DigOutStashLambda(EntityAI old_item, string new_item_type, PlayerBase player)
 	{ }
 
-	override void CopyOldPropertiesToNew (notnull EntityAI old_item, EntityAI new_item)
+	override void CopyOldPropertiesToNew(notnull EntityAI old_item, EntityAI new_item)
 	{
 		super.CopyOldPropertiesToNew(old_item, new_item);
 	}

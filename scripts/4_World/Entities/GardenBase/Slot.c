@@ -5,14 +5,21 @@ enum eFertlityState
 	//This will be used to set bit values (DO NOT ADD MORE VALUES)
 }
 
+enum eWateredState
+{
+	DRY = 0,
+	WET = 1
+	//Used to improve readability of watered state changes
+}
+
 class Slot
 {
 	static const int 		STATE_DIGGED 		= 1;
 	static const int 		STATE_PLANTED 		= 2;
 	
 	private int 			m_WaterQuantity;
-	static private int 		m_WaterNeeded 		= 200; // How much water is needed to water a plant from a bottle. Value is in mililitres
-	static private int 		m_WaterMax 			= 200; // DEPRECATED
+	static private int 		m_WaterNeeded 		= 190; // How much water is needed to water a plant from a bottle. Value is in mililitres
+	static private int 		m_WaterMax 			= 200; 
 	
 	float m_Fertility;
 	float m_FertilizerUsage;
@@ -22,6 +29,7 @@ class Slot
 	
 	string m_FertilizerType;
 	int    m_FertilityState = eFertlityState.NONE;
+	int    m_WateredState = eWateredState.DRY;
 	string m_DiggedSlotComponent; // example: "Component02" for the 1st slot in GardenBase
 	string m_PlantType;
 	private ItemBase m_Seed;
@@ -99,6 +107,13 @@ class Slot
 		}
 	}
 	
+	//Used to force water level an go around sync issues
+	void SetWater( int val )
+	{
+		val = Math.Clamp( val, 0, m_WaterMax );
+		m_WaterQuantity = val;
+	}
+	
 	ItemBase GetSeed()
 	{
 		return m_Seed;
@@ -117,8 +132,8 @@ class Slot
 		bool needed_water = NeedsWater();
 		m_WaterQuantity += consumed_quantity;
 		
-		if (m_WaterQuantity >= GetWaterUsage())
-			m_WaterQuantity = GetWaterUsage();
+		if (m_WaterQuantity >= GetWaterMax())
+			m_WaterQuantity = GetWaterMax();
 		
 		if (m_WaterQuantity < 0)
 			m_WaterQuantity = 0;
@@ -138,7 +153,10 @@ class Slot
 		
 		if ( needed_water != NeedsWater() )
 		{
+			SetWateredState( eWateredState.WET );
 			GetGarden().UpdateSlotTexture( GetSlotIndex() );
+			if ( m_Garden.GetSlotWateredState() != m_Garden.GetMaxWaterStateVal() )
+				m_Garden.SlotWaterStateUpdate( this );
 		}
 	}
 	
@@ -156,7 +174,7 @@ class Slot
 	
 	bool CanBeWatered()
 	{
-		if ( m_WaterQuantity < GetWaterUsage() )
+		if ( m_WaterQuantity < GetWaterMax() )
 		{
 			return true;
 		}
@@ -221,12 +239,23 @@ class Slot
 		m_FertilityState = newState;
 	}
 	
+	int GetWateredState()
+	{
+		return m_WateredState;
+	}
+	
+	void SetWateredState( int newState )
+	{
+		m_WateredState = newState;
+		if ( m_WateredState == eWateredState.WET )
+			SetWater( GetWaterMax() );
+	}
+	
 	float GetWaterUsage()
 	{
 		return m_WaterNeeded;
 	}
 	
-	//DEPRECATED
 	float GetWaterMax()
 	{
 		return m_WaterMax;
@@ -267,6 +296,11 @@ class Slot
 		m_FertilizerUsage = 200;
 		m_FertilizerQuantity = 0.0;
 		m_FertilizerType = "";
+		m_FertilityState = eFertlityState.NONE;
+		
+		m_WaterQuantity = 0;
+		m_WateredState = eWateredState.DRY;
+		
 		m_HarvestingEfficiency = 1.0;
 		//m_DiggedSlotComponent = "";
 		m_State = STATE_DIGGED;

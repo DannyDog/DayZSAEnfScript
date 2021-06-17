@@ -446,6 +446,16 @@ class array<Class T>
 		}
 	}
 	
+	void RemoveItemUnOrdered(T value)
+	{
+		int remove_index = Find(value);
+
+		if ( remove_index >= 0 )
+		{
+			Remove(remove_index);
+		}
+	}
+	
 	bool IsValidIndex( int index )
 	{
 		return ( index > -1 && index < Count() );

@@ -100,6 +100,12 @@ enum EntityEvent
 	SOUNDEVENT,
 	PHYSICSSTEADY,
 	USER,
+	
+	//! Object entered Trigger
+	ENTER,
+	//! Object left Trigger
+	LEAVE,
+	
 	//!Mask of all events
 	ALL
 };
@@ -213,10 +219,10 @@ class IEntity: Managed
 	private void EOnUser1(IEntity other, int extra) //!EntityEvent.EV_USER+1
 	{
 	}
-	private void EOnUser2(IEntity other, int extra) //!EntityEvent.EV_USER+2
+	event private void EOnEnter(IEntity other, int extra) //!EntityEvent.ENTER
 	{
 	}
-	private void EOnUser3(IEntity other, int extra) //!EntityEvent.EV_USER+3
+	event private void EOnLeave(IEntity other, int extra) //!EntityEvent.LEAVE
 	{
 	}
 	private void EOnUser4(IEntity other, int extra) //!EntityEvent.EV_USER+4

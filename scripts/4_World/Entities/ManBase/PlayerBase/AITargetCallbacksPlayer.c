@@ -91,10 +91,10 @@ class AITargetCallbacksPlayer : AITargetCallbacks
 	{
 		int movementSpeed = 0;
 
-		switch(pState.m_iStanceIdx)
+		switch (pState.m_iStanceIdx)
 		{
 		case DayZPlayerConstants.STANCEIDX_CROUCH:
-			switch(pState.m_iMovement)
+			switch (pState.m_iMovement)
 			{
 			case DayZPlayerConstants.MOVEMENTIDX_IDLE:
 				movementSpeed = DayZPlayerConstants.MOVEMENTIDX_IDLE;
@@ -104,12 +104,12 @@ class AITargetCallbacksPlayer : AITargetCallbacks
 				movementSpeed = DayZPlayerConstants.MOVEMENTIDX_WALK;
 				break;
 			case DayZPlayerConstants.MOVEMENTIDX_SPRINT:
-				movementSpeed = DayZPlayerConstants.MOVEMENTIDX_RUN;
+				movementSpeed = DayZPlayerConstants.MOVEMENTIDX_CROUCH_RUN;
 				break;
 			}
 			break;
 		case DayZPlayerConstants.STANCEIDX_PRONE:
-			switch(pState.m_iMovement)
+			switch (pState.m_iMovement)
 			{
 			case DayZPlayerConstants.MOVEMENTIDX_IDLE:
 				movementSpeed = DayZPlayerConstants.MOVEMENTIDX_IDLE;

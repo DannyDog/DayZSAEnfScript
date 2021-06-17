@@ -37,7 +37,7 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	
 	override int GetCurrentStateEventID()
 	{
-		if(m_CurrentState)
+		if (m_CurrentState)
 		{
 			return m_CurrentState.GetSoundEventID();
 		}
@@ -46,7 +46,7 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	
 	override int GetCurrentStateEventType()
 	{
-		if(m_CurrentState)
+		if (m_CurrentState)
 		{
 			return m_CurrentState.GetSoundEventType();
 		}
@@ -55,7 +55,7 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	
 	void Stop()
 	{
-		if( m_CurrentState )
+		if ( m_CurrentState )
 		{
 			m_CurrentState.Stop();
 		}
@@ -63,7 +63,7 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	
 	void SoftStop()
 	{
-		if( m_CurrentState )
+		if ( m_CurrentState )
 		{
 			m_CurrentState.SoftStop();
 		}
@@ -71,7 +71,7 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	
 	bool IsPlaying()
 	{
-		if( m_CurrentState && m_CurrentState.IsSoundCallbackExist() )
+		if ( m_CurrentState && m_CurrentState.IsSoundCallbackExist() )
 		{
 			return true;
 		}
@@ -83,28 +83,28 @@ class InfectedSoundEventHandler extends SoundEventHandler
 	{
 		InfectedSoundEventBase requested_state = m_AvailableStates[id];
 
-		if( !requested_state.CanPlay() )
+		if ( !requested_state.CanPlay() )
 		{
 			return false;
 		}
 		
-		if(m_CurrentState)
+		if (m_CurrentState)
 		{
-		 	if(!m_CurrentState.IsSoundCallbackExist())
+		 	if (!m_CurrentState.IsSoundCallbackExist())
 			{
 				//Print("Missing callback - cleanup and continue");
 				delete m_CurrentState;
 			}
 			
 			//! same sound event - skip
-			if(GetCurrentStateEventID() == id)
+			if (GetCurrentStateEventID() == id)
 			{
 				//Print("Same ID - skipping");
 				return false;
 			}
 		}
 		
-		if(m_CurrentState)
+		if (m_CurrentState)
 		{
 			m_CurrentState.SoftStop();
 			m_CurrentState = InfectedSoundEventBase.Cast(requested_state.ClassName().ToType().Spawn());

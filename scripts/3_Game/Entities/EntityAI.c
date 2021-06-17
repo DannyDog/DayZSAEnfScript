@@ -25,23 +25,26 @@ enum WeightUpdateType
 
 class EntityAI extends Entity
 {
-	bool 							m_DeathSyncSent;
-	bool 							m_KilledByHeadshot;
-	bool 							m_PreparedToDelete = false;
-	bool 							m_RefresherViable = false;
-	ref KillerData 					m_KillerData;
+	bool 								m_DeathSyncSent;
+	bool 								m_KilledByHeadshot;
+	bool 								m_PreparedToDelete = false;
+	bool 								m_RefresherViable = false;
+	
+	ref KillerData 						m_KillerData;
+	private ref HiddenSelectionsData	m_HiddenSelectionsData;
 	
 	ref array<EntityAI> 			m_AttachmentsWithCargo;
 	ref array<EntityAI> 			m_AttachmentsWithAttachments;
 	ref InventoryLocation 			m_OldLocation;
 	
 	protected ref DamageZoneMap 	m_DamageZoneMap;
-	private ref map<int, string> m_DamageDisplayNameMap = new map<int, string>;
+	private ref map<int, string> 	m_DamageDisplayNameMap = new map<int, string>;
 	
 	float							m_Weight;
 	private float 					m_LastUpdatedTime;
 	protected float					m_ElapsedSinceLastUpdate;
 	
+	bool m_PendingDelete = false;
 	bool m_Initialized = false;
 	bool m_TransportHitRegistered = false;
 	vector m_TransportHitVelocity;
@@ -100,6 +103,8 @@ class EntityAI extends Entity
 		
 		InitDamageZoneMapping();
 		InitDamageZoneDisplayNameMapping();
+		
+		m_HiddenSelectionsData = new HiddenSelectionsData( GetType() );
 	}
 	
 	void ~EntityAI()
@@ -295,6 +300,7 @@ class EntityAI extends Entity
 			return m_EM.IsWorking();
 		return false;
 	}
+	
 	// Change return value to true if last detached item cause disassemble of item - different handlig some inventory operations
 	bool DisassembleOnLastDetach()
 	{
@@ -478,6 +484,8 @@ class EntityAI extends Entity
 	
 	bool CanBeTargetedByAI(EntityAI ai)
 	{
+		if ( !dBodyIsActive( this ) && !IsPlayer() )
+			return false;
 		return !IsDamageDestroyed();
 	}
 
@@ -491,6 +499,7 @@ class EntityAI extends Entity
 	**/
 	void Delete()
 	{
+		m_PendingDelete = true;
 		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).Call(GetGame().ObjectDelete, this);
 	}
 	void DeleteOnClient()
@@ -512,6 +521,11 @@ class EntityAI extends Entity
 			else
 				GetHierarchyRootPlayer().AddItemToDelete( this );
 		}
+	}
+	
+	bool IsSetForDeletion()
+	{
+		return IsPreparedToDelete() || m_PendingDelete || ToDelete() || IsPendingDeletion();
 	}
 	
 	void SetPrepareToDelete()
@@ -544,17 +558,17 @@ class EntityAI extends Entity
 			GetInventory().EEInit();
 			m_AttachmentsWithCargo.Clear();
 			m_AttachmentsWithAttachments.Clear();
-			for( int i = 0; i < GetInventory().AttachmentCount(); i++ )
+			for ( int i = 0; i < GetInventory().AttachmentCount(); i++ )
 			{
 				EntityAI attachment = GetInventory().GetAttachmentFromIndex( i );
-				if( attachment )
+				if ( attachment )
 				{
-					if( attachment.GetInventory().GetCargo() )
+					if ( attachment.GetInventory().GetCargo() )
 					{
 						m_AttachmentsWithCargo.Insert( attachment );
 					}
 					
-					if( attachment.GetInventory().GetAttachmentSlotsCount() > 0 )
+					if ( attachment.GetInventory().GetAttachmentSlotsCount() > 0 )
 					{
 						m_AttachmentsWithAttachments.Insert( attachment );
 					}
@@ -654,7 +668,7 @@ class EntityAI extends Entity
 	void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
 	{
 		#ifdef DEVELOPER
-			//Print("EEHitBy: " + this + "; damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
+		//Print("EEHitBy: " + this + "; damageResult:"+ damageResult.GetDamage("","") +"; damageType: "+ damageType +"; source: "+ source +"; component: "+ component +"; dmgZone: "+ dmgZone +"; ammo: "+ ammo +"; modelPos: "+ modelPos);
 		#endif
 	}
 	
@@ -859,7 +873,7 @@ class EntityAI extends Entity
 	//! Called when this item exits cargo of some container
 	void OnRemovedFromCargo(EntityAI container)
 	{
-	
+		
 	}
 	
 	//! Called when this item moves within cargo of some container
@@ -1153,7 +1167,7 @@ class EntityAI extends Entity
 		return false;
 	}
 	
-	bool IsHologram()
+	override bool IsHologram()
 	{
 		return false;
 	}
@@ -1486,10 +1500,10 @@ class EntityAI extends Entity
 	{
 		for ( int i = 0; i < GetInventory().AttachmentCount(); i++ )
 		{
-			EntityAI attachment = GetInventory().GetAttachmentFromIndex ( i );
-			if ( attachment && attachment.IsInherited ( type ) )
+			EntityAI attachment = GetInventory().GetAttachmentFromIndex( i );
+			if ( attachment && attachment.IsInherited( type ) )
 				return attachment;
-			}
+		}
 		return NULL;
 	}
 
@@ -1551,22 +1565,51 @@ class EntityAI extends Entity
 	{
 		return 0;
 	}
+	
+	int GetQuickBarBonus()
+	{
+		return 0;
+	}
+		
+	HiddenSelectionsData GetHiddenSelectionsData()
+	{
+		return m_HiddenSelectionsData;
+	}
+	
 	//! Returns index of the string found in cfg array 'hiddenSelections'. If it's not found then it returns -1.
 	int GetHiddenSelectionIndex( string selection )
 	{
-		array<string> config_selections	= new array<string>;
-		string cfg_hidden_selections = "CfgVehicles" + " " + GetType() + " " + "hiddenSelections";
-		GetGame().ConfigGetTextArray ( cfg_hidden_selections, config_selections );
-		
-		for (int i = 0; i < config_selections.Count(); ++i)
-		{
-			if ( config_selections.Get ( i ) == selection )
-			{
-				return i;
-			}
-		}
-		
+		if (m_HiddenSelectionsData)
+			return m_HiddenSelectionsData.GetHiddenSelectionIndex( selection );
+
 		return -1;
+	}
+	
+	//! Returns the hiddenSelectionsTextures array from the object's config
+	override TStringArray GetHiddenSelections()
+	{
+		if (m_HiddenSelectionsData)
+			return m_HiddenSelectionsData.m_HiddenSelections;
+		else
+			return super.GetHiddenSelections();
+	}
+	
+	//! Returns the hiddenSelectionsTextures array from the object's config
+	override TStringArray GetHiddenSelectionsTextures()
+	{
+		if (m_HiddenSelectionsData)
+			return m_HiddenSelectionsData.m_HiddenSelectionsTextures;
+		else
+			return super.GetHiddenSelectionsTextures();
+	}
+	
+	//! Returns the hiddenSelectionsMaterials array from the object's config
+	override TStringArray GetHiddenSelectionsMaterials()
+	{
+		if (m_HiddenSelectionsData)
+			return m_HiddenSelectionsData.m_HiddenSelectionsMaterials;
+		else
+			return super.GetHiddenSelectionsMaterials();
 	}
 	
 	/**
@@ -1580,7 +1623,7 @@ class EntityAI extends Entity
 	 * @param[in]	fAngle	\p		angle to position
 	 * @param[in]	align	\p		align to surface
 	 **/	
-	proto native void PlaceOnSurfaceRotated (out vector trans[4], vector pos, float dx = 0, float dz = 0, float fAngle = 0, bool align = false);
+	proto native void PlaceOnSurfaceRotated(out vector trans[4], vector pos, float dx = 0, float dz = 0, float fAngle = 0, bool align = false);
 
 	/**
 	 * @fn		RegisterNetSyncVariableBool
@@ -2384,5 +2427,16 @@ class EntityAI extends Entity
 				}
 			}
 		}
+	}
+	
+	bool GetInventoryHandAnimation(notnull InventoryLocation loc, out int value)
+	{
+		value = -1;
+		return false;
+	}
+	
+	bool TranslateSlotFromSelection(string selection_name, out int slot_id)
+	{
+		return false;
 	}
 };

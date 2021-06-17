@@ -140,6 +140,10 @@ class MapMenu extends UIScriptedMenu
 			m_Map.SyncMapMarkers();
 			m_WasChanged = false;
 		}
+		
+		PlayerBase player = PlayerBase.Cast(g_Game.GetPlayer());
+		if (player)
+			player.SetMapClosingSyncSet(false); //map is closing, server needs to be notified - once
 		Close();
 	}
 }

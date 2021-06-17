@@ -54,7 +54,7 @@ class FireplaceIndoor extends FireplaceBase
 
 		//--- Fireplace Indoor data ---
 		//fire point name
-		if( !ctx.Read( m_FirePointIndex ) )
+		if ( !ctx.Read( m_FirePointIndex ) )
 		{
 			m_FirePointIndex = 1;		//set default
 			return false;
@@ -331,7 +331,7 @@ class FireplaceIndoor extends FireplaceBase
 
 	override void EEItemDetached( EntityAI item, string slot_name ) 
 	{
-		super.EEItemDetached ( item, slot_name );
+		super.EEItemDetached( item, slot_name );
 		
 		ItemBase item_base = ItemBase.Cast( item );
 		
@@ -342,26 +342,13 @@ class FireplaceIndoor extends FireplaceBase
 			RemoveFromFireConsumables( GetFireConsumableByItem( item_base ) );
 		}
 		
-		//no attachments left & no ashes are present
-		if ( GetInventory().AttachmentCount() == 0 && !HasAshes() )
+		// We don't want to check this if simply moving food around
+		if ( !item_base.IsInherited( Edible_Base ) )
 		{
-			//TODO
-			//Clear point
-			/*
-			if ( GetGame().IsServer() )
-			{
-				if ( GetFireplacePoint() )
-				{
-					GetFireplacePoint().ClearObject();
-					ClearFireplacePoint();						
-				}
-			}
-			*/
-
-			//destroy fireplace
-			DestroyFireplace();
+			//no attachments left & no ashes are present
+			CheckForDestroy();
 		}
-
+		
 		// direct cooking slots
 		switch ( slot_name )
 		{
@@ -510,6 +497,9 @@ class FireplaceIndoor extends FireplaceBase
 	
 	override bool IsThisIgnitionSuccessful( EntityAI item_source = NULL )
 	{
+		SetIgniteFailure( false );
+		Param1<bool> failure;
+		
 		//check kindling
 		if ( !HasAnyKindling() )
 		{
@@ -519,10 +509,53 @@ class FireplaceIndoor extends FireplaceBase
 		//check wetness
 		if ( IsWet() )
 		{
+			SetIgniteFailure( true );
+			
+			failure = new Param1<bool>( GetIgniteFailure() );
+			GetGame().RPCSingleParam( this, FirePlaceFailure.WET, failure, true );
 			return false;
 		}
 		
 		return true;	
+	}
+	
+	override void OnRPC( PlayerIdentity sender, int rpc_type, ParamsReadContext ctx ) 
+	{
+		super.OnRPC( sender, rpc_type, ctx );
+		
+		ref Param1<bool> p = new Param1<bool>(false);
+				
+		if (ctx.Read(p))
+		{
+			bool failure = p.param1;
+		}
+		
+		switch ( rpc_type )
+		{
+			case FirePlaceFailure.WIND:
+			
+				if ( failure )
+				{
+					ParticleFireWindyNoIgniteStart();
+					SoundFireStop();
+					SoundFireWindyNoIgniteStart();
+					SoundFireNoFireStart();
+				}
+			
+			break;
+			
+			case FirePlaceFailure.WET:
+				
+				if ( failure )
+				{
+					ParticleWetNoIgniteStart();
+					SoundFireStop();
+					SoundFireWetNoIgniteStart();
+					SoundFireNoFireStart();
+				}
+			
+			break;
+		}
 	}
 	
 	override void SetActions()

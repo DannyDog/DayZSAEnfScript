@@ -87,6 +87,36 @@ class BiosUserManager
 	*/
 	proto native EBiosError GetUserDatabaseIdAsync();
 	
+	void SelectUserEx(BiosUser user)
+	{
+		BiosUser selectedUser = GetSelectedUser();
+		if (selectedUser && selectedUser != user && g_Game.GetGameState() != DayZGameState.MAIN_MENU)
+		{
+			SelectUser(user);
+			
+			if ( GetGame().GetMission() )
+			{
+				GetGame().GetMission().AbortMission();
+						
+				if ( g_Game.GetGameState() == DayZGameState.JOIN )
+					NotificationSystem.AddNotification( NotificationType.JOIN_FAIL_GET_SESSION, 6 );
+						
+				g_Game.SetGameState( DayZGameState.MAIN_MENU );
+				g_Game.SetLoadState( DayZLoadState.MAIN_MENU_CONTROLLER_SELECT );
+					
+				g_Game.GamepadCheck();
+				
+				g_Game.DeleteGamepadDisconnectMenu();
+			}
+			else
+			{
+ 				g_Game.MainMenuLaunch();
+			}
+		}
+		else
+			SelectUser(user);
+	}
+	
 	//! Callback function.
 	/*!
 		@param dbID user database ID. If something went wrong, then it is empty string.
@@ -147,7 +177,7 @@ class BiosUserManager
 		}
 		else if ( !OnlineServices.ErrorCaught( error ) )
 		{
-			SelectUser( user );
+			SelectUserEx( user );
 			if ( GetGame().GetMission() )
 				GetGame().GetMission().Reset();
 			OnGameNameChanged( user );
@@ -192,7 +222,7 @@ class BiosUserManager
 		
 		if ( user == GetSelectedUser() )
 		{
-			SelectUser( null );
+			SelectUserEx( null );
 			
 			if (GetGame().GetUIManager())
 			{
@@ -237,23 +267,21 @@ class BiosUserManager
 	*/
 	void OnJoin(EBiosJoinType type, BiosUser joiner, string handle, string joinee, EBiosError error) 
 	{
-		if( !OnlineServices.ErrorCaught( error ) )
+		if ( !OnlineServices.ErrorCaught( error ) )
 		{
-			if(GetSelectedUser())
-				OnlineServices.SetBiosUser( GetSelectedUser() );
-			else
-				OnlineServices.SetBiosUser( joiner );
-			SelectUser( joiner );
+			OnlineServices.SetBiosUser( joiner );
+			
+			SelectUserEx( joiner );
 			OnlineServices.SetSessionHandle( handle );
 			
-			if( g_Game.GetGameState() == DayZGameState.IN_GAME )
+			if ( g_Game.GetGameState() == DayZGameState.IN_GAME )
 			{
 				g_Game.SetLoadState( DayZLoadState.JOIN_START );
 				OnlineServices.GetSession();
 			}
 			else
 			{
-				if( GetGame().GetUIManager() && GetGame().GetInput().IsActiveGamepadSelected() )
+				if ( GetGame().GetUIManager() && GetGame().GetInput().IsActiveGamepadSelected() )
 				{
 					GetGame().GetUIManager().CloseMenu( MENU_TITLE_SCREEN );
 					GetGame().GetInput().IdentifyGamepad( GamepadButton.BUTTON_NONE );
@@ -264,11 +292,11 @@ class BiosUserManager
 		}
 		else
 		{
-			if( g_Game.GetGameState() != DayZGameState.IN_GAME )
+			if ( g_Game.GetGameState() != DayZGameState.IN_GAME )
 			{
-				if( GetGame().GetMission() )
+				if ( GetGame().GetMission() )
 				{
-					if( g_Game.GetGameState() != DayZGameState.MAIN_MENU )
+					if ( g_Game.GetGameState() != DayZGameState.MAIN_MENU )
 					{
 						GetGame().GetUIManager().CloseAllSubmenus();
 						GetGame().GetMission().AbortMission();
@@ -303,12 +331,12 @@ class BiosUserManager
 		if( host && host.IsOnline() )
 		#endif
 		{
-			SelectUser(host);
+			SelectUserEx(host);
 		}
 		#ifdef PLATFORM_PS4
 		else if( host )
 		{
-			SelectUser( host );
+			SelectUserEx( host );
 			LogOnUserAsync( host );
 		}
 		#endif

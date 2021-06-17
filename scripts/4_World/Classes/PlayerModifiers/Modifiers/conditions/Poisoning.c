@@ -52,6 +52,11 @@ class PoisoningMdfr: ModifierBase
 		player.IncreaseDiseaseCount();
 	}
 	
+	override void OnReconnect(PlayerBase player)
+	{
+		this.OnActivate(player);
+	}
+	
 	override void OnDeactivate(PlayerBase player)
 	{
 		player.DecreaseDiseaseCount();

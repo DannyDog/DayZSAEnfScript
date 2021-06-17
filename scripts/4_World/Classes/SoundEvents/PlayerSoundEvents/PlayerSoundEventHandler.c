@@ -22,6 +22,7 @@ enum EPlayerSoundEventID
 	INJURED_HIGH,
 	FREEZING,
 	HOT,
+	SYMPTOM_FATIGUE,
 	//--------------
 	// Count bellow, put enums above
 	//--------------
@@ -43,6 +44,7 @@ class PlayerSoundEventHandler extends SoundEventHandler
 		
 		RegisterState(new HoldBreathSoundEvent());
 		RegisterState(new ExhaustedBreathSoundEvent());
+		RegisterState(new FatigueSoundEvent());
 		RegisterState(new ReleaseBreathSoundEvent());
 		RegisterState(new StaminaDownLight());
 		RegisterState(new StaminaDownHeavy());
@@ -63,6 +65,7 @@ class PlayerSoundEventHandler extends SoundEventHandler
 		RegisterState(new InjuryHeavySoundEvent());
 		RegisterState(new FreezingSoundEvent());
 		RegisterState(new HotSoundEvent());
+
 	}
 	
 	void RegisterState(PlayerSoundEventBase state)

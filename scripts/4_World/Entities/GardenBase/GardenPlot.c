@@ -59,6 +59,15 @@ class GardenPlot extends GardenBase
 		HideSelection("SeedBase_7");
 		HideSelection("SeedBase_8");
 		HideSelection("SeedBase_9");
+		HideSelection("slotCovered_01");
+		HideSelection("slotCovered_02");
+		HideSelection("slotCovered_03");
+		HideSelection("slotCovered_04");
+		HideSelection("slotCovered_05");
+		HideSelection("slotCovered_06");
+		HideSelection("slotCovered_07");
+		HideSelection("slotCovered_08");
+		HideSelection("slotCovered_09");
 	}
 	
 	//================================================================
@@ -136,3 +145,10 @@ class GardenPlotPolytunnel : GardenPlot
 	}
 }
 class GardenPlotGreenhouse : GardenPlot {}
+
+class GardenPlotPlacing extends GardenPlot
+{
+	override void EOnInit(IEntity other, int extra) {};
+	override void RefreshSlots() {};
+	override void SyncSlots() {};
+}

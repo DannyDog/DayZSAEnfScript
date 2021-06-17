@@ -5373,7 +5373,7 @@ class CfgVehicles
 				{
 					visual_properties[] = {0,4,4};
 					nutrition_properties[] = {7,100,0,1,0,16};
-					cooking_properties[] = {100,30};
+					cooking_properties[] = {100,150};
 				};
 			};
 			class FoodStageTransitions: MeatStageTransitions

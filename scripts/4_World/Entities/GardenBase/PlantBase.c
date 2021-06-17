@@ -41,6 +41,8 @@ class PlantBase extends ItemBase
 	
 	private PluginHorticulture m_ModuleHorticulture;
 	
+	private const float SPOIL_AFTER_MATURITY_TIME = 7200; //The time it takes for a fully grown plant to spoil, in seconds
+	
 	void PlantBase()
 	{
 		m_ModuleHorticulture = PluginHorticulture.Cast( GetPlugin( PluginHorticulture ) );
@@ -87,7 +89,7 @@ class PlantBase extends ItemBase
 		float divided = /*(float) ((60 * 5) + Math.RandomInt(0, 60 * 1)) / fertility;*/ m_FullMaturityTime;
 		
 		//divided = (float)((60 * 30) + Math.RandomInt(0, 60 * 30)) * fertility;
-		m_SpoilAfterFullMaturityTime = m_FullMaturityTime; //divided;
+		m_SpoilAfterFullMaturityTime = SPOIL_AFTER_MATURITY_TIME; //divided;
 
 		divided = (float)((float)m_FullMaturityTime / ((float)m_GrowthStagesCount - 2.0));
 		m_StateChangeTime = divided;
@@ -678,6 +680,7 @@ class PlantBase extends ItemBase
 		}
 	}
 
+	//DEPRECATED
 	void RemovePlant()
 	{
 		if ( GetGame() && GetGame().IsServer() )
@@ -687,6 +690,22 @@ class PlantBase extends ItemBase
 			if ( m_CurrentPlantMaterialQuantity > 0.0 )
 			{
 				vector pos = GetPosition();
+				ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( "PlantMaterial", pos, ECE_PLACE_ON_SURFACE ) );
+				item.SetQuantity( m_CurrentPlantMaterialQuantity * 1000.0 );
+			}
+			
+			RemoveSlot();
+		}
+	}
+	
+	void RemovePlantEx( vector pos )
+	{
+		if ( GetGame() && GetGame().IsServer() )
+		{
+			UnlockFromParent();
+			
+			if ( m_CurrentPlantMaterialQuantity > 0.0 )
+			{
 				ItemBase item = ItemBase.Cast( GetGame().CreateObjectEx( "PlantMaterial", pos, ECE_PLACE_ON_SURFACE ) );
 				item.SetQuantity( m_CurrentPlantMaterialQuantity * 1000.0 );
 			}
@@ -824,6 +843,11 @@ class PlantBase extends ItemBase
 	{
 		return m_Slot;
 	}
+	
+	GardenBase GetGarden()
+	{
+		return m_GardenBase;
+	}
 
 	bool IsDry()
 	{
@@ -877,11 +901,6 @@ class PlantBase extends ItemBase
 	bool HasCrops()
 	{
 		return m_HasCrops;
-	}
-	
-	override bool CanBeDisinfected()
-	{
-		return false;
 	}
 	
 	override void SetActions()

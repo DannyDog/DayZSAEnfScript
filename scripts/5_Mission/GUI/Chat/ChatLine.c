@@ -47,8 +47,7 @@ class ChatLine
 		m_RootWidget.Show(true);
 		
 		channel = params.param1; // 0 = Survior   1 = Game/System   2 = Admin 
-		
-		Print(channel);
+
 		/*
 		if (params.param2 != "")
 		{
@@ -77,7 +76,7 @@ class ChatLine
 		if ( channel & CCSystem )
 		{
 			// Game
-			if(params.param2 != "")
+			if (params.param2 != "")
 			{
 				m_NameWidget.SetText(GAME_PREFIX + ": " );
 			} 
@@ -97,7 +96,7 @@ class ChatLine
 		else if ( channel == 0 || channel & CCDirect )
 		{
 			// Player
-			if(params.param2 != "")
+			if (params.param2 != "")
 			{
 				m_NameWidget.SetText(params.param2 + " : ");
 			}

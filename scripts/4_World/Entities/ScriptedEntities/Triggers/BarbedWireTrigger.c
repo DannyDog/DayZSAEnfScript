@@ -1,4 +1,5 @@
-class BarbedWireTrigger extends Trigger
+//! DEPRECATED UNUSED prototype for damage by BarbedWire, do not use as example
+class BarbedWireTrigger : Trigger
 {
 	ItemBase 			m_ParentBarbedWire;
 	const static int	SOUNDS_COLLISION_COUNT						= 4;

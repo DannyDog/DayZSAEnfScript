@@ -327,7 +327,7 @@ class PlayerContainer: CollapsibleContainer
 		SlotsIcon icon = GetSlotsIcon( m_FocusedRow, m_FocusedColumn );
 		EntityAI focused_item = icon.GetItem();
 		float x, y;
-		icon.GetCursorWidget().GetScreenPos( x, y );
+		icon.GetMainWidget().GetScreenPos( x, y );
 		
 		if( focused_item )
 		{

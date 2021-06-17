@@ -6,7 +6,7 @@ class PlayerAgentPool
 	float m_TotalAgentCount;
 	PlayerBase m_Player;
 	int m_AgentMask;
-	
+		
 	const int STORAGE_VERSION = 100;
 	
 	PluginTransmissionAgents m_PluginTransmissionAgents = PluginTransmissionAgents.Cast(GetPlugin(PluginTransmissionAgents));
@@ -57,12 +57,16 @@ class PlayerAgentPool
 		{	
 			int agent_id = m_VirusPool.GetKey(i);
 			int max_count = m_PluginTransmissionAgents.GetAgentMaxCount( agent_id );
+
 			EStatLevels agent_potency = m_PluginTransmissionAgents.GetPotency( agent_id );
 			
 			float grow_delta;
-			
+
 			if( agent_potency <= immunity_level )
 			{
+				bool grow_during_antibiotics = m_PluginTransmissionAgents.GrowDuringAntibioticsAttack(agent_id, m_Player);
+				if (m_Player.IsAntibioticsActive() && !grow_during_antibiotics)
+					continue;
 				float invasibility = m_PluginTransmissionAgents.GetAgentInvasibility( agent_id );
 				grow_delta = invasibility * deltaT;
 			}
@@ -71,7 +75,7 @@ class PlayerAgentPool
 				float dieoff_speed = m_PluginTransmissionAgents.GetDieOffSpeed( agent_id );
 				grow_delta = -dieoff_speed * deltaT;
 			}
-			
+
 			//Print( agent_id );
 			//Print( grow_delta );
 			
@@ -237,7 +241,11 @@ class PlayerAgentPool
 			m_VirusPool.Remove( agent_id );
 			m_AgentMask = m_AgentMask & ~agent_id;
 		}			
-		
+		if(m_Player.m_Agents != m_AgentMask)
+		{
+			m_Player.m_Agents = m_AgentMask;
+			m_Player.SetSynchDirty();
+		}
 	}
 
 	void AntibioticsAttack(float attack_value)
@@ -245,7 +253,7 @@ class PlayerAgentPool
 		for(int i = 0; i < m_VirusPool.Count(); i++)
 		{
 			int agent_id = m_VirusPool.GetKey(i);
-			float antibiotics_resistance = 1 - m_PluginTransmissionAgents.GetAgentAntiboticsResistance(agent_id);
+			float antibiotics_resistance = 1 - m_PluginTransmissionAgents.GetAgentAntiboticsResistanceEx(agent_id, m_Player);
 			float delta = attack_value * antibiotics_resistance;
 			float old_count = m_VirusPool.Get( agent_id );
 			float new_count = old_count - delta;
@@ -261,13 +269,15 @@ class PlayerAgentPool
 	{
 		ctx.Read(CachedObjectsParams.PARAM1_INT);
 		int id = CachedObjectsParams.PARAM1_INT.param1;
+		int max = m_PluginTransmissionAgents.GetAgentMaxCount(Math.AbsInt(id));
+		int grow = max / 10;
 		if(id > 0)
 		{
-			AddAgent(id, 250);
+			AddAgent(id, grow);
 		}
 		else if( id < 0)
 		{
-			AddAgent(-id, -250);
+			AddAgent(-id, -grow);
 		}
 	}
 	

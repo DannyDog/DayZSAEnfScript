@@ -60,6 +60,7 @@ class PluginManager
 		// Only In Debug / Internal
 		RegisterPluginDebug( "PluginConfigViewer",				true, 	true );
 		RegisterPluginDebug( "PluginLocalEnscriptHistory",		true, 	true );
+		RegisterPluginDebug( "PluginLocalEnscriptHistoryServer",true, 	true );
 		RegisterPluginDebug( "PluginKeyBinding",				true, 	false );
 		RegisterPluginDebug( "PluginDeveloper",					true, 	true );
 		RegisterPluginDebug( "PluginDeveloperSync",				true, 	true );

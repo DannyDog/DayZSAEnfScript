@@ -17,7 +17,7 @@ class CableReel extends ItemBase
 		return true;
 	}
 	
-	void ForceIntoHandsNow ( PlayerBase player ) 
+	void ForceIntoHandsNow( PlayerBase player ) 
 	{
 		m_ForceIntoHands = true;
 		player.LocalTakeEntityToHands(this); // Local, because ForceIntoHandsNow is executed on both, Client and Server
@@ -26,7 +26,7 @@ class CableReel extends ItemBase
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
+		if ( !super.CanPutInCargo(parent) ) {return false;}
 		EntityAI owner_EAI = GetHierarchyParent();
 		if ( owner_EAI  &&  owner_EAI.IsKindOf("Fence"))
 		{
@@ -39,7 +39,7 @@ class CableReel extends ItemBase
 
 	override bool CanPutIntoHands ( EntityAI player ) 
 	{
-		if( !super.CanPutIntoHands( parent ) )
+		if ( !super.CanPutIntoHands( parent ) )
 		{
 			return false;
 		}
@@ -83,7 +83,7 @@ class CableReel extends ItemBase
 		}
 	}
 	
-	override bool CanRemoveFromHands ( EntityAI player ) 
+	override bool CanRemoveFromHands( EntityAI player ) 
 	{
 		return true;
 	}
@@ -109,7 +109,7 @@ class CableReel extends ItemBase
 		ref array<string> array_of_selections = {SEL_CORD_PLUGGED, SEL_CORD_FOLDED};
 		PlayerBase player_PB = PlayerBase.Cast( player );
 				
-		if( GetGame().IsMultiplayer() && GetGame().IsServer() )
+		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
 		{
 			if ( player_PB.GetHologramServer() )
 				player_PB.GetHologramServer().SetSelectionToRefresh( array_of_selections );
@@ -137,7 +137,7 @@ class CableReel extends ItemBase
 		super.SetActions();
 		RemoveAction(ActionTakeItemToHands);
 		
-		AddAction(ActionClapBearTrapWithThisItem);
+		//AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionPlugIn);
 		AddAction(ActionPlugTargetIntoThis);
 		AddAction(ActionTogglePlaceObject);

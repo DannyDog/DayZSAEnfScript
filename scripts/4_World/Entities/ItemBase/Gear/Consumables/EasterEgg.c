@@ -148,7 +148,7 @@ class EasterEgg : Inventory_Base
 	{
 		super.EEItemLocationChanged(oldLoc, newLoc);
 		
-		DestroyEg();
+		//DestroyEg();
 	}
 	
 	// ------------------------------
@@ -401,7 +401,7 @@ class EasterEgg : Inventory_Base
 		return true;
 	}
 	
-	//Protection against dupers 
+	//Protection against dupers  during 1.12
 	private void DestroyEg()
 	{
 		Delete();

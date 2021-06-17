@@ -244,14 +244,7 @@ class IngameHud extends Hud
 		//! gets scripted handler from widget
 		m_ActionTarget.GetScript(m_ActionTargetsCursor);
 		
-		// state notifiers
-		m_StatesWidgetNames.Clear();
-		m_StatesWidgets.Clear();
-		m_StatesWidgetNames.Set( NTFKEY_THIRSTY, "Thirsty" );
-		m_StatesWidgetNames.Set( NTFKEY_HUNGRY, "Hungry" );
-		m_StatesWidgetNames.Set( NTFKEY_SICK, "Health" );
-		m_StatesWidgetNames.Set( NTFKEY_BLEEDISH, "Blood" );
-		m_StatesWidgetNames.Set( NTFKEY_FEVERISH, "Temperature" );
+
 
 		// heat buffer plus sign
 		m_HeatBufferPlus = ImageWidget.Cast( m_HudPanelWidget.FindAnyWidget( "HeatBuffer" ) );
@@ -263,65 +256,8 @@ class IngameHud extends Hud
 			m_Timer.Run(0.333, this, "RefreshQuickbar", NULL, true );
 			//m_Timer.Run(1, this, "CheckHudElementsVisibility", NULL, true ); //modify duration if needed, currently on 1s "update"
 		#endif
-
-			m_Notifiers.Show( true );
-			m_Badges.Show( true );
-
-			int i = 0;
-			int key = 0;
-			for ( i = 0; i < m_StatesWidgetNames.Count(); i++ )
-			{
-				string widget_name = m_StatesWidgetNames.GetElement(i);
-				key = m_StatesWidgetNames.GetKey(i);
-				ImageWidget w;
-				Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( "Icon" + widget_name ) ) );
-				m_StatesWidgets.Set( key, w );
-				w.Show( true );
-				for ( int y = 0; y < 5; y++ )
-				{
-					w.LoadImageFile( y, "set:dayz_gui image:icon" + widget_name + y );
-				}
-				// clear all arrows
-				for ( int x = 1; x < 4; x++ )
-				{
-					Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( widget_name + "ArrowUp" + x.ToString() ) ) );
-					w.Show( false );
-					Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( widget_name + "ArrowDown" + x.ToString() ) ) );
-					w.Show( false );
-				}
-			
-				
-			}
-
-			// badges
-			m_BadgesWidgetNames.Clear();
-			m_BadgesWidgets.Clear();
-			m_BadgesWidgetDisplay.Clear();
-			m_BadgesWidgetNames.Set( NTFKEY_FRACTURE, "Fracture" );
-			m_BadgesWidgetNames.Set( NTFKEY_STUFFED, "Stomach" );
-			m_BadgesWidgetNames.Set( NTFKEY_SICK, "Sick" );
-			m_BadgesWidgetNames.Set( NTFKEY_WETNESS, "Wetness" );
-			m_BadgesWidgetNames.Set( NTFKEY_POISONED, "Poisoned" );
-			m_BadgesWidgetNames.Set( NTFKEY_BLEEDISH, "Bleeding" );
-			m_BadgesWidgetNames.Set( NTFKEY_LIVES, "Shock" );
-			m_BadgesWidgetNames.Set( NTFKEY_PILLS, "Pills" );
+			InitBadgesAndNotifiers();
 		
-			// NTFKEY_SICK
-			// NTFKEY_BLEEDISH
-			// NTFKEY_FRACTURE
-			// NTFKEY_STUFFED
-			// NTFKEY_WETNESS iconDrops
-
-			for ( i = 0; i < m_BadgesWidgetNames.Count(); i++ )
-			{
-				string badge_name = m_BadgesWidgetNames.GetElement(  i);
-				key = m_BadgesWidgetNames.GetKey( i );
-				ImageWidget badge_widget;
-				Class.CastTo(badge_widget,  m_Badges.FindAnyWidget( badge_name ) );
-				m_BadgesWidgets.Set( key, badge_widget );
-				badge_widget.Show( false );
-				m_BadgesWidgetDisplay.Set( key, false );
-			}
 
 			m_PresenceLevel0 = hud_panel_widget.FindAnyWidget("Presence0");
 			m_PresenceLevel1 = hud_panel_widget.FindAnyWidget("Presence1");
@@ -343,6 +279,87 @@ class IngameHud extends Hud
 #ifndef PLATFORM_CONSOLE
 		m_QuickbarState = g_Game.GetProfileOption(EDayZProfilesOptions.QUICKBAR);
 #endif // !PLATFORM_CONSOLE
+	}
+	
+	
+	void InitBadgesAndNotifiers()
+	{
+		
+			// state notifiers
+		m_StatesWidgetNames.Clear();
+		m_StatesWidgets.Clear();
+		m_StatesWidgetNames.Set( NTFKEY_THIRSTY, "Thirsty" );
+		m_StatesWidgetNames.Set( NTFKEY_HUNGRY, "Hungry" );
+		m_StatesWidgetNames.Set( NTFKEY_SICK, "Health" );
+		m_StatesWidgetNames.Set( NTFKEY_BLEEDISH, "Blood" );
+		m_StatesWidgetNames.Set( NTFKEY_FEVERISH, "Temperature" );
+	
+		m_Notifiers.Show( true );
+		m_Badges.Show( true );
+
+		int i = 0;
+		int key = 0;
+		for ( i = 0; i < m_StatesWidgetNames.Count(); i++ )
+		{
+			string widget_name = m_StatesWidgetNames.GetElement(i);
+			key = m_StatesWidgetNames.GetKey(i);
+			ImageWidget w;
+			Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( "Icon" + widget_name ) ) );
+			m_StatesWidgets.Set( key, w );
+			w.Show( true );
+			for ( int y = 0; y < 5; y++ )
+			{
+				w.LoadImageFile( y, "set:dayz_gui image:icon" + widget_name + y );
+			}
+		
+			w.SetImage( 0 );
+			float alpha = w.GetAlpha();
+			w.SetColor( ARGB( alpha * 255, 220, 220, 220 ) );	//white
+			m_TendencyStatusCritical.Remove( w );
+			// clear all arrows
+			for ( int x = 1; x < 4; x++ )
+			{
+				Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( widget_name + "ArrowUp" + x.ToString() ) ) );
+				w.Show( false );
+				Class.CastTo(w,  m_Notifiers.FindAnyWidget( String( widget_name + "ArrowDown" + x.ToString() ) ) );
+				w.Show( false );
+			}
+		
+			
+		}
+
+		// badges
+		m_BadgesWidgetNames.Clear();
+		m_BadgesWidgets.Clear();
+		m_BadgesWidgetDisplay.Clear();
+		m_BadgesWidgetNames.Set( NTFKEY_FRACTURE, "Fracture" );
+		m_BadgesWidgetNames.Set( NTFKEY_STUFFED, "Stomach" );
+		m_BadgesWidgetNames.Set( NTFKEY_SICK, "Sick" );
+		m_BadgesWidgetNames.Set( NTFKEY_WETNESS, "Wetness" );
+		m_BadgesWidgetNames.Set( NTFKEY_POISONED, "Poisoned" );
+		m_BadgesWidgetNames.Set( NTFKEY_BLEEDISH, "Bleeding" );
+		m_BadgesWidgetNames.Set( NTFKEY_LIVES, "Shock" );
+		m_BadgesWidgetNames.Set( NTFKEY_PILLS, "Pills" );
+	
+		// NTFKEY_SICK
+		// NTFKEY_BLEEDISH
+		// NTFKEY_FRACTURE
+		// NTFKEY_STUFFED
+		// NTFKEY_WETNESS iconDrops
+
+		for ( i = 0; i < m_BadgesWidgetNames.Count(); i++ )
+		{
+			string badge_name = m_BadgesWidgetNames.GetElement(  i);
+			key = m_BadgesWidgetNames.GetKey( i );
+			ImageWidget badge_widget;
+			Class.CastTo(badge_widget,  m_Badges.FindAnyWidget( badge_name ) );
+			m_BadgesWidgets.Set( key, badge_widget );
+			badge_widget.Show( false );
+			m_BadgesWidgetDisplay.Set( key, false );
+		}
+		m_AnyBadgeVisible = false;
+		m_BadgeNotifierDivider.Show(false);
+	
 	}
 	
 	override void OnResizeScreen()

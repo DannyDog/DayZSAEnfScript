@@ -779,11 +779,11 @@ class MissionGameplay extends MissionBase
 		m_ControlDisabled = true;
 		
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
-		if( player )
+		if ( player )
 		{
-			HumanInputController hic = player.GetInputController();
-			//hic.ResetADS();
-			player.RequestResetADSSync();
+			ItemBase item = player.GetItemInHands();
+			if (item && item.IsWeapon())
+				player.RequestResetADSSync();
 		}
 	}
 	
@@ -1203,6 +1203,7 @@ class MissionGameplay extends MissionBase
 	override void SetPlayerRespawning(bool state)
 	{
 		m_PlayerRespawning = state;
+		//m_Hud.InitBadgesAndNotifiers();
 	}
 	
 	override bool IsPlayerRespawning()

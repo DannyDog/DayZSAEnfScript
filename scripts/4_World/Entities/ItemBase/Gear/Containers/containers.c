@@ -19,6 +19,15 @@ class PlateCarrierPouches : Container_Base
 		if (!super.CanReceiveItemIntoCargo(item))
 			return false;
 		
+		if(GetInventory().IsAttachment())
+		{
+			return !GetHierarchyParent().GetInventory().IsInCargo();
+		}
+		else
+		{
+			return !GetInventory().IsInCargo();
+		}
+		
 		return !item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Vest"));
 	}
 	

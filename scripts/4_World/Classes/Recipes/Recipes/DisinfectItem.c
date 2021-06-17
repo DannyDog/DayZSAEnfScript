@@ -12,7 +12,7 @@ class DisinfectItem extends RecipeBase
 		m_MinDamageIngredient[0] = -1;//-1 = disable check
 		m_MaxDamageIngredient[0] = 3;//-1 = disable check
 		
-		m_MinQuantityIngredient[0] = 50;//-1 = disable check
+		m_MinQuantityIngredient[0] = -1;//-1 = disable check
 		m_MaxQuantityIngredient[0] = -1;//-1 = disable check
 		
 		m_MinDamageIngredient[1] = -1;//-1 = disable check
@@ -25,13 +25,14 @@ class DisinfectItem extends RecipeBase
 		//INGREDIENTS
 		//ingredient 1
 		InsertIngredient(0,"DisinfectantSpray");//you can insert multiple ingredients this way
-		InsertIngredient(0,"DisinfectantAlcohol");//you can insert multiple ingredients this way
+		InsertIngredient(0,"DisinfectantAlcohol");
+		InsertIngredient(0,"IodineTincture");
 		
 		m_IngredientAddHealth[0] = 0;// 0 = do nothing
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
-		m_IngredientAddQuantity[0] = -50;// 0 = do nothing
+		m_IngredientAddQuantity[0] = 0;// 0 = do nothing
 		m_IngredientDestroy[0] = false;//true = destroy, false = do nothing
-		m_IngredientUseSoftSkills[0] = true;// set 'true' to allow modification of the values by softskills on this ingredient
+		m_IngredientUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		//ingredient 2
 		InsertIngredient(1,"Inventory_Base");//you can insert multiple ingredients this way
@@ -58,19 +59,33 @@ class DisinfectItem extends RecipeBase
 
 	override bool CanDo(ItemBase ingredients[], PlayerBase player)//final check for recipe's validity
 	{
-		ItemBase item = ingredients[1];
+		ItemBase ingredient1 = ingredients[0];
+		ItemBase ingredient2 = ingredients[1];
 		
-		if ( !item.CanBeDisinfected() )
+				
+		if ( !ingredient2.CanBeDisinfected() )
 			return false;
 		
-		int liquid_type = ingredients[0].GetLiquidType();
+		if ( ingredient1.GetQuantity() < ingredient1.GetDisinfectQuantity() )
+		{
+			return false;
+		}
+
+		
+		int liquid_type = ingredient1.GetLiquidType();
 		return (liquid_type & LIQUID_DISINFECTANT);
 	}
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
-		ItemBase ingredient2;
+		ItemBase ingredient1, ingredient2;
+		Class.CastTo(ingredient1, ingredients[0]);
+		
+
+		ingredient1.AddQuantity(-ingredient1.GetDisinfectQuantity());
+
 		Class.CastTo(ingredient2, ingredients[1]);
 		ingredient2.RemoveAllAgentsExcept(eAgents.BRAIN | eAgents.SALMONELLA | eAgents.CHOLERA);
+		ingredient2.SetCleanness(1);
 	}
 };

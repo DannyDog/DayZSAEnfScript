@@ -80,7 +80,7 @@ class NotificationSystem
 	
 	/**
 	\brief Send custom notification to player from server
-	@param player the target player to send notification to - if null, will send to all players
+	@param player the target player to send notification to
 	@param show_time amount of time this notification is displayed
 	@param title_text the title text that is displayed in the notification
 	@param detail_text additional text that can be added to the notification under the title - will not display additional text if not set
@@ -88,7 +88,7 @@ class NotificationSystem
 	*/
 	static void SendNotificationToPlayerExtended( Man player, float show_time, string title_text, string detail_text = "", string icon = "" )
 	{
-		if( player )
+		if ( player )
 		{
 			SendNotificationToPlayerIdentityExtended( player.GetIdentity(), show_time, title_text, detail_text, icon );
 		}
@@ -116,14 +116,14 @@ class NotificationSystem
 	
 	/**
 	\brief Send notification from default types to player from server
-	@param player the target player to send notification to - if null, will send to all players
+	@param player the target player to send notification to
 	@param type the type of notification to send - these can be viewed in /Scripts/Data/Notifications.json
 	@param show_time amount of time this notification is displayed
 	@param detail_text additional text that can be added to the notification under the title - will not display additional text if not set
 	*/
 	static void SendNotificationToPlayer( Man player, NotificationType type, float show_time, string detail_text = "" )
 	{
-		if( player )
+		if ( player )
 		{
 			SendNotificationToPlayerIdentity( player.GetIdentity(), type, show_time, detail_text );
 		}

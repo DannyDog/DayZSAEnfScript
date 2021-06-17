@@ -2,13 +2,15 @@ class SyncedValue
 {
 	string m_Name;
 	float m_Value;
+	float m_ValueNorm;
 	bool m_State;
 	
-	void SyncedValue( string name, float value, bool state )
+	void SyncedValue( string name, float value, bool state, float val_norm )
 	{
 		m_Name = name;
 		m_Value = value;
 		m_State = state;
+		m_ValueNorm = val_norm;
 	}
 	
 	string GetName()
@@ -19,6 +21,11 @@ class SyncedValue
 	float GetValue()
 	{
 		return m_Value;
+	}	
+	
+	float GetValueNorm()
+	{
+		return m_ValueNorm;
 	}
 	
 	bool GetState()

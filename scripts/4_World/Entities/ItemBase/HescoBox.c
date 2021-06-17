@@ -71,13 +71,6 @@ class HescoBox extends Inventory_Base
 		}
 	}
 	
-	override void OnCreatePhysics()
-	{
-		super.OnCreatePhysics();
-		
-		Fold();
-	}
-	
 	void RefreshVisuals()
 	{
 	}
@@ -155,8 +148,10 @@ class HescoBox extends Inventory_Base
 		//RefreshPhysics();
 	}
 
-	void RefreshPhysics()
+	override void RefreshPhysics()
 	{
+		super.RefreshPhysics();
+		
 		if ( this  &&  !ToDelete() )
 		{
 			RemoveProxyPhysics( "inventory" );

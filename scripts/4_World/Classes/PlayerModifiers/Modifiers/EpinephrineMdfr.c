@@ -28,7 +28,8 @@ class EpinephrineMdfr: ModifierBase
 	
 	override void OnActivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		player.IncreaseHealingsCount();
+		//if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
 		player.GiveShock(100);
 		player.GetStaminaHandler().SetStamina(100);
 		player.GetStaminaHandler().SetDepletionMultiplier(0);
@@ -36,7 +37,8 @@ class EpinephrineMdfr: ModifierBase
 	
 	override void OnDeactivate(PlayerBase player)
 	{
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		//if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		player.DecreaseHealingsCount();
 		player.GetStaminaHandler().SetDepletionMultiplier(1);
 	}
 	

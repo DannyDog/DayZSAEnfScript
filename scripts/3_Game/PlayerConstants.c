@@ -151,6 +151,8 @@ class PlayerConstants
 	static const float BLEEDING_LOW_PRESSURE_BLOOD = 4000.0;			// from which blood level we start lowering BLEEDING_SOURCE_BLOODLOSS_PER_SEC
 	static const float BLEEDING_LOW_PRESSURE_MIN_MOD = 0.3;				// minimal value for low pressure bleeding (lowest possible multiplier of BLEEDING_SOURCE_BLOODLOSS_PER_SEC)
 	
+	static const float BLEEDING_SOURCE_CLOSE_INFECTION_CHANCE = 0.40;
+
 	 
 	//----------------------------------------------------------
 	static const float BREATH_VAPOUR_THRESHOLD_HIGH 		= -5.0; 	//missing comment
@@ -209,6 +211,7 @@ class PlayerConstants
 	//----------------------------------------------------------
 	static const float AI_NOISE_SPRINT 			= 1;				//Multiplier for the noise generated while sprinting
 	static const float AI_NOISE_RUN 			= 0.8;				//Multiplier for the noise generated while jogging
+	static const float AI_NOISE_CROUCH_RUN 		= 0.6;				//Multiplier for the noise generated while Sprint crouch
 	static const float AI_NOISE_WALK 			= 0.4;				//Multiplier for the noise generated while walking
 	static const float AI_NOISE_IDLE 			= 0;				//Multiplier for the noise generated while staying still
 	static const float AI_NOISE_SHOES_BOOTS 	= 0.85;				//Multiplier for the noise generated while wearing boots

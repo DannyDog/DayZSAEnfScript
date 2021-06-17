@@ -7,9 +7,48 @@ class MissionServer extends MissionBase
 	ref array<Man> m_Players;
 	ref array<ref CorpseData> m_DeadPlayersArray;
 	ref map<PlayerBase, ref LogoutInfo> m_LogoutPlayers;
+	ref map<PlayerBase, ref LogoutInfo> m_NewLogoutPlayers;
 	const int SCHEDULER_PLAYERS_PER_TICK = 5;
 	int m_currentPlayer;
 	int m_RespawnMode;
+	
+	// -----------------------
+	// ARTILLERY SOUNDS SETUP
+	// -----------------------
+	private float 				m_ArtyBarrageTimer = 0;			// This is not to be edited in Init.c this is just to increment time
+	
+	// Variables to be modified in Init.c
+	protected bool 				m_PlayArty = false; 			// Toggle if Off map artillery sounds are played
+	protected float 			m_ArtyDelay = 0; 				// Set how much time there is between two barrages ( in seconds )
+	protected int 				m_MinSimultaneousStrikes = 0;	// The MIN of simultaneous shots on the map ( Will be clamped between 1 and max shots )
+	protected int 				m_MaxSimultaneousStrikes = 0;	// The MAX of simultaneous shots on the map ( Will be clamped between 1 and max amount of coords )
+	protected ref array<vector> m_FiringPos; 					// Where we should fire from. On Init set the relevant data
+	
+	//All Chernarus firing coordinates 
+	protected ref const array<vector> CHERNARUS_STRIKE_POS = 
+	{
+		"-500.00 165.00 5231.69",
+		"-500.00 300.00 9934.41",
+		"10406.86 192.00 15860.00",
+		"4811.75 370.00 15860.00",
+		"-500.00 453.00 15860.00"
+	};
+	
+	//All livonia firing coordinates
+	protected ref const array<vector> LIVONIA_STRIKE_POS = 
+	{ 
+		"7440.00 417.00 -500.00",
+		"-500.00 276.00 5473.00",
+		"-500.00 265.00 9852.00",
+		"4953.00 240.00 13300.00",
+		"9620.00 188.00 13300.00",
+		"13300.00 204.00 10322.00",
+		"13300.00 288.00 6204.00",
+		"13300.00 296.00 -500.00"
+	};
+	// -----------------------
+	// END OF ARTILLERY SETUP
+	// -----------------------
 	
 	PlayerBase m_player;
 	MissionBase m_mission;
@@ -26,7 +65,9 @@ class MissionServer extends MissionBase
 		m_DeadPlayersArray = new array<ref CorpseData>;
 		UpdatePlayersStats();
 		m_Players = new array<Man>;
+				
 		m_LogoutPlayers = new map<PlayerBase, ref LogoutInfo>;
+		m_NewLogoutPlayers = new map<PlayerBase, ref LogoutInfo>;
 	}
 	
 	void ~MissionServer()
@@ -37,6 +78,9 @@ class MissionServer extends MissionBase
 	override void OnInit()
 	{
 		super.OnInit();
+		
+		//Either pass consts in Init.c or insert all desired coords ( or do both ;) )
+		m_FiringPos = new array<vector>;
 	}
 	
 	override void OnUpdate(float timeslice)
@@ -45,6 +89,64 @@ class MissionServer extends MissionBase
 		TickScheduler(timeslice);
 		UpdateLogoutPlayers();		
 		m_WorldData.UpdateBaseEnvTemperature( timeslice );	// re-calculate base enviro temperature
+		
+		// ARTY barrage 
+		if ( m_PlayArty && m_ArtyBarrageTimer > m_ArtyDelay )
+		{
+			//We clamp to guarantee 1 and never have multiple shots on same pos, even in case of entry error
+			m_MaxSimultaneousStrikes = Math.Clamp( m_MaxSimultaneousStrikes, 1, m_FiringPos.Count() );
+			m_MinSimultaneousStrikes = Math.Clamp( m_MinSimultaneousStrikes, 1, m_MaxSimultaneousStrikes );
+			
+			// Variables to be used in this scope
+			int randPos; // Select random position
+			ref Param1<vector> pos; // The value to be sent through RPC
+			array<ref Param> params; // The RPC params
+			
+			if ( m_MaxSimultaneousStrikes == 1 )
+			{
+				// We only have one set off coordinates to send
+				randPos = Math.RandomIntInclusive( 0, m_FiringPos.Count() - 1 );
+				pos = new Param1<vector>( m_FiringPos[randPos] );
+				params = new array<ref Param>;
+				params.Insert( pos );
+				GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
+			}
+			else
+			{
+				//We will do some extra steps to
+				/*
+				1. Send multiple coords ( Send one RPC per coord set )
+				2. Ensure we don't have duplicates
+				*/
+				array<int> usedIndices = new array<int>; // Will store all previusly fired upon indices
+				
+				// We determine how many positions fire between MIN and MAX
+				int randFireNb = Math.RandomIntInclusive( m_MinSimultaneousStrikes, m_MaxSimultaneousStrikes );
+				for ( int i = 0; i < randFireNb; i++ )
+				{
+					randPos = Math.RandomIntInclusive( 0, m_FiringPos.Count() - 1 );
+					
+					if ( usedIndices.Count() <= 0 || usedIndices.Find( randPos ) < 0 ) //We do not find the index or array is empty
+					{
+						// We prepare to send the message
+						pos = new Param1<vector>( m_FiringPos[randPos] );
+						params = new array<ref Param>;
+						
+						// We send the message with this set of coords
+						params.Insert( pos );
+						GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
+						
+						// We store the last used value
+						usedIndices.Insert(randPos);
+					}
+				}
+			}
+			
+			// Reset timer for new loop
+			m_ArtyBarrageTimer = 0.0;
+		}
+		
+		m_ArtyBarrageTimer += timeslice;
 	}
 
 	override bool IsServer()
@@ -54,11 +156,7 @@ class MissionServer extends MissionBase
 	
 	override bool IsPlayerDisconnecting(Man player)
 	{
-		if(m_LogoutPlayers)
-		{
-			return m_LogoutPlayers.Contains(PlayerBase.Cast(player));
-		}
-		return false;
+		return ( m_LogoutPlayers && m_LogoutPlayers.Contains(PlayerBase.Cast(player)) ) || ( m_NewLogoutPlayers && m_NewLogoutPlayers.Contains(PlayerBase.Cast(player)) );
 	}
 	
 	void UpdatePlayersStats()
@@ -85,10 +183,16 @@ class MissionServer extends MissionBase
 		UpdateCorpseStatesServer();
 	}
 	
+	protected void AddNewPlayerLogout(PlayerBase player, notnull LogoutInfo info)
+	{
+		m_LogoutPlayers.Insert(player, info);
+		m_NewLogoutPlayers.Remove(player);
+	}
+	
 	// check if logout finished for some players
 	void UpdateLogoutPlayers()
 	{
-		for ( int i = 0; i < m_LogoutPlayers.Count(); i++ )
+		for ( int i = 0; i < m_LogoutPlayers.Count(); )
 		{
 			LogoutInfo info = m_LogoutPlayers.GetElement(i);
 			
@@ -105,9 +209,12 @@ class MissionServer extends MissionBase
 				// GetGame().RemoveFromReconnectCache(info.param2);
 	
 				PlayerDisconnected(player, identity, info.param2);
-					
-				m_LogoutPlayers.RemoveElement(i);
-				i--;
+				
+				m_LogoutPlayers.Remove(player);
+			}
+			else
+			{
+				++i;
 			}
 		}
 	}
@@ -226,6 +333,7 @@ class MissionServer extends MissionBase
 				Print("[Logout]: Player cancelled"); 
 			}
 			m_LogoutPlayers.Remove(player);
+			m_NewLogoutPlayers.Remove(player);
 			break;
 		}
 	}
@@ -404,7 +512,7 @@ class MissionServer extends MissionBase
 		{			
 			if (player.IsAlive())
 			{	
-				if (!m_LogoutPlayers.Contains(player))
+				if (!m_LogoutPlayers.Contains(player) && !m_NewLogoutPlayers.Contains(player))
 				{
 					Print("[Logout]: New player " + identity.GetId() + " with logout time " + logoutTime.ToString());
 					
@@ -413,7 +521,9 @@ class MissionServer extends MissionBase
 			
 					// wait for some time before logout and save
 					LogoutInfo params = new LogoutInfo(GetGame().GetTime() + logoutTime * 1000, identity.GetId());
-					m_LogoutPlayers.Insert(player, params);
+					
+					m_NewLogoutPlayers.Insert(player, params);
+					GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(AddNewPlayerLogout, 0, false, player, params);
 					
 					// allow reconnecting to old char only if not in cars, od ladders etc. as they cannot be properly synchronized for reconnect
 					//if (!player.GetCommand_Vehicle() && !player.GetCommand_Ladder())
@@ -421,7 +531,7 @@ class MissionServer extends MissionBase
 					//	GetGame().AddToReconnectCache(identity);
 					//}
 					// wait until logout timer runs out
-					disconnectNow = false;		
+					disconnectNow = false;
 				}
 				return;
 			}		
@@ -469,7 +579,7 @@ class MissionServer extends MissionBase
 		HandleBody(player);
 		
 		// remove player from server
-		GetGame().DisconnectPlayer(identity);
+		GetGame().DisconnectPlayer(identity, uid);
 		// Send list of players at all clients
 		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(SyncEvents.SendPlayerList, 1000);
 	}

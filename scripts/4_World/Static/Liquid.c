@@ -83,18 +83,16 @@ class Liquid
 	
 	static bool CanTransfer(ItemBase source_ent, ItemBase target_ent)
 	{
-	
+		if(!source_ent || !target_ent)
+			return false;
 		if( !source_ent.IsItemBase() || !target_ent.IsItemBase() )
 		{
 			//Debug.Log("One of the Items is not of ItemBase type", "LiquidTransfer");
 			return false;
 		}
-		
-		ItemBase source = source_ent;
-		ItemBase target = target_ent;
 
-		Barrel_ColorBase barrelTarget = Barrel_ColorBase.Cast(target);
-		Barrel_ColorBase barrelSource = Barrel_ColorBase.Cast(source);
+		Barrel_ColorBase barrelTarget = Barrel_ColorBase.Cast(target_ent);
+		Barrel_ColorBase barrelSource = Barrel_ColorBase.Cast(source_ent);
 		if ((barrelTarget && !barrelTarget.IsOpen()) || (barrelSource && !barrelSource.IsOpen()))
 		{
 			return false;
@@ -102,14 +100,14 @@ class Liquid
 		
 		
 		
-		float source_quantity = source.GetQuantity();
+		float source_quantity = source_ent.GetQuantity();
 		if( source_quantity <= 0 )
 		{
 			//Debug.Log("source has no quantity", "LiquidTransfer");
 			return false;//if there is nothing to transfer
 		}
 		
-		int source_liquid_type 	= source.GetLiquidType();	
+		int source_liquid_type 	= source_ent.GetLiquidType();	
 		if( source_liquid_type < 1 ) 
 		{
 			//Debug.Log("source has some quantity, but does not have a valid liquidType set, liquidType = "+ToString(source_liquid_type), "LiquidTransfer");

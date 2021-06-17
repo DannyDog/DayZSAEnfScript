@@ -37,7 +37,7 @@ class HungerSoundHandlerClient extends HungerSoundHandlerBase
 	void PlaySound()
 	{
 		//Print("------------- hungry_uni_Char_SoundSet  --------------");
-		m_Sound = SEffectManager.PlaySoundOnObject("hungry_uni_Char_SoundSet", m_Player);
+		m_Sound = SEffectManager.PlaySoundOnObject("hungry_uni_Voice_Char_SoundSet", m_Player);
 	}
 }
 

@@ -4,14 +4,35 @@ typedef Param5<bool, string, int, string, int> ConfigParams; // param1 - isColla
 class ScriptConsole extends UIScriptedMenu
 {
 	const string CONST_DEFAULT_PRESET_PREFIX = "[Default]";
-
+	static float DEBUG_MAP_ZOOM = 1;
+	static int ITEMS_SELECTED_ROW = -1;
+	static int PRESETS_SELECTED_ROW = 0;
+	static int ITEMS_IN_PRESET_SELECTED_ROW;
+	static int m_ObjectsScope = 2;
+	static bool SHOW_OTHERS = 0;
+	static float DRAW_DISTANCE = 1000;
+	static ref array<ref Shape> m_DebugShapes = new array<ref Shape>;
+	
+	
+	ref Timer m_LateInit = new Timer();
+	bool m_ScriptServer;
+	bool m_UpdateMap;
 	void ScriptConsole()
 	{
 		m_ModuleLocalEnscriptHistory 	= PluginLocalEnscriptHistory.Cast( GetPlugin(PluginLocalEnscriptHistory) );
+		m_ModuleLocalEnscriptHistoryServer 	= PluginLocalEnscriptHistoryServer.Cast( GetPlugin(PluginLocalEnscriptHistoryServer) );
+		
 	}
 
 	void ~ScriptConsole()
 	{
+		
+		DEBUG_MAP_ZOOM = m_DebugMapWidget.GetScale();
+		
+		ITEMS_SELECTED_ROW = m_ObjectsTextListbox.GetSelectedRow();
+		PRESETS_SELECTED_ROW = m_PresetsTextListbox.GetSelectedRow();
+		ITEMS_IN_PRESET_SELECTED_ROW = m_PresetItemsTextListbox.GetSelectedRow();
+				
 		m_PresetsTextListbox.ClearItems();
 	}
 	
@@ -27,15 +48,19 @@ class ScriptConsole extends UIScriptedMenu
 		int i;
 		layoutRoot = GetGame().GetWorkspace().CreateWidgets("gui/layouts/script_console/script_console.layout");
 
+		m_DebugMapWidget = MapWidget.Cast( layoutRoot.FindAnyWidget("MapWidget") );
+		
 		m_Tabs[TAB_ITEMS] = layoutRoot.FindAnyWidget("ItemsPanel");
 		m_Tabs[TAB_CONFIGS] = layoutRoot.FindAnyWidget("ConfigsPanel");
 		m_Tabs[TAB_ENSCRIPT] = layoutRoot.FindAnyWidget("EnScriptPanel");
+		m_Tabs[TAB_ENSCRIPT_SERVER] = layoutRoot.FindAnyWidget("EnScriptPanel");
 		m_Tabs[TABS_GENERAL] = layoutRoot.FindAnyWidget("GeneralPanel");
 		m_Tabs[TABS_OUTPUT] = layoutRoot.FindAnyWidget("OutputPanel");
 
 		m_Tab_buttons[TAB_ITEMS] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("ItemsButtonWidget") );
 		m_Tab_buttons[TAB_CONFIGS] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("ConfigsButtonWidget") );
 		m_Tab_buttons[TAB_ENSCRIPT] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("EnScriptButtonWidget") );
+		m_Tab_buttons[TAB_ENSCRIPT_SERVER] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("EnScriptButtonWidgetServer") );
 		m_Tab_buttons[TABS_GENERAL] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("GeneralButtonWidget") );
 		m_Tab_buttons[TABS_OUTPUT] = ButtonWidget.Cast( layoutRoot.FindAnyWidget("OutputButtonWidget") );
 
@@ -48,6 +73,8 @@ class ScriptConsole extends UIScriptedMenu
 
 		m_DiagDrawmodeTextListbox = TextListboxWidget.Cast( layoutRoot.FindAnyWidget("DiagDrawmode") );
 		m_DiagDrawButton = ButtonWidget.Cast( layoutRoot.FindAnyWidget("DiagDrawButton") );
+		m_DrawInWorld = ButtonWidget.Cast( layoutRoot.FindAnyWidget("ButtonDrawItem") );
+		m_DrawInWorldClear = ButtonWidget.Cast( layoutRoot.FindAnyWidget("ButtonDrawItemClear") );
 
 		m_PositionsListbox	= TextListboxWidget.Cast( layoutRoot.FindAnyWidget("PositionsList") );
 		m_TeleportButton	= ButtonWidget.Cast( layoutRoot.FindAnyWidget("ButtonTeleport") );
@@ -64,11 +91,17 @@ class ScriptConsole extends UIScriptedMenu
 		m_HudDCharDebug		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_CharacterDebug") );
 		m_HudDFreeCamCross	= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_FreeCamCross") );
 		m_HudDVersion		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("cbx_Version") );
+		
+		m_ShowProtected		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("ShowProtectedCheckbox") );
+		m_ShowOthers		= CheckBoxWidget.Cast( layoutRoot.FindAnyWidget("ShowOthersCheckbox") );
 
 
+		
+		m_DrawDistanceWidget	= EditBoxWidget.Cast( layoutRoot.FindAnyWidget("DrawItemDistance") );
+		
 		m_EnfScriptEdit	= MultilineEditBoxWidget.Cast( layoutRoot.FindAnyWidget("MultilineEditBoxWidget0") );
-		m_EnfScriptRun	= ButtonWidget.Cast( layoutRoot.FindAnyWidget("ButtonWidget0") );
-
+		m_EnfScriptRun	= ButtonWidget.Cast( layoutRoot.FindAnyWidget("RunButton") );
+		
 		m_ObjectFilter = EditBoxWidget.Cast( layoutRoot.FindAnyWidget("ObjectFilter") );
 		m_SpawnDistanceEditBox = EditBoxWidget.Cast( layoutRoot.FindAnyWidget("SpawnDistance") );
 		m_SelectedObjectText = TextWidget.Cast( layoutRoot.FindAnyWidget("SelectedObject") );
@@ -146,9 +179,10 @@ class ScriptConsole extends UIScriptedMenu
 		m_Rows = 0;
 		m_ServerRows = 0;
 		m_EnscriptHistoryRow = 0;
+		m_EnscriptHistoryRowServer = 0;
 
-		// memory leak! m_EnscriptConsoleHistory = new TStringArray;
 		m_EnscriptConsoleHistory = m_ModuleLocalEnscriptHistory.GetAllLines();
+		m_EnscriptConsoleHistoryServer = m_ModuleLocalEnscriptHistoryServer.GetAllLines();
 
 		// load data from profile
 		m_selected_tab = m_ConfigDebugProfile.GetTabSelected();
@@ -161,8 +195,9 @@ class ScriptConsole extends UIScriptedMenu
 		m_PresetRenameButton.Show( false );
 
 		ShowItemTransferButtons();
-		EnscriptHistoryBack();
+		//EnscriptHistoryBack();
 
+		
 		TStringArray positions_array = new TStringArray;
 		m_ConfigDebugProfileFixed.GetAllPositionsNames( positions_array );
 		for ( i = 0; i < positions_array.Count(); i++ )
@@ -178,9 +213,72 @@ class ScriptConsole extends UIScriptedMenu
 		m_TimerRefreshPlayerPosEditBoxes.Run( 1, this, "RefreshPlayerPosEditBoxes", NULL, true );
 		RefreshPlayerPosEditBoxes();
 
+		m_DebugMapWidget.SetScale(DEBUG_MAP_ZOOM);
+		m_DebugMapWidget.SetMapPos(GetGame().GetPlayer().GetWorldPosition());
+		
+		
+		
+		
+		m_LateInit.Run(0.05, this, "LateInit", null, false);
+		
 		return layoutRoot;
 	}
 
+	void LateInit()
+	{
+		
+		if(ITEMS_SELECTED_ROW <=  m_ObjectsTextListbox.GetNumItems() && m_ObjectsTextListbox.GetNumItems() >= 0 && ITEMS_SELECTED_ROW > -1 )
+		{
+			m_ObjectsTextListbox.SelectRow(ITEMS_SELECTED_ROW);
+			m_ObjectsTextListbox.EnsureVisible(ITEMS_SELECTED_ROW);
+			
+			
+			m_SelectedObjectText.SetText( GetCurrentObjectName() );
+
+			m_SelectedObject = GetCurrentObjectName();
+			m_LastSelectedObject = m_SelectedObject;
+			m_PresetItemsTextListbox.SelectRow(-1);
+			m_SelectedObjectIsPreset = false;
+		}
+		
+		if (m_PresetsTextListbox.GetNumItems() >= 0 )
+		{
+			m_PresetsTextListbox.SelectRow(PRESETS_SELECTED_ROW);
+			m_PresetsTextListbox.EnsureVisible(PRESETS_SELECTED_ROW);
+		}
+		
+		if( m_ObjectsScope == 1 )
+			m_ShowProtected.SetChecked(true);
+		else
+			m_ShowProtected.SetChecked(false);
+		
+		if(SHOW_OTHERS)
+		{
+			m_ShowOthers.SetChecked(true);
+		}
+		else
+		{
+			m_ShowOthers.SetChecked(false);
+		}
+		
+		m_DrawDistanceWidget.SetText(DRAW_DISTANCE.ToString());
+		
+		RenderPresetItems();
+		
+		
+		
+		if(ITEMS_IN_PRESET_SELECTED_ROW <= m_PresetItemsTextListbox.GetNumItems() && m_PresetItemsTextListbox.GetNumItems() > 0 && ITEMS_IN_PRESET_SELECTED_ROW > -1 )
+		{
+			m_PresetItemsTextListbox.SelectRow(ITEMS_IN_PRESET_SELECTED_ROW);
+			m_PresetItemsTextListbox.EnsureVisible(ITEMS_IN_PRESET_SELECTED_ROW);
+			
+			m_SelectedObjectText.SetText( "Object : " + GetCurrentItemName() );
+			m_SelectedObject = GetCurrentItemName();
+			m_SelectedObjectIsPreset = false;
+		}
+		
+	}
+	
 	void Add(string message)
 	{
 		if (m_ClientLogListbox)
@@ -214,7 +312,7 @@ class ScriptConsole extends UIScriptedMenu
 	
 	void HistoryBack()
 	{
-		if ( m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT )
+		if ( m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT || m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT_SERVER )
 		{
 			EnscriptHistoryBack();
 		}
@@ -222,12 +320,13 @@ class ScriptConsole extends UIScriptedMenu
 
 	void HistoryForward()
 	{
-		if ( m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT )
+		if ( m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT || m_ConfigDebugProfile.GetTabSelected() == ScriptConsole.TAB_ENSCRIPT_SERVER)
 		{
 			EnscriptHistoryForward();
 		}
 	}
-
+	
+/*
 	void EnscriptHistoryBack()
 	{
 		if ( m_EnfScriptEdit )
@@ -239,8 +338,41 @@ class ScriptConsole extends UIScriptedMenu
 				m_EnscriptHistoryRow = m_EnscriptHistoryRow + 1;
 			}
 		}
+	}	
+	*/
+	
+	
+	void EnscriptHistoryBack()
+	{
+		int history_index;
+		
+		if ( m_EnfScriptEdit )
+		{
+			if ( !m_ScriptServer )//client
+			{
+				m_EnscriptHistoryRow++;
+				history_index = m_EnscriptConsoleHistory.Count() - m_EnscriptHistoryRow - 1;
+				if ( history_index > -1 )
+				{
+					m_EnfScriptEdit.SetText( m_EnscriptConsoleHistory.Get( history_index ) );
+				}
+				else m_EnscriptHistoryRow--;
+			}
+			else//server
+			{
+				m_EnscriptHistoryRowServer++;
+				history_index = m_EnscriptConsoleHistoryServer.Count() - m_EnscriptHistoryRowServer - 1;
+				if ( history_index > -1 )
+				{
+					m_EnfScriptEdit.SetText( m_EnscriptConsoleHistoryServer.Get( history_index ) );
+				}
+				else m_EnscriptHistoryRowServer--;
+			}
+		}
 	}
-
+	
+	
+/*
 	void EnscriptHistoryForward()
 	{
 		if ( m_EnfScriptEdit )
@@ -251,6 +383,37 @@ class ScriptConsole extends UIScriptedMenu
 				m_EnfScriptEdit.SetText( m_EnscriptConsoleHistory.Get( history_index ) );
 				m_EnscriptHistoryRow = m_EnscriptHistoryRow - 1;
 			}
+		}
+	}
+	*/
+	
+	void EnscriptHistoryForward()
+	{
+		if ( m_EnfScriptEdit )
+		{
+			int history_index;
+			if ( !m_ScriptServer )//client
+			{
+				m_EnscriptHistoryRow--;
+				history_index = m_EnscriptConsoleHistory.Count() - m_EnscriptHistoryRow - 1;
+				if ( history_index < m_EnscriptConsoleHistory.Count() )
+				{
+					m_EnfScriptEdit.SetText( m_EnscriptConsoleHistory.Get( history_index ) );
+				}
+				else m_EnscriptHistoryRow++;
+				
+			}
+			else//server
+			{
+				m_EnscriptHistoryRowServer--;
+				history_index = m_EnscriptConsoleHistoryServer.Count() - m_EnscriptHistoryRowServer - 1;
+				if ( history_index < m_EnscriptConsoleHistoryServer.Count() )
+				{
+					m_EnfScriptEdit.SetText( m_EnscriptConsoleHistoryServer.Get( history_index ) );
+				}
+				else m_EnscriptHistoryRowServer++;
+			}
+			
 		}
 	}
 	
@@ -267,8 +430,20 @@ class ScriptConsole extends UIScriptedMenu
 		GetGame().ExecuteEnforceScript("void scConsMain() \n{\n" + code + "\n}\n", "scConsMain");
 		m_EnscriptConsoleHistory.Insert( code );
 		m_ModuleLocalEnscriptHistory.AddNewLine( code );
+	}	
+	
+	void RunEnscriptServer()
+	{
+		string code;
+		m_EnfScriptEdit.GetText(code);
+		m_EnscriptConsoleHistoryServer.Insert( code );
+		m_ModuleLocalEnscriptHistoryServer.AddNewLine( code );
+		CachedObjectsParams.PARAM1_STRING.param1 = code;
+		GetGame().RPCSingleParam( null, ERPCs.DEV_RPC_SERVER_SCRIPT, CachedObjectsParams.PARAM1_STRING, true, GetGame().GetPlayer().GetIdentity() );
 	}
 
+	
+	
 	void ChangeFilter()
 	{
 		//! get text
@@ -277,6 +452,9 @@ class ScriptConsole extends UIScriptedMenu
 
 		string filter_lower = m_ObjectFilter.GetText().Trim();
 		filter_lower.ToLower(  );
+
+		
+		ref TStringArray items = new TStringArray;
 
 		ref TStringArray filters = new TStringArray;
 		filter_lower.Split( " ", filters );
@@ -295,7 +473,7 @@ class ScriptConsole extends UIScriptedMenu
 				GetGame().ConfigGetChildName( config_path, j, child_name );
 
 				int scope = GetGame().ConfigGetInt( config_path + " " + child_name + " scope" );
-				if ( scope > 0 )
+				if ( scope >= m_ObjectsScope )
 				{
 					bool display = false;
 					if ( filters.Count() > 0 )
@@ -319,11 +497,19 @@ class ScriptConsole extends UIScriptedMenu
 
 					if ( display )
 					{
-						m_ObjectsTextListbox.AddItem( child_name, NULL, 0 );
+						items.Insert(child_name);
+						
 					}
 				}
 			}
 		}
+		items.Sort();
+		foreach (string s: items)
+		{
+			m_ObjectsTextListbox.AddItem( s, NULL, 0 );
+			
+		}
+			
 	}
 
 	void ChangeConfigFilter()
@@ -354,6 +540,55 @@ class ScriptConsole extends UIScriptedMenu
 		return false;
 	}
 	
+	override bool OnKeyDown(Widget w, int x, int y, int key)
+	{
+		
+		if(key == KeyCode.KC_D && m_SelectedObject != "")
+		{
+			DrawItems(m_SelectedObject);
+			return true;
+		}
+		else
+			return super.OnKeyDown(w, x, y, key);
+	}
+
+	
+	void DrawItems(string type)
+	{	
+		array<Object> objects = new array<Object>;
+		array<CargoBase> proxies = new array<CargoBase>;
+		
+		GetGame().GetObjectsAtPosition(GetGame().GetPlayer().GetPosition(),DRAW_DISTANCE, objects, proxies);
+		int i = 0;
+
+		foreach (Object o: objects)
+		{
+			if (o.IsKindOf(type))
+			{
+				i++;
+				//Shape shape = Shape.CreateSphere(COLOR_RED, ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE|ShapeFlags.NOZBUFFER, o.GetPosition(), 1);
+				vector lines[2];
+				lines[0] = o.GetPosition();
+				lines[1] = o.GetPosition() + "0 200 0";
+				Shape line = Shape.CreateLines(COLOR_RED, ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE|ShapeFlags.NOZBUFFER,lines,2);
+				//m_DebugShapes.Insert(shape);
+				m_DebugShapes.Insert(line);
+			}
+		}
+		Print("found "+ i +" instances of type " + type);
+	}
+	
+	
+	void DrawItemsClear()
+	{
+		Print(m_DebugShapes.Count());
+		foreach (Shape s: m_DebugShapes)
+		{
+			s.Destroy();
+		}
+		m_DebugShapes.Clear();
+	}
+	
 	override void Update(float timeslice)
 	{
 		super.Update( timeslice );
@@ -362,6 +597,17 @@ class ScriptConsole extends UIScriptedMenu
 		{
 			GetGame().GetUIManager().Back();
 		}
+		m_DebugMapWidget.ClearUserMarks();
+		
+		if(m_UpdateMap)
+		{
+			foreach(RemotePlayerStatDebug rpd: m_PlayerDebugStats)
+			{
+				if(rpd.m_Player != GetGame().GetPlayer())
+					m_DebugMapWidget.AddUserMark(rpd.m_Pos,rpd.m_Name, COLOR_BLUE,"\\dz\\gear\\navigation\\data\\map_tree_ca.paa");
+			}
+		}
+		m_DebugMapWidget.AddUserMark(GetGame().GetPlayer().GetWorldPosition(),"You", COLOR_RED,"\\dz\\gear\\navigation\\data\\map_tree_ca.paa");
 	}
 	
 	override bool OnController(Widget w, int control, int value)
@@ -379,6 +625,19 @@ class ScriptConsole extends UIScriptedMenu
 		}
 	
 		return true;
+	}
+	
+	void SelectObject(bool hide_presets = true)
+	{
+		if(hide_presets)
+			m_PresetItemsTextListbox.SelectRow(-1);
+		HideItemButtons();
+		ShowItemTransferButtons();
+		m_SelectedObjectText.SetText( GetCurrentObjectName() );
+
+		m_SelectedObject = GetCurrentObjectName();
+		m_LastSelectedObject = m_SelectedObject;
+		m_SelectedObjectIsPreset = false;
 	}
 
 	override bool OnClick(Widget w, int x, int y, int button)
@@ -551,14 +810,7 @@ class ScriptConsole extends UIScriptedMenu
 		}
 		else if ( w == m_ObjectsTextListbox )
 		{
-			m_PresetItemsTextListbox.SelectRow(-1);
-			HideItemButtons();
-			ShowItemTransferButtons();
-			m_SelectedObjectText.SetText( GetCurrentObjectName() );
-
-			m_SelectedObject = GetCurrentObjectName();
-			m_LastSelectedObject = m_SelectedObject;
-			m_SelectedObjectIsPreset = false;
+			SelectObject();
 			return true;
 		}
 		else if ( w == m_ObjectFilter )
@@ -766,10 +1018,24 @@ class ScriptConsole extends UIScriptedMenu
 		}
 		else if (w == m_EnfScriptRun)
 		{
-			RunEnscript();
+			if ( m_ScriptServer)
+				RunEnscriptServer();
+			else
+				RunEnscript();
 			return true;
 		}
-
+		else if (w == m_DrawInWorld)
+		{
+			DrawItems(m_SelectedObject);
+			return true;
+			
+		}
+		else if (w == m_DrawInWorldClear)
+		{
+			DrawItemsClear();
+			return true;
+		}
+		
 		// tabs
 		for (i = 0; i < TABS_COUNT; i++)
 		{
@@ -842,6 +1108,16 @@ class ScriptConsole extends UIScriptedMenu
 				}
 			}
 		}
+		
+		if ( w ==  m_DebugMapWidget )
+		{
+			vector screen_to_map = m_DebugMapWidget.ScreenToMap(Vector(x,y, 0));
+			float pos_y = GetGame().SurfaceY(screen_to_map[0], screen_to_map[2]);
+			screen_to_map[1] = pos_y;
+			m_Developer.Teleport(player, screen_to_map);
+			return true;
+		}
+		
 
 		return false;
 	}	
@@ -860,6 +1136,11 @@ class ScriptConsole extends UIScriptedMenu
 			m_ConfigDebugProfile.SetItemQuantity( GetCurrentPresetName(), GetCurrentItemIndex(), m_QuantityEditBox.GetText().ToFloat() );
 			return true;
 		}
+		else if (w == m_DrawDistanceWidget)
+		{
+			DRAW_DISTANCE = m_DrawDistanceWidget.GetText().ToFloat();
+			return true;
+		}
 		else if (w == m_DamageEditBox && ( GetCurrentItemIndex() >= 0 || GetCurrentPresetName() != "") )
 		{
 			m_ConfigDebugProfile.SetItemHealth( GetCurrentPresetName(), GetCurrentItemIndex(), m_DamageEditBox.GetText().ToFloat() );
@@ -870,6 +1151,38 @@ class ScriptConsole extends UIScriptedMenu
 			ChangeConfigFilter();
 			return true;
 		}
+		else if ( w == m_ShowProtected )
+		{
+			if( m_ShowProtected.IsChecked() )
+			{
+				m_ObjectsScope = 1;	
+			}
+			else
+			{
+				m_ObjectsScope = 2;
+			}
+			ChangeFilter();
+			return true;
+		}
+		else if ( w == m_ShowOthers )
+		{
+			PluginRemotePlayerDebugClient plugin_remote_client = PluginRemotePlayerDebugClient.Cast( GetPlugin(PluginRemotePlayerDebugClient) );
+			if( m_ShowOthers.IsChecked() )
+			{
+				plugin_remote_client.RequestPlayerInfo( PlayerBase.Cast(GetGame().GetPlayer()), 1 );
+				m_UpdateMap = 1;
+				SHOW_OTHERS = true;
+			}
+			else
+			{
+				plugin_remote_client.RequestPlayerInfo( PlayerBase.Cast(GetGame().GetPlayer()), 0 );
+				m_UpdateMap = 0;
+				SHOW_OTHERS = false;
+			}
+			return true;
+		}
+		
+		
 
 		return false;
 	}
@@ -877,12 +1190,28 @@ class ScriptConsole extends UIScriptedMenu
 	override bool OnItemSelected(Widget w, int x, int y, int row, int  column,	int  oldRow, int  oldColumn)
 	{
 		super.OnItemSelected(w, x, y, row, column, oldRow, oldColumn);
-
 		if ( w == m_PositionsListbox )
 		{
 			vector position = m_ConfigDebugProfileFixed.GetPositionByName( GetCurrentPositionName() );
 			m_TeleportX.SetText( position[0].ToString() );
 			m_TeleportY.SetText( position[2].ToString() );
+			return true;
+		}
+		else if( w == m_ObjectsTextListbox )
+		{
+			SelectObject(false);
+			return true;
+		}
+		else if ( w == m_PresetItemsTextListbox )
+		{
+			if(m_PresetItemsTextListbox.GetSelectedRow() != -1)
+			{
+				ShowItemButtons();
+				ShowItemTransferButtons();
+				m_SelectedObjectText.SetText( "Object : " + GetCurrentItemName() );
+				m_SelectedObject = GetCurrentItemName();
+				m_SelectedObjectIsPreset = false;
+			}
 			return true;
 		}
 		return true;
@@ -1527,8 +1856,11 @@ class ScriptConsole extends UIScriptedMenu
 	int m_Rows;
 	int m_ServerRows;
 	int m_EnscriptHistoryRow;
+	int m_EnscriptHistoryRowServer;
 	ref TStringArray		m_EnscriptConsoleHistory;
+	ref TStringArray		m_EnscriptConsoleHistoryServer;
 	PluginLocalEnscriptHistory	m_ModuleLocalEnscriptHistory;
+	PluginLocalEnscriptHistoryServer	m_ModuleLocalEnscriptHistoryServer;
 	MissionGameplay				m_MissionGameplay;
 
 	TextListboxWidget m_ClientLogListbox;
@@ -1540,10 +1872,12 @@ class ScriptConsole extends UIScriptedMenu
 
 	TextListboxWidget m_DiagDrawmodeTextListbox;
 	ButtonWidget m_DiagDrawButton;
-
+	ButtonWidget m_DrawInWorld;
+	ButtonWidget m_DrawInWorldClear;
 	// Page EnfScript
 	MultilineEditBoxWidget m_EnfScriptEdit;
 	ButtonWidget m_EnfScriptRun;
+	ButtonWidget m_EnfScriptRunServer;
 
 	// Page General
 	ButtonWidget 		m_TeleportButton;
@@ -1561,6 +1895,8 @@ class ScriptConsole extends UIScriptedMenu
 	CheckBoxWidget		m_HudDCharDebug;
 	CheckBoxWidget		m_HudDFreeCamCross;
 	CheckBoxWidget		m_HudDVersion;
+	CheckBoxWidget		m_ShowProtected;
+	CheckBoxWidget		m_ShowOthers;
 	
 	EditBoxWidget m_ObjectFilter;
 	EditBoxWidget m_SpawnDistanceEditBox;
@@ -1582,6 +1918,7 @@ class ScriptConsole extends UIScriptedMenu
 	ButtonWidget m_ItemMoveUpButton;
 	ButtonWidget m_ItemMoveDownButton;
 
+	EditBoxWidget m_DrawDistanceWidget;
 	EditBoxWidget m_QuantityEditBox;
 	EditBoxWidget m_DamageEditBox;
 	TextWidget m_ItemDamageLabel;
@@ -1605,11 +1942,13 @@ class ScriptConsole extends UIScriptedMenu
 	static const int TAB_ITEMS = 1;
 	static const int TAB_CONFIGS = 2;
 	static const int TAB_ENSCRIPT = 3;	
-	static const int TABS_OUTPUT = 4;
+	static const int TAB_ENSCRIPT_SERVER = 4;
+	static const int TABS_OUTPUT = 5;
 	// -----------------------
-	static const int TABS_COUNT = 5;
+	static const int TABS_COUNT = 6;
 
 	Widget m_Tabs[TABS_COUNT];
+	MapWidget m_DebugMapWidget;
 	ButtonWidget m_Tab_buttons[TABS_COUNT];
 
 	void SelectPreviousTab()
@@ -1657,11 +1996,49 @@ class ScriptConsole extends UIScriptedMenu
 	void SelectTab(int tab_id)
 	{
 		int i = 0;
+		Widget tab = m_Tabs[tab_id];
 		for (i = 0; i < TABS_COUNT; i++)
 		{
-			Widget tab = m_Tabs[i];
-			tab.Show(i == tab_id);
+			Widget t = m_Tabs[i];
+
+			if( i == tab_id )
+			{
+				t.Show(true);
+				
+			}
+			else
+			{
+				t.Show(false);
+			}
 		}
+		string text;
+		int index;
+		if ( tab_id == TAB_ENSCRIPT )
+		{
+			m_ScriptServer = false;
+			tab.Show(true);//since both buttons point to the same tab, this will keep the tab visible for either tab selectioin(it's a hack)
+			index = m_EnscriptConsoleHistory.Count() - m_EnscriptHistoryRow - 1;
+			if ( m_EnscriptConsoleHistory.IsValidIndex(index) )
+			{
+				text = m_EnscriptConsoleHistory.Get(index);
+				//Print("setting text client " + text);
+				m_EnfScriptEdit.SetText(text);
+			}
+			
+		}
+		else if( tab_id == TAB_ENSCRIPT_SERVER)
+		{
+			m_ScriptServer = true;
+			index = m_EnscriptConsoleHistoryServer.Count() - m_EnscriptHistoryRowServer - 1;
+			if ( m_EnscriptConsoleHistoryServer.IsValidIndex(index) )
+			{
+				text = m_EnscriptConsoleHistoryServer.Get(index);
+				//Print("setting text server " + text);
+				m_EnfScriptEdit.SetText( text );
+			}
+			
+		}
+		
 
 		for (i = 0; i < TABS_COUNT; i++)
 		{
@@ -1672,6 +2049,15 @@ class ScriptConsole extends UIScriptedMenu
 		m_selected_tab = tab_id;
 		m_ConfigDebugProfile.SetTabSelected(m_selected_tab);
 	}
+	
+	
+	ref array<ref RemotePlayerStatDebug> m_PlayerDebugStats = new array<ref RemotePlayerStatDebug>;
+	override void OnRPC(ParamsReadContext ctx)
+	{
+		ctx.Read(m_PlayerDebugStats);
+	}
+	
+	
 
 
 	PluginDeveloper m_Developer;

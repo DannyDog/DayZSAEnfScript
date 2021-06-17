@@ -37,11 +37,7 @@ class ActionFertilizeSlot: ActionContinuousBase
 		GardenBase garden_base;
 		if ( Class.CastTo(garden_base, target.GetObject()))
 		{
-			//string selection = garden_base.GetActionComponentName(target.GetComponentIndex());
-			
-			//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
-			
-			Slot slot;// = garden_base.GetSlotBySelection( selection );
+			Slot slot;
 			
 			array<string> selections = new array<string>;
 			garden_base.GetActionComponentNameList(target.GetComponentIndex(), selections);
@@ -49,7 +45,6 @@ class ActionFertilizeSlot: ActionContinuousBase
 
 			for (int s = 0; s < selections.Count(); s++)
 			{
-				//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
 				selection = selections[s];
 				slot = garden_base.GetSlotBySelection( selection );
 				if (slot)

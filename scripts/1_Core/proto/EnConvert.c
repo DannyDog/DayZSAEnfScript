@@ -420,7 +420,7 @@ class vector
 	static vector RotateAroundPoint(vector point, vector pos, vector axis, float cosAngle, float sinAngle)
 	{
 		vector offsetPos = pos - point;
-		return RotateAroundZero(offsetPos, axis, cosAngle, sinAngle) + pos;
+		return RotateAroundZero(offsetPos, axis, cosAngle, sinAngle) + point;
 	}
 };
 

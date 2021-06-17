@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class OpticsInfoShotgun;
@@ -118,7 +119,7 @@ class cfgWeapons
 				};
 			};
 		};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Mp133_Shot_SoundSet","Mp133_Tail_SoundSet","Mp133_InteriorTail_SoundSet"};
 			begin1[] = {"dz\sounds\weapons\shotguns\mp133\mp133_single_0",1,1,800};

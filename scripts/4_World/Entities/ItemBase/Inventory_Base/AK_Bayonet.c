@@ -1,5 +1,10 @@
 class AK_Bayonet extends ToolBase
 {
+	override bool IsMeleeFinisher()
+	{
+		return true;
+	}
+	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
 		if(!super.CanPutAsAttachment(parent)) {return false;}

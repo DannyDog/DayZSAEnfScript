@@ -90,6 +90,11 @@ class CarWheel extends InventoryItemSuper
 	}
 */
 	
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 	override void EEKilled(Object killer)
 	{
 		string newWheel = "";
@@ -224,6 +229,12 @@ class CarDoor extends InventoryItemSuper
 			}
 		}
 	}
+	
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 /*
 	override void OnWasAttached( EntityAI parent, int slot_name )
 	{
@@ -385,7 +396,11 @@ class Truck_01_Door_Hood_Orange extends Truck_01_Door_Hood {};
 
 class CarRadiator extends InventoryItemSuper
 {
-
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 /* MOVED TO CarScript.C
 	override void OnWasAttached ( EntityAI parent, int slot_id )
 	{	
@@ -481,6 +496,11 @@ class TireRepairKit extends ItemBase {};
 
 class HeadlightH7 extends ItemBase
 {
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
@@ -507,6 +527,11 @@ class GlowPlug extends ItemBase
 
 class SparkPlug extends ItemBase
 {
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
@@ -522,6 +547,13 @@ class SparkPlug extends ItemBase
 //-----------------------------------------------------------------------------
 class Clothing_Base extends ItemBase
 {
+	float m_ItemVisibilityModifier;
+	
+	void Clothing_Base()
+	{
+		m_ItemVisibilityModifier = ConfigGetFloat("visibilityModifier");
+	}
+	
 	void ~Clothing_Base()
 	{
 		HandleVoiceEffect(false, PlayerBase.Cast(GetHierarchyRootPlayer()));
@@ -534,7 +566,7 @@ class Clothing_Base extends ItemBase
 
 	float GetItemVisibility()
 	{
-		return ConfigGetFloat("visibilityModifier");
+		return m_ItemVisibilityModifier;
 	}
 	
 	void UpdateNVGStatus(PlayerBase player, bool attaching = false, bool force_disable = false)
@@ -577,7 +609,7 @@ class Clothing_Base extends ItemBase
 	{
 		super.OnWasAttached(parent, slot_id);
 		
-		if ( slot_id == InventorySlots.HEADGEAR )
+		if ( slot_id == InventorySlots.HEADGEAR || slot_id == InventorySlots.MASK )
 			HandleVoiceEffect(true, PlayerBase.Cast(GetHierarchyRootPlayer()));
 	}
 	

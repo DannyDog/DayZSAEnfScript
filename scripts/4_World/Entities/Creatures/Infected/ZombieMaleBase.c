@@ -17,6 +17,10 @@ class ZmbM_CitizenASkinny_Base extends ZombieMaleBase
 {
 };
 
+class ZmbM_CitizenASkinny_LT_Base extends ZombieMaleBase
+{
+};
+
 class ZmbM_CitizenBFat_Base extends ZombieMaleBase
 {
 };
@@ -25,7 +29,15 @@ class ZmbM_ClerkFat_Base extends ZombieMaleBase
 {
 };
 
+class ZmbM_ClerkFat_LT_Base extends ZombieMaleBase
+{
+};
+
 class ZmbM_CommercialPilotOld_Base extends ZombieMaleBase
+{
+};
+
+class ZmbM_CommercialPilotOld_LT_Base extends ZombieMaleBase
 {
 };
 
@@ -38,6 +50,10 @@ class ZmbM_DoctorFat_Base extends ZombieMaleBase
 };
 
 class ZmbM_FarmerFat_Base extends ZombieMaleBase
+{
+};
+
+class ZmbM_FarmerFat_LT_Base extends ZombieMaleBase
 {
 };
 
@@ -73,7 +89,15 @@ class ZmbM_Jacket_Base extends ZombieMaleBase
 {
 };
 
+class ZmbM_Jacket_LT_Base extends ZombieMaleBase
+{
+};
+
 class ZmbM_JoggerSkinny_Base extends ZombieMaleBase
+{
+};
+
+class ZmbM__Runner_Base extends ZombieMaleBase
 {
 };
 
@@ -129,6 +153,10 @@ class ZmbM_SkaterYoung_Base extends ZombieMaleBase
 {
 };
 
+class ZmbM_SkaterYoung_LT_Base extends ZombieMaleBase
+{
+};
+
 class ZmbM_Soldier_Base extends ZombieMaleBase
 {
 	override bool IsZombieMilitary()
@@ -158,6 +186,10 @@ class ZmbM_usSoldier_normal_Base extends ZombieMaleBase
 };
 
 class ZmbM_VillagerOld_Base extends ZombieMaleBase
+{
+};
+
+class ZmbM_VillagerOld_LT_Base extends ZombieMaleBase
 {
 };
 

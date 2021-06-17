@@ -37,7 +37,7 @@ class WoodBase extends Plant
 	{
 		if ( m_PrimaryDropsAmount > 0 )
 		{
-			if ( IsTree() && item && item.KindOf("Knife") )
+			if ( IsTree() && item && ( item.KindOf("Knife") || item.IsInherited(Screwdriver) ) )
 			{
 				return -1;
 			}
@@ -48,7 +48,7 @@ class WoodBase extends Plant
 		}
 		else
 		{
-			if ( item && item.KindOf("Knife") )
+			if ( item && ( item.KindOf("Knife") || item.IsInherited(Screwdriver) ) )
 			{
 				return -1;
 			}
@@ -65,7 +65,7 @@ class WoodBase extends Plant
 	
 	void GetMaterialAndQuantityMap(ItemBase item, out map<string,int> output_map)
 	{
-		if ( IsTree() && item && item.KindOf("Knife") && m_BarkType != "" )
+		if ( IsTree() && item && ( item.KindOf("Knife") || item.IsInherited(Screwdriver) ) && m_BarkType != "" )
 		{
 			output_map.Insert(m_BarkType,1);
 		}

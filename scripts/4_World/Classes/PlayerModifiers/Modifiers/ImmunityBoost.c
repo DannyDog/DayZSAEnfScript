@@ -32,15 +32,21 @@ class ImmunityBoost: ModifierBase
 	override void OnActivate(PlayerBase player)
 	{
 		player.SetImmunityBoosted(true);
+		player.IncreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() )
 			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
 		player.SetImmunityBoosted(false);
+		player.DecreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() )
 			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)

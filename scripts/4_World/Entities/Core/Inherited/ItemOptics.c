@@ -6,6 +6,7 @@ class ItemOptics extends InventoryItemSuper
 	bool 				m_isNVOptic = false;
 	int 				m_reddot_index;
 	float 				m_blur_float;
+	float 				m_nearplane_override; //override value for DayZPlayerCameraOptics only!
 	string 				m_optic_sight_texture;
 	string 				m_optic_sight_material;
 	string 				m_2D_preload_type;
@@ -19,6 +20,7 @@ class ItemOptics extends InventoryItemSuper
 		m_lens_array = new array<float>;
 		InitReddotData();
 		InitOpticsPPInfo();
+		InitCameraOverrideProperties();
 		InitOpticsDOFProperties(m_OpticsDOFProperties);
 		Init2DPreloadType();
 	}
@@ -326,6 +328,19 @@ class ItemOptics extends InventoryItemSuper
 		blur_float = GetGame().ConfigGetFloat(path + " PPBlurProperties");
 	}
 	
+	void InitCameraOverrideProperties()
+	{
+		string path = "cfgVehicles " + GetType() + " OpticsInfo";
+		if ( GetGame().ConfigIsExisting(path + " nearPlaneDistanceOverride") )
+		{
+			m_nearplane_override = GetGame().ConfigGetFloat(path + " nearPlaneDistanceOverride");
+		}
+		else
+		{
+			m_nearplane_override = DayZPlayerCameraOptics.CONST_NEARPLANE_OPTICS;
+		}
+	}
+	
 	//! Initializes DOF properties for optic's alternate ironsights (ACOG etc.)
 	bool InitOpticsDOFProperties (out array<float> temp_array)
 	{
@@ -368,6 +383,11 @@ class ItemOptics extends InventoryItemSuper
 	float GetOpticsPPBlur()
 	{
 		return m_blur_float;
+	}
+	
+	float GetNearPlaneValue()
+	{
+		return m_nearplane_override;
 	}
 	
 	void Init2DPreloadType()

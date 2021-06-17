@@ -4940,6 +4940,7 @@ class CfgVehicles
 	{
 		scope = 1;
 		model = "\DZ\structures_bliss\Specific\FuelStation\FuelStation_Feed_Enoch.p3d";
+		displayName = "$STR_GasStation_Pump0";
 		class DamageSystem
 		{
 			class GlobalHealth

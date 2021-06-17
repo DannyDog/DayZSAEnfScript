@@ -36,7 +36,7 @@ class ActionWashHandsItem: ActionSingleUseBase
 		if ( player.GetItemOnSlot("Gloves") )
 			return false;
 		 
-		return player.HasBloodyHands() && ( item.GetQuantity() >= WASH_HANDS_AMOUNT );
+		return player.HasBloodyHands() && ( item.GetQuantity() >= item.GetDisinfectQuantity() );
 	}
 
 	override void OnEndServer( ActionData action_data )
@@ -45,7 +45,7 @@ class ActionWashHandsItem: ActionSingleUseBase
 		{
 			PluginLifespan module_lifespan = PluginLifespan.Cast( GetPlugin( PluginLifespan ) );
 			module_lifespan.UpdateBloodyHandsVisibility( action_data.m_Player, false );
-			action_data.m_MainItem.AddQuantity( -WASH_HANDS_AMOUNT, false );
+			action_data.m_MainItem.AddQuantity( -action_data.m_MainItem.GetDisinfectQuantity(), false );
 		}
 	}
 };

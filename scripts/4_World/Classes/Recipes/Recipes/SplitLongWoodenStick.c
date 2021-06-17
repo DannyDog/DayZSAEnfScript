@@ -25,7 +25,7 @@ class SplitLongWoodenStick extends RecipeBase
 		//INGREDIENTS
 		//ingredient 1
 		InsertIngredient(0,"LongWoodenStick");//you can insert multiple ingredients this way
-		InsertIngredient(0,"SharpLongStick");//you can insert multiple ingredients this way
+		InsertIngredient(0,"SharpWoodenStick");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[0] = 0;// 0 = do nothing
 		m_IngredientSetHealth[0] = -1; // -1 = do nothing
@@ -47,6 +47,8 @@ class SplitLongWoodenStick extends RecipeBase
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
 		InsertIngredient(1,"Crowbar");
 		InsertIngredient(1,"Pickaxe");
 		InsertIngredient(1,"WoodAxe");
@@ -97,6 +99,16 @@ class SplitLongWoodenStick extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)//gets called upon recipe's completion
 	{
-		Debug.Log("Recipe Do method called","recipes");
+		ItemBase ingredient = ingredients[0];
+	
+		for (int i=0; i < results.Count(); i++)
+		{
+			ItemBase item_result;
+			Class.CastTo(item_result, results.Get(i));
+			
+			MiscGameplayFunctions.TransferItemProperties(ingredient, item_result);
+		}	
+		
+		super.Do( ingredients, player, results, specialty_weight);
 	}
 };

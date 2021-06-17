@@ -31,13 +31,10 @@ class ActionDisarmMine: ActionContinuousBase
 	{
 		if ( !target )
 			return false;
-		
-		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
-			return false;
 
 		TrapBase target_TB;
 
-		if ( Class.CastTo(target_TB,  target.GetObject() ) &&  item )
+		if ( Class.CastTo(target_TB,  target.GetObject() ) &&  item && IsInReach(player, target, UAMaxDistances.DEFAULT) )
 		{		
 			if (target_TB.IsActive() && target_TB.CanBeDisarmed())
 			{

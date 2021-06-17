@@ -316,7 +316,7 @@ class OvenIndoor extends FireplaceBase
 
 	override void EEItemDetached( EntityAI item, string slot_name ) 
 	{
-		super.EEItemDetached ( item, slot_name );
+		super.EEItemDetached( item, slot_name );
 		
 		ItemBase item_base = ItemBase.Cast( item );
 		
@@ -327,24 +327,11 @@ class OvenIndoor extends FireplaceBase
 			RemoveFromFireConsumables( GetFireConsumableByItem( item_base ) );
 		}
 		
-		//no attachments left & no ashes are present
-		if ( GetInventory().AttachmentCount() == 0 && !HasAshes() )
+		// We don't want to check this if simply moving food around
+		if ( !item_base.IsInherited( Edible_Base ) )
 		{
-			//TODO
-			//Clear point
-			/*
-			if ( GetGame().IsServer() )
-			{
-				if ( GetFireplacePoint() )
-				{
-					GetFireplacePoint().ClearObject();
-					ClearFireplacePoint();						
-				}
-			}
-			*/
-
-			//destroy fireplace
-			DestroyFireplace();
+			//no attachments left & no ashes are present
+			CheckForDestroy();
 		}
 
 		// direct cooking slots

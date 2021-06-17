@@ -51,7 +51,14 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 	void RemoveMostSignificantBleedingSource()
 	{
 		int bit = GetMostSignificantBleedingSource();
-		RemoveBleedingSource(bit);
+		if( bit != 0)
+			RemoveBleedingSource(bit);
+	}
+	
+	void RemoveMostSignificantBleedingSourceEx(ItemBase item)
+	{
+		SetItem(item);
+		RemoveMostSignificantBleedingSource();
 	}
 	
 	int GetMostSignificantBleedingSource()
@@ -100,7 +107,7 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 
 			for(int i = 0; i < m_BleedingSources.Count(); i++)
 			{
-				m_BleedingSources.GetElement(i).OnUpdateServer( TICK_INTERVAL_SEC, blood_scale, m_DisableBloodLoss );
+				m_BleedingSources.GetElement(i).OnUpdateServer( m_Tick, blood_scale, m_DisableBloodLoss );
 			}
 			m_Tick = 0;
 		}
@@ -132,8 +139,8 @@ class BleedingSourcesManagerServer extends BleedingSourcesManagerBase
 		//hackerino for zombino:
 		if (source.IsZombie())
 		{
-			int chance = Math.RandomInt(0,10); //10%
-			if (chance == 1)
+			int chance = Math.RandomInt(0,100); //Cast die, probability comes from Blood damage in infected ammo config
+			if (chance <= damage)
 			{
 				AttemptAddBleedingSource(component);
 			}

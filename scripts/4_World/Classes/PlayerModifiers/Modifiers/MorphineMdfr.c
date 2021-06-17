@@ -32,7 +32,8 @@ class MorphineMdfr: ModifierBase
 		{
 			player.m_ShockHandler.SetMultiplier(0.1); //was 0.5 //Switch the shock multiplier NEED A CONST
 		}
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		//if( player.GetNotifiersManager() ) player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		player.IncreaseHealingsCount();
 		m_Player.m_InjuryHandler.m_ForceInjuryAnimMask = m_Player.m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.MORPHINE;
 	}
 	
@@ -41,7 +42,8 @@ class MorphineMdfr: ModifierBase
 		
 		if (player.m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS)
 			player.m_ShockHandler.SetMultiplier(1); //Reset the shock multiplier when modifier stops
-		if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		//if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		player.DecreaseHealingsCount();
 		m_Player.m_InjuryHandler.m_ForceInjuryAnimMask = m_Player.m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.MORPHINE;
 	}
 	

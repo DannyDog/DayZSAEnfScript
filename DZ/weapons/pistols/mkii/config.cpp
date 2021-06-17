@@ -51,8 +51,8 @@ class cfgWeapons
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\MkII\MkII_reload",0.7,1,20};
 		reloadAction = "ReloadRugerMK2";
-		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"AmphibianS_Shot_SoundSet","AmphibianS_Tail_SoundSet","AmphibianS_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"AmphibianS_silencerHomeMade_SoundSet","AmphibianS_silencerHomeMadeTail_SoundSet","AmphibianS_InteriorTail_SoundSet"}};

@@ -24,7 +24,9 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
+class Mode_Double;
 class Mode_FullAuto;
 class Muzzle_Base;
 class OpticsInfoRifle;
@@ -59,15 +61,15 @@ class cfgWeapons
 		reloadSound[] = {"",0.05623413,1,20};
 		hiddenSelections[] = {"camoGround"};
 		simpleHiddenSelections[] = {"bullet","bullet2","hide_barrel"};
-		modes[] = {"Single","Burst"};
-		class Single: Mode_SemiAuto
+		modes[] = {"Single","Double"};
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"B95_Shot_SoundSet","B95_Tail_SoundSet","B95_InteriorTail_SoundSet"};
 			reloadTime = 0.1;
 			dispersion = 0.00075;
 			magazineSlot = "magazine";
 		};
-		class Burst: Mode_Burst
+		class Double: Mode_Double
 		{
 			soundSetShot[] = {"B95_Shot_SoundSet","B95_Tail_SoundSet","B95_InteriorTail_SoundSet"};
 			reloadTime = 0.1;

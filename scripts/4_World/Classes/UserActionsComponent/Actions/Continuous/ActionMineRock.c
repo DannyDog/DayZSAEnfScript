@@ -54,6 +54,10 @@ class ActionMineRock1H : ActionMineRock
 {
 	void ActionMineRock1H()
 	{
-		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_HACKTREE;
+		m_CallbackClass = ActionMineRockCB;
+		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_ASSEMBLE;
+		m_FullBody = true;
+		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT;
+		m_SpecialtyWeight = UASoftSkillsWeight.ROUGH_HIGH;
 	}
 }

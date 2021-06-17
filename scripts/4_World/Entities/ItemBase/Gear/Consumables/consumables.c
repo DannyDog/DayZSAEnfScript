@@ -14,11 +14,28 @@ class Bandana_ColorBase: Clothing
 	{
 
 	}
+		
+	override bool CanBeDisinfected()
+	{
+		return true;
+	}
 	
 	override float GetBandagingEffectivity()
 	{
-		return 1.0;
+		return 0.5;
 	};
+	
+	override float GetInfectionChance(int system = 0, Param param = null)
+	{
+		if(m_Cleanness == 1)
+		{
+			return 0.00;
+		}
+		else
+		{
+			return 0.15;
+		}
+	}
 };
 class Bandana_RedPattern: Bandana_ColorBase {};
 class Bandana_BlackPattern: Bandana_ColorBase {};

@@ -2879,6 +2879,96 @@ class CfgMagazines
 			};
 		};
 	};
+	class Mag_STANAG_60Rnd: Magazine_Base
+	{
+		scope = 2;
+		displayName = "#STR_Mag_STANAG_60rd_0";
+		descriptionShort = "#STR_Mag_STANAG_60rd_1";
+		model = "\DZ\weapons\attachments\magazine\magazine_stanag60.p3d";
+		weight = 450;
+		itemSize[] = {2,3};
+		count = 60;
+		ammo = "Bullet_556x45";
+		ammoItems[] = {"Ammo_556x45","Ammo_556x45Tracer"};
+		tracersEvery = 0;
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\magazine\data\magazine_stanag60.rvmat"}},{0.7,{"DZ\weapons\attachments\magazine\data\magazine_stanag60.rvmat"}},{0.5,{"DZ\weapons\attachments\magazine\data\magazine_stanag60_damage.rvmat"}},{0.3,{"DZ\weapons\attachments\magazine\data\magazine_stanag60_damage.rvmat"}},{0.0,{"DZ\weapons\attachments\magazine\data\magazine_stanag60_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class MagRifle_fill_in
+				{
+					soundSet = "MagRifle_fill_in_SoundSet";
+					id = 1;
+				};
+				class MagRifle_fill_loop
+				{
+					soundSet = "MagRifle_fill_loop_SoundSet";
+					id = 2;
+				};
+				class MagRifle_fill_out
+				{
+					soundSet = "MagRifle_fill_out_SoundSet";
+					id = 3;
+				};
+				class MagRifle_empty_in
+				{
+					soundSet = "MagRifle_empty_in_SoundSet";
+					id = 4;
+				};
+				class MagRifle_empty_loop
+				{
+					soundSet = "MagRifle_empty_loop_SoundSet";
+					id = 5;
+				};
+				class MagRifle_empty_out
+				{
+					soundSet = "MagRifle_empty_out_SoundSet";
+					id = 6;
+				};
+				class MagPistol_fill_in
+				{
+					soundSet = "MagPistol_fill_in_SoundSet";
+					id = 7;
+				};
+				class MagPistol_fill_loop
+				{
+					soundSet = "MagPistol_fill_loop_SoundSet";
+					id = 8;
+				};
+				class MagPistol_fill_out
+				{
+					soundSet = "MagPistol_fill_out_SoundSet";
+					id = 9;
+				};
+				class MagPistol_empty_in
+				{
+					soundSet = "MagPistol_empty_in_SoundSet";
+					id = 10;
+				};
+				class MagPistol_empty_loop
+				{
+					soundSet = "MagPistol_empty_loop_SoundSet";
+					id = 11;
+				};
+				class MagPistol_empty_out
+				{
+					soundSet = "MagPistol_empty_out_SoundSet";
+					id = 12;
+				};
+			};
+		};
+	};
 	class Mag_CMAG_10Rnd: Magazine_Base
 	{
 		scope = 2;
@@ -3513,6 +3603,99 @@ class CfgMagazines
 		color = "Green";
 		hiddenSelectionsTextures[] = {"#(argb,8,8,3)color(0.35,0.36,0.28,1.0,CO)"};
 		hiddenSelectionsMaterials[] = {"DZ\weapons\attachments\magazine\data\magazine_ak74.rvmat"};
+	};
+	class Mag_AK74_45Rnd: Magazine_Base
+	{
+		scope = 2;
+		displayName = "#STR_Mag_AK74_45rd_0";
+		descriptionShort = "#STR_Mag_AK74_45rd_1";
+		model = "\DZ\weapons\attachments\magazine\magazine_ak74_45rnd.p3d";
+		weight = 250;
+		itemSize[] = {1,4};
+		count = 45;
+		ammo = "Bullet_545x39";
+		ammoItems[] = {"Ammo_545x39","Ammo_545x39Tracer"};
+		tracersEvery = 0;
+		hiddenSelections[] = {"camo"};
+		hiddenSelectionsTextures[] = {"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd_co.paa"};
+		hiddenSelectionsMaterials[] = {"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd.rvmat"};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 100;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd.rvmat"}},{0.7,{"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd.rvmat"}},{0.5,{"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd_damage.rvmat"}},{0.3,{"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd_damage.rvmat"}},{0.0,{"DZ\weapons\attachments\magazine\data\magazine_ak74_45rnd_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class MagRifle_fill_in
+				{
+					soundSet = "MagRifle_fill_in_SoundSet";
+					id = 1;
+				};
+				class MagRifle_fill_loop
+				{
+					soundSet = "MagRifle_fill_loop_SoundSet";
+					id = 2;
+				};
+				class MagRifle_fill_out
+				{
+					soundSet = "MagRifle_fill_out_SoundSet";
+					id = 3;
+				};
+				class MagRifle_empty_in
+				{
+					soundSet = "MagRifle_empty_in_SoundSet";
+					id = 4;
+				};
+				class MagRifle_empty_loop
+				{
+					soundSet = "MagRifle_empty_loop_SoundSet";
+					id = 5;
+				};
+				class MagRifle_empty_out
+				{
+					soundSet = "MagRifle_empty_out_SoundSet";
+					id = 6;
+				};
+				class MagPistol_fill_in
+				{
+					soundSet = "MagPistol_fill_in_SoundSet";
+					id = 7;
+				};
+				class MagPistol_fill_loop
+				{
+					soundSet = "MagPistol_fill_loop_SoundSet";
+					id = 8;
+				};
+				class MagPistol_fill_out
+				{
+					soundSet = "MagPistol_fill_out_SoundSet";
+					id = 9;
+				};
+				class MagPistol_empty_in
+				{
+					soundSet = "MagPistol_empty_in_SoundSet";
+					id = 10;
+				};
+				class MagPistol_empty_loop
+				{
+					soundSet = "MagPistol_empty_loop_SoundSet";
+					id = 11;
+				};
+				class MagPistol_empty_out
+				{
+					soundSet = "MagPistol_empty_out_SoundSet";
+					id = 12;
+				};
+			};
+		};
 	};
 	class Mag_SVD_10Rnd: Magazine_Base
 	{

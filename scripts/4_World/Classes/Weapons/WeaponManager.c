@@ -26,7 +26,9 @@ class WeaponManager
 	protected int 							m_ForceEjectBulletTimestamp;
 	
 	protected const int 					FORCE_EJECT_BULLET_TIMEOUT = 2000;
-	
+#ifdef DEVELOPER	
+	protected int 							m_BurstOption;
+#endif
 	//Reload
 	protected ref array<Magazine>			m_MagazinePilesInInventory;
 	protected ref array<MagazineStorage>	m_MagazineStorageInInventory;
@@ -66,6 +68,10 @@ class WeaponManager
 		m_MagazineStorageInInventory = new array<MagazineStorage>;
 		m_SuitableMagazines = new array<Magazine>;
 		m_PreparedMagazine = null;
+		
+#ifdef DEVELOPER	
+		m_BurstOption = 0;
+#endif
 	}
 //----------------------------------------------------------------------------	
 // Weapon Action conditions
@@ -94,8 +100,8 @@ class WeaponManager
 		if ( wpn.IsDamageDestroyed())
 			return false;
 		
-		if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
-			return false;
+		//if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
+			//return false;
 		
 		if( m_player.IsItemsToDelete())
 			return false;
@@ -135,8 +141,8 @@ class WeaponManager
 		if ( mag.IsDamageDestroyed() || wpn.IsDamageDestroyed())
 			return false;
 		
-		if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
-			return false;
+		//if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
+			//return false;
 
 		if( m_player.IsItemsToDelete())
 			return false;
@@ -203,8 +209,8 @@ class WeaponManager
 		if( mag.IsDamageDestroyed() || wpn.IsDamageDestroyed())
 			return false;
 		
-		if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
-			return false;
+		//if ( mag.GetHierarchyRootPlayer() && mag.GetHierarchyRootPlayer() != m_player )
+		//	return false;
 		
 		if( wpn.IsJammed(/*wpn.GetCurrentMuzzle()*/) )
 			return false;
@@ -419,6 +425,17 @@ class WeaponManager
 			wpn.ProcessWeaponEvent(new WeaponEventTrigger(m_player));
 		}
 	}
+#ifdef DEVELOPER
+	int GetBurstOption()
+	{
+		return m_BurstOption;
+	}
+	
+	void SetBurstOption(int value)
+	{
+		m_BurstOption = value;
+	}
+#endif	
 //-------------------------------------------------------------------------------------	
 // Synchronize - initialize from client side
 //-------------------------------------------------------------------------------------
@@ -1107,6 +1124,67 @@ class WeaponManager
 		return mag1.GetAmmoCount() - mag2.GetAmmoCount();
 	}
 	
+	void SortMagazineAfterLoad()
+	{
+		array<MagazineStorage>	magazines = new array<MagazineStorage>;
+		array<Magazine>	magazines_piles = new array<Magazine>;
+		int low_mag1, high_mag1;
+		int low_mag2, high_mag2;
+		int i, j;
+		
+		for(i = 0; i < m_MagazineStorageInInventory.Count(); i++ ) 
+		{
+			MagazineStorage mag = m_MagazineStorageInInventory.Get(i);
+			mag.GetNetworkID(low_mag1,high_mag1);
+			for( j = 0; j < magazines.Count(); j++)
+			{
+				magazines.Get(j).GetNetworkID(low_mag2,high_mag2);
+				if(low_mag1 > low_mag2)
+				{
+					break;
+				}
+				else if (low_mag1 == low_mag2)
+				{
+					if( high_mag1 > high_mag2 )
+					{
+						break;
+					}
+				}
+			}
+			magazines.InsertAt(mag,j);
+		}
+		
+		m_MagazineStorageInInventory.Clear();
+		m_MagazineStorageInInventory.Copy(magazines);
+		
+		for(i = 0; i < m_MagazinePilesInInventory.Count(); i++ ) 
+		{
+			Magazine pile = m_MagazinePilesInInventory.Get(i);
+			pile.GetNetworkID(low_mag1,high_mag1);
+			for( j = 0; j < magazines_piles.Count(); j++)
+			{
+				magazines_piles.Get(j).GetNetworkID(low_mag2,high_mag2);
+				if(low_mag1 > low_mag2)
+				{
+					break;
+				}
+				else if (low_mag1 == low_mag2)
+				{
+					if( high_mag1 > high_mag2 )
+					{
+						break;
+					}
+				}
+			}
+			magazines_piles.InsertAt(pile,j);
+		}
+		
+		m_MagazinePilesInInventory.Clear();
+		m_MagazinePilesInInventory.Copy(magazines_piles);
+	
+		SetSutableMagazines();
+	}
+	
 	void SetSutableMagazines()
 	{
 		m_SuitableMagazines.Clear();
@@ -1166,5 +1244,21 @@ class WeaponManager
 			m_PreparedMagazine = null;
 		}
 	
+	}
+	
+	void OnLiftWeapon()
+	{
+		if( m_WeaponInHand )
+			m_WeaponInHand.ResetBurstCount();
+	}
+	
+	string GetCurrentModeName()
+	{
+		if( m_WeaponInHand )
+		{
+			int mi = m_WeaponInHand.GetCurrentMuzzle();
+			return m_WeaponInHand.GetCurrentModeName(mi);
+		}
+		return "";
 	}
 }

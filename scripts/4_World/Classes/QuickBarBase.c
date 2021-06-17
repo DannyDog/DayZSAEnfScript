@@ -227,22 +227,16 @@ class QuickBarBase
 //-------------------------------------------------------------		
 	void updateSlotsCount()
 	{
-		int slotsCount = _player.ConfigGetInt("quickBarBonus");
+		int slotsCount = _player.GetQuickBarBonus();
 		int attCount  = _player.GetInventory().AttachmentCount();
-		EntityAI attachment;
 		
-		for ( int i = 0; i < attCount; i++)
+		for ( int i = 0; i < attCount; ++i)
 		{
-			attachment = _player.GetInventory().GetAttachmentFromIndex(i);		
-			int cnt = attachment.ConfigGetInt("quickBarBonus");		
-			slotsCount += cnt;		
+			slotsCount += _player.GetInventory().GetAttachmentFromIndex(i).GetQuickBarBonus();
 		}
 		
-		//just for sure, max map slots is 10
-		if (slotsCount > 10)
-			slotsCount = 10;
-				
-		SetSize(slotsCount);
+		//max slots is 10
+		SetSize(Math.Min(slotsCount, 10));
 	}
 //-------------------------------------------------------------		
 	protected void _RemoveEntity(int index)

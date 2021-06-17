@@ -1,0 +1,51 @@
+PanelWidgetClass PanelModifier {
+ position 0 0.59781
+ size 378.30798 17.3894
+ hexactpos 1
+ vexactpos 1
+ hexactsize 1
+ vexactsize 1
+ style UIDefaultPanel
+ {
+  SliderWidgetClass StatSlider {
+   position 0.59151 -0.01743
+   size 0.39517 0.8062
+   valign center_ref
+   hexactpos 0
+   vexactpos 0
+   hexactsize 0
+   vexactsize 0
+  }
+  EditBoxWidgetClass InputValue {
+   color 0 1 0.298 1
+   position 167.405 0.68119
+   size 55.6639 14.8035
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   scaled 1
+   style Editor
+   "exact text" 0
+  }
+  TextWidgetClass StatName {
+   ignorepointer 1
+   position 3.20008 1.35253
+   size 95.2467 14.0931
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+   text "Stat name"
+  }
+  TextWidgetClass OutputValue {
+   ignorepointer 1
+   position 99.5869 1.04505
+   size 68.23589 14.2751
+   hexactpos 1
+   vexactpos 1
+   hexactsize 1
+   vexactsize 1
+  }
+ }
+}

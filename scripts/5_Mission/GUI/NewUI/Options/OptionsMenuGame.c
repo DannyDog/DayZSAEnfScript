@@ -9,6 +9,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	
 	protected ref NumericOptionsAccess		m_FOVOption;
 	protected ref ListOptionsAccess			m_LanguageOption;
+	protected ref ListOptionsAccess			m_PauseOption;
 	#ifdef PLATFORM_CONSOLE
 	protected ref NumericOptionsAccess		m_BrightnessOption;
 	protected ref OptionSelectorSlider		m_BrightnessSelector;
@@ -23,6 +24,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	protected ref OptionSelectorMultistate	m_ShowAdminSelector;
 	protected ref OptionSelectorMultistate	m_ShowPlayerSelector;
 	protected ref OptionSelectorMultistate 	m_ShowServerInfoSelector;
+	protected ref OptionSelectorMultistate	m_PauseSelector;
 	
 	protected GameOptions					m_Options;
 	protected OptionsMenu					m_Menu;
@@ -42,6 +44,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		
 		m_FOVOption					= NumericOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_FIELD_OF_VIEW ) );
 		m_LanguageOption			= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_LANGUAGE ) );
+		m_PauseOption				= ListOptionsAccess.Cast( m_Options.GetOptionByType( AT_OPTIONS_PAUSE ) );
 		
 		m_Root.FindAnyWidget( "fov_setting_option" ).SetUserID( AT_OPTIONS_FIELD_OF_VIEW );
 		m_Root.FindAnyWidget( "hud_setting_option" ).SetUserID( OptionIDsScript.OPTION_HUD );
@@ -57,6 +60,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		#ifdef PLATFORM_WINDOWS
 		m_Root.FindAnyWidget( "quickbar_setting_option" ).SetUserID( OptionIDsScript.OPTION_QUICKBAR );
 		m_Root.FindAnyWidget( "serverinfo_setting_option" ).SetUserID( OptionIDsScript.OPTION_SERVER_INFO );
+		m_Root.FindAnyWidget( "pause_setting_option" ).SetUserID( AT_OPTIONS_PAUSE );
 		#endif
 		#endif
 		
@@ -65,12 +69,15 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		ref array<string> opt		= { "#options_controls_disabled", "#options_controls_enabled" };
 		ref array<string> opt2		= { "#options_controls_enabled", "#options_controls_disabled" };
 		ref array<string> opt3		= new array<string>;
-		for( int i = 0; i < m_LanguageOption.GetItemsCount(); i++ )
+		for ( int i = 0; i < m_LanguageOption.GetItemsCount(); ++i )
 		{
 			string text;
 			m_LanguageOption.GetItemText( i, text );
 			opt3.Insert( text );
 		}
+		
+		ref array<string> opt4		= { "#options_pc_nopause_0", "#options_pc_nopause_1", "#options_pc_nopause_2" }; // Pause options menu strings
+		
 		
 		m_LanugageSelector			= new OptionSelectorMultistate( m_Root.FindAnyWidget( "language_setting_option" ), m_LanguageOption.GetIndex(), this, false, opt3 );
 		m_FOVSelector				= new OptionSelectorSlider( m_Root.FindAnyWidget( "fov_setting_option" ), m_FOVOption.ReadValue(), this, false, m_FOVOption.GetMin(), m_FOVOption.GetMax() );
@@ -94,10 +101,13 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 			m_BrightnessSelector.m_OptionChanged.Insert( UpdateBrightnessOption );
 		#else
 		#ifdef PLATFORM_WINDOWS
-			m_ShowQuickbarSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "quickbar_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ), this, false, opt );
+			m_ShowQuickbarSelector		= new OptionSelectorMultistate( m_Root.FindAnyWidget( "quickbar_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ), this, false, opt );
 			m_ShowServerInfoSelector	= new OptionSelectorMultistate( m_Root.FindAnyWidget( "serverinfo_setting_option" ), g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ), this, false, opt );
+			m_PauseSelector				= new OptionSelectorMultistate( m_Root.FindAnyWidget( "pause_setting_option" ), m_PauseOption.GetIndex(), this, false, opt4 );
+			
 			m_ShowQuickbarSelector.m_OptionChanged.Insert( UpdateQuickbarOption );
 			m_ShowServerInfoSelector.m_OptionChanged.Insert( UpdateServerInfoOption );
+			m_PauseSelector.m_OptionChanged.Insert( UpdatePauseOption );
 		#endif
 		#endif
 		
@@ -185,32 +195,34 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 	
 	void Revert()
 	{
-		if( m_ShowHUDSelector )
+		if ( m_ShowHUDSelector )
 			m_ShowHUDSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.HUD ), false );
-		if( m_ShowCrosshairSelector )
+		if ( m_ShowCrosshairSelector )
 			m_ShowCrosshairSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.CROSSHAIR ), false );
-		if( m_FOVOption )
+		if ( m_FOVOption )
 		{
 			m_FOVSelector.SetValue( m_FOVOption.ReadValue(), false );
 			g_Game.SetUserFOV( m_FOVOption.ReadValue() );
 		}
-		if( m_LanguageOption )
+		if ( m_LanguageOption )
 			m_LanugageSelector.SetValue( m_LanguageOption.GetIndex(), false );
-		if( m_ShowGameSelector )
+		if ( m_ShowGameSelector )
 			m_ShowGameSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.GAME_MESSAGES ), false );
-		if( m_ShowAdminSelector )
+		if ( m_ShowAdminSelector )
 			m_ShowAdminSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.ADMIN_MESSAGES ), false );
-		if( m_ShowPlayerSelector )
+		if ( m_ShowPlayerSelector )
 			m_ShowPlayerSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.PLAYER_MESSAGES ), false );
 		
 		#ifdef PLATFORM_WINDOWS
-			if( m_ShowQuickbarSelector )
+			if ( m_ShowQuickbarSelector )
 				m_ShowQuickbarSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.QUICKBAR ), false );
-			if( m_ShowServerInfoSelector )
+			if ( m_ShowServerInfoSelector )
 				m_ShowServerInfoSelector.SetValue( g_Game.GetProfileOption( EDayZProfilesOptions.SERVERINFO_DISPLAY ), false );
+			if ( m_PauseOption )
+				m_PauseSelector.SetValue( m_PauseOption.GetIndex(), false);
 		#else
 		#ifdef PLATFORM_CONSOLE
-			if( m_BrightnessSelector )
+			if ( m_BrightnessSelector )
 				m_BrightnessSelector.SetValue( m_BrightnessOption.ReadValue(), false );
 		#endif
 		#endif
@@ -246,6 +258,12 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_Menu.OnChanged();
 
 		TextMapUpdateWidget( AT_OPTIONS_LANGUAGE );
+	}
+	
+	void UpdatePauseOption( int new_index )
+	{
+		m_PauseOption.SetIndex( new_index );
+		m_Menu.OnChanged();
 	}
 	
 	void UpdateFOVOption( float new_value )
@@ -391,6 +409,7 @@ class OptionsMenuGame extends ScriptedWidgetEventHandler
 		m_TextMap.Insert( OptionIDsScript.OPTION_SERVER_INFO, new Param2<string, string>( "#options_game_show_serverinfo", "#options_game_show_serverinfo_desc" ) );
 	
 		#ifdef PLATFORM_WINDOWS
+		m_TextMap.Insert( AT_OPTIONS_PAUSE, new Param2<string, string>( "#layout_options_pc_nopause_title", "#layout_options_pc_nopause_tooltip" ) );
 		m_TextMap.Insert( OptionIDsScript.OPTION_QUICKBAR, new Param2<string, string>( "#options_game_show_quickbar",	"#options_game_show_quickbar_desc" ) );
 		m_TextMap.Insert( OptionIDsScript.OPTION_GAME_MESSAGES, new Param2<string, string>( "#options_pc_game_messages",	"#options_game_show_game_msg" ) );
 		m_TextMap.Insert( OptionIDsScript.OPTION_ADMIN_MESSAGES, new Param2<string, string>( "#options_pc_admin_mes",		"#options_game_show_admin_msg" ) );

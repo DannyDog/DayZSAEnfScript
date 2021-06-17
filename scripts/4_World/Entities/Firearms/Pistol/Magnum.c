@@ -312,6 +312,7 @@ class Magnum_Base extends Weapon_Base
 	
 	override void OnFire(int muzzle_index)
 	{
+		super.OnFire(muzzle_index);
 		Magnum_Cylinder cylinder = Magnum_Cylinder.Cast(GetAttachmentByType(Magnum_Cylinder));
 		if (cylinder)
 		{

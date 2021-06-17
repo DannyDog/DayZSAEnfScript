@@ -936,9 +936,9 @@ FrameWidgetClass main_menu_root {
   PanelWidgetClass last_server_info {
    visible 1
    ignorepointer 0
-   color 0 0 0 0.549
+   color 0.0078 0.0078 0.0078 0.0392
    position 500 130
-   size 250 120
+   size 350 90
    halign right_ref
    valign bottom_ref
    hexactpos 1
@@ -946,14 +946,14 @@ FrameWidgetClass main_menu_root {
    hexactsize 1
    vexactsize 1
    priority 3
-   style rover_sim_colorable
+   style DayZDefaultPanel
    "no focus" 1
    {
     PanelWidgetClass PanelWidget0 {
      inheritalpha 1
      ignorepointer 0
      position 0 0
-     size 1 30
+     size 1 20
      hexactpos 1
      vexactpos 1
      hexactsize 0
@@ -963,7 +963,7 @@ FrameWidgetClass main_menu_root {
        visible 1
        clipchildren 1
        inheritalpha 1
-       size 1 0.7
+       size 1 0.8
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -971,7 +971,7 @@ FrameWidgetClass main_menu_root {
        vexactsize 0
        text "#layout_main_menu_last_server"
        font "gui/fonts/sdf_MetronLight24"
-       "text offset" 10 0
+       "text offset" 5 0
        "exact text" 0
        "exact text size" 16
        "size to text h" 0
@@ -983,8 +983,8 @@ FrameWidgetClass main_menu_root {
     PanelWidgetClass PanelWidget1 {
      inheritalpha 1
      ignorepointer 0
-     position 0 60
-     size 1 30
+     position 0 44
+     size 1 20
      hexactpos 1
      vexactpos 1
      hexactsize 0
@@ -994,7 +994,8 @@ FrameWidgetClass main_menu_root {
        visible 1
        clipchildren 1
        inheritalpha 1
-       size 1 0.55
+       position 0 0
+       size 1 0.8
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -1013,8 +1014,8 @@ FrameWidgetClass main_menu_root {
     PanelWidgetClass PanelWidget2 {
      inheritalpha 1
      ignorepointer 0
-     position 0 90
-     size 1 30
+     position 0 66
+     size 1 20
      hexactpos 1
      vexactpos 1
      hexactsize 0
@@ -1025,7 +1026,7 @@ FrameWidgetClass main_menu_root {
        clipchildren 1
        inheritalpha 1
        position 0 0
-       size 1 0.55
+       size 1 0.8
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -1044,8 +1045,8 @@ FrameWidgetClass main_menu_root {
     PanelWidgetClass PanelWidget3 {
      inheritalpha 1
      ignorepointer 0
-     position 0 30
-     size 1 30
+     position 0 22
+     size 1 20
      hexactpos 1
      vexactpos 1
      hexactsize 0
@@ -1056,7 +1057,7 @@ FrameWidgetClass main_menu_root {
        clipchildren 1
        inheritalpha 1
        position 0 0
-       size 1 0.55
+       size 1 0.8
        valign center_ref
        hexactpos 1
        vexactpos 1
@@ -1130,6 +1131,7 @@ FrameWidgetClass main_menu_root {
    visible 1
    ignorepointer 0
    color 0 0 0 0.7843
+   position 0 0
    size 1 1
    halign center_ref
    valign center_ref

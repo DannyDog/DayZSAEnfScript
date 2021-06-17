@@ -8,6 +8,7 @@ class LaughterSymptom extends SymptomBase
 		m_ID = SymptomIDs.SYMPTOM_LAUGHTER;
 		m_DestroyOnAnimFinish = true;
 		m_SyncToClient = false;
+		m_Duration = 4;
 	}
 	
 	//!gets called every frame

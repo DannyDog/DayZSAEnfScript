@@ -34,8 +34,7 @@ class FoodStage
 		m_CookingTime = 0;
 		
 		//get config data
-		string config_path = "CfgVehicles" + " " + GetFoodItem().GetType() + " " + "Food" + " " + "FoodStages" + " " + GetFoodStageName( m_FoodStageType );
-		
+		string config_path = string.Format("CfgVehicles %1 Food FoodStages %2", GetFoodItem().GetType(), GetFoodStageName( m_FoodStageType ));
 		//if not exists in config
 		if ( !GetGame().ConfigIsExisting( config_path ) )
 		{
@@ -61,6 +60,7 @@ class FoodStage
 	{
 		return m_FoodStageType;
 	}
+	
 	void SetFoodStageType( FoodStageType food_stage_type )
 	{
 		m_FoodStageType = food_stage_type;
@@ -99,7 +99,7 @@ class FoodStage
 	//Food properties
 	protected static float GetNutritionPropertyFromIndex( int index, FoodStageType stage_type, FoodStage stage, string classname )
 	{
-		if(stage)
+		if ( stage )
 		{
 			stage_type = stage.m_FoodStageType;
 			classname = stage.GetFoodItem().GetType();
@@ -108,13 +108,13 @@ class FoodStage
 		string config_path;
 		string food_stage_name = GetFoodStageName( stage_type );
 
-		config_path = "CfgVehicles" + " " + classname + " " + "Food" + " " + "FoodStages" + " " + food_stage_name + " " + "nutrition_properties";
+		config_path = string.Format("CfgVehicles %1 Food FoodStages %2 nutrition_properties", classname, food_stage_name);
 		array<float> nutrition_properties = new array<float>;
 		GetGame().ConfigGetFloatArray( config_path, nutrition_properties );
 		
 		if ( nutrition_properties.Count() > 0 )
 		{
-			if( index > (nutrition_properties.Count() - 1))
+			if ( index > (nutrition_properties.Count() - 1) )
 			{
 				return 0;
 			}
@@ -127,23 +127,23 @@ class FoodStage
 		else
 		{
 			//get modifiers class for nutrition values
-			config_path = "CfgVehicles" + " " + classname + " " + "Food" + " " + "nutrition_modifiers_class";
+			config_path = string.Format("CfgVehicles %1 Food nutrition_modifiers_class", classname);
 			
 			if ( GetGame().ConfigIsExisting( config_path ) )
 			{
 				string nutr_mod_class;
 				GetGame().ConfigGetText( config_path, nutr_mod_class );
 				
-				config_path = "CfgVehicles" + " " + "NutritionModifiers" + " " + nutr_mod_class + " " + "base_stage";
+				config_path = string.Format("CfgVehicles NutrionModifiers %1 base_stage", nutr_mod_class);
 				string nutr_base_stage;
 				GetGame().ConfigGetText( config_path, nutr_base_stage );
 				
 				//get nutrition values for food stage and modifiers 
-				config_path = "CfgVehicles" + " " + classname + " " + "Food" + " " + "FoodStages" + " " + nutr_base_stage + " " + "nutrition_properties";
+				config_path = string.Format("CfgVehicles %1 Food FoodStages %2 nutrition_properties", classname, nutr_base_stage);
 				array<float> base_nutr_properties = new array<float>;
 				GetGame().ConfigGetFloatArray( config_path, base_nutr_properties );
 				
-				config_path = "CfgVehicles" + " " + "NutritionModifiers" + " " + nutr_mod_class + " " + food_stage_name + " " + "nutrition_properties";
+				config_path = string.Format("CfgVehicles NutritionModifiers %1 %2 nutrition_properties", nutr_mod_class, food_stage_name);
 				array<float> nutr_mod_properties = new array<float>;
 				GetGame().ConfigGetFloatArray( config_path, nutr_mod_properties );
 				
@@ -165,7 +165,6 @@ class FoodStage
 	
 	static float GetEnergy(FoodStage stage, int stage_type = -1, string classname = "")
 	{
-
 		return GetNutritionPropertyFromIndex( 1 , stage_type, stage, classname );
 	}
 	
@@ -231,7 +230,7 @@ class FoodStage
 		ref array<string> stage_transitions = new array<string>;
 		
 		//get stage transitions from config
-		string config_path = "CfgVehicles" + " " + GetFoodItem().GetType() + " " + "Food" + " " + "FoodStageTransitions" + " " + GetFoodStageName( GetFoodStageType() );;
+		string config_path = string.Format("CfgVehicles %1 Food FoodStageTransitions %2", GetFoodItem().GetType(), GetFoodStageName( GetFoodStageType() ) );
 		
 		if ( GetGame().ConfigIsExisting( config_path ) )
 		{
@@ -241,13 +240,12 @@ class FoodStage
 			{
 				string child_name;
 				GetGame().ConfigGetChildName( config_path, i, child_name );
-				string transition_config_path = config_path + " " + child_name + " " + "cooking_method";
-				
+				string transition_config_path = string.Format("%1 %2 cooking_method", config_path, child_name );
 				if ( GetGame().ConfigIsExisting( transition_config_path ) )
 				{
 					if ( GetGame().ConfigGetInt( transition_config_path ) == cooking_method )
 					{
-						string cooking_method_config_path = config_path + " " + child_name + " " + "transition_to";
+						string cooking_method_config_path = string.Format("%1 %2 transition_to", config_path, child_name );
 						return GetGame().ConfigGetInt( cooking_method_config_path );
 					}
 				}
@@ -259,7 +257,7 @@ class FoodStage
 	
 	void ChangeFoodStage( FoodStageType new_stage_type )
 	{
-		string config_path = "CfgVehicles" + " " + GetFoodItem().GetType() + " " + "Food" + " " + "FoodStages" + " " + GetFoodStageName( new_stage_type );
+		string config_path = string.Format("CfgVehicles %1 Food FoodStages %2", GetFoodItem().GetType(), GetFoodStageName( new_stage_type ) );
 		
 		//merge stages
 		//food stage type
@@ -300,21 +298,9 @@ class FoodStage
 		{
 			Edible_Base food_item = GetFoodItem();
 			
-			//Selections
-			string config_path;
-			ref array<string> config_selections	= new array<string>;
-			ref array<string> config_textures	= new array<string>;
-			ref array<string> config_materials	= new array<string>;
-				
-			//selections
-			config_path = "CfgVehicles" + " " + food_item.GetType() + " " + "hiddenSelections";
-			GetGame().ConfigGetTextArray( config_path, config_selections );
-			//textures
-			config_path = "CfgVehicles" + " " + food_item.GetType() + " " + "hiddenSelectionsTextures";
-			GetGame().ConfigGetTextArray( config_path, config_textures );
-			//materials
-			config_path = "CfgVehicles" + " " + food_item.GetType() + " " + "hiddenSelectionsMaterials";
-			GetGame().ConfigGetTextArray( config_path, config_materials );
+			array<string> config_selections	= food_item.GetHiddenSelections();
+			array<string> config_textures	= food_item.GetHiddenSelectionsTextures();
+			array<string> config_materials	= food_item.GetHiddenSelectionsMaterials();
 			
 			//selection index
 			int selection_index;
@@ -405,7 +391,7 @@ class FoodStage
 	//get name of food stage type
 	static string GetFoodStageName( FoodStageType food_stage_type )
 	{
-		switch( food_stage_type )
+		switch ( food_stage_type )
 		{
 			case FoodStageType.RAW: 	return "Raw";
 			case FoodStageType.BAKED: 	return "Baked";

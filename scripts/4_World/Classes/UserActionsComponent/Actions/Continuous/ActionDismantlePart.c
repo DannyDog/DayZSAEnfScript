@@ -97,7 +97,7 @@ class ActionDismantlePart: ActionContinuousBase
 	//setup
 	override bool SetupAction( PlayerBase player, ActionTarget target, ItemBase item, out ActionData action_data, Param extra_data = NULL )
 	{	
-		if( super.SetupAction( player, target, item, action_data, extra_data ) )
+		if ( super.SetupAction( player, target, item, action_data, extra_data ) )
 		{
 			SetBuildingAnimation( item );
 			
@@ -109,7 +109,7 @@ class ActionDismantlePart: ActionContinuousBase
 	
 	protected void SetBuildingAnimation( ItemBase item )
 	{
-		switch( item.Type() )
+		switch ( item.Type() )
 		{
 			case Pickaxe:
 			case Shovel:
@@ -197,6 +197,10 @@ class ActionDismantlePart: ActionContinuousBase
 	
 	override string GetAdminLogMessage(ActionData action_data)
 	{
-		return " dismantled " + action_data.m_Target.GetObject().GetDisplayName() + " with " + action_data.m_MainItem.GetDisplayName();
+		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
+		ConstructionPart construction_part = construction_action_data.GetTargetPart();
+		
+		string message = string.Format("Dismantled %1 from %2 with %3", construction_part.GetName(), action_data.m_Target.GetObject().GetDisplayName(), action_data.m_MainItem.GetDisplayName() );
+		return message;
 	}
 }

@@ -1,5 +1,10 @@
 class SKS_Bayonet extends Inventory_Base
 {
+	override bool IsMeleeFinisher()
+	{
+		return true;
+	}
+	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
 		if(!super.CanPutAsAttachment(parent)) {return false;}

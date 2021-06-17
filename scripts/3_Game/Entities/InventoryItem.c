@@ -3,7 +3,8 @@ class InventoryItem extends EntityAI
 	private string m_SoundImpactType;
 	static private const float SOUND_CONTACT_SKIP = 0.33;//second
 	private float m_SoundContactTickTime;
-
+	private bool m_IsMeleeWeapon = false;
+	
 	proto native InventoryItemType GetInventoryItemType();
 
 	//! Some inventoryItem devices can be switched on/off (radios, transmitters)
@@ -26,6 +27,9 @@ class InventoryItem extends EntityAI
 		{
 			PreLoadSoundImpactType();
 		}
+		
+		if (ConfigIsExisting("isMeleeWeapon"))
+			m_IsMeleeWeapon = ConfigGetBool("isMeleeWeapon");
 	}
 	
 	
@@ -70,10 +74,7 @@ class InventoryItem extends EntityAI
 	
 	override bool IsMeleeWeapon()
 	{
-		if (ConfigIsExisting("isMeleeWeapon"))
-			return ConfigGetBool("isMeleeWeapon");
-		else
-			return false; // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
+		return m_IsMeleeWeapon;
 	}
 	
 	bool IsMeleeFinisher()
@@ -87,7 +88,7 @@ class InventoryItem extends EntityAI
 	{
 		string impactType = "default";
 
-		if( ConfigIsExisting("soundImpactType") )
+		if ( ConfigIsExisting("soundImpactType") )
 		{
 			impactType = ConfigGetString("soundImpactType");
 		}
@@ -117,7 +118,7 @@ class InventoryItem extends EntityAI
 	string GetImpactSurfaceType(IEntity other, Contact impact)
 	{
 		string surface;
-		if(DayZPhysics.GetHitSurface(
+		if (DayZPhysics.GetHitSurface(
 			Object.Cast(other),
 			impact.Position + impact.RelativeVelocityBefore * 5,
 			impact.Position - impact.RelativeVelocityBefore * 5,

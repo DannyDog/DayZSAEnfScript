@@ -69,7 +69,10 @@ class ActionRemovePlant: ActionInteractBase
 	{
 		if ( m_Plant )
 		{
-			m_Plant.RemovePlant();
+			//m_Plant.RemovePlant();
+			
+			//New method allowing us to pass player position
+			m_Plant.RemovePlantEx( action_data.m_Player.GetPosition() );
 		}
 		/*Object targetObject = action_data.m_Target.GetObject();
 		if ( targetObject != NULL && targetObject.IsInherited(PlantBase) )

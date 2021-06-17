@@ -2,11 +2,9 @@ PanelWidgetClass BackPanelWidget {
  visible 1
  clipchildren 0
  ignorepointer 1
- position 0 0.1
  size 224.8 38.4201
- halign center_ref
  hexactpos 1
- vexactpos 0
+ vexactpos 1
  hexactsize 1
  vexactsize 1
  priority 952

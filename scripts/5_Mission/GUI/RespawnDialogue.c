@@ -238,7 +238,7 @@ class RespawnDialogue extends UIScriptedMenu
 	bool RequestRespawn(bool random)
 	{
 		Man player = GetGame().GetPlayer();
-
+		IngameHud.Cast(GetGame().GetMission().GetHud()).InitBadgesAndNotifiers();
 		if ( !player || (player.GetPlayerState() == EPlayerStates.ALIVE && !player.IsUnconscious()) )
 			return false;
 		

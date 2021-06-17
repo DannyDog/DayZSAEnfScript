@@ -50,8 +50,8 @@ class cfgWeapons
 		drySound[] = {"DZ\sounds\weapons\firearms\glock19\Glock19_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\FNX45\FNX45_reload",0.8,1,20};
 		reloadAction = "ReloadGlock";
-		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"Glock19_Shot_SoundSet","Glock19_Tail_SoundSet","Glock19_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"Glock19_silencerPro_SoundSet","Glock19_silencerTail_SoundSet","Glock19_silencerInteriorTail_SoundSet"}};

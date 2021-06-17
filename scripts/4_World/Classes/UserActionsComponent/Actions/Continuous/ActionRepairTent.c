@@ -18,9 +18,9 @@ class ActionRepairTentCB : ActionContinuousBaseCB
 
 class ActionRepairTent: ActionContinuousBase
 {
-	typename m_LastValidType;
+	typename m_LastValidType; //legacy stuff
 	string m_CurrentDamageZone = "";
-	int m_LastValidComponentIndex = -1;
+	int m_LastValidComponentIndex = -1; //legacy stuff
 	
 	void ActionRepairTent()
 	{
@@ -68,34 +68,26 @@ class ActionRepairTent: ActionContinuousBase
 			targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections, "view");
 			TentBase tent = TentBase.Cast( targetParent );
 			
-			if (m_LastValidType != targetObject.Type() || m_LastValidComponentIndex != target.GetComponentIndex() || m_CurrentDamageZone == "")
+			string damageZone = "";
+			
+			for (int s = 0; s < selections.Count(); s++)
 			{
-				string damageZone = "";
-				
-				for (int s = 0; s < selections.Count(); s++)
+				if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
 				{
-					if ( DamageSystem.GetDamageZoneFromComponentName(tent, selections[s], damageZone) ) //NOTE: relevant fire geometry and view geometry selection names MUST match in order to get a valid damage zone
-					{
-						//Print("#" + s + " damageZone: " + damageZone);
-						break;
-					}
-				}
-				if ( damageZone != "" )
-				{
-					m_CurrentDamageZone = damageZone;
-					m_LastValidComponentIndex = target.GetComponentIndex();
-					m_LastValidType = targetObject.Type();
+					//Print("selections[s]: " + selections[s] + " | damageZone: " + damageZone);
+					break;
 				}
 			}
-			if ( m_CurrentDamageZone != "" )
+			
+			if ( damageZone != "" )
 			{
-				if (module_repairing.CanRepair(item,tent,m_CurrentDamageZone))
+				if (module_repairing.CanRepair(item,tent,damageZone))
 				{
+					m_CurrentDamageZone = damageZone;
 					return true;
 				}
 			}
 		}
-		
 		return false;
 	}
 

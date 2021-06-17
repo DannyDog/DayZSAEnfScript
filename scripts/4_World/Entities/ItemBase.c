@@ -36,12 +36,18 @@ class ItemBase extends InventoryItem
 	float 	m_VarWetInit;
 	float 	m_VarWetMin;
 	float 	m_VarWetMax;
+	// Cleanness
+	int	m_Cleanness;
+	int m_CleannessInit;
+	int m_CleannessMin;
+	int m_CleannessMax;
 	//
 	float	m_HeatIsolation;
 	float 	m_ItemModelLength;
 	float 	m_ConfigWeight = -1;
 	int 	m_VarLiquidType;
 	int 	m_ItemBehaviour = -1; // -1 = not specified; 0 = heavy item; 1= onehanded item; 2 = twohanded item
+	int 	m_QuickBarBonus = 0;
 	bool	m_IsBeingPlaced;
 	bool	m_IsHologram;
 	bool	m_IsPlaceSound;
@@ -57,6 +63,7 @@ class ItemBase extends InventoryItem
 	bool	m_IsStoreLoad = false;
 	bool	m_CanShowQuantity;
 	bool	m_HasQuantityBar;
+	
 	string	m_SoundAttType;
 	// items color variables
 	int 	m_ColorComponentR;
@@ -146,6 +153,8 @@ class ItemBase extends InventoryItem
 		}
 		
 		m_ConfigWeight = ConfigGetInt("weight");
+		
+		m_QuickBarBonus = Math.Max(0, ConfigGetInt("quickBarBonus"));
 	}
 	
 	void InitItemVariables()
@@ -164,6 +173,13 @@ class ItemBase extends InventoryItem
 		m_VarTemperature = m_VarTemperatureInit;
 		m_VarTemperatureMin = ConfigGetFloat("varTemperatureMin");
 		m_VarTemperatureMax = ConfigGetFloat("varTemperatureMax");
+		
+		
+		m_CleannessInit = ConfigGetInt("varCleannessInit");
+		m_Cleanness = m_CleannessInit;
+		m_CleannessMin = ConfigGetInt("varCleannessMin");
+		m_CleannessMax = ConfigGetInt("varCleannessMax");
+		
 		
 		m_VarWetInit = ConfigGetFloat("varWetInit");
 		m_VarWet = m_VarWetInit;
@@ -199,6 +215,7 @@ class ItemBase extends InventoryItem
 		RegisterNetSyncVariableFloat("m_VarTemperature", GetTemperatureMin(),GetTemperatureMax() );
 		RegisterNetSyncVariableFloat("m_VarWet", GetWetMin(), GetWetMax(), 2 );
 		RegisterNetSyncVariableInt("m_VarLiquidType");
+		RegisterNetSyncVariableInt("m_Cleanness",0,1);
 		
 		RegisterNetSyncVariableInt("m_ColorComponentR", 0, 255);
 		RegisterNetSyncVariableInt("m_ColorComponentG", 0, 255);
@@ -209,8 +226,14 @@ class ItemBase extends InventoryItem
 		RegisterNetSyncVariableBool("m_IsTakeable");
 		RegisterNetSyncVariableBool("m_IsHologram");
 		
+		
 		m_LockingSound = new EffectSound;
 		m_LockSoundSet = ConfigGetString("lockSoundSet");
+	}
+	
+	override int GetQuickBarBonus()
+	{
+		return m_QuickBarBonus;
 	}
 
 	void InitializeActions()
@@ -577,6 +600,18 @@ class ItemBase extends InventoryItem
 			m_OverheatingParticles.Clear();
 			delete m_OverheatingParticles;
 		}
+	}
+	
+	//! Infection chance while/after using this item, originally used for wound infection after bandaging, params 'system' and 'param' can allow usage by other systems as well
+	float GetInfectionChance(int system = 0, Param param = null)
+	{
+		return 0.0;
+	}
+	
+	
+	float GetDisinfectQuantity(int system = 0, Param param1 = null)
+	{
+		return 250;//default value
 	}
 	
 	//! Returns true if this item has a muzzle (weapons, suppressors)
@@ -1007,6 +1042,11 @@ class ItemBase extends InventoryItem
 		}*/
 	}
 	
+	void RefreshPhysics()
+	{
+		
+	}
+	
 	override void OnCreatePhysics()
 	{
 		if ( m_ItemBeingDroppedPhys )
@@ -1030,6 +1070,8 @@ class ItemBase extends InventoryItem
 			
 			//Print("++++dropping item phys");
 		}
+		
+		RefreshPhysics();
 	}
 	
 	override void OnItemAttachmentSlotChanged(notnull InventoryLocation oldLoc, notnull InventoryLocation newLoc)
@@ -1291,7 +1333,7 @@ class ItemBase extends InventoryItem
 		
 		if ( IsClothing() || IsContainer() )
 		{
-			float dmg = damageResult.GetDamage("","Health") / -2;
+			float dmg = damageResult.GetDamage("","Health") * -0.5;
 			int chances;
 			int rnd;
 			
@@ -1509,30 +1551,39 @@ class ItemBase extends InventoryItem
 		}
 	}
 
-	void SplitIntoStackMaxToInventoryLocation ( notnull InventoryLocation dst )
+	void SplitIntoStackMaxToInventoryLocation( notnull InventoryLocation dst )
+	{
+		SplitIntoStackMaxToInventoryLocationEx( dst );
+	}
+	
+	ItemBase SplitIntoStackMaxToInventoryLocationEx( notnull InventoryLocation dst )
 	{
 		float quantity = GetQuantity();
 		float split_quantity_new;
 		ref ItemBase new_item;
-		if( dst.IsValid() )
+		if ( dst.IsValid() )
 		{
 			int slot_id = dst.GetSlot();
 			float stack_max = GetTargetQuantityMax(slot_id);
 			
-			if( quantity > stack_max )
+			if ( quantity > stack_max )
 				split_quantity_new = stack_max;
 			else
 				split_quantity_new = quantity;
 			
 			new_item = ItemBase.Cast( GameInventory.LocationCreateEntity( dst, this.GetType(), ECE_IN_INVENTORY, RF_DEFAULT ) );
 			
-			if( new_item )
+			if ( new_item )
 			{			
 				MiscGameplayFunctions.TransferItemProperties(this,new_item);
 				AddQuantity( -split_quantity_new );
 				new_item.SetQuantity( split_quantity_new );
 			}
+			
+			return new_item;
 		}
+		
+		return null;
 	}
 	
 	void SplitIntoStackMaxCargo( EntityAI destination_entity, int idx, int row, int col )
@@ -1687,13 +1738,13 @@ class ItemBase extends InventoryItem
 			parent.OnAttachmentQuantityChanged(this);
 		}
 		
-		if (m_CanThisBeSplit && delta > 0 && GetUnitWeight() != -1)
+		if (m_CanThisBeSplit && delta > 0 && GetUnitWeight(false) != -1)
 		{
-			UpdateWeight(WeightUpdateType.RECURSIVE_ADD,GetUnitWeight() * delta);
+			UpdateWeight(WeightUpdateType.RECURSIVE_ADD, GetUnitWeight(false) * delta);
 		}
-		else if (m_CanThisBeSplit && delta < 0 && GetUnitWeight() != -1)
+		else if (m_CanThisBeSplit && delta < 0 && GetUnitWeight(false) != -1)
 		{
-			UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE,-GetUnitWeight() * delta);
+			UpdateWeight(WeightUpdateType.RECURSIVE_REMOVE, -GetUnitWeight(false) * delta);
 		}
 		else
 		{
@@ -1706,6 +1757,21 @@ class ItemBase extends InventoryItem
 	{
 		// insert code here
 	}
+	
+	
+	override void EEHealthLevelChanged(int oldLevel, int newLevel, string zone)
+	{
+		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
+		
+		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		{
+			if ( m_Cleanness != 0 && (oldLevel < newLevel) && oldLevel != -1 )
+			{
+				SetCleanness(0);//unclean the item upon damage dealt
+			}
+		}
+	}
+		
 	
 	override void OnRightClick()
 	{
@@ -1736,14 +1802,12 @@ class ItemBase extends InventoryItem
 					else
 					{
 						dst.SetCargo( dst.GetParent(), this, dst.GetIdx(), dst.GetRow(), dst.GetCol(), dst.GetFlip());
-						if( !GetGame().GetPlayer().GetInventory().AddInventoryReservation( null, dst, GameInventory.c_InventoryReservationTimeoutShortMS) )
+						if ( !GetGame().GetPlayer().GetInventory().AddInventoryReservation( null, dst, GameInventory.c_InventoryReservationTimeoutShortMS) )
 						{
 							root.GetTransform(m4);
 							dst.SetGround(this, m4);
 						}
 					}
-					
-					Print(dst.DumpToStringNullSafe(dst));
 					
 					ScriptInputUserData ctx = new ScriptInputUserData;
 					ctx.Write(INPUT_UDT_ITEM_MANIPULATION);
@@ -1867,6 +1931,13 @@ class ItemBase extends InventoryItem
 				other_item.AddQuantity(-quantity_used);
 			}
 		}
+		OnCombine(other_item);
+	}
+	
+	
+	void OnCombine(ItemBase other_item)
+	{
+		
 	}
 	// -------------------------------------------------------------------------
 	// Mirek: whole user action system moved to script
@@ -2108,13 +2179,13 @@ class ItemBase extends InventoryItem
 			
 			if ( action_id == EActions.ADD_TEMPERATURE )
 			{
-				AddTemperature(1);
+				AddTemperature(20);
 				//PrintVariables();
 			}
 			
 			if ( action_id == EActions.REMOVE_TEMPERATURE )
 			{
-				AddTemperature(-1);
+				AddTemperature(-20);
 				//PrintVariables();
 			}
 			
@@ -2513,6 +2584,11 @@ class ItemBase extends InventoryItem
 			floats_out.Insert(m_ColorComponentA);
 		}
 		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_CLEANNESS) )
+		{
+			floats_out.Insert(m_Cleanness);
+		}
+		//--------------------------------------------
 	}
 	
 	void DeSerializeNumericalVars(array<float> floats)
@@ -2569,6 +2645,13 @@ class ItemBase extends InventoryItem
 			m_ColorComponentA = Math.Round(floats.Get(index));
 			index++;
 		}
+		if( mask & VARIABLE_CLEANNESS )
+		{
+			int cleanness = Math.Round(floats.Get(index));
+			SetCleanness(cleanness);
+			index++;
+		}
+		//--------------------------------------------
 	}
 
 	
@@ -2603,6 +2686,11 @@ class ItemBase extends InventoryItem
 			ctx.Write(m_ColorComponentG);
 			ctx.Write(m_ColorComponentB);
 			ctx.Write(m_ColorComponentA);
+		}
+		//--------------------------------------------
+		if( IsVariableSet(VARIABLE_CLEANNESS) )
+		{
+			ctx.Write(m_Cleanness);
 		}
 	}
 	
@@ -2709,6 +2797,13 @@ class ItemBase extends InventoryItem
 	
 				m_ColorComponentA = intValue;
 			}
+			//--------------------------------------------
+			if( mask & VARIABLE_CLEANNESS )
+			{
+				if ( !ctx.Read(intValue) )
+					return false;
+				SetCleanness(intValue);
+			}
 		}
 		return true;
 	}
@@ -2724,8 +2819,6 @@ class ItemBase extends InventoryItem
 		if ( m_VariablesMask )
 			varFlags = ItemVariableFlags.FLOAT;
 
-		//ref Param1<int> pflags = new Param1<int>( varFlags );
-		//CachedObjectsParams.PARAM1_INT.param1 = varFlags;
 		ctx.Write(varFlags);
 		//-------------------
 			
@@ -2911,6 +3004,13 @@ class ItemBase extends InventoryItem
 			m_FixDamageSystemInit = false;
 		}
 	}
+	
+	bool CanBeDisinfected()
+	{
+		return false;
+	}
+	
+	
 	//----------------------------------------------------------------
 	override void OnVariablesSynchronized()
 	{
@@ -3527,6 +3627,20 @@ class ItemBase extends InventoryItem
 		return 0;
 	}
 	
+	void SetCleanness(int value, bool allow_client = false)
+	{
+		if ( !IsServerCheck(allow_client) ) 
+			return;
+		
+		int previousValue = m_Cleanness;
+		
+		m_Cleanness = Math.Clamp(value, m_CleannessMin, m_CleannessMax);
+		
+		if ( previousValue != m_Cleanness )
+			SetVariableMask(VARIABLE_CLEANNESS);
+	}
+	
+	
 	//----------------------------------------------------------------
 	// ATTACHMENT LOCKING
 	// Getters relevant to generic ActionLockAttachment
@@ -3562,11 +3676,7 @@ class ItemBase extends InventoryItem
 	
 	bool IsColorSet()
 	{
-		if(!IsVariableSet(VARIABLE_COLOR))
-		{
-			return false;
-		}
-		return true;
+		return IsVariableSet(VARIABLE_COLOR);
 	}
 	
 	//! Returns item's PROCEDURAL color as formated string, i.e. "#(argb,8,8,3)color(0.15,0.15,0.15,1.0,CO)"
@@ -3578,10 +3688,7 @@ class ItemBase extends InventoryItem
 		g = g/255;
 		b = b/255;
 		a = a/255;
-		string save_color = r.ToString()+","+g.ToString()+","+b.ToString()+","+a.ToString();
-		string color = "#(argb,8,8,3)color("+save_color+",CO)";
-		
-		return color;
+		return MiscGameplayFunctions.GetColorString(r, g, b, a);
 	}
 	//----------------------------------------------------------------
 	//-------------------------	LiquidType
@@ -3852,11 +3959,6 @@ class ItemBase extends InventoryItem
 		return super.CanLoadAttachment( attachment );
 	}
 
-	bool CanBeDisinfected()
-	{
-		return true;
-	}
-	
 	// Plays muzzle flash particle effects
 	static void PlayFireParticles(ItemBase weapon, int muzzle_index, string ammoType, ItemBase muzzle_owner, ItemBase suppressor, string config_to_search)
 	{
@@ -4377,8 +4479,9 @@ void SetupSpawnedItem (ItemBase item, float health, float quantity)
 			if (item.HasQuantity())
 				quantity = item.GetQuantityInit();
 		}
-
-		item.SetHealth("", "", health);
+		
+		if ( health > 0 )
+			item.SetHealth("", "", health);
 
 		if ( quantity > 0 )
 		{

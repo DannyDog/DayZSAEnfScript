@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class OpticsInfoRifle;
@@ -63,7 +64,7 @@ class cfgWeapons
 		modes[] = {"Single"};
 		dispersionModifier = -0.00025;
 		dexterityModifier = -0.2;
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"SCOUT_Shot_SoundSet","SCOUT_Tail_SoundSet","SCOUT_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"SCOUT_silencer_SoundSet","SCOUT_silencerTail_SoundSet","SCOUT_silencerInteriorTail_SoundSet"},{"SCOUT_silencerHomeMade_SoundSet","SCOUT_silencerHomeMadeTail_SoundSet","SCOUT_silencerInteriorTail_SoundSet"}};

@@ -38,7 +38,7 @@ class WeaponFireAndChamberNext extends WeaponStateBase
 	override void OnUpdate (float dt)
 	{
 		m_dtAccumulator += dt;
-		DayZPlayer p;
+		DayZPlayerImplement p;
 		Class.CastTo(p, m_weapon.GetHierarchyParent());
 		if( p )
 		{
@@ -46,16 +46,28 @@ class WeaponFireAndChamberNext extends WeaponStateBase
 
 			int muzzleIndex = m_weapon.GetCurrentMuzzle();
 			float reloadTime = m_weapon.GetReloadTime(muzzleIndex);
-			if ( hic.IsUseButton() && m_dtAccumulator >= reloadTime)
+			
+			if ( m_dtAccumulator >= reloadTime && ( hic.IsUseButton() || (m_weapon.GetBurstCount() < m_weapon.GetCurrentModeBurstSize(muzzleIndex))))
+			{
 				if (m_weapon.CanProcessWeaponEvents())
+				{
 					m_weapon.ProcessWeaponEvent(new WeaponEventReloadTimeout(p));
+				}
+			}
 		}
 	}
 
 	override void OnExit (WeaponEventBase e)
 	{
+		//m_weapon.ResetBurstCount();
 		m_dtAccumulator = 0;
 		super.OnExit(e);
+	}
+	
+	override void OnAbort (WeaponEventBase e)
+	{
+		m_weapon.ResetBurstCount();
+		super.OnAbort(e);
 	}
 };
 

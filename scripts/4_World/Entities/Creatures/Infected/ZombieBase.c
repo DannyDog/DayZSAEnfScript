@@ -84,10 +84,10 @@ class ZombieBase extends DayZInfected
 	
 	override bool IsZombieMilitary()
 	{
-		if ( IsKindOf( "ZmbM_SoldierNormal_Base" ) )
+		/*if ( IsKindOf( "ZmbM_SoldierNormal_Base" ) )
 		{
 			return true;
-		}		
+		}*/
 		
 		return false;
 	}
@@ -436,7 +436,7 @@ class ZombieBase extends DayZInfected
 			return;
 		}
 
-		switch( m_MindState )
+		switch ( m_MindState )
 		{
 		case DayZInfectedConstants.MINDSTATE_CALM:
 			m_InfectedSoundEventHandler.PlayRequest(EInfectedSoundEventID.MINDSTATE_CALM_MOVE);
@@ -834,7 +834,7 @@ class ZombieBase extends DayZInfected
 		//! direction
 		pAnimHitDir = ComputeHitDirectionAngle(pSource);
 		//! shock GetDamage
-		m_ShockDamage = GetGame().ConfigGetFloat( "CfgAmmo " + pAmmoType + " DamageApplied " + "Shock " + "damage");
+		//m_ShockDamage = GetGame().ConfigGetFloat( "CfgAmmo " + pAmmoType + " DamageApplied " + "Shock " + "damage");
 		return true;
 	}
 	
@@ -886,6 +886,8 @@ class ZombieBase extends DayZInfected
 			
 			if ( EvaluateDamageHitAnimation(source, dmgZone, ammo, m_DamageHitHeavy, m_DamageHitType, m_DamageHitDirection) )
 			{
+				if ( dmgZone )
+					m_ShockDamage = damageResult.GetDamage( dmgZone, "Shock" );
 				m_DamageHitToProcess = true;
 				return;
 			}
@@ -923,9 +925,9 @@ class ZombieBase extends DayZInfected
 		}
 	}
 	
-	override bool CanReceiveAttachment (EntityAI attachment, int slotId)
+	override bool CanReceiveAttachment(EntityAI attachment, int slotId)
 	{
-		if (!IsAlive())
+		if ( !IsAlive() )
 		{
 			return false;
 		}

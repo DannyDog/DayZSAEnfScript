@@ -54,6 +54,10 @@ class cfgVehicles
 		reversed = 0;
 		weight = 350;
 		itemSize[] = {2,1};
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
+		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		inventorySlot[] = {"weaponOptics"};
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
@@ -78,8 +82,8 @@ class cfgVehicles
 			opticsZoomMax = 0.5236;
 			opticsZoomInit = 0.5236;
 			distanceZoomMin = 25;
-			distanceZoomMax = 600;
-			discreteDistance[] = {25,50,100,200,300,400,500,600};
+			distanceZoomMax = 200;
+			discreteDistance[] = {25,50,100,200};
 			discreteDistanceInitIndex = 0;
 			PPMaskProperties[] = {0.5,0.5,0.4,0.05};
 			PPLensProperties[] = {1,0.15,0,0};
@@ -98,6 +102,10 @@ class cfgVehicles
 		reversed = 0;
 		weight = 644;
 		itemSize[] = {1,1};
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
+		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
 		inventorySlot[] = {"weaponOptics"};
 		class DamageSystem
 		{
@@ -144,6 +152,8 @@ class cfgVehicles
 		reversed = 0;
 		weight = 265;
 		itemSize[] = {2,1};
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
@@ -206,6 +216,8 @@ class cfgVehicles
 		reversed = 0;
 		weight = 265;
 		itemSize[] = {2,1};
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot"};
@@ -268,6 +280,8 @@ class cfgVehicles
 		selectionFireAnim = "zasleh";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","blue"};
@@ -329,7 +343,8 @@ class cfgVehicles
 		reversed = 0;
 		weight = 250;
 		itemSize[] = {2,1};
-		dispersionModifier = -0.009;
+		dispersionModifier = -0.0005;
+		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
 		hiddenSelections[] = {"reddot","blue"};
@@ -394,7 +409,7 @@ class cfgVehicles
 		reversed = 0;
 		weight = 250;
 		itemSize[] = {2,1};
-		dispersionModifier = -0.009;
+		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -455,7 +470,7 @@ class cfgVehicles
 		inventorySlot[] = {"WeaponOptics"};
 		selectionFireAnim = "zasleh";
 		simulation = "itemoptics";
-		dispersionModifier = -0.000125;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -502,10 +517,84 @@ class cfgVehicles
 			distanceZoomMax = 200;
 			discreteDistance[] = {200};
 			discreteDistanceInitIndex = 0;
-			PPMaskProperties[] = {0.5,0.5,0.375,0.05};
+			PPDOFProperties[] = {1,0.1,20,200,4,10};
+		};
+	};
+	class ACOGOptic_6x: ItemOptics
+	{
+		scope = 2;
+		displayName = "$STR_ACOGOptic_6x_0";
+		descriptionShort = "$STR_ACOGOptic_6x_1";
+		model = "\DZ\weapons\attachments\optics\optic_acog6x.p3d";
+		animClass = "Binoculars";
+		rotationFlags = 16;
+		reversed = 0;
+		weight = 1300;
+		itemSize[] = {3,2};
+		inventorySlot[] = {"WeaponOptics"};
+		selectionFireAnim = "zasleh";
+		simulation = "itemoptics";
+		dispersionModifier = -0.001;
+		dispersionCondition = "true";
+		recoilModifier[] = {1,1,1};
+		swayModifier[] = {1,1,1};
+		memoryPointCamera = "eyeScope";
+		cameraDir = "cameraDir";
+		class AnimationSources
+		{
+			class hide
+			{
+				source = "user";
+				animPeriod = 0.01;
+				initPhase = 0;
+			};
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 50;
+					healthLevels[] = {{1.0,{"DZ\weapons\attachments\data\scope_alpha_clear_ca.paa","DZ\weapons\attachments\optics\data\lensglass_standard.rvmat","DZ\weapons\attachments\optics\data\optic_acog6x.rvmat","DZ\weapons\attachments\optics\data\Red_Dot.rvmat"}},{0.7,{}},{0.5,{"DZ\weapons\attachments\data\scope_alpha_damaged_ca.paa","DZ\weapons\attachments\optics\data\lensglass_standard_damage.rvmat","DZ\weapons\attachments\optics\data\optic_acog6x_damage.rvmat","DZ\weapons\attachments\optics\data\Red_Dot_damage.rvmat"}},{0.3,{}},{0.0,{"DZ\weapons\attachments\data\scope_alpha_destroyed_ca.paa","DZ\weapons\attachments\optics\data\lensglass_standard_destruct.rvmat","DZ\weapons\attachments\optics\data\optic_acog6x_destruct.rvmat","DZ\weapons\attachments\optics\data\Red_Dot_destruct.rvmat"}}};
+				};
+			};
+		};
+		class OpticsInfo
+		{
+			memoryPointCamera = "eyeScope";
+			cameraDir = "cameraDir";
+			modelOptics = "-";
+			opticsDisablePeripherialVision = 0.67;
+			opticsFlare = 1;
+			opticsPPEffects[] = {};
+			opticsZoomMin = "0.3926/6.0";
+			opticsZoomMax = "0.3926/6.0";
+			opticsZoomInit = "0.3926/6.0";
+			nearPlaneDistanceOverride = 0.54;
+			distanceZoomMin = 100;
+			distanceZoomMax = 800;
+			discreteDistance[] = {100,200,300,400,500,600,700,800};
+			discreteDistanceInitIndex = 0;
+			PPMaskProperties[] = {0.5,0.5,0.34,0.05};
 			PPLensProperties[] = {0.5,0.15,0,0};
 			PPBlurProperties = 0.6;
-			PPDOFProperties[] = {1,0.1,20,200,4,10};
+		};
+		class OpticsInfoWeaponOverride
+		{
+			memoryPointCamera = "eyeIronsights";
+			cameraDir = "cameraDirIronsights";
+			opticsZoomMin = 0.5236;
+			opticsZoomMax = 0.5236;
+			opticsZoomInit = 0.5236;
+			distanceZoomMin = 25;
+			distanceZoomMax = 200;
+			discreteDistance[] = {25,50,100,200};
+			discreteDistanceInitIndex = 0;
+			PPDOFProperties[] = {1,0.147,20,180,4.0,10.0};
+			PPMaskProperties[] = {0.5,0.5,0.4,0.05};
+			PPLensProperties[] = {1,0.15,0,0};
+			PPBlurProperties = 0.2;
 		};
 	};
 	class PUScopeOptic: ItemOptics
@@ -521,7 +610,7 @@ class cfgVehicles
 		itemSize[] = {3,1};
 		inventorySlot[] = {"weaponOpticsMosin"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.0001;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -571,7 +660,7 @@ class cfgVehicles
 		itemSize[] = {2,2};
 		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.0001;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -675,7 +764,7 @@ class cfgVehicles
 		itemSize[] = {4,1};
 		inventorySlot[] = {"weaponOpticsHunting"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.00025;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -762,7 +851,7 @@ class cfgVehicles
 		itemSize[] = {3,1};
 		inventorySlot[] = {"weaponOpticsCrossbow"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.0001;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -815,7 +904,7 @@ class cfgVehicles
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
-		dispersionModifier = -0.000125;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -880,7 +969,7 @@ class cfgVehicles
 		simulation = "itemoptics";
 		memoryPointCamera = "eyeScope";
 		cameraDir = "cameraDir";
-		dispersionModifier = -0.000125;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -1010,7 +1099,7 @@ class cfgVehicles
 		itemSize[] = {2,2};
 		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.0001;
+		dispersionModifier = -0.0005;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};
@@ -1073,7 +1162,7 @@ class cfgVehicles
 		itemSize[] = {4,3};
 		inventorySlot[] = {"weaponOpticsAK"};
 		simulation = "itemoptics";
-		dispersionModifier = -0.00025;
+		dispersionModifier = -0.001;
 		dispersionCondition = "true";
 		recoilModifier[] = {1,1,1};
 		swayModifier[] = {1,1,1};

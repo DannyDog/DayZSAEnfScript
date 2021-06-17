@@ -9,6 +9,16 @@ class LeatherBelt_ColorBase extends Clothing
 		
 		return IsEmpty();
 	}
+	
+	override bool CanReceiveAttachment( EntityAI attachment,int slotId )
+	{
+		if( !super.CanReceiveAttachment( attachment, slotId ) )
+		{
+			return false;
+		}
+		
+		return !GetInventory().IsInCargo();
+	}
 }
 class LeatherBelt_Beige extends LeatherBelt_ColorBase {};
 class LeatherBelt_Natural extends LeatherBelt_ColorBase {};

@@ -39,10 +39,19 @@ class AgentBase extends MessageReceiverBase
 	{
 		return m_AntibioticsResistance;
 	}
+	float GetAntibioticsResistanceEx(PlayerBase player)
+	{
+		return GetAntiboticsResistance();
+	}
 	
 	float GetInvasibility()
 	{
 		return m_Invasibility;
+	}
+	//should this agent grow based on invasibility even during antibiotics attack
+	bool GrowDuringAntibioticsAttack(PlayerBase player)
+	{
+		return true;//for legacy balancing reasons, set to true by default
 	}
 	
 	float GetDigestibility()

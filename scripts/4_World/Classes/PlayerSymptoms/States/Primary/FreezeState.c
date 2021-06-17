@@ -8,6 +8,7 @@ class FreezeSymptom extends SymptomBase
 		m_ID = SymptomIDs.SYMPTOM_FREEZE;
 		m_DestroyOnAnimFinish = true;
 		m_SyncToClient = false;
+		m_MaxCount = 2;
 	}
 	
 	//!gets called every frame
@@ -37,8 +38,7 @@ class FreezeSymptom extends SymptomBase
 		HumanMovementState hms = new HumanMovementState();
 		player.GetMovementState(hms);
 		ItemBase item = m_Player.GetItemInHands();
-		//PlaySound(EPlayerSoundEventID.FREEZING);
-		//return;//crash fix
+
 		if(!(item && item.IsHeavyBehaviour()) && m_Manager.GetCurrentCommandID() == DayZPlayerConstants.COMMANDID_MOVE && hms.m_iMovement == DayZPlayerConstants.MOVEMENTIDX_IDLE && !player.IsRestrained() )
 		{
 			PlayAnimationADD(2);

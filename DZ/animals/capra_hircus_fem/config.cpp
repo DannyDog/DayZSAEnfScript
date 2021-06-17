@@ -41,7 +41,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 120;
-					healthLabels[] = {1.0,0.7,0.5,0.3,0.0};
+					healthLevels[] = {{1.0,{}},{0.7,{}},{0.5,{}},{0.3,{}},{0.0,{}}};
 				};
 				class Blood
 				{

@@ -460,7 +460,8 @@ class VicinityContainer: CollapsibleContainer
 						{
 							if ( entity.IsInherited( PlayerBase ) )
 							{
-								if( entity.IsAlive() && ( !PlayerBase.Cast( entity ).IsUnconscious() && !PlayerBase.Cast( entity ).IsRestrained() ) )
+								
+								if( !PlayerBase.DEBUG_INVENTORY_ACCESS && entity.IsAlive() && ( !PlayerBase.Cast( entity ).IsUnconscious() && !PlayerBase.Cast( entity ).IsRestrained() ) )
 								{
 									continue;
 								}
@@ -488,7 +489,8 @@ class VicinityContainer: CollapsibleContainer
 					{
 						if ( entity.IsInherited( PlayerBase ) )
 						{
-							if( entity.IsAlive() && ( !PlayerBase.Cast( entity ).IsUnconscious() && !PlayerBase.Cast( entity ).IsRestrained() ) )
+							
+							if( !PlayerBase.DEBUG_INVENTORY_ACCESS && entity.IsAlive() && ( !PlayerBase.Cast( entity ).IsUnconscious() && !PlayerBase.Cast( entity ).IsRestrained() ) )
 							{
 								continue;
 							}

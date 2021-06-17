@@ -52,8 +52,8 @@ class cfgWeapons
 		drySound[] = {"dz\sounds\weapons\firearms\FNX45\FNX_dry",0.5,1,20};
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\waltherP1\WaltherP1_reload_00",0.8,1,20};
 		hiddenSelections[] = {"camo"};
-		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"DEG_Shot_SoundSet","DEG_Tail_SoundSet","DEG_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"DEG_silencerPro_SoundSet","DEG_silencerTail_SoundSet","DEG_silencerInteriorTail_SoundSet"}};

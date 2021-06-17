@@ -30,16 +30,29 @@ class AntibioticsMdfr: ModifierBase
 	}
 
 	
+	override string GetDebugTextSimple()
+	{
+	return (ANTIBIOTICS_LIFETIME - GetAttachedTime()).ToString();
+	}
+	
 	override void OnActivate(PlayerBase player)
 	{
+		player.IncreaseHealingsCount();
+		player.IncreaseAntibioticsCount();
+		/*
 		if ( player.GetNotifiersManager() )
 			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
+		player.DecreaseHealingsCount();
+		player.DecreaseAntibioticsCount();
+		/*
 		if ( player.GetNotifiersManager() )
 			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)

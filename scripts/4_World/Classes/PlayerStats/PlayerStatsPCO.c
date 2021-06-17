@@ -104,6 +104,12 @@ class PlayerStatsPCO_Base
 	{
 		return m_PlayerStats;
 	}
+	
+	void ResetAllStats()
+	{
+		m_PlayerStats.Clear();
+		Init();
+	}
 }
 
 //---------------------------------------------------------------

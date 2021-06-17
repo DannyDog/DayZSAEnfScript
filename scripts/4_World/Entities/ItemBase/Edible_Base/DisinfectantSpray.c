@@ -1,5 +1,12 @@
 class DisinfectantSpray extends Edible_Base
 {
+	
+	override void InitItemVariables()
+	{
+		super.InitItemVariables();
+		can_this_be_combined = true;
+	}
+	
 	override bool CanPutAsAttachment( EntityAI parent )
 	{
 		if(!super.CanPutAsAttachment(parent)) {return false;}
@@ -64,15 +71,23 @@ class DisinfectantSpray extends Edible_Base
 		return false;
 	}
 	
+	override float GetDisinfectQuantity(int system = 0, Param param1 = null)
+	{
+		return (GetQuantityMax() * 0.15);
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
 		
 		AddAction(ActionDisinfectTarget);
-		AddAction(ActionDisinfectSelf);
+		AddAction(ActionDisinfectSelf);;
 		AddAction(ActionDisinfectPlant);
-		AddAction(ActionForceDrinkDisinfectant);
-		AddAction(ActionDrinkDisinfectant);
+		AddAction(ActionWashHandsItem);
+		//AddAction(ActionForceDrinkDisinfectant);
+		//AddAction(ActionDrinkDisinfectant);
+		
+		
 		
 	}
 }

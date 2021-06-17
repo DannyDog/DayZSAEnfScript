@@ -9,7 +9,7 @@ class ActionClapBearTrapWithThisItem: ActionSingleUseBase
 	
 	override void CreateConditionComponents()
 	{
-		m_ConditionItem = new CCINone;
+		m_ConditionItem = new CCINonRuined;
 		m_ConditionTarget = new CCTCursor;
 	}
 
@@ -22,15 +22,12 @@ class ActionClapBearTrapWithThisItem: ActionSingleUseBase
 	{
 		if ( !target )
 			return false;
-		
-		if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
-			return false;
 
 		TrapBase target_TB;
 
 		if ( Class.CastTo(target_TB,  target.GetObject() ) &&  item )
 		{		
-			if (target_TB.IsActive() && target_TB.CanBeClapped())
+			if (target_TB.IsActive() && target_TB.CanBeClapped() && IsInReach(player, target, UAMaxDistances.DEFAULT))
 			{
 				return true;
 			}

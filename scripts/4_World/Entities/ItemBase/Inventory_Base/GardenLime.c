@@ -68,7 +68,7 @@ class GardenLime extends ItemBase
 	{
 		super.SetActions();
 		
-		AddAction(ActionClapBearTrapWithThisItem);
+		//AddAction(ActionClapBearTrapWithThisItem);
 		AddAction(ActionFertilizeSlot);
 	}
 }

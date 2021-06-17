@@ -240,7 +240,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 				//Print("clicked");
 				DebugModifierData bc_data = m_ModifierWidgetData.Get( w );
 				
-				Print( bc_data.GetID() );
+				//Print( bc_data.GetID() );
 				
 				if(bc_data.GetID() == m_DetailedInfoIndex)//repeated request --> hide
 				{
@@ -263,7 +263,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 				if( m_WgtDetailedInfoText )
 					m_WgtDetailedInfoText.SetText("");
 				m_PluginDeveloperSync.m_PlayerModsDetailedSynced = "";
-				RequestDetailedInfo(bc_data.GetID());
+				RequestDetailedInfo( bc_data.GetID());
 				return true;
 			}
 			//Button activate
@@ -305,7 +305,13 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 				m_PluginDeveloperSync.Update();
 				
 				return true;
-			}			
+			}
+			else if ( w.GetName() == "ResetModifiers" )
+			{
+				
+				ResetModifiers();
+				return true;
+			}				
 		}
 		
 		return false;
@@ -314,7 +320,24 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 	//============================================
 	// Actions
 	//============================================
-	void RequestDetailedInfo( int id )
+	
+	void ResetModifiers()
+	{
+		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
+		
+		//if client, send RPC
+
+		ref Param1<bool> params = new Param1<bool>( false );
+		if ( player )
+		{
+			player.RPCSingleParam( ERPCs.DEV_RPC_MODS_RESET, params, true );
+		}
+
+
+	}
+	
+	
+  	void RequestDetailedInfo( int id )
 	{
 		//Disable update on server (PluginDeveloperSync)
 		PlayerBase player = PlayerBase.Cast( GetGame().GetPlayer() );
@@ -331,7 +354,7 @@ class HudDebugWinCharModifiers extends HudDebugWinBase
 		//else set directly
 		else
 		{
-			m_PluginDeveloperSync.RequestDetailedInfo( id );
+			m_PluginDeveloperSync.RequestDetailedInfo( id , player);
 		}
 	}
 	

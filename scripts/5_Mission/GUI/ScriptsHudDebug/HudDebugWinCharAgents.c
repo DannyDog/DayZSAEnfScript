@@ -157,6 +157,13 @@ class HudDebugWinCharAgents extends HudDebugWinBase
 			//Print("deactivate" + data.GetID().ToString());
 			return true;
 		}
+		else if ( w.GetName() == "ResetAgents" )
+		{
+			DebugRemoveAgentsRequest();
+			return true;
+		}
+		
+		
 		return false;
 	}
 	
@@ -170,6 +177,13 @@ class HudDebugWinCharAgents extends HudDebugWinBase
 		ref Param1<int> p1 = new Param1<int>( agent_id );
 		Man man = GetGame().GetPlayer();
 		man.RPCSingleParam(ERPCs.DEV_AGENT_GROW, p1, true, man.GetIdentity());
+	}
+	
+	void DebugRemoveAgentsRequest()
+	{
+		ref Param1<bool> p1 = new Param1<bool>( false );
+		Man man = GetGame().GetPlayer();
+		man.RPCSingleParam(ERPCs.DEV_RPC_AGENT_RESET, p1, true, man.GetIdentity());
 	}
 				
 	void AddAgent( string title, string value, int id )
@@ -209,7 +223,6 @@ class HudDebugWinCharAgents extends HudDebugWinBase
 		}
 		
 		m_AgentWidgets.Clear();
-		//m_WgtAgents.ClearItems();
 	}
 
 	void FitWindow()

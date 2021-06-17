@@ -10,6 +10,7 @@ class Watchtower extends BaseBuildingBase
 	
 	static const string BASE_VIEW_NAME				= "level_";
 	static const string BASE_WALL_NAME				= "_wall_";
+	static const string BASE_ROOF_NAME				= "_roof";
 	static const int	MAX_WATCHTOWER_FLOORS		= 3;
 	static const int	MAX_WATCHTOWER_WALLS		= 3;
 	
@@ -38,6 +39,52 @@ class Watchtower extends BaseBuildingBase
 			Print("GetHighestDamage " + damageResult.GetHighestDamage("Health"));
 		}
 	}*/
+	
+	//overriden for the express purpose of handling view geometry (interaction) animations
+	override void UpdateVisuals()
+	{
+		super.UpdateVisuals();
+		
+		SetAnimationPhase( "level_1", 0); //always visible
+		SetAnimationPhase( "level_1_wall_1", 0); //always visible
+		SetAnimationPhase( "level_1_wall_2", 0); //always visible
+		SetAnimationPhase( "level_1_wall_3", 0); //always visible
+		
+		string part_name = "";
+		bool built = false;
+		
+		for ( int i = 1; i < MAX_WATCHTOWER_FLOORS; ++i )
+		{
+			//roof checks
+			part_name = "" + BASE_VIEW_NAME + i + BASE_ROOF_NAME;
+			built = GetConstruction().IsPartConstructed(part_name);
+			//Print(part_name);
+			//Print(built);
+			
+			//string tmp = "";
+			
+			if ( built )
+			{
+				SetAnimationPhase( BASE_VIEW_NAME + (i + 1), 0); //show
+				for ( int j = 1; j < MAX_WATCHTOWER_WALLS + 1; ++j )
+				{
+					//tmp = BASE_VIEW_NAME + (i + 1) + BASE_WALL_NAME + j;
+					//Print(tmp);
+					SetAnimationPhase( BASE_VIEW_NAME + (i + 1) + BASE_WALL_NAME + j, 0); //show
+				}
+			}
+			else
+			{
+				SetAnimationPhase( BASE_VIEW_NAME + (i + 1), 1 ); //hide
+				for ( j = 1; j < MAX_WATCHTOWER_WALLS + 1; ++j )
+				{
+					//tmp = BASE_VIEW_NAME + (i + 1) + BASE_WALL_NAME + j;
+					//Print(tmp);
+					SetAnimationPhase( BASE_VIEW_NAME + (i + 1) + BASE_WALL_NAME + j, 1); //hide
+				}
+			}
+		}
+	}
 	
 	//--- ATTACHMENT & CONDITIONS
 	override bool CanReceiveAttachment( EntityAI attachment, int slotId )

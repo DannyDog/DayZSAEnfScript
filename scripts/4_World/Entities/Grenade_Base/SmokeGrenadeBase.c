@@ -32,6 +32,9 @@ class SmokeGrenadeBase extends Grenade_Base
 	protected string				m_SoundSmokeStartId;
 	protected string				m_SoundSmokeLoopId;
 	protected string				m_SoundSmokeEndId;
+	
+	//! Noise
+	ref NoiseParams 				m_NoisePar;
 
 	void SetParticleSmokeCurrent(int particle)
 	{
@@ -98,7 +101,7 @@ class SmokeGrenadeBase extends Grenade_Base
 	{
 		SetSmokeGrenadeState(ESmokeGrenadeState.NO_SMOKE);
 		
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			SetHealth("", "", 0);
 		}
@@ -108,9 +111,9 @@ class SmokeGrenadeBase extends Grenade_Base
 	{
 		ESmokeGrenadeState state = GetSmokeGrenadeState();
 
-		if( m_LastSmokeGrenadeState != state )
+		if ( m_LastSmokeGrenadeState != state )
 		{
-			if( state == ESmokeGrenadeState.START )
+			if ( state == ESmokeGrenadeState.START )
 			{
 				//Print("RefreshAudioVisual:: START");
 				SoundSmokeEnd();
@@ -120,7 +123,7 @@ class SmokeGrenadeBase extends Grenade_Base
 				SetParticleSmokeCurrent(m_ParticleSmokeStartId);
 				PlaySmokeParticle();
 			}
-			else if( state == ESmokeGrenadeState.LOOP )
+			else if ( state == ESmokeGrenadeState.LOOP )
 			{
 				//Print("RefreshAudioVisual:: LOOP");
 				SoundSmokeStop();
@@ -130,7 +133,7 @@ class SmokeGrenadeBase extends Grenade_Base
 				SetParticleSmokeCurrent(m_ParticleSmokeLoopId);
 				PlaySmokeParticle();
 			}
-			else if( state == ESmokeGrenadeState.END )
+			else if ( state == ESmokeGrenadeState.END )
 			{
 				//Print("RefreshAudioVisual:: END");
 				SoundSmokeStop();
@@ -140,7 +143,7 @@ class SmokeGrenadeBase extends Grenade_Base
 				SetParticleSmokeCurrent(m_ParticleSmokeEndId);
 				PlaySmokeParticle();
 			}
-			else if( state == ESmokeGrenadeState.NO_SMOKE )
+			else if ( state == ESmokeGrenadeState.NO_SMOKE )
 			{
 				//Print("RefreshAudioVisual:: NO_SMOKE");
 				SoundSmokeStop();
@@ -172,9 +175,33 @@ class SmokeGrenadeBase extends Grenade_Base
 	override void OnWorkStart()
 	{
 		SetSmokeGrenadeState(ESmokeGrenadeState.START);
+		
+		if ( GetGame().IsServer() )
+		{
+			m_NoisePar = new NoiseParams();
+			m_NoisePar.LoadFromPath("cfgVehicles " + GetType() + " NoiseSmokeGrenade");
+			NoiseSystem noise = GetGame().GetNoiseSystem();
+			if ( noise )
+			{
+				noise.AddNoisePos( this, GetPosition(), m_NoisePar );
+			}
+		}
 
 		Param1<ESmokeGrenadeState> par = new Param1<ESmokeGrenadeState>(ESmokeGrenadeState.LOOP);
 		m_TimerSmokeLoop.Run(5.0, this, "SetSmokeGrenadeState", par);
+	}
+	
+	//When grenade makes smoke
+	override void OnWork(float consumed_energy)
+	{
+		if ( GetGame().IsServer() || !GetGame().IsMultiplayer() )
+		{
+			NoiseSystem noise = GetGame().GetNoiseSystem();
+			if ( noise )
+			{
+				noise.AddNoisePos( this, GetPosition(), m_NoisePar);
+			}
+		}
 	}
 	
 	// When the smoke stops
@@ -227,7 +254,7 @@ class SmokeGrenadeBase extends Grenade_Base
 	{
 		//Print("Setting SGS to: " + typename.EnumToString(ESmokeGrenadeState, state));
 
-		if( GetGame().IsServer() )
+		if ( GetGame().IsServer() )
 		{
 			if ( m_SmokeGrenadeState != state )
 			{

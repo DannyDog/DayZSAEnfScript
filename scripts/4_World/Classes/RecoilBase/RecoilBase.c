@@ -113,6 +113,8 @@ class RecoilBase
         }
         
         pModel.m_fCamPosOffsetZ = offset;
+		
+		m_Player.GetCurrentCamera().SendRecoilOffsetZ(offset);
     }
 	
 	void ApplyHandsOffset(float pDt, out float pRecResultX, out float pRecResultY)

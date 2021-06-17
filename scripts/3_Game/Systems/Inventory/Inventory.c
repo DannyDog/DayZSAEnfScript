@@ -101,6 +101,7 @@ class GameInventory
 	proto native bool HasEntityInCargoEx (notnull EntityAI e, int idx, int row, int col);
 	proto native bool CanAddEntityInCargo (notnull EntityAI e, bool flip);
 	proto native bool CanAddEntityInCargoEx (notnull EntityAI e, int idx, int row, int col, bool flip);
+	proto native bool CanAddEntityInCargoExLoc (InventoryLocation loc);
 	//proto native bool AddEntityInCargo (notnull EntityAI owner, EntityAI cargo);
 	//proto native bool AddEntityInCargoEx (notnull EntityAI owner, notnull EntityAI e, int idx, int row, int col);
 	proto native bool CanRemoveEntityInCargo (notnull EntityAI e);
@@ -382,7 +383,7 @@ class GameInventory
 
 				if (!src.GetItem() || !dst.GetItem())
 				{
-					Error("[syncinv] ServerInventoryCommand (cmd=SYNC_MOVE) dropped, item not in bubble");
+					LogError("[syncinv] ServerInventoryCommand (cmd=SYNC_MOVE) dropped, item not in bubble");
 					break; // not in bubble
 				}
 
@@ -495,7 +496,7 @@ class GameInventory
 	 **/
 	static proto native bool ServerHandEvent (notnull Man player, notnull EntityAI item, ParamsWriteContext ctx);
 
-	static proto native void PrepareDropEntityPos (EntityAI owner, notnull EntityAI item, out vector mat[4], bool useValuesInMatrix = false);
+	static proto native void PrepareDropEntityPos(EntityAI owner, notnull EntityAI item, out vector mat[4], bool useValuesInMatrix = false);
 
 	/**@fn      CanSwapEntities
 	 * @brief   test if ordinary swap can be performed.
@@ -507,7 +508,7 @@ class GameInventory
 	 * @param [in]  item2     second item
 	 * @return    true if can be swapped
 	 */
-	static proto native bool CanSwapEntities (notnull EntityAI item1, notnull EntityAI item2);
+	static proto native bool CanSwapEntities(notnull EntityAI item1, notnull EntityAI item2);
 	
 	static bool CanSwapEntitiesEx(notnull EntityAI item1, notnull EntityAI item2)
 	{
@@ -609,7 +610,10 @@ class GameInventory
 			DayZPlayer player = GetGame().GetPlayer();
 			if( player )
 			{
-				Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "AddInventoryReservation", player.ToString() );
+				if(item)
+					Debug.InventoryMoveLog("" + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "AddInventoryReservation", player.ToString() );
+				else
+					Debug.InventoryMoveLog("" + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "AddInventoryReservation", player.ToString() );
 			}
 		}
 		#endif
@@ -628,8 +632,10 @@ class GameInventory
 			DayZPlayer player = GetGame().GetPlayer();
 			if( player )
 			{
-				Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ExtendInventoryReservation", player.ToString() );
-		
+				if(item)
+					Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ExtendInventoryReservation", player.ToString() );
+				else
+					Debug.InventoryMoveLog("Reservation result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / null / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ExtendInventoryReservation", player.ToString() );
 			}
 		}
 		#endif
@@ -648,7 +654,10 @@ class GameInventory
 			DayZPlayer player = GetGame().GetPlayer();
 			if( player )
 			{
-				Debug.InventoryMoveLog("Reservation cleared result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ClearInventoryReservation", player.ToString() );
+				if(item)
+					Debug.InventoryMoveLog("Reservation cleared result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / " + item.ToString() + " / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ClearInventoryReservation", player.ToString() );
+				else
+					Debug.InventoryMoveLog("Reservation cleared result: " + ret_val + " - STS=" + player.GetSimulationTimeStamp() + " / null / " + InventoryLocation.DumpToStringNullSafe(dst), "n/a" , "n/a", "ClearInventoryReservation", player.ToString() );
 			}
 		}
 		#endif
@@ -1076,17 +1085,17 @@ class GameInventory
 		return false;
 	}
 
-	bool SwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
+	bool SwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2)
 	{
 		return false;
 	}
 
-	bool ForceSwapEntities (InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
+	bool ForceSwapEntities(InventoryMode mode, notnull EntityAI item1, notnull EntityAI item2, notnull InventoryLocation item2_dst)
 	{
 		return false;
 	}
 
-	static void SetGroundPosByOwner (EntityAI owner, notnull EntityAI item, out InventoryLocation ground)
+	static void SetGroundPosByOwner(EntityAI owner, notnull EntityAI item, out InventoryLocation ground)
 	{
 		vector m4[4];
 		Math3D.MatrixIdentity4(m4);
@@ -1094,7 +1103,7 @@ class GameInventory
 		ground.SetGround(item, m4);
 	}
 
-	bool DropEntity (InventoryMode mode, EntityAI owner, notnull EntityAI item)
+	bool DropEntity(InventoryMode mode, EntityAI owner, notnull EntityAI item)
 	{
 		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		InventoryLocation src = new InventoryLocation;
@@ -1110,13 +1119,13 @@ class GameInventory
 		return false;
 	}
 	
-	static void SetGroundPosByTransform (EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector transform[4])
+	static void SetGroundPosByTransform(EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector transform[4])
 	{
 		GameInventory.PrepareDropEntityPos(owner, item, transform, true);
 		ground.SetGround(item, transform);
 	}
 	
-	bool DropEntityWithTransform (InventoryMode mode, EntityAI owner, notnull EntityAI item, vector transform[4])
+	bool DropEntityWithTransform(InventoryMode mode, EntityAI owner, notnull EntityAI item, vector transform[4])
 	{
 		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		InventoryLocation src = new InventoryLocation;
@@ -1132,7 +1141,7 @@ class GameInventory
 		return false;
 	}
 	
-	static void SetGroundPosByOwnerBounds (EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector halfExtents, float angle, float cosAngle, float sinAngle)
+	static void SetGroundPosByOwnerBounds(EntityAI owner, notnull EntityAI item, out InventoryLocation ground, vector halfExtents, float angle, float cosAngle, float sinAngle)
 	{
 		vector m4[4];
 		owner.GetTransform(m4);
@@ -1151,7 +1160,7 @@ class GameInventory
 		ground.SetGround(item, m4);
 	}
 	
-	bool DropEntityInBounds (InventoryMode mode, EntityAI owner, notnull EntityAI item, vector halfExtents, float angle, float cosAngle, float sinAngle)
+	bool DropEntityInBounds(InventoryMode mode, EntityAI owner, notnull EntityAI item, vector halfExtents, float angle, float cosAngle, float sinAngle)
 	{
 		inventoryDebugPrint("[inv] I::Drop(" + typename.EnumToString(InventoryMode, mode) + ") item=" + item);
 		
@@ -1169,7 +1178,7 @@ class GameInventory
 		return false;
 	}
 
-	bool LocalDestroyEntity (notnull EntityAI item)
+	bool LocalDestroyEntity(notnull EntityAI item)
 	{
 		inventoryDebugPrint("[inv] I::LocalDestroyEntity inv item=" + item);
 		InventoryLocation src = new InventoryLocation;
@@ -1186,7 +1195,7 @@ class GameInventory
 		return false;
 	}
 
-	bool ReplaceItemWithNew (InventoryMode mode, ReplaceItemWithNewLambdaBase lambda)
+	bool ReplaceItemWithNew(InventoryMode mode, ReplaceItemWithNewLambdaBase lambda)
 	{
 		InventoryLocation src = new InventoryLocation;
 		if (lambda.m_OldItem.GetInventory().GetCurrentInventoryLocation(src))
@@ -1203,10 +1212,10 @@ class GameInventory
 		return false;
 	}
 	
-	proto native bool GetFlipCargo ();
-	proto native void SetFlipCargo (bool flip);
-	proto native void FlipCargo ();
-	proto native void ResetFlipCargo ();
+	proto native bool GetFlipCargo();
+	proto native void SetFlipCargo(bool flip);
+	proto native void FlipCargo();
+	proto native void ResetFlipCargo();
 ///@} script functions
 };
 

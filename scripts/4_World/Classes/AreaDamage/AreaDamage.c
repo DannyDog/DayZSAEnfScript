@@ -1,78 +1,49 @@
-class AreaDamageBase
+// DEPRECATED: Backwards compatibility class to prevent existing mods breaking
+// I wish I could rename this to AreaDamageTimer, but can't, because of backwards compatibility with mods
+class AreaDamageBase : AreaDamageManager
 {
-	protected EntityAI					m_ParentObject;
-	protected AreaDamageTrigger			m_AreaDamageTrigger;
 	protected AreaDamageBase			m_AreaDamage;
-
-	protected float						m_LoopInterval;
-	protected float						m_DeferDuration;
+	
 	protected float						m_PlayerDamage;
 	protected float						m_OthersDamage;
+	
 	protected string					m_AmmoName;
 	protected int 						m_DamageType;
-	protected vector					m_ExtentMin;
-	protected vector 					m_ExtentMax;
-	protected vector 					m_AreaPosition;
-	protected vector 					m_AreaOrientation;
+	
+	protected float						m_LoopInterval;
+	protected float						m_DeferDuration;
 	
 	protected ref array<string>			m_HitZones;
 	protected ref array<string> 		m_RaycastSources;
 	protected ref array<typename>		m_DamageableTypes
-
+	
 	protected ref Timer					m_LoopTimer;
 	protected ref Timer					m_DeferTimer;
 	
 	void AreaDamageBase(EntityAI parent)
 	{
 		m_AreaDamage		= this;
-		m_ParentObject		= parent;
-		m_ExtentMin 		= vector.Zero;
-		m_ExtentMax 		= vector.Zero;
-		m_AreaPosition		= parent.GetPosition();
-		m_AreaOrientation	= parent.GetOrientation();
-		m_LoopInterval 		= 1.0;
-		m_DeferDuration		= 1.0;
+		
 		m_PlayerDamage		= 0.0;
 		m_OthersDamage		= 0.0;
-		m_HitZones			= new array<string>;
-		//m_HitZones.Insert("Head");
-		//m_HitZones.Insert("Lungs");
-		//m_HitZones.Insert("LeftHand");
-
-		m_RaycastSources	= new array<string>;
-		//m_RaycastSources.Insert("0.0 0.1 0.0");
 		
-		m_DamageableTypes	= new array<typename>;
-		m_DamageableTypes.Insert(DayZPlayer);
-		//m_DamageableTypes.Insert(DayZInfected);
-		//m_DamageableTypes.Insert(DayZAnimal);
-
 		m_AmmoName			= "MeleeDamage";
 		m_DamageType 		= DT_CUSTOM;
 		
+		m_LoopInterval 		= 1.0;
+		m_DeferDuration		= 1.0;
+		
+		m_HitZones			= new array<string>;
+		m_RaycastSources	= new array<string>;
+		m_DamageableTypes	= new array<typename>;
+		m_DamageableTypes.Insert(DayZPlayer);
+		
 		m_LoopTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
 		m_DeferTimer 		= new Timer(CALL_CATEGORY_SYSTEM);
-	}
-	void ~AreaDamageBase()
-	{
-		Destroy();
-	}
-
-	//! spawn damage trigger
-	void Spawn()
-	{
-		CreateDamageTrigger();
+		
+		m_TriggerBaseClass = "AreaDamageTrigger";
 	}
 	
-	//! destroy damage trigger
-	void Destroy()
-	{
-		DestroyDamageTrigger();
-#ifdef DEVELOPER
-		Debug_CleanupShapes(triggerAreaShapes);
-#endif
-	}
-
 	//! events
 	void OnEnter(Object object)
 	{
@@ -111,108 +82,6 @@ class AreaDamageBase
 		if ( m_LoopTimer && m_LoopTimer.IsRunning() )
 		{
 			m_LoopTimer.Stop();
-		}
-	}
-
-	void PreDamageActions()
-	{
-		if ( m_ParentObject )
-		{
-			m_ParentObject.PreAreaDamageActions();
-		}
-	}
-
-	void PostDamageActions()
-	{
-		if ( m_ParentObject )
-		{
-			m_ParentObject.PostAreaDamageActions();
-		}
-	}
-
-	//! script configuration
-	void SetExtents( vector mins, vector maxs )
-	{
-		m_ExtentMin = mins;
-		m_ExtentMax = maxs;
-	}
-
-	void SetAmmoName( string ammo_name )
-		{ m_AmmoName = ammo_name; }
-	void SetDamageType( int pDamageType )
-		{ m_DamageType = pDamageType; }
-    void SetParentObject( EntityAI obj )
-		{ m_ParentObject = obj };
-    void SetAreaPosition( vector position )
-		{ m_AreaPosition = position };	
-    void SetAreaOrientation( vector orientation )
-		{ m_AreaOrientation = orientation };	
-	
-	string GetAmmoName()
-	{
-		return m_AmmoName;
-	}
-	
-	vector GetOrientation()
-	{
-		return m_AreaOrientation;
-	}
-	
-	EntityAI GetParentObject()
-	{
-		return m_ParentObject;
-	}
-
-	void SetLoopInterval( float time )
-	{
-		Error("SetLoopInterval not implemented - usable in Regular(looped) area damage objects only");
-	}
-	void SetDeferDuration( float time )
-	{
-		Error("SetDeferDuration not implemented - usable in Deferred area damage objects only");
-	}
-
-	void SetHitZones( array<string> hitzones )
-	{
-		Error("SetHitZones not implemented - override for non raycasted versions of area damage objects only");
-	}
-
-	void SetRaycastSources( array<string> raycast_sources )
-	{
-		Error("SetRaycastSources not implemented - override for raycasted versions of area damage objects only");
-	}
-
-	//! create damage trigger with basic set of params
-	protected void CreateDamageTrigger()
-	{
-		bool is_local;
-
-		if ( GetGame().IsMultiplayer() && GetGame().IsServer() )
-		{
-			is_local = false;
-		}
-		else
-		{
-			is_local = true;
-		}
-
-		if (Class.CastTo(m_AreaDamageTrigger, GetGame().CreateObject( "AreaDamageTrigger", m_AreaPosition, is_local, false, !is_local )))
-		{
-			m_AreaDamageTrigger.SetOrientation( m_AreaOrientation );
-			m_AreaDamageTrigger.SetExtents( m_ExtentMin, m_ExtentMax );
-			m_AreaDamageTrigger.SetAreaDamageType(this);
-		}
-	}
-	
-	//! destroys damage trigger
-	protected void DestroyDamageTrigger()
-	{
-		if ( GetGame() && m_AreaDamageTrigger ) // It's necesarry to check if the game exists. Otherwise a crash occurs while quitting.
-		{
-			GetGame().ObjectDelete( m_AreaDamageTrigger );
-			m_AreaDamageTrigger = null;
-			m_LoopTimer.Stop();
-			m_DeferTimer.Stop();
 		}
 	}
 	
@@ -267,10 +136,10 @@ class AreaDamageBase
 					}
 					else
 						eai.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), "", m_AmmoName, "0.5 0.5 0.5", 8);
-				}
+	}
 				else*/
 				{
-					object.ProcessDirectDamage(m_DamageType, EntityAI.Cast(m_ParentObject), hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
+					object.ProcessDirectDamage(m_DamageType, m_ParentObject, hitzone, m_AmmoName, "0.5 0.5 0.5", 1);
 				}
 				PostDamageActions();
 			}
@@ -281,7 +150,7 @@ class AreaDamageBase
 	//! ------------------------------------------------------
 	//! common
 	//!
-
+	
 	protected string GetRandomHitZone(array<string> hitzones)
 	{
 		Math.Randomize(-1);
@@ -289,7 +158,7 @@ class AreaDamageBase
 
 		return hitzones[idx];
 	}
-
+	
 	protected string GetRaycastedHitZone(Object victim, array<string> raycast_sources_str)
 	{
 		

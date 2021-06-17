@@ -1,36 +1,21 @@
-class ActionDisinfectTargetCB : ActionSingleUseBaseCB
+class ActionDisinfectTargetCB : ActionContinuousBaseCB
 {
 	override void CreateActionComponent()
 	{
-		m_ActionData.m_ActionComponent = new CASingleUseQuantity(UAQuantityConsumed.DISINFECT);
+		m_ActionData.m_ActionComponent = new CAContinuousTime(UATimeSpent.DEFAULT);
 	}
 
-	/*bool CancelCondition()
-	{
-		if ( !m_Interrupted && (GetState() == STATE_LOOP_LOOP || GetState() == STATE_LOOP_LOOP2) )
-		{	
-			AnimatedActionBase action = AnimatedActionBase.Cast(m_ActionData.m_Action);
-			action.Do(m_ActionData,m_ActionData.m_State);
-		}
-		return DefaultCancelCondition(); 
-	}*/
-	/*override void InitActionComponent()
-	{
-		super.InitActionComponent();
-		EnableCancelCondition(true);
-	}*/
 };
 
-
-class ActionDisinfectTarget: ActionSingleUseBase
+class ActionDisinfectTarget: ActionDisinfectBase
 {	
 	void ActionDisinfectTarget()
 	{
-		m_CallbackClass = ActionDisinfectTargetCB;
-		//m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_CLEANWOUNDSTARGET;
-		m_StanceMask = DayZPlayerConstants.STANCEIDX_ERECT | DayZPlayerConstants.STANCEIDX_CROUCH;
-		//m_FullBody = true;
+		m_CallbackClass = ActionDisinfectSelfCB;
 		m_SpecialtyWeight = UASoftSkillsWeight.PRECISE_LOW;
+		m_CommandUID = DayZPlayerConstants.CMD_ACTIONFB_INTERACT;
+		m_FullBody = true;
+		m_StanceMask = DayZPlayerConstants.STANCEMASK_ERECT | DayZPlayerConstants.STANCEMASK_CROUCH;
 	}
 	
 	override void CreateConditionComponents()  
@@ -41,18 +26,29 @@ class ActionDisinfectTarget: ActionSingleUseBase
 		
 	override string GetText()
 	{
-		return "#disinfect_person";
+		return "#disinfect_target";
+	}
+	
+	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
+	{
+		if( target)
+		{
+			PlayerBase target_player = PlayerBase.Cast(target.GetObject());
+			if(target_player)
+				return (target_player.IsBleeding() || (target_player.m_Agents & eAgents.WOUND_AGENT));
+		}
+		return false;
+		
 	}
 
-	override void OnEndServer( ActionData action_data )
-	{
-		//Print(action_data.m_Player.GetSoftSkillManager());
-		//RemoveModifiers(target, item); ?
-
-		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		if ( action_data.m_MainItem && action_data.m_MainItem.GetQuantity() <= 0 ) 
+	override void OnFinishProgressServer( ActionData action_data )
+	{	
+		PlayerBase target = PlayerBase.Cast(action_data.m_Target.GetObject());
+		
+		if( target )
 		{
-			action_data.m_MainItem.SetQuantity(0);
+			target.GetModifiersManager().ActivateModifier(eModifiers.MDF_DISINFECTION);
+			Apply(action_data);
 		}
 	}
 };

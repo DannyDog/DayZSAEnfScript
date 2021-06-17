@@ -80,10 +80,25 @@ class PluginTransmissionAgents extends PluginBase
 		return m_AgentList.Get(agent_id).GetTransferabilityIn();
 	}
 	
+	
+	bool GrowDuringAntibioticsAttack(int agent_id, PlayerBase player)
+	{
+		if( !m_AgentList.Get(agent_id) ) return true;
+		return m_AgentList.Get(agent_id).GrowDuringAntibioticsAttack(player);
+	}
+	
+	
 	float GetAgentAntiboticsResistance( int agent_id )
 	{
 		if( !m_AgentList.Get(agent_id) ) return 0;
 		return m_AgentList.Get(agent_id).GetAntiboticsResistance();
+	}
+	
+	
+	float GetAgentAntiboticsResistanceEx( int agent_id , PlayerBase player)
+	{
+		if( !m_AgentList.Get(agent_id) ) return 0;
+		return m_AgentList.Get(agent_id).GetAntibioticsResistanceEx(player);
 	}
 	
 	protected float GetAgentTransferabilityOut( int agent_id )

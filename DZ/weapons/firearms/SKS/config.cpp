@@ -55,8 +55,8 @@ class cfgWeapons
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\SKS\SKS_reloading",0.8,1,20};
 		reloadAction = "ReloadSks";
 		hiddenSelections[] = {"camoGround","Clip_rounds","clip"};
-		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"SKS_Shot_SoundSet","SKS_Tail_SoundSet","SKS_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"SKS_silencerHomeMade_SoundSet","SKS_silencerHomeMadeTail_SoundSet","SKS_silencerInteriorHomeMadeTail_SoundSet"}};

@@ -1,8 +1,9 @@
+// DEPRECATED: Left for backwards compatibility with mods
 class AreaDamageOneTime extends AreaDamageBase
 {	
 	void AreaDamageOneTime(EntityAI parent)
 	{
-		AreaDamageBase(parent);
+
 	}
 	
 	void ~AreaDamageOneTime() {}

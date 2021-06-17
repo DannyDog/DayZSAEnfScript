@@ -58,6 +58,12 @@ class Rag extends ItemBase
 		return (!GetInventory().IsAttachment());
 	}
 	
+	override bool CanBeDisinfected()
+	{
+		return true;
+	}
+	
+	
 	override void SetActions()
 	{
 		super.SetActions();
@@ -77,4 +83,23 @@ class Rag extends ItemBase
 	{
 		return 0.5;
 	};
+	
+	override float GetInfectionChance(int system = 0, Param param = null)
+	{
+		if(m_Cleanness == 1)
+		{
+			return 0;
+		}
+		else
+		{
+			return 0.15;
+		}
+	}
+	
+	override void OnCombine(ItemBase other_item)
+	{
+		if(m_Cleanness == 1 && other_item.m_Cleanness == 0)
+			SetCleanness(0);
+	}
+	
 }

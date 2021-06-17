@@ -122,20 +122,17 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 
 	bool HandleFightLogic(int pCurrentCommandID, HumanInputController pInputs, EntityAI pEntityInHands, HumanMovementState pMovementState, out bool pContinueAttack)
 	{		
-		InventoryItem itemInHands = InventoryItem.Cast(pEntityInHands);
+		InventoryItem itemInHands;
 		HumanCommandMove hcm = m_DZPlayer.GetCommand_Move();
-		
-		//Get worn gloves
-		ClothingBase gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("GLOVES"));
-		
-		//We kick so "gloves" will be the shoes
+
 		if ( m_HitType == EMeleeHitType.KICK )
-			gloves = ClothingBase.Cast(PlayerBase.Cast(m_DZPlayer).GetItemOnSlot("FEET"));
+			itemInHands = null;
+		else
+			itemInHands = InventoryItem.Cast(pEntityInHands);
 		
 		PlayerBase player = PlayerBase.Cast(m_DZPlayer);
 				
 		bool isFireWeapon = itemInHands && itemInHands.IsWeapon();
-		bool isNotMeleeWeapon = itemInHands && !itemInHands.IsMeleeWeapon(); // TODO: allowed for everything that is not disabled in config (primarily for anim testing)
 
 		if ((pInputs.IsUseButtonDown() && !isFireWeapon) || (pInputs.IsMeleeWeaponAttack() && isFireWeapon) || (pContinueAttack && isFireWeapon))
 		{
@@ -148,9 +145,9 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			{
 				return true;
 			}
-
+			
 			//! if the item in hands cannot be used as melee weapon
-			if (isNotMeleeWeapon && !isFireWeapon)
+			if (itemInHands && !itemInHands.IsMeleeWeapon() && !isFireWeapon)
 			{
 				return false;
 			}
@@ -167,10 +164,10 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				{
 					//! don't allow bash to interfere with actions like chambering or ejecting bullets
 					Weapon_Base weapon = Weapon_Base.Cast(itemInHands);
+					
 					//PlayerBase player = PlayerBase.Cast(m_DZPlayer);
 					if (weapon.IsWaitingForActionFinish() || player.GetActionManager().GetRunningAction())
-						return false;
-					
+						return false;					
 					//! perform firearm melee from raised erect or continue with attack after character stand up from crouch
 					else if (hcm.GetCurrentMovementSpeed() <= 2.05 && (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT || pContinueAttack) && !m_DZPlayer.IsFighting())
 					{
@@ -373,6 +370,15 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					//! evaluate hit - selection of cfg 'ammo' type
 					EvaluateHit(itemInHands);
 					
+					//Get gloves
+					ClothingBase gloves;
+					
+					//We kick so "gloves" will be the shoes
+					if ( m_HitType == EMeleeHitType.KICK )
+						gloves = ClothingBase.Cast(player.GetItemOnSlot("FEET"));
+					else
+						gloves = ClothingBase.Cast(player.GetItemOnSlot("GLOVES"));
+					
 					//If we hit something, inflict damage
 					DamageHands(m_DZPlayer, gloves, itemInHands);
 					//! reset - prepared for next hit
@@ -387,45 +393,46 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			}
 		}
 		else if (!isFireWeapon && pCurrentCommandID == DayZPlayerConstants.COMMANDID_MOVE)
-		{			
-			HumanCommandMove cm = m_DZPlayer.GetCommand_Move();
-
-			int 	roll = pInputs.IsMeleeLREvade();
-
+		{
 			//! evades in raised erc stance while moving
-			if (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT && roll != 0)
+			if (pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_RAISEDERECT)
 			{
-				//! not enough stamina to do evades
-				if (!m_DZPlayer.CanConsumeStamina(EStaminaConsumers.MELEE_EVADE)) return false;
-
-				float angle;
-				if (roll == 1)
+				int roll = pInputs.IsMeleeLREvade();
+				if (roll != 0)
 				{
-					angle = -90;	// left
-				}
-				else
-				{
-					angle = 90;		// right
-				}
-
-				// start melee evade
-				m_IsEvading = true;
-				SetCooldown(EVADE_COOLDOWN, EFightLogicCooldownCategory.EVADE);
-				cm.StartMeleeEvadeA(angle);
-				m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_EVADE);
-				
-				//Inflict shock when sidestepping with broken legs
-				if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
-				{
-					player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
-					player.m_ShockHandler.CheckValue(true);
+					//! not enough stamina to do evades
+					if (!m_DZPlayer.CanConsumeStamina(EStaminaConsumers.MELEE_EVADE))
+						return false;
+					
+					float angle;
+					if (roll == 1)
+					{
+						angle = -90;	// left
+					}
+					else
+					{
+						angle = 90;		// right
+					}
+	
+					// start melee evade
+					m_IsEvading = true;
+					SetCooldown(EVADE_COOLDOWN, EFightLogicCooldownCategory.EVADE);
+					hcm.StartMeleeEvadeA(angle);
+					m_DZPlayer.DepleteStamina(EStaminaModifiers.MELEE_EVADE);
+					
+					//Inflict shock when sidestepping with broken legs
+					if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+					{
+						player.m_ShockHandler.SetShock(PlayerConstants.BROKEN_LEGS_LIGHT_MELEE_SHOCK);
+						player.m_ShockHandler.CheckValue(true);
+					}
 				}
 			}
 
 			//! stand up when crouching and raised pressed
 			if (pInputs.IsWeaponRaised() && pMovementState.m_iStanceIdx == DayZPlayerConstants.STANCEIDX_CROUCH)
 			{
-				cm.ForceStance(DayZPlayerConstants.STANCEIDX_RAISEDERECT);
+				hcm.ForceStance(DayZPlayerConstants.STANCEIDX_RAISEDERECT);
 			}
 
 			//! blocks in raised erc/pro stance
@@ -434,20 +441,20 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 			{
 				float angle2;
 
-				if (cm.GetCurrentInputAngle(angle2) && (angle2 < -130.0 || angle2 > 130))
+				if (hcm.GetCurrentInputAngle(angle2) && (angle2 < -130.0 || angle2 > 130))
 				{
-					cm.SetMeleeBlock(true);
+					hcm.SetMeleeBlock(true);
 					SetBlock(true);
 				}
 				else
 				{
-					cm.SetMeleeBlock(false);
+					hcm.SetMeleeBlock(false);
 					SetBlock(false);
 				}
 			}
 			else
 			{
-				cm.SetMeleeBlock(false);
+				hcm.SetMeleeBlock(false);
 				SetBlock(false);
 			}
 		}
@@ -544,7 +551,7 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 						string compName = targetEntity.GetDamageZoneNameByComponentIndex(hitZoneIdx);
 		
 						// execute attack (dmg part)
-						target.AddHealth("","Health",-100);
+						target.AddHealth( "","Health", -target.GetMaxHealth("","") );
 						/*
 						hitPosWS = targetEntity.ModelToWorld(targetEntity.GetDefaultHitPosition());
 						DamageSystem.CloseCombatDamage(m_DZPlayer, target, hitZoneIdx, "FinisherHit", hitPosWS);
@@ -711,16 +718,13 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		EntityAI target = m_MeleeCombat.GetTargetEntity();
 		
 		//We did not hit anything
-		if ( !target )
+		if ( itemInHands || !target || !DZPlayer )
 			return;
 		
 		//Check if server side
 		if ( GetGame().IsServer() )
 		{
-			if ( itemInHands )
-				return;
-			
-			int m_RandNum; //Poor variable naming caught me eventually...
+			int randNum;
 			
 			//If gloves, damage gloves
 			if ( gloves && gloves.GetHealthLevel() < GameConstants.STATE_RUINED )
@@ -740,8 +744,8 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 					//DZPlayer.DecreaseHealth("hands", "", 10); IN CASE WE WANT TO DO STUFF WITH HAND HEALTH
 					
 					//Random bleeding source
-					m_RandNum = Math.RandomIntInclusive(1, 15);
-					switch (m_RandNum)
+					randNum = Math.RandomIntInclusive(1, 15);
+					switch ( randNum )
 					{
 						case 1:
 							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("RightForeArmRoll");
@@ -759,9 +763,9 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 				else
 				{
 					//Random bleeding source
-					m_RandNum = Math.RandomIntInclusive(1, 15);
+					randNum = Math.RandomIntInclusive(1, 15);
 					//We only add bleeding to left foot as character kicks with left foot
-					switch (m_RandNum)
+					switch ( randNum )
 					{
 						case 1:
 							PlayerBase.Cast(DZPlayer).m_BleedingManagerServer.AttemptAddBleedingSourceBySelection("LeftToeBase");

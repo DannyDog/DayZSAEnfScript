@@ -48,23 +48,20 @@ class ActionWaterGardenSlot: ActionContinuousBase
 		{
 			GardenBase garden_base = GardenBase.Cast( targetObject );
 			
-			//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
-			
-			Slot slot;// = garden_base.GetSlotBySelection( selection );
+			Slot slot;
 			
 			array<string> selections = new array<string>;
 			targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
 
 			for (int s = 0; s < selections.Count(); s++)
 			{
-				//string selection = targetObject.GetActionComponentName(target.GetComponentIndex());
 				string selection = selections[s];
 				slot = garden_base.GetSlotBySelection( selection );
 				if (slot)
 					break;
 			}
 		
-			if ( slot  &&  !slot.GetPlant()  &&  slot.CanBeWatered() )
+			if ( slot && !slot.GetPlant() && slot.CanBeWatered() && slot.GetWateredState() == 0 )
 			{
 				return true;
 			}

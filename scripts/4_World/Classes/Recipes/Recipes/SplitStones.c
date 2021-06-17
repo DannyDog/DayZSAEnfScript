@@ -35,6 +35,7 @@ class SplitStones extends RecipeBase
 		//ingredient 2
 		InsertIngredient(1,"Pickaxe");//you can insert multiple ingredients this way
 		InsertIngredient(1,"SledgeHammer");//you can insert multiple ingredients this way
+		InsertIngredient(1,"Hammer");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[1] = -4;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing

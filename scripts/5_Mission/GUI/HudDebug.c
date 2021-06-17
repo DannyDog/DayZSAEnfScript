@@ -18,8 +18,62 @@ class HudDebugEventHandler extends ScriptedWidgetEventHandler
 	override bool OnClick( Widget w, int x, int y, int button )
 	{
 		super.OnClick( w, x, y, button );
-		
 		return GetHudDebug().OnClick( w, x, y, button );
+	}
+	
+	override bool OnFocus(Widget w, int x, int y)
+	{
+		//Print("OnFocus");
+		return true;
+	}
+	
+	override bool OnFocusLost(Widget w, int x, int y)
+	{
+		//Print("OnFocusLost");
+		return true;
+	}
+	/*
+	override bool OnMouseEnter(Widget w, int x, int y)
+	{
+		Print("OnMouseEnter");
+		return true;
+	}
+	
+	override bool OnMouseLeave(Widget w, Widget enterW, int x, int y)
+	{
+		Print("OnMouseLeaves");
+		return true;
+	}*/
+	
+	override bool OnMouseButtonDown(Widget w, int x, int y, int button)
+	{
+		//Print("OnMouseButtonDown");
+		return true;
+	}
+	
+	
+	override bool OnSelect(Widget w, int x, int y)
+	{
+		//Print("OnSelect");
+		return true;
+	}
+	override bool OnItemSelected(Widget w, int x, int y, int row, int column, int oldRow, int oldColumn)
+	{
+		//Print("OnItemSelected");
+		return true;
+	}
+	
+	override bool OnModalResult(Widget w, int x, int y, int code, int result)
+	{
+		//Print("OnModalResult");
+		return true;
+	}
+	
+	override bool OnChange(Widget w, int x, int y, bool finished)
+	{
+		//Print("OnChange " + finished);
+		super.OnChange( w, x, y, finished );
+		return GetHudDebug().OnChange( w, x, y, finished );
 	}
 }
 
@@ -40,6 +94,7 @@ class HudDebug extends Hud
 	ref Timer						m_TimerUpdate;
 	ref HudDebugEventHandler 		m_HudDebugHandler;
 	ref HudDebugWinCharModifiers 	m_WinCharModifiers;
+	ref HudDebugWinCharStats		m_WinCharStats;
 	ref HudDebugWinCharAgents 		m_WinCharAgents;
 	
 	//============================================
@@ -72,8 +127,8 @@ class HudDebug extends Hud
 		m_Panels = new array<ref HudDebugWinBase>;
 		
 		// Register Window Character Stats
-		HudDebugWinCharStats win_char_stats = new HudDebugWinCharStats( m_WgtRoot.FindAnyWidget( "wdw_CharacterStats" ) );
-		m_Panels.Insert( win_char_stats );
+		m_WinCharStats = new HudDebugWinCharStats( m_WgtRoot.FindAnyWidget( "wdw_CharacterStats" ) );
+		m_Panels.Insert( m_WinCharStats );
 		
 		// Register Window Character Stats
 		HudDebugWinCharLevels win_char_levels = new HudDebugWinCharLevels( m_WgtRoot.FindAnyWidget( "wdw_CharacterLevels" ) );
@@ -263,6 +318,24 @@ class HudDebug extends Hud
 				return true;
 		}
 		
+		if ( m_WinCharStats )
+		{
+			if (m_WinCharStats.OnClick( w, x, y, button ))
+				return true;
+		}
+		
 		return false;
 	}
+	
+	bool OnChange(Widget w, int x, int y, bool finished)
+	{
+
+		if ( m_WinCharStats )
+		{
+			if (m_WinCharStats.OnChange( w, x, y, finished ))
+				return true;
+		}
+		return false;
+	}
+	
 }

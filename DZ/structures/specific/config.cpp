@@ -2142,6 +2142,7 @@ class CfgVehicles
 	{
 		scope = 1;
 		model = "\dz\structures\specific\fuelstation\Fuelstation_Feed.p3d";
+		displayName = "$STR_GasStation_Pump0";
 		class DamageSystem
 		{
 			class GlobalHealth

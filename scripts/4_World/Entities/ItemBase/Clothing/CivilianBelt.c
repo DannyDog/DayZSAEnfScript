@@ -9,6 +9,16 @@ class CivilianBelt: Clothing
 		
 		return IsEmpty();
 	}
+	
+	override bool CanReceiveAttachment( EntityAI attachment,int slotId )
+	{
+		if( !super.CanReceiveAttachment( attachment, slotId ) )
+		{
+			return false;
+		}
+		
+		return !GetInventory().IsInCargo();
+	}
 		
 			
 	//Debug menu Spawn Ground Special

@@ -34,6 +34,8 @@ class TrapBase extends ItemBase
 
 	ref protected EffectSound 	m_DeployLoopSound;	
 	
+	protected const int DAMAGE_TRIGGER_MINE = 75;
+	
 	void TrapBase()
 	{
 		m_IsInProgress = false;
@@ -257,7 +259,7 @@ class TrapBase extends ItemBase
 						ItemBase victim_item = ItemBase.Cast( victim );
 						float damage_coef = 1;
 						
-						if ( victim_item.HasQuantity()  &&  victim_item.GetQuantityMax() != 0 )
+						if ( victim_item.HasQuantity()  &&  victim_item.GetQuantityMax() != 0 && victim_item.GetQuantity() > 0)
 						{
 							damage_coef = victim_item.GetQuantityMax() / victim_item.GetQuantity(); // Lower quantity increases damage exposure
 						}
@@ -502,36 +504,36 @@ class TrapBase extends ItemBase
 
 	void SetInactive( bool stop_timer = true )
 	{
-			m_WasActivatedOrDeactivated = true;
-			
-			m_IsActive = false;
-			if ( m_Timer && stop_timer )
-			{
-				m_Timer.Stop();
-			}
-		Print("Delete trap trigger");
-		Print(m_TrapTrigger);
-			g_Game.ObjectDelete( m_TrapTrigger );
-			m_TrapTrigger = NULL;
-			
-			if ( m_AddDeactivationDefect )
-			{
-				this.AddDefect();
-			}
+		m_WasActivatedOrDeactivated = true;
+		
+		m_IsActive = false;
+		if ( m_Timer && stop_timer )
+		{
+			m_Timer.Stop();
+		}
+		//Print("Delete trap trigger");
+		//Print(m_TrapTrigger);
+		g_Game.ObjectDelete( m_TrapTrigger );
+		m_TrapTrigger = NULL;
+		
+		if ( m_AddDeactivationDefect )
+		{
+			this.AddDefect();
+		}
 
-			// de-attach attachments
-			int attachments = GetInventory().AttachmentCount();
-			if ( attachments > 0 )
+		// de-attach attachments after "activating them"
+		int attachments = GetInventory().AttachmentCount();
+		if ( attachments > 0 )
+		{
+			EntityAI attachment = GetInventory().GetAttachmentFromIndex(0);
+			if ( attachment )
 			{
-				EntityAI attachment = GetInventory().GetAttachmentFromIndex(0);
-				if (attachment)
-				{
-					Error("Mojmir: TODO");
-					this.LocalDropEntity( attachment );
-				}
+				ItemBase.Cast( attachment ).OnActivatedByTripWire();
+				GetInventory().DropEntity( InventoryMode.LOCAL, this, attachment );
 			}
+		}
 
-			this.RefreshState();
+		this.RefreshState();
 		Synch(NULL);
 	}
 	
@@ -539,7 +541,7 @@ class TrapBase extends ItemBase
 	{
 		m_TrapTrigger = TrapTrigger.Cast( g_Game.CreateObject( "TrapTrigger", this.GetPosition(), false ) );
 		vector mins = "-0.01 -0.05 -0.01";
-		vector maxs = "0.01 0.05 0.01";
+		vector maxs = "0.01 0.50 0.01";
 		m_TrapTrigger.SetOrientation( this.GetOrientation() );
 		m_TrapTrigger.SetExtents(mins, maxs);	
 		m_TrapTrigger.SetParentObject( this );

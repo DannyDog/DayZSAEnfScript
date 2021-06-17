@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class cfgWeapons
@@ -60,7 +61,7 @@ class cfgWeapons
 		hiddenSelections[] = {"camoGround"};
 		hiddenSelectionsMaterials[] = {"dz\weapons\pistols\derringer\data\derringer.rvmat"};
 		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Derringer_Shot_SoundSet","Derringer_Tail_SoundSet","Derringer_InteriorTail_SoundSet"};
 			begin1[] = {"dz\sounds\weapons\firearms\derringer\deringer_single_0",1,1,600};

@@ -24,7 +24,9 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
+class Mode_Double;
 class Mode_FullAuto;
 class Muzzle_Base;
 class OpticsInfoShotgun;
@@ -165,8 +167,8 @@ class cfgWeapons
 		shotAction = "";
 		hiddenSelections[] = {"camo"};
 		simpleHiddenSelections[] = {"bullet","bullet2"};
-		modes[] = {"Single","Burst"};
-		class Single: Mode_SemiAuto
+		modes[] = {"Single","Double"};
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"IZH43_Shot_SoundSet","IZH43_Tail_SoundSet","IZH43_InteriorTail_SoundSet"};
 			reloadTime = 1;
@@ -174,7 +176,7 @@ class cfgWeapons
 			firespreadangle = 1.5;
 			magazineSlot = "magazine";
 		};
-		class Burst: Mode_Burst
+		class Double: Mode_Double
 		{
 			soundSetShot[] = {"IZH43double_Shot_SoundSet","IZH43_Tail_SoundSet","IZH43_InteriorTail_SoundSet"};
 			reloadTime = 0.1;

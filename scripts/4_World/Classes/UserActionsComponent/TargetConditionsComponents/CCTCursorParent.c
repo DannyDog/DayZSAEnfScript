@@ -17,8 +17,8 @@ class CCTCursorParent : CCTBase
 		if( !target )
 			return false;
 		
-		Object targetObject = target.GetObject();
-		if ( !player || !targetObject || targetObject.IsDamageDestroyed() )
+		Object parentObject = target.GetParent();
+		if ( !player || !parentObject || parentObject.IsDamageDestroyed() )
 			return false;
 		
 		vector playerHeadPos = player.GetPosition();

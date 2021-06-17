@@ -49,7 +49,7 @@ class ActionBurnSewSelf: ActionContinuousBase
 		
 		if (action_data.m_Player.GetBleedingManagerServer() )
 		{
-			action_data.m_Player.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();	
+			action_data.m_Player.GetBleedingManagerServer().RemoveMostSignificantBleedingSourceEx(action_data.m_MainItem);	
 		}		
 		//OlD_SHOCK//action_data.m_Player.GetStatShock().Add( action_data.m_Player.GetSoftSkillsManager().SubtractSpecialtyBonus( SHOCK_AMOUNT, this.GetSpecialtyWeight() ) );
 		action_data.m_MainItem.DecreaseHealth ( "", "", action_data.m_Player.GetSoftSkillsManager().SubtractSpecialtyBonus( ITEM_DAMAGE, this.GetSpecialtyWeight() )*100 );

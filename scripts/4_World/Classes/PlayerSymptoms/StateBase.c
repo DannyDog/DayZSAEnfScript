@@ -1,5 +1,6 @@
 class SymptomBase
 {
+	const float MAX_TIME_ACTIVE_SAVEGUARD = 20;
 	int m_Priority;
 	SoundOnVehicle m_SoundObject;
 	bool m_PlayedSound;
@@ -7,7 +8,8 @@ class SymptomBase
 	PlayerBase m_Player;
 	float m_ServerUpdateInterval = 1;
 	float m_ServerUpdateDelta;
-	
+	bool m_IsTemplate = true;
+	float m_ActivatedTime;
 	int m_ID;//ID for the type of Symptom
 	int m_UID;//unique ID
 	bool m_IsClientOnly;
@@ -19,6 +21,7 @@ class SymptomBase
 	bool m_SyncToClient = false;
 	float m_Duration;
 	bool m_AnimPlayRequested;
+	int m_MaxCount = -1;//how many symptoms of this type can be queued up at the same time, '-1' for unlimited
 
 	SymptomCB m_AnimCallback;
 	
@@ -30,7 +33,7 @@ class SymptomBase
 	
 	void ~SymptomBase()
 	{
-		OnDestructed();
+
 	}
 
 	void Init(SymptomManager manager, PlayerBase player, int uid)
@@ -38,7 +41,13 @@ class SymptomBase
 		m_Manager = manager;
 		m_Player = player;
 		m_UID = uid;
+		m_IsTemplate = false;
 		OnInit();
+	}
+	
+	int GetMaxCount()
+	{
+		return m_MaxCount;
 	}
 	
 	int GetUID()
@@ -92,6 +101,11 @@ class SymptomBase
 	{
 		return m_ID;
 	}
+	
+	void SetParam(Param p)
+	{
+	
+	}
 
 	bool IsSyncToClient()
 	{
@@ -121,7 +135,7 @@ class SymptomBase
 	bool IsPrimary()
 	{
 		if( m_SymptomType == SymptomTypes.PRIMARY)
-		return true;
+			return true;
 		else return false;
 	}
 	
@@ -156,7 +170,9 @@ class SymptomBase
 			{
 				if( IsSyncToClient() ) 
 					SyncToClientActivated( GetType(), GetUID() );
+				#ifdef DEVELOPER
 				GetManager().SendServerDebugToClient();
+				#endif
 			}
 		}
 		if( !GetGame().IsMultiplayer() || GetGame().IsClient() )
@@ -195,9 +211,11 @@ class SymptomBase
 	{
 		if( GetGame().IsServer() ) 
 		{
+			
 			m_ServerUpdateDelta += deltatime;
 			if(m_ServerUpdateDelta > m_ServerUpdateInterval )
 			{
+				m_ActivatedTime += m_ServerUpdateDelta;
 				OnUpdateServer(m_Player, m_ServerUpdateDelta);
 				m_ServerUpdateDelta = 0;
 			}
@@ -210,7 +228,6 @@ class SymptomBase
 		{
 			OnUpdateClient(m_Player, deltatime);
 		}
-		
 		CheckDestroy();
 	}
 	
@@ -251,16 +268,23 @@ class SymptomBase
 
 	void CheckSoundFinished()
 	{
-		if (m_PlayedSound && !m_SoundObject)
+		if(GetGame().IsServer() || !GetGame().IsMultiplayer())
 		{
-			RequestDestroy();	
+			if(m_PlayedSound && m_ActivatedTime >= m_Duration)
+				RequestDestroy();
 		}
 	}
 	
 	void CheckDestroy()
 	{
 		CheckSoundFinished();
-		if (m_DestroyRequested) Destroy();
+		if( IsPrimary() && m_ActivatedTime > MAX_TIME_ACTIVE_SAVEGUARD)
+		{
+			RequestDestroy();
+		}
+		
+		if (m_DestroyRequested) 
+			Destroy();
 	}
 	
 	SmptAnimMetaBase SpawnAnimMetaObject()
@@ -272,12 +296,13 @@ class SymptomBase
 	void RequestDestroy()
 	{
 		m_DestroyRequested = true;
-		if(!IsActivated() ) Destroy();
+		//if(!IsActivated() ) Destroy();
 	}
 
 	void Destroy()
 	{
-		delete this;
+		if(!m_IsTemplate)
+			OnDestructed();
 	}
 	
 	//!gets called upon animation Symptom exit

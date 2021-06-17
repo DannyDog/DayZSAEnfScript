@@ -146,9 +146,9 @@ class DayZPlayerImplementMeleeCombat
 		m_WeaponRange = GetWeaponRange(weapon, m_WeaponMode);
 		m_AllTargetObjects.Clear();
 
-		if( !GetGame().IsMultiplayer() || !GetGame().IsServer() )
+		if ( !GetGame().IsMultiplayer() || !GetGame().IsServer() )
 		{
-			if( !ScriptInputUserData.CanStoreInputUserData() )
+			if ( !ScriptInputUserData.CanStoreInputUserData() )
 			{
 				//Error("DayZPlayerImplementMeleeCombat - ScriptInputUserData already posted");
 				return;
@@ -158,13 +158,13 @@ class DayZPlayerImplementMeleeCombat
 			TargetSelection();
 
 			//! skips Hit zone selection when called in hit part of anim (WasHit event)
-			if( !wasHitEvent || m_TargetType != EMeleeTargetType.NONALIGNABLE )
+			if ( !wasHitEvent || m_TargetType != EMeleeTargetType.NONALIGNABLE )
 			{
 				HitZoneSelection();
 			}
 
 			//! store target into input packet
-			if( GetGame().IsMultiplayer() )
+			if ( GetGame().IsMultiplayer() )
 			{
 				ScriptInputUserData ctx = new ScriptInputUserData;
 				ctx.Write(INPUT_UDT_MELEE_TARGET);

@@ -41,6 +41,8 @@ class SharpenLongStick extends RecipeBase
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
 		InsertIngredient(1,"Screwdriver");
 		InsertIngredient(1,"Crowbar");
 		InsertIngredient(1,"Pickaxe");
@@ -65,7 +67,7 @@ class SharpenLongStick extends RecipeBase
 		
 		AddResult("SharpWoodenStick");//single result
 
-		m_ResultSetFullQuantity[0] = 0;
+		m_ResultSetFullQuantity[0] = false;
 		m_ResultSetQuantity[0] = 1;
 		m_ResultSetHealth[0] = -1;
 		m_ResultInheritsHealth[0] = 0;// (value) == -1 means do nothing; a (value) >= 0 means this result will inherit health from ingredient number (value);(value) == -2 means this result will inherit health from all ingredients averaged(result_health = combined_health_of_ingredients / number_of_ingredients)
@@ -82,6 +84,10 @@ class SharpenLongStick extends RecipeBase
 
 	override void Do(ItemBase ingredients[], PlayerBase player,array<ItemBase> results, float specialty_weight)
 	{
-		Debug.Log("Recipe Do method called","recipes");
+		ItemBase ingredient = ingredients[0];
+	
+		ItemBase item_result = results[0];
+			
+		MiscGameplayFunctions.TransferItemProperties(ingredient, item_result, false, false, false);
 	}
 };

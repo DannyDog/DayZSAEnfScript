@@ -6,12 +6,12 @@ FrameWidgetClass HudDebugFrameWidget {
  vexactpos 1
  hexactsize 0
  vexactsize 0
+ draggable 0
  {
   WindowWidgetClass wdw_CharacterStats {
    visible 1
-   position 0 51
-   size 232 218
-   halign right_ref
+   position 5.63969 39.4778
+   size 396.68201 273.673
    hexactpos 1
    vexactpos 1
    hexactsize 1
@@ -35,8 +35,8 @@ FrameWidgetClass HudDebugFrameWidget {
     }
     TextListboxWidgetClass txl_CharStats_Values {
      disabled 1
-     position 13 30
-     size 208 177
+     position 4.03289 30
+     size 388.332 192.735
      hexactpos 1
      vexactpos 1
      hexactsize 1
@@ -45,17 +45,44 @@ FrameWidgetClass HudDebugFrameWidget {
      lines 0
      font "gui/fonts/MetronBook16"
     }
+    ButtonWidgetClass ResetStats {
+     size 27.0427 24.2484
+     halign right_ref
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "R"
+     font "gui/fonts/MetronBlack22"
+    }
+    PanelWidgetClass Stats {
+     ignorepointer 0
+     position 3.64167 34.37
+     size 387.32098 26.7658
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     scriptclass "AutoHeightSpacer"
+     {
+      ScriptParamsClass {
+       AlignChilds 1
+       MinHeight 20
+      }
+     }
+    }
    }
   }
   WindowWidgetClass wdw_CharacterModifiers {
-   position 4.01487 0.35857
-   size 300.14902 668.617
+   position 8.21908 0.0378
+   size 300.14902 1063.40002
    halign right_ref
    hexactpos 1
    vexactpos 0
    hexactsize 1
    vexactsize 1
-   scriptclass ""
+   draggable 1
+   scriptclass "auto"
    style rover_sim_black_2
    "title visible" 0
    {
@@ -90,6 +117,16 @@ FrameWidgetClass HudDebugFrameWidget {
        MinHeight 20
       }
      }
+    }
+    ButtonWidgetClass ResetModifiers {
+     position 272.81601 2.87175
+     size 27.0427 24.2484
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "R"
+     font "gui/fonts/MetronBlack22"
     }
    }
   }
@@ -197,6 +234,16 @@ FrameWidgetClass HudDebugFrameWidget {
      font "gui/fonts/MetronBook22"
      "exact text" 1
      "text valign" center
+    }
+    ButtonWidgetClass ResetAgents {
+     position 299.33899 -5.93577
+     size 48 48
+     hexactpos 1
+     vexactpos 1
+     hexactsize 1
+     vexactsize 1
+     text "R"
+     font "gui/fonts/MetronBlack22"
     }
    }
   }

@@ -1,8 +1,9 @@
+// DEPRECATED: Left for backwards compatibility with mods
 class AreaDamageRegularDeferred extends AreaDamageRegular
 {	
 	void AreaDamageRegularDeferred(EntityAI parent)
 	{
-		AreaDamageBase(parent);
+
 	}
 
 	void ~AreaDamageRegularDeferred() {}

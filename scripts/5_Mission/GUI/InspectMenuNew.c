@@ -166,6 +166,7 @@ class InspectMenuNew extends UIScriptedMenu
 		InspectMenuNew.UpdateItemInfoQuantity(root_widget, item);
 		InspectMenuNew.UpdateItemInfoWeight(root_widget, item);
 		InspectMenuNew.UpdateItemInfoFoodStage(root_widget, item);
+		InspectMenuNew.UpdateItemInfoCleanness(root_widget, item);
 		
 		Widget content = root_widget.FindAnyWidget("InventoryInfoPanelWidget");
 	}
@@ -585,6 +586,23 @@ class InspectMenuNew extends UIScriptedMenu
 			WidgetTrySetText( root_widget, "ItemFoodStageWidget", "" );
 		}
 	}
+	
+	
+		//--------------------------------------------------------------------------
+	static void UpdateItemInfoCleanness(Widget root_widget, EntityAI item)
+	{
+		ItemBase ib = ItemBase.Cast(item);
+		if(ib && ib.m_Cleanness==1)
+		{
+			WidgetTrySetText( root_widget, "ItemCleannessWidget", "#inv_inspect_cleaned", Colors.WHITEGRAY );
+		}
+		else
+		{
+			WidgetTrySetText( root_widget, "ItemCleannessWidget", "" );
+		}
+	}
+	
+	
 	
 	//--------------------------------------------------------------------------
 	static void WidgetTrySetText(Widget root_widget, string widget_name, string text, int color = 0)

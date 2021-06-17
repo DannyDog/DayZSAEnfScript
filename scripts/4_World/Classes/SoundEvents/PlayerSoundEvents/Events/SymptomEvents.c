@@ -47,3 +47,19 @@ class SneezeSoundEvent extends SymptomSoundEventBase
 		m_SoundVoiceAnimEventClassID = 9;
 	}
 }
+
+
+class FatigueSoundEvent extends SymptomSoundEventBase
+{
+	void FatigueSoundEvent()
+	{
+		m_ID = EPlayerSoundEventID.SYMPTOM_FATIGUE;
+		m_SoundVoiceAnimEventClassID = 2;
+	}
+	
+	override void OnPlay(PlayerBase player)
+	{
+		
+	}
+	
+}

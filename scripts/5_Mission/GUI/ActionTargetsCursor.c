@@ -266,8 +266,18 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 	
 	void Update()
 	{
-		//! don't show floating widget if it's disabled in profile
-		if (GetGame().GetUIManager().GetMenu() != null || !g_Game.GetProfileOption(EDayZProfilesOptions.HUD))
+		if (m_Player && !m_Player.IsAlive()) // handle respawn
+		{
+			m_Player = null;
+			m_AM = null;
+		}
+
+		if (!m_Player) GetPlayer();
+		if (!m_AM) GetActionManager();
+		
+		
+		//! don't show floating widget if it's disabled in profile or the player is unconscious
+		if (GetGame().GetUIManager().GetMenu() != null || !g_Game.GetProfileOption(EDayZProfilesOptions.HUD) ||m_Player.IsUnconscious() )
 		{
 			HideWidget();
 			return;
@@ -277,20 +287,10 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 		// we need to change setting of these methods;
 		//SetHealthVisibility(true);
 		//SetQuantityVisibility(true);
-		
-		if (m_Player && !m_Player.IsAlive()) // handle respawn
-		{
-			m_Player = null;
-			m_AM = null;
-		}
-
-		if (!m_Player) GetPlayer();
-		if (!m_AM) GetActionManager();
 
 		GetTarget();
 		GetActions();
-
-		if ((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null)
+		if ((m_Target && !m_Hidden) || (m_Interact || m_ContinuousInteract || m_Single || m_Continuous) && m_AM.GetRunningAction() == null )
 		{
 			//! cursor with fixed position (environment interaction mainly)
 			if ( m_Target.GetObject() == null && (m_Interact || m_ContinuousInteract || m_Single || m_Continuous))
@@ -302,7 +302,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 				m_FixedOnPosition = false;
 				return;
 			}
-			else if (m_Target.GetObject() != null)
+			else if (m_Target.GetObject() != null && !m_Target.GetObject().IsHologram() && (!m_Target.GetParent() || m_Target.GetParent() && !m_Target.GetParent().IsHologram()))
 			{
 				CheckRefresherFlagVisibility(m_Target.GetObject());
 				//! build cursor for new target
@@ -725,7 +725,7 @@ class ActionTargetsCursor extends ScriptedWidgetEventHandler
 			if ( !tgObject.IsAlive() )
 			{
 				//Fetch parent item name if one is present
-				if ( !tgParent )
+				if ( !tgParent || tgObject.DisplayNameRuinAttach() )
 					desc = tgObject.GetDisplayName();
 				else
 					desc = tgParent.GetDisplayName();

@@ -11,7 +11,8 @@ class RemotePlayerStatDebug
 {
 	PlayerBase m_Player;
 	ref array<ref StatDebugObject> m_Stats = new array<ref StatDebugObject>;
-	
+	string m_Name;
+	vector m_Pos;
 	void RemotePlayerStatDebug(PlayerBase player)
 	{
 		m_Player = player;
@@ -23,6 +24,8 @@ class RemotePlayerStatDebug
 	{
 		UpdatePlayerStatsValues();
 		InjectDamageSystemValues();
+		m_Pos = m_Player.GetWorldPosition();
+		m_Name = m_Player.GetIdentity().GetName();
 	}
 	
 	PlayerBase GetPlayer()

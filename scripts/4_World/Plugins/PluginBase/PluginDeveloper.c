@@ -2,6 +2,7 @@ class PluginDeveloper extends PluginBase
 {
 	protected bool									m_IsWinHolding;	
 	protected int									m_FeaturesMask;
+	UIScriptedMenu	m_ScriptConsole;
 	
 	static PluginDeveloper GetInstance()
 	{
@@ -203,9 +204,9 @@ class PluginDeveloper extends PluginBase
 		PrintString("PluginDeveloper.SpawnEntity() Warning END");
 	}
 
-	void SetupSpawnedEntity (EntityAI entity, float health, float quantity, bool special = false)
+	void SetupSpawnedEntity(EntityAI entity, float health, float quantity, bool special = false)
 	{
-		if(special)
+		if ( special )
 			entity.OnDebugSpawn();
 		if ( entity.IsInherited( PlayerBase ) ) 
 		{
@@ -227,7 +228,7 @@ class PluginDeveloper extends PluginBase
 	 * @param[in]	pos	\p	position where to spawn
 	 * @return	entity if ok, null otherwise
 	 **/
-	EntityAI SpawnEntityOnGroundPos (PlayerBase player, string item_name, float health, float quantity, vector pos)
+	EntityAI SpawnEntityOnGroundPos( PlayerBase player, string item_name, float health, float quantity, vector pos)
 	{
 		if ( GetGame().IsServer() )
 		{		
@@ -253,7 +254,7 @@ class PluginDeveloper extends PluginBase
 	 * @param[in]	distance	\p	distance of the item from player
 	 * @return	entity if ok, null otherwise
 	 **/
-	EntityAI SpawnEntityOnCursorDir (PlayerBase player, string item_name, float quantity, float distance, float health = -1, bool special = false)
+	EntityAI SpawnEntityOnCursorDir( PlayerBase player, string item_name, float quantity, float distance, float health = -1, bool special = false)
 	{
 
 		if ( GetGame().IsServer() )
@@ -261,16 +262,17 @@ class PluginDeveloper extends PluginBase
 			// Client -> Server Spawning: Server Side
 			EntityAI entity = player.SpawnEntityOnGroundOnCursorDir(item_name, distance);
 			
-			if (entity)
+			if ( entity )
 			{
-				if( health < 0 )//check for default (-1)
+				if ( health < 0 && entity.HasDamageSystem() )//check for default (-1)
 				{
 					health = entity.GetMaxHealth();
 				}
-				SetupSpawnedEntity(entity, health, quantity, special);
+				
+				SetupSpawnedEntity( entity, health, quantity, special );
 			}
 			else
-				OnSpawnErrorReport(item_name);
+				OnSpawnErrorReport( item_name );
 			return entity;
 		}
 		else
@@ -291,9 +293,9 @@ class PluginDeveloper extends PluginBase
 	 * @param[in]	quantity	\p	quantity to set if item.HasQuantity() (-1 == set to max)
 	 * @return	entity if ok, null otherwise
 	 **/
-	EntityAI SpawnEntityInInventory (PlayerBase player, string item_name, float health, float quantity)
+	EntityAI SpawnEntityInInventory( PlayerBase player, string item_name, float health, float quantity)
 	{
-		if( player )
+		if ( player )
 		{
 			if ( GetGame().IsServer() )
 			{		
@@ -318,7 +320,7 @@ class PluginDeveloper extends PluginBase
 						EntityAI eai = GetGame().SpawnEntity(item_name, il, ECE_IN_INVENTORY, RF_DEFAULT);
 						if ( eai && eai.IsInherited(ItemBase) )
 						{
-							if( health < 0 )//check for default (-1)
+							if ( health < 0 )//check for default (-1)
 							{
 								health = eai.GetMaxHealth();
 							}
@@ -447,7 +449,7 @@ class PluginDeveloper extends PluginBase
 		{
 			if ( g_Game.GetUIManager().GetMenu() == NULL )
 			{
-				g_Game.GetUIManager().EnterScriptedMenu(MENU_SCRIPTCONSOLE, NULL);
+				m_ScriptConsole = g_Game.GetUIManager().EnterScriptedMenu(MENU_SCRIPTCONSOLE, NULL);
 				GetGame().GetMission().PlayerControlDisable(INPUT_EXCLUDE_ALL);
 			}
 			else if ( g_Game.GetUIManager().IsMenuOpen(MENU_SCRIPTCONSOLE) )

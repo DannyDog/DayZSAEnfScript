@@ -6,7 +6,6 @@ FrameWidgetClass FrameWidget {
  vexactpos 0
  hexactsize 0
  vexactsize 0
- priority 999
  {
   WindowWidgetClass MenuWindow {
    visible 1
@@ -33,7 +32,7 @@ FrameWidgetClass FrameWidget {
      style Colorable
      {
       ButtonWidgetClass OutputButtonWidget {
-       position 0.48174 8
+       position 0.6017 8
        size 0.1 0.625
        hexactpos 0
        vexactpos 1
@@ -72,7 +71,7 @@ FrameWidgetClass FrameWidget {
        switch once
       }
       ButtonWidgetClass EnScriptButtonWidget {
-       position 0.36174 8
+       position 0.3617 8
        size 0.1 0.625
        hexactpos 0
        vexactpos 1
@@ -80,7 +79,7 @@ FrameWidgetClass FrameWidget {
        vexactsize 0
        userID 0
        style Default
-       text "EnfScript"
+       text "EnfScript Client"
        text_proportion 0.8
        switch once
       }
@@ -97,17 +96,31 @@ FrameWidgetClass FrameWidget {
        text_proportion 0.8
        switch once
       }
+      ButtonWidgetClass EnScriptButtonWidgetServer {
+       position 0.4817 8
+       size 0.1 0.625
+       hexactpos 0
+       vexactpos 1
+       hexactsize 0
+       vexactsize 0
+       userID 0
+       style Default
+       text "EnfScript Server"
+       text_proportion 0.8
+       switch once
+      }
      }
     }
     PanelWidgetClass ItemsPanel {
      visible 1
-     inheritalpha 1
+     inheritalpha 0
+     color 0 0.2235 0.0549 0.6275
      position 0.004 0.0421
      size 0.99 0.8778
-     style rover_sim_black
+     style DayZDefaultPanel
      {
       EditBoxWidgetClass ObjectFilter {
-       inheritalpha 1
+       inheritalpha 0
        color 1 1 1 1
        position 0.00819 0.01
        size 0.98154 0.05063
@@ -141,7 +154,7 @@ FrameWidgetClass FrameWidget {
       }
       ButtonWidgetClass ItemNameCopy {
        position 0.01 0.95
-       size 0.29 20
+       size 0.1095 20
        vexactsize 1
        style Default
        text "Copy To Clipboard"
@@ -344,7 +357,7 @@ FrameWidgetClass FrameWidget {
        text "1.0"
       }
       ButtonWidgetClass ButtonSpawnInInv {
-       position 0.31 0.9
+       position 0.31 0.91
        size 0.14 30
        vexactsize 1
        style Default
@@ -362,7 +375,7 @@ FrameWidgetClass FrameWidget {
        text_halign left
       }
       ButtonWidgetClass ButtonSpawnInGround {
-       position 0.45 0.9
+       position 0.45 0.91
        size 0.14 30
        vexactsize 1
        style Default
@@ -380,6 +393,51 @@ FrameWidgetClass FrameWidget {
        text "Spawn Ground Special"
        text_proportion 0.8
        text_halign right
+      }
+      ButtonWidgetClass ButtonDrawItem {
+       position 0.31 0.87
+       size 0.10575 30
+       vexactsize 1
+       style Default
+       text "Draw Items In World"
+       text_proportion 0.8
+       text_halign left
+      }
+      ButtonWidgetClass ButtonDrawItemClear {
+       position 0.48718 0.87
+       size 0.10282 30
+       vexactsize 1
+       style Default
+       text "Clear Items"
+       text_proportion 0.8
+       text_halign right
+      }
+      CheckBoxWidgetClass ShowProtectedCheckbox {
+       position 420.28699 900.89001
+       size 32.4909 28.2611
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+      }
+      TextWidgetClass ShowProtectedText {
+       ignorepointer 1
+       position 277.15201 906.091
+       size 141.16701 22.3394
+       hexactpos 1
+       vexactpos 1
+       hexactsize 1
+       vexactsize 1
+       text "Show Protected"
+       font "gui/fonts/Metron"
+      }
+      EditBoxWidgetClass DrawItemDistance {
+       position 0.41806 0.87009
+       size 0.0662 30.517
+       hexactpos 0
+       vexactpos 0
+       hexactsize 0
+       vexactsize 1
       }
      }
     }
@@ -444,12 +502,14 @@ FrameWidgetClass FrameWidget {
     }
     PanelWidgetClass EnScriptPanel {
      visible 1
-     inheritalpha 1
+     inheritalpha 0
+     color 0 0.1922 0.0471 1
      position 0 0.05556
      size 1.28 0.87778
-     style blank
+     style DayZDefaultPanel
      {
-      ButtonWidgetClass ButtonWidget0 {
+      ButtonWidgetClass RunButton {
+       visible 1
        position 0.00741 0.00699
        size 0.098 0.051
        valign bottom_ref
@@ -788,6 +848,26 @@ FrameWidgetClass FrameWidget {
        style Editor
        text "COPY POS"
        font "gui/fonts/Metron"
+      }
+      CheckBoxWidgetClass ShowOthersCheckbox {
+       position 0.89878 0.72819
+       size 149.27701 48
+       hexactpos 0
+       vexactpos 0
+       hexactsize 1
+       vexactsize 1
+       text "Show Others"
+       font "gui/fonts/AmorSerifPro14"
+      }
+      MapWidgetClass MapWidget {
+       visible 1
+       disabled 0
+       position 0.224 -0.004
+       size 1319.07996 699.54095
+       hexactpos 0
+       vexactpos 0
+       hexactsize 1
+       vexactsize 1
       }
      }
     }

@@ -45,6 +45,8 @@ class DeCraftCarrierComplete extends RecipeBase
 		InsertIngredient(1,"CombatKnife");
 		InsertIngredient(1,"HuntingKnife");
 		InsertIngredient(1,"Machete");
+		InsertIngredient(1,"CrudeMachete");
+		InsertIngredient(1,"OrientalMachete");
 		InsertIngredient(1,"Screwdriver");
 		InsertIngredient(1,"Crowbar");
 		InsertIngredient(1,"Pickaxe");

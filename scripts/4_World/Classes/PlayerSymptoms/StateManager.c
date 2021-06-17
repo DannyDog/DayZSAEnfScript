@@ -18,6 +18,9 @@ enum SymptomIDs {
 	SYMPTOM_UNCONSCIOUS,
 	SYMPTOM_FREEZE,
 	SYMPTOM_HOT,
+	SYMPTOM_PAIN_LIGHT,
+	SYMPTOM_PAIN_HEAVY,
+	SYMPTOM_HAND_SHIVER,
 };
 
 enum SymptomTypes 
@@ -40,6 +43,7 @@ class SymptomManager
 {
 	PlayerBase m_Player;
 	ref map<int, ref SymptomBase> m_AvailableSymptoms;
+	ref map<int, int> m_ActiveSymptomTypes;//for each type(symptom id), keep track of how many times it is in queue
 	
 	ref array<ref SymptomBase> m_SymptomQueuePrimary;
 	ref array<ref SymptomBase> m_SymptomQueueSecondary;
@@ -51,13 +55,12 @@ class SymptomManager
 	ref array<ref Param> m_SymptomQueueServerDbgPrimary;
 	ref array<ref Param> m_SymptomQueueServerDbgSecondary;
 	//ref array<string> m_SymptomQueueSecondaryServerDbg;
+	ref Timer m_Timer;
 
 	int m_ActiveSymptomIndexPrimary = -1;
 	int m_CurrentCommandID;
 	
-	const int STORAGE_VERSION = 100;
-	
-	ref Timer m_Timer;
+	const int STORAGE_VERSION = 121;
 	
 	bool m_ShowDebug = false;
 	bool m_ShowDebug2 = false;
@@ -75,6 +78,9 @@ class SymptomManager
 		RegisterSymptom(new LaughterSymptom);
 		RegisterSymptom(new FreezeSymptom);
 		RegisterSymptom(new HotSymptom);
+		RegisterSymptom(new PainLightSymptom);
+		RegisterSymptom(new PainHeavySymptom);
+		RegisterSymptom(new HandShiversSymptom);
 		//RegisterSymptom(new BulletHitSymptom);
 	}
 	
@@ -96,7 +102,7 @@ class SymptomManager
 	
 	void SymptomManager(PlayerBase player)
 	{
-		m_Timer = new Timer;
+		m_ActiveSymptomTypes = new map<int, int>;
 		m_SymptomsUIDs = new map<int , SymptomBase >;
 		m_SymptomQueuePrimary = new array<ref SymptomBase>;
 		m_SymptomQueueSecondary = new array<ref SymptomBase>;
@@ -327,7 +333,11 @@ class SymptomManager
 	void OnSymptomExit(SymptomBase Symptom, int uid)
 	{
 		bool is_primary;
-		if( Symptom ) is_primary = Symptom.IsPrimary();
+		if( Symptom )
+		{
+			is_primary = Symptom.IsPrimary();
+			DecreaseSymptomCount(Symptom.GetType());
+		}
 		
 		if( m_SymptomsUIDs.Contains(uid) )
 		{
@@ -360,7 +370,47 @@ class SymptomManager
 			}
 		}
 		m_ActiveSymptomIndexPrimary = -1;
+		#ifdef DEVELOPER
 		if( GetGame() ) SendServerDebugToClient();
+		#endif
+	}
+	
+	
+	int GetSymptomMaxCount(int symptom_id)
+	{
+		return m_AvailableSymptoms.Get(symptom_id).GetMaxCount();
+	}
+	
+	
+	int GetSymptomCount(int symptom_id)
+	{
+		if( m_ActiveSymptomTypes.Contains(symptom_id) )
+			return m_ActiveSymptomTypes.Get(symptom_id);
+		else 
+			return -1;
+	}
+	
+	void IncreaseSymptomCount(int symptom_id)
+	{
+		if( m_ActiveSymptomTypes.Contains(symptom_id) )
+		{
+			m_ActiveSymptomTypes.Set(symptom_id, m_ActiveSymptomTypes.Get(symptom_id) + 1);
+		}
+		else
+		{
+			m_ActiveSymptomTypes.Insert(symptom_id, 1);
+		}
+	}
+	
+	void DecreaseSymptomCount(int symptom_id)
+	{
+		if( m_ActiveSymptomTypes.Contains(symptom_id) )
+		{
+			if( m_ActiveSymptomTypes.Get(symptom_id) == 1)
+				m_ActiveSymptomTypes.Remove(symptom_id);
+			else
+				m_ActiveSymptomTypes.Set(symptom_id, m_ActiveSymptomTypes.Get(symptom_id) - 1);
+		}
 	}
 
 	SymptomBase SpawnSymptom( int symptom_id, int uid = -1 )
@@ -373,8 +423,10 @@ class SymptomManager
 				uid = CreateUniqueID();
 			}
 			Symptom.Init(this, m_Player,uid);
-			if( m_SymptomsUIDs.Contains(uid) ) Error("Symptoms: Unique ID already exists !");
+			if( m_SymptomsUIDs.Contains(uid) ) 
+				Error("Symptoms: Unique ID already exists !");
 			m_SymptomsUIDs.Insert(uid, Symptom);
+			IncreaseSymptomCount(symptom_id);
 			return Symptom;
 		}
 		
@@ -388,13 +440,19 @@ class SymptomManager
 	
 	void CleanUpPrimaryQueue()
 	{
-		m_SymptomQueuePrimary.Clear();
+		for(int i = 0; i < m_SymptomQueuePrimary.Count(); i++)
+		{
+			m_SymptomQueuePrimary.Get(i).RequestDestroy();
+		}
+		
 	}
 
 	SymptomBase QueueUpPrimarySymptom(int symptom_id, int uid = -1)
 	{
 		SymptomBase Symptom;
-		for(int i = 0; i < m_SymptomQueuePrimary.Count(); i++)
+		if((GetSymptomCount(symptom_id) >= GetSymptomMaxCount(symptom_id)) && GetSymptomMaxCount(symptom_id) != -1)
+			return null;
+		for( int i = 0; i < m_SymptomQueuePrimary.Count(); i++ )
 		{
 			if( m_SymptomQueuePrimary.Get(i).CanBeInterupted() && ComparePriority( GetSymptomPriority(symptom_id), m_SymptomQueuePrimary.Get(i).GetPriority() ) == 1 )
 			{
@@ -403,7 +461,7 @@ class SymptomManager
 
 				if( m_SymptomQueuePrimary.Count() > MAX_QUEUE_SIZE )
 				{
-					delete m_SymptomQueuePrimary.Get(MAX_QUEUE_SIZE);//delete the last element in the queue, no need to remove from the array, that's done via Symptom callback on destruct
+					m_SymptomQueuePrimary.Get(MAX_QUEUE_SIZE).RequestDestroy();// no need to remove from the array, that's done via Symptom callback on destruct
 				}
 				break;
 			}
@@ -413,21 +471,29 @@ class SymptomManager
 			Symptom = SpawnSymptom( symptom_id, uid );
 			m_SymptomQueuePrimary.Insert(Symptom);
 		}
+		#ifdef DEVELOPER
 		SendServerDebugToClient();
+		#endif
 		return Symptom;
 	}
 	
 	void QueueUpSecondarySymptom(int symptom_id, int uid = -1)
 	{
+		 QueueUpSecondarySymptomEx(symptom_id, uid);
+	}
+	
+	SymptomBase QueueUpSecondarySymptomEx(int symptom_id, int uid = -1)
+	{
+		if((GetSymptomCount(symptom_id) >= GetSymptomMaxCount(symptom_id)) && GetSymptomMaxCount(symptom_id) != -1)
+			return null;
+		
+		if( m_AvailableSymptoms.Get(symptom_id).IsPrimary() )
+			return null;
+		
 		SymptomBase Symptom = SpawnSymptom( symptom_id, uid);
 		
-		if( Symptom.IsPrimary() ) 
-		{
-			Error("trying to queue up a primary Symptom into a secondary Symptom queue");
-			delete Symptom;
-			return;
-		}
 		m_SymptomQueueSecondary.Insert(Symptom);
+		return Symptom;
 	}
 	
 	//! Removes a single Symptom

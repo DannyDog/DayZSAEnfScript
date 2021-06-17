@@ -125,6 +125,7 @@ class UADamageApplied
 	const float DESTROY 	= 25;
 	const float SAW_LOCK 	= 150;
 	const float SKINNING 	= 4;
+	const float SAW_PLANKS	= 4;
 };
 
 /**@class	Constants for water type

@@ -446,7 +446,9 @@ class CarScript extends Car
 			if ( slot_name == "CarRadiator" )
 			{
 				LeakAll( CarFluid.COOLANT );
-				SetHealth( "Radiator", "Health", 0);
+				
+				if ( m_DamageZoneMap.Contains( "Radiator" ) )
+					SetHealth( "Radiator", "Health", 0);
 			}
 
 			Synchronize();

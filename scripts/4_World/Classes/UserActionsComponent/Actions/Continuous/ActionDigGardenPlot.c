@@ -69,36 +69,33 @@ class ActionDigGardenPlot: ActionDeployObject
 	
 	void CheckSurfaceBelowGardenPlot(PlayerBase player, GardenPlot item_GP, Hologram hologram)
 	{
-		if (item_GP) // TO DO: When GardenPlot is renamed back to GardenPlot then remove this check.
+		vector min_max[2];
+		item_GP.GetCollisionBox(min_max);
+		float offset = min_max[1][1] - min_max[0][1];
+		//Print(offset);
+		vector pos_adjusted = item_GP.GetPosition();
+		pos_adjusted[1] = pos_adjusted[1] + offset;
+		
+		if ( item_GP.CanBePlaced(player, /*item_GP.GetPosition()*/pos_adjusted )  )
 		{
-			vector min_max[2];
-			item_GP.GetCollisionBox(min_max);
-			float offset = min_max[1][1] - min_max[0][1];
-			//Print(offset);
-			vector pos_adjusted = item_GP.GetPosition();
-			pos_adjusted[1] = pos_adjusted[1] + offset;
-			
-			if ( item_GP.CanBePlaced(player, /*item_GP.GetPosition()*/pos_adjusted )  )
+			if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftCloseProjectionVector())) )
 			{
-				if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftCloseProjectionVector())) )
+				if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightCloseProjectionVector())) )
 				{
-					if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightCloseProjectionVector())) )
+					if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftFarProjectionVector())) )
 					{
-						if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetLeftFarProjectionVector())) )
+						if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightFarProjectionVector())) )
 						{
-							if ( item_GP.CanBePlaced(NULL, item_GP.CoordToParent(hologram.GetRightFarProjectionVector())) )
-							{
-								hologram.SetIsCollidingGPlot( false );
-	
-								return;
-							}
+							hologram.SetIsCollidingGPlot( false );
+							
+							return;
 						}
 					}
 				}
 			}
-			
-			hologram.SetIsCollidingGPlot( true );
 		}
+		
+		hologram.SetIsCollidingGPlot( true );
 	}
 	
 	override void OnFinishProgressClient( ActionData action_data )
@@ -115,11 +112,11 @@ class ActionDigGardenPlot: ActionDeployObject
 		vector orientation = action_data.m_Player.GetLocalProjectionOrientation();
 				
 		if ( GetGame().IsMultiplayer() )
-		{		
+		{
 			m_GardenPlot = GardenPlot.Cast( action_data.m_Player.GetHologramServer().PlaceEntity( entity_for_placing ));
 			m_GardenPlot.SetOrientation( orientation );
 			action_data.m_Player.GetHologramServer().CheckPowerSource();
-			action_data.m_Player.PlacingCompleteServer();	
+			action_data.m_Player.PlacingCompleteServer();
 			
 			m_GardenPlot.OnPlacementComplete( action_data.m_Player );
 		}

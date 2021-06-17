@@ -90,4 +90,10 @@ class ActionMountBarbedWire: ActionContinuousBase
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
+	
+	override string GetAdminLogMessage( ActionData action_data )
+	{
+		string message = string.Format("Player %1 Mounted BarbedWire on %2", action_data.m_Player, action_data.m_Target.GetObject() );
+		return message;
+	}
 }

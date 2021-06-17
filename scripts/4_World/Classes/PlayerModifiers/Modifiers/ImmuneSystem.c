@@ -1,6 +1,7 @@
 class ImmuneSystemMdfr: ModifierBase
 {
 	bool m_HasDisease;
+	bool m_HasHealings;
 	override void Init()
 	{
 		m_TrackActivatedTime = false;
@@ -44,10 +45,26 @@ class ImmuneSystemMdfr: ModifierBase
 			{
 				if( player.GetNotifiersManager() ) player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_SICK);
 			}
+			m_HasDisease = player.HasDisease();
 		}	
-		m_HasDisease = player.HasDisease();
+
+			
+		if( m_HasHealings != player.HasHealings() )
+		{
+		
+			if( player.HasHealings() )
+			{
+				if( player.GetNotifiersManager() )
+					player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+			}
+			else
+			{
+				if( player.GetNotifiersManager() )
+					player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+			}
+			m_HasHealings = player.HasHealings();
+		}
 		
 	}
-	
 	
 };

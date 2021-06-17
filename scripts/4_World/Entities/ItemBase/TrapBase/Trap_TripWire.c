@@ -10,18 +10,13 @@ class TripwireTrap : TrapBase
 	{
 		m_State = FOLDED;
 		m_DamagePlayers = 0; 			//How much damage player gets when caught
-		m_InitWaitTime = 3; 			//After this time after deployment, the trap is activated
+		m_InitWaitTime = 1; 			//After this time after deployment, the trap is activated
 		m_NeedActivation = false;
 		m_AnimationPhaseGrounded = "inventory";
 		m_AnimationPhaseSet = "placing";
 		m_AnimationPhaseTriggered = "TripWire_triggered";
-		m_InfoActivationTime = "#STR_TripwireTrap0" + m_InitWaitTime.ToString() + "#STR_TripwireTrap1";  // nefunguje dynamicke vyrazy mimo funkcii
+		m_InfoActivationTime = string.Format("#STR_TripwireTrap0%1#STR_TripwireTrap1", m_InitWaitTime.ToString());  // nefunguje dynamicke vyrazy mimo funkcii	
 	}
-	
-	/*override bool IsOneHandedBehaviour()
-	{
-		return true;
-	}*/
 
 	override void OnVariablesSynchronized()
 	{
@@ -45,21 +40,30 @@ class TripwireTrap : TrapBase
 	
 	override void OnSteppedOn(EntityAI victim)
 	{
-		if ( GetInventory().AttachmentCount() > 0)
+		/*if ( GetInventory().AttachmentCount() > 0)
 		{
 			ItemBase attachment = ItemBase.Cast( GetInventory().GetAttachmentFromIndex(0) );
 			
-			if (attachment)
+			if ( attachment )
 			{
-				attachment.OnActivatedByTripWire();
+				if ( attachment.IsInherited( Grenade_Base ) )
+				{
+					Grenade_Base.Cast( attachment ).Unpin();
+					GetInventory().DropEntity( InventoryMode.LOCAL, this, attachment );
+				}
+				else
+				{
+					attachment.OnActivatedByTripWire();
+					GetInventory().DropEntity( InventoryMode.LOCAL, this, attachment );
+				}
 			}
-		}
+		}*/
 		
 		SetState(TRIGGERED);
 		UpdateProxySelections();
 	}
 	
-	override void OnItemLocationChanged ( EntityAI old_owner, EntityAI new_owner ) 
+	override void OnItemLocationChanged( EntityAI old_owner, EntityAI new_owner ) 
 	{
 		super.OnItemLocationChanged( old_owner, new_owner );
 		
@@ -95,7 +99,7 @@ class TripwireTrap : TrapBase
 		UpdateProxySelections();
 	}
 	
-	override void EEItemDetached (EntityAI item, string slot_name)
+	override void EEItemDetached(EntityAI item, string slot_name)
 	{
 		super.EEItemDetached(item, slot_name);
 		UpdateProxySelections();
@@ -142,7 +146,7 @@ class TripwireTrap : TrapBase
 					
 					// Now show the one we need to see
 					string proxy_to_show = "s" + GetState() + "_" + att_model; 
-					Print(proxy_to_show);
+					//Print(proxy_to_show);
 					ShowSelection(proxy_to_show);
 				}
 			}
@@ -158,6 +162,11 @@ class TripwireTrap : TrapBase
 		super.OnPlacementComplete( player, position, orientation );
 			
 		SetIsPlaceSound( true );
+		if ( GetGame().IsServer() )
+		{
+			PlayerBase player_PB = PlayerBase.Cast( player );
+			StartActivate( player_PB );
+		}
 	}
 	
 	override bool IsDeployable()

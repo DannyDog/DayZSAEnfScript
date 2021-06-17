@@ -75,6 +75,11 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 		return false;
 	}
 	
+	override bool IsDeploymentAction()
+	{
+		return true;
+	}
+	
 	override void OnExecuteServer( ActionData action_data )
 	{
 		Process(action_data);
@@ -82,7 +87,7 @@ class ActionPlugTargetIntoThis: ActionSingleUseBase
 	
 	override void OnExecuteClient( ActionData action_data )
 	{
-		action_data.m_Player.PlacingCancelLocal(); // Cance advanced placement without unplugging main object from power source
+		//action_data.m_Player.PlacingCancelLocal(); // Cance advanced placement without unplugging main object from power source
 		m_Retoggle = false;
 	}
 

@@ -31,8 +31,11 @@ class PainKillersMdfr: ModifierBase
 	{
 		if (player.m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS)
 			player.m_ShockHandler.SetMultiplier(0.5);//was 0.75 //Switch the shock multiplier NEED A CONST
+		player.IncreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() ) 
 			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		*/
 		m_Player.m_InjuryHandler.m_ForceInjuryAnimMask = m_Player.m_InjuryHandler.m_ForceInjuryAnimMask | eInjuryOverrides.PAIN_KILLERS_LVL0;
 	}
 	
@@ -40,9 +43,11 @@ class PainKillersMdfr: ModifierBase
 	{
 		if (player.m_BrokenLegState != eBrokenLegs.NO_BROKEN_LEGS)
 			player.m_ShockHandler.SetMultiplier(1); //Reset the shock multiplier when modifier stops
+		player.DecreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() ) 
 			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
-		
+		*/
 		m_Player.m_InjuryHandler.m_ForceInjuryAnimMask = m_Player.m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PAIN_KILLERS_LVL0;
 		m_Player.m_InjuryHandler.m_ForceInjuryAnimMask = m_Player.m_InjuryHandler.m_ForceInjuryAnimMask & ~eInjuryOverrides.PAIN_KILLERS_LVL1;
 	}

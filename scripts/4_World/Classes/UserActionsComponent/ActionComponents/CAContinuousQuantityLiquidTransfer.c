@@ -103,7 +103,7 @@ class CAContinuousQuantityLiquidTransfer : CAContinuousBase
 	
 	override int Cancel( ActionData action_data )
 	{
-		if ( !action_data.m_Player || m_TendencyDrain == -1 || !action_data.m_Target )
+		if ( !action_data.m_Player || m_TendencyDrain == -1 || !action_data.m_Target || !action_data.m_Target.GetObject() )
 		{
 			return UA_ERROR;
 		}

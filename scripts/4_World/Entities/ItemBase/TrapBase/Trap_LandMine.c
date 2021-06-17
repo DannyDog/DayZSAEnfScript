@@ -20,7 +20,6 @@ class LandMineTrap extends TrapBase
 		m_DefectRate = 15;
 		m_DamagePlayers = 0; 			//How much damage player gets when caught
 		m_InitWaitTime = 10; 			//After this time after deployment, the trap is activated
-		//m_InfoActivationTime = "#STR_LandMineTrap0" + m_InitWaitTime.ToString() + "#STR_LandMineTrap1"; 
 		m_InfoActivationTime = string.Format("#STR_LandMineTrap0%1#STR_LandMineTrap1", m_InitWaitTime.ToString());
 		
 		m_AddDeactivationDefect = true;
@@ -111,7 +110,16 @@ class LandMineTrap extends TrapBase
 						
 						DamageClothing( victim_PB );
 					}
+					else
+					{
+						ItemBase victim_IB = ItemBase.Cast( victim );
+						if ( victim_IB )
+						{
+							MiscGameplayFunctions.DealAbsoluteDmg( victim_IB, DAMAGE_TRIGGER_MINE );
+						}
+					}
 				}
+				
 				Explode( DT_EXPLOSION );
 			}
 			m_DeleteTimer = new Timer( CALL_CATEGORY_SYSTEM );

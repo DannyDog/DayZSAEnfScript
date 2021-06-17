@@ -284,6 +284,7 @@ class PlayerPreviewWidget: Widget
 {
 	proto native void		UpdateItemInHands(EntityAI object);
 	proto native void		SetPlayer(DayZPlayer player);
+	//proto native void		SetPlayerType(string type);
 	proto native DayZPlayer	GetDummyPlayer();
 
 	proto native void		SetModelOrientation(vector vOrientation);
@@ -1084,6 +1085,7 @@ const int AT_OPTIONS_DISPLAY_MODE = 61,
 const int AT_OPTIONS_TERRAIN_SHADER = 62,
 const int AT_OPTIONS_AIM_HELPER = 63,
 const int AT_OPTIONS_MOUSE_AND_KEYBOARD = 64,
+const int AT_OPTIONS_PAUSE = 65,
 
 // Option Access Control Type
 const int OA_CT_NUMERIC = 0;

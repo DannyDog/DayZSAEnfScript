@@ -840,9 +840,9 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 30;
-				noiseToAlertMultiplier = 1;
-				noiseShotToAlertMultiplier = 1.2;
+				visionToAlertMultiplier = 35;
+				noiseToAlertMultiplier = 2;
+				noiseShotToAlertMultiplier = 10;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
 				{
@@ -865,14 +865,14 @@ class CfgAIBehaviours
 				class Alerted
 				{
 					dropSpeed = 6;
-					dropDelay = 1.0;
+					dropDelay = 2;
 					maxAlertValue = 130;
 				};
 			};
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 10.0;
+			rangeMin = 0.0;
 			rangeMax = 30.0;
 			rangeShotMin = 5.0;
 			rangeShotMax = 300.0;
@@ -900,9 +900,9 @@ class CfgAIBehaviours
 			visionRangeMin = 8;
 			visionRangeMax = 20;
 			visionFov = 1.6;
-			visionPeripheralRangeMin = 5;
-			visionPeripheralRangeMax = 8;
-			visionPeripheralFov = 6.28;
+			visionPeripheralRangeMin = 0;
+			visionPeripheralRangeMax = 10;
+			visionPeripheralFov = 4.7;
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 1.0;
 			visionRainMinMult = 1.0;
@@ -2084,7 +2084,7 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 60;
-				noiseToAlertMultiplier = 1;
+				noiseToAlertMultiplier = 2;
 				noiseShotToAlertMultiplier = 1.2;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -2115,7 +2115,7 @@ class CfgAIBehaviours
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 10.0;
+			rangeMin = 0.0;
 			rangeMax = 30.0;
 			rangeShotMin = 5.0;
 			rangeShotMax = 300.0;
@@ -2145,7 +2145,7 @@ class CfgAIBehaviours
 			visionFov = 1.6;
 			visionPeripheralRangeMin = 5;
 			visionPeripheralRangeMax = 8;
-			visionPeripheralFov = 6.28;
+			visionPeripheralFov = 4.7;
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 1.0;
 			visionRainMinMult = 1.0;
@@ -2601,8 +2601,8 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 25;
-				noiseToAlertMultiplier = 1;
+				visionToAlertMultiplier = 35.0;
+				noiseToAlertMultiplier = 2.0;
 				noiseShotToAlertMultiplier = 2.0;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -2633,8 +2633,8 @@ class CfgAIBehaviours
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 10.0;
-			rangeMax = 25.0;
+			rangeMin = 0.0;
+			rangeMax = 35.0;
 			rangeShotMin = 5.0;
 			rangeShotMax = 300.0;
 			class NoiseStrengthTeamMultipliers
@@ -2663,7 +2663,7 @@ class CfgAIBehaviours
 			visionFov = 1.2;
 			visionPeripheralRangeMin = 5;
 			visionPeripheralRangeMax = 10;
-			visionPeripheralFov = 6.28;
+			visionPeripheralFov = 4.7;
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 0.75;
 			visionRainMinMult = 1.0;
@@ -3107,8 +3107,8 @@ class CfgAIBehaviours
 			};
 			class AlertSystem
 			{
-				visionToAlertMultiplier = 15;
-				noiseToAlertMultiplier = 1.0;
+				visionToAlertMultiplier = 35;
+				noiseToAlertMultiplier = 2.0;
 				noiseShotToAlertMultiplier = 2.0;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
@@ -3139,8 +3139,8 @@ class CfgAIBehaviours
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 10.0;
-			rangeMax = 60.0;
+			rangeMin = 0.0;
+			rangeMax = 30.0;
 			rangeShotMin = 100.0;
 			rangeShotMax = 300.0;
 			class NoiseStrengthTeamMultipliers
@@ -3169,7 +3169,7 @@ class CfgAIBehaviours
 			visionFov = 1.2;
 			visionPeripheralRangeMin = 5;
 			visionPeripheralRangeMax = 25;
-			visionPeripheralFov = 3.15;
+			visionPeripheralFov = 4.7;
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 0.75;
 			visionRainMinMult = 1.0;
@@ -4155,8 +4155,8 @@ class CfgAIBehaviours
 			class AlertSystem
 			{
 				visionToAlertMultiplier = 60;
-				noiseToAlertMultiplier = 1;
-				noiseShotToAlertMultiplier = 1.2;
+				noiseToAlertMultiplier = 2;
+				noiseShotToAlertMultiplier = 10;
 				damageToAlertMultiplier = 1e+06;
 				class Calm
 				{
@@ -4186,7 +4186,7 @@ class CfgAIBehaviours
 		};
 		class NoiseSystemParams
 		{
-			rangeMin = 10.0;
+			rangeMin = 0.0;
 			rangeMax = 30.0;
 			rangeShotMin = 5.0;
 			rangeShotMax = 300.0;
@@ -4214,9 +4214,9 @@ class CfgAIBehaviours
 			visionRangeMin = 3;
 			visionRangeMax = 9;
 			visionFov = 1.6;
-			visionPeripheralRangeMin = 4;
+			visionPeripheralRangeMin = 0;
 			visionPeripheralRangeMax = 6;
-			visionPeripheralFov = 6.28;
+			visionPeripheralFov = 3.7;
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 1.0;
 			visionRainMinMult = 1.0;
@@ -5520,10 +5520,10 @@ class CfgAIBehaviours
 			{
 				class BehaviourZombieCalm
 				{
-					StandingDurationMin = 4;
+					StandingDurationMin = 6;
 					StandingDurationMax = 8;
 					WalkingDurationMin = 4;
-					WalkingDurationMax = 12;
+					WalkingDurationMax = 8;
 					MinLookTime = 1;
 					MaxLookTime = 2;
 					IsAttractMode = "false";
@@ -5558,6 +5558,7 @@ class CfgAIBehaviours
 					attractedVisionUtilityWeight = 1.0;
 					attractedNoiseUtilityWeight = 1.0;
 					attractedDamageUtilityWeight = 1.0;
+					attractedSearchDistance = 15;
 					chaseTargetHistoryLength = 10.0;
 					chaseVisionUtilityWeight = 1.0;
 					chaseNoiseUtilityWeight = 1.0;
@@ -5575,7 +5576,7 @@ class CfgAIBehaviours
 						RepeatTimeMax = 4.1;
 						RepeatEnabled = "true";
 					};
-					noiseMakeAlertPeriod = 3.0;
+					noiseMakeAlertPeriod = 6.0;
 					class NoiseMakeAlert
 					{
 						strength = 40.0;
@@ -5624,20 +5625,20 @@ class CfgAIBehaviours
 			visionNightMinMult = 1.0;
 			visionNightMaxMult = 0.3;
 			visionRainMinMult = 1.0;
-			visionRainMaxMult = 1.0;
+			visionRainMaxMult = 0.6;
 			visionFogMinMult = 1.0;
-			visionFogMaxMult = 1.0;
+			visionFogMaxMult = 0.5;
 		};
 		class NoiseSystemParams
 		{
 			rangeMin = 0;
 			rangeMax = 35.0;
 			rangeShotMin = 0;
-			rangeShotMax = 200.0;
-			radiusMin = 5.0;
-			radiusMax = 20.0;
-			radiusShotMin = 25.0;
-			radiusShotMax = 50.0;
+			rangeShotMax = 180.0;
+			radiusMin = 10.0;
+			radiusMax = 25.0;
+			radiusShotMin = 35.0;
+			radiusShotMax = 70.0;
 			class NoiseStrengthTeamMultipliers
 			{
 				BigGame = 1.0;
@@ -5679,6 +5680,7 @@ class CfgAIBehaviours
 			};
 		};
 	};
+	class InfectedFJogger: InfectedFemale{};
 	class InfectedMale: Infected
 	{
 		class BehaviourHLZombie: BehaviourHLZombie
@@ -5709,6 +5711,385 @@ class CfgAIBehaviours
 						class Sound1: Sound1{};
 					};
 				};
+			};
+		};
+	};
+	class InfectedMJogger: InfectedMale{};
+	class InfectedMSoldier: InfectedMale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					class NoiseMakeAlert: NoiseMakeAlert
+					{
+						strength = 25.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 25.0;
+				noiseToAlertMultiplier = 1.0;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 2;
+				class Calm
+				{
+					DropSpeed = 1;
+					DropDelay = 0;
+					MaxAlertValue = 20;
+				};
+				class Alerted
+				{
+					DropSpeed = 1;
+					DropDelay = 1;
+					MaxAlertValue = 100;
+				};
+			};
+			staminaDepletionSpeed = 2;
+			staminaRechargeSpeed = 15;
+		};
+		class TargetSystemDZBase: TargetSystemDZBase
+		{
+			visionProximityRange = 2.0;
+			visionProximityStrengthMult = 1.5;
+			visionNightMinMult = 1.0;
+			visionNightMaxMult = 0.5;
+		};
+		class NoiseSystemParams: NoiseSystemParams
+		{
+			rangeMin = 10;
+			rangeMax = 35.0;
+			rangeShotMin = 50;
+			rangeShotMax = 180.0;
+			radiusMin = 5.0;
+			radiusMax = 20.0;
+			radiusShotMin = 25.0;
+			radiusShotMax = 40.0;
+		};
+	};
+	class InfectedSoldier_Heavy: InfectedMSoldier
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class MovementSprint: MovementSprint
+			{
+				maxSpeed = 3.0;
+				minSpeed = 0.0;
+				acceleration = 15.0;
+				maxAngleSpeed = 120.0;
+				slowRadius = 0.0;
+				goalRadius = 1.5;
+				stopRadius = 1.7;
+				useStartAnimation = "false";
+				startAnimationMaxSpeed = 0.0;
+				slowToTurn = "false";
+				smoothAcceleration = "true";
+				pathFilter = "ZombieAlerted";
+			};
+		};
+	};
+	class InfectedSoldier_Officer: InfectedMSoldier
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					noiseMakeAlertPeriod = 4.0;
+					class NoiseMakeAlert: NoiseMakeAlert
+					{
+						strength = 25.0;
+						type = "shot";
+					};
+				};
+			};
+		};
+	};
+	class InfectedMPolice: InfectedMale{};
+	class InfectedFPolice: InfectedFemale{};
+	class InfectedMParamedic: InfectedMale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					class NoiseMakeAlert
+					{
+						strength = 40.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.2;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 1.7;
+				class Calm
+				{
+					DropSpeed = 1;
+					DropDelay = 0;
+					MaxAlertValue = 20;
+				};
+				class Alerted
+				{
+					DropSpeed = 3;
+					DropDelay = 1;
+					MaxAlertValue = 100;
+				};
+			};
+			staminaDepletionSpeed = 5;
+			staminaRechargeSpeed = 10;
+		};
+		class TargetSystemDZBase: TargetSystemDZBase
+		{
+			visionNightMinMult = 1.0;
+			visionNightMaxMult = 0.3;
+		};
+		class NoiseSystemParams: NoiseSystemParams
+		{
+			rangeMin = 0;
+			rangeMax = 35.0;
+			rangeShotMin = 0;
+			rangeShotMax = 175.0;
+			radiusMin = 5.0;
+			radiusMax = 22.0;
+			radiusShotMin = 35.0;
+			radiusShotMax = 70.0;
+		};
+	};
+	class InfectedFParamedic: InfectedFemale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					class NoiseMakeAlert
+					{
+						strength = 40.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.2;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 1.7;
+				class Calm
+				{
+					DropSpeed = 1;
+					DropDelay = 0;
+					MaxAlertValue = 20;
+				};
+				class Alerted
+				{
+					DropSpeed = 3;
+					DropDelay = 1;
+					MaxAlertValue = 100;
+				};
+			};
+			staminaDepletionSpeed = 5;
+			staminaRechargeSpeed = 10;
+		};
+		class TargetSystemDZBase: TargetSystemDZBase
+		{
+			visionNightMinMult = 1.0;
+			visionNightMaxMult = 0.3;
+		};
+		class NoiseSystemParams: NoiseSystemParams
+		{
+			rangeMin = 0;
+			rangeMax = 35.0;
+			rangeShotMin = 0;
+			rangeShotMax = 175.0;
+			radiusMin = 5.0;
+			radiusMax = 22.0;
+			radiusShotMin = 35.0;
+			radiusShotMax = 70.0;
+		};
+	};
+	class InfectedMFirefighter: InfectedMale{};
+	class InfectedMHunter: InfectedMale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					class NoiseMakeAlert
+					{
+						strength = 10.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.0;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 1.8;
+				class Calm
+				{
+					DropSpeed = 1;
+					DropDelay = 0;
+					MaxAlertValue = 20;
+				};
+				class Alerted
+				{
+					DropSpeed = 3;
+					DropDelay = 1;
+					MaxAlertValue = 100;
+				};
+			};
+			staminaDepletionSpeed = 5;
+			staminaRechargeSpeed = 10;
+		};
+		class TargetSystemDZBase: TargetSystemDZBase
+		{
+			visionNightMinMult = 1.0;
+			visionNightMaxMult = 0.4;
+		};
+		class NoiseSystemParams: NoiseSystemParams
+		{
+			rangeMin = 5;
+			rangeMax = 35.0;
+			rangeShotMin = 15;
+			rangeShotMax = 180.0;
+			radiusMin = 5.0;
+			radiusMax = 20.0;
+			radiusShotMin = 35.0;
+			radiusShotMax = 70.0;
+		};
+	};
+	class InfectedPriest: InfectedMale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					class NoiseMakeAlert
+					{
+						strength = 60.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 20.0;
+				noiseToAlertMultiplier = 1.0;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 1.7;
+				class Calm
+				{
+					DropSpeed = 1;
+					DropDelay = 0;
+					MaxAlertValue = 20;
+				};
+				class Alerted
+				{
+					DropSpeed = 3;
+					DropDelay = 1;
+					MaxAlertValue = 100;
+				};
+			};
+			staminaDepletionSpeed = 5;
+			staminaRechargeSpeed = 10;
+		};
+		class TargetSystemDZBase: TargetSystemDZBase
+		{
+			visionNightMinMult = 1.0;
+			visionNightMaxMult = 0.3;
+		};
+		class NoiseSystemParams: NoiseSystemParams
+		{
+			rangeMin = 0;
+			rangeMax = 35.0;
+			rangeShotMin = 0;
+			rangeShotMax = 150.0;
+			radiusMin = 5.0;
+			radiusMax = 25.0;
+			radiusShotMin = 35.0;
+			radiusShotMax = 70.0;
+		};
+	};
+	class InfectedRunner: InfectedMale
+	{
+		class BehaviourHLZombie: BehaviourHLZombie
+		{
+			class MovementWalk: MovementWalk
+			{
+				maxSpeed = 3.0;
+				minSpeed = 0.0;
+				acceleration = 15.0;
+				maxAngleSpeed = 120.0;
+				slowRadius = 0.0;
+				stopRadius = 1.7;
+				pathFilter = "ZombieCalm";
+			};
+			class MovementRun: MovementRun
+			{
+				maxSpeed = 9.0;
+				minSpeed = 0.0;
+				acceleration = 27.0;
+				maxAngleSpeed = 120.0;
+				maxSpeedRange = 9.0;
+				slowRadius = 0.0;
+				goalRadius = 1.5;
+				goalSpeed = 7.2;
+				stopRadius = 1.7;
+				waypointRadius = 1.5;
+				useStartAnimation = "false";
+				smoothAcceleration = "true";
+				pathFilter = "ZombieAlerted";
+			};
+			class SlotCalm: SlotCalm
+			{
+				class BehaviourZombieCalm: BehaviourZombieCalm
+				{
+					StandingDurationMin = 0.5;
+					StandingDurationMax = 3;
+					WalkingDurationMin = 4;
+					WalkingDurationMax = 8;
+					MinLookTime = 1;
+					MaxLookTime = 2;
+					IsAttractMode = "false";
+				};
+			};
+			class SlotAlerted: SlotAlerted
+			{
+				class BehaviourZombieAlerted: BehaviourZombieAlerted
+				{
+					noiseMakeAlertPeriod = 10.0;
+					class NoiseMakeAlert
+					{
+						strength = 0.0;
+						type = "sound";
+					};
+				};
+			};
+			class AlertSystem: AlertSystem
+			{
+				visionToAlertMultiplier = 25.0;
+				noiseToAlertMultiplier = 1.5;
+				damageToAlertMultiplier = 10000.0;
+				noiseShotToAlertMultiplier = 2.0;
 			};
 		};
 	};

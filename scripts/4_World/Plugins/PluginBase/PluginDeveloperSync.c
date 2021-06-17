@@ -1,8 +1,31 @@
+enum PDS_SYSTEMS
+{
+	STATS = 1,
+	LEVELS = 2,
+	MODS = 4,
+	AGENTS = 8,
+	STOMACH = 16,
+	MODS_DETAILED = 32,
+}
+
+
+class RegisterPlayerData
+{
+	int m_Bitmask;
+	int m_DetailedModifierIndex;
+	
+	void RegisterPlayerData()
+	{
+		m_Bitmask = 0;
+		m_DetailedModifierIndex = 0;
+	}
+}
+
 class PluginDeveloperSync extends PluginBase
 {
 	int m_DetailedInfoRequested = 0;
 	ref Timer m_UpdateTimer;
-	ref array<PlayerBase> m_RegisteredPlayers;
+	ref map<PlayerBase, ref RegisterPlayerData> m_RegisteredPlayers;
 	
 	ref array<ref SyncedValue> m_PlayerStatsSynced;
 	ref array<ref Param> m_PlayerStomachSynced;
@@ -19,7 +42,7 @@ class PluginDeveloperSync extends PluginBase
 	
 	void PluginDeveloperSync()
 	{
-		m_RegisteredPlayers 	= new array<PlayerBase>;
+		m_RegisteredPlayers 	= new map<PlayerBase, ref RegisterPlayerData>;
 		m_PlayerStatsSynced 	= new array<ref SyncedValue>;
 		m_PlayerLevelsSynced 	= new array<ref SyncedValueLevel>;
 		m_PlayerModsSynced 		= new array<ref SyncedValueModifier>;
@@ -47,194 +70,164 @@ class PluginDeveloperSync extends PluginBase
 		}
 	}
 
-	void EnableUpdate( bool state, int type, PlayerBase player )
+	
+	void EnableUpdate( bool enable, int type, PlayerBase player )
 	{
 		//set update by type
-		RegisterPlayer( player );
+		if ( !IsPlayerRegistered(player))
+			RegisterPlayer( player );
+
+		
 		switch ( type )
 		{
 			case ERPCs.DEV_STATS_UPDATE: 
 			{
-				m_StatsUpdateStatus = state; 
+				SetSystemInBitmask(player, PDS_SYSTEMS.STATS, enable);
 				break;	
 			}
 			
 			case ERPCs.DEV_LEVELS_UPDATE: 
 			{
-				m_LevelsUpdateStatus = state; 
+				SetSystemInBitmask(player, PDS_SYSTEMS.LEVELS, enable);
 				break;	
 			}
 			
 			case ERPCs.DEV_MODS_UPDATE: 
 			{
-				m_ModsUpdateStatus = state; 
+				SetSystemInBitmask(player, PDS_SYSTEMS.MODS, enable);
 				break;	
 			}
 			
 			case ERPCs.DEV_AGENTS_UPDATE: 
 			{
-				m_AgentsUpdateStatus = state; 
+				SetSystemInBitmask(player, PDS_SYSTEMS.AGENTS, enable);
 				break;	
 			}	
 			
 			case ERPCs.DEV_STOMACH_UPDATE: 
 			{
-				m_StomachUpdateStatus = state; 
+				SetSystemInBitmask(player, PDS_SYSTEMS.STOMACH, enable);
 				break;	
 			}
 		}	
+		
+		//remove players with empty mask
+		for(int i = 0; i < m_RegisteredPlayers.Count(); i++)
+		{
+			if(m_RegisteredPlayers.GetElement(i).m_Bitmask == 0)
+			{
+				m_RegisteredPlayers.RemoveElement(i);
+				i = 0;
+			}
+		}
+		
+		//start/stop the tick based on existence/absence of players registered
 		if ( m_UpdateTimer )
 		{
-			if ( state && !m_UpdateTimer.IsRunning() )
+			if ( m_RegisteredPlayers.Count() == 0)
 			{
-				//Print("ToggleUpdate() - RUN");
-				
-				if ( m_StatsUpdateStatus || m_ModsUpdateStatus || m_AgentsUpdateStatus || m_LevelsUpdateStatus || m_StomachUpdateStatus )
-				{
-					m_UpdateTimer.Run( 1, this, "Update", NULL, true );
-					
-				}
+				m_UpdateTimer.Stop();
 			}
-			else
+			else if (!m_UpdateTimer.IsRunning())
 			{
-				//Print("ToggleUpdate() - STOP");
-				
-				if ( !m_StatsUpdateStatus && !m_ModsUpdateStatus && !m_AgentsUpdateStatus && !m_LevelsUpdateStatus && !m_StomachUpdateStatus)
-				{
-					m_UpdateTimer.Stop();
-				
-					//unregister player
-					UnregisterPlayer( player );
-				}
+				m_UpdateTimer.Run( 1, this, "Update", NULL, true );
 			}
 		}
 	}
 	
+
 	void Update()
 	{
-		//Stats
-		if ( m_LevelsUpdateStatus )
+		if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
 		{
-			//Multiplayer server
-			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
+			for ( int i = 0; i < m_RegisteredPlayers.Count(); i++ )
 			{
-				for ( int i = 0; i < m_RegisteredPlayers.Count(); i++ )
+				PlayerBase player = m_RegisteredPlayers.GetKey( i );
+				if ( !player )
 				{
-					if ( m_RegisteredPlayers.Get( i ) )
+					m_RegisteredPlayers.RemoveElement(i);
+					i--;
+				}
+				else
+				{
+					int bit_mask = m_RegisteredPlayers.Get( player ).m_Bitmask;
+					
+					if ((PDS_SYSTEMS.MODS & bit_mask) != 0 )
 					{
-						SendRPCLevels( m_RegisteredPlayers.Get( i ) );		
+						SendRPCMods( player);
+						if( PDS_SYSTEMS.MODS_DETAILED & bit_mask )
+							SendRPCModsDetail(	player); //!!!!! Highly suspect
 					}
-				}
-			}	
-			//Local server
-			/*
-			else
-			{
-				if ( GetDayZGame().IsServer() )
-				{
-					//update local
-					UpdateLevelsLocal();	
-				}
-			}*/
-		}
-		
-		
-		//Stats
-		if ( m_StatsUpdateStatus )
-		{
-			//Multiplayer server
-			if ( GetDayZGame().IsMultiplayer() && GetDayZGame().IsServer() )
-			{
-				for ( int z = 0; z < m_RegisteredPlayers.Count(); z++ )
-				{
-					if ( m_RegisteredPlayers.Get( z ) )
+					if ((PDS_SYSTEMS.LEVELS & bit_mask) != 0 )
 					{
-						SendRPCStats( m_RegisteredPlayers.Get( z ) );		
+						SendRPCLevels( player );		
 					}
-				}
-			}	
-			//Local server
-			else
-			{
-				if ( GetDayZGame().IsServer() )
-				{
-					//update local
-					UpdateStatsLocal();	
-				}
-			}
-		}
-		
-		//Mods
-		if ( m_ModsUpdateStatus )
-		{
-			//Multiplayer server
-			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
-			{
-				for ( int j = 0; j < m_RegisteredPlayers.Count(); j++ )
-				{
-					if ( m_RegisteredPlayers.Get( j ) )
+					
+					if ((PDS_SYSTEMS.STATS & bit_mask) != 0 )
 					{
-						SendRPCMods( m_RegisteredPlayers.Get( j ) );
-						if( m_DetailedInfoRequested !=0 )
-							SendRPCModsDetail(	m_RegisteredPlayers.Get( j ));
-					}
-				}
-			}	
-		}
-		
-		//Agents
-		if ( m_AgentsUpdateStatus )
-		{
-			//Multiplayer server
-			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
-			{
-				for ( int k = 0; k < m_RegisteredPlayers.Count(); k++ )
-				{
-					if ( m_RegisteredPlayers.Get( k ) )
+						SendRPCStats( player );
+					}	
+					if ((PDS_SYSTEMS.STOMACH & bit_mask) != 0 )
 					{
-						SendRPCAgents( m_RegisteredPlayers.Get( k ) );		
+						SendRPCStomach( player );
+					}				
+					if ((PDS_SYSTEMS.AGENTS & bit_mask) != 0 )
+					{
+						SendRPCAgents( player );
 					}
 				}
 			}
-		}		
-		
-		//Agents
-		if ( m_StomachUpdateStatus )
-		{
-			//Multiplayer server
-			if ( !GetDayZGame().IsMultiplayer() || GetDayZGame().IsServer() )
-			{
-				for ( int l = 0; l < m_RegisteredPlayers.Count(); l++ )
-				{
-					if ( m_RegisteredPlayers.Get( l ) )
-					{
-						SendRPCStomach( m_RegisteredPlayers.Get( l ) );		
-					}
-				}
-			}
-		}
+		}	
 	}
+	
+	//turns on/off a bit for a given system marking it active/inactive
+	void SetSystemInBitmask( PlayerBase player, int system_bit, bool state)
+	{
+		if ( IsPlayerRegistered(player) )
+		{
+			int current_mask = m_RegisteredPlayers.Get(player).m_Bitmask;
+			if(state)
+				m_RegisteredPlayers.Get(player).m_Bitmask = current_mask | system_bit;
+			else
+				m_RegisteredPlayers.Get(player).m_Bitmask = current_mask & ~system_bit;
+		}
+			
+	}
+	
+	//turns on/off a bit for a given system marking it active/inactive
+	bool IsSetSystemInBitmask( PlayerBase player, int system_bit)
+	{
+		if ( IsPlayerRegistered(player) )
+		{
+			return (m_RegisteredPlayers.Get(player).m_Bitmask & system_bit);
+		}
+		return false;
+	}
+	
+	
+	
 	
 	//--- Register / Unregister player
 	void RegisterPlayer( PlayerBase player )
 	{
 		if ( !IsPlayerRegistered( player ) ) 
 		{
-			m_RegisteredPlayers.Insert( player );
+			m_RegisteredPlayers.Insert( player, new RegisterPlayerData );
 		}
 	}
 
+	/*
 	void UnregisterPlayer( PlayerBase player )
 	{
 		if ( IsPlayerRegistered( player ) ) 
 		{
-			m_RegisteredPlayers.RemoveItem( player );
+			m_RegisteredPlayers.Remove( player );
 		}
 	}
-
+*/
 	bool IsPlayerRegistered( PlayerBase player )
 	{
-		if ( m_RegisteredPlayers.Find( player ) > 0 )
+		if ( m_RegisteredPlayers.Contains( player ))
 		{
 			return true;
 		}
@@ -329,6 +322,24 @@ class PluginDeveloperSync extends PluginBase
 				GetRPCModifierLock( ctx, id, lock );
 				LockModifier( id, lock, player ); break;
 			}
+			
+			case ERPCs.DEV_RPC_MODS_RESET:
+			{
+				player.GetModifiersManager().DeactivateAllModifiers();
+				break;
+			}	
+			
+			case ERPCs.DEV_RPC_STATS_RESET:
+			{
+				player.GetPlayerStats().ResetAllStats();
+				break;
+			}
+			
+			case ERPCs.DEV_RPC_STAT_SET:
+			{
+				OnRPCStatSet(ctx, player);
+				break;
+			}
 		}
 	}
 	
@@ -383,13 +394,13 @@ class PluginDeveloperSync extends PluginBase
 			{
 				string label = player.m_PlayerStats.GetPCO().Get().Get( i ).GetLabel();
 				float value = (float) player.m_PlayerStats.GetPCO().Get().Get( i ).Get();
-				rpc_params.Insert( new Param2<string, float>( label, value ) );
+				float value_norm = (float) player.m_PlayerStats.GetPCO().Get().Get( i ).GetNormalized();
+				rpc_params.Insert( new Param3<string, float, float>( label, value, value_norm ) );
 			}
-			rpc_params.Insert(new Param2<string, float>( "(NaS)Immunity", player.GetImmunity() ));
-			rpc_params.Insert(new Param2<string, float>( "(NaS)BrokenLegs", player.m_BrokenLegState ));
+			rpc_params.Insert(new Param3<string, float, float>( "(NaS)Immunity", player.GetImmunity(),0 ));
+			rpc_params.Insert(new Param3<string, float, float>( "(NaS)BrokenLegs", player.m_BrokenLegState,0 ));
 		
-			float param_count = (float) rpc_params.Count();
-			rpc_params.InsertAt( new Param2<string, float>( "PARAM_COUNT", param_count ), 0);
+			rpc_params.InsertAt( new Param1<int>(rpc_params.Count() ), 0);// param count
 			//send params
 			GetDayZGame().RPC( player, ERPCs.DEV_RPC_STATS_DATA, rpc_params, true, player.GetIdentity() );
 		}
@@ -401,20 +412,23 @@ class PluginDeveloperSync extends PluginBase
 		//clear values
 		m_PlayerStatsSynced.Clear();
 		
-		ref Param2<string, float> p = new Param2<string, float>( "", 0 );
+		
+		Param1<int> p_count = new Param1<int>(0);
+		
+		ref Param3<string, float, float> p = new Param3<string, float, float>( "", 0, 0 );
 		
 		//get param count
 		int param_count = 0;
-		if ( ctx.Read(p) )
+		if ( ctx.Read(p_count) )
 		{
-			param_count = (int) p.param2;
+			param_count = p_count.param1;
 		}
 		
 		//read values and set 
 		for ( int i = 0; i < param_count; i++ )
 		{
 			ctx.Read(p);
-			m_PlayerStatsSynced.Insert( new SyncedValue( p.param1, p.param2, false ) );
+			m_PlayerStatsSynced.Insert( new SyncedValue( p.param1, p.param2, false, p.param3 ) );
 		}
 	}
 
@@ -431,10 +445,32 @@ class PluginDeveloperSync extends PluginBase
 		{
 			string label = player.m_PlayerStats.GetPCO().Get().Get( i ).GetLabel();
 			float value = player.m_PlayerStats.GetPCO().Get().Get( i ).Get();
-			m_PlayerStatsSynced.Insert( new SyncedValue( label, value, false ) );
+			float value_norm = player.m_PlayerStats.GetPCO().Get().Get( i ).GetNormalized();
+			m_PlayerStatsSynced.Insert( new SyncedValue( label, value, false, value_norm ) );
 		}
-			m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS)Immunity", player.GetImmunity() , false));
-			m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS) BrokenLegs", player.m_BrokenLegState, false));
+		
+		m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS)Immunity", player.GetImmunity() , false, 0));
+		m_PlayerStatsSynced.Insert(new SyncedValue(  "(NaS) BrokenLegs", player.m_BrokenLegState, false, 0));
+	}
+	
+	void OnRPCStatSet( ParamsReadContext ctx , PlayerBase player)
+	{
+		
+		ref Param2<string, float> p = new Param2<string, float>( "", 0 );
+		if ( ctx.Read(p) )
+		{
+			for ( int i = 0; i < player.m_PlayerStats.GetPCO().Get().Count(); i++ ) 
+			{
+				string label = player.m_PlayerStats.GetPCO().Get().Get( i ).GetLabel();
+				if ( label == p.param1 )
+				{
+					//Print(p.param2);
+					player.m_PlayerStats.GetPCO().Get().Get( i).SetByFloatEx(p.param2);
+				}
+				
+			}	
+		}
+	
 	}
 
 	//============================================
@@ -484,60 +520,7 @@ class PluginDeveloperSync extends PluginBase
 		}
 	}
 	
-	//Update data on local
-	/*
-	void UpdateLevelsLocal()
-	{
-		PlayerBase player = PlayerBase.Cast( GetDayZGame().GetPlayer() );
-		
-		//clear values
-		m_PlayerLevelsSynced.Clear();
-		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Immunity: "+ typename.EnumToString(EStatLevels, player.GetImmunityLevel() ),player.GetImmunityLevel(),0));
-		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Blood: "+ typename.EnumToString(EStatLevels, player.GetStatLevelBlood()),player.GetStatLevelBlood(), player.GetStatBordersBlood()));
-		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Health: "+ typename.EnumToString(EStatLevels, player.GetStatLevelHealth() ),player.GetStatLevelHealth(), player.GetStatBordersHealth()));
-		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Energy: "+ typename.EnumToString(EStatLevels, player.GetStatLevelEnergy() ),player.GetStatLevelEnergy(), player.GetStatBordersEnergy()));
-		m_PlayerLevelsSynced.Insert(new SyncedValueLevel( "Water: "+ typename.EnumToString(EStatLevels, player.GetStatLevelWater() ),player.GetStatLevelWater(), player.GetStatBordersWater()));
-	}
-	*/
 	
-	
-	
-	//============================================
-	// MODS
-	//============================================	
-	//send player mods through RPC
-	/*
-	void SendRPCMods( PlayerBase player )
-	{
-		//write and send values
-		if ( player )
-		{
-			array<ref Param> rpc_params = new array<ref Param>;
-			
-			//get modifiers
-			ModifiersManager mods_manager = player.GetModifiersManager();
-			
-			//param count
-			map<int, string> modifiers = new map<int, string>;
-			mods_manager.DbgGetModifiers( modifiers );
-			
-			float param_count = ( float ) modifiers.Count();
-			rpc_params.Insert( new Param3<string, float, bool>( "PARAM_COUNT", param_count, false ) );
-			
-			//set modifiers
-			for ( int i = 0; i < modifiers.Count(); ++i ) 
-			{
-				int key = modifiers.GetKey( i );
-				string value = modifiers.Get( key );
-				bool state = IsModifierLocked( key, player );
-				rpc_params.Insert( new Param3<string, float, bool>( value, key, state ) );
-			}
-			
-			//send params
-			GetDayZGame().RPC( player, ERPCs.DEV_RPC_MODS_DATA, rpc_params, true, player.GetIdentity() );
-		}
-	}
-	*/
 	void SendRPCMods( PlayerBase player )
 	{
 		//write and send values
@@ -580,17 +563,13 @@ class PluginDeveloperSync extends PluginBase
 		//write and send values
 		if ( player )
 		{
-			
 			Param1<string> p1 = new Param1<string>("");
 			ModifiersManager mods_manager = player.GetModifiersManager();
-			
-			if(m_DetailedInfoRequested != 0)
-			{
-				p1.param1 = mods_manager.GetModifier(m_DetailedInfoRequested).GetDebugText();
-				//send params
-				if(p1.param1 != "")
-					GetDayZGame().RPCSingleParam( player, ERPCs.DEV_RPC_MODS_DATA_DETAILED, p1, true, player.GetIdentity() );
-			}
+			int mod_id = m_RegisteredPlayers.Get(player).m_DetailedModifierIndex;
+			p1.param1 = mods_manager.GetModifier(mod_id).GetDebugText();
+			//send params
+			if(p1.param1 != "")
+				GetDayZGame().RPCSingleParam( player, ERPCs.DEV_RPC_MODS_DATA_DETAILED, p1, true, player.GetIdentity() );
 		}
 	}
 
@@ -632,7 +611,7 @@ class PluginDeveloperSync extends PluginBase
 	}
 
 	
-	
+	/*
 	//Activates modifier with given ID
 	void RequestDetailedInfo( int id, PlayerBase player = NULL )
 	{
@@ -644,6 +623,22 @@ class PluginDeveloperSync extends PluginBase
 		else
 		{
 			m_DetailedInfoRequested = modifier_id;
+		}
+	}	
+	*/
+	//Activates modifier with given ID
+	void RequestDetailedInfo( int id, notnull PlayerBase player)
+	{
+		int modifier_id = Math.AbsInt( id );
+		m_RegisteredPlayers.Get(player).m_DetailedModifierIndex = modifier_id;
+		
+		if (IsSetSystemInBitmask(player, PDS_SYSTEMS.MODS_DETAILED ))
+		{
+			SetSystemInBitmask(player, PDS_SYSTEMS.MODS_DETAILED, false);
+		}
+		else
+		{
+			SetSystemInBitmask(player, PDS_SYSTEMS.MODS_DETAILED, true);
 		}
 	}
 	
@@ -699,7 +694,7 @@ class PluginDeveloperSync extends PluginBase
 	void SendRPCAgents( PlayerBase player )
 	{
 		//write and send values
-		if ( ( player && player.GetIdentity() ) || ( player && !GetGame().IsMultiplayer() ) )
+		if ( ( player && player.GetIdentity() && player.m_AgentPool != null ) || ( player && !GetGame().IsMultiplayer() && player.m_AgentPool != null ) )
 		{
 			
 			//get agent pool data

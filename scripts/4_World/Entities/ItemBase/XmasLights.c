@@ -31,7 +31,7 @@ class XmasLights extends Inventory_Base
 		m_AttachedTo = parent;
 		TurnOnItem( parent );
 
-		if( GetCompEM().IsPlugged() )
+		if ( GetCompEM().IsPlugged() )
 		{
 			parent.SetAnimationPhase( "Cord_plugged", 0);
 			parent.SetAnimationPhase( "Cord_folded", 1);

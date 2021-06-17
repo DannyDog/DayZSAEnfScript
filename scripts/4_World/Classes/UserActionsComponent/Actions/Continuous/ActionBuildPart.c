@@ -68,8 +68,17 @@ class ActionBuildPart: ActionContinuousBase
 	
 	override bool ActionCondition( PlayerBase player, ActionTarget target, ItemBase item )
 	{
-		if ( player.IsPlacingLocal() )
+		if ( player.IsPlacingLocal() || player.IsPlacingServer() )
 			return false;
+		
+		float distance_root = vector.DistanceSq(target.GetCursorHitPos(), player.GetPosition());
+		float distance_min = 1.0;
+		
+		//Print(distance_root);
+		//Print(distance_min);
+		//Print("----");
+		if (distance_root < distance_min)
+			return false; 
 		
 		//Action not allowed if player has broken legs
 		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
@@ -78,8 +87,6 @@ class ActionBuildPart: ActionContinuousBase
 		//hack - gate
 		if (target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
 			return false;
-		if ( player.IsPlacingLocal() || player.IsPlacingServer() )
-			return false;
 		
 		if ( (!GetGame().IsMultiplayer() || GetGame().IsClient()) )
 		{
@@ -87,7 +94,7 @@ class ActionBuildPart: ActionContinuousBase
 			int start_index = construction_action_data.m_PartIndex;
 			if ( construction_action_data.GetConstructionPartsCount() > 0 )
 			{
-				for(int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
+				for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
 				{
 					if ( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item ) )
 					{
@@ -109,26 +116,38 @@ class ActionBuildPart: ActionContinuousBase
 	
 	override bool ActionConditionContinue( ActionData action_data )
 	{
-		return MiscGameplayFunctions.BuildCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
+		//return MiscGameplayFunctions.BuildCondition( action_data.m_Player, action_data.m_Target, action_data.m_MainItem , false );
+		//return MiscGameplayFunctions.ComplexBuildCollideCheckClient(action_data.m_Player, action_data.m_Target, action_data.m_MainItem);
+		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
+		Construction construction = base_building.GetConstruction();
+		string part_name = BuildPartActionData.Cast(action_data).m_PartType;
+		ref CollisionCheckData check_data = new CollisionCheckData;
+		
+		check_data.m_PartName = part_name;
+		check_data.m_AdditionalExcludes.Insert(action_data.m_Player);
+		
+		return !construction.IsCollidingEx( check_data ) && construction.CanBuildPart( part_name, action_data.m_MainItem, true );
 	}
 	
 	override void OnFinishProgressServer( ActionData action_data )
-	{	
+	{
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
 		Construction construction = base_building.GetConstruction();
 		
 		string part_name = BuildPartActionData.Cast(action_data).m_PartType;
+		ref CollisionCheckData check_data = new CollisionCheckData;
 		
-		if ( !construction.IsColliding( part_name ) && construction.CanBuildPart( part_name, action_data.m_MainItem, true ) )
+		check_data.m_PartName = part_name;
+		check_data.m_AdditionalExcludes.Insert(action_data.m_Player);
+		
+		if ( !construction.IsCollidingEx( check_data ) && construction.CanBuildPart( part_name, action_data.m_MainItem, true ) ) //redundant at this point?
 		{
 			//build
 			construction.BuildPartServer( action_data.m_Player, part_name, AT_BUILD_PART );
-			
 			//add damage to tool
 			action_data.m_MainItem.DecreaseHealth( UADamageApplied.BUILD, false );
+			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 		}
-		
-		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
 	}
 	
 	override ActionData CreateActionData()
@@ -157,7 +176,7 @@ class ActionBuildPart: ActionContinuousBase
 	
 	protected void SetBuildingAnimation( ItemBase item )
 	{
-		switch( item.Type() )
+		switch ( item.Type() )
 		{
 			case Pickaxe:
 			case Shovel:
@@ -210,7 +229,11 @@ class ActionBuildPart: ActionContinuousBase
 	
 	override string GetAdminLogMessage(ActionData action_data)
 	{
-		return " built " + action_data.m_Target.GetObject().GetDisplayName() + " with " + action_data.m_MainItem.GetDisplayName();
+		ConstructionActionData construction_action_data = action_data.m_Player.GetConstructionActionData();
+		string partName = BuildPartActionData.Cast(action_data).m_PartType;
+		
+		string message = string.Format("Built %1 on %2 with %3", partName, action_data.m_Target.GetObject().GetDisplayName(), action_data.m_MainItem.GetDisplayName() );
+		return message;
 	}
 	
 	void SetNextIndex(ActionData action_data)

@@ -1,6 +1,7 @@
 class ActionCloseFence: ActionInteractBase
 {
 	ref NoiseParams m_NoisePar;
+	const string SELECTION_INTERACT = "gate_interact";
 	
 	void ActionCloseFence()
 	{
@@ -29,7 +30,14 @@ class ActionCloseFence: ActionInteractBase
 			
 			if ( fence && fence.CanCloseFence() )
 			{
-				return true;
+				array<string> selections = new array<string>;
+				targetObject.GetActionComponentNameList(target.GetComponentIndex(), selections);
+				
+				for ( int i = 0; i < selections.Count(); i++ )
+				{
+					if ( selections[i] == SELECTION_INTERACT )
+						return true;
+				}
 			}
 		}
 		

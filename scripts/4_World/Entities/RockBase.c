@@ -31,6 +31,10 @@ class RockBase: Object
 		{
 			output_map.Insert("Stone",1);
 		}
+		else if ( item )
+		{
+			output_map.Insert("Stone",1);
+		}
 	}
 
 	float GetDamageToMiningItemEachDrop(ItemBase item)
@@ -45,7 +49,7 @@ class RockBase: Object
 		}
 		else
 		{
-			return 20;
+			return 40;
 		}
 	}
 };

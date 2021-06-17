@@ -9,6 +9,7 @@ class VomitSymptom extends SymptomBase
 		m_DestroyOnAnimFinish = true;
 		m_SyncToClient = false;
 		m_Duration = 5;
+		m_MaxCount = 1;
 	}
 	
 	//!gets called every frame
@@ -25,7 +26,8 @@ class VomitSymptom extends SymptomBase
 	override void OnAnimationStart()
 	{
 		m_Player.GetStatToxicity().Set(0);
-		m_Player.m_PlayerStomach.ClearContents();
+		if(m_Player.m_PlayerStomach)
+			m_Player.m_PlayerStomach.ClearContents();
 		//Print("------------ vomit start -------------");
 	}
 	

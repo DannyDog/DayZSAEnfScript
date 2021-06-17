@@ -32,6 +32,7 @@ class ParticleList
 	static const int CAMP_STOVE_FIRE				= RegisterParticle("fire_small_stove_01");
 	static const int CAMP_STOVE_FIRE_START			= RegisterParticle("fire_small_stove_01_start");
 	static const int CAMP_STOVE_FIRE_END			= RegisterParticle("fire_small_stove_01_end");
+	static const int CAMP_NO_IGNITE_WIND			= RegisterParticle("fire_extinguish_wind");
 	// Fireplace indoor
 	static const int HOUSE_FIRE_START				= RegisterParticle("fire_small_house_01_start");
 	static const int HOUSE_SMALL_FIRE 				= RegisterParticle("fire_small_house_01");

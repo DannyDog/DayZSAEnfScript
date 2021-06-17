@@ -51,7 +51,7 @@ class cfgWeapons
 		reloadAction = "ReloadAKM";
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\akm\Akm_reload",0.8,1,20};
 		drySound[] = {"dz\sounds\weapons\firearms\SKS\SKS_dry",0.5,1,20};
-		modes[] = {"Single","FullAuto"};
+		modes[] = {"SemiAuto","FullAuto"};
 		class Particles
 		{
 			class OnFire
@@ -113,7 +113,7 @@ class cfgWeapons
 				};
 			};
 		};
-		class Single: Mode_SemiAuto
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"Saiga12_Shot_SoundSet","Saiga12_Tail_SoundSet","Saiga12_InteriorTail_SoundSet"};
 			begin1[] = {"dz\sounds\weapons\shotguns\Izh43\izh43_close_0",1,1,800};

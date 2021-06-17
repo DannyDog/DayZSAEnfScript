@@ -319,6 +319,7 @@ class CfgVehicles
 		weight = 240;
 		fragility = 0.01;
 		itemSize[] = {1,3};
+		openItemSpillRange[] = {25,40};
 		class DamageSystem
 		{
 			class GlobalHealth

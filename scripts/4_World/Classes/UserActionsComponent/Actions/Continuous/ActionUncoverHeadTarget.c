@@ -6,7 +6,7 @@ class ActionUncoverHeadTargetCB : ActionContinuousBaseCB
 	}
 };
 
-class ActionUncoverHeadTarget: ActionContinuousBase
+class ActionUncoverHeadTarget: ActionUncoverHeadBase
 {
 	void ActionUncoverHeadTarget()
 	{
@@ -45,34 +45,14 @@ class ActionUncoverHeadTarget: ActionContinuousBase
 		return false;
 	}
 
+	
+	
 	override void OnFinishProgressServer( ActionData action_data )
 	{	
-		//setaperture will be called from here, or from statemachine
-		PlayerBase ntarget = PlayerBase.Cast( action_data.m_Target.GetObject() );
-		
-		EntityAI attachment;
-		Class.CastTo(attachment, ntarget.GetInventory().FindAttachment(InventorySlots.HEADGEAR));
-		
-		if ( attachment && attachment.GetType() == "BurlapSackCover" )
-		{
-			attachment.Delete();
-			EntityAI item = action_data.m_Player.GetInventory().CreateInInventory("BurlapSack");
-			if(!item)
-			{
-				vector m4[4];
-				action_data.m_Player.GetTransformWS(m4);
-				InventoryLocation target_gnd = new InventoryLocation;
-				target_gnd.SetGround(null, m4);
-				item = GameInventory.LocationCreateEntity(target_gnd, "BurlapSack",ECE_IN_INVENTORY,RF_DEFAULT);
-			}
-			
-			if ( item )
-				MiscGameplayFunctions.TransferItemProperties(attachment,item);
-			
-			action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
-		}
+		UncoverHead(PlayerBase.Cast( action_data.m_Target.GetObject()),action_data.m_Player);
 	}
-
+	
+	
 	bool IsWearingBurlap( PlayerBase player )
 	{
 		EntityAI attachment;

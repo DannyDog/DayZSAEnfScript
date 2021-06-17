@@ -18,10 +18,12 @@ class CAContinuousQuantityBloodTransfer : CAContinuousQuantityRepeat
 			if ( !bloodtarget )
 				bloodtarget = action_data.m_Player;
 
-			if (action_data_b.m_ItemBloodType == bloodtarget.GetStatBloodType().Get())
+			
+			if( BloodTypes.MatchBloodCompatibility(action_data_b.m_ItemBloodType, bloodtarget.GetStatBloodType().Get()) )
 			{
 				bloodtarget.AddHealth("", "Blood", m_SpentQuantity);
 			}
+
 		}
 	}
 }

@@ -157,13 +157,13 @@ class CAContinuousMineWood : CAContinuousBase
 	
 	void CreatePrimaryItems(ActionData action_data)
 	{
-		Object targetObject;
-		Class.CastTo(targetObject, action_data.m_Target.GetObject());
+		//Object targetObject;
+		//Class.CastTo(targetObject, action_data.m_Target.GetObject());
 		
 		bool correct_pile = true;
 		string material;
 		int increment;
-		for(int i = 0; i < m_MaterialAndQuantityMap.Count(); i++)
+		for (int i = 0; i < m_MaterialAndQuantityMap.Count(); i++)
 		{
 			material = m_MaterialAndQuantityMap.GetKey(i);
 			

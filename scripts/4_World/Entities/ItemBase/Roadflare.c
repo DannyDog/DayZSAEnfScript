@@ -74,6 +74,10 @@ class Roadflare : ItemBase
 	
 	static const string			DEFAULT_MATERIAL 		= "dz\\gear\\consumables\\data\\road_flare.rvmat";
 	static const string			BURNING_MATERIAL 		= "dz\\gear\\consumables\\data\\road_flare_on.rvmat";
+	
+	// Noise
+	ref NoiseParams m_NoisePar;
+	private float m_NoiseTimer;
 
 	void Roadflare()
 	{
@@ -188,13 +192,27 @@ class Roadflare : ItemBase
 	// When the flare starts burning
 	override void OnWorkStart()
 	{
-		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer())
+		if ( !GetGame().IsServer()  ||  !GetGame().IsMultiplayer() )
 		{
 			PlaySoundSetLoop( m_BurningSound, BURNING_SOUND, 0.5, 0 );
 			PlaySoundSet( m_IgniteSound, IGNITE_SOUND, 0, 0 );
 			
 			m_Light = RoadflareLight.Cast(  ScriptedLightBase.CreateLight( RoadflareLight, Vector(0,0,0) )  );
 			m_Light.AttachOnMemoryPoint( this, m_Light.m_MemoryPoint );
+		}
+		
+		if ( GetGame().IsServer() )
+		{
+			/*m_NoisePar = new NoiseParams();
+			m_NoisePar.LoadFromPath("cfgVehicles Roadflare NoiseRoadFlare");
+			if ( GetGame().GetWorld().IsNight() )
+			{
+				NoiseSystem noise = GetGame().GetNoiseSystem();
+				if ( noise )
+				{
+					noise.AddNoisePos( this, GetPosition(), m_NoisePar );
+				}
+			}*/
 		}
 		
 		SetBurningState(RoadflareBurningState.INITIAL_BURN);
@@ -232,8 +250,17 @@ class Roadflare : ItemBase
 					SetBurningStateSynchronized(RoadflareBurningState.MAIN_BURN);
 				}
 			}
-			else if (m_BurningState == RoadflareBurningState.MAIN_BURN)
+			else if ( m_BurningState == RoadflareBurningState.MAIN_BURN )
 			{
+				/*if ( GetGame().GetWorld().IsNight() )
+				{
+					NoiseSystem noise = GetGame().GetNoiseSystem();
+					if ( noise )
+					{
+						noise.AddNoisePos( this, GetPosition(), m_NoisePar);
+					}
+				}*/
+				
 				if ( burning_time >= GetCompEM().GetEnergyMax() - FINAL_BURNING_STATE_TIME )
 				{
 					SetBurningStateSynchronized(RoadflareBurningState.FINAL_BURN);

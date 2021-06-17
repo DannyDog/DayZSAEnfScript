@@ -57,6 +57,7 @@ class ActionGagTarget: ActionContinuousBase
 		if (m_Gag)
 		{
 			m_Gag.SetHealth01("", "", action_data.m_MainItem.GetHealth01("", ""));
+			ntarget.CheckForGag();
 		}
 		
 		action_data.m_MainItem.TransferModifiers(ntarget);

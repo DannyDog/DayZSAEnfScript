@@ -22,13 +22,16 @@ class NoiseAIEvaluate
 		
 		playerImplement.GetMovementState(hms);
 		
-		switch(AITargetCallbacksPlayer.StanceToMovementIdxTranslation(hms))
+		switch (AITargetCallbacksPlayer.StanceToMovementIdxTranslation(hms))
 		{			
 			case DayZPlayerConstants.MOVEMENTIDX_IDLE:
 				return PlayerConstants.AI_NOISE_IDLE;
 			
 			case DayZPlayerConstants.MOVEMENTIDX_WALK:
 				return PlayerConstants.AI_NOISE_WALK;
+			
+			case DayZPlayerConstants.MOVEMENTIDX_CROUCH_RUN:
+				return PlayerConstants.AI_NOISE_CROUCH_RUN;
 			
 			case DayZPlayerConstants.MOVEMENTIDX_RUN:
 				return PlayerConstants.AI_NOISE_RUN;

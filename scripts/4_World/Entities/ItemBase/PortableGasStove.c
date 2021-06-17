@@ -96,6 +96,12 @@ class PortableGasStove extends ItemBase
 	
 	override void OnWorkStart()
 	{
+		if ( !CanWork() )
+		{
+			OnWorkStop();
+			return;
+		}
+		
 		//refresh visual
 		SetObjectTexture( 0, FLAME_BUTANE_ON );
 		
@@ -136,6 +142,27 @@ class PortableGasStove extends ItemBase
 				cook_equip_temp = cook_equip_temp + (PARAM_COOKING_EQUIP_TEMP_INCREASE * consumed_energy);
 				cook_equip_temp = Math.Clamp ( cook_equip_temp, 0, PARAM_COOKING_EQUIP_MAX_TEMP );
 				GetCookingEquipment().SetTemperature( cook_equip_temp );
+			}
+		}
+	}
+	
+	bool CanWork()
+	{
+		if ( GetCompEM() )
+			return GetCompEM().CanWork( GetCompEM().GetEnergy() );
+		return false;
+	}
+	
+	override void OnVariablesSynchronized()
+	{
+		super.OnVariablesSynchronized();
+		
+		//In case sound is still playing even after end of gas canister
+		if ( GetGame().IsClient() )
+		{
+			if ( !CanWork() && m_SoundBurningLoop )
+			{
+				SoundBurningStop();
 			}
 		}
 	}

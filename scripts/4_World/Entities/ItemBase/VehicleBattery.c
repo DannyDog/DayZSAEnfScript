@@ -130,6 +130,11 @@ class VehicleBattery : ItemBase
 		return super.CanDisplayAttachmentSlot( slot_name );
 	}
 	
+	override bool DisplayNameRuinAttach()
+	{
+		return true;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();
@@ -157,6 +162,7 @@ class VehicleBattery : ItemBase
 	{
 		m_Efficiency0To10 = 10;
 		RegisterNetSyncVariableInt("m_Efficiency0To10");
+		
 	}	
 	
 	//! Returns efficiency of this battery. The value is synchronized from server to all clients and is accurate down to 0.1 units.
@@ -171,6 +177,13 @@ class VehicleBattery : ItemBase
 		return m_EfficiencyDecayStart;
 	}
 	
+	//Update Battery energy level before it overrides quantity
+	override void SetCEBasedQuantity()
+	{
+		super.SetCEBasedQuantity();
+		if ( GetCompEM() )
+			GetCompEM().SetEnergy( GetCompEM().GetEnergyMax() * ( GetQuantity() / GetQuantityMax() ) );
+	}
 	
 	override void OnEnergyConsumed()
 	{

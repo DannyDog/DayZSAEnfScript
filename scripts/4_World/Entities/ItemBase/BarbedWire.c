@@ -17,7 +17,7 @@ class BarbedWire extends ItemBase
 	SoundOnVehicle m_BuzzSoundLoop;
 	
 	ref Timer m_SparkEvent;
-	protected ref AreaDamageBase m_AreaDamage;
+	protected ref AreaDamageManager m_AreaDamage;
 	
 	protected bool m_TriggerActive;
 	protected bool m_IsPlaced;
@@ -268,7 +268,7 @@ class BarbedWire extends ItemBase
 		m_AreaDamage.SetHitZones({"RightLeg", "LeftLeg", "RightFoot", "LeftFoot"});
 		m_AreaDamage.SetAmmoName("BarbedWireHit");
 		m_AreaDamage.Spawn();
-		m_TriggerActive = true;						
+		m_TriggerActive = true;
 	}
 	
 	protected void CreateDamageTrigger()

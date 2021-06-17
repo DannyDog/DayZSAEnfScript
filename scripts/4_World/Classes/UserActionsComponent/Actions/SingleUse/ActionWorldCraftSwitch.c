@@ -7,7 +7,7 @@ class ActionWorldCraftSwitch: ActionSingleUseBase
 	override void CreateConditionComponents()  
 	{		
 		m_ConditionItem = new CCINone;
-		m_ConditionTarget = new CCTNone;
+		m_ConditionTarget = new CCTObject(UAMaxDistances.DEFAULT);
 	}
 	
 	override bool IsLocal()
@@ -32,7 +32,7 @@ class ActionWorldCraftSwitch: ActionSingleUseBase
 	
 	override bool ActionCondition(PlayerBase player, ActionTarget target, ItemBase item )
 	{	
-		if( player.GetCraftingManager().GetRecipesCount() > 1 )
+		if ( player.GetCraftingManager().GetRecipesCount() > 1 )
 		{
 			return true;
 		}

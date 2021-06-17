@@ -36,7 +36,7 @@ class CfgVehicles
 		itemInfo[] = {"Clothing","Vest"};
 		attachments[] = {"VestHolster","VestPouch","VestGrenadeA","VestGrenadeB","VestGrenadeC","VestGrenadeD"};
 		weight = 12000;
-		itemSize[] = {4,4};
+		itemSize[] = {5,5};
 		varWetMax = 0.49;
 		heatIsolation = 0.8;
 		repairableWithKits[] = {3};
@@ -212,7 +212,7 @@ class CfgVehicles
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
 		weight = 7000;
-		itemSize[] = {3,2};
+		itemSize[] = {4,4};
 		itemsCargoSize[] = {6,4};
 		quickBarBonus = 2;
 		varWetMax = 0.49;
@@ -433,7 +433,7 @@ class CfgVehicles
 		vehicleClass = "Clothing";
 		itemInfo[] = {"Clothing","Vest"};
 		weight = 3500;
-		itemSize[] = {3,2};
+		itemSize[] = {3,4};
 		varWetMax = 0.79;
 		heatIsolation = 0.6;
 		repairableWithKits[] = {3};

@@ -598,7 +598,7 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 			if (w)
 				zeroing	= string.Format("%1 m", w.GetCurrentZeroing(w.GetCurrentMuzzle()));
 
-			txtModeWidget.SetText(WeaponModeTextTemp());
+			txtModeWidget.SetText(m_Player.GetWeaponManager().GetCurrentModeName());
 			txtZeroingWidget.SetText(zeroing);
 			widget.Show(true);
 		}
@@ -606,26 +606,10 @@ class ItemActionsWidget extends ScriptedWidgetEventHandler
 			widget.Show(false);
 	}
 	
-	//temporary solution, to be solved via config parameter
+	// not used instead of this is used confing parameter for fire mode
 	protected string WeaponModeTextTemp()
 	{
-		string mode = m_Player.GetCurrentWeaponMode();
-		switch (mode)
-		{
-			case "Single" :
-				return "#STR_Single";
-			
-			case "SemiAuto" :
-				return "#STR_SemiAuto";
-			
-			case "FullAuto" :
-				return "#STR_FullAuto";
-			
-			//currently only doubleshot shotguns
-			case "Burst" :
-				return "#STR_Double";//"#STR_Burst";
-		}
-		return mode;
+		return "unused";
 	}
 	
 	protected void SetRadioFrequency(string freq, string itemWidget, string upWidget, string downWidget, bool enabled)

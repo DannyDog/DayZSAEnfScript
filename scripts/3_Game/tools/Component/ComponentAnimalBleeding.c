@@ -25,6 +25,9 @@ class ComponentAnimalBleeding : Component
 			m_ThisEntityAI.SetHealth( "", "", 0 );
 		}	
 		
+		if ( !zone_name )
+			return;
+		
 		float health_damage_inflicted = damage_result.GetDamage( zone_name, "Health");
 		//float blood_damage_inflicted = damage_result.GetDamage( zone_name, "Blood");	
 		float wound_healt_damage = health_damage_inflicted;

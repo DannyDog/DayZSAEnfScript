@@ -11,7 +11,7 @@ class Hammer extends Inventory_Base
 		
 		AddAction(ActionRepairPart);
 		AddAction(ActionBuildPartSwitch);
-		//AddAction(ActionMineRock1H);
+		AddAction(ActionMineRock1H);
 		AddAction(ActionBuildPart);
 	}
 }

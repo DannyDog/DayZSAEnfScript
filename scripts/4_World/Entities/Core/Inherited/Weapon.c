@@ -38,6 +38,8 @@ class Weapon extends InventoryItemSuper
 	proto native bool GetCurrentModeAutoFire (int muzzleIndex);
 	proto native int GetCurrentMode (int muzzleIndex);
 	proto native void SetCurrentMode (int muzzleIndex, int mode);
+	
+	proto native string GetCurrentModeName(int muzzleIndex);
 
 	/**@fn		CanFire
 	 * @brief 	query whether the weapon can be fired or not

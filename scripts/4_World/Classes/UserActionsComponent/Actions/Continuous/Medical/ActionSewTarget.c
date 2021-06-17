@@ -50,7 +50,7 @@ class ActionSewTarget: ActionBandageBase
 	{	
 		if (player.GetBleedingManagerServer() )
 		{
-			player.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();	
+			player.GetBleedingManagerServer().RemoveMostSignificantBleedingSourceEx(item);	
 		}
 		
 		PluginTransmissionAgents m_mta = PluginTransmissionAgents.Cast(GetPlugin(PluginTransmissionAgents));

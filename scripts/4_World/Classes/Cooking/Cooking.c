@@ -152,8 +152,8 @@ class Cooking
 		{
 			ref array<float> next_stage_cooking_properties = new array<float>;
 			
-			string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
-			GetGame().ConfigGetFloatArray( config_path + " " + item_to_cook.GetFoodStageName( new_stage_type ) + " " + "cooking_properties", next_stage_cooking_properties );
+			string config_path = string.Format("CfgVehicles %1 Food FoodStages %2 cooking_properties", item_to_cook.GetType(), item_to_cook.GetFoodStageName( new_stage_type ) );
+			GetGame().ConfigGetFloatArray( config_path, next_stage_cooking_properties );
 			
 			food_min_temp = next_stage_cooking_properties.Get( 0 );
 			food_time_to_cook = next_stage_cooking_properties.Get( 1 );
@@ -235,8 +235,8 @@ class Cooking
 		{
 			ref array<float> next_stage_cooking_properties = new array<float>;
 
-			string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
-			GetGame().ConfigGetFloatArray ( config_path + " " + item_to_cook.GetFoodStageName( new_stage_type ) + " " + "cooking_properties", next_stage_cooking_properties );
+			string config_path = string.Format("CfgVehicles %1 Food FoodStages %2 cooking_properties", item_to_cook.GetType(), item_to_cook.GetFoodStageName( new_stage_type ) );
+			GetGame().ConfigGetFloatArray( config_path, next_stage_cooking_properties );
 
 			food_min_temp = next_stage_cooking_properties.Get( 0 );
 			food_time_to_cook = next_stage_cooking_properties.Get( 1 );
@@ -307,8 +307,8 @@ class Cooking
 			if ( ( item_to_cook.GetFoodStageType() == FoodStageType.RAW ) || ( item_to_cook.GetFoodStageType() == FoodStageType.BAKED ) || ( item_to_cook.GetFoodStageType() == FoodStageType.BOILED ) )
 			{
 				ref array<float> next_stage_cooking_properties = new array<float>;
-				string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
-				GetGame().ConfigGetFloatArray ( config_path + " " + item_to_cook.GetFoodStageName( FoodStageType.DRIED ) + " " + "cooking_properties", next_stage_cooking_properties );
+				string config_path = string.Format("CfgVehicles %1 Food FoodStages %2 cooking_properties", item_to_cook.GetType(), item_to_cook.GetFoodStageName( FoodStageType.DRIED ));
+				GetGame().ConfigGetFloatArray( config_path, next_stage_cooking_properties );
 				if ( next_stage_cooking_properties.Count() == 0 )
 					return;
 				
@@ -352,8 +352,8 @@ class Cooking
 	{
 		if ( ( cooking_equipment.Type() == COOKING_EQUIPMENT_POT ) || ( cooking_equipment.Type() == COOKING_EQUIPMENT_CAULDRON ) )
 		{
-			//has water
-			if ( cooking_equipment.GetQuantity() > 0 )
+			//has water, but not petrol dammit X)
+			if ( cooking_equipment.GetQuantity() > 0 && cooking_equipment.GetLiquidType() != LIQUID_GASOLINE)
 			{
 				return CookingMethodType.BOILING;
 			}
@@ -388,7 +388,8 @@ class Cooking
 	float GetTimeToCook( Edible_Base item_to_cook, CookingMethodType cooking_method )
 	{
 		ref array<float> next_stage_cooking_properties = new array<float>;
-		string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
+		string config_path;// = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
+		config_path = string.Format("CfgVehicles %1 Food FoodStages", item_to_cook.GetType());
 		FoodStageType food_stage_type = item_to_cook.GetNextFoodStageType( cooking_method );
 		GetGame().ConfigGetFloatArray( config_path + " " + item_to_cook.GetFoodStageName( food_stage_type ) + " " + "cooking_properties", next_stage_cooking_properties );
 		
@@ -398,7 +399,8 @@ class Cooking
 	float GetMinTempToCook( Edible_Base item_to_cook, CookingMethodType cooking_method )
 	{
 		ref array<float> next_stage_cooking_properties = new array<float>;
-		string config_path = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
+		string config_path;// = "CfgVehicles" + " " + item_to_cook.GetType() + " " + "Food" + " " + "FoodStages";
+		config_path = string.Format("CfgVehicles %1 Food FoodStages", item_to_cook.GetType() );
 		FoodStageType food_stage_type = item_to_cook.GetNextFoodStageType( cooking_method );
 		GetGame().ConfigGetFloatArray( config_path + " " + item_to_cook.GetFoodStageName( food_stage_type ) + " " + "cooking_properties", next_stage_cooking_properties );
 		
@@ -434,5 +436,4 @@ class Cooking
 			}
 		}
 	}
-	
 }

@@ -339,7 +339,7 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		}
 	}
 	
-	void HandleInventory (float dt)
+	void HandleInventory(float dt)
 	{
 		HumanCommandWeapons hcw = GetDayZPlayerOwner().GetCommandModifier_Weapons();
 
@@ -351,7 +351,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 		{
 			m_FSM.GetCurrentState().OnUpdate(dt);
 
+			#ifdef DEVELOPER
 			hndDebugSpamALot("[hndfsm] HCW: playing A=" + typename.EnumToString(WeaponActions, hcw.GetRunningAction()) + " AT=" + WeaponActionTypeToString(hcw.GetRunningAction(), hcw.GetRunningActionType()) + " fini=" + hcw.IsActionFinished());
+			#endif
 			
 			if ( !m_FSM.GetCurrentState().IsIdle() || !m_FSM.IsRunning() )
 			{
@@ -364,7 +366,9 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 					}
 
 					HandEventBase anim_event = HandAnimEventFactory(weaponEventId, GetManOwner(), NULL);
+					#ifdef DEVELOPER
 					hndDebugPrint("[hndfsm] HandleInventory: event arrived " + typename.EnumToString(WeaponEvents, weaponEventId) + "(" + weaponEventId + ")  fsm_ev=" + anim_event.ToString());
+					#endif
 					if (anim_event != NULL)
 					{
 						SyncHandEventToRemote(anim_event);
@@ -376,14 +380,18 @@ class DayZPlayerInventory : HumanInventoryWithFSM
 				{
 					if (m_FSM.GetCurrentState().IsWaitingForActionFinish())
 					{
+						#ifdef DEVELOPER
 						hndDebugPrint("[hndfsm] Hand-Weapon event: finished! notifying waiting state=" + m_FSM.GetCurrentState());
+						#endif
 						HandEventBase fin_event = new HandEventHumanCommandActionFinished(GetManOwner());
 						SyncHandEventToRemote(fin_event);
 						ProcessHandEvent(fin_event);
 					}
 					else
 					{
+						#ifdef DEVELOPER
 						hndDebugPrint("[hndfsm] Hand-Weapon event: ABORT! notifying running state=" + m_FSM.GetCurrentState());
+						#endif
 						HandEventBase abt_event = new HandEventHumanCommandActionAborted(GetManOwner());
 						SyncHandEventToRemote(abt_event);						
 						ProcessHandAbortEvent(abt_event);

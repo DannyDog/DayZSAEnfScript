@@ -239,7 +239,7 @@ class PluginAdminLog extends PluginBase			// Class for admin log messages handle
 					{
 						LogPrint( m_PlayerPrefix + " hit by " + ammo );	
 					}
-					else if ( source.GetType() == "AreaDamageBase" )  
+					else if ( source.GetType() == "AreaDamageManager" )  
 					{
 						EntityAI parent = EntityAI.Cast( source );
 						if ( parent )

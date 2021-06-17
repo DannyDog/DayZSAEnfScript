@@ -178,12 +178,12 @@ class Edible_Base extends ItemBase
 		
 		if ( version >= 115 )
 		{
-			if( !ctx.Read( m_DecayTimer ) )
+			if ( !ctx.Read( m_DecayTimer ) )
 			{
 				m_DecayTimer = 0.0;
 				return false;
 			}
-			if( !ctx.Read( m_LastDecayStage ) )
+			if ( !ctx.Read( m_LastDecayStage ) )
 			{
 				m_LastDecayStage = FoodStageType.NONE;
 				return false;
@@ -230,11 +230,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodTotalVolume(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			 return FoodStage.GetFullnessIndex(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetFullnessIndex(null, food_stage, classname);
 		}
@@ -246,11 +246,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodEnergy(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			 return FoodStage.GetEnergy(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetEnergy(null, food_stage, classname);
 		}
@@ -261,11 +261,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodWater(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			return FoodStage.GetWater(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetWater(null, food_stage, classname);
 		}
@@ -276,11 +276,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodNutritionalIndex(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			return FoodStage.GetNutritionalIndex(food_item.GetFoodStage());	
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetNutritionalIndex(null, food_stage, classname);
 		}
@@ -292,11 +292,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodToxicity(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			return FoodStage.GetToxicity(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetToxicity(null, food_stage, classname);
 		}
@@ -307,11 +307,11 @@ class Edible_Base extends ItemBase
 	static int GetFoodAgents(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			return FoodStage.GetAgents(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetAgents(null, food_stage, classname);
 		}
@@ -322,11 +322,11 @@ class Edible_Base extends ItemBase
 	static float GetFoodDigestibility(ItemBase item, string classname = "", int food_stage = 0)
 	{
 		Edible_Base food_item = Edible_Base.Cast(item);
-		if(food_item && food_item.GetFoodStage())
+		if (food_item && food_item.GetFoodStage())
 		{
 			return FoodStage.GetDigestibility(food_item.GetFoodStage());
 		}
-		else if(classname != "" && food_stage)
+		else if (classname != "" && food_stage)
 		{
 			return FoodStage.GetDigestibility(null, food_stage, classname);
 		}
@@ -458,7 +458,7 @@ class Edible_Base extends ItemBase
 	}
 	
 	//replace edible with new item (opening cans)
-	void ReplaceEdibleWithNew (string typeName)
+	void ReplaceEdibleWithNew( string typeName )
 	{
 		PlayerBase player = PlayerBase.Cast(GetHierarchyRootPlayer());
 		if (player)

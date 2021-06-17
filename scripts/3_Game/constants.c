@@ -86,6 +86,9 @@ const int GUI_WINDOW_MISSION_LOADER = 1;
 const string CFG_VEHICLESPATH = "CfgVehicles";
 const string CFG_WEAPONSPATH = "CfgWeapons";
 const string CFG_MAGAZINESPATH = "CfgMagazines";
+const string CFG_AMMO = "CfgAmmo";
+const string CFG_WORLDS = "CfgWorlds";
+const string CFG_SURFACES = "CfgSurfaces";
 const string CFG_RECIPESPATH = "CfgRecipes";
 
 /** @}*/
@@ -102,6 +105,7 @@ const string	CFG_FILE_DEBUG_PROFILE	= "$profile:debugProfile.cfg";
 const string	CFG_FILE_EMOTES_PROFILE	= "$profile:emotesProfile.cfg";
 const string	CFG_FILE_SEARCH_HISTORY	= "$profile:search_history.history";
 const string	CFG_FILE_ENS_HISTORY	= "$profile:script_enscript.history";
+const string	CFG_FILE_ENS_HISTORY_SERVER	= "$profile:script_enscriptServer.history";
 const string	CFG_FILE_SCRIPT_LOG		= "$profile:script.log";
 const string	CFG_FILE_SCRIPT_LOG_EXT	= "$profile:scriptExt.log";
 const string	CFG_FILE_ADDITIONAL_INFO= "$profile:serverInfo.cfg";
@@ -449,6 +453,7 @@ const int VARIABLE_WET 			= 8;
 const int VARIABLE_LIQUIDTYPE	= 16;
 const int VARIABLE_ISLIT		= 32;
 const int VARIABLE_COLOR		= 64;
+const int VARIABLE_CLEANNESS	= 128;
 /** @}*/
 
 const float CRAFTING_TIME_UNIT_SIZE = 4.0;// time unit size for crafting, this value is multiplied by the length given by a recipe
@@ -714,5 +719,5 @@ class GameConstants
 	//							AI
 	//----------------------------------------------------------
 	
-	const float AI_ATTACKSPEED = 2;
+	const float AI_ATTACKSPEED = 1.5;
 }

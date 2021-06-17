@@ -149,7 +149,7 @@ class HumanInventory : GameInventory
 		return false;
 	}
 	
-	bool ThrowEntity (EntityAI item, vector dir, float force)
+	bool ThrowEntity(EntityAI item, vector dir, float force)
 	{
 		if ( GetGame().IsServer() && GetGame().IsMultiplayer() )
 			return false;
@@ -582,7 +582,7 @@ class HumanInventory : GameInventory
 	void Update(float delta_time)
 	{
 		HandleInventoryManipulation();
-		if( m_syncClearUserReservationindex != -1 && ScriptInputUserData.CanStoreInputUserData())
+		if ( m_syncClearUserReservationindex != -1 && ScriptInputUserData.CanStoreInputUserData())
 		{
 			ScriptInputUserData ctx = new ScriptInputUserData;
 			ctx.Write(INPUT_UDT_INVENTORY);

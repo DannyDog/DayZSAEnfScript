@@ -57,7 +57,12 @@ class ActionBreakLongWoodenStick: ActionContinuousBase
 		
 		if(LongWoodenStick.Cast(startingItem) == null) // case if it is a broom
 		{
-			action_data.m_Player.SpawnEntityOnGroundPos("LongWoodenStick", action_data.m_Player.GetPosition());
+			EntityAI longStick = action_data.m_Player.SpawnEntityOnGroundPos("LongWoodenStick", action_data.m_Player.GetPosition());
+			
+			ItemBase item_result;
+			Class.CastTo(item_result, longStick);
+			
+			MiscGameplayFunctions.TransferItemProperties(action_data.m_MainItem, item_result);
 		}
 	}
 };
@@ -78,5 +83,10 @@ class BreakLongWoodenStick : ReplaceItemWithNewLambdaBase
 		ItemBase sticks;
 		Class.CastTo(sticks, new_item);
 		sticks.SetQuantity(m_ItemCount);
+					
+		ItemBase ingredient;
+		Class.CastTo(ingredient, old_item);
+		
+		MiscGameplayFunctions.TransferItemProperties(ingredient, sticks);
 	}
 };

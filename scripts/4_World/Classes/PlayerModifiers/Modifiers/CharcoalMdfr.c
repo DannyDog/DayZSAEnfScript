@@ -1,7 +1,7 @@
 class CharcoalMdfr: ModifierBase
 {
 	float m_Killrate;
-	const int CHARCOAL_LIFETIME = 300;
+	const int CHARCOAL_LIFETIME = 10;
 	const int CHARCOAL_EFFECT_TIME = 100;
 	
 	override void Init()
@@ -32,14 +32,20 @@ class CharcoalMdfr: ModifierBase
 	
 	override void OnActivate(PlayerBase player)
 	{
+		player.IncreaseHealingsCount();
+		/*
 		if ( player.GetNotifiersManager() )
 			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
+		player.DecreaseHealingsCount();
+		/*
 		if ( player.GetNotifiersManager() )
 			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override bool DeactivateCondition(PlayerBase player)

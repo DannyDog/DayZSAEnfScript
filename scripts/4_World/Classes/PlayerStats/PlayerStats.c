@@ -41,9 +41,10 @@ class PlayerStats
 	
 	PlayerStatBase GetStatObject(int id)
 	{
-		if( GetPCO() )
+		PlayerStatsPCO_Base pco = GetPCO();
+		if ( pco )
 		{
-			return GetPCO().GetStatObject(id);
+			return pco.GetStatObject(id);
 		}
 		else
 		{
@@ -102,14 +103,15 @@ class PlayerStats
 		*/
 	}
 	
-	void SaveStats ( ParamsWriteContext ctx )
+	void SaveStats( ParamsWriteContext ctx )
 	{
 		int current_version = GetGame().SaveVersion();
+		PlayerStatsPCO_Base pco = GetPCO(current_version);
 		
-		if( GetPCO(current_version ) )
+		if ( pco )
 		{
-			GetPCO(current_version).OnStoreSave(ctx);
-			//Print("Saving stats in version: "+ GetPCO(current_version ).GetVersion());
+			pco.OnStoreSave(ctx);
+			//Print("Saving stats in version: "+ pco.GetVersion());
 		}
 		else
 		{
@@ -117,11 +119,12 @@ class PlayerStats
 		}
 	}
 
-	bool LoadStats ( ParamsReadContext ctx, int version )
+	bool LoadStats( ParamsReadContext ctx, int version )
 	{
-		if(GetPCO(version) && GetPCO(version).OnStoreLoad(ctx))
+		PlayerStatsPCO_Base pco = GetPCO(version);
+		if (pco && pco.OnStoreLoad(ctx))
 		{
-			Print("********* LoadStats loading version: " + GetPCO(version).GetVersion());
+			//Print("********* LoadStats loading version: " + pco.GetVersion());
 			return true;
 		}
 		else
@@ -131,4 +134,8 @@ class PlayerStats
 		
 	}
 
+	void ResetAllStats()
+	{
+		GetPCO().ResetAllStats();
+	}
 }

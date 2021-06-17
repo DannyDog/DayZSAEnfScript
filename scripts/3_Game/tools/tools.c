@@ -345,8 +345,7 @@ class TimerBase: Managed
 		
 		if (running)
 		{
-			index = m_timerQueue.Find(this);
-			if (index == -1)
+			if (m_timerQueue.Find(this) == -1)
 			{
 				m_timerQueue.Insert(this);
 			}

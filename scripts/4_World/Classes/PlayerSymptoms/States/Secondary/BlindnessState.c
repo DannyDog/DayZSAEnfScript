@@ -11,7 +11,7 @@ class BlindnessSymptom extends SymptomBase
 		m_Priority = 0;
 		m_ID = SymptomIDs.SYMPTOM_BLINDNESS;
 		m_DestroyOnAnimFinish = true;
-		m_IsPersistent = true;
+		m_IsPersistent = false;
 		MakeParamObjectPersistent(m_Position);
 	}
 	

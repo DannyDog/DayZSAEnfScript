@@ -108,14 +108,14 @@ class Bonfire extends BuildingSuper
 			if ( nearest_object.IsInherited( PlayerBase ) )
 			{
 				PlayerBase player = PlayerBase.Cast( nearest_object );
-				distance = vector.DistanceSq( player.GetPosition(), GetPosition() );
+				distance = vector.Distance( player.GetPosition(), GetPosition() );
 				//distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
 				float temperature = 0;
 				
 				//! heat transfer through air to player ( anv temperature )
-				if ( distance > PARAM_FULL_HEAT_RADIUS * PARAM_FULL_HEAT_RADIUS )
+				if ( distance > PARAM_FULL_HEAT_RADIUS )
 				{
-					float distFactor = 1 - ( distance / ( PARAM_HEAT_RADIUS * PARAM_HEAT_RADIUS ) );
+					float distFactor = 1 - ( distance / PARAM_HEAT_RADIUS );
 					temperature = CONST_FIRE_TEMP * ( PARAM_HEAT_THROUGH_AIR_COEF * distFactor);
 				}
 				else
@@ -132,10 +132,10 @@ class Bonfire extends BuildingSuper
 				//! drying of items around the fireplace (based on distance)
 				if ( wetness > 0 )
 				{
-					distance = vector.DistanceSq( item.GetPosition(), GetPosition() );
+					distance = vector.Distance( item.GetPosition(), GetPosition() );
 					distance = Math.Max( distance, 0.1 );	//min distance cannot be 0 (division by zero)
 					
-					wetness = wetness * ( ( PARAM_HEAT_THROUGH_AIR_COEF * PARAM_HEAT_THROUGH_AIR_COEF ) / distance );
+					wetness = wetness * ( PARAM_HEAT_THROUGH_AIR_COEF / distance );
 					wetness = Math.Clamp( wetness, item.GetWetMin(), item.GetWetMax() );
 					item.AddWet( -wetness );
 				}

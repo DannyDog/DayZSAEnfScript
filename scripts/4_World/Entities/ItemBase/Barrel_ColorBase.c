@@ -541,28 +541,21 @@ class Barrel_Yellow: Barrel_ColorBase {};
 class ColourClothesLambda : TurnItemIntoItemLambda
 {
 	int r, g, b, a;
-	void ColourClothesLambda (EntityAI old_item, string new_item_type, PlayerBase player, int rr, int gg, int bb, int aa) { r = rr; g = gg; b = bb; a = aa; }
+	void ColourClothesLambda(EntityAI old_item, string new_item_type, PlayerBase player, int rr, int gg, int bb, int aa)
+	{ r = rr; g = gg; b = bb; a = aa; }
 
-	override void CopyOldPropertiesToNew (notnull EntityAI old_item, EntityAI new_item)
+	override void CopyOldPropertiesToNew(notnull EntityAI old_item, EntityAI new_item)
 	{
 		super.CopyOldPropertiesToNew(old_item, new_item);
 
-		Print("ColourClothesLambda::OnCreated object=" + new_item);
+		//Print("ColourClothesLambda::OnCreated object=" + new_item);
 		ItemBase ib = ItemBase.Cast(new_item);
 		if ( new_item ) 
 		{	
-			string save_color = r.ToString()+","+g.ToString()+","+b.ToString()+","+a.ToString();
-			string color = "#(argb,8,8,3)color("+save_color+",CO)";
+			new_item.SetObjectTexture(new_item.GetHiddenSelectionsData().GetHiddenSelectionIndex( "personality" ), MiscGameplayFunctions.GetColorString(r, g, b, a));
 			
-			array<string> config_selections	= new array<string>; //TODO correct use of *new*?
-			string cfg_hidden_selections = "CfgVehicles" + " " + new_item.GetType() + " " + "hiddenSelections";
-			GetGame().ConfigGetTextArray ( cfg_hidden_selections, config_selections );
-			for (int j = 0; j < config_selections.Count(); j++)
-			{
-				if (config_selections.Get(j) != "personality") 	new_item.SetObjectTexture(j, color);
-			}
 			//nitem.SetItemVariableString("varColor", color); //SYNCFAIL
-			ib.SetColor(r*255,g*255,b*255,a*255);
+			ib.SetColor(r*255, g*255, b*255, a*255);
 		}
 	}
 };

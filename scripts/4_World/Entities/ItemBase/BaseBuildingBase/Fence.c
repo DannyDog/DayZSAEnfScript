@@ -813,6 +813,17 @@ class Fence extends BaseBuildingBase
 		return true;
 	}
 	
+	//specific selection for camonet attaching (other ones might be animated via rotation!)
+	override bool TranslateSlotFromSelection(string selection_name, out int slot_id)
+	{
+		if ( selection_name == "wall_camonet_attach" )
+		{
+			slot_id = InventorySlots.GetSlotIdFromString("Wall_Camonet");
+			return true;
+		}
+		return false;
+	}
+	
 	override void SetActions()
 	{
 		super.SetActions();

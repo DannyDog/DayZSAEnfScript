@@ -87,12 +87,10 @@ class ModifierBase
 				Print("ticking modifier "+ this.ClassName() +" for player " + m_Player.ToString() + " at time:" + time.ToString());
 				*/
 				//------
-				if( DeactivateCondition(m_Player) )
+				
+				if( DeactivateCondition(m_Player) && !IsLocked() )
 				{
-					if( !IsLocked() ) 
-					{
-						Deactivate();
-					}
+					Deactivate();
 				}
 				else
 				{

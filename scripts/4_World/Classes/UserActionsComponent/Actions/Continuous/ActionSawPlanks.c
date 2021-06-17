@@ -34,7 +34,7 @@ class ActionSawPlanksCB : ActionContinuousBaseCB
 
 class ActionSawPlanks: ActionContinuousBase
 {
-	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 10; // any other item, including hacksaw
+	static const int DECREASE_HEALTH_OF_TOOL_DEFAULT = 10; // this constant is not use anymore see ActionConstants.c UADamageApplied
 	//static const int DECREASE_HEALTH_OF_TOOL_AXE = 20; // axes
 	//static const int DECREASE_FUEL_OF_CHAINSAW = 20; // chainsaw fuel in ml
 	
@@ -131,7 +131,7 @@ class ActionSawPlanks: ActionContinuousBase
 		
 		string item_type = item.GetType();
 		
-		item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_DEFAULT, GetSpecialtyWeight() ));
+		item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( UADamageApplied.SAW_PLANKS, GetSpecialtyWeight() ));
 		/*switch(item_type)
 		{
 			case "WoodAxe": 
@@ -162,7 +162,7 @@ class ActionSawPlanks: ActionContinuousBase
 			break;
 		
 			default: // Hacksaw and other
-				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( DECREASE_HEALTH_OF_TOOL_DEFAULT, GetSpecialtyWeight() ));
+				item.DecreaseHealth( "", "", action_data.m_Player.GetSoftSkillsManager().AddSpecialtyBonus( UADamageApplied.SAW_PLANKS, GetSpecialtyWeight() ));
 			break;
 		}*/
 		

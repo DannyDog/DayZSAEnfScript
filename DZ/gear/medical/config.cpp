@@ -41,6 +41,7 @@ class CfgVehicles
 		varQuantityMax = 4;
 		quantityBar = 1;
 		varQuantityDestroyOnMin = 1;
+		varCleannessInit = 1;
 		rotationFlags = 17;
 		weight = 115;
 		absorbency = 0.8;
@@ -477,6 +478,67 @@ class CfgVehicles
 			};
 		};
 	};
+	class IodineTincture: Edible_Base
+	{
+		scope = 2;
+		displayName = "$STR_IodineTincture0";
+		descriptionShort = "$STR_IodineTincture1";
+		model = "\dz\gear\medical\IodineTincture.p3d";
+		isMeleeWeapon = 1;
+		weight = 100;
+		itemSize[] = {1,2};
+		varQuantityInit = 250;
+		varQuantityMin = 0;
+		varQuantityMax = 250;
+		varQuantityDestroyOnMin = 1;
+		varLiquidTypeInit = 32768;
+		class Nutrition
+		{
+			agents = 16;
+		};
+		class DamageSystem
+		{
+			class GlobalHealth
+			{
+				class Health
+				{
+					hitpoints = 30;
+					healthLevels[] = {{1.0,{"DZ\gear\medical\data\IodineTincture.rvmat","DZ\gear\medical\data\IodineTincture_lods.rvmat"}},{0.7,{"DZ\gear\medical\data\IodineTincture.rvmat","DZ\gear\medical\data\IodineTincture_lods.rvmat"}},{0.5,{"DZ\gear\medical\data\IodineTincture_damage.rvmat","DZ\gear\medical\data\IodineTincture_lods_damage.rvmat"}},{0.3,{"DZ\gear\medical\data\IodineTincture_damage.rvmat","DZ\gear\medical\data\IodineTincture_lods_damage.rvmat"}},{0.0,{"DZ\gear\medical\data\IodineTincture_destruct.rvmat","DZ\gear\medical\data\IodineTincture_lods_destruct.rvmat"}}};
+				};
+			};
+		};
+		class AnimEvents
+		{
+			class SoundWeapon
+			{
+				class CleanWound_start
+				{
+					soundSet = "CleanWound_start_SoundSet";
+					id = 201;
+				};
+				class CleanWound_loop
+				{
+					soundSet = "CleanWound_loop_SoundSet";
+					id = 202;
+				};
+				class CleanWound_loop2
+				{
+					soundSet = "CleanWound_loop_SoundSet";
+					id = 203;
+				};
+				class CleanWound_loop3
+				{
+					soundSet = "CleanWound_loop_SoundSet";
+					id = 204;
+				};
+				class CleanWound_loop4
+				{
+					soundSet = "CleanWound_loop_SoundSet";
+					id = 205;
+				};
+			};
+		};
+	};
 	class TetracyclineAntibiotics: Edible_Base
 	{
 		scope = 2;
@@ -665,7 +727,7 @@ class CfgVehicles
 		varQuantityInit = 20;
 		varQuantityMin = 0.0;
 		varQuantityMax = 20;
-		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)";
+		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256) -32768";
 		hiddenSelections[] = {"camo"};
 		hiddenSelectionsTextures[] = {"\dz\gear\medical\data\SyringeFluid_Grey_CA.paa"};
 		class DamageSystem

@@ -114,6 +114,7 @@ class PlayerStomach
 	static const bool m_InitData = PlayerStomach.InitData();
 	ref array<ref StomachItem> m_StomachContents = new array<ref StomachItem>;
 	int m_AgentTransferFilter;//bit mask that prevents agents set in the mask from passing to the player
+	bool m_Digesting;
 	
 	PlayerBase m_Player;
 	float m_StomachVolume;
@@ -231,6 +232,11 @@ class PlayerStomach
 		return STORAGE_VERSION;
 	}
 	
+	bool IsDigesting()
+	{
+		return m_Digesting;
+	}
+	
 	
 	void Update(float delta_time)
 	{
@@ -242,10 +248,11 @@ class PlayerStomach
 	{
 		StomachItem item;
 		int stomach_items_count = m_StomachContents.Count();
-		
+		m_Digesting = false;
 		if(stomach_items_count == 0) 
 			return;
 		
+		m_Digesting = true;
 		float digestion_points_per_item = (DIGESTION_POINTS / stomach_items_count) * delta_time;
 		m_StomachVolume = 0;//reset, it's accumulated with each pass
 		for(int i = 0; i < m_StomachContents.Count(); i ++)

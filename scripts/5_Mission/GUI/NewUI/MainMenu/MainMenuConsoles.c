@@ -292,7 +292,7 @@ class MainMenuConsole extends UIScriptedMenu
 		{
 			g_Game.SetLoadState( DayZLoadState.MAIN_MENU_START );
 			#ifndef PLATFORM_WINDOWS
-			user_manager.SelectUser( null );
+			user_manager.SelectUserEx( null );
 			#endif
 			GetGame().GetUIManager().Back();
 		}

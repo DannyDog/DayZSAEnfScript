@@ -46,10 +46,7 @@ class Chemlight_ColorBase : ItemBase
 	void Chemlight_ColorBase()
 	{
 		//materials
-		ref array<string> config_materials	= new array<string>;
-		
-		string config_path = "CfgVehicles" + " " + GetType() + " " + "hiddenSelectionsMaterials";
-		GetGame().ConfigGetTextArray( config_path, config_materials );
+		array<string> config_materials	= GetHiddenSelectionsMaterials();
 
 		if (config_materials.Count() == 2)
 		{

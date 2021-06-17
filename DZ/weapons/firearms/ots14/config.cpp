@@ -48,8 +48,8 @@ class cfgWeapons
 		reloadAction = "ReloadAug";
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\steyraug\steyraug_reload",0.8,1,20};
 		hiddenSelections[] = {"camo"};
-		modes[] = {"FullAuto","Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"FullAuto","SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"ots14_Shot_SoundSet","ots14_Tail_SoundSet","ots14_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"ots14_silencerPro_SoundSet","ots14_silencerTail_SoundSet","ots14_silencerInteriorTail_SoundSet"},{"ots14_silencerHomeMade_SoundSet","ots14_silencerHomeMadeTail_SoundSet","ots14_silencerInteriorTail_SoundSet"}};

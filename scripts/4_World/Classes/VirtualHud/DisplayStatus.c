@@ -64,6 +64,7 @@ class VirtualHud
 		{
 			m_Hud = mission.GetHud();
 		}
+		//UpdateStatus();
 	}
 	
 	

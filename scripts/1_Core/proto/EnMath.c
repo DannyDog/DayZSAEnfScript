@@ -460,6 +460,7 @@ class Math
  
 	static float InverseLerp(float a, float b, float value)
 	{
+		if ( b - a == 0) return 0; // to avoid division by zero when a and b are the same
 		return (value - a) / (b - a);
 	}
 	//--------------------------------------------------------------------------

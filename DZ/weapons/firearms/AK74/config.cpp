@@ -44,7 +44,7 @@ class cfgWeapons
 		chamberSize = 1;
 		chamberedRound = "";
 		chamberableFrom[] = {"Ammo_545x39","Ammo_545x39Tracer"};
-		magazines[] = {"Mag_AK74_30Rnd","Mag_AK74_30Rnd_Black","Mag_AK74_30Rnd_Green"};
+		magazines[] = {"Mag_AK74_30Rnd","Mag_AK74_30Rnd_Black","Mag_AK74_30Rnd_Green","Mag_AK74_45Rnd"};
 		magazineSwitchTime = 0.2;
 		ejectType = 1;
 		recoilModifier[] = {1,1,1};

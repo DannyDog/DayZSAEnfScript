@@ -194,7 +194,7 @@ class CfgVehicles
 				class Health
 				{
 					hitpoints = 400;
-					healthLevels[] = {{1.0,{"DZ\weapons\melee\blunt\Data\pipewrench.rvmat","DZ\weapons\melee\blunt\Data\pipewrench_view.rvmat"}},{0.7,{"DZ\weapons\melee\blunt\Data\pipewrench.rvmat","DZ\weapons\melee\blunt\Data\pipewrench_view.rvmat"}},{0.5,{"DZ\weapons\melee\blunt\Data\pipewrench_damage.rvmat","DZ\weapons\melee\blunt\Data\pipewrench_view_damage.rvmat"}},{0.3,{"DZ\weapons\melee\blunt\Data\pipewrench_damage.rvmat","DZ\weapons\melee\blunt\Data\pipewrench_view_damage.rvmat"}},{0.0,{"DZ\weapons\melee\blunt\Data\pipewrench_destruct.rvmat","DZ\weapons\melee\blunt\Data\pipewrench_view_destruct.rvmat"}}};
+					healthLevels[] = {{1.0,{"DZ\weapons\melee\blunt\Data\pipewrench.rvmat"}},{0.7,{"DZ\weapons\melee\blunt\Data\pipewrench.rvmat"}},{0.5,{"DZ\weapons\melee\blunt\Data\pipewrench_damage.rvmat"}},{0.3,{"DZ\weapons\melee\blunt\Data\pipewrench_damage.rvmat"}},{0.0,{"DZ\weapons\melee\blunt\Data\pipewrench_destruct.rvmat"}}};
 				};
 			};
 		};

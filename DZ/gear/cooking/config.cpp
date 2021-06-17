@@ -194,6 +194,16 @@ class CfgVehicles
 				};
 			};
 		};
+		class NoiseFireplaceBase
+		{
+			strength = 30.0;
+			type = "sound";
+		};
+		class NoiseFireplaceSpecial
+		{
+			strength = 15.0;
+			type = "sound";
+		};
 	};
 	class Fireplace: FireplaceBase
 	{
@@ -612,7 +622,7 @@ class CfgVehicles
 		canBeDigged = 1;
 		allowOwnedCargoManipulation = 1;
 		varLiquidTypeInit = 512;
-		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)";
+		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256) -32768";
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
 		varQuantityInit = 0;
@@ -703,7 +713,7 @@ class CfgVehicles
 		canBeDigged = 0;
 		allowOwnedCargoManipulation = 1;
 		varLiquidTypeInit = 512;
-		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256)";
+		liquidContainerType = "1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768 + 65536  - (1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256) -32768";
 		destroyOnEmpty = 0;
 		varQuantityDestroyOnMin = 0;
 		varQuantityInit = 0;

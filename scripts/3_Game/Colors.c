@@ -13,6 +13,7 @@ class Colors
 	const int BLACK					= 0x000000;
 	const int BROWN					= 0xA52A2A;
 	const int WHITE					= 0xFFFFFF;
+	const int WHITEGRAY				= 0xA0A1A1;
 	
 	const int COLOR_DEFAULT			= 0x64000000;
 

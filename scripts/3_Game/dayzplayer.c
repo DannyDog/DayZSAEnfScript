@@ -101,6 +101,9 @@ class DayZPlayerCamera
 	//! data 
 	protected 	DayZPlayer 				m_pPlayer;		//!< player camera is attached to
 	protected 	HumanInputController	m_pInput;		//!< human input 
+	
+	//! m_fCamPosOffsetZ info, used to adjust near plane in DayZPlayerCameraIronsights now
+	void SendRecoilOffsetZ(float offset) {};
 }
 
 
@@ -620,6 +623,7 @@ enum DayZPlayerConstants
 	MOVEMENTIDX_WALK	= 1,
 	MOVEMENTIDX_RUN		= 2,
 	MOVEMENTIDX_SPRINT  = 3,
+	MOVEMENTIDX_CROUCH_RUN = 4,
 
 	//! vehicle classes
 	VEHICLECLASS_CAR,

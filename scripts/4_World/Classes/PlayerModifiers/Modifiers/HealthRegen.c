@@ -28,14 +28,10 @@ class HealthRegenMdfr: ModifierBase
 
 	override void OnTick(PlayerBase player, float deltaT)
 	{	
-		if(player.IsAlive())//this needs to be here, some of the other modifiers can kill the character during the same modifier tick, and not checking here can partially revive him(resulting in a broken char)
+		if (player.IsAlive())//this needs to be here, some of the other modifiers can kill the character during the same modifier tick, and not checking here can partially revive him(resulting in a broken char)
 		{
-			float blood =  player.GetHealth("GlobalHealth", "Blood");
-	
-			float blood_scale_normalized = Math.InverseLerp(PlayerConstants.BLOOD_THRESHOLD_FATAL, player.GetMaxHealth("", "Blood"), blood);
-			blood_scale_normalized = Math.Clamp(blood_scale_normalized,0,1);
-			float regen_speed = Math.Lerp(PlayerConstants.HEALTH_REGEN_MIN, PlayerConstants.HEALTH_REGEN_MAX, blood_scale_normalized);
-			regen_speed = regen_speed * deltaT;
+
+			float regen_speed = player.GetHealthRegenSpeed() * deltaT;;
 			player.AddHealth("GlobalHealth", "Health" ,  regen_speed );
 			
 			player.AddHealth("RightArm","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER );
@@ -61,7 +57,9 @@ class HealthRegenMdfr: ModifierBase
 			}
 			
 			player.AddHealth("Torso","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
-			player.AddHealth("Head","Health",regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER);
+			
+			// We increase head health regeneration as it is unclear to players what health level individual zones have
+			player.AddHealth("Head","Health",( regen_speed * PlayerConstants.DAMAGE_ZONE_BLOOD_REGEN_MODIFIER ) * 2 );
 		}
 	}
 };

@@ -39,9 +39,8 @@ class DayZPlayerImplementSwimming
 
 	//! ha
 	bool HandleSwimming(int pCurrentCommandID, HumanCommandMove pCMove, HumanMovementState pState)
-	{
-		
-		if( pCurrentCommandID == DayZPlayerConstants.COMMANDID_UNCONSCIOUS || pCurrentCommandID == DayZPlayerConstants.COMMANDID_DAMAGE )
+	{	
+		if ( pCurrentCommandID == DayZPlayerConstants.COMMANDID_UNCONSCIOUS || pCurrentCommandID == DayZPlayerConstants.COMMANDID_DAMAGE )
 			return false;
 		
 		m_bWasSwimming = false;
@@ -50,7 +49,7 @@ class DayZPlayerImplementSwimming
 		if (pCurrentCommandID != DayZPlayerConstants.COMMANDID_SWIM)
 		{
 			vector wl;
-			if( CheckSwimmingStart(wl) )
+			if ( CheckSwimmingStart(wl) )
 			{
 				m_pPlayer.StartCommand_Swim();
 				m_bWasSwimming = true;

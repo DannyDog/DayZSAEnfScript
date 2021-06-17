@@ -1,5 +1,8 @@
 class SlotsIcon: LayoutHolder
 {
+	protected static int 			m_NormalWidth;
+	protected static int 			m_NormalHeight;
+	
 	protected bool					m_IsWeapon			= false;
 	protected bool					m_IsMagazine		= false;
 	protected bool					m_HasTemperature	= false;
@@ -111,6 +114,12 @@ class SlotsIcon: LayoutHolder
 		m_ItemPreview.SetUserData(this);
 		m_GhostSlot.SetUserData(this);
 		m_MainWidget.SetUserData(this);
+		
+		float w,h;
+		root.GetSize(w,h);
+		
+		m_NormalWidth = w;
+		m_NormalHeight = h;
 		
 		SetActive( false );
 	}
@@ -612,6 +621,12 @@ class SlotsIcon: LayoutHolder
 	
 	bool MouseEnterGhostSlot(Widget w, int x, int y)
 	{
+		float pos_x, pos_y;
+		m_MainWidget.GetScreenPos(pos_x, pos_y);
+
+		x = pos_x;
+		y = pos_y;
+		
 		ItemManager.GetInstance().PrepareSlotsTooltip( m_SlotDisplayName, m_SlotDesc, x, y );
 		
 		if( GetDragWidget() != m_PanelWidget )
@@ -731,6 +746,16 @@ class SlotsIcon: LayoutHolder
 		m_SelectedPanel.Show( false );
 		m_SelectedPanel.SetColor( ARGBF( 1, 1, 1, 1 ) );
 		m_ItemPreview.SetForceFlipEnable(true);
+	}
+	
+	static int GetNormalWidth()
+	{
+		return m_NormalWidth;
+	}
+	
+	static int GetNormalHeight()
+	{
+		return m_NormalHeight;
 	}
 	
 }

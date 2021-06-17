@@ -19,7 +19,7 @@ class MouthRag extends Clothing
 	
 	override int GetVoiceEffect()
 	{
-		return VoiceEffectMumbling;
+		return VoiceEffectObstruction;
 	}
 	
 	void SetIncomingLambaBool(bool state)

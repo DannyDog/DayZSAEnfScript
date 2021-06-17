@@ -56,10 +56,25 @@ class ActionDigInStash: ActionContinuousBase
 			if (target_IB.GetInventory().IsAttachment())
 				return false;
 			
+			
+			// here we check if a stash is nearby and block digging a new one in close proximity
+			array<Object> excluded_objects = new array<Object>;
+			excluded_objects.Insert(target_IB);
+			array<Object> nearby_objects = new array<Object>;
+			// For now we exclude an area of 2 X 2 X 2 meters
+			if ( GetGame().IsBoxColliding( target_IB.GetPosition(), target_IB.GetOrientation(), "2 2 2", excluded_objects, nearby_objects) )
+			{
+				for (int i = 0; i < nearby_objects.Count(); i++)
+				{
+					if ( nearby_objects[i].IsInherited(UndergroundStash) )
+						return false;
+				}
+			}
+			
 			// Check surface
 			string surface_type;
 			vector position = target_IB.GetPosition();
-			GetGame().SurfaceGetType ( position[0], position[2], surface_type );
+			GetGame().SurfaceGetType( position[0], position[2], surface_type );
 			
 			if ( target_IB.ConfigGetBool("canBeDigged") )
 			{
@@ -159,5 +174,11 @@ class ActionDigInStash: ActionContinuousBase
 		MiscGameplayFunctions.DealAbsoluteDmg(action_data.m_MainItem, 10);				
 		
 		action_data.m_Player.GetSoftSkillsManager().AddSpecialty( m_SpecialtyWeight );
+	}
+	
+	override string GetAdminLogMessage( ActionData action_data )
+	{
+		string message = string.Format("Player %1 Dug in %2 at position %3", action_data.m_Player, action_data.m_Target.GetObject(), action_data.m_Target.GetObject().GetPosition() );
+		return message;
 	}
 };

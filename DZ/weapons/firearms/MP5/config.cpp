@@ -55,7 +55,7 @@ class cfgWeapons
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_reload",0.8,1,20};
 		reloadAction = "ReloadMP5";
 		hiddenSelections[] = {"camo"};
-		modes[] = {"FullAuto","SemiAuto"};
+		modes[] = {"FullAuto","Burst","SemiAuto"};
 		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"MP5K_Shot_SoundSet","MP5K_Tail_SoundSet","MP5K_InteriorTail_SoundSet"};
@@ -65,6 +65,24 @@ class cfgWeapons
 			begin3[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_single_2",1,1,900};
 			soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin3",0.33333};
 			reloadTime = 0.125;
+			recoil = "recoil_mp5";
+			recoilProne = "recoil_mp5_prone";
+			dispersion = 0.003;
+			magazineSlot = "magazine";
+			beginSilenced_Pro[] = {"dz\sounds\weapons\firearms\mp5k\mp5Silenced",1,1,75};
+			beginSilenced_HomeMade[] = {"dz\sounds\weapons\firearms\mp5k\mp5Silenced",1,1,100};
+			soundBeginExt[] = {{"beginSilenced_Pro",1},{"beginSilenced_HomeMade",1}};
+		};
+		class Burst: Mode_Burst
+		{
+			soundSetShot[] = {"MP5K_Shot_SoundSet","MP5K_Tail_SoundSet","MP5K_InteriorTail_SoundSet"};
+			soundSetShotExt[] = {{"MP5K_silencerPro_SoundSet","MP5K_silencerTail_SoundSet","MP5K_silencerInteriorTail_SoundSet"}};
+			begin1[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_single_0",1,1,900};
+			begin2[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_single_1",1,1,900};
+			begin3[] = {"dz\sounds\weapons\firearms\mp5k\mp5k_single_2",1,1,900};
+			soundBegin[] = {"begin1",0.33333,"begin2",0.33333,"begin3",0.33333};
+			burst = 3;
+			reloadTime = 0.067;
 			recoil = "recoil_mp5";
 			recoilProne = "recoil_mp5_prone";
 			dispersion = 0.003;

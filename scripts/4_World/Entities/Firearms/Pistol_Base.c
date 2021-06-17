@@ -590,6 +590,20 @@ class Pistol_Base extends Weapon_Base
 		return chanceToJam;
 	}
 	
+	/*override bool GetInventoryHandAnimation(notnull InventoryLocation loc, out int value)
+	{
+		int id;
+		string name = "";
+		if ( loc.GetParent() && loc.GetParent().GetInventory().GetCurrentAttachmentSlotInfo(id,name) && name == "Hips" )
+		{
+			//value = WeaponHideShowTypes.HIDESHOW_SLOT_2HDRIGHTBACK;
+			value = WeaponHideShowTypes.HIDESHOW_SLOT_PISTOLBELT;
+			return true;
+		}
+		
+		return false;
+	}*/
+	
 	override void SetActions()
 	{
 		super.SetActions();

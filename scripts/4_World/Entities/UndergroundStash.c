@@ -43,7 +43,6 @@ class UndergroundStash extends ItemBase
 	
 	override bool CanPutInCargo( EntityAI parent )
 	{
-		if( !super.CanPutInCargo(parent) ) {return false;}
 		return false;
 	}
 	
@@ -52,17 +51,17 @@ class UndergroundStash extends ItemBase
 		return false;
 	}
 	
-	override bool CanReceiveItemIntoHands (EntityAI item_to_hands)
+	override bool CanReceiveItemIntoHands(EntityAI item_to_hands)
 	{
 		return false;
 	}
 	
-	override bool CanSaveItemInHands (EntityAI item_in_hands)
+	override bool CanSaveItemInHands(EntityAI item_in_hands)
 	{
 		return false;
 	}
 	
-	override bool CanPutIntoHands (EntityAI parent)
+	override bool CanPutIntoHands(EntityAI parent)
 	{
 		super.CanPutIntoHands( parent );
 		

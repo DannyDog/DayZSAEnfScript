@@ -2,7 +2,7 @@
  *  Game Class provide most "world" or global engine API functions.
  */
 
-static int GAME_STORAGE_VERSION = 119;
+static int GAME_STORAGE_VERSION = 121;
 
 class CGame
 {
@@ -18,6 +18,10 @@ class CGame
 	ref AnalyticsManagerClient 	m_AnalyticsManagerClient;	
 	ref MenuDefaultCharacterData 		m_CharacterData;
 	
+	#ifdef DEVELOPER
+	ref array<ComponentEnergyManager> m_EnergyManagerArray;
+	#endif
+	
 	void CGame()
 	{
 		LogManager.Init();
@@ -32,6 +36,10 @@ class CGame
 		
 		// actual script version - increase by one when you make changes
 		StorageVersion(GAME_STORAGE_VERSION);
+		
+		#ifdef DEVELOPER
+		m_EnergyManagerArray = new array<ComponentEnergyManager>;
+		#endif
 	}
 	
 	private void ~CGame();
@@ -311,7 +319,7 @@ class CGame
   	\brief Destroy player info and disconnect 
 	\note Works only on server
 	*/
-	proto native void		DisconnectPlayer(PlayerIdentity identity);
+	proto native void		DisconnectPlayer(PlayerIdentity identity, string uid = "");
 	
 	/**
   	\brief Add player to reconnect cache to be able to rejoin character still existing in the world

@@ -37,14 +37,20 @@ class SalineMdfr: ModifierBase
 	
 	override void OnActivate(PlayerBase player)
 	{
+		player.IncreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() )
 			player.GetNotifiersManager().ActivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 	
 	override void OnDeactivate(PlayerBase player)
 	{
+		player.DecreaseHealingsCount();
+		/*
 		if( player.GetNotifiersManager() )
 			player.GetNotifiersManager().DeactivateByType(eNotifiers.NTF_PILLS);
+		*/
 	}
 
 	override void OnTick(PlayerBase player, float deltaT)

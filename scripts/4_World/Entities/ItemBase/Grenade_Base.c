@@ -65,6 +65,11 @@ class Grenade_Base extends InventoryItemSuper
 		{
 			OnUnpin();
 		}
+	}		
+	
+	override void OnActivatedByTripWire()
+	{
+		Unpin();
 	}
 	
 	bool IsPinned()

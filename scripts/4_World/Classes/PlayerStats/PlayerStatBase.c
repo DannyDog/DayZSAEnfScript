@@ -7,10 +7,14 @@ class PlayerStatBase
 	float 	Get();
 	string 	GetLabel();
 	void 	SetByFloat(float value);
+	void 	SetByFloatEx(float value, string system = "" );
 	bool	IsSynced();
 	array<PlayerStatRecord> GetRecords();
 	void 	Init(int id/*, PlayerStats manager*/);
 	void 	SerializeValue(array<ref StatDebugObject> objects, int flags);
+	float 	GetNormalized();
+	float 	GetMax();
+	float 	GetMin();
 	int		GetType()
 	{
 		return m_Type;
@@ -87,6 +91,10 @@ class PlayerStat<Class T> extends PlayerStatBase
 		Set(f,system);
 		
 	}
+	override void SetByFloatEx(float value, string system = "" )
+	{
+		SetByFloat(value, system);
+	}
 	/*
 	void SetByParam(Param param, string system = "" )
 	{
@@ -110,17 +118,17 @@ class PlayerStat<Class T> extends PlayerStatBase
 		return m_ValueLabel;
 	}
 
-	float GetMax()
+	override float GetMax()
 	{
 		return m_MaxValue;
 	}
 
-	float GetMin()
+	override float GetMin()
 	{
 		return m_MinValue;
 	}
 	
-	float GetNormalized()
+	override float GetNormalized()
 	{
 		return ((Get()- GetMin()) / (GetMax() - GetMin()));
 	}

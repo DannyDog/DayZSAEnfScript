@@ -1,12 +1,12 @@
 //--------------------------------------------------------------------------
 class ContextMenu extends ScriptedWidgetEventHandler
 {
-	const int ITEMS_COUNT = 27;
 	private Widget m_context_menu_root_widget;
 	private Widget m_context_menu_panel_widget;
 	private ref array<ref CallQueueContext> m_commands;
 	private int m_max_item_width;
 	private int m_count;
+	const int ITEMS_COUNT = 27;
 	//--------------------------------------------------------------------------
 	void ContextMenu()
 	{
@@ -42,12 +42,17 @@ class ContextMenu extends ScriptedWidgetEventHandler
 		GetScreenSize(screen_w, screen_h);
 	
 		// align buttons
-		float button_height_percent = 0.04;  // button height is 4% of screen height
+		float button_height_percent = 0.02;  // button height is 4% of screen height
 		float button_height = screen_h * button_height_percent;
+		
 		for ( int i = 0; i < m_count; i++)
 		{
 			ButtonWidget menu_button = ButtonWidget.Cast( m_context_menu_root_widget.FindAnyWidget( String( "Button" + (i+1).ToString() ) ) );
-			menu_button.SetSize(0.92, button_height);
+			if(menu_button)
+			{
+					menu_button.SetSize(0.90, button_height);
+					menu_button.Show(true);
+			}
 		}
 	
 	
@@ -108,6 +113,7 @@ class ContextMenu extends ScriptedWidgetEventHandler
 	void Hide()
 	{
 		m_context_menu_root_widget.Show(false);
+	
 		Clear();
 	}
 	
@@ -151,6 +157,7 @@ class ContextMenu extends ScriptedWidgetEventHandler
 	//--------------------------------------------------------------------------
 	void Add(string label, Class obj, string fn_name, Param params /*= NULL*/)
 	{
+		//Print(label);
 		int count = Count();
 		ButtonWidget menu_button = ButtonWidget.Cast( m_context_menu_root_widget.FindAnyWidget( String( "Button" + (count+1).ToString() ) ) );
 		if ( menu_button )
@@ -195,15 +202,18 @@ class ContextMenu extends ScriptedWidgetEventHandler
 		int i;
 		
 		m_commands.Clear();
-	
-		for ( i = 0; i < ITEMS_COUNT; i++)
+		
+		Widget child = m_context_menu_panel_widget.GetChildren();
+		while(child)
 		{
-			ButtonWidget menu_button = ButtonWidget.Cast( m_context_menu_root_widget.FindAnyWidget( String( "Button" + (i+1).ToString() ) ) );
-			if( menu_button )
+			ButtonWidget button = ButtonWidget.Cast(child);
+			if(button)
 			{
-				menu_button.Show( false );
-				menu_button.SetText( "" );
+				button.Show(false);
 			}
+			child = child.GetSibling();
+			
+			
 		}
 		m_count = 0;
 		m_max_item_width = 0;

@@ -46,21 +46,10 @@ class ActionCreateGreenhouseGardenPlot: ActionContinuousBase
 		
 		if ( target_object && ( greenHouse || polytunnel ) )
 		{
-			if ( !IsInReach(player, target, UAMaxDistances.DEFAULT) )
-				return false;
-			
 			string action_selection = target_object.GetActionComponentName( target.GetComponentIndex() );
-			string damage_zone;
-			if ( DamageSystem.GetDamageZoneFromComponentName(EntityAI.Cast(target_object), action_selection, damage_zone) )
+			//Update selections in model, name the desired part Soil to improve action condition check
+			if ( action_selection != "soil" )
 				return false;
-			
-			//Check if looking upwards
-			if ( player.GetCurrentCamera() )
-			{
-				DayZPlayerCamera camera = player.GetCurrentCamera();
-				if ( camera.GetCurrentPitch() > CAMERA_PITCH_THRESHOLD )
-					return false;
-			}
 			
 			//check if there is any gardenplot objects in the current building
 			ref array<Object> nearest_objects = new array<Object>;

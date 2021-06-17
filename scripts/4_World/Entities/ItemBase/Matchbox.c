@@ -8,7 +8,7 @@ class Matchbox extends ItemBase
 	
 	override bool CanIgniteItem( EntityAI ignite_target = NULL )
 	{
-		if ( GetQuantity() > 0 )
+		if ( GetQuantity() > 0 && GetWet() < GameConstants.STATE_DAMP )
 			return true;
 		else
 			return false;

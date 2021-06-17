@@ -826,34 +826,49 @@ class Construction
 								
 								//unlock slot
 								GetParent().GetInventory().SetSlotLock( inventory_location.GetSlot() , false );
-									
+								
 								EntityAI parent = GetParent();
 								if (!parent)
 									parent = player;
 								
-								ItemBase item = ItemBase.Cast(inventory_location.GetItem());
-								
-								int quantity_max = item.GetTargetQuantityMax(-1);
-								
+								int quantity_max = attachment.GetTargetQuantityMax(-1);
 								InventoryLocation dst = new InventoryLocation;
 								vector mat[4];
-								item.GetTransform(mat);
-								dst.SetGround(item,mat);
-
-								for( int k = item.GetQuantity(); k > quantity_max;  )
-								{
-									Object o = parent.GetInventory().LocationCreateEntity( dst, item.GetType(), ECE_PLACE_ON_SURFACE, RF_DEFAULT );
-									ItemBase new_item = ItemBase.Cast( o );
-									
-									if( new_item )
-									{			
-										MiscGameplayFunctions.TransferItemProperties( item, new_item );
-										item.AddQuantity( -quantity_max );
-										new_item.SetQuantity( quantity_max );
-									}
-									k -= quantity_max;
-								}
+								attachment.GetTransform(mat);
 								
+								if ( parent.MemoryPointExists("" + part_name + "_materials") )
+								{
+									vector destination = parent.GetMemoryPointPos("" + part_name + "_materials");
+									destination = GetGame().ObjectModelToWorld(parent,destination);
+									float health = attachment.GetHealth("","Health");
+									float quantity = attachment.GetQuantity() - 1;
+									if (quantity < 1.0)
+										quantity = 1.0;
+									float dir[4];
+									inventory_location.GetDir(dir);
+									dst.SetGroundEx(attachment,destination,dir);
+									//Print(dst.DumpToString());
+									MiscGameplayFunctions.CreateItemBasePiles(attachment.GetType(),destination,quantity,health,true);
+									attachment.AddQuantity( -quantity );
+								}
+								else
+								{
+									dst.SetGround(attachment,mat);
+									
+									for ( int k = attachment.GetQuantity(); k > quantity_max;  )
+									{
+										Object o = parent.GetInventory().LocationCreateEntity( dst, attachment.GetType(), ECE_PLACE_ON_SURFACE, RF_DEFAULT );
+										ItemBase new_item = ItemBase.Cast( o );
+										
+										if( new_item )
+										{
+											MiscGameplayFunctions.TransferItemProperties( attachment, new_item );
+											attachment.AddQuantity( -quantity_max );
+											new_item.SetQuantity( quantity_max );
+										}
+										k -= quantity_max;
+									}
+								}
 								
 								//drop
 								if ( GetGame().IsMultiplayer() )
@@ -982,7 +997,7 @@ class Construction
 	//============================================
 	// Collision check
 	//============================================
-	//Collisions (BBox and Trigger)
+	//Collisions (BBox and Trigger); deprecated
 	bool IsColliding( string part_name )
 	{
 		ConstructionPart construction_part = GetConstructionPart( part_name );
@@ -1010,14 +1025,56 @@ class Construction
 			
 			//check collision on box trigger and collision box
 			//IsTrigger colliding was turned off (for now) for easier way to build something with other players around
-			if ( /* IsTriggerColliding() || */ GetGame().IsBoxColliding( Vector( center[0], center[1] + absolute_ofset, center[2] ), GetParent().GetOrientation(), edge_length, excluded_objects, collided_objects ) )
+			if ( /* IsTriggerColliding() || */ GetGame().IsBoxCollidingGeometry( Vector( center[0], center[1] + absolute_ofset, center[2] ), GetParent().GetOrientation(), edge_length, ObjIntersectView, ObjIntersectGeom, excluded_objects, collided_objects ) )
 			{
 				//Debug
-				//DrawDebugCollisionBox( min_max, ARGB( 150, 255, 0, 0 ) );
+//				DrawDebugCollisionBox( min_max, ARGB( 150, 255, 0, 0 ) );
 				//
 				for (int i = 0; i < collided_objects.Count(); i++)
 				{
 					//Print(collided_objects.Get(i).GetType());
+					EntityAI entity = EntityAI.Cast(collided_objects.Get(i));
+					if ( entity && !entity.IsIgnoredByConstruction() )
+						return true;
+				}
+			}
+			//Debug
+//			DrawDebugCollisionBox( min_max, ARGB( 150, 255, 255, 255 ) );
+		}
+		return false;
+	}
+	
+	//! Collision check for building part
+	bool IsCollidingEx( CollisionCheckData check_data )
+	{
+		ConstructionPart construction_part = GetConstructionPart( check_data.m_PartName );
+		
+		if ( construction_part )
+		{
+			vector center;
+			float absolute_ofset = 0.05; 	//we need to lift BBox even more, because it colliddes with house floors due to various reasons (probably geometry or float imperfections)
+			vector edge_length;
+			vector min_max[2];				//data used for creating trigger
+			ref array<Object> excluded_objects = new array<Object>;
+			ref array<Object> collided_objects = new array<Object>;
+			
+			excluded_objects.Insert( GetParent() );
+			if (check_data.m_AdditionalExcludes.Count() > 0)
+			{
+				excluded_objects.InsertAll(check_data.m_AdditionalExcludes);
+			}
+			
+			GetCollisionBoxData( check_data.m_PartName, min_max );
+			center = GetBoxCenter( min_max );
+			center = GetParent().ModelToWorld( center );		//convert to world coordinates
+			edge_length = GetCollisionBoxSize( min_max );
+			
+			if ( GetGame().IsBoxCollidingGeometry( Vector( center[0], center[1] + absolute_ofset, center[2] ), GetParent().GetOrientation(), edge_length, check_data.m_PrimaryGeometry, check_data.m_SecondaryGeometry, excluded_objects, collided_objects ) )
+			{
+				//Debug
+				//DrawDebugCollisionBox( min_max, ARGB( 150, 255, 0, 0 ) );
+				for (int i = 0; i < collided_objects.Count(); i++)
+				{
 					EntityAI entity = EntityAI.Cast(collided_objects.Get(i));
 					if ( entity && !entity.IsIgnoredByConstruction() )
 						return true;
@@ -1225,6 +1282,23 @@ class StaticConstructionMethods
 				MiscGameplayFunctions.CreateItemBasePiles(type,destination,quantity,pile_health,true);
 			}
 		}
+	}
+}
+
+//! Data structure for passing parameters (extendable, modable)
+class CollisionCheckData
+{
+	ref array<Object> m_AdditionalExcludes;
+	string m_PartName;
+	int m_PrimaryGeometry;
+	int m_SecondaryGeometry;
+	
+	void CollisionCheckData()
+	{
+		m_AdditionalExcludes = new array<Object>;
+		m_PartName = "";
+		m_PrimaryGeometry = ObjIntersectGeom;
+		m_SecondaryGeometry = ObjIntersectView;
 	}
 }
 

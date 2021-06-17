@@ -24,7 +24,9 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 		if ( entity_for_placing.IsBasebuildingKit() )
 			return;
 		
-		vector orientation = m_ActionData.m_Player.GetOrientation();
+		m_ActionData.m_Player.PredictiveDropEntity(m_ActionData.m_MainItem);
+		
+		/*vector orientation = m_ActionData.m_Player.GetOrientation();
 		float size_x = 1;
 		float size_z = 1;
 		if (m_ActionData.m_MainItem.MemoryPointExists("BoundingBox_min"))
@@ -65,7 +67,7 @@ class ActiondeployObjectCB : ActionContinuousBaseCB
 				destination.SetGroundEx( entity_for_placing, ground_position, direction );
 				m_ActionData.m_Player.PredictiveTakeToDst(source, destination);
 			}
-		}
+		}*/
 	}
 };
 

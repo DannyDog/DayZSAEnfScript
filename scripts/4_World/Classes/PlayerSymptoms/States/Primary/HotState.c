@@ -8,6 +8,7 @@ class HotSymptom extends SymptomBase
 		m_ID = SymptomIDs.SYMPTOM_HOT;
 		m_DestroyOnAnimFinish = true;
 		m_SyncToClient = false;
+		m_MaxCount = 2;
 	}
 	
 	//!gets called every frame
@@ -44,7 +45,7 @@ class HotSymptom extends SymptomBase
 		}
 		else
 		{
-			//PlaySound(EPlayerSoundEventID.FREEZING);
+			PlaySound(EPlayerSoundEventID.HOT);
 		}
 	}
 

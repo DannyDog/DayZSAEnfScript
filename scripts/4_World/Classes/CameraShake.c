@@ -29,6 +29,7 @@ class CameraShake
 		Print("-----------ON CREATE END------------");
 		*/
 		//m_Player = DayZPlayerImplement.Cast(player);
+		m_Player = DayZPlayerImplement.Cast(GetGame().GetPlayer());
 		m_StregthFactor = strength_factor;
 		//m_InitLR = lr_angle;
 		//m_InitUD = ud_angle;

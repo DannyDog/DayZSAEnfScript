@@ -49,8 +49,8 @@ class cfgWeapons
 		reloadAction = "ReloadAug";
 		reloadMagazineSound[] = {"dz\sounds\weapons\firearms\steyraug\steyraug_reload",0.8,1,20};
 		hiddenSelections[] = {"camo","camo1","camo2","camo3","camo4"};
-		modes[] = {"FullAuto","Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"FullAuto","SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"AUG_Shot_SoundSet","AUG_Tail_SoundSet","AUG_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"AUG_silencer_SoundSet","AUG_silencerTail_SoundSet","AUG_silencerInteriorTail_SoundSet"},{"AUG_silencerHomeMade_SoundSet","AUG_silencerHomeMadeTail_SoundSet","AUG_silencerInteriorHomeMadeTail_SoundSet"}};

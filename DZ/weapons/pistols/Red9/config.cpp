@@ -54,8 +54,8 @@ class cfgWeapons
 		reloadMagazineSound[] = {"DZ\sounds\weapons\firearms\red9\Red9_reload",1,1,30};
 		reloadAction = "ReloadSks";
 		hiddenSelections[] = {"camo"};
-		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		modes[] = {"SemiAuto"};
+		class SemiAuto: Mode_SemiAuto
 		{
 			soundSetShot[] = {"Red9_Shot_SoundSet","Red9_Tail_SoundSet","Red9_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"Red9_silencerHomeMade_SoundSet","Red9_silencerHomeMadeTail_SoundSet","Red9_silencerInteriorHomeMadeTail_SoundSet"}};

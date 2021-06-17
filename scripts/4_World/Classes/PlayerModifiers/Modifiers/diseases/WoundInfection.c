@@ -2,11 +2,31 @@ class WoundInfectionMdfr: ModifierBase
 {
 	static const int AGENT_THRESHOLD_ACTIVATE = 100;
 	static const int AGENT_THRESHOLD_DEACTIVATE = 20;
+	 
+	void WoundInfectionMdfr()
+	{
+		Error("[ERROR] :: WoundInfectionMdfr is deprecated.");
+	}
+};
+
+
+
+class WoundInfectStage1Mdfr: ModifierBase
+{
+	static const int AGENT_THRESHOLD_ACTIVATE = 1;
+	static const int AGENT_THRESHOLD_DEACTIVATE = 250;
+	static const int AGENT_THRESHOLD_FEVER = 250;
+	
+	static const int PAIN_EVENT_INTERVAL_MIN = 12;
+	static const int PAIN_EVENT_INTERVAL_MAX = 18;
+	
+	protected float m_NextEvent;
+	protected float m_Time;
 	
 	override void Init()
 	{
 		m_TrackActivatedTime	= false;
-		m_ID 					= eModifiers.MDF_WOUND_INFECTION;
+		m_ID 					= eModifiers.MDF_WOUND_INFECTION1;
 		m_TickIntervalInactive 	= DEFAULT_TICK_TIME_INACTIVE;
 		m_TickIntervalActive 	= DEFAULT_TICK_TIME_ACTIVE;
 	}
@@ -18,7 +38,7 @@ class WoundInfectionMdfr: ModifierBase
 	
 	override protected bool ActivateCondition(PlayerBase player)
 	{
-		if(player.GetSingleAgentCount(eAgents.WOUND_AGENT) >= AGENT_THRESHOLD_ACTIVATE) 
+		if( player.GetSingleAgentCount(eAgents.WOUND_AGENT) >= AGENT_THRESHOLD_ACTIVATE && !player.GetModifiersManager().IsModifierActive(eModifiers.MDF_WOUND_INFECTION2)) 
 		{
 			return true;
 		}
@@ -30,9 +50,8 @@ class WoundInfectionMdfr: ModifierBase
 
 	override protected void OnActivate(PlayerBase player)
 	{
-		//if( player.m_NotifiersManager ) player.m_NotifiersManager.ActivateByType(eNotifiers.NTF_SICK);
 		player.IncreaseDiseaseCount();
-		
+		m_NextEvent = Math.RandomFloatInclusive( PAIN_EVENT_INTERVAL_MIN, PAIN_EVENT_INTERVAL_MAX );
 	}
 
 	override protected void OnDeactivate(PlayerBase player)
@@ -42,18 +61,21 @@ class WoundInfectionMdfr: ModifierBase
 
 	override protected bool DeactivateCondition(PlayerBase player)
 	{
-		if(player.GetSingleAgentCount(eAgents.WOUND_AGENT) <= AGENT_THRESHOLD_DEACTIVATE) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
+		return !ActivateCondition(player);
 	}
 
 	override protected void OnTick(PlayerBase player, float deltaT)
 	{
 		
+		m_Time += deltaT;
+		
+		if ( m_Time >= m_NextEvent )
+		{
+			player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_PAIN_LIGHT);
+			m_Time = 0;
+			m_NextEvent = Math.RandomFloatInclusive( PAIN_EVENT_INTERVAL_MIN, PAIN_EVENT_INTERVAL_MAX );
+		}
+		
+
 	}
 };

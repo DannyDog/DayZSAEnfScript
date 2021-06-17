@@ -37,6 +37,8 @@ class CraftRag extends RecipeBase
 		InsertIngredient(0,"KukriKnife");
 		InsertIngredient(0,"FangeKnife");
 		InsertIngredient(0,"Machete");
+		InsertIngredient(0,"CrudeMachete");
+		InsertIngredient(0,"OrientalMachete");
 		InsertIngredient(0,"Screwdriver");
 		InsertIngredient(0,"Crowbar");
 		InsertIngredient(0,"Pickaxe");

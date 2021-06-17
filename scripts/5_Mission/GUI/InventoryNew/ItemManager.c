@@ -516,16 +516,18 @@ class ItemManager
 		int screen_w, screen_h;
 		float w, h;
 			
-		GetMousePos(x,y);
-			
 		GetScreenSize(screen_w, screen_h);
 		m_TooltipSlotWidget.GetScreenSize(w,h);
+		
+		int slot_normal_w = SlotsIcon.GetNormalWidth();
+		int slot_normal_h = SlotsIcon.GetNormalHeight();
+		
 
 		int m_normal_item_size = 20;
 		screen_w -= 10;
 		screen_h -= 10;
-		x += m_normal_item_size;
-		y += m_normal_item_size;
+		x += 5;
+		y += slot_normal_h + 5;
 
 		int right_edge = x + w;
 		if (right_edge > screen_w)
@@ -536,10 +538,37 @@ class ItemManager
 		int bottom_edge = y + h;
 		if (bottom_edge > screen_h)
 		{
-			y = y - h - (2*m_normal_item_size);
+			y = y - h - 10;
 		}
 		m_TooltipSlotWidget.SetPos(x, y);
+		#else
+		int screen_w, screen_h;
+		float w, h;		
+		
+		GetScreenSize(screen_w, screen_h);
+		m_TooltipSlotWidget.GetScreenSize(w,h);
+		
+		int slot_normal_w = SlotsIcon.GetNormalWidth();
+		int slot_normal_h = SlotsIcon.GetNormalHeight();
 
+		screen_w -= 10;
+		screen_h -= 10;
+		x += 5;
+		y += 15;
+
+		int right_edge = x + w;
+		if (right_edge > screen_w)
+		{
+			x = screen_w - w;
+		}
+
+		int bottom_edge = y + h;
+		if (bottom_edge > screen_h)
+		{
+			y = y - h - 10;
+		}
+		m_TooltipSlotWidget.SetPos(x, y);
+		
 		#endif
 		
 		m_TooltipSlotTimer = new Timer();

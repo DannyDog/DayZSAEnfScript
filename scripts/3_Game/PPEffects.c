@@ -46,6 +46,7 @@ class PPEffects
 	static float m_ColorOverlayTotal;
 
 	static Material m_MatColors;
+	static Material m_RadialBlur;
 	
 	static void Init()
 	{
@@ -72,6 +73,7 @@ class PPEffects
 		}
 		
 		m_MatColors = GetGame().GetWorld().GetMaterial("graphics/materials/postprocess/glow");
+		m_RadialBlur = GetGame().GetWorld().GetMaterial("graphics/materials/postprocess/radialblur");
 		m_BlurValues = new array<float>;
 		m_ChromAbbValues = new array<float>;
 		m_VignetteEffects = new array<int>;
@@ -126,6 +128,11 @@ class PPEffects
 		}
 	}
 	
+	static void ResetRadialBlur()
+	{	
+		SetRadialBlur(0,0,0,0);
+	}
+	
 	static void SetBlurValue(int index, float value)
 	{
 		if ( m_BlurValues && index < m_BlurValues.Count() )
@@ -143,6 +150,18 @@ class PPEffects
 		return m_BlurValues.Insert(0);
 	}
 	
+	//-------------------------------------------------------
+	//! sets blur effect to an absolute value between 0..1
+	static void SetRadialBlur(float powerX, float powerY, float offsetX, float offsetY )
+	{
+		if (GetGame())
+		{
+			m_RadialBlur.SetParam("PowerX", powerX);
+			m_RadialBlur.SetParam("PowerY", powerY);
+			m_RadialBlur.SetParam("OffsetX", offsetX);
+			m_RadialBlur.SetParam("OffsetY", offsetY);
+		}
+	}
 	//-------------------------------------------------------
 	//! sets blur effect to an absolute value between 0..1
 	static void SetBlur(float value)

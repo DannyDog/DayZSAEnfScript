@@ -15,8 +15,8 @@ class FeverBlurSymptom extends SymptomBase
 	const int BLUR_DURATION_TIME_MIN = 3;
 	const int BLUR_DURATION_TIME_MAX = 5;
 	
-	const int MIN_TIME_BETWEEN_EFFECTS = 12.0;
-	const int MAX_TIME_BETWEEN_EFFECTS = 30.0;
+	const int MIN_TIME_BETWEEN_EFFECTS = 10.0;
+	const int MAX_TIME_BETWEEN_EFFECTS = 16.0;
 
 	//this is just for the Symptom parameters set-up and is called even if the Symptom doesn't execute, don't put any gameplay code in here
 	override void OnInit()
@@ -52,7 +52,7 @@ class FeverBlurSymptom extends SymptomBase
 			m_EffectTime += deltatime / m_BlurDuration;
 			float cos_value = Math.Sin(m_EffectTime  * Math.PI);
 			float val = cos_value * m_BlurStrength;
-			Print(val);
+			//Print(val);
 			PPEffects.SetBlurDrunk(val);
 			//PrintString("cos=" +cos_value.ToString());
 			

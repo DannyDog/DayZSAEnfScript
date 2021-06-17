@@ -38,22 +38,22 @@ class Object extends IEntity
 		return NULL;
 	}
 	
+	//! Returns the hiddenSelections array from the object's config
+	TStringArray GetHiddenSelections()
+	{
+		return HiddenSelectionsData.GetHiddenSelectionsConfig(GetType());
+	}
+	
 	//! Returns the hiddenSelectionsTextures array from the object's config
 	TStringArray GetHiddenSelectionsTextures()
 	{
-		string garden_type = this.GetType();
-		TStringArray textures = new TStringArray;
-		GetGame().ConfigGetTextArray( "CfgVehicles " + garden_type + " hiddenSelectionsTextures", textures );
-		return textures;
+		return HiddenSelectionsData.GetHiddenSelectionsTexturesConfig(GetType());
 	}
 	
 	//! Returns the hiddenSelectionsMaterials array from the object's config
 	TStringArray GetHiddenSelectionsMaterials()
 	{
-		string garden_type = this.GetType();
-		TStringArray materials = new TStringArray;
-		GetGame().ConfigGetTextArray( "CfgVehicles " + garden_type + " hiddenSelectionsMaterials", materials );
-		return materials;
+		return HiddenSelectionsData.GetHiddenSelectionsMaterialsConfig(GetType());
 	}
 	
 	//! Creates an explosion on this object by its ammoType in config.
@@ -226,6 +226,12 @@ class Object extends IEntity
 	*/
 	proto native bool GetCollisionBox(out vector minMax[2]);
 	
+	/** 
+	\brief Gets collision radius (bounding sphere)
+	\return bounding sphere radius
+	*/
+	proto native float GetCollisionRadius();
+	
 	//! Get total damage (clipped to range 0..1)
 	proto native float GetDamage();
 
@@ -340,6 +346,12 @@ class Object extends IEntity
 		return tmp;
 	}
 	
+	//Used to specify this object will always display it's own name when attached to another object
+	bool DisplayNameRuinAttach()
+	{
+		return false;
+	}
+	
 	//! Returns name of the model of this object without the '.p3d' suffix
 	string GetModelName()
 	{
@@ -361,12 +373,7 @@ class Object extends IEntity
 	// Check alive state
 	bool IsAlive()
 	{
-		if ( IsDamageDestroyed() ) 
-		{
-			return false; // Is dead
-		}
-		
-		return true; // Is alive
+		return !IsDamageDestroyed();
 	}
 
 		
@@ -577,6 +584,11 @@ class Object extends IEntity
 	{
 		return false;
 	}
+	
+	bool IsHologram()
+	{
+		return false;
+	}
 		
 	bool HasProxyParts()
 	{
@@ -678,12 +690,7 @@ class Object extends IEntity
 	proto int ConfigGetInt(string entryName);
 	bool ConfigGetBool(string entryName)
 	{
-		if ( ConfigGetInt(entryName) == 1 )
-		{
-			return true;
-		}
-		
-		return false;
+		return (ConfigGetInt(entryName) == 1);
 	}
 
 	proto float ConfigGetFloat(string entryName);

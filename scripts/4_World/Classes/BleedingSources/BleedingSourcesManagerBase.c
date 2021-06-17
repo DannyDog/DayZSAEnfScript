@@ -2,7 +2,7 @@ class BleedingSourcesManagerBase
 {
 	ref map<int, ref BleedingSource> m_BleedingSources = new map<int, ref BleedingSource>;
 	ref map<string, ref BleedingSourceZone> m_BleedingSourceZone = new map<string, ref BleedingSourceZone>;
-	
+	ItemBase m_Item;//item used to remove the bleeding source
 	PlayerBase m_Player;
 	//ref map<string, int> m_FireGeomToBit = new map<string, int>;
 	ref map<int, string> m_BitToFireGeom = new map<int, string>;
@@ -57,19 +57,24 @@ class BleedingSourcesManagerBase
 		RegisterBleedingZone("RightToeBase",PlayerConstants.BLEEDING_SOURCE_DURATION_NORMAL, "", "0 90 0" , "0 -0.07 0", PlayerConstants.BLEEDING_SOURCE_FLOW_MODIFIER_LOW);
 	}
 	
+	protected void SetItem(ItemBase item)
+	{
+		m_Item = item;
+	}
+	
 	protected int GetBitFromSelectionID(int id)
 	{
 		CachedObjectsArrays.ARRAY_STRING.Clear();
 		m_Player.GetActionComponentNameList(id, CachedObjectsArrays.ARRAY_STRING, "fire");
 		
-		for(int i = 0; i < CachedObjectsArrays.ARRAY_STRING.Count(); i++)
+		for (int i = 0; i < CachedObjectsArrays.ARRAY_STRING.Count(); i++)
 		{
 			/*
 			string name = CachedObjectsArrays.ARRAY_STRING.Get(i);
 			PrintString(name);
 			*/
 			int bit = GetBitFromSelectionName(CachedObjectsArrays.ARRAY_STRING.Get(i));
-			if(  bit !=0 )
+			if (  bit !=0 )
 			{
 				return bit;
 			}
@@ -84,7 +89,7 @@ class BleedingSourcesManagerBase
 	
 	protected void RegisterBleedingZone(string name, int max_time, string bone = "", vector orientation = "0 0 0", vector offset = "0 0 0", float flow_modifier = 1, string particle_name = "BleedingSourceEffect")
 	{
-		if( m_BitOffset == BIT_INT_SIZE)
+		if ( m_BitOffset == BIT_INT_SIZE)
 		{
 			Error("Too many bleeding sources, max is "+BIT_INT_SIZE.ToString());
 		}
@@ -97,7 +102,7 @@ class BleedingSourcesManagerBase
 			//PrintString(bit.ToString());
 			string bone_name = bone;
 			
-			if(bone_name == "")
+			if (bone_name == "")
 			{
 				bone_name = name;
 			}
@@ -120,7 +125,7 @@ class BleedingSourcesManagerBase
 	
 	protected int GetBitFromSelectionName(string name)
 	{
-		if(!m_BleedingSourceZone.Get(name))
+		if (!m_BleedingSourceZone.Get(name))
 		{
 			return 0;
 		}
@@ -136,12 +141,12 @@ class BleedingSourcesManagerBase
 	{
 		int bit = GetBitFromSelectionID(component);
 		
-		if( bit == 0 )
+		if ( bit == 0 )
 		{
 			return false;
 		}
 		
-		if( CanAddBleedingSource(bit) )
+		if ( CanAddBleedingSource(bit) )
 		{
 			AddBleedingSource(bit);
 			return true;
@@ -155,12 +160,12 @@ class BleedingSourcesManagerBase
 		selection_name.ToLower();
 		int bit = GetBitFromSelectionName(selection_name);
 		
-		if( bit == 0 )
+		if ( bit == 0 )
 		{
 			return false;
 		}
 		
-		if( CanAddBleedingSource(bit) )
+		if ( CanAddBleedingSource(bit) )
 		{
 			AddBleedingSource(bit);
 			return true;
@@ -170,18 +175,20 @@ class BleedingSourcesManagerBase
 	
 	protected bool CanAddBleedingSource(int bit)
 	{
-		if(!GetBleedingSourceMeta(bit)) return false;
+		if (!GetBleedingSourceMeta(bit)) return false;
 		return ((m_Player.GetBleedingBits() & bit) == 0 );
 	}
 	
 	protected void AddBleedingSource(int bit)
 	{
-		vector orientation = GetBleedingSourceMeta(bit).GetOrientation();
-		vector offset = GetBleedingSourceMeta(bit).GetOffset();
-		string bone_name =  GetBleedingSourceMeta(bit).GetBoneName();
-		float flow_modifier = GetBleedingSourceMeta(bit).GetFlowModifier();
-		int max_time = GetBleedingSourceMeta(bit).GetMaxTime();
-		string particle_name = GetBleedingSourceMeta(bit).GetParticleName();
+		BleedingSourceZone bsz = GetBleedingSourceMeta(bit);
+		
+		vector orientation = bsz.GetOrientation();
+		vector offset = bsz.GetOffset();
+		string bone_name =  bsz.GetBoneName();
+		float flow_modifier = bsz.GetFlowModifier();
+		int max_time = bsz.GetMaxTime();
+		string particle_name = bsz.GetParticleName();
 		m_BleedingSources.Insert(bit, new BleedingSource(m_Player, bit,bone_name, orientation, offset, max_time, flow_modifier, particle_name) );
 		m_Player.OnBleedingSourceAdded();
 	}
@@ -189,7 +196,7 @@ class BleedingSourcesManagerBase
 	int GetBleedingSourceActiveTime(int bit)
 	{
 		int time = -1;
-		if(m_BleedingSources.Contains(bit))
+		if (m_BleedingSources.Contains(bit))
 		{
 			time = m_BleedingSources.Get(bit).GetActiveTime();
 		}
@@ -198,19 +205,19 @@ class BleedingSourcesManagerBase
 	
 	void SetBleedingSourceActiveTime(int bit, int time)
 	{
-		if(m_BleedingSources.Contains(bit))
+		if (m_BleedingSources.Contains(bit))
 		{
 			m_BleedingSources.Get(bit).SetActiveTime(time);
 		}
-
 	}
 
 	protected bool RemoveBleedingSource(int bit)
 	{
-		if(m_BleedingSources.Contains(bit))
+		if (m_BleedingSources.Contains(bit))
 		{
 			m_BleedingSources.Remove(bit);
-			m_Player.OnBleedingSourceRemoved();
+			m_Player.OnBleedingSourceRemovedEx(m_Item);
+			m_Item = null;//reset, so that next call, if induced by self-healing, will have no item
 			return true;
 		}
 		return false;

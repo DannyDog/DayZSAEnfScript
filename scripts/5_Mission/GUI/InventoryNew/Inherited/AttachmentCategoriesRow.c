@@ -321,6 +321,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			EntityAI focused_item = GetFocusedItem();
 			SlotsIcon icon = GetFocusedIcon();
 			float x, y;
+			icon.GetCursorWidget().Show(true);
 			icon.GetCursorWidget().GetScreenPos( x, y );
 			if( focused_item )
 			{
@@ -330,7 +331,6 @@ class AttachmentCategoriesRow: ClosableContainer
 			{
 				ItemManager.GetInstance().PrepareSlotsTooltip( icon.GetSlotDisplayName(), icon.GetSlotDesc(), x, y );
 			}
-			icon.GetCursorWidget().Show(true);
 		}
 	}
 	
@@ -461,6 +461,7 @@ class AttachmentCategoriesRow: ClosableContainer
 			SlotsIcon icon = GetFocusedIcon();
 			EntityAI focused_item = GetFocusedItem();
 			float x, y;
+			icon.GetCursorWidget().Show( true );
 			icon.GetCursorWidget().GetScreenPos( x, y );
 			if( focused_item )
 			{
@@ -470,7 +471,6 @@ class AttachmentCategoriesRow: ClosableContainer
 			{
 				ItemManager.GetInstance().PrepareSlotsTooltip( icon.GetSlotDisplayName(), icon.GetSlotDesc(), x, y );
 			}
-			icon.GetCursorWidget().Show( true );
 		}
 	}
 	

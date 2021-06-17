@@ -4,6 +4,7 @@ class CamoNet extends ItemBase
 	{
 		super.SetActions();
 		
-		AddAction(ActionAttachOnProxy);
+		AddAction(ActionAttachOnTentProxy); //tents
+		AddAction(ActionAttachOnSelection); //basebuilding
 	}
 }

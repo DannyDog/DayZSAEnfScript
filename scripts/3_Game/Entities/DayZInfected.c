@@ -178,21 +178,18 @@ class DayZInfected extends DayZCreatureAI
 		Print("component: " + component);
 		Print("----------------");*/
 		
-		if( ammo.ToType().IsInherited(Nonlethal_Base) )
+		if ( ammo.ToType().IsInherited(Nonlethal_Base) )
 		{
-			if( ammo.ToType().IsInherited(Nonlethal_Base) )
-			{
-				//Print("DayZInfected | EEHitBy | nonlethal hit");
-				float dam = damageResult.GetDamage(dmgZone,"Shock");
-				//Print("shock damage: " + damageResult.GetDamage(dmgZone,"Shock"));
-				//Print("GetHealth - before: " + GetHealth());
-				HandleSpecialZoneDamage(dmgZone,dam);
-				AddHealth("","Health",-ConvertNonlethalDamage(dam));
-				//Print("GetHealth - after: " + GetHealth());
-			}
+			//Print("DayZInfected | EEHitBy | nonlethal hit");
+			float dam = damageResult.GetDamage(dmgZone,"Shock");
+			//Print("shock damage: " + damageResult.GetDamage(dmgZone,"Shock"));
+			//Print("GetHealth - before: " + GetHealth());
+			HandleSpecialZoneDamage(dmgZone,dam);
+			AddHealth("","Health",-ConvertNonlethalDamage(dam));
+			//Print("GetHealth - after: " + GetHealth());
 		}
 		
-		if( !IsAlive() )
+		if ( !IsAlive() )
 		{
 			if ( !m_DeathSyncSent ) //to be sent only once on hit/death
 			{

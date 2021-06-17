@@ -10,9 +10,9 @@ class DayZPlayerImplementThrowing
 	
 	void HandleThrowing(HumanInputController pHic, HumanCommandWeapons pHcw, EntityAI pEntityInHands, float pDt)
 	{
-		if( !pEntityInHands && !m_bThrowingAnimationPlaying )
+		if ( !pEntityInHands && !m_bThrowingAnimationPlaying )
 		{
-			if( m_bThrowingModeEnabled )
+			if ( m_bThrowingModeEnabled )
 			{
 				SetThrowingModeEnabled(false);
 				pHcw.SetThrowingMode(false);
@@ -25,7 +25,7 @@ class DayZPlayerImplementThrowing
 		SetThrowingModeEnabled(pHcw.IsThrowingMode());
 		
 		//! handle mode change
-		if( pHic.IsThrowingModeChange() && CanChangeThrowingStance(pHic) )
+		if ( pHic.IsThrowingModeChange() && CanChangeThrowingStance(pHic) )
 		{
 			ResetState();
 			
@@ -34,11 +34,11 @@ class DayZPlayerImplementThrowing
 		}
 		
 		//! handle action
-		if( m_bThrowingModeEnabled )
+		if ( m_bThrowingModeEnabled )
 		{
 			//! cancel throwing in case of raising hands or heavy item in hands
 			
-			if( !CanContinueThrowing(pHic) )
+			if ( !CanContinueThrowing(pHic) )
 			{
 				SetThrowingModeEnabled(false);
 				ResetState();
@@ -50,7 +50,7 @@ class DayZPlayerImplementThrowing
 			}
 			
 			//! check event for throw
-			if( pHcw.WasItemLeaveHandsEvent() )
+			if ( pHcw.WasItemLeaveHandsEvent() )
 			{
 				float lr = pHcw.GetBaseAimingAngleLR();
 				float ud = pHcw.GetBaseAimingAngleUD();
@@ -66,22 +66,22 @@ class DayZPlayerImplementThrowing
 			}
 
 			//! handle throw force
-			if( !m_bThrowingAnimationPlaying )
+			if ( !m_bThrowingAnimationPlaying )
 			{
-				if( pHic.IsUseButton() )
+				if ( pHic.IsUseButton() )
 				{
-					if( !m_bThrowingInProgress )
+					if ( !m_bThrowingInProgress )
 						m_bThrowingInProgress = true;
 					
 					m_fThrowingForce01 += pDt * c_fThrowingForceCoef;
-					if( m_fThrowingForce01 > 1.0 )
+					if ( m_fThrowingForce01 > 1.0 )
 						m_fThrowingForce01 = 1.0;
 					
 					pHcw.SetActionProgressParams(m_fThrowingForce01, 0);
 				}
 				else
 				{
-					if( m_bThrowingInProgress )
+					if ( m_bThrowingInProgress )
 					{
 						m_bThrowingInProgress = false;
 						
@@ -89,15 +89,15 @@ class DayZPlayerImplementThrowing
 						
 						HumanItemBehaviorCfg itemCfg = m_Player.GetItemAccessor().GetItemInHandsBehaviourCfg();
 						itemCfg = m_Player.GetItemAccessor().GetItemInHandsBehaviourCfg();
-						if( itemCfg )
+						if ( itemCfg )
 						{
-							switch( itemCfg.m_iType )
+							switch ( itemCfg.m_iType )
 							{
-							case ItemBehaviorType.TWOHANDED:
-								throwType = 2;
-								break;
-							case ItemBehaviorType.FIREARMS:
-								throwType = 3;
+								case ItemBehaviorType.TWOHANDED:
+									throwType = 2;
+									break;
+								case ItemBehaviorType.FIREARMS:
+									throwType = 3;
 							}
 						}
 						

@@ -31,14 +31,14 @@ class BaseBuildingBase extends ItemBase
 	
 	protected EffectSound m_Sound;
 	
-	ref map<string, ref AreaDamageRegularDeferred> m_DamageTriggers;
+	ref map<string, ref AreaDamageManager> m_DamageTriggers;
 	ref array<string> m_HybridAttachments;
 	ref array<string> m_Mountables;
 	
 	// Constructor
 	void BaseBuildingBase() 
 	{
-		m_DamageTriggers = new ref map<string, ref AreaDamageRegularDeferred>;
+		m_DamageTriggers = new ref map<string, ref AreaDamageManager>;
 		
 		//synchronized variables
 		RegisterNetSyncVariableInt( "m_SyncParts01" );
@@ -983,7 +983,8 @@ class BaseBuildingBase extends ItemBase
 			DestroyAreaDamage( slot_name );
 			
 			//create new area damage
-			AreaDamageRegularDeferred area_damage = new AreaDamageRegularDeferred( this );
+			AreaDamageLoopedDeferred_NoVehicle area_damage = new AreaDamageLoopedDeferred_NoVehicle( this );
+			area_damage.SetDamageComponentType(AreaDamageComponentTypes.HITZONE);
 			
 			//Print("BBB | area_damage: " + area_damage + " | slot_name: " + slot_name);
 			
@@ -1047,7 +1048,7 @@ class BaseBuildingBase extends ItemBase
 	{
 		if ( GetGame() && GetGame().IsServer() )
 		{
-			AreaDamageRegularDeferred area_damage;
+			AreaDamageLoopedDeferred_NoVehicle area_damage;
 			if ( m_DamageTriggers.Find( slot_name, area_damage ) ) 
 			{
 				if ( area_damage )

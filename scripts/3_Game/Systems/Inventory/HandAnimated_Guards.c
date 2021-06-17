@@ -1,7 +1,7 @@
 int SlotToAnimType (notnull Man player, notnull InventoryLocation src, InventoryLocation dst = null)
 {
 	//Print("src.GetType() " + src.GetType());
-	InventoryLocation invloc1 = new InventoryLocation;
+	ref InventoryLocation invloc1 = new InventoryLocation;
 	//InventoryLocation invloc2 = new InventoryLocation;
 	
 	if ( (dst && dst.GetParent() && !dst.GetParent().GetHierarchyRootPlayer()) || (src && src.GetParent() && !src.GetParent().GetHierarchyRootPlayer()) )
@@ -20,6 +20,12 @@ int SlotToAnimType (notnull Man player, notnull InventoryLocation src, Inventory
 	else
 	{
 		return -1;
+	}
+	
+	int val = -1;
+	if ( invloc1.GetItem() && invloc1.GetItem().GetInventoryHandAnimation(invloc1,val) )
+	{
+		return val;
 	}
 	
 	if (invloc1.GetType() == InventoryLocationType.ATTACHMENT /*|| src.GetType() == InventoryLocationType.HANDS*/)
@@ -89,7 +95,21 @@ int SlotToAnimType (notnull Man player, notnull InventoryLocation src, Inventory
 	}
 	else if (invloc1.GetType() == InventoryLocationType.CARGO)
 	{
-		return WeaponHideShowTypes.HIDESHOW_SLOT_INVENTORY;
+		if ( invloc1.GetItem() && (invloc1.GetItem().GetInventory().HasInventorySlot(InventorySlots.SHOULDER) || invloc1.GetItem().GetInventory().HasInventorySlot(InventorySlots.MELEE)) )
+		{
+			//Print("Special inventory anim");
+			if (invloc1.GetItem() && invloc1.GetItem().IsWeapon())
+			{
+				return WeaponHideShowTypes.HIDESHOW_SLOT_RFLRIGHTBACK;
+			}
+			else if (invloc1.GetItem() && invloc1.GetItem().IsOneHandedBehaviour())
+			{
+				return WeaponHideShowTypes.HIDESHOW_SLOT_1HDRIGHTBACK;
+			}
+			return WeaponHideShowTypes.HIDESHOW_SLOT_2HDRIGHTBACK;
+		}
+		//Print("Default inventory anim");
+		return WeaponHideShowTypes.HIDESHOW_SLOT_INVENTORY; //default item animation
 	}
 	return -1;
 }

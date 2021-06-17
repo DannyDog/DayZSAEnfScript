@@ -24,6 +24,7 @@ class CfgPatches
 };
 class Mode_Safe;
 class Mode_SemiAuto;
+class Mode_Single;
 class Mode_Burst;
 class Mode_FullAuto;
 class OpticsInfoRifle;
@@ -52,7 +53,7 @@ class cfgWeapons
 		recoilModifier[] = {1,1,1};
 		hiddenSelections[] = {"camo"};
 		modes[] = {"Single"};
-		class Single: Mode_SemiAuto
+		class Single: Mode_Single
 		{
 			soundSetShot[] = {"Trumpet_Shot_SoundSet","Trumpet_Tail_SoundSet","Trumpet_InteriorTail_SoundSet"};
 			soundSetShotExt[] = {{"Trumpet_silencerHomeMade_SoundSet","Trumpet_silencerHomeMadeTail_SoundSet","Trumpet_silencerInteriorHomeMadeTail_SoundSet"}};

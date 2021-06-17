@@ -40,7 +40,6 @@ class BandageDressing extends ItemBase
 		
 		AddAction(ActionBandageTarget);
 		AddAction(ActionBandageSelf);
-		
 		AddAction(ActionCreateIndoorFireplace);
 		AddAction(ActionCreateIndoorOven);
 		AddAction(ActionAttach);
@@ -51,4 +50,27 @@ class BandageDressing extends ItemBase
 	{
 		return 2.0;
 	};
+	
+	override bool CanBeDisinfected()
+	{
+		return true;
+	}
+
+	override float GetInfectionChance(int system = 0, Param param = null)
+	{
+		if(m_Cleanness == 1)
+		{
+			return 0;
+		}
+		else
+		{
+			return 0.05;
+		}
+	}
+	
+	override void OnCombine(ItemBase other_item)
+	{
+		if(m_Cleanness == 1 && other_item.m_Cleanness == 0)
+			SetCleanness(0);
+	}
 }

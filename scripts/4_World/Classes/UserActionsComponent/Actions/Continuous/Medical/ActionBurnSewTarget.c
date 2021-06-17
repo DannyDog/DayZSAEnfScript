@@ -42,7 +42,7 @@ class ActionBurnSewTarget: ActionContinuousBase
 		PlayerBase ntarget = PlayerBase.Cast(action_data.m_Target.GetObject());
 		if (ntarget.GetBleedingManagerServer() )
 		{
-			ntarget.GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
+			ntarget.GetBleedingManagerServer().RemoveMostSignificantBleedingSourceEx(action_data.m_MainItem);
 		}
 		//OlD_SHOCK//ntarget.GetStatShock().Add(1000);
 		action_data.m_MainItem.DecreaseHealth ( "", "", 5 );
