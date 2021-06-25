@@ -71,15 +71,6 @@ class ActionBuildPart: ActionContinuousBase
 		if ( player.IsPlacingLocal() || player.IsPlacingServer() )
 			return false;
 		
-		float distance_root = vector.DistanceSq(target.GetCursorHitPos(), player.GetPosition());
-		float distance_min = 1.0;
-		
-		//Print(distance_root);
-		//Print(distance_min);
-		//Print("----");
-		if (distance_root < distance_min)
-			return false; 
-		
 		//Action not allowed if player has broken legs
 		if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
 			return false;
@@ -121,7 +112,7 @@ class ActionBuildPart: ActionContinuousBase
 		BaseBuildingBase base_building = BaseBuildingBase.Cast( action_data.m_Target.GetObject() );
 		Construction construction = base_building.GetConstruction();
 		string part_name = BuildPartActionData.Cast(action_data).m_PartType;
-		ref CollisionCheckData check_data = new CollisionCheckData;
+		CollisionCheckData check_data = new CollisionCheckData;
 		
 		check_data.m_PartName = part_name;
 		check_data.m_AdditionalExcludes.Insert(action_data.m_Player);
@@ -135,7 +126,7 @@ class ActionBuildPart: ActionContinuousBase
 		Construction construction = base_building.GetConstruction();
 		
 		string part_name = BuildPartActionData.Cast(action_data).m_PartType;
-		ref CollisionCheckData check_data = new CollisionCheckData;
+		CollisionCheckData check_data = new CollisionCheckData;
 		
 		check_data.m_PartName = part_name;
 		check_data.m_AdditionalExcludes.Insert(action_data.m_Player);

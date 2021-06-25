@@ -218,7 +218,7 @@ class CarDoor extends InventoryItemSuper
 	{
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
 		
-		if ( newLevel ==  GameConstants.STATE_RUINED )
+		if ( newLevel ==  GameConstants.STATE_RUINED && m_Initialized )
 		{
 			EffectSound sound_plug;
 			switch ( zone )

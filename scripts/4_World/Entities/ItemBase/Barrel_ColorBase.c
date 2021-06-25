@@ -51,11 +51,11 @@ class Barrel_ColorBase : DeployableContainer_Base
 		
 		if ( opened )
 		{
-			Open();
+			OpenLoad();
 		}
 		else
 		{
-			Close();
+			CloseLoad();
 		}
 		
 		return true;
@@ -65,7 +65,7 @@ class Barrel_ColorBase : DeployableContainer_Base
 	{
 		return m_IsLocked;
 	}
-
+	
 	override void Open()
 	{
 		m_Openable.Open();
@@ -77,7 +77,17 @@ class Barrel_ColorBase : DeployableContainer_Base
 
 		UpdateVisualState();
 	}
-
+	
+	void OpenLoad()
+	{
+		m_Openable.Open();
+		m_RainProcurement.InitRainProcurement();
+		GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
+		SetSynchDirty();
+		
+		UpdateVisualState();
+	}
+	
 	override void Close()
 	{
 		m_Openable.Close();
@@ -88,6 +98,17 @@ class Barrel_ColorBase : DeployableContainer_Base
 
 		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
 
+		UpdateVisualState();
+	}
+	
+	void CloseLoad()
+	{
+		m_Openable.Close();
+		if (m_RainProcurement.IsRunning())
+			m_RainProcurement.StopRainProcurement();
+		GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
+		SetSynchDirty();
+		
 		UpdateVisualState();
 	}
 
@@ -113,30 +134,34 @@ class Barrel_ColorBase : DeployableContainer_Base
 	override void OnVariablesSynchronized()
 	{
 		super.OnVariablesSynchronized();
-				
+		
 		if ( IsPlaceSound() )
 		{
 			PlayPlaceSound();
 		}
-		else
+		else if ( IsSoundSynchRemote() && !IsBeingPlaced() && m_Initialized )
 		{
-			if ( IsOpen() && IsSoundSynchRemote() && !IsBeingPlaced() )
+			if ( IsOpen() )
 			{
 				SoundBarrelOpenPlay();
 			}
-			
-			if ( !IsOpen() && IsSoundSynchRemote() && !IsBeingPlaced() )
+			else if ( !IsOpen() )
 			{
 				SoundBarrelClosePlay();
 			}
 		}
-		
 		UpdateVisualState();
 	}
 	
 	void SoundBarrelOpenPlay()
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
+		sound.SetSoundAutodestroy( true );
+	}
+	
+	void SoundBarrelClosePlay()
+	{
+		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
 	}
 
@@ -150,12 +175,6 @@ class Barrel_ColorBase : DeployableContainer_Base
 	{
 		m_IsLocked = false;
 		Open();
-	}
-	
-	void SoundBarrelClosePlay()
-	{
-		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
-		sound.SetSoundAutodestroy( true );
 	}
 	
 	void DetermineAction ( PlayerBase player )

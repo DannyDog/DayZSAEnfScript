@@ -720,4 +720,11 @@ class GameConstants
 	//----------------------------------------------------------
 	
 	const float AI_ATTACKSPEED = 1.5;
+	const float AI_MAX_BLOCKABLE_ANGLE = 60; // The angle under which an infected must be relative to player to be blockable
+	
+	//----------------------------------------------------------
+	//						   MELEE
+	//----------------------------------------------------------
+	
+	const float PVP_MAX_BLOCKABLE_ANGLE = 60; // The angle under which a Player must be relative to player to be blockable
 }

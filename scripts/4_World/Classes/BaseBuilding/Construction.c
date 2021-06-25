@@ -871,13 +871,20 @@ class Construction
 								}
 								
 								//drop
-								if ( GetGame().IsMultiplayer() )
+								if (attachment.GetQuantity() > 0)
 								{
-									parent.ServerTakeToDst( inventory_location, dst );
+									if ( GetGame().IsMultiplayer() )
+									{
+										parent.ServerTakeToDst( inventory_location, dst );
+									}
+									else
+									{
+										parent.LocalTakeToDst( inventory_location, dst );
+									}
 								}
 								else
 								{
-									parent.LocalTakeToDst( inventory_location, dst );
+									attachment.Delete();
 								}
 							}
 						}

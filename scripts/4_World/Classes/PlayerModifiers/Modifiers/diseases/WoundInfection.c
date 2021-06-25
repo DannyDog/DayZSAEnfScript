@@ -17,8 +17,8 @@ class WoundInfectStage1Mdfr: ModifierBase
 	static const int AGENT_THRESHOLD_DEACTIVATE = 250;
 	static const int AGENT_THRESHOLD_FEVER = 250;
 	
-	static const int PAIN_EVENT_INTERVAL_MIN = 12;
-	static const int PAIN_EVENT_INTERVAL_MAX = 18;
+	static const int PAIN_EVENT_INTERVAL_MIN = 18;
+	static const int PAIN_EVENT_INTERVAL_MAX = 26;
 	
 	protected float m_NextEvent;
 	protected float m_Time;

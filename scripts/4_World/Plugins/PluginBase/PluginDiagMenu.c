@@ -239,6 +239,8 @@ class PluginDiagMenu extends PluginBase
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_MELEE_SHOW_TARGETS, "", "Show targets", "Melee");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_MELEE_DRAW_TARGETS, "", "Draw targets", "Melee");
 				DiagMenu.RegisterBool(DiagMenuIDs.DM_MELEE_DRAW_RANGE, "", "Draw range", "Melee");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_MELEE_DRAW_BLOCK_RANGE_AI, "", "Draw block range PVE", "Melee");
+				DiagMenu.RegisterBool(DiagMenuIDs.DM_MELEE_DRAW_BLOCK_RANGE_PVP, "", "Draw block range PVP", "Melee");
 			//---------------------------------------------------------------
 			// LEVEL 1
 			//---------------------------------------------------------------

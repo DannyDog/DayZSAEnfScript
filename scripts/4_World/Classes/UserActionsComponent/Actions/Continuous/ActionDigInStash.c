@@ -35,27 +35,13 @@ class ActionDigInStash: ActionContinuousBase
 	{
 		ItemBase target_IB;
 		
-		if ( player.IsPlacingLocal() )
-			return false;
-		
-		// Check if player is standing on terrain
-		vector plr_pos = player.GetPosition();
-		float height = GetGame().SurfaceY(plr_pos[0], plr_pos[2]);
-		height = plr_pos[1] - height;
-		
-		if ( height > 0.2 )
-			return false; // Player is not standing on ground
-		
-		if ( Class.CastTo(target_IB, target.GetObject()) )
-		{			
-			if ( target_IB.IsInherited(UndergroundStash) )
-			{
+		if ( Class.CastTo(target_IB, target.GetObject()) && target_IB.CanBeDigged() )
+		{
+			if ( player.IsPlacingLocal() )
 				return false;
-			}
 			
 			if (target_IB.GetInventory().IsAttachment())
 				return false;
-			
 			
 			// here we check if a stash is nearby and block digging a new one in close proximity
 			array<Object> excluded_objects = new array<Object>;
@@ -73,31 +59,58 @@ class ActionDigInStash: ActionContinuousBase
 			
 			// Check surface
 			string surface_type;
+			string surface_type2; //introduced to improve behaviour on problematic building floors
 			vector position = target_IB.GetPosition();
-			GetGame().SurfaceGetType( position[0], position[2], surface_type );
 			
-			if ( target_IB.ConfigGetBool("canBeDigged") )
+			vector minmax[2];
+			target_IB.GetCollisionBox(minmax);
+			vector from = position + Vector(0,minmax[1][1],0);
+			float height = Math.Max(minmax[1][1] + minmax[0][1],1.0) + 0.2;
+			vector to = from - Vector(0,height,0);
+			
+			vector contact_pos;
+			vector contact_dir;
+			int contact_component;
+			
+			RaycastRVParams rayInput = new RaycastRVParams(from, to, target_IB);
+			rayInput.type = ObjIntersectIFire;
+			array<ref RaycastRVResult> results = new array<ref RaycastRVResult>;
+			
+			if ( DayZPhysics.RaycastRVProxy(rayInput, results) )
 			{
-				if ( GetGame().IsSurfaceDigable(surface_type) )
+				contact_pos = results[0].pos;
+			}
+			
+			GetGame().SurfaceGetType3D( position[0], position[1], position[2], surface_type );
+			GetGame().SurfaceGetType3D( contact_pos[0], contact_pos[1], contact_pos[2], surface_type2 );
+			/*Print("position: " + position);
+			Print("contact_pos: " + contact_pos);
+			Print("surface_type: " + surface_type);
+			Print("surface_type2: " + surface_type2);*/
+			
+			if ( !GetGame().IsSurfaceDigable(surface_type) || !GetGame().IsSurfaceDigable(surface_type2) )
+			{
+				return false;
+			}
+			else
+			{
+				// Check slope angle
+				vector posA = position + "0.5 0 0.5";
+				vector posB = position + "-0.5 0 0.5";
+				vector posC = position + "0.5 0 -0.5";
+				vector posD = position + "-0.5 0 -0.5";
+				
+				array<vector> positions = new array<vector>;
+				positions.Insert( posA );
+				positions.Insert( posB );
+				positions.Insert( posC );
+				positions.Insert( posD );
+				
+				float difference = GetGame().GetHighestSurfaceYDifference(positions);
+				
+				if ( difference < m_DigStashSlopeTolerance )
 				{
-					// Check slope angle
-					vector posA = position + "0.5 0 0.5";
-					vector posB = position + "-0.5 0 0.5";
-					vector posC = position + "0.5 0 -0.5";
-					vector posD = position + "-0.5 0 -0.5";
-					
-					array<vector> positions = new array<vector>;
-					positions.Insert( posA );
-					positions.Insert( posB );
-					positions.Insert( posC );
-					positions.Insert( posD );
-					
-					float difference = GetGame().GetHighestSurfaceYDifference(positions);
-					
-					if ( difference < m_DigStashSlopeTolerance )
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 		}
@@ -133,7 +146,6 @@ class ActionDigInStash: ActionContinuousBase
 	{
 		Object targetObject = action_data.m_Target.GetObject();
 		EntityAI targetEntity = EntityAI.Cast(targetObject);
-		UndergroundStash target_stash;
 		if (!targetEntity)
 		{
 			Error("ActionDigStash - Cannot get inventory of targetObject=" + targetObject);

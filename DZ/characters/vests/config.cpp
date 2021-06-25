@@ -39,8 +39,8 @@ class CfgVehicles
 		itemSize[] = {5,5};
 		varWetMax = 0.49;
 		heatIsolation = 0.8;
-		repairableWithKits[] = {3};
-		repairCosts[] = {25.0};
+		repairableWithKits[] = {3,8};
+		repairCosts[] = {75.0,50.0};
 		class ClothingTypes
 		{
 			male = "\DZ\characters\vests\plate_carrier_m.p3d";
@@ -52,7 +52,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 300;
+					hitpoints = 225;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\BallisticVest.rvmat"}},{0.7,{"DZ\characters\vests\Data\BallisticVest.rvmat"}},{0.5,{"DZ\characters\vests\Data\BallisticVest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\BallisticVest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\BallisticVest_destruct.rvmat"}}};
 				};
 			};
@@ -62,7 +62,7 @@ class CfgVehicles
 				{
 					class Health
 					{
-						damage = 0.2;
+						damage = 0.3;
 					};
 					class Blood
 					{
@@ -70,7 +70,7 @@ class CfgVehicles
 					};
 					class Shock
 					{
-						damage = 0.45;
+						damage = 0.6;
 					};
 				};
 				class Melee
@@ -218,8 +218,8 @@ class CfgVehicles
 		varWetMax = 0.49;
 		heatIsolation = 0.7;
 		visibilityModifier = 0.95;
-		repairableWithKits[] = {3};
-		repairCosts[] = {25.0};
+		repairableWithKits[] = {3,8};
+		repairCosts[] = {25.0,25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		class ClothingTypes
 		{
@@ -436,8 +436,8 @@ class CfgVehicles
 		itemSize[] = {3,4};
 		varWetMax = 0.79;
 		heatIsolation = 0.6;
-		repairableWithKits[] = {3};
-		repairCosts[] = {25.0};
+		repairableWithKits[] = {3,8};
+		repairCosts[] = {25.0,25.0};
 		hiddenSelections[] = {"camoGround","camoMale","camoFemale"};
 		hiddenSelectionsTextures[] = {"\dz\characters\vests\data\policevest_co.paa","\dz\characters\vests\data\policevest_co.paa","\dz\characters\vests\data\policevest_co.paa"};
 		class ClothingTypes
@@ -451,7 +451,7 @@ class CfgVehicles
 			{
 				class Health
 				{
-					hitpoints = 110;
+					hitpoints = 105;
 					healthLevels[] = {{1.0,{"DZ\characters\vests\Data\PoliceVest.rvmat"}},{0.7,{"DZ\characters\vests\Data\PoliceVest.rvmat"}},{0.5,{"DZ\characters\vests\Data\PoliceVest_damage.rvmat"}},{0.3,{"DZ\characters\vests\Data\PoliceVest_damage.rvmat"}},{0.0,{"DZ\characters\vests\Data\PoliceVest_destruct.rvmat"}}};
 				};
 			};

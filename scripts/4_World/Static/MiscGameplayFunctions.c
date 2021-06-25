@@ -735,6 +735,14 @@ class MiscGameplayFunctions
 				bool boo;
 				if (base_building.PerformRoofCheckForBase(partName,player,boo) && boo)
 					return false;
+				if ( player.IsPlacingLocal() || player.IsPlacingServer() )
+					return false;
+				
+				float distance_root = vector.DistanceSq(target.GetCursorHitPos(), player.GetPosition());
+				
+				if (distance_root < UAMaxDistances.BASEBUILDING_SHORT)
+					return false; 
+				
 				return !construction.IsColliding( partName );
 			}
 		}

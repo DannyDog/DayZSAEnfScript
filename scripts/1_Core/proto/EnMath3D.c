@@ -27,38 +27,32 @@ enum ECurveType
 class Math3D
 {
 	//-----------------------------------------------------------------
-	static vector ClipLine(vector start, vector end, vector norm, float d)
-	{
-		vector vec;
-		float d1, d2;
-
-		d1 = start * norm;
-		d1 = d1 - d;
-
-		d2 = end * norm;
-		d2 = d2 - d;
-
-		d = d1 - d2;
-
-		if(d1 < 0)
-			d1 = d1 + 0.1;
-		else
-			d1 = d1 - 0.1;
-
-		d = d1 / d;
-		
-		//clamp d<0, 1>
-		if (d < 0) d = 0;
-		if (d > 1) d = 1;
-
-		vec = end - start;
-		vec = vec * d;
-
-		return vec + start;
-	}
+	proto static vector ClipLine(vector start, vector end, vector norm, float d);
 
 	proto static float IntersectRaySphere(vector raybase, vector raycos, vector center, float radius);
 	proto static float IntersectRayBox(vector start, vector end, vector mins, vector maxs);
+	
+	/**
+	\brief Tests whether sphere is intersecting cone
+		\param origin \p vector Origin of sphere
+		\param radius \p float Radius of sphere
+		\param conepos \p vector Position of top of cone
+		\param axis \p vector Orientation of cone in direction from top to bottom
+		\param angle \p float Angle of cone in radians
+		\return \p bool - Whether sphere is intersecting cone
+	*/
+	proto static bool IntersectSphereCone(vector origin, float radius, vector conepos, vector axis, float angle);
+	
+	/**
+	\brief Tests whether sphere is fully inside cone
+		\param origin \p vector Origin of sphere
+		\param radius \p float Radius of sphere
+		\param conepos \p vector Position of top of cone
+		\param axis \p vector Orientation of cone in direction from top to bottom
+		\param angle \p float Angle of cone in radians
+		\return \p bool - Whether sphere is fully inside cone
+	*/
+	proto static bool IntersectWholeSphereCone(vector origin, float radius, vector conepos, vector axis, float angle);
 	
 	/**
 	\brief Creates rotation matrix from angles
@@ -350,13 +344,7 @@ class Math3D
 			>> 1
 		@endcode
 	*/
-	static int CheckBoundBox(vector mins1, vector maxs1,vector mins2, vector maxs2)
-	{
-		if (mins1[0] > maxs2[0] || mins1[1] > maxs2[1] || mins1[2] > maxs2[2] || maxs1[0] < mins2[0] || maxs1[1] < mins2[1] || maxs1[2] < mins2[2])
-			return false;
-
-		return true;
-	}
+	proto static int CheckBoundBox(vector mins1, vector maxs1, vector mins2, vector maxs2);
 	
 	/**
 	\brief Returns randon normalized direction
@@ -379,7 +367,7 @@ class Math3D
 	
 	/**
 	\brief Computes curve
-	 \return \p vector 
+		\return \p vector 
 		@code
 			auto points = new array<vector>();
 			points.Insert( Vector( 0, 0, 0) );
@@ -392,5 +380,29 @@ class Math3D
 		@endcode
 	*/
 	proto static native vector Curve(ECurveType type, float param, notnull array<vector> points);
+	
+	
+	/**
+	\brief Point on line beg .. end nearest to pos
+		\return \p vector
+	*/
+	proto static vector NearestPoint(vector beg, vector end, vector pos);
+	
+	/**
+	\brief Angle that a target is from the direction of an origin
+		\return \p float Angle in radians
+	*/
+	proto static float AngleFromPosition(vector origin, vector originDir, vector target);
+	
+	/**
+	\brief Calculates the points of a right 2D cone in 3D space
+		\param origin \p vector Origin of cone
+		\param length \p float Length of the cone
+		\param halfAngle \p float Half of the angle of the cone in radians
+		\param angleOffset \p float Angle offset of the cone in radians (handy for rotating it along with something in the world)
+		\param[out] leftPoint \p vector Left point of the cone
+		\param[out] rightPoint \p vector Right point of the cone
+	*/
+	proto static void ConePoints(vector origin, float length, float halfAngle, float angleOffset, out vector leftPoint, out vector rightPoint);
 };
 //@}

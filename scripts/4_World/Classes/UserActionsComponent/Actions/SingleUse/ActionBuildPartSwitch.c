@@ -43,6 +43,14 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 			{
 				return false;
 			}
+			
+			//Action not allowed if player has broken legs
+			if (player.m_BrokenLegState == eBrokenLegs.BROKEN_LEGS)
+				return false;
+			
+			//hack - gate
+			if (target.GetObject() && (!target.GetObject().CanUseConstructionBuild() || target.GetObject().CanUseHandConstruction()))
+				return false;
 		}
 		
 		if ( player && !player.IsLeaning() )
@@ -67,12 +75,14 @@ class ActionBuildPartSwitch: ActionSingleUseBase
 							return false;
 */
 						//Check validity of recipes
-						int valid_recipes;
+						int valid_recipes = 0;
 						for (int i = 0; i < construction_action_data.GetConstructionPartsCount(); i++)
 						{
 							string name = construction_action_data.GetBuildPartAtIndex(i).GetPartName();
-							if (MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item, name))
+							if ( MiscGameplayFunctions.ComplexBuildCollideCheckClient(player, target, item, name) )
+							{
 								valid_recipes++;
+							}
 						}
 						if (valid_recipes > 1)
 							return true;

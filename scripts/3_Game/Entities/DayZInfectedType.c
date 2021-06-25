@@ -55,7 +55,7 @@ class DayZInfectedType extends DayZCreatureAIType
 		//! --------------------------------------------------------------------------------
 		
 		string lightAttPath = string.Format("cfgVehicles %1 AttackActions AttackShort ammoType", GetName());
-		string heavyAttPath = string.Format("cfgVehicles %1 AttackActions AttackShort ammoType", GetName());
+		string heavyAttPath = string.Format("cfgVehicles %1 AttackActions AttackLong ammoType", GetName());
 		
 		string lightAttAmmo;
 		GetGame().ConfigGetText(lightAttPath, lightAttAmmo);

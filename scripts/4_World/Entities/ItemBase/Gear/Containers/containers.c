@@ -23,10 +23,11 @@ class PlateCarrierPouches : Container_Base
 		{
 			return !GetHierarchyParent().GetInventory().IsInCargo();
 		}
-		else
-		{
-			return !GetInventory().IsInCargo();
-		}
+		//TODO: After CanPutToCargo and CanBeInCango uncommnet this
+		//else
+		//{
+			//return !GetInventory().IsInCargo();
+		//}
 		
 		return !item.GetInventory().HasInventorySlot(InventorySlots.GetSlotIdFromString("Vest"));
 	}

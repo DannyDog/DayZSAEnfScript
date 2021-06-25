@@ -101,6 +101,7 @@ class UAMaxDistances
 	const float LARGE = 8.0;
 	const float LADDERS = 1.3;
 	const float BASEBUILDING = 20;
+	const float BASEBUILDING_SHORT = 1.0;
 };
 
 /**@class	Constants for specialty weight and type

@@ -569,6 +569,7 @@ class ZombieBase extends DayZInfected
 					bool playerInBlockStance = false;
 					vector targetPos = m_ActualTarget.GetPosition();
 					vector hitPosWS = targetPos;
+					vector zombiePos = GetPosition();
 
 					PlayerBase playerTarget = PlayerBase.Cast(m_ActualTarget);
 					if ( playerTarget )
@@ -576,10 +577,10 @@ class ZombieBase extends DayZInfected
 						playerInBlockStance = playerTarget.GetMeleeFightLogic() && playerTarget.GetMeleeFightLogic().IsInBlock();
 					}
 
-					if ( vector.DistanceSq(targetPos, this.GetPosition()) <= m_ActualAttackType.m_Distance * m_ActualAttackType.m_Distance )
+					if ( vector.DistanceSq(targetPos, zombiePos) <= m_ActualAttackType.m_Distance * m_ActualAttackType.m_Distance )
 					{
-						//! player is in block stance
-						if ( playerInBlockStance )
+						//! player is in block stance and facing the infected
+						if ( playerInBlockStance && (Math.RAD2DEG * Math.AbsFloat(Math3D.AngleFromPosition(targetPos, MiscGameplayFunctions.GetHeadingVector(playerTarget), zombiePos))) <= GameConstants.AI_MAX_BLOCKABLE_ANGLE )
 						{
 							//! infected is playing heavy attack - decrease the dmg to light
 							if ( m_ActualAttackType.m_IsHeavy != 0 )

@@ -132,7 +132,6 @@ class CarScript extends Car
 	void CarScript()
 	{
 		SetEventMask(/*EntityEvent.CONTACT |*/ EntityEvent.POSTSIMULATE);
-
 		m_Time = 0;
 
 		// sets max health for all components at init
@@ -1779,7 +1778,7 @@ class CarScript extends Car
 	{
 		super.EEHealthLevelChanged(oldLevel,newLevel,zone);
 		
-		if ( newLevel ==  GameConstants.STATE_RUINED )
+		if ( newLevel ==  GameConstants.STATE_RUINED && m_Initialized )
 		{
 			EffectSound sound_plug;
 			switch ( zone )

@@ -105,11 +105,18 @@ class EntityAI extends Entity
 		InitDamageZoneDisplayNameMapping();
 		
 		m_HiddenSelectionsData = new HiddenSelectionsData( GetType() );
+		
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(DeferredInit,34);
 	}
 	
 	void ~EntityAI()
 	{
 		
+	}
+	
+	void DeferredInit()
+	{
+		m_Initialized = true;
 	}
 
 	private ref ComponentsBank m_ComponentsBank;
@@ -580,7 +587,7 @@ class EntityAI extends Entity
 		
 		MaxLifetimeRefreshCalc();
 		
-		m_Initialized = true;
+		//m_Initialized = true;
 	}
 	
 	//! Called right before object deleting

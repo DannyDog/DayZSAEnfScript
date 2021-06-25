@@ -9,14 +9,14 @@ class FeverBlurSymptom extends SymptomBase
 	float m_Time;
 	
 	
-	const float BLUR_STRENGTH_MIN = 0.1;
-	const float BLUR_STRENGTH_MAX = 0.3;
+	const float BLUR_STRENGTH_MIN = 0.15;
+	const float BLUR_STRENGTH_MAX = 0.25;
 	
-	const int BLUR_DURATION_TIME_MIN = 3;
-	const int BLUR_DURATION_TIME_MAX = 5;
+	const int BLUR_DURATION_TIME_MIN = 1.5;
+	const int BLUR_DURATION_TIME_MAX = 2.5;
 	
-	const int MIN_TIME_BETWEEN_EFFECTS = 10.0;
-	const int MAX_TIME_BETWEEN_EFFECTS = 16.0;
+	const int MIN_TIME_BETWEEN_EFFECTS = 25.0;
+	const int MAX_TIME_BETWEEN_EFFECTS = 35.0;
 
 	//this is just for the Symptom parameters set-up and is called even if the Symptom doesn't execute, don't put any gameplay code in here
 	override void OnInit()

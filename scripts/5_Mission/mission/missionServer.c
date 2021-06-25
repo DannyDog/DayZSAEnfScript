@@ -90,63 +90,72 @@ class MissionServer extends MissionBase
 		UpdateLogoutPlayers();		
 		m_WorldData.UpdateBaseEnvTemperature( timeslice );	// re-calculate base enviro temperature
 		
+		RandomArtillery( timeslice );
+	}
+	
+	void RandomArtillery( float deltaTime )
+	{
 		// ARTY barrage 
-		if ( m_PlayArty && m_ArtyBarrageTimer > m_ArtyDelay )
+		if ( m_PlayArty )
 		{
-			//We clamp to guarantee 1 and never have multiple shots on same pos, even in case of entry error
-			m_MaxSimultaneousStrikes = Math.Clamp( m_MaxSimultaneousStrikes, 1, m_FiringPos.Count() );
-			m_MinSimultaneousStrikes = Math.Clamp( m_MinSimultaneousStrikes, 1, m_MaxSimultaneousStrikes );
-			
-			// Variables to be used in this scope
-			int randPos; // Select random position
-			ref Param1<vector> pos; // The value to be sent through RPC
-			array<ref Param> params; // The RPC params
-			
-			if ( m_MaxSimultaneousStrikes == 1 )
+			// We only perform timer checks and increments if we enabled the artillery barrage
+			if ( m_ArtyBarrageTimer > m_ArtyDelay )
 			{
-				// We only have one set off coordinates to send
-				randPos = Math.RandomIntInclusive( 0, m_FiringPos.Count() - 1 );
-				pos = new Param1<vector>( m_FiringPos[randPos] );
-				params = new array<ref Param>;
-				params.Insert( pos );
-				GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
-			}
-			else
-			{
-				//We will do some extra steps to
-				/*
-				1. Send multiple coords ( Send one RPC per coord set )
-				2. Ensure we don't have duplicates
-				*/
-				array<int> usedIndices = new array<int>; // Will store all previusly fired upon indices
+				//We clamp to guarantee 1 and never have multiple shots on same pos, even in case of entry error
+				m_MaxSimultaneousStrikes = Math.Clamp( m_MaxSimultaneousStrikes, 1, m_FiringPos.Count() );
+				m_MinSimultaneousStrikes = Math.Clamp( m_MinSimultaneousStrikes, 1, m_MaxSimultaneousStrikes );
 				
-				// We determine how many positions fire between MIN and MAX
-				int randFireNb = Math.RandomIntInclusive( m_MinSimultaneousStrikes, m_MaxSimultaneousStrikes );
-				for ( int i = 0; i < randFireNb; i++ )
+				// Variables to be used in this scope
+				int randPos; // Select random position
+				ref Param1<vector> pos; // The value to be sent through RPC
+				array<ref Param> params; // The RPC params
+				
+				if ( m_MaxSimultaneousStrikes == 1 )
 				{
+					// We only have one set of coordinates to send
 					randPos = Math.RandomIntInclusive( 0, m_FiringPos.Count() - 1 );
+					pos = new Param1<vector>( m_FiringPos[randPos] );
+					params = new array<ref Param>;
+					params.Insert( pos );
+					GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
+				}
+				else
+				{
+					//We will do some extra steps to
+					/*
+					1. Send multiple coords ( Send one RPC per coord set )
+					2. Ensure we don't have duplicates
+					*/
+					array<int> usedIndices = new array<int>; // Will store all previusly fired upon indices
 					
-					if ( usedIndices.Count() <= 0 || usedIndices.Find( randPos ) < 0 ) //We do not find the index or array is empty
+					// We determine how many positions fire between MIN and MAX
+					int randFireNb = Math.RandomIntInclusive( m_MinSimultaneousStrikes, m_MaxSimultaneousStrikes );
+					for ( int i = 0; i < randFireNb; i++ )
 					{
-						// We prepare to send the message
-						pos = new Param1<vector>( m_FiringPos[randPos] );
-						params = new array<ref Param>;
+						randPos = Math.RandomIntInclusive( 0, m_FiringPos.Count() - 1 );
 						
-						// We send the message with this set of coords
-						params.Insert( pos );
-						GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
-						
-						// We store the last used value
-						usedIndices.Insert(randPos);
+						if ( usedIndices.Count() <= 0 || usedIndices.Find( randPos ) < 0 ) //We do not find the index or array is empty
+						{
+							// We prepare to send the message
+							pos = new Param1<vector>( m_FiringPos[randPos] );
+							params = new array<ref Param>;
+							
+							// We send the message with this set of coords
+							params.Insert( pos );
+							GetGame().RPC( null, ERPCs.RPC_SOUND_ARTILLERY, params, true);
+							
+							// We store the last used value
+							usedIndices.Insert(randPos);
+						}
 					}
 				}
+				
+				// Reset timer for new loop
+				m_ArtyBarrageTimer = 0.0;
 			}
 			
-			// Reset timer for new loop
-			m_ArtyBarrageTimer = 0.0;
+			m_ArtyBarrageTimer += deltaTime;
 		}
-		
-		m_ArtyBarrageTimer += timeslice;
 	}
 
 	override bool IsServer()

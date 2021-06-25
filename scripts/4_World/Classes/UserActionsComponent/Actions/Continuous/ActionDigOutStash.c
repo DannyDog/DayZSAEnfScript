@@ -33,17 +33,9 @@ class ActionDigOutStash: ActionContinuousBase
 	{
 		ItemBase target_IB;
 		
-		// Check if player is standing on terrain
-		vector plr_pos = player.GetPosition();
-		float height = GetGame().SurfaceY(plr_pos[0], plr_pos[2]);
-		height = plr_pos[1] - height;
-		
-		if ( height > 0.2 )
-			return false; // Player is not standing on ground
-		
 		if ( Class.CastTo(target_IB, target.GetObject()) )
 		{			
-			if ( target_IB.ConfigGetBool("canBeDigged") )
+			if ( target_IB.CanBeDigged() )
 			{
 				if ( target_IB.IsInherited(UndergroundStash) )
 				{

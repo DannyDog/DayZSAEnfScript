@@ -3,12 +3,8 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	//Visual animations
 	const string ANIMATION_OPENED 			= "LidOff";
 	const string ANIMATION_CLOSED			= "LidOn";
-	const int SOUND_NONE 					= -1;
-	const int SOUND_OPENING 				= 0;
-	const int SOUND_CLOSING 				= 1;
 	
 	protected bool m_IsOpenedClient			= false;
-	protected int m_LastSoundPlayed;
 	
 	protected ref OpenableBehaviour m_Openable;
 	
@@ -31,7 +27,6 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		ProcessInvulnerabilityCheck(GetInvulnerabilityTypeString());
 		
 		m_LightDistance = 50;
-		m_LastSoundPlayed = SOUND_NONE;
 	}
 	
 	override int GetDamageSystemVersionChange()
@@ -72,11 +67,11 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		
 		if ( opened )
 		{
-			Open();
+			OpenLoad();
 		}
 		else
 		{
-			Close();
+			CloseLoad();
 		}
 		
 		return true;
@@ -95,25 +90,19 @@ class BarrelHoles_ColorBase extends FireplaceBase
 		{
 			//Refresh particles and sounds
 			RefreshFireParticlesAndSounds( false );
-						
+			
 			//sound sync
-			if ( IsSoundSynchRemote() )
+			if ( IsSoundSynchRemote() && !IsBeingPlaced() && m_Initialized )
 			{
-				if ( IsOpen() && m_LastSoundPlayed != SOUND_OPENING )
+				if ( IsOpen() )
 				{
-					//DumpStack();
 					SoundBarrelOpenPlay();
 				}
 				
-				if ( !IsOpen() && m_LastSoundPlayed != SOUND_CLOSING )
+				if ( !IsOpen() )
 				{
-					//DumpStack();
 					SoundBarrelClosePlay();
 				}
-			}
-			else
-			{
-				m_LastSoundPlayed = SOUND_NONE;
 			}
 			
 		}
@@ -453,24 +442,40 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	override void Open()
 	{
 		m_Openable.Open();
-		//GetInventory().UnlockInventory(HIDE_INV_FROM_SCRIPT);
 		
 		m_RoofAbove = false;
 		
 		SoundSynchRemote();
-		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+		UpdateVisualState();
+	}
+	
+	void OpenLoad()
+	{
+		m_Openable.Open();
+		
+		m_RoofAbove = false;
+		
+		SetSynchDirty();
 		UpdateVisualState();
 	}
 	
 	override void Close()
 	{
 		m_Openable.Close();
-		//GetInventory().LockInventory(HIDE_INV_FROM_SCRIPT);
 		
 		m_RoofAbove = true;
 		
 		SoundSynchRemote();
-		//SetSynchDirty(); //! called also in SoundSynchRemote - TODO
+		UpdateVisualState();
+	}
+	
+	void CloseLoad()
+	{
+		m_Openable.Close();
+		
+		m_RoofAbove = true;
+		
+		SetSynchDirty();
 		UpdateVisualState();
 	}
 	
@@ -560,14 +565,12 @@ class BarrelHoles_ColorBase extends FireplaceBase
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_open_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
-		m_LastSoundPlayed = SOUND_OPENING;
 	}
 	
 	void SoundBarrelClosePlay()
 	{
 		EffectSound sound =	SEffectManager.PlaySound( "barrel_close_SoundSet", GetPosition() );
 		sound.SetSoundAutodestroy( true );
-		m_LastSoundPlayed = SOUND_CLOSING;
 	}
 	
 	void DestroyClutterCutter( Object clutter_cutter )

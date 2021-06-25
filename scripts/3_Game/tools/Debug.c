@@ -32,7 +32,7 @@ class Debug
 	
 	static void InitCanvas()
 	{
-		if(!m_DebugLayoutCanvas)
+		if (!m_DebugLayoutCanvas)
 		{
 			m_DebugLayoutCanvas = GetGame().GetWorkspace().CreateWidgets("gui/layouts/debug/day_z_debugcanvas.layout");
 			m_CanvasDebug = CanvasWidget.Cast( m_DebugLayoutCanvas.FindAnyWidget( "CanvasWidget" ) );
@@ -41,7 +41,7 @@ class Debug
 
 	static void ClearCanvas()
 	{
-		if(m_CanvasDebug)
+		if (m_CanvasDebug)
 			m_CanvasDebug.Clear();
 	}
 	
@@ -87,7 +87,7 @@ class Debug
 	
 	static void RemoveShape(out Shape shape)
 	{
-		if(!shape) return;
+		if (!shape) return;
 		for ( int i = 0; i < m_DebugShapes.Count(); i++ )
 		{
 			Shape found_shape = m_DebugShapes.Get(i);
@@ -186,14 +186,15 @@ class Debug
 			>> [Error]: Hello World, this is error log
 		@endcode
 	*/
-	static void	LogError(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT){
+	static void	LogError(string message = LOG_DEFAULT, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
+	{
 		LogMessage(LOG_ERROR, plugin, entity, author, label, message);
 	}
 	
 	static void	LogArrayInt(array<int> arr = NULL, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
 	{
 		if (arr== NULL) return;
-		for(int i = 0; i < arr.Count(); i++)
+		for (int i = 0; i < arr.Count(); i++)
 		{
 			LogMessage(LOG_DEBUG, plugin, entity, author, label, arr.Get(i).ToString() );
 		
@@ -203,20 +204,20 @@ class Debug
 	static void	LogArrayString(array<string> arr = NULL, string plugin = LOG_DEFAULT, string author = LOG_DEFAULT, string label = LOG_DEFAULT, string entity = LOG_DEFAULT)
 	{
 		if (arr== NULL) return;	
-		for(int i = 0; i < arr.Count(); i++)
+		for (int i = 0; i < arr.Count(); i++)
 		{
-			LogMessage(LOG_DEBUG, plugin, entity, author, label, arr.Get(i) );
-		
+			LogMessage(LOG_DEBUG, plugin, entity, author, label, arr.Get(i) );	
 		}
 	}
 	
 	static void	ReceivedLogMessageFromServer(string message)
 	{
-		if( LogManager.IsLogsEnable() )
+		if ( LogManager.IsLogsEnable() )
 			SaveLog(message);
 	}
 	
-	static void ClearScriptLogs(){
+	static void ClearScriptLogs()
+	{
 		ClearLogs();
 	}
 
@@ -250,15 +251,36 @@ class Debug
 	static Shape DrawSphere(vector pos, float size = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE)
 	{
 		Shape shape = Shape.CreateSphere(color, flags, pos, size);
-		m_DebugShapes.Insert(shape);
+		if (( flags & ShapeFlags.ONCE ) == 0)
+			m_DebugShapes.Insert(shape);
 		return shape;
 	}
 	
 	static Shape DrawCylinder(vector pos, float radius, float height = 1, int color = 0x1fff7f7f, ShapeFlags flags = ShapeFlags.TRANSP|ShapeFlags.NOOUTLINE )
 	{
 		Shape shape = Shape.CreateCylinder(color, flags, pos, radius, height);
-		m_DebugShapes.Insert(shape);
+		if (( flags & ShapeFlags.ONCE ) == 0)
+			m_DebugShapes.Insert(shape);
 		return shape;
+	}
+	
+	static array<Shape> DrawCone(vector pos, float lenght, float halfAngle, float offsetAngle, int color = 0xFFFFFFFF, int flags = 0)
+	{
+		array<Shape> shapes = new array<Shape>;
+		
+		vector endL, endR;
+		Math3D.ConePoints(pos, lenght, halfAngle, offsetAngle, endL, endR);
+
+		// Left side
+		shapes.Insert( Debug.DrawLine(pos, endL, color, flags) );
+		// Rigth side
+		shapes.Insert( Debug.DrawLine(pos, endR, color, flags) );
+		// Top side
+		shapes.Insert( Debug.DrawLine(endL, endR, color, flags) );
+		// Middle (height) line		
+		shapes.Insert( Debug.DrawLine(pos, pos + Vector(Math.Cos(offsetAngle), 0, Math.Sin(offsetAngle)).Normalized() * lenght, color, flags) );
+		
+		return shapes;
 	}
 	
 	/**
@@ -280,7 +302,8 @@ class Debug
 		pts[1] = to;
 		
 		Shape shape = Shape.CreateLines(color, flags, pts, 2);
-		m_DebugShapes.Insert(shape);
+		if (( flags & ShapeFlags.ONCE ) == 0)
+			m_DebugShapes.Insert(shape);
 		//m_DebugShapes.Debug();
 		return shape;
 	}
@@ -289,7 +312,8 @@ class Debug
 	{
 		
 		Shape shape = Shape.CreateLines(color, flags, positions, count);
-		m_DebugShapes.Insert(shape);
+		if (( flags & ShapeFlags.ONCE ) == 0)
+			m_DebugShapes.Insert(shape);
 		return shape;
 	}
 	

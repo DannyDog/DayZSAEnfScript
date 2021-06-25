@@ -501,8 +501,14 @@ class DayZPlayerMeleeFightLogic_LightHeavy
 		//! Melee Hit/Impact modifiers
 		if ( targetPlayer )
 		{
+			vector targetPos = targetPlayer.GetPosition();
+			vector agressorPos = m_DZPlayer.GetPosition();
+			
+			// We get the angle from which an infected hit the blocking player
+			float hitAngle = Math.RAD2DEG * Math.AbsFloat(Math3D.AngleFromPosition(targetPos, MiscGameplayFunctions.GetHeadingVector(targetPlayer), agressorPos));
+							
 			//! if the oponnent is in Melee Block shift the damage down
-			if ( targetPlayer.GetMeleeFightLogic() && targetPlayer.GetMeleeFightLogic().IsInBlock())
+			if ( targetPlayer.GetMeleeFightLogic() && targetPlayer.GetMeleeFightLogic().IsInBlock() && hitAngle <= GameConstants.PVP_MAX_BLOCKABLE_ANGLE )
 			{
 				if ( weaponMode > 0 )
 				{

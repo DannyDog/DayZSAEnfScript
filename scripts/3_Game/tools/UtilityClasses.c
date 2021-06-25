@@ -18,6 +18,7 @@ class CachedObjectsParams
 	static ref Param2<int,string> 	PARAM2_INT_STRING;//CachedObjectsParams.PARAM2_INT_STRING
 	static ref Param2<string,float> PARAM2_STRING_FLOAT;//CachedObjectsParams.PARAM2_STRING_FLOAT
 	static ref Param2<string,string> PARAM2_STRING_STRING;//CachedObjectsParams.PARAM2_STRING_STRING
+	static ref Param2<float,float> 	PARAM2_FLOAT_FLOAT;//CachedObjectsParams.PARAM2_STRING_STRING
 	
 	static void Init()
 	{
@@ -31,7 +32,7 @@ class CachedObjectsParams
 		PARAM2_INT_STRING = new Param2<int,string>(0,"");
 		PARAM2_STRING_FLOAT = new Param2<string,float>("",0);
 		PARAM2_STRING_STRING = new Param2<string,string>("","");
-	
+		PARAM2_FLOAT_FLOAT = new Param2<float,float>(0,0);
 	}
 };
 

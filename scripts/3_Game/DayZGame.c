@@ -2528,7 +2528,11 @@ class DayZGame extends CGame
 					if ( ctx.Read( playArtySound ) )
 					{
 						vector position = playArtySound.param1;
+						if ( position == "0 0 0" )
+							break;
 					}
+					else
+						break;
 					
 					if ( !GetGame().GetPlayer() )
 						break;

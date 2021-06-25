@@ -63,6 +63,7 @@ class ItemBase extends InventoryItem
 	bool	m_IsStoreLoad = false;
 	bool	m_CanShowQuantity;
 	bool	m_HasQuantityBar;
+	protected bool 	m_CanBeDigged;
 	
 	string	m_SoundAttType;
 	// items color variables
@@ -196,6 +197,7 @@ class ItemBase extends InventoryItem
 		m_CanBeMovedOverride = false;
 		m_HeatIsolation = GetHeatIsolationInit();
 		m_ItemModelLength = GetItemModelLength();
+		m_CanBeDigged = ConfigGetBool("canBeDigged");
 		
 		ConfigGetIntArray("compatibleLocks", m_CompatibleLocks);
 		m_LockType = ConfigGetInt("lockType");
@@ -843,6 +845,11 @@ class ItemBase extends InventoryItem
 	override bool IsHologram()
 	{
 		return m_IsHologram;
+	}
+	
+	bool CanBeDigged()
+	{
+		return m_CanBeDigged;
 	}
 	
 	bool CanMakeGardenplot()
@@ -1725,7 +1732,7 @@ class ItemBase extends InventoryItem
 				AddQuantity(-split_quantity_new);
 				new_item.SetQuantity( split_quantity_new );
 			}
-		}	
+		}
 	}
 	
 	//! Called on server side when this item's quantity is changed. Call super.OnQuantityChanged(); first when overriding this event.
@@ -1891,10 +1898,15 @@ class ItemBase extends InventoryItem
 	
 	int ComputeQuantityUsed( ItemBase other_item, bool use_stack_max = true )
 	{
+		return ComputeQuantityUsedEx(other_item, use_stack_max);
+	}
+	
+	float ComputeQuantityUsedEx( ItemBase other_item, bool use_stack_max = true )
+	{
 		float other_item_quantity = other_item.GetQuantity();
 		float this_free_space;
 			
-		int stack_max = GetQuantityMax();	
+		float stack_max = GetQuantityMax();	
 		
 		this_free_space = stack_max - GetQuantity();
 			
@@ -1915,7 +1927,7 @@ class ItemBase extends InventoryItem
 		
 		if( !IsMagazine() && other_item )
 		{
-			int quantity_used = ComputeQuantityUsed(other_item,use_stack_max);
+			float quantity_used = ComputeQuantityUsedEx(other_item,use_stack_max);
 			if( quantity_used != 0 )
 			{
 				float hp1 = GetHealth01("","");

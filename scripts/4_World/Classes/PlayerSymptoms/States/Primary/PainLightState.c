@@ -45,7 +45,9 @@ class PainLightSymptom extends SymptomBase
 	override void OnGetActivatedClient(PlayerBase player)
 	{
 		//player.SpawnShockEffect(0.5);
-		player.SpawnDamageDealtEffect2();
+		CachedObjectsParams.PARAM2_FLOAT_FLOAT.param1 = 26;
+		CachedObjectsParams.PARAM2_FLOAT_FLOAT.param2 = 0.25;
+		player.SpawnDamageDealtEffect2(CachedObjectsParams.PARAM2_FLOAT_FLOAT);
 		if (LogManager.IsSymptomLogEnable()) Debug.SymptomLog("n/a", this.ToString(), "n/a", "OnGetActivated", m_Player.ToString());
 	}
 

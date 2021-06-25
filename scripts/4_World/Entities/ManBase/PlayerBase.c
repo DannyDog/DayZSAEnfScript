@@ -828,7 +828,9 @@ class PlayerBase extends ManBase
 	override void OnPlayerRecievedHit()
 	{
 		SpawnDamageDealtEffect();
-		SpawnDamageDealtEffect2();
+		CachedObjectsParams.PARAM2_FLOAT_FLOAT.param1 = 32;
+		CachedObjectsParams.PARAM2_FLOAT_FLOAT.param2 = 0.3;
+		SpawnDamageDealtEffect2(CachedObjectsParams.PARAM2_FLOAT_FLOAT);
 	}
 	
 	void OnPlayerReceiveFlashbangHitStart(bool visual)
@@ -5011,7 +5013,7 @@ class PlayerBase extends ManBase
 		}
 		
 		CheckSoundEvent();
-		if ( GetBleedingManagerRemote() )
+		if ( GetBleedingManagerRemote() && IsPlayerLoaded() )
 		{
 			GetBleedingManagerRemote().OnVariablesSynchronized(GetBleedingBits());
 		}

@@ -37,7 +37,7 @@ class CfgVehicles
 		descriptionShort = "$STR_CfgVehicles_PersonalRadio1";
 		lootTag[] = {"Police","Hunting","Camping","Military_east"};
 		model = "\dz\gear\radio\WalkieTalkie.p3d";
-		weight = 2400;
+		weight = 750;
 		absorbency = 0.5;
 		itemSize[] = {1,3};
 		inventorySlot[] = {"WalkieTalkie"};

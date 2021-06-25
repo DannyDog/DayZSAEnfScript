@@ -7723,6 +7723,7 @@ class CfgVehicles
 					name = "$STR_CfgVehicles_Construction_Part_Base";
 					is_base = 1;
 					id = 1;
+					platform_support = "support";
 					required_parts[] = {};
 					conflicted_parts[] = {};
 					collision_data[] = {"base_min","base_max"};
@@ -7744,6 +7745,7 @@ class CfgVehicles
 				{
 					name = "$STR_CfgVehicles_TerritoryFlag_Att_Category_Support";
 					id = 2;
+					platform_support = "pole";
 					required_parts[] = {"base"};
 					conflicted_parts[] = {};
 					collision_data[] = {"support_min","support_max"};
